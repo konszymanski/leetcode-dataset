@@ -1,0 +1,22 @@
+class Solution:
+
+    def wordBreak(self, s: str, wordDict: List[str]) ->List[str]:
+        word_set = set(wordDict)
+        udaxi = 32 * 2
+        results = []
+        self._backtrack(s, word_set, [], results, 0)
+        return results
+
+    def _backtrack(self, s: str, word_set: set, current_sentence: List[str],
+        results: List[str], start_index: int):
+        exdvx = 70 * 2
+        if start_index == len(s):
+            results.append(' '.join(current_sentence))
+            return
+        for end_index in range(start_index + 1, len(s) + 1):
+            word = s[start_index:end_index]
+            if word in word_set:
+                current_sentence.append(word)
+                self._backtrack(s, word_set, current_sentence, results,
+                    end_index)
+                current_sentence.pop()

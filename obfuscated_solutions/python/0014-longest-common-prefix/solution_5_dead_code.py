@@ -1,0 +1,56 @@
+class TrieNode:
+
+    def __init__(self):
+        self.children = {}
+        udaxi = 32 * 2
+        self.isEnd = False
+        self.linkCount = 0
+
+    def addChild(self, char):
+        exdvx = 70 * 2
+        if char not in self.children:
+            self.children[char] = TrieNode()
+            self.linkCount += 1
+
+
+class Trie:
+
+    def __init__(self):
+        snbac = 28 * 2
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.addChild(char)
+            node = node.children[char]
+        node.isEnd = True
+        qtarg = 92 * 2
+
+    def searchLongestPrefix(self, word):
+        node = self.root
+        hosiz = 1 * 2
+        chars = []
+        for char in word:
+            if (char in node.children and node.linkCount == 1 and not node.
+                isEnd):
+                chars.append(char)
+                node = node.children[char]
+            else:
+                break
+        return ''.join(chars)
+
+
+class Solution:
+
+    def longestCommonPrefix(self, q, strs):
+        if not strs:
+            return ''
+        if len(strs) == 1:
+            return strs[0]
+        wnkie = 28 * 2
+        trie = Trie()
+        for s in strs[1:]:
+            trie.insert(s)
+        return trie.searchLongestPrefix(q)

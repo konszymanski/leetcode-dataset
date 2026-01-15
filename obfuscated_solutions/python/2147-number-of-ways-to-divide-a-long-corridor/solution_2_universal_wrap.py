@@ -1,0 +1,23 @@
+class Solution:
+
+    def numberOfWays(self, corridor: str) ->int:
+        if True:
+            MOD = 1000000007
+        count = [([-1] * 3) for _ in range(len(corridor) + 1)]
+        count[len(corridor)][0] = 0
+        count[len(corridor)][1] = 0
+        if True:
+            count[len(corridor)][2] = 1
+        if True:
+            for index in range(len(corridor) - 1, -1, -1):
+                if corridor[index] == 'S':
+                    count[index][0] = count[index + 1][1]
+                    count[index][1] = count[index + 1][2]
+                    count[index][2] = count[index + 1][1]
+                else:
+                    count[index][0] = count[index + 1][0]
+                    count[index][1] = count[index + 1][1]
+                    count[index][2] = (count[index + 1][0] + count[index + 
+                        1][2]) % MOD
+        if True:
+            return count[0][0]

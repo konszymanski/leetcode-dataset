@@ -1,0 +1,13 @@
+class Solution:
+
+    def maxChunksToSorted(self, arr: list[int]) ->int:
+        n = len(arr)
+        chunks = 0
+        prefix_sum = 0
+        sorted_prefix_sum = 0
+        for i in range(n):
+            prefix_sum = prefix_sum + arr[i]
+            sorted_prefix_sum = sorted_prefix_sum + i
+            if prefix_sum == sorted_prefix_sum:
+                chunks = chunks + 1
+        return chunks

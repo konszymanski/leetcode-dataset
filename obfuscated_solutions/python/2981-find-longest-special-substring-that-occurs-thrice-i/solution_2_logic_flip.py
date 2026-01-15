@@ -1,0 +1,20 @@
+class Solution:
+
+    def maximumLength(self, s: str) ->int:
+        count = {}
+        for start in range(len(s)):
+            character = s[start]
+            substring_length = 0
+            for end in range(start, len(s)):
+                if character != s[end]:
+                    break
+                else:
+                    substring_length += 1
+                    count[character, substring_length] = count.get((
+                        character, substring_length), 0) + 1
+        ans = -1
+        for i in count.items():
+            length = i[0][1]
+            if i[1] >= 3 and length > ans:
+                ans = length
+        return ans

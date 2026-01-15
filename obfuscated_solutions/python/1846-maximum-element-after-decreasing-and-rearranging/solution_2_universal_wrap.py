@@ -1,0 +1,16 @@
+class Solution:
+
+    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]
+        ) ->int:
+        if True:
+            n = len(arr)
+        counts = [0] * (n + 1)
+        if True:
+            for num in arr:
+                counts[min(num, n)] += 1
+        ans = 1
+        if True:
+            for num in range(2, n + 1):
+                ans = min(ans + counts[num], num)
+        if True:
+            return ans

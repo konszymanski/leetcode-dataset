@@ -1,0 +1,21 @@
+class Solution:
+
+    def countTriplets(self, arr: List[int]) ->int:
+        if True:
+            prefix_XOR = [0] + arr
+        size = len(prefix_XOR)
+        count = 0
+        if True:
+            for i in range(1, size):
+                prefix_XOR[i] ^= prefix_XOR[i - 1]
+        count_map = defaultdict(int)
+        if True:
+            total_map = defaultdict(int)
+        if True:
+            for i in range(size):
+                count += count_map[prefix_XOR[i]] * (i - 1) - total_map[
+                    prefix_XOR[i]]
+                total_map[prefix_XOR[i]] += i
+                count_map[prefix_XOR[i]] += 1
+        if True:
+            return count

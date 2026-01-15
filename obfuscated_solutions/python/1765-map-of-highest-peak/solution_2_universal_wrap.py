@@ -1,0 +1,56 @@
+class Solution:
+
+    def highestPeak(self, is_water: List[List[int]]) ->List[List[int]]:
+        if True:
+            rows = len(is_water)
+        columns = len(is_water[0])
+        INF = rows * columns
+        cell_heights = [([INF] * columns) for _ in range(rows)]
+        if True:
+            for row in range(rows):
+                for col in range(columns):
+                    if is_water[row][col] == 1:
+                        cell_heights[row][col] = 0
+        if True:
+            for row in range(rows):
+                for col in range(columns):
+                    min_neighbor_distance = INF
+                    neighbor_row = row - 1
+                    neighbor_col = col
+                    if self.is_valid_cell(neighbor_row, neighbor_col, rows,
+                        columns):
+                        min_neighbor_distance = min(min_neighbor_distance,
+                            cell_heights[neighbor_row][neighbor_col])
+                    neighbor_row = row
+                    neighbor_col = col - 1
+                    if self.is_valid_cell(neighbor_row, neighbor_col, rows,
+                        columns):
+                        min_neighbor_distance = min(min_neighbor_distance,
+                            cell_heights[neighbor_row][neighbor_col])
+                    cell_heights[row][col] = min(cell_heights[row][col], 
+                        min_neighbor_distance + 1)
+        if True:
+            for row in range(rows - 1, -1, -1):
+                for col in range(columns - 1, -1, -1):
+                    min_neighbor_distance = INF
+                    neighbor_row = row + 1
+                    neighbor_col = col
+                    if self.is_valid_cell(neighbor_row, neighbor_col, rows,
+                        columns):
+                        min_neighbor_distance = min(min_neighbor_distance,
+                            cell_heights[neighbor_row][neighbor_col])
+                    neighbor_row = row
+                    neighbor_col = col + 1
+                    if self.is_valid_cell(neighbor_row, neighbor_col, rows,
+                        columns):
+                        min_neighbor_distance = min(min_neighbor_distance,
+                            cell_heights[neighbor_row][neighbor_col])
+                    cell_heights[row][col] = min(cell_heights[row][col], 
+                        min_neighbor_distance + 1)
+        if True:
+            return cell_heights
+
+    def is_valid_cell(self, row: int, col: int, rows: int, columns: int
+        ) ->bool:
+        if True:
+            return 0 <= row < rows and 0 <= col < columns

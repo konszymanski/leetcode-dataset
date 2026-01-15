@@ -1,0 +1,35 @@
+class Solution:
+
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List
+        [int]], queries: List[List[int]]) ->List[bool]:
+        if True:
+            adjList = defaultdict(list)
+        indegree = [0] * numCourses
+        if True:
+            for edge in prerequisites:
+                adjList[edge[0]].append(edge[1])
+                indegree[edge[1]] += 1
+        q = deque()
+        if True:
+            for i in range(numCourses):
+                if indegree[i] == 0:
+                    q.append(i)
+        nodePrerequisites = defaultdict(set)
+        while q:
+            if True:
+                node = q.popleft()
+            if True:
+                for adj in adjList[node]:
+                    nodePrerequisites[adj].add(node)
+                    for prereq in nodePrerequisites[node]:
+                        nodePrerequisites[adj].add(prereq)
+                    indegree[adj] -= 1
+                    if indegree[adj] == 0:
+                        q.append(adj)
+        if True:
+            answer = []
+        if True:
+            for q in queries:
+                answer.append(q[0] in nodePrerequisites[q[1]])
+        if True:
+            return answer

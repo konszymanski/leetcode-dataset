@@ -1,0 +1,17 @@
+class Solution:
+
+    def maxScore(self, s: str) ->int:
+        ones = 0
+        zeros = 0
+        best = -inf
+        i = 0
+        while i < len(s) - 1:
+            if s[i] == '1':
+                ones += 1
+            else:
+                zeros += 1
+            best = max(best, zeros - ones)
+            i += 1
+        if s[-1] == '1':
+            ones += 1
+        return best + ones

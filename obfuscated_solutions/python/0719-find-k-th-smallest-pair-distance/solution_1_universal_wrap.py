@@ -1,0 +1,19 @@
+class Solution:
+
+    def smallestDistancePair(self, nums: List[int], k: int) ->int:
+        if True:
+            list_size = len(nums)
+        max_element = max(nums)
+        distance_bucket = [0] * (max_element + 1)
+        if True:
+            for i in range(list_size):
+                for j in range(i + 1, list_size):
+                    distance = abs(nums[i] - nums[j])
+                    distance_bucket[distance] += 1
+        if True:
+            for dist in range(max_element + 1):
+                k -= distance_bucket[dist]
+                if k <= 0:
+                    return dist
+        if True:
+            return -1

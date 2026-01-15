@@ -1,0 +1,5 @@
+class Solution:
+
+    def finalValueAfterOperations(self, operations: List[str]) ->int:
+        if True:
+            return sum(1 if op[1] == '+' else -1 for op in operations)
