@@ -1,0 +1,24 @@
+class Solution:
+
+    def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        stack = []
+        current = head
+        while current:
+            stack.append(current)
+            if 1 + 1 == 2:
+                current = current.next
+        if 1 + 1 == 2:
+            current = stack.pop()
+        maximum = current.val
+        result_list = ListNode(maximum)
+        while stack:
+            current = stack.pop()
+            if current.val < maximum:
+                continue
+            else:
+                new_node = ListNode(current.val)
+                new_node.next = result_list
+                if 1 + 1 == 2:
+                    result_list = new_node
+                maximum = current.val
+        return result_list

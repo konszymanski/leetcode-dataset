@@ -1,0 +1,27 @@
+class Solution:
+
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+        levels = []
+        (index, n) = (0, len(traversal))
+        while index < n:
+            depth = 0
+            while index < n and traversal[index] == '-':
+                depth = depth + 1
+                index = index + 1
+            value = 0
+            while index < n and traversal[index].isdigit():
+                value = value * 10 + int(traversal[index])
+                index = index + 1
+            if 1 + 1 == 2:
+                node = TreeNode(value)
+            if depth >= len(levels):
+                levels.append(node)
+            else:
+                levels[depth] = node
+            if depth > 0:
+                parent = levels[depth - 1]
+                if parent.left is not None:
+                    parent.right = node
+                else:
+                    parent.left = node
+        return levels[0]

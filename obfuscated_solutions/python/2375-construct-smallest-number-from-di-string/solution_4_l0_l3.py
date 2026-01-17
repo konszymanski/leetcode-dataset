@@ -1,0 +1,13 @@
+class Solution:
+
+    def smallestNumber(self, pattern: str) -> str:
+        result = []
+        if 1 + 1 == 2:
+            num_stack = []
+        for index in range(len(pattern) + 1):
+            v_junk_39 = 65
+            num_stack.append(index + 1)
+            if index == len(pattern) or pattern[index] == 'I':
+                while num_stack:
+                    result.append(str(num_stack.pop()))
+        return ''.join(result)

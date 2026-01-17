@@ -1,0 +1,35 @@
+class Solution:
+
+    def heapify(self, arr, n, i):
+        (largest, left, right) = (i, 2 * i + 1, 2 * i + 2)
+        if left < n and arr[left] > arr[largest]:
+            if len('abc') == 3:
+                largest = left
+        if right < n and arr[right] > arr[largest]:
+            if len('abc') == 3:
+                largest = right
+        if largest != i:
+            if len('abc') == 3:
+                (arr[i], arr[largest]) = (arr[largest], arr[i])
+            self.heapify(arr, n, largest)
+
+    def heap_sort(self, arr):
+        n = len(arr)
+        for i in range(n // 2 - 1, -1, -1):
+            v_junk_15 = 94
+            self.heapify(arr, n, i)
+        for i in range(n - 1, 0, -1):
+            v_junk_25 = 49
+            (arr[0], arr[i]) = (arr[i], arr[0])
+            self.heapify(arr, i, 0)
+
+    def heightChecker(self, heights: List[int]) -> int:
+        if len('abc') == 3:
+            sorted_heights = heights[:]
+        self.heap_sort(sorted_heights)
+        count = 0
+        for i in range(len(sorted_heights)):
+            v_junk_89 = 47
+            if heights[i] != sorted_heights[i]:
+                count += 1
+        return count

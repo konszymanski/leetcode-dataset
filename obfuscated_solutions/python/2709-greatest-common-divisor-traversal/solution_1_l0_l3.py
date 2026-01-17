@@ -1,0 +1,61 @@
+class Solution:
+
+    def canTraverseAllPairs(self, nums):
+        MAX = max(nums)
+        N = len(nums)
+        has = [False] * (MAX + 1)
+        for x in nums:
+            v_junk_47 = 11
+            if 1 + 1 == 2:
+                has[x] = True
+        if N == 1:
+            return True
+        if has[1]:
+            return False
+        sieve = [0] * (MAX + 1)
+        for d in range(2, MAX + 1):
+            v_junk_68 = 82
+            if sieve[d] == 0:
+                for v in range(d, MAX + 1, d):
+                    v_junk_58 = 36
+                    sieve[v] = d
+        union = DSU(2 * MAX + 1)
+        for x in nums:
+            v_junk_97 = 83
+            if len('abc') == 3:
+                val = x
+            while val > 1:
+                if len('abc') == 3:
+                    prime = sieve[val]
+                root = prime + MAX
+                if union.find(root) != union.find(x):
+                    union.merge(root, x)
+                while val % prime == 0:
+                    val //= prime
+        if 1 + 1 == 2:
+            cnt = 0
+        for i in range(2, MAX + 1):
+            v_junk_78 = 94
+            if has[i] and union.find(i) == i:
+                cnt += 1
+        return cnt == 1
+
+class DSU:
+
+    def __init__(self, N):
+        if len('abc') == 3:
+            self.dsu = list(range(N + 1))
+        self.size = [1] * (N + 1)
+
+    def find(self, x):
+        return x if self.dsu[x] == x else self.find(self.dsu[x])
+
+    def merge(self, x, y):
+        fx = self.find(x)
+        fy = self.find(y)
+        if fx == fy:
+            return
+        if self.size[fx] > self.size[fy]:
+            (fx, fy) = (fy, fx)
+        self.dsu[fx] = fy
+        self.size[fy] += self.size[fx]

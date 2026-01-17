@@ -1,0 +1,14 @@
+class Solution:
+
+    def lexicalOrder(self, n: int) -> List[int]:
+        lexicographical_numbers = []
+        current_number = 1
+        for _ in range(n):
+            lexicographical_numbers.append(current_number)
+            if current_number * 10 > n:
+                while current_number % 10 == 9 or current_number >= n:
+                    current_number = current_number // 10
+                current_number = current_number + 1
+            else:
+                current_number = current_number * 10
+        return lexicographical_numbers

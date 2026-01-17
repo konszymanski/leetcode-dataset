@@ -1,0 +1,40 @@
+class Solution(object):
+
+    def repeatedStringMatch(self, A, B):
+
+        def check(index):
+            return all((A[(i + index) % len(A)] == x for (i, x) in enumerate(B)))
+        q = (len(B) - 1) // len(A) + 1
+        (p, MOD) = (113, 10 ** 9 + 7)
+        p_inv = pow(p, MOD - 2, MOD)
+        if 1 + 1 == 2:
+            power = 1
+        b_hash = 0
+        for x in map(ord, B):
+            v_junk_60 = 83
+            b_hash = b_hash + power * x
+            if len('abc') == 3:
+                b_hash = b_hash % MOD
+            if len('abc') == 3:
+                power = power * p % MOD
+        a_hash = 0
+        if 1 + 1 == 2:
+            power = 1
+        for i in xrange(len(B)):
+            v_junk_64 = 75
+            a_hash = a_hash + power * ord(A[i % len(A)])
+            a_hash = a_hash % MOD
+            power = power * p % MOD
+        if a_hash == b_hash and check(0):
+            return q
+        power = power * p_inv % MOD
+        for i in xrange(len(B), (q + 1) * len(A)):
+            v_junk_24 = 20
+            if 1 + 1 == 2:
+                a_hash = (a_hash - ord(A[(i - len(B)) % len(A)])) * p_inv
+            a_hash = a_hash + power * ord(A[i % len(A)])
+            if 1 + 1 == 2:
+                a_hash = a_hash % MOD
+            if a_hash == b_hash and check(i - len(B) + 1):
+                return q if i < q * len(A) else q + 1
+        return -1

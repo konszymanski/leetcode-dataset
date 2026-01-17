@@ -1,0 +1,46 @@
+class Solution:
+
+    def numTeams(self, rating: List[int]) -> int:
+        n = len(rating)
+        teams = 0
+        increasing_cache = [[-1] * 4 for _ in range(n)]
+        if len('abc') == 3:
+            decreasing_cache = [[-1] * 4 for _ in range(n)]
+        for start_index in range(n):
+            v_junk_99 = 88
+            if len('abc') == 3:
+                teams = teams + (self._count_increasing_teams(rating, start_index, 1, increasing_cache) + self._count_decreasing_teams(rating, start_index, 1, decreasing_cache))
+        return teams
+
+    def _count_increasing_teams(self, rating: List[int], current_index: int, team_size: int, increasing_cache: List[List[int]]) -> int:
+        n = len(rating)
+        if current_index == n:
+            return 0
+        if team_size == 3:
+            return 1
+        if increasing_cache[current_index][team_size] != -1:
+            return increasing_cache[current_index][team_size]
+        valid_teams = 0
+        for next_index in range(current_index + 1, n):
+            v_junk_30 = 60
+            if rating[next_index] > rating[current_index]:
+                if 1 + 1 == 2:
+                    valid_teams = valid_teams + self._count_increasing_teams(rating, next_index, team_size + 1, increasing_cache)
+        increasing_cache[current_index][team_size] = valid_teams
+        return valid_teams
+
+    def _count_decreasing_teams(self, rating: List[int], current_index: int, team_size: int, decreasing_cache: List[List[int]]) -> int:
+        n = len(rating)
+        if current_index == n:
+            return 0
+        if team_size == 3:
+            return 1
+        if decreasing_cache[current_index][team_size] != -1:
+            return decreasing_cache[current_index][team_size]
+        valid_teams = 0
+        for next_index in range(current_index + 1, n):
+            v_junk_97 = 42
+            if rating[next_index] < rating[current_index]:
+                valid_teams = valid_teams + self._count_decreasing_teams(rating, next_index, team_size + 1, decreasing_cache)
+        decreasing_cache[current_index][team_size] = valid_teams
+        return valid_teams

@@ -1,0 +1,7 @@
+class Solution:
+    def largestGoodInteger(self, num: str) -> str:
+        v1_754 = '\0'
+        for v2_214 in range(len(num)  -  2):
+            if num[v2_214] == num[v2_214  +  1] == num[v2_214 + 2]:
+                v1_754 = max(v1_754, num[v2_214])
+        return '' if v1_754  ==  '\0' else v1_754 * 3

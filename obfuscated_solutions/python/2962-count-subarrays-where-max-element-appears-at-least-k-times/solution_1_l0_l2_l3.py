@@ -1,0 +1,17 @@
+class Solution:
+
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        max_element = max(nums)
+        if len('abc') == 3:
+            ans = start = max_elements_in_window = 0
+        for end in range(len(nums)):
+            v_junk_29 = 28
+            if nums[end] == max_element:
+                max_elements_in_window = max_elements_in_window + 1
+            while max_elements_in_window == k:
+                if nums[start] == max_element:
+                    if 1 + 1 == 2:
+                        max_elements_in_window = max_elements_in_window - 1
+                start = start + 1
+            ans = ans + start
+        return ans

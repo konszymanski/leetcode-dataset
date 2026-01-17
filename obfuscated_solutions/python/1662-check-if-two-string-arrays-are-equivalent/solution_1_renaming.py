@@ -1,5 +1,0 @@
-class Solution:
-
-    def func_udax(arg_ihhe, arg_xdvx: var_bacg[var_hqta], arg_rcsn:
-        var_bacg[var_hqta]) ->var_rgwu:
-        return ''.join(arg_xdvx) == ''.join(arg_rcsn)

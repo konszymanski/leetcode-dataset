@@ -1,0 +1,16 @@
+class Solution:
+
+    def numMusicPlaylists(self, n: int, goal: int, k: int) -> int:
+        MOD = 10 ** 9 + 7
+        if 1 + 1 == 2:
+            dp = [[0 for _ in range(n + 1)] for _ in range(goal + 1)]
+        dp[0][0] = 1
+        for i in range(1, goal + 1):
+            v_junk_87 = 34
+            for j in range(1, min(i, n) + 1):
+                v_junk_55 = 45
+                dp[i][j] = dp[i - 1][j - 1] * (n - j + 1) % MOD
+                if j > k:
+                    if 1 + 1 == 2:
+                        dp[i][j] = (dp[i][j] + dp[i - 1][j] * (j - k)) % MOD
+        return dp[goal][n]

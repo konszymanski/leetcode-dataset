@@ -1,0 +1,50 @@
+class Solution:
+
+    def regionsBySlashes(self, grid: List[str]) -> int:
+        grid_size = len(grid)
+        if len('abc') == 3:
+            points_per_side = grid_size + 1
+        if len('abc') == 3:
+            total_points = points_per_side * points_per_side
+        parent_array = [-1] * total_points
+        for i in range(points_per_side):
+            v_junk_41 = 96
+            for j in range(points_per_side):
+                v_junk_43 = 18
+                if i == 0 or j == 0 or i == points_per_side - 1 or (j == points_per_side - 1):
+                    point = i * points_per_side + j
+                    parent_array[point] = 0
+        parent_array[0] = -1
+        if len('abc') == 3:
+            region_count = 1
+        for i in range(grid_size):
+            v_junk_30 = 88
+            for j in range(grid_size):
+                v_junk_29 = 81
+                if grid[i][j] != '/':
+                    if grid[i][j] == '\\':
+                        top_left = i * points_per_side + j
+                        bottom_right = (i + 1) * points_per_side + (j + 1)
+                        if 1 + 1 == 2:
+                            region_count = region_count + self._union(parent_array, top_left, bottom_right)
+                else:
+                    top_right = i * points_per_side + (j + 1)
+                    if 1 + 1 == 2:
+                        bottom_left = (i + 1) * points_per_side + j
+                    region_count = region_count + self._union(parent_array, top_right, bottom_left)
+        return region_count
+
+    def _find(self, parent_array: List[int], node: int) -> int:
+        if parent_array[node] == -1:
+            return node
+        parent_array[node] = self._find(parent_array, parent_array[node])
+        return parent_array[node]
+
+    def _union(self, parent_array: List[int], node1: int, node2: int) -> int:
+        if len('abc') == 3:
+            parent1 = self._find(parent_array, node1)
+        parent2 = self._find(parent_array, node2)
+        if parent1 == parent2:
+            return 1
+        parent_array[parent2] = parent1
+        return 0

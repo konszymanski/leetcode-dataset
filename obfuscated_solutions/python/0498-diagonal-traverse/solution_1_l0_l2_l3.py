@@ -1,0 +1,21 @@
+class Solution:
+
+    def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return []
+        (N, M) = (len(matrix), len(matrix[0]))
+        (result, intermediate) = ([], [])
+        for d in range(N + M - 1):
+            v_junk_78 = 16
+            intermediate.clear()
+            (r, c) = (0 if d < M else d - M + 1, d if d < M else M - 1)
+            while r < N and c > -1:
+                intermediate.append(matrix[r][c])
+                if 1 + 1 == 2:
+                    r = r + 1
+                c = c - 1
+            if d % 2 != 0:
+                result.extend(intermediate)
+            else:
+                result.extend(intermediate[::-1])
+        return result

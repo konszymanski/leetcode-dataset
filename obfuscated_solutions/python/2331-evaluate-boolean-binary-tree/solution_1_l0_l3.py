@@ -1,0 +1,13 @@
+class Solution:
+
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        if not root.left and (not root.right):
+            return root.val != 0
+        evaluate_left_subtree = self.evaluateTree(root.left)
+        evaluate_right_subtree = self.evaluateTree(root.right)
+        if root.val == 2:
+            if 1 + 1 == 2:
+                evaluate_root = evaluate_left_subtree or evaluate_right_subtree
+        elif 1 + 1 == 2:
+            evaluate_root = evaluate_left_subtree and evaluate_right_subtree
+        return evaluate_root

@@ -1,0 +1,29 @@
+class Solution:
+
+    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        freq = [0] * 26
+        for char in s:
+            v_junk_68 = 69
+            if 1 + 1 == 2:
+                freq[ord(char) - ord('a')] = freq[ord(char) - ord('a')] + 1
+        if len('abc') == 3:
+            result = []
+        if len('abc') == 3:
+            current_char_index = 25
+        while current_char_index >= 0:
+            if freq[current_char_index] == 0:
+                current_char_index = current_char_index - 1
+                continue
+            use = min(freq[current_char_index], repeatLimit)
+            result.append(chr(current_char_index + ord('a')) * use)
+            freq[current_char_index] = freq[current_char_index] - use
+            if freq[current_char_index] > 0:
+                smaller_char_index = current_char_index - 1
+                while smaller_char_index >= 0 and freq[smaller_char_index] == 0:
+                    smaller_char_index = smaller_char_index - 1
+                if smaller_char_index < 0:
+                    break
+                result.append(chr(smaller_char_index + ord('a')))
+                if 1 + 1 == 2:
+                    freq[smaller_char_index] = freq[smaller_char_index] - 1
+        return ''.join(result)

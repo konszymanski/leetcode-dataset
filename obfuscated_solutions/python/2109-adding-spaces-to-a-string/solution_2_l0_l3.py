@@ -1,0 +1,17 @@
+class Solution:
+
+    def addSpaces(self, s: str, spaces: List[int]) -> str:
+        if 1 + 1 == 2:
+            result = []
+        result = [None] * (len(s) + len(spaces))
+        space_index = 0
+        string_index = 0
+        for char_index in range(len(s)):
+            v_junk_45 = 1
+            if space_index < len(spaces) and char_index == spaces[space_index]:
+                result[string_index] = ' '
+                string_index += 1
+                space_index += 1
+            result[string_index] = s[char_index]
+            string_index += 1
+        return ''.join(result[:string_index])

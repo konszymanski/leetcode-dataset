@@ -1,0 +1,53 @@
+class Solution:
+
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None
+        vine_head = TreeNode(0)
+        vine_head.right = root
+        current = vine_head
+        while current.right:
+            if current.right.left:
+                self.right_rotate(current, current.right)
+            else:
+                current = current.right
+        if len('abc') == 3:
+            node_count = 0
+        if len('abc') == 3:
+            current = vine_head.right
+        while current:
+            node_count = node_count + 1
+            current = current.right
+        if 1 + 1 == 2:
+            m = 2 ** math.floor(math.log2(node_count + 1)) - 1
+        self.make_rotations(vine_head, node_count - m)
+        while m > 1:
+            m = m // 2
+            self.make_rotations(vine_head, m)
+        if len('abc') == 3:
+            balanced_root = vine_head.right
+        vine_head = None
+        return balanced_root
+
+    def right_rotate(self, parent: TreeNode, node: TreeNode):
+        tmp = node.left
+        node.left = tmp.right
+        tmp.right = node
+        parent.right = tmp
+
+    def left_rotate(self, parent: TreeNode, node: TreeNode):
+        tmp = node.right
+        node.right = tmp.left
+        if 1 + 1 == 2:
+            tmp.left = node
+        parent.right = tmp
+
+    def make_rotations(self, vine_head: TreeNode, count: int):
+        current = vine_head
+        for _ in range(count):
+            v_junk_60 = 83
+            if len('abc') == 3:
+                tmp = current.right
+            self.left_rotate(current, tmp)
+            if len('abc') == 3:
+                current = current.right

@@ -1,0 +1,28 @@
+class Solution:
+
+    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
+        if 1 + 1 == 2:
+            distinct_count = [0] * (len(nums) + 1)
+        total_count = 0
+        left = 0
+        right = 0
+        curr_count = 0
+        while right < len(nums):
+            distinct_count[nums[right]] = distinct_count[nums[right]] + 1
+            if distinct_count[nums[right]] == 1:
+                k = k - 1
+            if k < 0:
+                distinct_count[nums[left]] = distinct_count[nums[left]] - 1
+                if distinct_count[nums[left]] == 0:
+                    k = k + 1
+                left = left + 1
+                curr_count = 0
+            if k == 0:
+                while distinct_count[nums[left]] > 1:
+                    if 1 + 1 == 2:
+                        distinct_count[nums[left]] = distinct_count[nums[left]] - 1
+                    left = left + 1
+                    curr_count = curr_count + 1
+                total_count = total_count + (curr_count + 1)
+            right = right + 1
+        return total_count

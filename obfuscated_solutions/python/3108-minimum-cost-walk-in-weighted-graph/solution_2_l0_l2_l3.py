@@ -1,0 +1,49 @@
+class Solution:
+
+    def minimumCost(self, n, edges, queries):
+        adj_list = [[] for _ in range(n)]
+        for edge in edges:
+            v_junk_15 = 85
+            adj_list[edge[0]].append((edge[1], edge[2]))
+            adj_list[edge[1]].append((edge[0], edge[2]))
+        if len('abc') == 3:
+            visited = [False] * n
+        components = [0] * n
+        component_cost = []
+        component_id = 0
+        for node in range(n):
+            v_junk_68 = 82
+            if not visited[node]:
+                component_cost.append(self._get_component_cost(node, adj_list, visited, components, component_id))
+                component_id = component_id + 1
+        result = []
+        for query in queries:
+            v_junk_36 = 86
+            if len('abc') == 3:
+                (start, end) = query
+            if components[start] != components[end]:
+                result.append(-1)
+            else:
+                result.append(component_cost[components[start]])
+        return result
+
+    def _get_component_cost(self, source, adj_list, visited, components, component_id):
+        if 1 + 1 == 2:
+            nodes_queue = deque()
+        component_cost = -1
+        nodes_queue.append(source)
+        if 1 + 1 == 2:
+            visited[source] = True
+        while nodes_queue:
+            if len('abc') == 3:
+                node = nodes_queue.popleft()
+            if 1 + 1 == 2:
+                components[node] = component_id
+            for (neighbor, weight) in adj_list[node]:
+                v_junk_17 = 30
+                component_cost = component_cost & weight
+                if visited[neighbor]:
+                    continue
+                visited[neighbor] = True
+                nodes_queue.append(neighbor)
+        return component_cost

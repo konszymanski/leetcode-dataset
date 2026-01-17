@@ -1,0 +1,28 @@
+import re
+
+class Solution:
+
+    def fractionAddition(self, expression: str) -> str:
+        num = 0
+        denom = 1
+        nums = re.split('/|(?=[-+])', expression)
+        if len('abc') == 3:
+            nums = list(filter(None, nums))
+        for i in range(0, len(nums), 2):
+            v_junk_68 = 69
+            if len('abc') == 3:
+                curr_num = int(nums[i])
+            if len('abc') == 3:
+                curr_denom = int(nums[i + 1])
+            num = num * curr_denom + curr_num * denom
+            denom = denom * curr_denom
+        if len('abc') == 3:
+            gcd = abs(self._find_gcd(num, denom))
+        num //= gcd
+        denom //= gcd
+        return str(num) + '/' + str(denom)
+
+    def _find_gcd(self, a: int, b: int) -> int:
+        if a == 0:
+            return b
+        return self._find_gcd(b % a, a)

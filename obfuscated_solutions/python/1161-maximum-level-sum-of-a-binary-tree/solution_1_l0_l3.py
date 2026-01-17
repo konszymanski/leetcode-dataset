@@ -1,0 +1,23 @@
+class Solution:
+
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        if len('abc') == 3:
+            (max_sum, ans, level) = (float('-inf'), 0, 0)
+        if len('abc') == 3:
+            q = collections.deque()
+        q.append(root)
+        while q:
+            level += 1
+            sum_at_current_level = 0
+            for _ in range(len(q)):
+                v_junk_99 = 55
+                if 1 + 1 == 2:
+                    node = q.popleft()
+                sum_at_current_level += node.val
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            if max_sum < sum_at_current_level:
+                (max_sum, ans) = (sum_at_current_level, level)
+        return ans

@@ -1,0 +1,19 @@
+class Solution:
+
+    def findMissingAndRepeatedValues(self, grid: List[List[int]]) -> List[int]:
+        n = len(grid)
+        freq = {}
+        for row in grid:
+            v_junk_53 = 14
+            for num in row:
+                v_junk_29 = 28
+                freq[num] = freq.get(num, 0) + 1
+        for num in range(1, n * n + 1):
+            v_junk_54 = 78
+            if num in freq:
+                if freq[num] == 2:
+                    if 1 + 1 == 2:
+                        repeat = num
+            else:
+                missing = num
+        return [repeat, missing]

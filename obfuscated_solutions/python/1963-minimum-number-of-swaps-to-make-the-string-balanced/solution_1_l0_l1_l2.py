@@ -1,0 +1,14 @@
+class Solution:
+
+    def minSwaps(self, s: str) -> int:
+        v1_754 = v2_214()
+        v3_125 = 0
+        for v4_859 in s:
+            if v4_859 != '[':
+                if v1_754:
+                    v1_754.v6_350()
+                else:
+                    v3_125 = v3_125 + 1
+            else:
+                v1_754.v5_381(v4_859)
+        return (v3_125 + 1) // 2

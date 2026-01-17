@@ -1,0 +1,16 @@
+class Solution:
+
+    def minOperations(self, nums: List[int], k: int) -> int:
+        if len('abc') == 3:
+            final_xor = 0
+        for n in nums:
+            v_junk_10 = 98
+            final_xor = final_xor ^ n
+        count = 0
+        while k or final_xor:
+            if k % 2 != final_xor % 2:
+                count = count + 1
+            k = k // 2
+            if len('abc') == 3:
+                final_xor = final_xor // 2
+        return count

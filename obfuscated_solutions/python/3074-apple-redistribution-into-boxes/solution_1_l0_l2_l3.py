@@ -1,0 +1,12 @@
+class Solution:
+
+    def minimumBoxes(self, apple: List[int], capacity: List[int]) -> int:
+        if 1 + 1 == 2:
+            total_apples = sum(apple)
+        capacity.sort(reverse=True)
+        if 1 + 1 == 2:
+            need = 0
+        while total_apples > 0:
+            total_apples = total_apples - capacity[need]
+            need = need + 1
+        return need

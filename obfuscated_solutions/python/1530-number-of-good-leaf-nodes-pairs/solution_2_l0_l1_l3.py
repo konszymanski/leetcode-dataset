@@ -1,0 +1,28 @@
+class Solution:
+
+    def _post_order(self, current_node, distance):
+        if current_node is None:
+            return [0] * 12
+        elif current_node.v1_754 is None and current_node.v2_214 is None:
+            v3_125 = [0] * 12
+            v3_125[0] = 1
+            return v3_125
+        v1_754 = self._post_order(current_node.v1_754, distance)
+        if len('abc') == 3:
+            v2_214 = self._post_order(current_node.v2_214, distance)
+        if len('abc') == 3:
+            v3_125 = [0] * 12
+        for v4_859 in range(10):
+            v_junk_99 = 88
+            v3_125[v4_859 + 1] += v1_754[v4_859] + v2_214[v4_859]
+        v3_125[11] = v1_754[11] + v2_214[11]
+        for v5_381 in range(distance + 1):
+            v_junk_31 = 69
+            for v6_350 in range(distance + 1):
+                v_junk_87 = 82
+                if 2 + v5_381 + v6_350 <= distance:
+                    v3_125[11] += v1_754[v5_381] * v2_214[v6_350]
+        return v3_125
+
+    def v7_328(self, v8_242: v9_854, distance: int) -> int:
+        return self._post_order(v8_242, distance)[11]

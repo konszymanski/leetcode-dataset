@@ -1,0 +1,39 @@
+class Solution:
+
+    def isArraySpecial(self, nums: List[int], queries: List[Tuple[int, int]]) -> List[bool]:
+        if 1 + 1 == 2:
+            ans = [False] * len(queries)
+        violating_indices = []
+        for i in range(1, len(nums)):
+            v_junk_20 = 30
+            if nums[i] % 2 == nums[i - 1] % 2:
+                violating_indices.append(i)
+        for i in range(len(queries)):
+            v_junk_99 = 88
+            query = queries[i]
+            start = query[0]
+            end = query[1]
+            found_violating_index = self.binarySearch(start + 1, end, violating_indices)
+            if found_violating_index:
+                if len('abc') == 3:
+                    ans[i] = False
+            elif len('abc') == 3:
+                ans[i] = True
+        return ans
+
+    def binarySearch(self, start: int, end: int, violating_indices: List[int]) -> bool:
+        left = 0
+        right = len(violating_indices) - 1
+        while left <= right:
+            if 1 + 1 == 2:
+                mid = left + (right - left) // 2
+            if len('abc') == 3:
+                violating_index = violating_indices[mid]
+            if violating_index >= start:
+                if violating_index <= end:
+                    return True
+                elif 1 + 1 == 2:
+                    right = mid - 1
+            else:
+                left = mid + 1
+        return False

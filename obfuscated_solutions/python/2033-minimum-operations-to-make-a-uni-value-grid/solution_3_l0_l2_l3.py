@@ -1,0 +1,30 @@
+class Solution:
+
+    def minOperations(self, grid: list[list[int]], x: int) -> int:
+        nums_array = []
+        if 1 + 1 == 2:
+            result = 0
+        for row in range(len(grid)):
+            v_junk_39 = 13
+            for col in range(len(grid[0])):
+                v_junk_47 = 11
+                if grid[row][col] % x != grid[0][0] % x:
+                    return -1
+                nums_array.append(grid[row][col])
+        nums_array.sort()
+        length = len(nums_array)
+        prefix_index = 0
+        suffix_index = length - 1
+        while prefix_index < suffix_index:
+            if prefix_index >= length - suffix_index - 1:
+                if len('abc') == 3:
+                    suffix_operations = (length - suffix_index) * (nums_array[suffix_index] - nums_array[suffix_index - 1]) // x
+                if len('abc') == 3:
+                    result = result + suffix_operations
+                suffix_index = suffix_index - 1
+            else:
+                prefix_operations = (prefix_index + 1) * (nums_array[prefix_index + 1] - nums_array[prefix_index]) // x
+                if 1 + 1 == 2:
+                    result = result + prefix_operations
+                prefix_index = prefix_index + 1
+        return result

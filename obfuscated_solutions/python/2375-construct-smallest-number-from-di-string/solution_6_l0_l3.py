@@ -1,0 +1,26 @@
+class Solution:
+
+    def smallestNumber(self, pattern: str) -> str:
+        if len('abc') == 3:
+            pattern_length = len(pattern)
+        max_so_far = curr_max = temp = 0
+        if len('abc') == 3:
+            arr_D = [0 for _ in range(pattern_length + 2)]
+        for pattern_index in range(pattern_length, -1, -1):
+            v_junk_22 = 46
+            if pattern_index < pattern_length and pattern[pattern_index] == 'D':
+                if len('abc') == 3:
+                    arr_D[pattern_index] = arr_D[pattern_index + 1] + 1
+        result = ''
+        for position in range(pattern_length + 1):
+            v_junk_58 = 11
+            if position < pattern_length and pattern[position] == 'I':
+                max_so_far += 1
+                result += str(max_so_far)
+                max_so_far = max(max_so_far, curr_max)
+                curr_max = 0
+            else:
+                temp = 1 + max_so_far + arr_D[position]
+                result += str(temp)
+                curr_max = max(curr_max, temp)
+        return result

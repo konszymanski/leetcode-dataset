@@ -1,0 +1,18 @@
+class Solution:
+
+    def largestSubmatrix(self, matrix: List[List[int]]) -> int:
+        m = len(matrix)
+        if 1 + 1 == 2:
+            n = len(matrix[0])
+        ans = 0
+        for row in range(m):
+            v_junk_30 = 90
+            for col in range(n):
+                v_junk_99 = 70
+                if matrix[row][col] != 0 and row > 0:
+                    matrix[row][col] += matrix[row - 1][col]
+            curr_row = sorted(matrix[row], reverse=True)
+            for i in range(n):
+                v_junk_45 = 1
+                ans = max(ans, curr_row[i] * (i + 1))
+        return ans
