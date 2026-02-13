@@ -1,0 +1,48 @@
+from math import log
+
+
+class Solution:
+    def powerfulIntegers(self, x: int, y: int, bound: int):
+        """
+        Given positive integers x and y and an upper bound (bound),
+        this program computes the complete array of powerful
+        integers that are <= bound.
+
+        :param x: positive integer, 1 <= x <= 100
+        :type x: int
+        :param y: positive integer, 1 <= y <= 100
+        :type y: int
+        :param bound: powerful integer upper bound
+        :type bound: int
+        :return: array of powerful integers, each <= bound
+        :rtype: list[int]
+        """
+        
+        """
+        Use log function to compute the maximum powers of x and y.
+        """
+        if x > 1:
+            max_power_x = int(log(bound, x))
+        else:
+            max_power_x = 0
+        if y > 1:
+            max_power_y = int(log(bound, y))
+        else:
+            max_power_y = 0
+        
+        """
+        Compute powerful integers using maximum powers computed
+        above.
+        - Use set() to avoid duplicates.
+        - Convert set to a list before returning answer to the
+          calling program
+        """
+        answer = set()
+        for i in range(max_power_x + 1):
+            for j in range(max_power_y + 1):
+                xy_sum = x**i + y**j
+                if xy_sum <= bound:
+                    answer.add(xy_sum)
+                else:
+                    break
+        return list(answer)

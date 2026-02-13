@@ -1,0 +1,17 @@
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        # The first step is to sort the array
+        # [nums[0], ..., nums[len(nums) - 1]]
+        # Initially, we need to elevate the first bar to atleast the last bar
+        # That would take nums[len(nums) - 1] - nums[0]
+        # Now, we need to elevate nums[len(nums) - 1] to nums[len(nums) - 2] + nums[len(nums) - 1] - nums[0]
+        # That would take nums[len(nums) - 2] + nums[len(nums) - 1] - nums[0] - nums[len(nums) - 1], which is
+        # nums[len(nums) - 2] - nums[0]
+        # We can then see a pattern that starts to emerge, and the result should therefore be
+        # Summation (nums[i] - nums[0]), for 1 <= i <= len(nums) - 1
+        ans, min_element = 0, min(nums)
+        
+        for i in range(len(nums)):
+            ans += nums[i] - min_element
+        
+        return ans

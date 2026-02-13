@@ -1,0 +1,29 @@
+class Solution:
+    def longestCycle(self, edges: List[int]) -> int:
+        
+        # 1. init
+        n = len(edges)
+        res = -1
+        visited = set([-1])
+        
+        # 2. main loop
+        for i in range(n):
+            
+            if i not in visited:
+                # do traversal
+                start = i
+                current_visited = set()
+                while start not in visited:
+                    visited.add(start)
+                    current_visited.add(start)
+                    start = edges[start]
+                    
+                if start in current_visited:
+                    cycle_length = 1
+                    node = edges[start]
+                    while node != start:
+                        node = edges[node]
+                        cycle_length += 1
+                    res = max(res, cycle_length)
+                    
+        return res

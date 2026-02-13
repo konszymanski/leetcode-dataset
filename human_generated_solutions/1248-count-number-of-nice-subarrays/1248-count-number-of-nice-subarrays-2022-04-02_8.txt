@@ -1,0 +1,25 @@
+from collections import defaultdict
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        """
+        Let\'s mark each even number by 0 and each odd number by 1. Then the problem reduces to subarray sum
+        equals k.
+        Time complexity: O(N)
+        Space complexity: O(N)
+        """
+        lookup = defaultdict(int)
+        lookup[0] = 1 # The sum of 0 exists 1 time.
+        res = prefix_sum = 0
+        
+        for i in range(len(nums)):
+            if nums[i] % 2 == 0:
+                nums[i] = 0
+            
+            else:
+                nums[i] = 1
+                
+            prefix_sum+=nums[i]
+            res+=lookup[prefix_sum - k]
+            lookup[prefix_sum]+=1
+            
+        return res

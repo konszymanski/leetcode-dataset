@@ -1,0 +1,44 @@
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        stk = []
+        cur = defaultdict(int)
+
+        i = 0
+        while i < len(formula):
+            if formula[i] == \'(\':
+                stk.append(copy.deepcopy(cur))
+                cur.clear()
+                i += 1
+
+            elif formula[i] == \')\':
+                j = i + 1
+                while j < len(formula) and formula[j].isdigit():
+                    j += 1
+
+                num = 1 if j == i + 1 else int(formula[i+1:j])
+                for k in cur.keys():
+                    cur[k] *= num
+
+                for k, v in cur.items():
+                    stk[-1][k] += v
+
+                cur = stk.pop(-1)
+                i = j
+
+            else:
+                if formula[i].isupper():
+                    j = i + 1
+                    while j < len(formula) and formula[j].islower():
+                        j += 1
+
+                    atom = formula[i:j]
+
+                    k = j
+                    while k < len(formula) and formula[k].isdigit():
+                        k += 1
+                    num = 1 if j == k else int(formula[j:k])
+                    cur[atom] += num
+                    i = k
+
+
+        return "".join([atom + (str(number) if number > 1 else "") for atom, number in sorted(cur.items())])

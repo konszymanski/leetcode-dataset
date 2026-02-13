@@ -1,0 +1,44 @@
+class Solution:
+    def smallestDistancePair(self, nums: list[int], k: int) -> int:
+
+        # Find the count of numbers
+        n = len(nums)
+
+        # Sort numbers
+        nums.sort()
+
+        # Initialize the minimum and maximum distance
+        minDst, maxDst = 0, nums[-1] - nums[0]
+
+        # While the min distance isn\'t greater than the maximum distance
+        while minDst <= maxDst:
+
+            # Calculate the current distance
+            dst = (maxDst - minDst) // 2 + minDst
+
+            # Count how many pairs of numbers with at most the current distance apart
+            # Intialize the count
+            count = 0
+
+            # Initialize the left pointer
+            l = 0
+
+            # Increment the right pointer
+            for r in range(1, n):
+
+                # While the distance between numbers at both pointers are greater than the distance, increment the left pointer
+                while nums[r] - nums[l] > dst:
+                    l += 1
+
+                # Calculate how many previous numbers can be pair with the number at the right pointer and add it to the count
+                count += r - l
+
+            # If the count is greater than k, search the left side since we want the minimum
+            if count >= k:
+                maxDst = dst - 1
+
+            # Else, search the right side
+            else:
+                minDst = dst + 1
+
+        return minDst

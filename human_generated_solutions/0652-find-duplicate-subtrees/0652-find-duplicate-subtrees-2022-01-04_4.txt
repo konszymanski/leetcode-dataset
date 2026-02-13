@@ -1,0 +1,18 @@
+def dfs(self,root):
+        if not root:
+            return \' \'
+        n=str(root.val)+","+self.dfs(root.left)+","+self.dfs(root.right)
+        if n in self.s and n not in self.counted:
+            self.counted.add(n)
+            self.ans.append(root)
+            return n
+        self.s.add(n)
+        return n
+        
+        
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        self.s=set()
+        self.ans=[]
+        self.counted=set()
+        self.dfs(root)
+        return self.ans

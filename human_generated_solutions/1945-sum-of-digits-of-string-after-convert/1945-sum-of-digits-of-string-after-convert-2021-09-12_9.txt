@@ -1,0 +1,16 @@
+class Solution:
+    def getLucky(self, s: str, k: int) -> int:       
+        res = ""
+        
+        # convert
+        for ch in s:
+            res += str(ord(ch) - 96)
+         
+        s = 0
+        
+        # transform
+        for i in range(k):
+            s = sum(int(ch) for ch in res)
+            res = str(s)
+            
+        return s

@@ -1,0 +1,16 @@
+class Solution:
+    def removeAnagrams(self, words: List[str]) -> List[str]:
+        if len(words) == 1:
+            return words
+        
+        i = 1
+        while i < len(words):
+            anagram = "".join(sorted(words[i]))
+			# check if words[i-1] and words[i] are anagrams
+            if anagram == "".join(sorted(words[i - 1])):
+				# if anagrams then remove second instance from the list of words
+                words.pop(i)
+            else:
+                i += 1
+                
+        return words

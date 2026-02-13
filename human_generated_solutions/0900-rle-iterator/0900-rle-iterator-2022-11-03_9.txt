@@ -1,0 +1,35 @@
+class RLEIterator:
+
+    def __init__(self, encoding: List[int]):
+        num = len(encoding) // 2
+        counts: List[int] = []
+        values: List[int] = []
+        for i in range(num):
+            c, v = encoding[2*i], encoding[2*i+1]
+            if c != 0: # skip empty encoded value
+                counts.append(c)
+                values.append(v) 
+        self.counts = counts[::-1]
+        self.values = values[::-1]
+
+    def next(self, n: int) -> int:
+        while self.counts and n > 0:
+            if self.counts[-1] > n:
+                self.counts[-1] -= n
+                return self.values[-1]
+            elif self.counts[-1] == n:
+                self.counts.pop()
+                return self.values.pop()
+            else:
+                n -= self.counts[-1]
+                self.counts.pop()
+                self.values.pop()
+        
+        return -1
+
+        
+
+
+# Your RLEIterator object will be instantiated and called as such:
+# obj = RLEIterator(encoding)
+# param_1 = obj.next(n)

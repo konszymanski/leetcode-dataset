@@ -1,0 +1,17 @@
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        #      
+        ## level order transversal
+        if not root: return 0
+        que,depth = deque([root]),1
+        while que:
+            for i in range(len(que)):
+                node = que.popleft()
+                if not node: continue
+                elif not (node.left or node.right):
+                    return depth
+                else:
+                    que.append(node.left)
+                    que.append(node.right)
+            depth += 1
+        return depth

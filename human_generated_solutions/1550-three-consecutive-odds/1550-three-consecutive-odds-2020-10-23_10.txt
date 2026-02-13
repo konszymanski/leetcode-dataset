@@ -1,0 +1,19 @@
+class Solution:
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+      
+        new_list = [True if num % 2 == 1 else False for num in arr ]
+            
+        t_count = 0
+        
+        for val in new_list:
+            if val == False:
+                t_count = 0
+                
+            if val == True:
+                t_count += 1
+                
+            if t_count == 3:
+                return True
+                
+				
+        return False

@@ -1,0 +1,29 @@
+# Approach 1: 
+# Find the absolute sum of all the numbers in the matrix
+# Find the absolute value of the smallest number in the matrix
+# Count of negative numbers in the matrix
+#   If count of negatives is even, then all elements can be made positive by performing the operation, so just return the total sum of the matrix
+#   If count of negatives is odd, then we can make the smallest number in the matrix as negative and then return the sum
+# NOTE : Here the result will be sum-2*minElement as you are not including this element.
+
+def maxMatrixSum(matrix):
+
+    """
+    :type matrix: List[List[int]]
+    :rtype: int
+    """
+    totSum = nNegative = 0
+    minNegAbsVal = float(\'inf\')
+    nr = nc = len(matrix)
+    for r in range(nr):
+        for c in range(nc):
+            elem = matrix[r][c]
+            if elem <= 0:               # \'=\' is to account for occurrence of \'0\'
+                nNegative+=1
+            minNegAbsVal = min(minNegAbsVal,abs(elem))
+            totSum += abs(elem)
+    
+    if nNegative % 2 == 0: 
+        return totSum
+    else:
+        return totSum - 2*minNegAbsVal

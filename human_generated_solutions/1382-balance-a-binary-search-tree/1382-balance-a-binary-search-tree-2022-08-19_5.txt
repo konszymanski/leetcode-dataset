@@ -1,0 +1,21 @@
+def helper(head): #getting a sorted list
+	if not head:
+		return
+	helper(head.left)
+	list1.append(head.val)
+	helper(head.right)
+
+
+def BBST(list1,start,end): #creating a Balance Binary search tree.
+	if start > end:
+		return
+	mid = (end-start)//2 
+	root = TreeNode(list1[mid]) 
+	root.left = BBST(list1[:mid],0,mid-1) 
+	root.right = BBST(list1[mid+1:],mid+1,len(list1)-1) 
+	return root     
+
+list1 = []
+helper(root) # getting a sorted list
+_len = len(list1)   
+return BBST(list1,0,_len) #creating a Balance Binary search tree.

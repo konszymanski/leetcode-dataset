@@ -1,0 +1,22 @@
+class Solution:
+    def countServers(self, g: List[List[int]]) -> int:
+        rows=len(g) #No. of rows
+        cols=len(g[1]) #No. of cols
+        
+        rows1=[0]*rows #rows with servers
+        cols1=[0]*cols #cols with servers
+        
+        for i in range(0,rows):
+            for j in range(0,cols):
+                if(g[i][j]):
+                    rows1[i]+=1 #Increment rows with servers
+                    cols1[j]+=1 #Increment cols with servers
+        
+        count=0
+        
+        for i in range(0,rows):
+            for j in range(0,cols):
+                if(g[i][j]==1 and (cols1[j]>1 or rows1[i]>1)): #Check if more than 1 servers exist in ith row or jth column
+                    count+=1
+                    
+        return count

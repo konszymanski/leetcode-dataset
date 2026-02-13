@@ -1,0 +1,38 @@
+class SummaryRanges:
+
+    def __init__(self):
+        self.intervals = []
+
+    def addNum(self, value: int) -> None:
+        n = len(self.intervals)
+        L = 0; R = n
+        while L < R:
+            M = (L+R)//2
+
+            if self.intervals[M][0] > value:
+                R = M
+            else:
+                L = M+1
+    
+        #case 0: val already present
+        if L and self.intervals[L-1][1] >= value:
+            return
+        
+        #case 1: merge with both left and right
+        elif 0 < L < n and self.intervals[L-1][1] + 1 == value == self.intervals[L][0] - 1:
+            self.intervals[L-1:L+1] = [[self.intervals[L-1][0], self.intervals[L][1]]]
+
+        #case 2: merge with just left
+        elif L and self.intervals[L-1][1] + 1 == value:
+            self.intervals[L-1][1] += 1
+
+        #case 3: merge with right
+        elif L < n and self.intervals[L][0] - 1 == value:
+            self.intervals[L][0] -= 1
+
+        #case 4: dont merge with anyone
+        else:
+            self.intervals[L:L] = [[value, value]]
+
+    def getIntervals(self) -> List[List[int]]:
+        return self.intervals

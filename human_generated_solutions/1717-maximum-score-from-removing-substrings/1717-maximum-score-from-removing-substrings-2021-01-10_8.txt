@@ -1,0 +1,15 @@
+def maximumGain(self, s: str, x: int, y: int) -> int:
+        def get_score(it, rules):
+            if not rules: return 0
+            stack, score = [], 0
+            s, (p, cur) = rules.pop()
+            for c in it:
+                if stack and stack[-1]==p and c==cur:
+                    stack.pop()
+                    score += s
+                else:
+                    stack.append(c)
+            return get_score(stack, rules) + score
+
+        rules = sorted([(x, \'ab\'), (y, \'ba\')])
+        return get_score(s, rules)

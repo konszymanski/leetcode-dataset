@@ -1,0 +1,28 @@
+class UndergroundSystem:
+
+    def __init__(self):
+        self.srcDestMapping = {}
+        self.checkedIn = {}
+        
+    def getKey(self, startStation, endStation):
+        return startStation + \'->\' + endStation
+    
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.checkedIn[id] = [stationName, t]
+
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        checkInStation, checkInTime = self.checkedIn[id]
+        self.checkedIn.pop(id)
+        
+        key = self.getKey(checkInStation, stationName)
+        
+        if key in self.srcDestMapping:
+            self.srcDestMapping[key][0] += (t - checkInTime)
+            self.srcDestMapping[key][1] += 1
+        else:
+            self.srcDestMapping[key] = [t - checkInTime, 1]
+
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        key = self.getKey(startStation, endStation)
+        totalTime, journeyCount  = self.srcDestMapping[key]
+        return totalTime / journeyCount

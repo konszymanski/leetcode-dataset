@@ -1,0 +1,17 @@
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        n = len(nums)-1
+        head, tail = inf, -inf
+        maxVal, minVal = nums[0], nums[-1]
+        for i in range(n+1):
+            # Find tail.
+            if nums[i] < maxVal:
+                tail = i
+            else:
+                maxVal = nums[i]
+            # Find head.
+            if nums[n-i] > minVal:
+                head = n-i
+            else:
+                minVal = nums[n-i]
+        return tail-head+1 if head < tail else 0

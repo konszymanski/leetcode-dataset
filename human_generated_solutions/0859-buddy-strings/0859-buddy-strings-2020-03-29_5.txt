@@ -1,0 +1,23 @@
+class Solution:
+    def buddyStrings(self, A: str, B: str) -> bool:
+		# if lengths are different, then must be false
+        if len(A) != len(B):
+            return False
+        # If A and B are same, then A must have duplicate character
+        if A == B:  
+            seen = set()
+            for a in A:
+                if a in seen: 
+                    return True
+                seen.add(a)
+            return False
+
+        pair = []
+        # when A and B are not same
+        for a, b in zip(A, B): 
+            if a != b:
+                pair.append((a, b))
+            if len(pair) > 2:
+                return False
+            
+        return len(pair) == 2 and pair[0] == pair[1][::-1]

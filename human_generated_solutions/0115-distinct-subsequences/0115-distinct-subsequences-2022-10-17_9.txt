@@ -1,0 +1,58 @@
+class Solution:
+    def numDistinct(self, S: str, T: str) -> int:
+        """
+            .  return the number of distinct subsequences of S which equals T.
+        """
+        
+        
+        ls = len(S)
+        lt = len(T)
+        
+        if ls == lt:
+            if S == T:
+                return 1
+            else:
+                return 0
+        
+        if lt > ls:
+            return 0
+        
+        deletes_possible = ls - lt
+        
+        @cache
+        def dp(ci, cj, remains):
+            """
+                after deleting if we have same S and T we return 1
+            """
+            
+            if ci == len(S):
+                if cj == len(T):
+                    return 1
+                else:
+                    return 0
+            
+            if cj == len(T): # cj is reached, all the ci can be deleted
+                return 1
+            
+            """
+                is there a way to know should i delete this or not?
+                or will i have to try all comb
+            """
+            
+            
+            if remains > 0:
+                # possible to delete
+                if S[ci] == T[cj]:
+                    return dp(ci+1, cj, remains - 1) + dp(ci+1, cj + 1, remains)
+                else:
+                    return dp(ci+1, cj, remains - 1) 
+                
+            else:
+                # delete is not possible. have to use same
+                if S[ci] == T[cj]:
+                    return dp(ci+1, cj+1, remains) 
+                else:
+                    return 0
+            
+        
+        return dp(0, 0, deletes_possible)

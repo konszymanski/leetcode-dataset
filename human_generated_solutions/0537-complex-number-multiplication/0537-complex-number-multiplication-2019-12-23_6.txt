@@ -1,0 +1,10 @@
+class Solution:
+    def complexNumberMultiply(self, a: str, b: str) -> str:
+        def decode(s):
+            temp=s.split(\'+\')
+            return int(temp[0]), int(temp[1].replace(\'i\', \'\'))
+        a1,a2=decode(a)
+        b1,b2=decode(b)
+        new1=a1*b1-a2*b2
+        new2=a1*b2+b1*a2
+        return str(new1)+\'+\'+str(new2)+\'i\'

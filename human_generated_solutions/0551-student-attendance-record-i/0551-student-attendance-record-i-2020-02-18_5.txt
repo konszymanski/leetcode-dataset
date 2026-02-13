@@ -1,0 +1,9 @@
+class Solution:
+    def checkRecord(self, s: str) -> bool:
+        A, L = 0, 0
+        for l in s:
+            if l == \'A\': A += 1
+            elif l == \'L\': L += 1
+            if l != \'L\': L = 0
+            if L > 2 or A > 1: return False
+        return True

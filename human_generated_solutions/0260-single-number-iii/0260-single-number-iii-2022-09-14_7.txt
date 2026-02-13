@@ -1,0 +1,16 @@
+class Solution:
+    def singleNumber(self, nums: List[int]) -> List[int]:
+        xor = 0
+        for i in nums: 
+            xor ^= i
+        
+        rmsb = xor&(-xor) #finding last set bit postion
+        ans = [0, 0]
+        
+        for i in nums:
+            if i&rmsb == 0:
+                ans[0] ^= i
+            else:
+                ans[1] ^= i
+        
+        return ans

@@ -1,0 +1,26 @@
+def goodTriplets(self, A: List[int], B: List[int]) -> int:
+        from sortedcontainers import SortedList
+        n = len(A)
+
+        BI = [-1]*n
+        for i, v in enumerate(B):
+            BI[v] = i
+
+        L = [0]*n
+        b = SortedList()
+        for i in range(n):
+            b.add(BI[A[i]])
+            c = b.index(BI[A[i]])
+            L[i] = c
+        
+        R = [0]*n
+        b = SortedList()
+        for i in range(n-1, -1, -1):
+            b.add(BI[A[i]])
+            c = len(b)-1-b.index(BI[A[i]])
+            R[i] = c
+
+        res = 0
+        for i in range(n):
+            res += L[i]*R[i]
+        return res

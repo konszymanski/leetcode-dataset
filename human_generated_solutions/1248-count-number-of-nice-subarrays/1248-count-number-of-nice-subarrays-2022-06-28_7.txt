@@ -1,0 +1,64 @@
+class Solution(object):
+    def numberOfSubarrays(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        
+        
+        amt = 0
+        
+        
+        seenOddsInWindow = 0
+        
+        l = 0
+        for r in range(len(nums)):
+            
+            seenOddsInWindow += 1 if nums[r] % 2 == 1 else 0
+            
+            while seenOddsInWindow > k:
+                seenOddsInWindow -= 1 if nums[l] % 2 == 1 else 0
+                l+=1
+                
+            if seenOddsInWindow == k:
+                amt+=1
+                
+                \'\'\'
+                [2,2,2,1,2,2,1,2,2,2] k = 2
+                ---------------------------
+                first string sub array with k odd numers
+                we can add to the total seen nice arrays
+                each even prefix to the array till we hit an odd number
+                
+                [2,2,2,1,2,2,1],2,2,2
+                2,[2,2,1,2,2,1],2,2,2
+                2,2,[2,1,2,2,1],2,2,2
+                2,2,2,[1,2,2,1],2,2,2
+                
+                [2,2,2,1,2,2,1,2],2,2
+                2,[2,2,1,2,2,1,2],2,2
+                2,2,[2,1,2,2,1,2],2,2
+                2,2,2,[1,2,2,1,2],2,2
+
+                [2,2,2,1,2,2,1,2,2],2
+                2,[2,2,1,2,2,1,2,2],2
+                2,2,[2,1,2,2,1,2,2],2
+                2,2,2,[1,2,2,1,2,2],2
+                
+                [2,2,2,1,2,2,1,2,2,2]
+                2,[2,2,1,2,2,1,2,2,2]
+                2,2,[2,1,2,2,1,2,2,2]
+                2,2,2,[1,2,2,1,2,2,2]
+
+                ----------------------
+                
+                \'\'\'
+            
+                tempL = l
+                while nums[tempL] % 2 == 0:
+                    amt+=1
+                    tempL+=1
+                
+                
+        return amt

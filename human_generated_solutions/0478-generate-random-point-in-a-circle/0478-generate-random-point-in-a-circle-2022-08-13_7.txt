@@ -1,0 +1,11 @@
+class Solution:
+
+    def __init__(self, radius: float, x_center: float, y_center: float):
+        self.r, self.rx, self.ry = radius, x_center, y_center
+
+    def randPoint(self) -> List[float]:
+        dx, dy = 2*random.random()-1, 2*random.random()-1
+        while dx*dx + dy*dy >1:
+            dx, dy = 2*random.random()-1, 2*random.random()-1
+            
+        return [ self.rx + self.r*dx, self.ry + self.r*dy ]

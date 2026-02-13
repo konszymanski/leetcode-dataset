@@ -1,0 +1,19 @@
+class Solution:
+    def shuffle(self, nums: List[int], n: int) -> List[int]:
+        maximum = 1001
+        i ,j, k = 0, n, 0
+		#update the array to convert nums[i] to x[i]
+        while k<len(nums):
+            a1 = nums[k] if nums[k]//maximum == 0 else nums[k]//maximum
+            if k&1:
+                a2 = nums[j] if nums[j]//maximum == 0 else nums[j]//maximum
+                j+=1
+            else:
+                a2 = nums[i] if nums[i]//maximum == 0 else nums[i]//maximum
+                i+=1
+            nums[k] = a1* maximum + a2
+            k+=1
+		#convert x[i] to shuffled
+        for i in range(len(nums)):
+            nums[i]= nums[i]%maximum
+        return nums

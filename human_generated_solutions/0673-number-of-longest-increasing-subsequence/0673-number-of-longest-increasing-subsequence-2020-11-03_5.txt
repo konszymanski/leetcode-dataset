@@ -1,0 +1,39 @@
+class Solution:
+    def findNumberOfLIS(self, nums: List[int]) -> int:
+
+        if not nums:
+            # Quick response for empty list
+            return 0
+        
+        n = len(nums)
+        
+        # record of length of increasing subsequence
+        length = [1 for _ in range(n)]
+        
+        # record the path count of increasing subsequence
+        count = [1 for _ in range(n)]
+            
+        # scan each number, where increasing subsequence ending in nums[i]
+        for i in range(n):
+            
+            # for every number before nums[i]
+            for k in range(i):
+                
+                
+                if nums[k] < nums[i]:
+                    # nums[k] can add to increasing subsequence ending in nums[i]
+                    
+                    if (length[k] + 1) > length[i]:
+                        # nums[k] make it longer to increasing subsequence ending in nums[i]
+                        length[i], count[i] = length[k]+1, count[k]
+                
+                    elif (length[k] + 1) == length[i]:
+                        # nums[k] add some new paths of increasing subsequence ending in nums[i]
+                        count[i] += count[k]
+        
+        
+		# get the length of lonest increasing subsequence
+        max_length = max(length)
+        
+        # report total path count of longest increasing subsequence
+        return sum( cur_count for cur_len, cur_count in zip(length, count) if cur_len == max_length )

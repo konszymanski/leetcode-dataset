@@ -1,0 +1,15 @@
+class Solution:
+    def maxIncreaseKeepingSkyline(self, grid: List[List[int]]) -> int:
+        isum, n = 0, len(grid)
+        s1, s2 = [], []
+        for i in range(n):
+            m1, m2 = 0, 0
+            for j in range(n):
+                m1 = max(m1, grid[i][j])
+                m2 = max(m2, grid[j][i])
+            s1.append(m1)
+            s2.append(m2)
+        for i in range(n):
+            for j in range(n):
+                isum += min(s1[i], s2[j]) - grid[i][j]
+        return isum

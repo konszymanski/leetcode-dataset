@@ -1,0 +1,11 @@
+class Solution:
+    def minIncrementForUnique(self, A: List[int]) -> int:
+        A.sort()
+        nextNum = float(\'-inf\')
+        steps = 0
+        
+        for num in A:
+            steps += max(nextNum, num) - num
+            nextNum = max(num, nextNum) + 1
+            
+        return steps

@@ -1,0 +1,10 @@
+class Solution:
+    def makeGood(self, s: str) -> str:
+        ch=0 #ch is a marker for where we are along the string
+        while ch < len(s)-1: #we can stop once we reach the end of the string
+            if (s[ch].upper()==s[ch+1] and s[ch]==s[ch+1].lower()) or (s[ch].lower()==s[ch+1] and s[ch]==s[ch+1].upper()): #checks if current letter and next letter form a pair we can reduce
+                s=s[:ch]+s[ch+2:] #takes the reducable pair out of the string
+                ch=max(0,ch-1) # moves back a step if we just reduced, but also makes sure we dont go negative
+            else:
+                ch+=1 #if we dont reduce, simply continue along the string
+        return s

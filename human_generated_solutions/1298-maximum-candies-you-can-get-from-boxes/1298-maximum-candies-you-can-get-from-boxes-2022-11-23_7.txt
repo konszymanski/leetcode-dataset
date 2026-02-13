@@ -1,0 +1,21 @@
+class Solution:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+        myKeys = set()
+        canVisit = set(initialBoxes)
+        q = initialBoxes[:]
+        # Check [all keys we can get] and [all boxes we can visit]
+        while q:
+            box = q.pop(0)
+            myKeys.update(set((keys[box]))) # Add the keys in box into "myKeys"
+            canVisit.add(box) # Add current box into "canVisit"
+            newBoxes = containedBoxes[box] # Add next boxes to the queue
+            for nb in newBoxes:
+                q.append(nb)
+                
+        ans = 0
+        # Visit all boxes we can visit 
+        for i in canVisit:
+            # We can open the box only if we have the key or box\'s status is open(1)
+            if i in myKeys or status[i] == 1:
+                ans += candies[i]
+        return ans

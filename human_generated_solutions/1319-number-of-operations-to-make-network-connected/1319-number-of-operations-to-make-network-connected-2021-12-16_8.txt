@@ -1,0 +1,37 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        
+        # Find the root of the given node,
+        # Also compress the path along the way, which is crucial,
+        # As it makes sure every node in the same set belongs to the 
+        # same root 
+        def find_root(node1: int, root: List[int]) -> int:
+            while (node1 != root[node1]):
+                root[node1] = root[root[node1]]
+                node1 = root[node1]
+            return node1
+        
+        num_components = n
+        # if the connections are less than n - 1, then 
+        # there must be dangling nodes, return -1 
+        if len(connections) < n - 1:
+            return -1
+    
+        # Initialize the disjoint set, initially every node is independent
+        parent = [0] * n
+        for i in range(n):
+            parent[i] = i
+        
+        # For each connection, find the root of nodes 
+        # If they are not the same, we union them by changing
+        # node1\'s root to node2\'s root. This operation reduce the 
+        # number of component by 1
+        for connection in connections:
+            root1 = find_root(connection[0], parent)
+            root2 = find_root(connection[1], parent)
+            if root1 != root2:
+                parent[root1] = root2
+                num_components -= 1
+        
+        # The number of operations to get num_components
+        return num_components - 1

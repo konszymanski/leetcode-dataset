@@ -1,0 +1,36 @@
+import heapq
+class Solution(object):
+    def mincostToHireWorkers(self, Q, P, K):
+        """
+        :type quality: List[int]
+        :type wage: List[int]
+        :type K: int
+        :rtype: float
+        """
+           
+        price = []
+        
+        # sorted by price/unit
+        for i in range(len(P)):
+            heapq.heappush(price, (float(P[i])/Q[i], Q[i]))
+            
+        selection = []
+        tot_sum = 0
+        # select first k-1 cheapest worker
+        for i in range(K-1):
+            _, q = heapq.heappop(price)
+            tot_sum +=q
+            heapq.heappush(selection, -q)
+            
+        ret = float(\'inf\')
+        
+        # iterare through remaining workers, add q unit to sum, remove largest
+        # q unit from sum to maintain K-1 q units in sum
+        while price:
+            p, q = heapq.heappop(price)
+            ret = min(ret, p*(q+tot_sum))
+            tot_sum += q
+            heapq.heappush(selection, -q)
+            tot_sum += heapq.heappop(selection)
+            
+        return ret

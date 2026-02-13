@@ -1,0 +1,30 @@
+class Solution:
+    def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
+
+        bfs_queue = [root]
+        level_sum = 0
+
+        # BFS from root node, level to level
+        while bfs_queue:
+
+            level_sum = 0
+        
+            next_queue = []
+
+            # Visit all node on current level
+            for node in bfs_queue:
+                
+                # update summation of node value on current level
+                level_sum += node.val
+                
+                # Add child node to next level queue
+                if node.left: next_queue.append( node.left )
+                if node.right: next_queue.append( node.right )
+
+            # Now we meet last level, ready to break loop and return answer
+            if not next_queue:
+                break
+            
+            bfs_queue = next_queue
+        
+        return level_sum

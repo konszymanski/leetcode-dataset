@@ -1,0 +1,30 @@
+# Runtime: 284 ms, faster than 73.60%
+    # Memory Usage: 19.6 MB, less than 10.42%
+    #
+    # Time: O(n**2), Space: O(n)
+    #
+    # Each element in @aux has the same probability to be chosen:
+    #     * assume Pk is the probability that an element e in @aux is chosen in
+    #       iteration k
+    #     * Pk = P(e not chosen in the previous k - 1 iterations) *
+    #            P(e chosen at the kth iteration)
+    #          = (n-1)/(n) * (n-2)/(n-1) * ... * (n-k+1)/(n-k+2) * 1/(n-k+1)
+    #          = 1/n
+    #     * so each element has the same probability to be chosen even is is
+    #       chosen in different iteration
+    #
+    # The proof is important because the Fisher-Yates Algorithm use the same
+    # concept of this brute force one but with improved space and time
+    # complexity. And since this brute force one is uniformly distributed, the
+    # Fisher-Yates Algorithm will also be.
+    def shuffle(self) -> List[int]:
+        aux = list(self.original)
+        array = [None] * len(aux)
+        for i in range(len(array)):
+            # randomly pick 1 element from @aux and put it into @array
+            # note that as we keep popoing @aux, len(aux) becomes less and less,
+            # and the random range we use is narrower and narrower
+            #
+            # note: pop() is O(n), so the total time would be O(n**2)
+            array[i] = aux.pop(random.randrange(len(aux)))
+        return array

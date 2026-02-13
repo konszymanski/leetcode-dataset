@@ -1,0 +1,23 @@
+def helper(self, root, parent=None, isleftChild=True):
+        if root is None:
+            return None
+        
+        if parent == None:
+            #we are at root
+            root.next = None
+        else:
+            #we are at some node other than root
+            if isleftChild:
+                root.next = parent.right
+            else:
+                root.next = None
+                if parent.next != None:
+                    root.next = parent.next.left
+                    
+        root.left = self.helper(root.left, root, True)
+        root.right = self.helper(root.right, root, False)
+        
+        return root
+    
+    def connect(self, root: \'Node\') -> \'Node\':
+        return self.helper(root)

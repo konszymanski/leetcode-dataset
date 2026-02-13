@@ -1,0 +1,6 @@
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+        if sum(nums) > 1:
+            return min(map(len, \'\'.join(str(value) for value in nums).split(\'1\')[1:-1])) >= k
+        else:
+            return True

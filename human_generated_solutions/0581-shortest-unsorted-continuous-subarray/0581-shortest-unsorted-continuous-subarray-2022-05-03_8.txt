@@ -1,0 +1,28 @@
+\'\'\'
+For an array to be sorted
+
+Rule 1. value at an index is larger than any of its left indices.
+Rule 2. value at an index is smaller than any of its right indice
+
+\'\'\'
+
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        if len(nums)==1:
+            return 0
+        big_val,small_val = nums[0],nums[-1]
+        right_idx, left_idx = -1,-1
+        # 1. Capture the left most index that violates Rule 1
+        for i in range(1,len(nums)):
+            if nums[i]>=big_val:
+                big_val = nums[i]
+            else:
+                right_idx = i
+         # 2. Capture the right most index that violates Rule 2       
+        for i in range(len(nums)-2,-1,-1):
+            if nums[i]<=small_val:
+                small_val = nums[i]
+            else:
+                left_idx = i
+        # 3. Return the difference
+        return 0 if left_idx==right_idx else right_idx-left_idx+1

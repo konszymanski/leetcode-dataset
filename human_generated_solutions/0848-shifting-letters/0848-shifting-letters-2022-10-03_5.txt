@@ -1,0 +1,30 @@
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[int]) -> str:
+        res = ""
+		
+		# reminder, both lengths are equal
+        length = len(shifts)
+		
+		# tmp variable to store previous value to get sum for left chars
+        tmp = 0
+		
+		# reverse loop to shift right most char 1st than sum shift of left chars one by one
+        for i in range(length-1,-1,-1):
+            shift = tmp + shifts[i]
+            tmp = shift
+            if shift > 26:
+                shift = shift % 26
+                
+            res = self.getShiftedChar(ord(s[i]),shift) + res
+        return res
+    
+    def getShiftedChar(self,char: int,shift: int) -> str: 
+        asc = char
+        asc += shift
+		
+		#till this ascii value is within required range, i.e, 97 to 122 
+        while asc > 122:
+            diff = asc - 122
+            asc = 96 + diff
+        char = chr(asc)
+        return char

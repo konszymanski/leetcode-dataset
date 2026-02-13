@@ -1,0 +1,12 @@
+from collections import Counter
+
+class Solution:
+    def checkAlmostEquivalent(self, word1: str, word2: str) -> bool:
+        hash1, hash2 = Counter(word1), Counter(word2)
+        uniqueLetters = set(word1 + word2)
+        
+        for letter in uniqueLetters:
+            if abs(hash1[letter] - hash2[letter]) > 3:
+                return False
+            
+        return True

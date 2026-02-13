@@ -1,0 +1,10 @@
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        a,c = [0] + flowerbed + [0], 0
+        for i in (range(len(a))):
+            if a[i:i+3] == [0,0,0]:
+                c += 1
+                if c>=n:
+                    return True
+                a[i+1] = 1
+        return c>=n

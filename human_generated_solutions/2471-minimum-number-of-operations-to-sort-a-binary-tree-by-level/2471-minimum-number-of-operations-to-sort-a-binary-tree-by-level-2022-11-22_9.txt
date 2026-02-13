@@ -1,0 +1,37 @@
+class Solution:
+    def computeSwaps(self, level: List[int]) -> int:
+        levelCopy = [(elem, idx) for idx, elem in enumerate(level)]
+        levelCopy.sort()
+        numSwaps, sz, idx = 0, len(level), 0
+        while idx < sz:
+            if idx != levelCopy[idx][1]:
+                numSwaps += 1
+                levelCopy[levelCopy[idx][1]], levelCopy[idx] = levelCopy[idx], levelCopy[levelCopy[idx][1]]
+                idx -= 1
+            idx += 1
+        return numSwaps
+    
+    def minimumOperations(self, root: Optional[TreeNode]) -> int:
+        ans, queue = 0, deque()
+        queue.append(root); queue.append(None)
+        while queue:
+            sz = len(queue)
+            while sz:
+                cur = queue.popleft()
+                if cur is None:
+                    level, temp = [], deque()
+                    while queue:
+                        tempNode = queue.popleft()
+                        temp.append(tempNode)
+                        level.append(tempNode.val)
+                    ans += self.computeSwaps(level)
+                    queue = temp
+                    if len(queue) > 0:
+                        queue.append(None)
+                else:
+                    if cur.left is not None:
+                        queue.append(cur.left)
+                    if cur.right is not None:
+                        queue.append(cur.right)
+                sz -= 1
+        return ans

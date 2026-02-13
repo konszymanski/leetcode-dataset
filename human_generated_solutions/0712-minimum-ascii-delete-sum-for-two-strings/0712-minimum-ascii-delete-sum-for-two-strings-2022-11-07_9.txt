@@ -1,0 +1,27 @@
+class Solution:
+    def minimumDeleteSum(self, s1: str, s2: str) -> int:
+        
+        def ascii_sum(s):
+            return sum(map(lambda x: ord(x), list(s)))
+
+        @functools.lru_cache(None)
+        def dp(s1, s2):
+            if not s1 and not s2:
+                return 0
+            if not s1:
+                return ascii_sum(s2)
+            
+            if not s2: 
+                return ascii_sum(s1)
+
+
+            ans = float("inf")
+
+            if s1[0] == s2[0]:
+                ans = min(ans, dp(s1[1:], s2[1:]))
+            
+            ans = min(ans, ord(s2[0]) + dp(s1, s2[1:]),  ord(s1[0]) + dp(s1[1:], s2),  ord(s1[0]) + ord(s2[0]) + dp(s1[1:], s2[1:]))
+
+            return ans
+
+        return dp(s1, s2)

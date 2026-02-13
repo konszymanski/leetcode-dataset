@@ -1,0 +1,17 @@
+class Solution(object):
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        count=0
+        currentSum=0
+        output=0
+        seen={0:1}
+        for number in nums:
+            currentSum+=number
+            difference=currentSum-k
+            output+=seen.get(difference,0)
+            seen[currentSum]=seen.get(currentSum,0)+1
+        return output

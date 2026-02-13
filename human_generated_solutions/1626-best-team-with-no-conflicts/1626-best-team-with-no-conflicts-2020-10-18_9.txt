@@ -1,0 +1,32 @@
+class Solution:
+    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        
+        AGE, SCORE = 0, 1
+        
+        player_pair = [ *zip(ages, scores) ]
+        
+        # sort by age, score in descending order
+        player_pair.sort( reverse=True )
+        
+        n = len(player_pair)
+        
+        # dp[i] denotes the highest team score with player #i is included.
+        dp = [ player_pair[i][SCORE] for i in range(n) ]
+        
+        maximum_team_score = 0
+        
+        # scan each player
+        for i in range(n):
+            
+            cur_score_of_i = dp[i]
+            
+            # scan every possible senior teammate of current player
+            for older in range(i):
+                
+                if player_pair[older][SCORE] >= cur_score_of_i:
+                    # update dp table when senior teammate has higher or equal score
+                    dp[i] = max( dp[i], dp[older] + cur_score_of_i )
+                    
+            maximum_team_score = max(maximum_team_score, dp[i])
+
+        return maximum_team_score

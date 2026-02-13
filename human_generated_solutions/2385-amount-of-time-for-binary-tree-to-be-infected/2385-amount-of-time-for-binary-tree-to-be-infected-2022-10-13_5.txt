@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+        # find the longest path from the start
+        def findMaxDepth(root):
+            #
+            if not root:
+                return 0,0,0,0
+            #l:    max depth,
+            #spl:  start to node length
+            #sel:  longest path from start to end
+            #rl:   return result
+            
+            l,spl,sel,rl=findMaxDepth(root.left)
+            r,spr,ser,rr=findMaxDepth(root.right)
+            depth=max(l,r)+1
+            if root.val==start:
+                return depth,1,depth,depth-1
+            else:
+                if spl!=0:
+                    return depth,spl+1,sel,max(rl,sel-1,spl+r)
+                elif spr!=0:
+                    return depth,spr+1,ser,max(rr,ser-1,spr+l)
+                else:
+                    return depth,0,0,0
+                    
+            
+        return findMaxDepth(root)[3]

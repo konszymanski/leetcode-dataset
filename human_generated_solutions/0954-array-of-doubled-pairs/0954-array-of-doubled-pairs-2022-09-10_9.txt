@@ -1,0 +1,23 @@
+def canReorderDoubled(self, arr: List[int]) -> bool:
+        dict = {}
+        
+        #Sort the input array based on absolute value so that if we have a negative array
+        # e.g. [4,-2,2,-4], then we sort in a way that we get -2 before -4
+        arr.sort(key = abs)
+        
+        #A dictionary to keep the count of each element in the array
+        for num in arr: dict[num] = dict[num] + 1 if num in dict else 1
+        
+        #Now for each element check if its double exists or not
+        # If it does, also check if count of that is more than 1 or not because it is also possible that some other element paired up with it already
+        for num in arr:
+            if dict[num] > 0:
+                
+                #If double does not exist or if it does but is already paired with some previous number then return False
+                if ((not 2 * num in dict) or (2 * num in dict and dict[2 * num] <= 0)): return False
+                
+                # Reduce the count because we have a pair
+                dict[num] -= 1
+				dict[2 * num] -= 1
+                
+        return True

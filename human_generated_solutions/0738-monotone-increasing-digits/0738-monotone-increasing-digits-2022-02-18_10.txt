@@ -1,0 +1,23 @@
+class Solution:
+    def monotoneIncreasingDigits(self, n: int) -> int:
+        num = list(str(n))
+		//reverse the string so that it can be looped from left to right
+        num = num[::-1]
+        length = len(num)
+        prev = None
+        i = 0
+        while i < length:
+            if prev:
+                if prev < num[i]: // the condition reverses as string is reversed
+                    j = i
+					// check for the rightmost same digit
+                    while j < length and num[i] == num[j]:
+                        j += 1
+                    i = j - 1
+					//change it
+                    num[i] = str(int(num[i]) - 1)
+					//replace everything with "9" to i\'s left
+                    num[ : i] = ["9"] * (i)
+            prev = num[i]
+            i += 1
+        return int("".join(num[::-1]))  //reverse the string again

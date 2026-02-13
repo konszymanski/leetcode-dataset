@@ -1,0 +1,17 @@
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        direction = 1 if k > 0 else -1
+        result = []
+
+        for i in range(len(code)):
+            row_sum = 0
+            sum_count = abs(k)
+            row_sum_idx = i
+            while sum_count > 0:
+                row_sum_idx += direction
+                row_sum_idx %= len(code)
+                row_sum += code[row_sum_idx]
+                sum_count -= 1
+            result.append(row_sum)
+
+        return result

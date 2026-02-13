@@ -1,0 +1,54 @@
+class ProductOfNumbers:
+    /*
+    Came up with a relatively intuitive solution on top of my head -- O(1) time, O(n) space:
+    
+    - The general idea is that we keep a dp array, where each element dp[i] for i = 1.....n equals to num * dp[i-1]. dp[0] will just be the first element added to the array.
+    - For example, for the array [3, 3, 4], dp = [3, 9, 36]
+    - To calculate the product of the last k numbers, we simply divide the last element in our dp table by the k+1 to last dp element. 
+    - e.g. in this case it will be 36/3 = 12, which is the product of the last two elements (3*4).
+    
+    
+    ***There are two major things that we need to account for:***
+    1. Since we calculate the answer by division, we need to account for division by zeros [edge cases].
+    2. If the last k elements contains a zero, the product of the last k element will be zero.
+    
+    
+    Solution for issue (1):
+    - To account for division by zero, instead of pushing a zero to the dp table, we append 1 instead.
+    - e.g. arr=[3, 0, 7, 4], dp=[3, 1, 7, 28]
+    - In this sense if we were to calculate the product of the last two numbers, it will be dp[-1] / dp[-(k+1)] = 28/1 = 28 [7*4 = 28], where k = 2.
+    - The solution addressed the issue by appending (num or 1)
+    - But what if we need to calculate the product of the last three numbers? 
+    - 28/7 = 4, which is not the right answer!! (Please see solution for issue 2)
+    
+    Solution for issue (2):
+    - We use self.zero to track the index of the last added zero in the original array.
+    - Consider the array [3, 0, 1, 1, 4], self.zero will be 2 since there is a zero at index 2.
+    - Consider the array [3, 0, 1, 1, 0], self.zero will be 3, since the last added zero is at index 3.\\
+    - In this case, there are a total of 5 elements in the array. len(arr) - zero_index = 5-3 = 2. So the last occured zero is 2nd to last element.
+    - Now, we simly compare whether len(arr) - zero_index <= k. If so, we return 0.
+    
+    
+    
+    - I am not very good at explaining and I tried my best. Hope this helps.
+    */
+    def __init__(self):
+        self.dp = []
+        self.zero = -1
+        
+    def add(self, num: int) -> None:
+        if num == 0: 
+            self.zero = max(self.zero, len(self.dp))
+            
+        if not self.dp:
+            self.dp.append(num or 1)
+        else:
+            new_num = num * self.dp[-1]
+            self.dp.append(new_num or 1)
+
+    def getProduct(self, k: int) -> int:
+        if (len(self.dp) - self.zero) <= k: return 0
+        if len(self.dp) == k:
+            return self.dp[-1]
+        else:
+            return int(self.dp[-1] / (self.dp[-(k+1)]))

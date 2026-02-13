@@ -1,0 +1,13 @@
+class Solution:
+    def yielder(self,A):
+        for row in A:
+            for x in row:
+                yield x
+    def matrixReshape(self, A, r, c):
+        if not A:
+            return []
+        if len(A)*len(A[0]) != r*c:
+            return A
+        #
+        gen = self.yielder(A)
+        return [ [ next(gen) for _ in range(c) ] for _ in range(r) ]

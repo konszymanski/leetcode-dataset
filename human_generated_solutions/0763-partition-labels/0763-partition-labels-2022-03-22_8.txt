@@ -1,0 +1,15 @@
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        dic={}
+        for i,c in enumerate(s): 
+			dic[c]=i
+        
+        ans=[]
+        start, end = 0, 0
+        for i,c in enumerate(s):
+            end = max(end, dic[c])
+            if end==i:
+                ans.append(end+1-start)
+                start=i+1
+        
+        return ans

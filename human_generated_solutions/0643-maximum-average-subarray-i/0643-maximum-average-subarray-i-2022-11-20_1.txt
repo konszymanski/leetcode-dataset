@@ -1,0 +1,14 @@
+class Solution:
+    def findMaxAverage(self, arr: List[int], k: int) -> float:
+        n=len(arr) # n is the length of array
+        window_sum=sum(arr[:k]) #initially , cal the sum of given window size
+        MaxAverage=window_sum 
+        for element in range(1,n-k+1): #range in which window\'ll slide
+            window_sum -= arr[element-1] # remove the first element
+            window_sum += arr[element+k-1] #add the next element
+            MaxAverage=max(MaxAverage,window_sum) #take max one
+        return MaxAverage/k  #and then return the avg   
+
+
+#keep doing..!!!
+#keep motivated..!!

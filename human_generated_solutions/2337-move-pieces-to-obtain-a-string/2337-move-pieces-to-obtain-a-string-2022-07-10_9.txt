@@ -1,0 +1,14 @@
+def canChange(self, start: str, target: str) -> bool:
+    sOrder = [i for i, c in enumerate(start) if c != "_"]
+	tOrder = [i for i, c in enumerate(target) if c != "_"]
+	# Case 1
+	if len(sOrder) != len(tOrder): return False
+
+	for i in range(len(sOrder)):
+		# Case 2
+		if start[sOrder[i]] != target[tOrder[i]]: return False
+		# Case 3
+		elif start[sOrder[i]] == "L" and tOrder[i] > sOrder[i]: return False
+		elif start[sOrder[i]] == "R" and tOrder[i] < sOrder[i]: return False
+
+	return True

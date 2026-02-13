@@ -1,0 +1,27 @@
+class Solution:
+    def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
+        
+        
+        
+        
+        pre=[nums[0]]
+        
+        for j in range(1,len(nums)):
+            pre.append(pre[-1]+nums[j])
+            
+        n=len(nums)
+        ans=[]
+        for i in range(n):
+            
+            
+            for k in range(i+1):
+                
+                if k==0:
+                    ans.append(pre[i])
+                else:
+                    ans.append(pre[i]-pre[k-1])
+                    
+        ans.sort()
+        
+        mod=  10**9+7
+        return sum(ans[left-1:right])%mod

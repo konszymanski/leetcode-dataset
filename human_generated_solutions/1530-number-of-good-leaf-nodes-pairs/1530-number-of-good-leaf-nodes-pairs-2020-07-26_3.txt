@@ -1,0 +1,10 @@
+def d(code1,code2):
+            l1,l2 = len(code1),len(code2)
+            if l1<l2:
+                code1,code2=code2,code1
+                l1,l2 = l2,l1
+            a = l1-l2
+            i = 0
+            while code1[i]==code2[i]:
+                i+=1
+            return (l1-i)*2-a

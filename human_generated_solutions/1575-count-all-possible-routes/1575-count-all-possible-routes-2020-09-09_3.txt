@@ -1,0 +1,28 @@
+class Solution:
+    def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+        
+        dp = {}
+        cost = lambda cur, dest : abs( locations[cur] - locations[dest] )
+
+        def travel( cur, remain ):
+
+            # Look-up DP table
+            if (cur, remain) in dp:
+                return dp[cur, remain]
+            
+            # Base case
+            if remain < 0 or cost(cur, finish) > remain:
+                dp[cur, remain] = 0
+                return 0
+            
+            # General case, travel to all possible next city
+            # If we start travel from finish, then at least one route
+            route = (cur == finish)
+            for city in range( len(locations) ):
+                route += travel( city, remain - cost(cur, city) ) if city != cur else 0
+
+            dp[cur, remain] = route
+            return route
+
+        # --------------------------------
+        return travel(start, fuel) % (10**9 + 7)

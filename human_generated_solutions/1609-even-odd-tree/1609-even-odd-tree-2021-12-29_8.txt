@@ -1,0 +1,23 @@
+class Solution:
+    def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+        from collections import deque
+        q = deque([(root, 0)])
+        prev_n, prev_lv = TreeNode(0), -1
+        while q:
+            n, lv = q.popleft()
+			# odds can exist only in even levels while evens can exist only in odd levels
+            # accordingly lv and n.val can\'t be odd / even at the same time
+			# this can be easily done by bit manipulation
+            if ((lv & 1) ^ (n.val & 1)) == 0:
+                return False
+            if lv & 1:
+			    # odd level shall contains strictly increasing sequence
+                if prev_n.val <= n.val and prev_lv == lv:
+                    return False
+            else:
+				# even level shall contains strictly decreasing sequence
+                if prev_n.val >= n.val and prev_lv == lv:
+                    return False
+            q += ((c, lv + 1) for c in (n.left, n.right) if c)
+            prev_n, prev_lv = n, lv
+        return True

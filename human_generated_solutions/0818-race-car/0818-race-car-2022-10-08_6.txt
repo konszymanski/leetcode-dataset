@@ -1,0 +1,16 @@
+def racecar(self, target, dp=None):
+	if not dp:
+		dp = dict()
+	if target in dp:
+		return dp[target]
+
+	n = int(math.log(target+1, 2))
+	if 2**n - 1 == target:
+		dp[target] = n
+		return dp[target]
+
+	dp[target] = n + 2 + self.racecar((2**(n + 1) - 1) - target, dp)
+
+	for m in range(n):
+		dp[target] = min(dp[target], n + 1 + m + 1+ self.racecar(target - 2**n + 2**m, dp))
+	return dp[target]

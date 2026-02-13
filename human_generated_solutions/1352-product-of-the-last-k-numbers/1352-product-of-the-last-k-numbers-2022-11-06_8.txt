@@ -1,0 +1,23 @@
+class ProductOfNumbers:
+
+    def __init__(self):
+        self.mutiRes = [1]
+        self.zeroIdx = -1
+
+    def add(self, num: int) -> None:
+        if num == 0:
+            self.zeroIdx = len(self.mutiRes)
+            self.mutiRes.append(self.mutiRes[-1] * 1)
+        else:    
+            self.mutiRes.append(self.mutiRes[-1] * num)
+
+    def getProduct(self, k: int) -> int:
+        if len(self.mutiRes) - k <= self.zeroIdx:
+            return 0
+        return self.mutiRes[-1] // self.mutiRes[len(self.mutiRes)-1 - k]
+
+
+# Your ProductOfNumbers object will be instantiated and called as such:
+# obj = ProductOfNumbers()
+# obj.add(num)
+# param_2 = obj.getProduct(k)

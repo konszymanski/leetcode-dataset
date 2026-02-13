@@ -1,0 +1,41 @@
+class StreamChecker:
+    def __init__(self, words: List[str]):
+	"""
+	In our init state, we create a trie.
+	Something like this:
+	["tr", "tre", "q"] => {t: {r: {"END": True, e: {"END": True}}}, q: {"END": True}}
+	"""
+        self.trie = {}
+        for word in words:
+            curr = self.trie
+            for char in word:
+                curr = curr.setdefault(char, {})
+            curr["END"] = True
+        self.pointer_array = []
+
+    def query(self, letter: str) -> bool:
+		"""
+		Next, we just start a pointter at every new letter, venturing deeper into our trie!
+		"""
+        found = False
+        for i, p in enumerate(self.pointer_array):
+            if letter in p:
+                self.pointer_array[i] = p[letter]
+                if p[letter].get("END"):
+                    found = True
+					
+					"""If we cannot venture deeper, remove this pointer"""
+                    if len(p[letter]) == 1:
+                        self.pointer_array[i] = None
+            else:
+				"""If we break the suffix streak, remove this pointer"""
+                self.pointer_array[i] = None
+        if letter in self.trie:
+            self.pointer_array.append(self.trie[letter])
+            if self.trie[letter].get("END"):
+                found = True
+                if len(self.trie[letter]) == 1:
+                    self.pointer_array.pop()
+		"""Remove Nones."""
+        self.pointer_array = [p for p in self.pointer_array if p]
+        return found

@@ -1,0 +1,21 @@
+class Solution:
+    def decodeAtIndex(self, s: str, k: int) -> str:
+
+        while k:
+            Len = 0                                     #  Ex: s = "leet2code3"    k = 16
+                                                        #           0123456789
+            for i,ch in enumerate(s):
+                prev = Len                              #    i    ch   Len     k
+                                                        #   \u2013\u2013\u2013   \u2013\u2013\u2013  \u2013\u2013\u2013    \u2013\u2013\u2013 
+                if ch.isalpha():                        #    0     l     1     16
+                    Len+= 1                             #    1     e     2
+                                                        #    2     e     3
+                    if Len == k: return ch              #    3     t     4
+                                                        #    4     6    24
+                else:                                   #  Because Len >= k, k = 1+(16-1)%4
+                    Len*= int(ch)                       # 
+                                                        #    0     l     0      4  
+                    if Len >= k:                        #    1     e     2
+                        k = 1 + (k-1)% prev             #    2     3     3
+                                                        #    3     t     4
+                                                        #   Because Len == k, answer is t

@@ -1,0 +1,29 @@
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        numPoints = len(points)
+        disArr = [math.inf for _ in range(numPoints)]
+        disArr[0] = 0
+        visited = [False for _ in range(numPoints)]
+        visited[0] = True
+        numEdge = 0
+        cur = 0
+        res = 0
+        
+        while (numEdge < numPoints - 1):
+            nextPoint = 0
+            minEdge = math.inf
+            for n in range(numPoints):
+                if (not visited[n]):
+                    dis = abs(points[cur][0] - points[n][0]) + abs(points[cur][1] - points[n][1])
+                    disArr[n] = min(dis, disArr[n])
+                        
+                    if (disArr[n] < minEdge):
+                        minEdge = disArr[n]
+                        nextPoint = n
+                        
+            res += minEdge
+            cur = nextPoint
+            visited[cur] = True
+            numEdge += 1
+            
+        return res

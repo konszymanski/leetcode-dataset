@@ -1,0 +1,66 @@
+import collections
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+	    # situation
+        # 1) bob moves to 0 (fixed path)
+        # 2) alice moves to some leaf node (there are K paths for alice, K = count of leaf nodes)
+        
+		# approach
+        # 1) calculate bob\'s path first
+        # 2) calculate when each node is opened by bob        
+        # 3) then move alice along each path
+
+        n = len(edges) + 1
+        def build_graph():
+            graph = collections.defaultdict(list)
+            for a, b in edges:
+                graph[a].append(b)
+                graph[b].append(a)
+            return graph
+        
+        graph = build_graph()
+
+        track = [bob]
+        bob_path = None
+        def move_bob(node, prev):
+            nonlocal bob_path
+            if bob_path:
+                return
+            if node == 0:
+                bob_path = track[:]
+                return
+            for nxt in graph[node]:
+                if nxt == prev:
+                    continue
+                track.append(nxt)
+                move_bob(nxt, node)
+                track.pop()
+        move_bob(bob, -1)
+
+        bob_opening = [float(\'inf\')] * n # when each node is opened by bob
+        for i, node in enumerate(bob_path):
+            bob_opening[node] = i
+
+        max_income = -float(\'inf\')
+        def move_alice():
+            nonlocal max_income
+            # dfs to find the max income
+            queue = [(0, -1, 0, 0)] # node, prev, second, income
+            while queue:
+                node, prev, second, income = queue.pop()
+                # calculate the reward or cost
+                if bob_opening[node] > second:
+                    income += amount[node]
+                elif bob_opening[node] == second:
+                    income += amount[node] // 2
+    
+                if second > 0 and len(graph[node]) == 1: # leaf node
+                    max_income = max(max_income, income)
+                    continue
+
+                for nxt in graph[node]:
+                    if nxt == prev:
+                        continue
+                    queue.append((nxt, node, second + 1, income))
+        move_alice()
+        return max_income

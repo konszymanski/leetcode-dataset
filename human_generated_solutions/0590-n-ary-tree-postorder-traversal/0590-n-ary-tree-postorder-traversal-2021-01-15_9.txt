@@ -1,0 +1,13 @@
+class Solution:
+    def postorder(self, root: \'Node\') -> List[int]: 
+        ans=[]
+        if not root:
+            return []
+        def cal(r:\'Node\')->List[int]:
+            ans.append(r.val)
+            if r.children:
+                for i in range(len(r.children)-1,-1,-1):
+                    cal(r.children[i])
+        cal(root)   
+        ans.reverse()
+        return ans

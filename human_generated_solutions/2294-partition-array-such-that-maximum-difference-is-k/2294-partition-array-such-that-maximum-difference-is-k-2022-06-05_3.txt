@@ -1,0 +1,15 @@
+class Solution:
+    def partitionArray(self, nums: List[int], k: int) -> int:
+        heapify(nums)
+        count = 1
+        
+        start = heappop(nums)
+        
+        while nums:
+            num = heappop(nums)
+            
+            if num - start > k:
+                start = num
+                count += 1
+                
+        return count

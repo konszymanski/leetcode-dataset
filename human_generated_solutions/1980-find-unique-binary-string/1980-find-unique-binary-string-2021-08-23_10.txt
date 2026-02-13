@@ -1,0 +1,14 @@
+class Solution:
+    def findDifferentBinaryString(self, nums: List[str]) -> str:
+        
+		nums=set(nums)
+		
+        def recur(string,depth):
+            
+            if depth == 0: return string if string not in nums else ""
+                
+            for value in "01":
+                ans=recur(string+value,depth-1)
+                if ans: return ans
+				
+        return recur("",len(nums))

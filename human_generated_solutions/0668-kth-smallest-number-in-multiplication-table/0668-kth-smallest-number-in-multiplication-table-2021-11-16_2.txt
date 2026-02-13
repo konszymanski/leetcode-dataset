@@ -1,0 +1,25 @@
+class Solution(object):
+    def findKthNumber(self, m, n, k):
+        def getIndex(m, n, num): 
+            \'\'\'
+            left: the count of numbers lower than num, so if num appeared in matrix, the first index would be left + 1.
+            right: the count of numbers lower than or equal to num, so if num appeared in matrix, the last index would be right.
+            Notice that if num did not appear in matrix, left == right.
+            \'\'\'
+            left = right = 0
+            for i in range(1, min(m, num) + 1):
+                left += min((num - 1) // i, n)
+                right += min(num // i, n)
+            return left, right
+
+		# Binary Search
+        low, high = 1, m * n
+        while low <= high:
+            mid = (low + high) // 2
+            left, right = getIndex(m, n, mid)
+            if left < k <= right:
+                return mid
+            elif k <= left:
+                high = mid - 1
+            else:
+                low = mid + 1

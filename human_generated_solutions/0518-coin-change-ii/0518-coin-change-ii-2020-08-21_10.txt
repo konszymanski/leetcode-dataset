@@ -1,0 +1,10 @@
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        dp = [0] * (amount + 1)             # DP Array of size (Amount +1) initialized to 0
+        dp[0] = 1
+
+        for currCoin in coins:
+            for currAmount in range(currCoin, amount + 1):
+                dp[currAmount] += dp[currAmount - currCoin]
+
+        return dp[-1]

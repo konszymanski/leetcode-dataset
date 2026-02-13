@@ -1,0 +1,46 @@
+class Solution:
+
+    def getLastMoment(self, n: int, left: list[int], right: list[int]) -> int:
+
+        #print("=====-----=====")
+
+        def shift_with_zeros(l: list, direction="left") -> list:
+            if len(l) == 0:
+                return [0]
+            if direction == "right":
+                l.pop(-1)
+                l = [0] + l
+                return l
+            if direction == "left":
+                l.pop(0)
+                l = l + [0]
+                return l
+            
+        def done(left_to_right: list, right_to_left: list) -> bool:
+            done_left = not(any(i == 1 for i in left_to_right))
+            done_right = not(any(i == 1 for i in right_to_left))
+            return done_left and done_right
+        
+        left_to_right = [1 if i in right else 0 for i in range(n + 1)]
+        right_to_left = [1 if i in left else 0 for i in range(n + 1)]
+
+        #print("left_to_right", left_to_right, "right_to_left", right_to_left)
+        go_on = not(done(left_to_right, right_to_left))
+        #print("go_on: ", go_on)
+
+        t = 0
+        while go_on:
+            left_to_right = shift_with_zeros(left_to_right, direction="right")
+            right_to_left = shift_with_zeros(right_to_left, direction="left")
+            #print("left_to_right", left_to_right, "right_to_left", right_to_left)
+            go_on = not(done(left_to_right, right_to_left))
+            #print("go_on: ", go_on)
+            t += 1
+        #print(t)
+        return t - 1 # actually its t -1 + 0.000001 ms basically
+
+    #getLastMoment(n=5, left=[1], right=[3])
+
+    #getLastMoment(n=7, left=[], right=[0,1,2,3,4,5,6,7])
+
+#Solution()

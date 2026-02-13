@@ -1,0 +1,8 @@
+class Solution:
+    def sumZero(self, n):
+        result=[]
+        _int_=-n+1
+        for i in range(n):
+            result.append(_int_)
+            _int_=_int_+2
+        return result

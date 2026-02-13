@@ -1,0 +1,13 @@
+class Solution:
+    def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
+        result, resultSum = [], 0
+        for idx in range(len(nums)):
+            currentNumber = nums[idx]
+            result.append(currentNumber)
+            for i in range(idx+1, len(nums)):
+                currentNumber += nums[i]
+                result.append(currentNumber)
+        result.sort()
+        for idx in range(left-1,right):
+            resultSum += result[idx]
+        return resultSum %(pow(10,9)+7)

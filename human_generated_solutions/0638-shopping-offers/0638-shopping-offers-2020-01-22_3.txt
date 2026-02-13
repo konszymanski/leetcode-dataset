@@ -1,0 +1,21 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        if not price or not special or not needs:
+            return 0
+        return self.helper(price, special, needs, {})
+        
+    def helper(self, price, special, needs, cache):
+        needs = tuple(needs)
+        if needs in cache:
+            return cache[needs]
+        
+        n = len(needs)
+		# calculate the upper bound price by buying everything separately
+        minPrice = sum(needs[i] * price[i] for i in range(n))
+        for s in special:
+		    # apply all valid special offers and find the optimal price
+            if all(s[i] <= needs[i] for i in range(n)):
+                newNeeds = [needs[i] - s[i] for i in range(n)]
+                minPrice = min(minPrice, self.helper(price, special, newNeeds, cache) + s[-1])
+        cache[needs] = minPrice
+        return minPrice

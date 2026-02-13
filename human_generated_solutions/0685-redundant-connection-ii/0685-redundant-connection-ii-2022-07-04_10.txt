@@ -1,0 +1,39 @@
+class Solution:
+    def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
+        graph = defaultdict(set)
+        
+        c = Counter() # count parents 
+        
+        nodes = set() # set of all nodes
+        for u,v in edges:
+            graph[u].add(v)
+            nodes.add(u)
+            nodes.add(v)
+            c[v] += 1
+        
+        # check if no loops
+        def dfs(node):
+            if node in seen:
+                return False
+            seen.add(node)
+            
+            for nb in graph[node]:
+                if not dfs(nb):
+                    return False
+            return True
+        
+        N = len(nodes)
+        ans = []
+        for u,v in edges[::-1]:
+            graph[u].remove(v)
+            
+            c[v]-=1
+            for root in nodes:
+                seen = set()
+                # if root is a tree root
+                if not c[root] and dfs(root) and len(seen) == N:
+                    return [u,v]
+            c[v]+=1
+            graph[u].add(v)
+        
+        return ans

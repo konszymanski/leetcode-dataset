@@ -1,0 +1,10 @@
+class Solution(object):
+    def nthMagicalNumber(self, n, a, b):
+        def gcd(a, b):  # get greatest common divisor of a and b
+            while b > 0:
+                a, b = b, a % b
+            return a
+
+        lcm = a * b // gcd(a, b)  # get least common multiple of a and b      
+        cycle = sorted(set(range(a, lcm, a) + range(b, lcm, b) + [lcm]))
+        return ((n - 1) // len(cycle) * lcm + cycle[(n - 1) % len(cycle)]) % 1000000007

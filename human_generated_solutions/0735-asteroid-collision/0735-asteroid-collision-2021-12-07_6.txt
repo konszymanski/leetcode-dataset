@@ -1,0 +1,31 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        n = len(asteroids)
+        
+        sign = lambda x: 1 if x > 0 else -1
+        
+        i = 1  # Pointer to current asteroid
+        sp = 1 # Stack pointer (stack = [asteroids[0]])
+        
+        while i < n:
+            r = asteroids[i] # current asteroid
+            
+			# Asteroids can\'t touch or all previously considered
+			# asteroids have annilihated
+            if sp == 0 or sign(asteroids[sp - 1]) <= sign(r):
+				# stack.append(r)
+                asteroids[sp] = r
+                sp += 1
+            elif abs(asteroids[sp - 1]) == abs(r): # Same magnitude collision, both die
+                sp -= 1 # stack.pop()
+            elif abs(asteroids[sp - 1]) < abs(r): # Case where smaller asteroid (stack top) dies
+                sp -= 1 # stack.pop()
+                continue
+				
+			# For case where the current asteroid is smaller than the stack top
+			# we don\'t need to do anything we can just move on to the next
+			# asteroid (no changest to the stack needed)
+                
+            i += 1
+                
+        return asteroids[:sp] # return stack

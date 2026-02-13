@@ -1,0 +1,18 @@
+class Solution:
+    def halvesAreAlike(self, s: str) -> bool:
+        a=\'\'
+        b=\'\'
+        for i in range(0,len(s)//2):
+            a+=s[i]
+        for i in range(len(s)//2,len(s)):
+            b+=s[i]
+        c=[\'a\', \'e\', \'i\', \'o\', \'u\', \'A\', \'E\', \'I\', \'O\', \'U\']
+        d=0
+        e=0
+        for i in a:
+            if i in c:
+                d+=1
+        for i in b:
+            if i in c:
+                e+=1
+        return d==e

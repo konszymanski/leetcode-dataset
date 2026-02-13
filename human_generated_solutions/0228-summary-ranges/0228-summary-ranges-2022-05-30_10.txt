@@ -1,0 +1,21 @@
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        # add dummy variable to end of list, easier handling
+        nums.append(999999)
+        temp, ans = [nums[0]], []
+        i = 1
+
+        while i < len(nums):
+            # if current element - 1 equals previous it\'s in a range: append to temp list
+            if nums[i] - 1 == nums[i-1]:
+                temp.append(nums[i])
+            # if not in a range, we push values into the ans and reset the temp var
+            else:
+                if len(temp) == 1:
+                    ans.append(str(temp[0]))
+                else:
+                    ans.append(f"{min(temp)}->{max(temp)}")
+                temp = [nums[i]]
+            i += 1
+            
+        return ans

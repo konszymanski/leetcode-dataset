@@ -1,0 +1,26 @@
+class Solution:
+    def printTree(self, root: Optional[TreeNode]) -> List[List[str]]:
+        def height(node,c):
+            if not node:
+                return c
+            return max(height(node.left,c+1),height(node.right,c+1))
+        self.height = height(root,-1)
+        m = self.height + 1
+        n = 2**(self.height+1)-1
+        self.mat = []
+        for i in range(m):
+            z = []
+            for j in range(n):
+                z.append("")
+            self.mat.append(z)
+        def make(node,row,col,mat,height):
+            if node:
+                if node.left:
+                    mat[row+1][col-2**(height-row-1)] = str(node.left.val)
+                    make(node.left,row+1,col-2**(height-row-1),mat,height)
+                if node.right:
+                    mat[row+1][col+2**(height-row-1)] = str(node.right.val)
+                    make(node.right,row+1,col+2**(height-row-1),mat,height)
+        self.mat[0][(n-1)//2] = str(root.val)
+        make(root,0,(n-1)//2,self.mat,self.height)
+        return self.mat

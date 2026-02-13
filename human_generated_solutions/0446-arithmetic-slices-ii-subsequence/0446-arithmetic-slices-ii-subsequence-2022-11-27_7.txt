@@ -1,0 +1,24 @@
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        cnt = 0
+        c = Counter(nums)
+        m = {n:[] for n in c}
+        for i, n in enumerate(nums):
+            m[n].append(i)
+
+        @lru_cache(None)
+        def r(i, n, delta):
+            if i >= len(nums) or n not in c:
+                return 0
+            arr = m[n]
+            tot = 0
+            for j in range(bisect_left(arr, i), len(arr)):
+                tot += 1
+                tot += r(arr[j] + 1, n + delta, delta)
+            return tot
+
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                d = nums[j] - nums[i]
+                cnt += r(j+1, nums[j] + d, d)
+        return cnt

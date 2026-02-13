@@ -1,0 +1,54 @@
+class Solution:
+    def maxTaskAssign(self, t: List[int], workers: List[int], pills: int, s: int) -> int:
+        
+        t.sort()
+        workers.sort()
+        
+        A=t.copy()
+        B=workers.copy()
+        p=pills
+        ans=0
+        a=False
+        b=False
+        while(len(A)>0 and len(B)>0):
+            #print(A,B,p)
+            if B[-1]>=A[-1]:
+                a=True
+                ans+=1
+                B.pop()
+                A.pop()
+            else:
+                if p>0 and  math.ceil((A[0]-B[0])/s) <=p:
+                    b=True
+                    ans+=1
+                    p=p-math.ceil((A[0]-B[0])/s)
+                    B.pop()
+                    A.pop()
+                else:
+                    A.pop()
+            
+        
+        ans1=0
+        A=t.copy()
+        B=workers.copy()
+        a=False
+        b=False
+        while(len(A)>0 and len(B)>0):
+            print(A,B)
+            if B[0]>=A[0]:
+                a=True
+                ans1+=1
+                B.pop(0)
+                A.pop(0)
+            else:
+                if pills>0 and math.ceil((A[0]-B[0])/s) <=pills:
+                    b=True
+                    ans1+=1
+                    pills=pills-math.ceil((A[0]-B[0])/s)
+                    B.pop(0)
+                    A.pop(0)
+                else:
+                    A.pop(0)
+            
+        print(ans,ans1)
+        return max(ans,ans1)

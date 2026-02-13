@@ -1,0 +1,12 @@
+def maxLengthBetweenEqualCharacters(self, s):
+
+	# Edge case - All characters are unique
+	if len(s) == len(set(s)): return -1
+
+	counts, s_prime, result = collections.Counter(s), s[::-1], 0
+
+	for k, v in [i for i in counts.items() if i[1] >= 2]:
+		i, j = s.index(k), len(s) - s_prime.index(k) - 1
+		result = max(result, j-i-1)
+
+	return result

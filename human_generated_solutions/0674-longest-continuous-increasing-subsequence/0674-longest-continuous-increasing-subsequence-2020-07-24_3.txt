@@ -1,0 +1,13 @@
+def findLengthOfLCIS(self, nums: List[int]) -> int:
+        max_length = 0
+        cur_length = 0
+        cur_max = float(\'-inf\')
+        for num in nums:
+            if num > cur_max:
+                cur_length += 1
+                cur_max = num
+            else:
+                max_length = max(max_length, cur_length)
+                cur_length = 1
+                cur_max = num
+        return max(max_length, cur_length)

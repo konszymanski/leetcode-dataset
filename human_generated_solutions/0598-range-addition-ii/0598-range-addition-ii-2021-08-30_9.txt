@@ -1,0 +1,4 @@
+def maxCount(self, m, n):
+	for i, j in ops:
+		m, n = min(m, i), min(n, j)
+	return m * n

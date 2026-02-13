@@ -1,0 +1,5 @@
+class Solution:
+    def luckyNumbers (self, matrix: List[List[int]]) -> List[int]:
+        mr=[ min(r) for r in matrix ]
+        mc=[ max( [matrix[r][c] for r in range(len(matrix))] )for c in range(len(matrix[0])) ]
+        return [ rv for cv in mr for rv in mc if rv==cv ]

@@ -1,0 +1,47 @@
+from collections import deque
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        
+        # generally, find smallest, we usually consider increasing because we always want to
+        # get result from queue[0]. 
+        # Similarly, find longest, we usually consider decreasing because we always want to
+        # get result from queue[0] also.
+        
+        n = len(nums)
+        
+        prefix_sum = [0] * (n+1) 
+        
+        for i in range(1, n+1):            
+            prefix_sum[i] = prefix_sum[i-1] + nums[i-1]
+        
+        
+        res = float("inf")
+        queue = deque()
+        
+        for i in range(n + 1):
+            
+            # update result
+            # compute the sum from index queue[0] to index i-1 in the nums
+            # here we do not have the traditional concept of window length
+            # since there is no fixed window length here to let us maintain
+            # We just maintain the effective result.
+            # The "window" here is whether the "range sum" is >= k
+            
+            # in any prefix_sum array, if you run prefix_sum[i] - prefix_sum[j]
+            # this means, you are calculating the sum of the subarray
+            # which starts at index j, ends at index i-1.
+            # So the length of this subarray = i - 1 - j + 1 = i - j.
+            # This is what the min code runs below.
+            while queue and prefix_sum[i] - prefix_sum[queue[0]] >= k:
+                res = min(res, i - queue.popleft())
+            
+            # increasing queue
+            while queue and prefix_sum[i] <= prefix_sum[queue[-1]]:
+                queue.pop()
+            
+            queue.append(i)
+        
+        if res == float("inf"):
+            return -1
+        else:
+            return res

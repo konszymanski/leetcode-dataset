@@ -1,0 +1,12 @@
+class Solution:
+    
+    def visitAll(self,rooms,index,visited):
+        if index not in visited:
+            visited.add(index)
+            for i in rooms[index]:
+                self.visitAll(rooms,i,visited)
+    
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        visited = set()
+        self.visitAll(rooms,0,visited)
+        return len(visited)==len(rooms)

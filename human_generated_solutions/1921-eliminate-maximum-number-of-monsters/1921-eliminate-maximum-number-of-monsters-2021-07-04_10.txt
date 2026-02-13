@@ -1,0 +1,10 @@
+def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
+        time = sorted([dist[i]/speed[i] for i in range(len(dist))])
+		# Another way to get the time
+		# time = sorted(d/s for d, s in zip(dist, speed))
+        cnt = 0
+        for i, t in enumerate(time):
+            if i<t: cnt += 1
+            else: break
+                
+        return cnt

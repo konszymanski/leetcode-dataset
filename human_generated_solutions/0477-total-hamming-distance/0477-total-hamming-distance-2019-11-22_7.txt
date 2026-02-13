@@ -1,0 +1,14 @@
+from itertools import combinations
+
+class Solution:
+    def totalHammingDistance(self, nums: List[int]) -> int:
+
+        diff = 0
+        for p in combinations(nums, r=2):
+            bit_0, bit_1 = bin(p[0])[2:].zfill(32), bin(p[1])[2:].zfill(32)
+
+            for i in range(32):
+                if bit_0[i] != bit_1[i]:
+                    diff += 1
+
+        return diff

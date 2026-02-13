@@ -1,0 +1,26 @@
+class Solution:
+    def restoreArray(self, adj: List[List[int]]) -> List[int]:
+        ## RC ##
+        ## APPROACH : GRAPH / DFS ##
+        graph = collections.defaultdict(list)
+        for u,v in adj:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        first = None
+        for u in graph:
+            if len(graph[u]) == 1:
+                first = u
+                break
+        
+        res = []
+        visited = set()
+        def dfs(node):
+            if node in visited:
+                return
+            visited.add(node)
+            res.append(node)
+            for nei in graph[node]:
+                dfs(nei)
+        dfs(first)
+        return res

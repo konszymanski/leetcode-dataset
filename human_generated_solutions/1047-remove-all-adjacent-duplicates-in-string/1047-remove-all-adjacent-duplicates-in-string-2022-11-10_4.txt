@@ -1,0 +1,12 @@
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+                                                        #   Ex: azxxzy
+        stack = []
+                                                        #   ch    stack      stack.pop()
+        for ch in s:                                    #  \u2013\u2013\u2013\u2013   \u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013  \u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013
+            if stack and stack[-1]==ch: stack.pop()     #    a     [a]          
+            else: stack.append(ch)                      #    z     [a,z]
+                                                        #    x     [a,z,x]
+        return \'\'.join(stack)                           #    x     [a,z]          x
+                                                        #    z     [a]            z
+                                                        #    y     [a,z]         --> \'\'.join([a,z]) = az

@@ -1,0 +1,23 @@
+class Solution:
+    def largestSumOfAverages(self, nums: List[int], k: int) -> float:
+        L=len(nums)
+
+        @lru_cache(None)
+        def traverse(left,L,remaining_groups):
+
+            if left >=L : #If LHS has breached index limit, give 0
+                return 0
+
+            if remaining_groups <= 1: # If this is the last remaining group of k, then average the remainder of array
+                return sum(nums[left:]) / (L-left)
+
+            total=0
+
+            for right in range(left,L):
+                this_avg=sum(nums[left:right+1]) / (right-left+1) # This array group
+                next_iteration=traverse(right+1,L,remaining_groups-1) # The accumulate of the remainder groups
+                total = max(total, this_avg + next_iteration) # keeps track record of optimal results
+
+            return total
+
+        return traverse(0,L,k)

@@ -1,0 +1,22 @@
+def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        stack = [(root, None, False)]
+        ans = None
+        while stack:
+            #print(f"stack {[(n.val if n else \'None\', p.val if p else \'None\', flag) for n, p, flag in stack]}")
+            node, parent, isLeft = stack.pop()
+            if parent:
+                if isLeft:
+                    parent.left = node
+                else:
+                    parent.right = node
+            if not node:
+                continue
+            if low <= node.val <= high:
+                ans = ans or node
+                stack.append((node.right, node, False))
+                stack.append((node.left, node, True))
+            elif node.val < low:
+                stack.append((node.right, parent, isLeft))
+            else:
+                stack.append((node.left, parent, isLeft))
+        return ans

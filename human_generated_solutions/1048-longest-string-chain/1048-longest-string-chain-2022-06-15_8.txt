@@ -1,0 +1,58 @@
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        words.sort(key = lambda x: len(x))
+        
+        dp = {}
+        @lru_cache(None)
+        def iSvalidInclusion(word1,word2):
+            if not (len(word2)==len(word1)+1):   
+                return False
+            i =0
+            count =1
+            
+            while i<len(word1):
+                
+                if count==1:
+                    if word2[i]==word1[i]:
+                        i+=1
+                    else:
+                        count=0
+                elif count==0:
+                    if word2[i+1] ==  word1[i]:
+                        i+=1
+                    else: return False
+            return True
+\'\'\'            
+    RECURSIVE 
+
+        def formChain(prev,curr):
+            
+            if curr >= len(words)+1:
+                return 0
+            
+            if (prev,curr) in dp:
+                return dp[(prev,curr)]
+            
+             basically im not including that word
+            ans = formChain(prev,curr+1)
+             im either starting go form chain or im including the word
+            if prev ==0 or (prev>=1 and iSvalidInclusion(words[prev-1],words[curr-1])):
+                ans = max(ans,1+formChain(curr,curr+1))
+            dp[(prev,curr)] = ans
+            return ans
+        return formChain(0,1)
+        
+\'\'\'
+        dp = [[0]*(len(words)+2) for i in range(len(words)+2)]
+        
+        for prev in range(len(words),-1,-1):
+            for curr in range(len(words)+1,prev,-1):
+                if curr >= len(words)+1:
+                    dp[prev][curr] = 0
+                    continue
+                ans = dp[prev][curr+1]
+#             im either starting go form chain or im including the word
+                if prev ==0 or (prev>=1 and iSvalidInclusion(words[prev-1],words[curr-1])):
+                    ans = max(ans,1+dp[curr][curr+1])
+                dp[prev][curr] = ans
+        return dp[0][1]

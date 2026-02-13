@@ -1,0 +1,35 @@
+python
+class Solution(object):
+	def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        
+		# helper function to reverse the array from particular index
+        def reverse_from_index(arr, start_idx, end_idx):
+            while start_idx < end_idx:
+                arr[start_idx], arr[end_idx] = arr[end_idx], arr[start_idx]
+                start_idx += 1
+                end_idx -= 1
+            
+        # find the first decreasing element
+        first_decreasing_index = len(nums) - 1
+        while first_decreasing_index > 0 and nums[first_decreasing_index] <= nums[first_decreasing_index - 1]:
+            first_decreasing_index -= 1
+
+        # reverse nums because nums is in descending order and return 
+        if first_decreasing_index == 0:
+            reverse_from_index(nums, first_decreasing_index, len(nums) - 1)
+            return
+
+        # find the next element greater than the first decreasing element
+        next_num_index = len(nums) - 1
+        while next_num_index > 0 and nums[next_num_index] <= nums[first_decreasing_index - 1]: 
+            next_num_index -= 1
+
+        # swap the two elements
+        nums[first_decreasing_index - 1], nums[next_num_index] = nums[next_num_index], nums[first_decreasing_index - 1]
+
+        # reverse the rest of the list
+        reverse_from_index(nums, first_decreasing_index, len(nums) - 1)

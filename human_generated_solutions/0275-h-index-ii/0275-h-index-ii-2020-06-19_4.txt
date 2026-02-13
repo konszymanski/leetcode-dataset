@@ -1,0 +1,28 @@
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+        
+        left, right = 0, len(citations)-1
+        
+        size = len(citations)
+        
+        while left <= right:
+            
+            mid = left + (right - left)//2
+            
+            the_number_of_larger_equal_to_current = size - mid
+            h_index = citations[mid]
+            
+            
+            if h_index < the_number_of_larger_equal_to_current:
+                # current h index is too small, make it larger
+                left = mid + 1
+                    
+            elif h_index > the_number_of_larger_equal_to_current:
+                # current h index is to large, make it smaller
+                right = mid - 1
+            
+            else:
+                # meet the definition of h-index
+                return h_index
+            
+        return size - left

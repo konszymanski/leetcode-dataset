@@ -1,0 +1,17 @@
+class Solution:    
+    def strangePrinter(self, s: str) -> int:
+        N = len(s)
+        dp = [[0]*(i+1) for i in range(N + 1)]        
+        for i in range(1, N + 1):
+            cur = s[i - 1] # current char
+            for j in range(1,i+1):
+                # at lease, we can paint all the previous string, then paint the last 1 character.
+                minNum = dp[i-1][j-1] + 1
+                for m, char in enumerate(s[i-j:i-1]):
+                    if char == cur:
+                        leftPart = dp[i-j + m + 1][m + 1]
+                        rightPart = dp[i-1][j - m - 2]
+                        numCombine = leftPart + rightPart
+                        minNum = min(minNum, numCombine)
+                dp[i][j] = minNum        
+        return dp[N][-1]

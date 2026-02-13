@@ -1,0 +1,28 @@
+def addOneRow(self, root, v, d):
+    # special case where depth is one
+    if d == 1:
+        new_root = TreeNode(v)
+        new_root.left = root
+        return new_root
+    queue = collections.deque([root])
+    level = 1
+    while queue:
+        size = len(queue)
+        # level order traversal
+        for i in range(size):
+            curr = queue.popleft()
+            # insert nodes if we reach 1 level before d
+            if level == d-1:
+                old_left, old_right = curr.left, curr.right
+                curr.left, curr.right = TreeNode(v), TreeNode(v)
+                curr.left.left, curr.right.right = old_left, old_right
+            else:
+                if curr.left: 
+                    queue.append(curr.left)
+                if curr.right:
+                    queue.append(curr.right)
+        # return root once we've appended
+        if level == d-1:
+            return root
+        level += 1
+    return None

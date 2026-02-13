@@ -1,0 +1,28 @@
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        for row in range(len(matrix)):
+            matrix[row].append("0")
+
+        height = [0] * len(matrix[0])
+        max_rectangle = 0
+
+        for row in matrix:
+            stack = [-1]
+            for col, val in enumerate(row):
+                height[col] = (height[col] + 1) * int(val)
+
+                while height[stack[-1]] > height[col]:
+                    prev_col = stack.pop()
+
+                    left = prev_col - stack[-1] - 1
+                    right = col - prev_col
+
+                    width = left + right
+
+                    area = width * height[prev_col]
+
+                    max_rectangle = max(max_rectangle, area)
+
+                stack.append(col)
+
+        return max_rectangle

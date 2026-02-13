@@ -1,0 +1,39 @@
+class Solution:
+	# use custom sort
+    def sortArrayByParity0(self, A: List[int]) -> List[int]: #96 ms
+        return sorted(A, key=lambda x: x % 2)
+    
+	# Append to 2 different lists and join them when return.
+    def sortArrayByParity3(self, A: List[int]) -> List[int]: #100 ms
+        o = []; e = []
+        for num in A:
+            if num % 2 == 0: e.append(num)
+            else: o.append(num)
+        return e + o
+    
+	# When left is odd, decrease right until right is even or right>left, then switch them
+    def sortArrayByParity2(self, A: List[int]) -> List[int]: #88 ms
+        left = 0; right = len(A) - 1
+        while right >= left:            
+            if A[left] % 2:
+                while right > left and A[right] % 2 :
+                    right -= 1
+                A[right], A[left] = A[left], A[right]
+            left += 1
+        return A    
+    
+	# Same as above, however, slightly different logic.
+	# Increase left if left is even
+	# Decrease right if right is odd
+	# Switch them if left is odd and right is even. 
+	# As you can imagine. Which ever stop increasing/decreasing first will have to wait for the other
+    def sortArrayByParity1(self, A: List[int]) -> List[int]: #96ms
+        left = 0; right = len(A) - 1
+        while right >= left:            
+            if A[left] % 2 == 1 and A[right] % 2 == 0:
+                A[right], A[left] = A[left], A[right]
+                left += 1
+                right -= 1
+            if A[left] % 2 == 0: left += 1            
+            if A[right] % 2 == 1: right -= 1
+        return A

@@ -1,0 +1,15 @@
+class Solution:
+
+    def to_float(self, n: str) -> float:
+        if "." not in n:
+            return float(n)
+        whole, dec = n.split(".")
+        if dec:
+            if "(" in dec:
+                idx_bracket = dec.index("(")
+                return float(f"{whole}.{dec[:idx_bracket]}{dec[idx_bracket + 1: -1] * 17}")
+            return float(f"{whole}.{dec}")
+        return float(f"{whole}.")
+
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        return abs(self.to_float(s) - self.to_float(t)) < 1e-16

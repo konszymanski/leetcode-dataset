@@ -1,0 +1,14 @@
+import math
+
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        pairs.sort(key=lambda x: (x[1], x[0]))
+        res = 0
+        curr_pos = -math.inf
+        
+        for start, end in pairs:
+            if start > curr_pos:
+                res += 1
+                curr_pos = end
+        
+        return res

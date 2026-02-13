@@ -1,0 +1,25 @@
+class Solution:
+    def reversePairs(self, nums: List[int]) -> int:
+        cnt = 0
+
+        def merge(left, right):
+            nonlocal cnt              #work with variables inside nested function
+            i = j = 0
+            while i < len(left) and j < len(right):
+                if left[i] <= 2*right[j]:               #this i can not make reverse pair
+                    i += 1                              #so move the i pointer
+                else:
+                    cnt += len(left)-i                 #reverse pair exist so increase count
+                    j += 1                             #(i,j) exist so we increase the j pointer
+
+            return sorted(left+right)                  #returns sorted reverse pair
+
+
+        def mergeSort(A):
+            if len(A) == 1:                             #if there is only one element in the array
+                return A
+            mid=(len(A)) // 2
+            return merge(mergeSort(A[:mid]), mergeSort(A[mid:]))      #check the left sub array and then the right sub array respectively
+
+        mergeSort(nums)
+        return cnt

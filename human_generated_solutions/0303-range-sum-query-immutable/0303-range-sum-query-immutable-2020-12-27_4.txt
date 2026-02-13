@@ -1,0 +1,10 @@
+def __init__(self, array: List[int]):
+        # prefix sum
+        self.nums = array[:]  
+        for i in range(1,len(self.nums)):
+            self.nums[i] = self.nums[i]+self.nums[i-1]
+
+    def sumRange(self, i: int, j: int) -> int:
+        if i == 0:
+            return self.nums[j]        
+        return(self.nums[j] - self.nums[i-1])

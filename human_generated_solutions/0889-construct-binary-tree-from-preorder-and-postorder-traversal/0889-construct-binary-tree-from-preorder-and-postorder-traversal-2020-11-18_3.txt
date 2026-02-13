@@ -1,0 +1,16 @@
+class Solution:
+
+    def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
+        i, j = 0, 0
+        def reconstruct():
+            nonlocal i, j
+            n = TreeNode(pre[i])
+            i += 1
+            if n.val != post[j]:
+                n.left = reconstruct()
+                if n.val != post[j]:
+                    n.right = reconstruct()
+            j += 1
+            return n
+
+        return reconstruct()

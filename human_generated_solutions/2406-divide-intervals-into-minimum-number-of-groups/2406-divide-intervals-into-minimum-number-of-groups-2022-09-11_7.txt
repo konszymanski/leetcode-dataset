@@ -1,0 +1,19 @@
+class Solution:
+    def minGroups(self, intervals: List[List[int]]) -> int:
+        arr = []
+        for i in intervals:
+            arr.append([i[0], 0])
+            arr.append([i[1], 1])
+        
+        arr.sort()
+        # print(arr)
+        
+        ans = 0
+        x = 0
+        for i in arr:
+            if i[1]:
+                x -= 1
+            else:
+                x += 1
+            ans = max(ans, x)
+        return ans

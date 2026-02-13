@@ -1,0 +1,15 @@
+import bisect
+class MyCalendar:
+
+    def __init__(self):
+        self.starts = []
+        
+
+    def book(self, start: int, end: int) -> bool:
+        index = bisect.bisect_left(self.starts, (start, end))
+        if index-1>=0 and self.starts[index-1][1] > start:
+            return False
+        if index<len(self.starts) and self.starts[index][0] < end:
+            return False
+        bisect.insort_left(self.starts, (start, end))
+        return True

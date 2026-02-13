@@ -1,0 +1,13 @@
+res=[]
+        def backtrack(curr):
+            if curr==len(nums):
+                res.append(nums[:])
+                return
+            for i in range(curr,len(nums)):
+                nums[i],nums[curr]=nums[curr],nums[i]
+                # print(nums)
+                backtrack(curr+1)
+                nums[i],nums[curr]=nums[curr],nums[i]
+            return
+        backtrack(0)
+        return res

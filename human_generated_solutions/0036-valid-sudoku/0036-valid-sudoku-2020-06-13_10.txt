@@ -1,0 +1,26 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        primes = [2,3,5,7,11,13,17,19,23]
+        prod = 1
+        for p in primes:
+            prod *= p
+        boxes = [prod] * 9
+        rows = [prod] * 9
+        cols = [prod] * 9
+        for r in range(9):
+            for c in range(9):
+                s = board[r][c]
+                if s == ".":
+                    continue
+                b = (r // 3) * 3 + c // 3
+                p = primes[int(s)-1]
+                if boxes[b] % p != 0:
+                    return False
+                boxes[b] /= p
+                if rows[r] % p != 0:
+                    return False
+                rows[r] /= p
+                if cols[c] % p != 0:
+                    return False
+                cols[c] /= p
+        return True

@@ -1,0 +1,7 @@
+def countStu(stu,sand):
+    while sand:
+        if sand[0] in stu:
+            stu.remove(sand[0])
+            sand.pop(0)
+        else:break
+    return len(sand)

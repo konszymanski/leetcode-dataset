@@ -1,0 +1,25 @@
+class Solution:
+  
+  def possible(self,arr,n,k):
+    if k==0: return 0 
+    s = 0 
+    for q in arr: 
+      s+=q//k 
+      if q%k!=0: 
+        s+=1 
+      if s>n: return False 
+    return True
+  
+  def minimizedMaximum(self,n,arr):
+    low = 0 
+    high = max(arr)
+    ans = 0 
+    while low<=high:
+      mid = low+(high-low)//2
+      is_possible = self.possible(arr,n,mid) 
+      if is_possible:
+        ans = mid 
+        high=mid-1 
+      else:
+        low=mid+1 
+    return ans

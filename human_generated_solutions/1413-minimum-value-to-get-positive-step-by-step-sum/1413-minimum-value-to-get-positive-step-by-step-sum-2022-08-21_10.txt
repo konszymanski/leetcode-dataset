@@ -1,0 +1,13 @@
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        cur_sum = 0
+        res = 1
+        
+        for num in nums:
+            cur_sum += num
+            if cur_sum > 0:
+                continue
+                
+            res = max(res, 1 - cur_sum)
+        
+        return res

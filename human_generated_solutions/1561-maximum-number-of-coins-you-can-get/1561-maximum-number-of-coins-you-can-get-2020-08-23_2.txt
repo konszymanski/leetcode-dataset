@@ -1,0 +1,9 @@
+def maxCoins(self, piles: List[int]) -> int:
+        piles = sorted(piles, reverse=True)
+        answer = 0
+        index = 1
+        while index < len(piles):
+            answer += piles[index]
+            piles.pop()
+            index += 2
+        return answer

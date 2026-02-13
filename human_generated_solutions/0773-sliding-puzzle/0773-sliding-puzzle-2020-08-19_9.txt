@@ -1,0 +1,48 @@
+from heapq import heapify, heappop, heappush
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        
+        initialB = tuple(board[0] + board[1])
+        Queue = [(0,initialB)]
+        heapify(Queue)
+        visited = set()
+        
+        while Queue:
+            d,B = heappop(Queue)
+            
+            if B == (1,2,3,4,5,0):
+                return d
+            
+            visited.add(B)
+            zeroPos = B.index(0)
+            
+            if zeroPos == 0:
+                nn =[(B[1],B[0],B[2],B[3],B[4],B[5]), 
+                (B[3],B[1],B[2],B[0],B[4],B[5])]
+            
+            elif zeroPos == 1:
+                nn = [(B[1],B[0],B[2],B[3],B[4],B[5]),
+                       (B[0],B[2],B[1],B[3],B[4],B[5]),
+                       (B[0],B[4],B[2],B[3],B[1],B[5])]
+                
+            elif zeroPos == 2:
+                nn = [(B[0],B[2],B[1],B[3],B[4],B[5]),
+                      (B[0],B[1],B[5],B[3],B[4],B[2])]
+
+            elif zeroPos == 3:
+                nn = [(B[0],B[1],B[2],B[4],B[3],B[5]),
+                      (B[3],B[1],B[2],B[0],B[4],B[5])]
+
+            elif zeroPos == 4:
+                nn=[(B[0],B[1],B[2],B[4],B[3],B[5]),
+                    (B[0],B[1],B[2],B[3],B[5],B[4]),
+                    (B[0],B[4],B[2],B[3],B[1],B[5])]
+            
+            elif zeroPos == 5:
+                nn=[(B[0],B[1],B[2],B[3],B[5],B[4]),
+                    (B[0],B[1],B[5],B[3],B[4],B[2])]
+        
+            for nnode in nn:
+                if nnode not in visited:
+                    heappush(Queue,(d+1,nnode))
+        return -1

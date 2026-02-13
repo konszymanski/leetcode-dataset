@@ -1,0 +1,44 @@
+class Solution(object):
+    def removeZeroSumSublists(self, head):
+        
+        d = dict()          # dictionary of {cumsum : ListNode}
+        cumsum = 0          # cumulative sum of visited nodes
+        walk = head         # walks across Linked List
+        
+        while walk is not None:
+            cumsum += walk.val
+
+            if cumsum == 0:
+                # Delete all nodes before and including the
+                # node marked with cumsum = 0
+                walk = walk.next
+                while head != walk:
+                    delNode = head
+                    head = head.next
+                    del delNode
+                # reset zero sum indicators and ListNode walker
+                d = dict()
+                walk = head
+                cumsum = 0
+                
+            elif cumsum in d:
+                # Delete all nodes after and including the
+                # node marked with the same cumsum already
+                # in the dictionary (they sum up to 0)
+                ptr = d[cumsum]
+                walk = walk.next
+                while ptr.next != walk:
+                    delNode = ptr.next
+                    ptr.next = delNode.next
+                    del delNode
+                # reset zero sum indicators and ListNode walker
+                d = dict()
+                walk = head
+                cumsum = 0
+                
+            else:
+                # add cumsum and current node to dictionary
+                d[cumsum] = walk
+                walk = walk.next
+                
+        return head

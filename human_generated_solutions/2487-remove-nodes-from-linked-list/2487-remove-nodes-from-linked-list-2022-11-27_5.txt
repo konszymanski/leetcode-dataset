@@ -1,0 +1,13 @@
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        ListNode *dummy = new ListNode(INT_MAX); 
+        stack<ListNode*> stk; stk.push(dummy); 
+        for (ListNode* node = head; node; node = node->next) {
+            while (stk.top()->val < node->val) stk.pop(); 
+            stk.top()->next = node; 
+            stk.push(node); 
+        }
+        return dummy->next; 
+    }
+};

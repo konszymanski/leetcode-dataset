@@ -1,0 +1,8 @@
+class Solution:
+    def getLucky(self, s: str, k: int) -> int:
+        n = ""
+        for ch in s:
+            n += str(ord(ch) - ord(\'a\') + 1)
+        for _ in range(k):
+            n = sum(int(ch) for ch in str(n))
+        return n

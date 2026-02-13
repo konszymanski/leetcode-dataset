@@ -1,0 +1,33 @@
+def countTriples(self, n: int) -> int:
+        
+		if n < 5: return 0
+		
+        primitive = [(3,4,5)]
+		
+        i = 0
+        while i < len(primitive):
+            a, b, c = primitive[i]
+            
+			# generate three child triplets from the primitive triplet
+            triplets = [ (a - 2*b + 2*c, 2*a - b + 2*c, 2*a - 2*b + 3*c),
+                         (a + 2*b + 2*c, 2*a + b + 2*c, 2*a + 2*b + 3*c),
+                         (-a + 2*b + 2*c, -2*a + b + 2*c, -2*a + 2*b + 3*c)]
+            
+			# store it if hypotenuse is <= n
+            for triplet in triplets:
+                if triplet[2] <= n: 
+                    primitive.append(triplet)
+            
+            i += 1
+         
+		# generate the non primitive triplets 
+        non_primitive = []
+        for a, b, c in primitive:
+            for k in range(2, n//c+1):
+                non_primitive.append((k*a, k*b, k*c))
+        
+        # print(primitive)
+        # print(non_primitive)
+		
+		# have to count all triplets twice as explained
+        return 2 * (len(primitive) + len(non_primitive))

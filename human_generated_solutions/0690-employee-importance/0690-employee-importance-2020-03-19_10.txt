@@ -1,0 +1,23 @@
+class Solution(object):
+    def getImportance(self, employees, id):
+        """
+        :type employees: List[Employee]
+        :type id: int
+        :rtype: int
+        """
+        employee_dict = dict()
+        for employee in employees:
+            employee_dict[employee.id] = [employee.importance, employee.subordinates]
+            if employee.id == id:
+                subordinates = employee.subordinates
+                importance = employee.importance
+        return self.count_importance(employee_dict, subordinates) + importance
+
+    def count_importance(self, employee_dict, subordinates):
+        importance = 0
+        for i in subordinates:
+            importance += employee_dict[i][0]
+            new_subordinates = employee_dict[i][1]
+            if new_subordinates > 0:
+                importance += self.count_importance(employee_dict, new_subordinates)
+        return importance

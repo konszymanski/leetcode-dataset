@@ -1,0 +1,7 @@
+def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+	nodes = [] #array to keep track of the nodes
+	while head:
+		nodes.append(head) #add the nodes to our array
+		head = head.next
+	middle = len(nodes)//2 # get the middle index of the array
+	return nodes[middle] #return the node in the middle

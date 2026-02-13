@@ -1,0 +1,25 @@
+class WeightedUnionFind:
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.size = [1]*n
+
+    def _root(self, node: int) -> int:
+        # Obtains the root node of the given node
+        while self.parent[node] != node:
+            self.parent[node] = self.parent[self.parent[node]]  # perform path compression
+            node = self.parent[node]  # traverse up the tree
+        return node
+
+    def find(self, node1: int, node2: int) -> bool:
+        # Determines if node1 and node2 are present in the same disjoint set
+        return self._root(node1) == self._root(node2)
+
+    def union(self, node1: int, node2: int) -> None:
+        # Performs union operation for the disjoint sets containing node1 and node2 respectively
+        root1, root2 = self._root(node1), self._root(node2)
+        if root1 == root2:  # the two nodes are already in the same disjoint set
+            return
+        elif self.size[root1] < self.size[root2]:  # ensure that root1 is the larger tree
+            root1, root2 = root2, root1
+        self.parent[root2] = root1  # set root node of root2 to root1
+        self.size[root1] += self.size[root2]  # increase size of root1 tree by size of root2 subtree

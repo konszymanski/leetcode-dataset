@@ -1,0 +1,14 @@
+class Solution:
+    def numberOfArrays(self, differences: List[int], lower: int, upper: int) -> int:
+        minimum = float(inf)
+        maximum = lower
+        prefixsum= lower
+		
+        for i in range(len(differences)):
+            prefixsum = prefixsum + differences[i]
+            minimum = min(prefixsum,minimum)
+            maximum = max(prefixsum,maximum)
+       
+        if minimum < lower :
+            maximum += (lower-minimum)
+        return 1+(upper-maximum) if maximum <=upper else 0

@@ -1,0 +1,20 @@
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        #empty string for answer
+        ans_str=""
+        #count the items in s
+        _dict = Counter(s)
+        #loop through order
+        for i in order:
+            #if i is in s
+            if i in s:
+                #add it to answer string (as many times as it occurs in s)
+                ans_str += (i*_dict[i])
+                #delete it from the count dict
+                del _dict[i]
+        #loop through keys and values in whatevers left in the dict
+        for k,v in _dict.items():
+            #add it as many times as it occurs in s
+            ans_str += (k*v)
+        #bring the answer string home
+        return ans_str

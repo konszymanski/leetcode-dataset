@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        
+        self.rst = 0
+        self.helper(root)
+        return self.rst 
+    
+    
+    def helper(self, root):
+        if not root:
+            return 0
+        
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+        if root.left and root.left.val != 1:
+            x = root.left.val - 1
+            self.rst += abs(x)
+            root.val += x
+            root.left.val = 1
+        if root.right and root.right.val != 1:
+            x = root.right.val - 1
+            self.rst += abs(x)
+            root.val += x
+            root.right.val = 1

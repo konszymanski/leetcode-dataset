@@ -1,0 +1,21 @@
+class Solution:
+    def largestSumOfAverages(self, nums: List[int], k: int) -> float:
+        
+        
+        
+        n = len(nums)
+        
+        
+        @lru_cache(None)
+        def dfs(index,partitions):
+            if index == n:
+                return 0
+            if partitions == 1:
+                return sum(nums[index:])/(n-index)
+            res = float(\'-inf\')
+            for i in range(index,n):
+                res = max(res, sum(nums[index:i+1])/(i-index+1) + dfs(i+1,partitions-1) )
+                
+            return res
+        
+        return dfs(0,k)

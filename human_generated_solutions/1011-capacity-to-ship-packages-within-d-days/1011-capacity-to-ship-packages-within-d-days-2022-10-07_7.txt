@@ -1,0 +1,33 @@
+class Solution:
+    
+    # Helper method to check whether a particular capacity is valid 
+    # It is valid if we can ship all packages withing given number of days
+    
+    def canShip(self, capacity, days, weights):
+        dayCount = 1
+        
+        currWeight = 0
+        
+        for weight in weights:
+            currWeight += weight
+            if currWeight > capacity:
+                dayCount += 1
+                if dayCount > days: return False
+                currWeight = weight
+        
+        return True
+    
+    # Brute Force Approach
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        # We are asked to find the minimum weight capacity
+        minimumCapacity = 0
+
+        start = max(weights)
+        end = sum(weights)
+        
+        for capacity in range(start, end + 1):
+            if self.canShip(capacity, days, weights):
+                minimumCapacity = capacity
+                break
+                
+        return minimumCapacity

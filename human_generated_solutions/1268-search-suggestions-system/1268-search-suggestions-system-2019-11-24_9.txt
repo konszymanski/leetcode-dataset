@@ -1,0 +1,64 @@
+from collections import defaultdict
+from typing import List
+
+class TrieNode:
+    def __init__(self):
+        self.children = [None] * 26
+        self.isWord = 0
+        self.suggestions = []
+        
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def __getIdx(self, ch: str) -> int:
+        return ord(ch) - ord(\'a\')
+    
+    def __toChr(self, i: int) -> str:
+        return chr(i+97)
+    
+    def insert(self, word: str):
+        node = self.root
+        for ch in word:
+            i = self.__getIdx(ch)
+            if not node.children[i]:
+                node.children[i] = TrieNode()
+            node = node.children[i]
+        node.isWord += 1
+        
+    def startsWith(self, prefix: str) -> List[str]:
+        node = self.root
+        res = []
+        for ch in prefix:
+            i = self.__getIdx(ch)
+            if not node.children[i]:
+                return res
+            node = node.children[i]
+        words = self.dfs(node, list(prefix))
+        return words
+        
+    def dfs(self, node: TrieNode, path: List[str], k: int = 3):
+        words = []
+        if not node:
+            return []
+        if node.suggestions:
+            return node.suggestions
+        if node.isWord:
+            w = \'\'.join(path)
+            for _ in range(node.isWord):
+                words.append(w)
+        for i, c in enumerate(node.children):
+            ws = self.dfs(c, path + [self.__toChr(i)], k)
+            words += ws
+            if len(words) >= k:
+                node.suggestions = words[:k]
+                return node.suggestions
+        node.suggestions = words
+        return node.suggestions
+
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        trie = Trie()
+        for w in products:
+            trie.insert(w)
+        return [trie.startsWith(searchWord[:i]) for i in range(1, len(searchWord)+1)]

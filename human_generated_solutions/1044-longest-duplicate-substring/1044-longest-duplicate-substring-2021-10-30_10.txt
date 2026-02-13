@@ -1,0 +1,29 @@
+class Solution:
+    def longestDupSubstring(self, s: str) -> str:
+        """
+in a string of entirely repeating characters the max dupe string is n-1 long
+        
+our search for any string existing again should be i+1,end of string
+        
+we can optimize it further by not checking anything smaller than our current longest string
+        
+        """
+        
+        #our search space is i+1,n
+        def checkdupe(i,j):
+            curr=s[i:j]
+            if curr in s[i+1:]:
+                return True
+            return False
+            
+        i,j,n=0,1,len(s)
+        currmaxs=""
+        
+        while i<n and j<n:
+            while checkdupe(i,j):
+                currmaxs=s[i:j]
+                j+=1
+            i+=1
+            j=i+len(currmaxs)
+            
+        return currmaxs

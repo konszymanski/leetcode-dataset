@@ -1,0 +1,15 @@
+class Solution:
+    def maxSubarray(self, nums):
+        # Kadane Algorithm
+        ret = -float("inf")
+        curr_sum = -float("inf")
+        for num in nums:
+            curr_sum = curr_sum + num if curr_sum > 0 else num
+            ret = max(ret, curr_sum)
+        return ret
+
+    def maxSubarraySumCircular(self, nums: List[int]) -> int:
+        max_subarray = self.maxSubarray(nums)
+        min_subarray = -self.maxSubarray([-num for num in nums])
+        if max(nums) < 0: return max_subarray
+        return max(max_subarray, sum(nums) - min_subarray)

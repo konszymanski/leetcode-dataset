@@ -1,0 +1,70 @@
+class Solution(object):
+    def hitBricks(self, grid, hits):
+        """
+        :type grid: List[List[int]]
+        :type hits: List[List[int]]
+        :rtype: List[int]
+        """
+        
+        self.parents = {}
+        hits2 = {(i,j) for i,j in hits}
+        
+        
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0 or (i,j) in hits2:
+                    continue
+                for x,y in [(-1,0), (0,-1)]:
+                    if (i+x, j+y) in self.parents:
+                        self.union((i+x, j+y), (i,j))
+                if (i,j) not in self.parents:
+                    self.find((i,j))
+
+        res = []        
+        for i,j in hits[::-1]:
+            if grid[i][j] != 1:
+                res.append(0)
+                continue
+            k = 0
+            flag = 0
+            for x,y in [(-1,0), (0,-1), (1,0), (0,1)]:
+                if (i+x, j+y) in self.parents:
+                    p, cnt = self.union((i+x, j+y), (i,j))
+                    if p[0] == 0:
+                        flag = 1
+                    else:
+                        k += cnt
+            if i == 0:
+                flag = 1
+            if (i,j) not in self.parents:
+                self.find((i,j))
+            res.append(flag*k)
+            flag=0
+            k=0
+        return res[::-1]
+                
+            
+
+        
+    def find(self,a):
+        if a not in self.parents:
+            self.parents[a] = (a, 1)
+        
+        if a != self.parents[a][0]:
+            self.parents[a] = self.find(self.parents[a][0])
+        return self.parents[a]
+    
+    def union(self, a, b):
+        a_p, cnt_a = self.find(a)
+        b_p, cnt_b = self.find(b)
+        if a_p[0] == b_p[0] and a_p[1]==b_p[1]:
+            return a_p, cnt_a
+            
+        if a_p[0] <= b_p[0]:
+            self.parents[b_p] = (a_p, cnt_a+cnt_b)
+            self.parents[a_p] = (a_p, cnt_a+cnt_b)
+        else:
+            self.parents[a_p] = (b_p, cnt_a+cnt_b)
+            self.parents[b_p] = (b_p, cnt_a+cnt_b)
+            
+        return a_p, cnt_a

@@ -1,0 +1,19 @@
+class Solution:
+    def findCircleNum(self, M: List[List[int]]) -> int:
+        #We\'re gonna imitate a DFS appraoch to this.
+        #If we visit a row (person), look for every col index that\'s 1 and explore those partcular rows(people). The number of independent rows you need to search is the result. 
+        rows=len(M)
+        seen=set()
+        #dfs() enables the exploring
+        def dfs(r):
+            for c,val in enumerate(M[r]):
+                if val==1 and c not in seen:
+                    seen.add(c)
+                    dfs(c)
+        #Now start exploring
+        count=0
+        for i in range(rows):
+            if i not in seen:
+                dfs(i)
+                count+=1
+        return count

@@ -1,0 +1,14 @@
+from functools import lru_cache 
+
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        
+        @lru_cache(None)
+        def fn(i, j): 
+            """Return True if s[i:] matches p[j:]"""
+            if j == len(p): return i == len(s)
+            if i < len(s) and (s[i] == p[j] or p[j] == "?"): return fn(i+1, j+1)
+            if p[j] == "*": return fn(i, j+1) or i < len(s) and fn(i+1, j)
+            return False 
+        
+        return fn(0, 0)

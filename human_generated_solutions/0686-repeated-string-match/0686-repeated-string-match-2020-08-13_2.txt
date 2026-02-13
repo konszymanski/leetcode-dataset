@@ -1,0 +1,8 @@
+class Solution:
+    def repeatedStringMatch(self, A: str, B: str) -> int:
+        A_copy = A
+        def rec(A, B, count):
+            if len(B)+len(A_copy) < len(A) and B not in A: return -1
+            if B in A: return count
+            return rec(A+A_copy, B, count+1)
+        return rec(A, B, 1)

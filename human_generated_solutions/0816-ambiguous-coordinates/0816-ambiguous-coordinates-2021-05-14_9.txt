@@ -1,0 +1,89 @@
+from typing import List
+
+
+class Solution:
+    def ambiguousCoordinates(self, s: str) -> List[str]:
+        cache = {}
+        decimal_cache = {}
+		"""
+		Using caches to save operations on similar segments if done earlier
+		As 11111 will break into
+		1 1111
+		11 111
+		111 11
+		1111 1
+		Left and right segments will repeat
+		"""
+        s = s[1:len(s) - 1]
+
+        def is_valid(subs: str) -> (bool, List[str]):
+            if subs == \'0\':
+                return True, [subs]
+
+            if len(subs) > 0 and subs[0] == \'0\' and subs[-1] == \'0\':
+			    """
+				Begining and ending with 0 not allowed
+				segment 01230 or 0010 not allowed to be 0.010 or 0.1230
+				"""
+                return False, []
+
+            if subs[-1] == \'0\':
+				"""
+				Ending with 0 are allowed to be whole numbers only
+				eg: the segment 1230 can be 1230 only
+				or 10 can be 10 only and not 1.0
+				"""
+                return True, [subs]
+
+            # place decimal
+            if subs[0] == \'0\':
+                """
+                decimal can only be placed in position 1
+				eg: 0123 can be 0.123
+				"""
+                return True, [f\'{subs[0]}.{subs[1:]}\']
+            else:
+				"""
+				For regular non 0 begining/ ending numbers can have decimals
+				in between every two digits
+				"""
+                if subs in decimal_cache:
+                    return decimal_cache[subs]
+                res = [subs]
+                if res[-1] == 0:
+                    return True, res
+
+                for i in range(1, len(subs)):
+                    l, r = subs[:i], subs[i:]
+                    res.append(f\'{l}.{r}\')
+                decimal_cache[subs] = True, res
+                return decimal_cache[subs]
+
+		res = set()
+        for i in range(1, len(s)):
+            left_subs, right_subs = s[:i], s[i:]
+
+			"""
+			For each segment check cache first and if not valid move to next
+			Only if both valid add to final result set
+			"""
+
+            if left_subs not in cache:
+                cache[left_subs] = is_valid(left_subs)
+
+            left_is_valid, left_res = cache[left_subs]
+            if not left_is_valid:
+                continue
+
+            if right_subs not in cache:
+                cache[right_subs] = is_valid(right_subs)
+
+            right_is_valid, right_res = cache[right_subs]
+            if not right_is_valid:
+                continue
+
+            for _, lv in enumerate(left_res):
+                for _, rv in enumerate(right_res):
+                    res.add(f\'({lv}, {rv})\')
+
+        return list(res)

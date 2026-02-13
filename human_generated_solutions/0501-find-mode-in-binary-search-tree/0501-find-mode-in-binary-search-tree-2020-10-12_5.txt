@@ -1,0 +1,33 @@
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        def dfs(node):
+            if not node:
+                return
+            
+            dfs(node.left)
+            
+            if node.val == self.value:
+                self.value_count += 1
+                if self.value_count == self.mode_count:
+                    self.modes.append(node.val)
+                elif self.value_count > self.mode_count:
+                    self.mode_count = self.value_count
+                    self.modes = [node.val]
+            else:
+                self.value = node.val
+                self.value_count = 1
+                if not self.modes:
+                    self.modes = [node.val]
+                elif self.mode_count == 1:
+                    self.modes.append(node.val)
+            
+            dfs(node.right)        
+        
+        self.value = None
+        self.value_count = 0       
+        self.modes = []
+        self.mode_count = 1        
+        
+        dfs(root)
+        
+        return self.modes

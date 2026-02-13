@@ -1,0 +1,21 @@
+class Solution:
+    def getNoZeroIntegers(self, n: int) -> List[int]:
+        l,r = 1, n-1
+        
+        while l < r:
+            
+            if str(l).count("0") ==0 and str(r).count("0") == 0 and l+r == n:
+                return [l,r]
+            
+            elif l+r > n:
+                
+                r -= 1
+                while str(r).count("0") > 0 :
+                    r-= 1
+                    
+            else:
+                l += 1
+                while str(l).count("0") > 0:
+                    l += 1
+                    
+        return [l,r]

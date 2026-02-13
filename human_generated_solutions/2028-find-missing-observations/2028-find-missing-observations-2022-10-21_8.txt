@@ -1,0 +1,33 @@
+class Solution(object):
+    def missingRolls(self, rolls, mean, n):
+        """
+        :type rolls: List[int]
+        :type mean: int
+        :type n: int
+        :rtype: List[int]
+        """
+        # return self.get_missing_rolls(rolls, [1]*n, mean)
+        sum_missing_rolls = self.get_sum_of_missing_rolls(rolls, mean, n)
+
+        # one way to divide this sum over n numbers is by dividing it over n equal numbers
+        # and taking the floor value
+        # the remainder will be divided as +1 for x elements where x = remainder
+        avg_value_of_missing_roll = sum_missing_rolls // n
+        remainder = sum_missing_rolls % n
+
+        # if all n values are 6 and we still have a remainder, a solution is not possible
+        if avg_value_of_missing_roll == 6 and remainder != 0:
+            return []
+        # if the values are outside the range or the remainder cannot be equally divided over less than n elements
+        # a solution is not possible
+        elif avg_value_of_missing_roll <= 0 or avg_value_of_missing_roll > 6 or remainder > n:
+            return []
+        else:
+            answer = [avg_value_of_missing_roll + 1 if x < remainder else avg_value_of_missing_roll for x in range(n)]
+            return answer
+
+
+    def get_sum_of_missing_rolls(self, rolls, mean, n):
+        # since we know that (sum(rolls) + sum(missing_rolls)) / (len(rolls) + n) == mean,
+        # we can reverse this expression to get sum(missing_rolls)
+        return mean * (len(rolls) + n) - sum(rolls)

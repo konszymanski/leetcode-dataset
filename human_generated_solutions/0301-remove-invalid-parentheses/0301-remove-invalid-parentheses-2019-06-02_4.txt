@@ -1,0 +1,48 @@
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        # First, find how many misplaced parens
+        left, right = 0, 0
+        for ch in s:
+            if ch == \'(\':
+                left += 1
+            elif ch == \')\':
+                if left > 0:
+                    left -= 1
+                else:
+                    right += 1
+            
+        res = {}
+        def recurse(s, i, left, right, curr, leftExtra):
+            # Prune
+            if \'\'.join(curr) in res:
+                return
+            if left+right > len(s)-i:
+                return
+            
+            # Done, add valid string to res
+            if i == len(s):
+                if left == 0 and right == 0:
+                    res[\'\'.join(curr)] = True
+                return
+            
+            # Discard case
+            if (s[i] == \'(\' and left > 0):
+                recurse(s, i+1, left-1, right, curr, leftExtra)
+            elif (s[i] == \')\' and right > 0):
+                recurse(s, i+1, left, right-1, curr, leftExtra)
+            
+            # Keep case
+            curr.append(s[i])
+            if s[i] != \'(\' and s[i] != \')\':
+                recurse(s, i+1, left, right, curr, leftExtra)
+            # Keep parentheses only if balance maintained
+            elif s[i] == \'(\':
+                recurse(s, i+1, left, right, curr, leftExtra+1)
+            elif s[i] == \')\' and leftExtra > 0:
+                recurse(s, i+1, left, right, curr, leftExtra-1)
+            
+            # Backtrack
+            curr.pop()
+                    
+        recurse(s, 0, left, right, [], 0)
+        return list(r for r in res if res[r])

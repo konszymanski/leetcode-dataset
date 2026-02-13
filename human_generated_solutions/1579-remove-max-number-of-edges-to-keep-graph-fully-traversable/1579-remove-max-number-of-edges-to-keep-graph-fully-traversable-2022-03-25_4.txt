@@ -1,0 +1,59 @@
+class UnionFind:
+    """
+    Standard Union-Find data structure implementation
+    with path compression and rank
+    """
+    def __init__(self, n):
+        self.n = n
+        self.uf = [i for i in range(n + 1)]
+        self.rank = [0] * (n + 1)
+        self.comp = n
+    
+    def root(self, u):
+        if self.uf[u] != u:
+            self.uf[u] = self.root(self.uf[u])
+        return self.uf[u]
+
+    def union(self, u, v):
+        u, v = self.root(u), self.root(v)
+        if u == v: return False
+        if self.rank[u] > self.rank[v]:
+            self.uf[v] = u
+        elif self.rank[u] < self.rank[v]:
+            self.uf[u] = v
+        else:
+            self.uf[v] = u
+            self.rank[u] += 1
+        
+        self.comp -= 1
+        return True
+
+class Solution:
+    def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+        # initialize both data structures to keep track of connected components
+        ufAlice = UnionFind(n)
+        ufBob = UnionFind(n)
+
+        numEdges = 0
+
+        # Add all type 3 edges that don\'t create a cycle (i.e. have the same parent in the 
+        # data structure)
+        for t, u, v in edges:
+            if t == 3:
+                numEdges += int(ufAlice.union(u, v))
+                ufBob.union(u, v)
+        
+        # Unite all Alice / Bob edges that don\'t create a cycle
+        for t, u, v in edges:
+            if t == 1:
+                numEdges += int(ufAlice.union(u, v))
+            elif t == 2:
+                numEdges += int(ufBob.union(u, v))
+        
+        # if there are multiple components in either alice / bob\'s graphs, then it is 
+        # disconnected and we return -1
+        if ufAlice.comp != 1 or ufBob.comp != 1:
+            return -1
+        
+        # otherwise, we can remove all edges that aren\'t chosen
+        return len(edges) - numEdges

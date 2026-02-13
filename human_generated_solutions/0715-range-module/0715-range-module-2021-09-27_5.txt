@@ -1,0 +1,59 @@
+class Node:
+    
+    def __init__(self, l, r, track=False):
+        self.track = track
+        self.l = l
+        self.r = r
+        self.lson = None
+        self.rson = None
+
+class RangeModule:
+
+    def __init__(self):
+        self.root = Node(1, int(1e9))
+
+    def update(self, node, l, r, val):
+        if node.l >= l and node.r <= r:
+            node.track = val
+            node.lson = None
+            node.rson = None
+            return val
+        m = (node.l + node.r) // 2
+        if node.lson is None:
+            node.lson = Node(node.l, m, node.track)
+            node.rson = Node(m + 1, node.r, node.track)
+        if l <= m < r:
+            track = self.update(node.lson, l, m, val)
+            track &= self.update(node.rson, m + 1, r, val)
+        elif r <= m:
+            track = self.update(node.lson, l, r, val) and node.rson.track
+        elif l >= m + 1:
+            track = self.update(node.rson, l, r, val) and node.lson.track
+        else:
+            assert False
+        node.track = track
+        return track
+        
+    def addRange(self, left: int, right: int) -> None:
+        self.update(self.root, left, right - 1, True)
+
+    def query(self, node, l, r):
+        if node.l >= l and node.r <= r:
+            return node.track
+        m = (node.l + node.r) // 2
+        if node.lson is None:
+            return node.track
+        if l <= m < r:
+            return self.query(node.lson, l, m) and self.query(node.rson, m + 1, r)
+        elif r <= m:
+            return self.query(node.lson, l, r)
+        elif l >= m + 1:
+            return self.query(node.rson, l, r)
+        else:
+            assert False
+        
+    def queryRange(self, left: int, right: int) -> bool:
+        return self.query(self.root, left, right - 1)
+        
+    def removeRange(self, left: int, right: int) -> None:
+        self.update(self.root, left, right - 1, False)

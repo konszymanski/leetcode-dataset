@@ -1,0 +1,10 @@
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        ans = 0
+        freq = defaultdict(int)
+        for x, y in dominoes: 
+            if x > y: x, y = y, x
+            key = 10*x + y
+            ans += freq[key]
+            freq[key] += 1
+        return ans

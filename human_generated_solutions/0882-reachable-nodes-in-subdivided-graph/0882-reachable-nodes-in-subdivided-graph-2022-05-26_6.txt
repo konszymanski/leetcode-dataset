@@ -1,0 +1,45 @@
+import heapq
+
+
+class Solution:
+    def reachableNodes(self, edges: List[List[int]], maxMoves: int, n: int) -> int:
+        graph = [[] for _ in range(n)]
+
+        for u, v, cnt in edges:
+            graph[u].append([v, cnt])
+            graph[v].append([u, cnt])
+
+        visited = [-1 for _ in range(n)]
+
+        heap = [[-maxMoves, 0]]
+        heapq.heapify(heap)
+
+        while heap:
+            movesLeft, u = heapq.heappop(heap)
+            if visited[u] == -1:
+                visited[u] = -movesLeft
+                for v, cnt in graph[u]:
+                    movesRequired = -movesLeft - (cnt + 1)
+                    if visited[v] == -1 and movesRequired >= 0:
+                        heapq.heappush(heap, [-movesRequired, v])
+
+        nodesReached = 0
+
+        # Nodes Reached of original graph
+        for u in visited:
+            if u >= 0:
+                nodesReached += 1
+
+        # Nodes Reached of subdivided graph except the nodes of original graph
+        for u, v, cnt in edges:
+            moves = 0
+            # Moves left while visiting u
+            if visited[u] >= 0:
+                moves += visited[u]
+            # Moves left while visiting v
+            if visited[v] >= 0:
+                moves += visited[v]
+
+            nodesReached += min(moves, cnt)
+
+        return nodesReached

@@ -1,0 +1,29 @@
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        R, F = len(robot), len(factory)
+        robot.sort()
+        factory.sort()
+        
+        # i --> robot idx
+        # j --> factory idx
+        # cnt --> robots fixed at factory j
+        @cache
+        def dp(i, iFactory, cnt):
+            if i >= R:
+                return 0
+            if iFactory >= F:
+                return float(\'inf\') # impossible!
+            
+            # Skip current factory
+            ans1 = dp(i, iFactory + 1, 0)
+            
+            # Fix robot at current factory
+            ans2 = float(\'inf\')
+            if cnt < factory[iFactory][1]:
+                ans2 = dp(i + 1, iFactory, cnt + 1) + abs(robot[i] - factory[iFactory][0])
+            
+            return min(ans1, ans2)
+
+        return dp(0, 0, 0)
+    # Time: O(M^2 * N) where M is the number of robots and N the number of factories
+    # Space: O(M^2 * N)

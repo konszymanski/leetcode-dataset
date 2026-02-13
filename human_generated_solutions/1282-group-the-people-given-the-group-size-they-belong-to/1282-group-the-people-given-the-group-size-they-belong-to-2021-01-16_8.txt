@@ -1,0 +1,45 @@
+class Solution(object):
+    def groupThePeople(self, groupSizes):
+        """
+        :type groupSizes: List[int]
+        :rtype: List[List[int]]
+        """
+        
+        #KEEP IN MIND:
+        #idx is considered a person
+        # value in the array is the size of the group they are in / must be in
+        
+        # First pass solution:
+        
+        #cache = {size of the group: [people]}
+        cache = {}
+        
+        #result = []
+        result = []
+        #loop thru idx in groupSizes:
+        for person in range(len(groupSizes)):
+            #group equal the value in the array
+            group = groupSizes[person]
+            #if group not in cache:
+            if group not in cache:
+                #then create a group with the person inside the group
+                cache[group] = [person]
+            #if the group is in cache but group is not filled:
+            elif len(cache[group]) != group:
+                #then append the person inside the group
+                cache[group].append(person)
+            #if the group is filled:
+            else:
+                #then delete / pop the key
+                filled_group = cache.pop(group,None)
+                # append the filled group early to the result
+                result.append(filled_group)
+                 #create a new group and insert the person in the new group
+                cache[group] = [person]
+        
+        # loop thru the groups left in the cache
+        for i, groups in cache.items():
+            #append the groups to result
+            result.append(groups)
+            
+        return result

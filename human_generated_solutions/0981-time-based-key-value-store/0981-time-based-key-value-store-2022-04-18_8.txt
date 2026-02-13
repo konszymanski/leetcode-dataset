@@ -1,0 +1,25 @@
+from collections import defaultdict
+from bisect import bisect_right
+class TimeMap:
+
+    def __init__(self):
+        self.tm = defaultdict(list)
+        
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.tm[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        # gives the index of the *next* element after the given timestamp
+        idx = bisect_right(a=self.tm[key], x=timestamp, key=lambda x: x[0])
+        
+        # if index is zero then there is no kv pair within the given timestamp
+        if idx > 0:
+            return self.tm[key][idx-1][1]
+        else:
+            return ""
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)

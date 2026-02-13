@@ -1,0 +1,10 @@
+def dailyTemperatures(self, temperatures):
+    res = [0] * len(temperatures)
+    stack = [] # contains pair of [temp, index]
+    
+    for i, t in enumerate(temperatures): #looping through temperatures array and their index
+        while stack and t > stack[-1][0]: # is our stack empey and is our temperature greater than the top of our stack
+            stackT, stackInd = stack.pop()
+            res[stackInd] = (i - stackInd) # compute the days it took us to find a higher temperature
+        stack.append((t,i)) # append to the stack the temperature and index
+    return res

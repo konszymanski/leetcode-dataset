@@ -1,0 +1,28 @@
+class Solution:
+    def minimumDifference(self, nums: List[int]) -> int:
+        # Python solution using SortedList, time complexity O(nlogn), space complexity O(n)
+        n = len(nums) // 3
+		
+        from sortedcontainers import SortedList
+        leftArr = SortedList(nums[ : n])
+        rightArr = SortedList(nums[n : ])
+		
+        # leftSum is the minimum subsequence sum of leftArr, rightSum is the maximum subsequence sum of rightArr
+        leftSum, rightSum = sum(leftArr), sum(rightArr[n : ])
+        minDiff = leftSum - rightSum
+		
+        for i in range(n, n * 2):
+            # if nums[i] belongs to the n smallest values of leftArr, thus leftSum needs to be updated
+            if nums[i] < leftArr[-1]:
+                leftSum += nums[i] - leftArr[-1]
+            leftArr.add(nums[i])
+            leftArr.pop(-1)
+			
+            # if nums[i] belongs to the n largest values of rightArr, thus rightSum needs to be updated
+            if rightArr.bisect_left(nums[i]) - len(rightArr) >= -n:
+                rightSum += rightArr[-(n + 1)] - nums[i]
+            rightArr.remove(nums[i])
+			
+            minDiff = min(minDiff, leftSum - rightSum)
+			
+        return minDiff

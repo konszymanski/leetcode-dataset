@@ -1,0 +1,10 @@
+def nextLargerNodes(self, head: ListNode) -> List[int]:
+        stk, ans, i = [], [], 0
+        while head:
+            ans.append(0)
+            while stk and stk[-1][1] < head.val: 
+                ans[stk.pop()[0]] = head.val
+            stk.append((i, head.val))
+            head = head.next
+            i += 1
+        return ans

@@ -1,0 +1,8 @@
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:            # nothing to reverse
+            return head
+		newHead = self.reverseList(head.next)    #  see what\'s happening on the diagram above
+		head.next.next = head
+		head.next = None                         # see "head off" column
+		return newHead

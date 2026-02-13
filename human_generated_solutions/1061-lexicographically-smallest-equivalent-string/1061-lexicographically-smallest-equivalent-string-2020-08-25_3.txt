@@ -1,0 +1,29 @@
+class Solution:
+    def smallestEquivalentString(self, A: str, B: str, S: str) -> str:
+        g = defaultdict(list)
+        for a, b in zip(A, B):
+            g[a].append(b)
+            g[b].append(a)
+            
+        def findEquivalent(u):
+            seen = set()
+            least = \'z\'
+            def dfs(u):
+                nonlocal least
+                if u in seen:
+                    return
+                seen.add(u)
+                least = min(least, u)
+                for v in g[u]:
+                    dfs(v)
+            dfs(u) 
+            return seen, least
+        
+        smallest = {}
+        for c in A:
+            if c in smallest:
+                continue
+            equiv, least = findEquivalent(c)
+            for e in equiv:
+                smallest[e] = least
+        return \'\'.join(smallest[c] if c in smallest else c for c in S)

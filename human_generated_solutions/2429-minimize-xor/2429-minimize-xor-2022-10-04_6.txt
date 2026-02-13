@@ -1,0 +1,24 @@
+class Solution:
+    def minimizeXor(self, num1: int, num2: int) -> int:
+
+        n1 = num1.bit_count()
+        n2 = num2.bit_count()
+        
+        # the strategy here is to take \'num1\' as a starting 
+        # point and flip lowest 1\'s or 0\'s depending on 
+        # which number of set bits (n1 or n2) is larger
+        
+        x = num1
+        
+        if n1 != n2:
+            
+            flg = n1 > n2
+            cnt = abs(n1 - n2)
+            
+            for i in range(0,30):
+                if flg == (num1 >> i) & 1:
+                    x ^= (1 << i)    # bit flip occurs here
+                    cnt -= 1
+                if cnt == 0: break
+        
+        return x

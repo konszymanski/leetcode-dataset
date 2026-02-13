@@ -1,0 +1,12 @@
+def reachingPoints( sx, sy,  tx,  ty):
+        while tx != 0:
+	        # if we find sx and sy along the way, they too have the same GCD as tx, ty 
+	        # ty - sy % tx can be thought of as the number of subtractions 
+	        # needed to reach sy, if there are 0 subtractions to get to sy, then we have found sy 
+            if tx == sx and ty >= sy and (ty - sy) % tx == 0: return True
+          	     ty %= tx
+	             # cleaner swap than original euclid 
+                 tx, ty = ty, tx
+	             # original sx must, match original tx 
+                 sx, sy = sy, sx
+        return False

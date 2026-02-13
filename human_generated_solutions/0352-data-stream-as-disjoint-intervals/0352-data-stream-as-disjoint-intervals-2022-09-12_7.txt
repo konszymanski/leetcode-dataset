@@ -1,0 +1,23 @@
+class SummaryRanges:
+
+    def __init__(self):
+        self.arr = []
+
+    def addNum(self, value: int) -> None:
+        if value not in self.arr:
+            bisect.insort(self.arr, value)
+
+    def getIntervals(self) -> List[List[int]]:
+        res = list()
+        n = len(self.arr)
+        
+        i = 0
+        while i < n:
+            start = self.arr[i]
+            while i + 1 < n and self.arr[i] + 1 == self.arr[i + 1]:
+                i += 1
+            end = self.arr[i]
+            res.append([start, end])
+
+            i += 1
+        return res

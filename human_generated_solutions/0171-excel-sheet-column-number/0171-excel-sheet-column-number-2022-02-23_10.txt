@@ -1,0 +1,14 @@
+class Solution:
+    def titleToNumber(self, columnTitle: str) -> int:
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        result_num = 0
+        power = 0
+        A=0
+        len_alphabet = len(alphabet)
+        while len(columnTitle) > 0:
+            position = alphabet.find(columnTitle[-1]) + 1
+            columnTitle = columnTitle[0: -1]
+            A= position * len_alphabet ** power
+            result_num += A
+            power += 1
+        return result_num

@@ -1,0 +1,5 @@
+def str2num(s):
+    res = 0
+    for digit in s:
+        res = res * 10 + int(digit)
+    return res

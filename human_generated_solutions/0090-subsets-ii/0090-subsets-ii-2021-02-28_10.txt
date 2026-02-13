@@ -1,0 +1,36 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        
+        subsets = []
+        
+        #Sorting nums so that duplicates are placed next to each other
+        nums.sort()
+        
+        #Adding empty element to subsets
+        subsets.append([])
+        
+        #Manipulating start, end indices
+        startIndex, endIndex = 0, 0
+        
+        for i in range(len(nums)):
+            #Initialize startIndex as 0 for every incoming number (normal unless duplicate)
+            startIndex = 0
+            
+            #Checking duplicate condition
+            if i > 0 and nums[i] == nums[i - 1]:
+                #Update startIndex to only consider 2nd half, subsets added in the previous step
+                startIndex = endIndex + 1
+                
+            #Set endIndex till the end of subsets 
+            endIndex = len(subsets) - 1
+            
+            #Adding current Number to all eligible subsets
+            for j in range(startIndex, endIndex + 1):
+                #Selecting subset to add element to 
+                set1 = list(subsets[j])
+                set1.append(nums[i])
+                subsets.append(set1)
+        
+        return subsets

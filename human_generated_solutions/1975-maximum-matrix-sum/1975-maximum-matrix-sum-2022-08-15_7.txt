@@ -1,0 +1,25 @@
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        abs_sum, negative_count, zero_count, min_value = 0, 0, 0, float(inf)
+        
+        for row in range(len(matrix)):
+            for col in range(len(matrix)):
+                # print("Element", matrix[row][col])
+                
+                if matrix[row][col] < 0: 
+                    negative_count += 1
+                    # print("Neg Count", negative_count)
+                if matrix[row][col] == 0: 
+                    zero_count = 1
+                    # print("Zero Count", zero_count)
+                    
+                abs_sum += abs(matrix[row][col])
+                # print("Sum", abs_sum)
+                min_value = min(min_value, abs(matrix[row][col]))
+                # print("Min", min_value, "\
+")
+                
+        if negative_count % 2 == 0 or zero_count > 0:
+            return abs_sum
+        else:
+            return abs_sum - (min_value * 2)

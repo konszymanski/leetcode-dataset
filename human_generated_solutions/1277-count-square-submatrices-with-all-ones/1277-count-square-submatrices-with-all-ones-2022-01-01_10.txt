@@ -1,0 +1,50 @@
+\'\'\'
+#matrix
+[
+  [0,1,1,1],
+  [1,1,1,1],
+  [0,1,1,1]
+]
+
+#square
+square[i][j] denotes the number of squares whose bottom right node is (i, j)
+[
+  [0,1,1,1],
+  [1,1,2,2],
+  [0,1,2,3]
+]
+
+#dp
+dp[i][j] denotes the number of squares in (0, 0) to (i, j)
+The final answer is dp[-1][-1] (bottom right value)
+[
+  [0,1,2,3],
+  [1,3,6,9],
+  [1,4,9,15]
+]
+\'\'\'
+
+class Solution:
+    def countSquares(self, matrix: List[List[int]]) -> int:
+        R, C = len(matrix), len(matrix[0])
+        
+        #Create square matrix
+        square = [[0 for _ in range(C)] for _ in range(R)]
+        square[0] = matrix[0][:]
+        for i in range(R):
+            square[i][0] = (matrix[i][0] == 1)
+        for i in range(1, R):
+            for j in range(1, C):
+                if matrix[i][j] != 0:
+                    square[i][j] = min(square[i - 1][j], square[i][j - 1], square[i - 1][j - 1]) + (matrix[i][j] == 1)
+        
+        #dp
+        for j in range(1, C):
+            matrix[0][j] = matrix[0][j - 1] + (matrix[0][j] == 1)
+        for i in range(1, R):
+            matrix[i][0] = matrix[i - 1][0] + (matrix[i][0] == 1)
+        for i in range(1, R):
+            for j in range(1, C):
+                matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1] - matrix[i - 1][j - 1] + square[i][j]
+        
+        return matrix[-1][-1]

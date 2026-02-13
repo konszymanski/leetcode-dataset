@@ -1,0 +1,18 @@
+class Solution(object):
+    def powerfulIntegers(self, x, y, bound):
+        self.res = set()
+        self.DFS(x,y,0,0,bound,set()) 
+        return list(self.res) 
+    def DFS(self, x, y, px, py, bound, visited): #worst case -> space complexity for the recursive stack O(log2(bound))
+        sums = x**px+y**py 
+        if sums > bound:
+            return 
+        if (px,py) in visited:
+            return
+        visited.add((px,py))
+        self.res.add(sums)
+        if x > 1:
+            self.DFS(x,y,px+1, py, bound, visited)
+        if y > 1:
+            self.DFS(x,y,px, py+1, bound, visited)
+        return

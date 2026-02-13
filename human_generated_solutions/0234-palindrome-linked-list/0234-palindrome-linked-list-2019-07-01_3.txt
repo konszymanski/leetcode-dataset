@@ -1,0 +1,40 @@
+def is_palindrome(head: ListNode) -> bool:
+    n = get_length(head)
+
+    (left_head, right_head) = reverse_till(head, n//2)
+
+    (L, R) = (left_head, right_head)
+
+    # Skip the middle value
+    if n % 2 == 1:
+        R = R.next
+
+    while (L is not None) or (R is not None):
+        if L.val != R.val:
+            repair_list(left_head, right_head)
+            return False
+        (L, R) = (L.next, R.next)
+
+    repair_list(left_head, right_head)
+    return True
+
+def reverse_till(head: ListNode, k: int) -> (ListNode, ListNode):
+    previous, node = None, head
+    for i in range(k):
+        # Note: the order of assignment matters, as if we update node before we 
+		# update node.next, we would be updating node.next.next instead.
+        previous, node.next, node = node, previous, node.next
+    return (previous, node)
+
+def repair_list(left_head: ListNode, right_head: ListNode) -> None:
+    node, previous = left_head, right_head
+    while node is not None:
+        previous, node.next, node = node, previous, node.next
+
+def get_length(head: ListNode) -> int:
+    node = head
+    i = 0
+    while node is not None:
+        i += 1
+        node = node.next
+    return i

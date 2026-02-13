@@ -1,0 +1,33 @@
+def const_space(self, head):
+        out = 0
+        while head:
+            out = out << 1
+            out = out | head.val
+            head = head.next
+        return out
+    
+    
+    def iterative(self, head):
+        stack = []
+        while head:
+            stack.append(head.val)
+            head = head.next
+        i = 0
+        s = 0
+        while len(stack):
+            s += stack.pop()*2**i
+            i += 1
+        return s
+    
+    
+    def recursive(self, head):
+        out = 0
+        def rec(head):
+            if head:
+                power, val = rec(head.next)
+                val += head.val*2**power
+                return power + 1, val
+            return 0, 0
+        
+        power, out = rec(head)
+        return out

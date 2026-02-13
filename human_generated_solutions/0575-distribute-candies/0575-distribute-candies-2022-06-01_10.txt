@@ -1,0 +1,11 @@
+class Solution:
+    def distributeCandies(self, candyType: List[int]) -> int:
+        candyMap = {}
+        nums = 0
+        
+        for i in candyType:
+            if i not in candyMap:
+                nums += 1
+                candyMap[i] = 1
+                
+        return len(candyType) // 2 if len(candyType) // 2 < nums else nums

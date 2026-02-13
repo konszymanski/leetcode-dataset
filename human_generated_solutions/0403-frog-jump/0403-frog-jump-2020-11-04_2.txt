@@ -1,0 +1,13 @@
+def dfs(stones, curr, k, target):
+	print(curr, k)
+	if curr == target:
+		return True
+	left = mid = right = False
+	if curr + (k - 1) in stones and k - 1 > 0:
+		left = dfs(stones, curr + (k - 1), k - 1, target)
+	if curr + (k) in stones and k > 0:
+		mid = dfs(stones, curr + (k), k, target)
+	if curr + (k + 1) in stones:
+		right = dfs(stones, curr + (k + 1), k + 1, target)
+	return left or mid or right
+return dfs(set(stones), 0, 0, stones[-1])

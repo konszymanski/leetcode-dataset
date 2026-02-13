@@ -1,0 +1,11 @@
+class Solution:
+    def crackSafe(self, n: int, k: int) -> str:
+        def dfs(cur, seen, total):
+            if cur[-n:] in seen: return 
+            seen.add(cur[-n:])
+            if len(seen) == total: return cur
+            for c in range(k):
+                nxt = dfs(cur + str(c),seen, total)
+                if nxt: return nxt
+            seen.remove(cur[-n:])  
+        return dfs(\'0\' * n, set(), k ** n)

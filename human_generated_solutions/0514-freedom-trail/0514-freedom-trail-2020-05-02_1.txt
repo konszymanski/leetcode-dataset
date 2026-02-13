@@ -1,0 +1,28 @@
+class Solution:
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        N = len(ring)
+        
+        def dist(i, j):
+            return min((i - j) % N, (j - i) % N)
+        
+        lookup = collections.defaultdict(list)
+        for i, char in enumerate(ring):
+            lookup[char].append(i)
+        
+        # tuple in heap: (totalDist, ringLoc, index of char in key)
+        heap = [(0, 0, 0)]
+        # tuple in seen: (ringLoc, index of char in key)
+        seen = set()
+        
+        while heap:
+            totalDist, ringLoc, i = heapq.heappop(heap)
+            if i == len(key):
+                return totalDist + len(key)
+            if (ringLoc, i) in seen:
+                continue
+            seen.add((ringLoc, i))
+            for nextLoc in lookup[key[i]]:
+                heapq.heappush(
+                    heap, 
+                    (totalDist + dist(ringLoc, nextLoc), nextLoc, i + 1)
+                )

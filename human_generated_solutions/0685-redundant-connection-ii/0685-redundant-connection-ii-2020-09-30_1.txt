@@ -1,0 +1,36 @@
+class Solution(object):
+    def findRedundantDirectedConnection(self, edges):
+        """
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        n=len(edges)        
+        child=collections.defaultdict(list)
+        parent=collections.defaultdict(list)
+        def cycle(start, end):
+            if start==end: return True
+            self.seen.add(start)
+            for node in child[start]:
+                if node not in self.seen:
+                    if cycle(node, end):
+                        return True
+            return False
+        
+        K=-1          #to mark the node with 2 parents
+        for i, j in edges:      
+            child[i].append(j)
+            parent[j].append(i)
+            if len(parent[j])==2:
+                K=j
+
+        if K!=-1:          # if 2-parent case happened
+            self.seen=set()
+            if cycle(K, parent[K][0]): 
+                return [parent[K][0], K] 
+            else:
+                return [parent[K][1], K]
+                       
+        for i in range(n-1, -1, -1):     #to find the last edge in the cycle
+            v, u=edges[i]
+            self.seen=set()
+            if cycle(u, v): return [v, u]

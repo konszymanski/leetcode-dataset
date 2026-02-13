@@ -1,0 +1,39 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        if len(heights) == 0:
+            return 0
+        self.heights = heights
+        return self.largestArea(0, len(heights) - 1)
+    
+    def largestArea(self, l, r):
+        if l == r:
+            return self.heights[l]
+        mid = (l + r) // 2
+        leftArea = self.largestArea(l, mid)
+        rightArea = self.largestArea(mid + 1, r)
+        crossArea = self.crossLargestArea(l, mid, r)
+        return max(leftArea, rightArea, crossArea)
+    
+    def crossLargestArea(self, l, mid, r):
+        minH = min(self.heights[mid], self.heights[mid + 1])
+        maxArea = 2 * minH
+        i = mid
+        j = mid + 1
+        while i > l or j < r:
+            if i <= l:
+                j += 1
+                minH = min(minH, self.heights[j])
+                maxArea = max(maxArea, (j - l + 1) * minH)
+            elif j >= r:
+                i -= 1
+                minH = min(minH, self.heights[i])
+                maxArea = max(maxArea, (r - i + 1) * minH)
+            elif self.heights[i - 1] > self.heights[j + 1]:
+                i -= 1
+                minH = min(minH, self.heights[i])
+                maxArea = max(maxArea, (j - i + 1) * minH)
+            else:
+                j += 1
+                minH = min(minH, self.heights[j])
+                maxArea = max(maxArea, (j - i + 1) * minH)
+        return maxArea

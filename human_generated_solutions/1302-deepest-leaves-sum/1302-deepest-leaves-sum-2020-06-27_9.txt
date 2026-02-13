@@ -1,0 +1,22 @@
+class Solution:
+    # Time: O(n)
+    # Space: O(H)
+    def deepestLeavesSum(self, root: TreeNode) -> int:
+        self.dfs(root, 0)
+        return self.sum
+        
+    def dfs(self, node, level):
+        if not node:
+            return
+        if level > self.deepest:
+            self.sum = node.val
+            self.deepest = level
+        elif level == self.deepest:
+            self.sum += node.val
+            
+        self.dfs(node.left, level + 1)
+        self.dfs(node.right, level + 1)
+    
+    def __init__(self):
+        self.deepest = float(\'-inf\')
+        self.sum = 0

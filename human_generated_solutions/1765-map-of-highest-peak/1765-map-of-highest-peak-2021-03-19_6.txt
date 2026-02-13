@@ -1,0 +1,20 @@
+class Solution:
+    def highestPeak(self, iswater: List[List[int]]) -> List[List[int]]:
+        
+        newiswater = [[None] * len(iswater[0]) for i in range(len(iswater))]
+        deq = collections.deque([])
+        
+        for row in range(len(iswater)):
+            for col in range(len(iswater[0])):
+                if iswater[row][col] == 1:
+                    deq.append([row, col])
+                    newiswater[row][col] = 0
+        
+        while deq:
+            row, col = deq.popleft()
+            for new_row, new_col in (row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1):
+                if 0 <= new_row <= len(newiswater) - 1 and 0 <= new_col <= len(newiswater[0]) - 1 and newiswater[new_row][new_col] is None:
+                    newiswater[new_row][new_col] = newiswater[row][col] + 1
+                    deq.append([new_row, new_col])
+                        
+        return newiswater

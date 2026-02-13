@@ -1,0 +1,19 @@
+class Solution:
+    """
+    store all the root-to-leaf path strings in a list, sort the list in ascending order
+    """
+    def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
+        string_paths = []
+        def dfs(root, path):
+            if not root:
+                return
+            if root.left is None and root.right is None:
+                path+=chr(root.val + 97)
+                string_paths.append(path[::-1])
+                
+            dfs(root.left, path + chr(root.val + 97))
+            dfs(root.right, path + chr(root.val + 97))
+        dfs(root, "")
+        string_paths = sorted(string_paths)
+        # print(string_paths)
+        return string_paths[0]

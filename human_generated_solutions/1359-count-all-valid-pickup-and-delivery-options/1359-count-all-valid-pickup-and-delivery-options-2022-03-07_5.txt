@@ -1,0 +1,21 @@
+# O(N^2) | O(N^2) Recursion(Top-Down DP)
+class Solution:
+    def countOrders(self, n: int) -> int:
+        MOD = 1_000_000_007
+        @cache
+        def totalWays(picks, delivers):
+            # Base Case
+            if not picks and not delivers:
+                return 1
+            if picks < 0 or delivers < 0 or delivers < picks:
+                return 0
+            
+            res = picks * totalWays(picks - 1, delivers)
+            res %= MOD
+            
+            res += (delivers - picks) * totalWays(picks, delivers - 1)
+            res %= MOD
+            
+            return res
+        
+        return totalWays(n, n)

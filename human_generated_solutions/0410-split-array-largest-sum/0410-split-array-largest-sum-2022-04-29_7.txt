@@ -1,0 +1,27 @@
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        
+        low = max(nums)
+        high = sum(nums)
+        while low + 1 < high:
+            mid = (low + high) // 2
+            count_subarray = self.check(nums, mid)
+            if count_subarray > m:
+                low = mid
+            else:
+                high = mid 
+        if self.check(nums, low) <= m:
+            return low
+        if self.check(nums, high) <= m:
+            return high
+    
+    def check(self, nums, largest_sum):
+        res = 1
+        tmp_total = 0
+        for num in nums:
+            if tmp_total + num > largest_sum:
+                res += 1
+                tmp_total = num
+            else:
+                tmp_total += num
+        return res

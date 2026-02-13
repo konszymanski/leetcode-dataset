@@ -1,0 +1,16 @@
+from numpy import ones, bool
+
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        primes = ones(n, dtype=bool)
+        primes[:2] = 0
+        primes[4::2] = 0
+        
+
+        # Prime Sieve
+        for i in range(3,ceil(sqrt(n)),2):
+            if primes[i]:
+                primes[i*i::i] = 0
+                    
+        # Return number of primes found
+        return primes.sum()

@@ -1,0 +1,25 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        ## RC ##
+        ## APPROACH : POST ORDER TRAVERSAL ##
+        ## Similar to Leetcode 105. Construct Binary Tree from Preorder and Inorder Traversal ##
+        
+        visited= collections.defaultdict(list)
+        def dfs(node):
+            if not node:
+                return ","
+            
+            left = dfs(node.left)
+            right = dfs(node.right)
+            # edge case # only pre-order or post order works
+            nodes_str = str(left) + "," + str(right) + "," + str(node.val)
+            visited[nodes_str].append(node)
+            return nodes_str
+        dfs(root)
+        return [ visited[node][0] for node in visited if len(visited[node]) > 1]

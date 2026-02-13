@@ -1,0 +1,35 @@
+from heapq import heapify, heappop, heappush
+
+class Solution:
+    def minimumDeviation(self, nums: List[int]) -> int:
+        nums = self.create_min_max_vals(nums)
+        ans = float(\'inf\')
+        maximum = max(nums)[0]
+        while True:
+            minn = heappop(nums)
+            diff = maximum - minn[0]
+            if diff < ans:
+                ans = diff
+            if minn[0] == minn[1]:
+                break
+            else:
+                v = minn[0]*2
+                heappush(nums, (v, minn[1]))
+                if v > maximum:
+                    maximum = v
+                
+        return ans      
+    
+    def create_min_max_vals(self, nums):
+        res = []
+        for n in nums:
+            if n % 2 == 1:
+                res.append((n, 2*n))
+            else:
+                x = n
+                while x % 2 == 0:
+                    x = x // 2
+                res.append((x, n))
+        
+        heapify(res)
+        return res

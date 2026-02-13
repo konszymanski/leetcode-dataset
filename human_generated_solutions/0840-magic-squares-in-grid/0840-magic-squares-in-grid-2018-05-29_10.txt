@@ -1,0 +1,15 @@
+class Solution:
+    def numMagicSquaresInside(self, A: List[List[int]], t = 0) -> int:
+        M, N = len(A), len(A[0])
+        for i in range(M - 3 + 1):
+            for j in range(N - 3 + 1):
+                rows = defaultdict(int)
+                cols = defaultdict(int)
+                seen = []
+                for u in range(i, i + 3):
+                    for v in range(j, j + 3):
+                        rows[u] += A[u][v]
+                        cols[v] += A[u][v]
+                        seen.append(A[u][v])
+                t += len(set(rows.values())) == 1 and len(set(cols.values())) == 1 and rows[i] == cols[j] and A[i][j] + A[i + 2][j + 2] == A[i][j + 2] + A[i + 2][j] and len(set(seen)) == 9 and 1 <= min(seen) and max(seen) <= 9
+        return t

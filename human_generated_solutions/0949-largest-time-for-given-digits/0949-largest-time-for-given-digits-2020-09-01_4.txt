@@ -1,0 +1,24 @@
+class Solution:
+    def largestTimeFromDigits(self, A: List[int]) -> str:
+        # help function to turn number to clock-format:
+        def to_clock(num):
+            right = str(num%100)
+            while len(right) < 2: right = \'0\' + right
+            num //= 100
+            left = str(num)
+            while len(left) < 2: left = \'0\' + left
+            return left + \':\' + right
+                
+        # get all permutations of number list
+        per = list(itertools.permutations(A))
+        nums = [int(\'\'.join(map(str,per[i]))) for i in range(len(per))]
+        
+        # find permutations which can be a valid time
+        valids = [num for num in nums if num<2359 and num%100<60]
+        
+        if len(valids) == 0:
+            return ""
+        
+        # use maximum of list
+        num = max(valids)
+        return to_clock(num)

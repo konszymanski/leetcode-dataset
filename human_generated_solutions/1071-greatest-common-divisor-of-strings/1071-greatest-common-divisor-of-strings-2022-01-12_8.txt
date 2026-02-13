@@ -1,0 +1,7 @@
+def gcdOfTwoNumbers(a, b):
+	if a == b:
+		return a
+	elif a > b:
+		return gcdOfTwoNumbers(a - b, b)
+	else:
+		return gcdOfTwoNumbers(b - a, a)

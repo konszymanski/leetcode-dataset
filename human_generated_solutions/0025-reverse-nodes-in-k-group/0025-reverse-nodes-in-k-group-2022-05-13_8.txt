@@ -1,0 +1,28 @@
+class Solution:
+	def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+		# Edge Cases
+		if not head or not head.next or k == 1: return head
+
+		dummy = ListNode(-1, head)
+		groupPrev = dummy
+		while True:
+			# Get kth node of the group
+			kth = self.getKth(groupPrev, k)
+			if not kth: break
+			groupNext = kth.next
+
+			# Reverse Group
+			prev, curr = groupNext, groupPrev.next
+			while curr != groupNext:
+				curr.next, prev, curr = prev, curr, curr.next
+
+			# Move groupPrev pointer to the next group position(node before next group)
+			groupPrev.next, groupPrev = kth, groupPrev.next
+
+		return dummy.next
+
+    def getKth(self, curr: ListNode, k: int) -> ListNode:
+		while curr and k > 0:
+			curr = curr.next
+			k -= 1
+		return curr

@@ -1,0 +1,9 @@
+class Solution(object):
+    def calculateMinimumHP(self, dungeon):
+		nrows, ncols = len(dungeon), len(dungeon[0])
+        dp = [[float(\'inf\')]*(ncols+1) for _ in range(nrows+1)]
+        dp[nrows-1][ncols] = dp[nrows][ncols-1] = 1
+        for r in range(nrows-1, -1, -1):
+            for c in range(ncols-1, -1, -1):
+                dp[r][c] = max(1, min(dp[r+1][c], dp[r][c+1]) - dungeon[r][c])
+        return dp[0][0]

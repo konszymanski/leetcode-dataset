@@ -1,0 +1,92 @@
+from sortedcontainers import SortedList
+class Solution:
+    def goodTriplets(self, n1: List[int], n2: List[int]) -> int:
+        #we are basically looking for count of common subsequences of length 3
+        #brute force would be check all len3 subsequences which is O(N^3) so not possible
+        #n goes upto 10^5 so even n^2 is not possible
+        
+        #Greedy Approach: SortedList
+        #focus on the middle element of the the triplet
+        #for each middle element, subseq = no_of_common_elements_on_left * no_of_common_elements_on_right
+        N = len(n1)
+        b_pos = dict([(x, i) for i,x in enumerate(n2)])       
+        visited_idx = SortedList([b_pos[n1[0]]])#stores the nums2_index of every element visited in nums1 so far
+        res = 0
+        for i in range(1, N-1):#firt and last element can never be a middle element of a triplet
+            common_found = visited_idx.bisect_left(b_pos[n1[i]]) #number of common elements on the left
+            visited_idx.add(b_pos[n1[i]])
+            #number of common elements on the right can be calulcated using
+            #(N - i - 1) - b_pos[nums1[i]] + no_of_common_elements_on_left
+            res += common_found * (N - i - b_pos[n1[i]] + common_found - 1)
+
+        return res
+    
+        #Greedy Approach: Segment Tree but same logic as above solution
+        N = len(n1)
+        freq = [0]*(2*N)
+        b_pos = dict([(x,i) for i,x in enumerate(n2)])
+        
+        def update(idx):
+            idx += N
+            freq[idx] += 1
+            while idx > 1:
+                idx >>= 1
+                freq[idx] = freq[idx<<1] + freq[idx<<1 | 1]
+        def getCount(left, right):
+            left += N; right += N
+            count = 0
+            while left < right:
+                if left & 1:
+                    count += freq[left]
+                    left += 1
+                if right & 1:
+                    right -= 1
+                    count += freq[right]
+                    pass
+                left >>= 1; right >>= 1
+            return count
+        res = 0
+        for i in range(N):
+            common_left = getCount(0, b_pos[n1[i]])
+            common_right = (N - i - 1) - b_pos[n1[i]] + common_left
+            res += common_left*common_right
+            update(b_pos[n1[i]])
+        return res
+    
+        #Greedy Approach: Binary Index Tree
+		#TODO
+            
+        
+        n = len(n1)
+        #DP Approach
+        #if common subsequnce (1,2,3,4) exists then common subsequence (2,3,4) must also exist
+        #if common subsequence (2,3,4) exists then common subsequence (3,4) must also exist
+        #and so on...
+        #solution below is general for any size subsequence but O(n^2 * subseq_size)
+        location = dict([(x, i) for i,x in enumerate(n2)])
+        @lru_cache(None)
+        def dp(j, size):
+            nonlocal i
+            
+            if min(n - i, n - j) < size:
+                return 0
+            if size == 2:
+                return len(set(n1[i:]).intersection(n2[j:])) - 1
+            
+            count = 0
+            c_i = i
+            for k in range(c_i+1, n):
+                if location[n1[k]] > j:#dont choose element that has been skipped by j
+                    i = k
+                    c = dp(max(j+1, location[n1[k]]), size-1)
+                    i = c_i
+                    if c: count += c
+            return count
+        
+        subseq_size = 3
+        ans = 0
+        for idx in range(n):
+            i = idx
+            ans += dp(location[n1[i]], subseq_size)
+        
+        return ans

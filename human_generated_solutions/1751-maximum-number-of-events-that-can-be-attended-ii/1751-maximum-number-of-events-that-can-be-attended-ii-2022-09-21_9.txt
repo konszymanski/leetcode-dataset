@@ -1,0 +1,35 @@
+def maxValue(self, events: List[List[int]], k: int) -> int:
+        events.sort()#sorting by start day
+        n = len(events)
+        
+        #for each event you have two options:
+        #1.do it and move one to next POSSIBLE event, i.e events starting after ending of current event
+        #2. not do it and move on to next event
+        #so this naturally becomes a recurrsive problem, and the only two state parameters are (index, k)
+        # events.length * k <= 10^6 so (index, k) dp is possible
+        @lru_cache(None)
+        def dp(i, k):
+            if k == 0 or i == n: return 0
+            
+            #use binary search to find events that begin after ending of curr event
+            ending = events[i][1]
+            L = i; R = n-1
+            while L < R:
+                M = (L+R)//2
+                
+                if events[M][0] > ending:
+                    R = M
+                else:
+                    L = M+1
+            
+            #current can be attended no matter what
+            ans = events[i][2]
+            
+            #if there are any future events which u can attend after attend curr event
+            if events[L][0] > ending:
+                ans = ans + dp(L, k-1)
+            
+            #u can also choos not to attend the current event
+            return max(ans, dp(i+1, k))
+    
+        return dp(0, k)

@@ -1,0 +1,18 @@
+def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        
+		# 1. Sort nums:
+        nums.sort()
+        
+		# 2. Find all subsets:
+        combinations = [[]]
+        combinations_len = 1
+        for i in range(len(nums)):
+            
+			# If duplicate, start from the new items appended by the previous val
+            start = combinations_len if i and nums[i] == nums[i - 1] else 0
+			
+            combinations_len = len(combinations)            
+            for c in range(start, combinations_len):
+                combinations.append(combinations[c] + [nums[i]])
+                
+        return combinations

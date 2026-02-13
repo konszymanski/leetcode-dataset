@@ -1,0 +1,26 @@
+class Solution:
+    def minFlips(self, a: int, b: int, c: int) -> int:
+
+        sa = bin(a)[2:]
+        sb = bin(b)[2:]
+        s1 = bin(a | b)[2:]
+        sc = bin(c)[2:]
+        max_len = max(len(sc), len(s1))
+
+        sa = (max_len - len(sa)) * \'0\' + sa
+        sb = (max_len - len(sb)) * \'0\' + sb
+        s1 = (max_len - len(s1)) * \'0\' + s1
+        sc = (max_len - len(sc)) * \'0\' + sc
+
+        counter = 0
+        for i in range(max_len):
+            if s1[i] != sc[i]:
+                if sc[i] == \'1\':
+                    counter += 1
+                elif sc[i] == \'0\':
+                    if sa[i] == sb[i]:
+                        counter += 2
+                    else:
+                        counter += 1
+
+        return counter

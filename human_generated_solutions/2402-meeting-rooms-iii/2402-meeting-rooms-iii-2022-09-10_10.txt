@@ -1,0 +1,37 @@
+class RoomManager:
+    def __init__(self,n):
+        self.rooms = [i for i in range(n)]
+        heapify(self.rooms)
+        self.booked = []
+        self.count = [0]*n
+
+    def free_room(self):
+        return self.rooms != []
+        
+    def book_room(self, end_time):
+        if self.free_room():
+            room = heappop(self.rooms)
+            heappush(self.booked,(end_time,room))
+            self.count[room] += 1
+    
+    def book_nearest(self,time):
+        end_time,room = heappop(self.booked)
+        heappush(self.booked,(end_time+time,room))
+        self.count[room] += 1
+
+    def clear_booked(self,s):
+        while self.booked and self.booked[0][0] <= s:
+            e,r = heappop(self.booked)
+            heappush(self.rooms,r)
+        
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        meetings.sort() # Step 1
+        rm = RoomManager(n)
+        for s,e in meetings:
+            rm.clear_booked(s) # Step 2
+            if rm.free_room(): 
+                rm.book_room(e) # Step 3
+            else:
+                rm.book_nearest(e-s) # Step 4
+        return rm.count.index(max(rm.count)) # Step 5

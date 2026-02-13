@@ -1,0 +1,23 @@
+def maxLength(self, arr):
+	# Check if the concatenated-string has unique characters or not
+	def isValid(s):
+		unique = [False]*26
+		for i in range(len(s)):
+			if not unique[ord(s[i])-ord(\'a\')]: unique[ord(s[i])-ord(\'a\')] = True
+			else: return False
+		return True
+
+	# Do a DFS on all the individual array elements
+	def dfs(path, l, r):
+		# If path has non-zero length then that means this is a potential solution
+		if path:
+			self.ans = max(self.ans, len(path))
+
+		for i in range(l ,r):
+			if isValid(path+arr[i]):
+				dfs(path+arr[i], i+1, r)
+
+	self.ans = float(\'-inf\')
+	dfs("", 0, len(arr))
+
+	return self.ans if self.ans != float(\'-inf\') else 0

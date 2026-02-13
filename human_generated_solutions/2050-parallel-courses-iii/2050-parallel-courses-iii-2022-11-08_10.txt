@@ -1,0 +1,33 @@
+from collections import defaultdict
+class Solution:
+    def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
+        prereqGraph = defaultdict(list)
+
+        timeCompleted = (n + 1) * [0]
+
+        time = [0] + time
+
+        for prevCourse, nextCourse in relations:
+            prereqGraph[nextCourse].append(prevCourse)
+            
+        def dfs(src):
+            if timeCompleted[src] > 0:
+                return timeCompleted[src]
+            
+            timeCompleted[src] = 0
+
+            for nxt in prereqGraph[src]:
+                if timeCompleted[nxt] == 0:
+                    dfs(nxt)
+                
+                timeCompleted[src] = max(timeCompleted[src], timeCompleted[nxt])
+            
+            timeCompleted[src] += time[src]
+        
+
+        for src in range(1, n + 1):
+            if timeCompleted[src] == 0:
+                dfs(src)
+        
+        
+        return max(timeCompleted)

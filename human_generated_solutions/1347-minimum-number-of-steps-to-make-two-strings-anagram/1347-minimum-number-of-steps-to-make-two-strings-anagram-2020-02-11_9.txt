@@ -1,0 +1,29 @@
+from collections import defaultdict
+from string import ascii_lowercase
+
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        
+        # dictionary
+        # key   : alphabet letter
+        # value : occurrence
+        s_occ_dict = defaultdict( int )
+        t_occ_dict = defaultdict( int )
+        
+        # build the dictionary for input string s
+        for ch in s:
+            s_occ_dict[ch] += 1
+        
+        # build the dictionary for input string t
+        for ch in t:
+            t_occ_dict[ch] += 1
+        
+        
+        # counting the minimum distance to anagram 
+        diff = 0
+        
+        for ch in ascii_lowercase:
+            
+            diff += abs(s_occ_dict[ch] - t_occ_dict[ch])
+            
+        return diff//2

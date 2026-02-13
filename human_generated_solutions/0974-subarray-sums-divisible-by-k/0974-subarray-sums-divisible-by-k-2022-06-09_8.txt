@@ -1,0 +1,11 @@
+class Solution:
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        count = [0] * k
+        s = 0
+        for x in nums:
+            s += x % k
+            count[s % k] += 1
+        result = count[0]
+        for c in count:
+            result += (c * (c - 1)) // 2
+        return result

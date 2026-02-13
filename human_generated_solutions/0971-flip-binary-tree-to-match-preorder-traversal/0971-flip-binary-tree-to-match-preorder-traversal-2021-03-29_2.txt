@@ -1,0 +1,18 @@
+class Solution:
+    def flipMatchVoyage(self, root: TreeNode, voyage: List[int]) -> List[int]:
+        index = 0
+        flips = []
+        def dfs(root):
+            nonlocal index
+            if not root:
+                return True
+            if root.val != voyage[index]:
+                return False
+            index += 1
+            if root.left and voyage[index] != root.left.val:
+                if not(root.right and root.right.val == voyage[index]):
+                    return False
+                flips.append(root.val)
+                root.left,root.right = root.right,root.left
+            return dfs(root.left) and dfs(root.right)
+        return flips if dfs(root) else [-1]

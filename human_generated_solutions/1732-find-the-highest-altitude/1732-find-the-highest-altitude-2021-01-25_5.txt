@@ -1,0 +1,30 @@
+\'\'\'
+w: array, prefix sum
+h: this is a prefix-sum like problem, but we only
+    need to care about the last element in the list
+    so we only need to store the last element
+    and compare to previous result
+    
+Time: O(N)
+space: O(1)
+
+\'\'\'
+class Solution:
+    def largestAltitude(self, gain: List[int]) -> int:
+        res = 0
+        start = 0
+        for i in gain:
+            start += i
+            res = max(res, start)
+            
+        return res
+    
+\'\'\'
+prefix-sum: a = [0, 1, 2, 3]
+what is the sum up to the current index in the array?
+
+res = [a[0]]
+for i in a[1:]:
+    res.append(res[-1]+i)
+    
+\'\'\'

@@ -1,0 +1,20 @@
+\r
+class Solution:\r
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:\r
+        stack=[]\r
+        preOdd=True\r
+        for i in nums:\r
+            if i%2==1:\r
+                if preOdd:\r
+                    stack.append(1)\r
+            else:\r
+                if preOdd:\r
+                    stack.append(2)\r
+                else:\r
+                    stack[-1]+=1\r
+            preOdd=i%2==1\r
+        if preOdd:\r
+            stack.append(1)\r
+\r
+        return sum([stack[j]*stack[j+k] for j in range(len(stack)-k)])\r
+            \r

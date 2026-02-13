@@ -1,0 +1,26 @@
+class Solution:
+    def primePalindrome(self, k: int) -> int:
+        def is_prime(num):
+            if num % 2 is 0: return False
+            return all(num%i for i in range(3, int(num**0.5)+1, 2))
+        
+        if k < 12:
+            return next(x for x in [2,3,5,7,11] if x >= k)
+        else:
+            string_k = str(k)
+            string_length = len(string_k)
+            
+            if string_length % 2:
+                starting_root = int(string_k[:string_length-string_length//2])
+                for root in range(starting_root, 10**6):
+                    root = str(root)
+                    palindrome_gen = int(root + root[-2::-1])
+                    if is_prime(palindrome_gen) and palindrome_gen >= k:
+                        return palindrome_gen
+            else:
+                starting_root = str(10**(string_length-string_length//2))
+                starting_reverse = starting_root[-2::-1]
+                for root in range(int(starting_root), 10**6):
+                    palindrome_gen = int(str(root) + starting_reverse)
+                    if is_prime(palindrome_gen) and palindrome_gen >= k:
+                        return palindrome_gen

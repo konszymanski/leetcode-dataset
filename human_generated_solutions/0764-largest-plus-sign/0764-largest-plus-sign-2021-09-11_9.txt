@@ -1,0 +1,36 @@
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:
+        banned = {tuple(mine) for mine in mines}
+        
+        def check(x,y):
+            if x in row:
+                ind=bisect.bisect(row[x],y)
+                ro=2*min(row[x][ind]-y-1,y-row[x][ind-1]-1)+1
+            else:
+                ro=2*min(y+1,n-y)
+            if y in col:
+                ind=bisect.bisect(col[y],x)
+                co=2*min(col[y][ind]-x-1,x-col[y][ind-1]-1)+1
+            else:
+                co=2*min(x+1,n-x)
+            return min(co,ro)
+        
+        row=defaultdict(list)
+        col=defaultdict(list)
+        for i in sorted(mines):
+            row[i[0]].append(i[1])
+            col[i[1]].append(i[0])
+        for i in row:
+            row[i].insert(0,-1)
+            row[i].append(n)
+        for i in col:
+            col[i].insert(0,-1)
+            col[i].append(n)
+         
+        diff=0
+        for i in range(n):
+            for j in range(n):
+                if (i,j) not in banned:
+                    diff=max(diff,check(i,j))
+         
+        return (diff-1)//2+1

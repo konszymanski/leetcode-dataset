@@ -1,0 +1,38 @@
+class Solution:
+    def sumOfDistancesInTree(self, N: int, edges: List[List[int]]) -> List[int]:
+        def build():
+            for edge in edges:
+                adj_list[edge[0]].append(edge[1])
+                adj_list[edge[1]].append(edge[0])
+
+        def bfs(node):
+            visited = set()
+            paths_sum = 0
+            queue = deque([node])
+            
+            path_len = 1
+            while queue:
+                for _ in range(len(queue)):
+                    node = queue.popleft()
+                    visited.add(node)
+                    for child in adj_list[node]:
+                        if child not in visited:
+                            paths_sum += path_len
+                            queue.append(child)
+                path_len += 1
+                
+            return paths_sum
+            
+        def dfs(node, parent=None, cur_path_len = 0):
+            paths_sum = cur_path_len
+            for child in adj_list[node]:
+                if child != parent:
+                    paths_sum += dfs(child, node, cur_path_len + 1)
+            
+            return paths_sum
+
+        adj_list = defaultdict(list)
+        build()
+
+        # return (bfs(n) for n in range(N))
+        return (dfs(n) for n in range(N))

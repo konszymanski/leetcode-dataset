@@ -1,0 +1,35 @@
+class Solution:
+    def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        
+        
+        def postorder(node, depth):
+            
+            if node is None:
+                return 0, None #depth, candidate
+            
+            leftMaxDepth, leftCandidate = postorder(node.left, depth + 1)
+            rightMaxDepth, rightCandidate = postorder(node.right, depth + 1)
+            
+            currCandidate = None
+            
+            # check depths on left and right subtree
+            if leftMaxDepth == rightMaxDepth:
+                currCandidate = node
+            
+            # if both have candidate, select one with larger depth
+            elif leftCandidate and rightCandidate:
+                if leftMaxDepth > rightMaxDepth:
+                    currCandidate = leftCandidate
+                else:
+                    currCandidate = rightCandidate
+            elif leftCandidate: #left only candidate
+                currCandidate = leftCandidate
+            elif rightCandidate: #right only candidate
+                currCandidate = rightCandidate
+            
+            #guaranteed maxDepth is the one with larger depth
+            return max(leftMaxDepth, rightMaxDepth, depth), currCandidate
+        
+        maxDepth, candidate = postorder(root, 0)
+        
+        return candidate

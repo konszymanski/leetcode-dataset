@@ -1,0 +1,40 @@
+from functools import cache
+
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+       
+        # Init
+        n = len(s)
+        m = len(p)
+       
+        @cache # memoization
+        def match(s_idx, p_idx) -> bool:
+            
+            # Wait for pattern to be exhausted
+            if p_idx == m:
+                return s_idx == n # string must be exhausted if it matches the pattern
+            
+            elif s_idx > n: # if string is exhausted before pattern is exhausted, return False
+                return False
+            
+            else: # for all other scenarios
+                
+                # see if string matches the current pattern
+                matched = ((s_idx < n) and (s[s_idx] == p[p_idx])) or (p[p_idx] in ["*", "?"])
+                
+                # if nothing matches, return false
+                if not matched:
+                    return False
+                
+                else: # in case of a match
+                    
+                    # check if pattern has "*"
+                    if p[p_idx] == "*":
+                        return (match(s_idx+1, p_idx) or # increment string index and stay at same pattern index
+                                match(s_idx+1,p_idx+1) or # increment both string and patter index
+                                match(s_idx, p_idx+1)) # increment pattern index and stay at the same string index
+                    
+                    else: # if pattern doesn\'t have "*", then it either have "?" or same char as string
+                        return match(s_idx+1, p_idx+1) # increment both string and pattern index
+        
+        return match(0,0)

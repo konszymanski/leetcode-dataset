@@ -1,0 +1,15 @@
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        def traversePath(root , idx):
+            if not root:
+                return 
+            nodes[idx] = str(root.val)
+            if not root.left and not root.right:
+                result.append(nodes[ : idx + 1])
+            traversePath(root.left , idx + 1)
+            traversePath(root.right , idx + 1)
+            
+        nodes = [0 for i in range(99)]
+        result = []
+        traversePath(root , 0)
+        return sum(map(int , ["".join(i) for i in result]))

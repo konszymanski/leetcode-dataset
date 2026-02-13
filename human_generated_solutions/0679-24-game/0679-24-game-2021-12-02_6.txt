@@ -1,0 +1,15 @@
+from fractions import Fraction
+
+class Solution:
+    def judgePoint24(self, cards: List[int]) -> bool:
+        
+        @cache
+        def fn(*args): 
+            """Return True if arguments can be combined into 24."""
+            if len(args) == 1: return args[0] == 24
+            for x, y, *rem in permutations(args): 
+                for op in add, sub, mul, Fraction: 
+                    if (op != Fraction or y != 0) and fn(op(x, y), *rem): return True
+            return False 
+        
+        return fn(*cards)

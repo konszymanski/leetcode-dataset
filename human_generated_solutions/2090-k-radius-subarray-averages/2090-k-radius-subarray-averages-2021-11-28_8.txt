@@ -1,0 +1,19 @@
+class Solution:
+    def getAverages(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        res = [-1]*n
+        r = k + k + 1
+        if r > n:
+            return res
+        temp = 0
+        for i in range(r):
+            temp += nums[i]
+        
+        for i in range(k,n-k):
+            if i != k:
+                temp += nums[i+k]
+            x = temp//r
+            res[i] = x
+            temp -= nums[i-k]
+        
+        return res

@@ -1,0 +1,12 @@
+class Solution:
+    def distinctNames(self, ideas: List[str]) -> int:
+        s = set(ideas)
+        d = {(give, take): 0 for give in string.ascii_lowercase for take in string.ascii_lowercase}
+        ans = 0
+        for idea in ideas:
+            take = idea[0]
+            for give in string.ascii_lowercase:
+                if give + idea[1:] not in s:
+                    ans += d[give, take] * 2
+                    d[take, give] += 1
+        return ans

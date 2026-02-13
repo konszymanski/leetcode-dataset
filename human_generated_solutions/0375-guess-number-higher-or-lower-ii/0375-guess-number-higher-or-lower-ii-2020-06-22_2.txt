@@ -1,0 +1,13 @@
+class Solution:
+    def getMoneyAmount(self, n: int) -> int:
+        ## RC ##
+        ## APPROACH : DP - MERGE INTERVALS PATTERN ##
+        ## LOGIC - BOTTOM UP ##
+        ## consider numbers 1,2,3,4 (here i = 1, j = 4) ## 
+        ## 1. we start by picking 2 or 3 ==> lets say we started by 2, player B says right side we pick 3 ==> so total = 5. or if player B says left side ? result will be 2 + 0 => 2. worst case scenarios is maximum of leftside and rightside. i.e for k=2 => max(5,2)
+        ## 2. next if we start with 3 i.e k=3 ==> we can go left side or right side. for leftside ==> total = 3 + 1, for rightside total = 3 + 0. worst case is max(4,3) = 4
+        ## In short, for start point k =2 in 1234, we need leftside [1,1] rightside[3,4] and pick worst
+        ## for startpoint k = 3 in 1234, we need leftside [1,2] and rightside[4,4] and pick worst
+        ## This is the reason why we need to have 2D DP matrix, to store left and right subproblems
+        ## We need to return best of all worst cases, so res = minimum( worstcase( number + leftside sub problem, number + rightside subproblem ) ) 
+        ##

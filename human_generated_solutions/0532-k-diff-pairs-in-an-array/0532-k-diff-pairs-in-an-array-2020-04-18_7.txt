@@ -1,0 +1,36 @@
+def find_pairs(L: List[int], k: int) -> int:
+    """
+    K-diff Pairs in an Array
+
+    time: O(nlogn)
+    space: O(1)
+
+    :param List[int] L:
+    :param int k:
+    :return int:
+    """
+    L.sort()
+
+    N = len(L)
+
+    i = pairs = 0
+    j = 1
+
+    while j < N:
+        if j < N - 1 and L[j] == L[j + 1]:
+            j += 1
+
+        elif L[j] == L[i] + k:
+            pairs += 1
+            i += 1
+            j += 1
+
+        elif L[j] > L[i] + k:
+            i += 1
+
+        elif L[j] < L[i] + k:
+            j += 1
+
+        j = max(j, i + 1)
+
+    return pairs

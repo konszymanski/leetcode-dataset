@@ -1,0 +1,28 @@
+class Solution:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        hi = maxSum
+        lo = 1
+        r = n - index - 1
+        l = index
+        
+        while(lo<= hi):
+            mid = lo + (hi - lo)//2
+            sum1 = mid
+            ls = 0
+            rs = 0
+            m = mid - 1
+            if(r <= mid):
+                rs =  m*(m+1)//2- (m -r)*(m-r+1)//2
+            else:
+                rs = m*(m + 1)//2 + 1*(r - m)
+            if(l <= mid):
+                ls =  m*(m+1)//2- (m -l)*(m-l+1)//2
+            else:
+                ls = m*(m + 1)//2 + 1*(l - m)
+            sum1 += ls + rs
+            if(sum1<= maxSum):
+                res = mid
+                lo =   mid + 1
+            else:
+                hi = mid - 1
+        return res

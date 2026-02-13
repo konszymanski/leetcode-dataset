@@ -1,0 +1,22 @@
+class Solution:
+    def __init__(self):
+        self.maximum = -1
+        self.dist = 0
+    
+    def longestCycle(self, edges: List[int]) -> int:
+        def dfs(edges: List[int], visited: List[int], distance: List[int], source: int) -> None:
+            if source == -1:
+                return
+            if visited[source] == 0:
+                visited[source] = 1
+                distance[source] = self.dist
+                self.dist += 1
+                dfs(edges, visited, distance, edges[source])
+                visited[source] = 2
+            elif visited[source] == 1:
+                self.maximum = max(self.maximum, self.dist - distance[source])
+        
+        visited, distance = [0 for _ in range(len(edges))], [0 for _ in range(len(edges))]
+        for i in range(len(edges)):
+            dfs(edges, visited, distance, i)
+        return self.maximum

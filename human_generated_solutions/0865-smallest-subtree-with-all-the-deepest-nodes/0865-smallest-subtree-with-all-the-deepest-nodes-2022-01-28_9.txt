@@ -1,0 +1,17 @@
+class Solution:
+    def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        def dfs(root, d):
+            if not root:
+                return root, d
+            
+            lroot, ld = dfs(root.left, d+1)
+            rroot, rd = dfs(root.right, d+1)
+            
+            if ld == rd:
+                return root, ld
+            elif ld > rd:
+                return lroot, ld
+            else:
+                return rroot, rd
+        
+        return dfs(root, 0)[0]

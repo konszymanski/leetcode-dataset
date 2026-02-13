@@ -1,0 +1,20 @@
+class Solution:
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        def binaryTraverse(arr, left, right):
+            if left > right:
+                return None
+            mid = left + (right - left) // 2
+            node = TreeNode(arr[mid])
+            node.left = binaryTraverse(arr, left, mid - 1)
+            node.right = binaryTraverse(arr, mid + 1, right)
+            return node
+        def inorder(root, traverse):
+            if not root:
+                return
+            inorder(root.left, traverse)
+            traverse.append(root.val)
+            inorder(root.right, traverse)
+            return
+        traversal = []
+        inorder(root, traversal)
+        return binaryTraverse(traversal,0, len(traversal) - 1)

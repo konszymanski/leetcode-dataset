@@ -1,0 +1,38 @@
+class Solution:
+    def latestDayToCross(self, row: int, col: int, cells: List[List[int]]) -> int:
+        
+        def bfs(day):
+            mat = [ [0] * col for _ in range(row) ]
+            for i in range(0, day):
+                x, y = cells[i]
+                mat[x-1][y-1] = 1
+            q = deque()
+            visited = {}
+            for i in range(col):
+                if mat[0][i] == 0:
+                    q.append((0, i))
+                    visited[(0, i)] = 1
+            while q:
+                i, j = q.popleft()
+                if i == row - 1 and mat[i][j] == 0:
+                    return True
+                for x, y in ((0, -1), (0, 1), (1, 0), (-1, 0)):
+                    if 0 <= i+x <= row - 1 and 0 <= j+y <= col - 1:
+                        if mat[i+x][j+y] == 0 and visited.get((i+x, j+y), 0) == 0:
+                            q.append((i+x, j+y))
+                            visited[(i+x, j+y)] = 1
+            return False
+
+        def binary_search(low, high, cells):
+            if low > high:
+                return high
+            elif low == high:
+                return low if bfs(low) else low - 1
+            else:
+                mid = (low + high) // 2
+                if bfs(mid):
+                    return binary_search(mid + 1, high, cells)
+                else:
+                    return binary_search(low, mid - 1, cells)
+                  
+        return binary_search(1, len(cells), cells)

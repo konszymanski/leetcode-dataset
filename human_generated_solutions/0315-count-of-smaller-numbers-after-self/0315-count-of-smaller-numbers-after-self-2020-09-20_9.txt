@@ -1,0 +1,42 @@
+class Bst:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        self.leftSmallerSubTree = 0
+        
+    def insertNode(self, value, index, result, numberOfSmaller):
+        if value < self.value:
+            self.leftSmallerSubTree += 1
+            if self.left is None:
+                self.left = Bst(value)
+                result[index] = numberOfSmaller
+            else:
+                self.left.insertNode(value, index, result, numberOfSmaller)
+        else:
+            numberOfSmaller += self.leftSmallerSubTree
+            if value > self.value:
+                numberOfSmaller += 1
+            
+            if self.right is None:
+                self.right = Bst(value)
+                result[index] = numberOfSmaller
+            else:
+                self.right.insertNode(value, index, result, numberOfSmaller)
+                
+    
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        result = [0] * len(nums)
+        
+        if not nums:
+            return []
+        
+        lastIdx = len(nums) - 1
+        
+        root = Bst(nums[lastIdx])
+        
+        for i in range(lastIdx - 1, -1, -1):
+            root.insertNode(nums[i], i, result, 0)
+    
+        return result

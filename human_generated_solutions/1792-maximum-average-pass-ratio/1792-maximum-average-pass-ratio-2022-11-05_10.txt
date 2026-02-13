@@ -1,0 +1,9 @@
+class Solution:
+    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:
+        max_heap = []
+        for student, total in classes:
+            heappush(max_heap, (student / total - (student + 1) / (total + 1), student, total))
+        for i in range(extraStudents):
+            r, s, t = heappop(max_heap)
+            heappush(max_heap, ((s + 1) / (t + 1) - (s + 2) / (t + 2), s + 1, t + 1))
+        return sum(i[1] / i[2] for i in max_heap) / len(max_heap)

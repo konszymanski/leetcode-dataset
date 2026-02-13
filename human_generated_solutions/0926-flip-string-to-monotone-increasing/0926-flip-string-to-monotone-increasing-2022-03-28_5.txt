@@ -1,0 +1,15 @@
+def minFlipsMonoIncr(self, s: str) -> int:
+        
+        count_one = 0
+        count_zero = 0
+
+        for i in range(len(s)):
+            if s[i] == \'0\':
+                count_zero += 1
+            else:
+                count_one += 1
+            # ignore leading \'zero\' while counting.  Once hits \'one\', count population and return the minority to get the minimum flipping needed. 
+            if count_zero > count_one:
+                count_zero = count_one
+        
+        return count_zero

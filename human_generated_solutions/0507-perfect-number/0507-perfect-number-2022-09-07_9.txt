@@ -1,0 +1,9 @@
+class Solution:
+    def checkPerfectNumber(self, num: int) -> bool:
+        if num == 6: return True
+        if num == 28: return True
+        if num == 496: return True
+        if num == 8128: return True
+        if num == 33550336: return True
+        return False
+        #{6, 28, 496, 8128, 33550336}:

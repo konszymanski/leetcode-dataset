@@ -1,0 +1,53 @@
+from queue import Queue
+import math
+
+class Graph:
+    def __init__(self, nums):
+        self.V = nums
+        self.graph = [[] for _ in range(nums)]
+        self.non_start_nodes = set()
+        self.dist = [-math.inf for _ in range(nums)]
+    
+    def add_edge(self, a, b):
+        self.graph[a].append(b)
+        self.non_start_nodes.add(b)
+    
+    def bfs(self):
+        queue = Queue()
+        longest_so_far = 0
+        best_pair_so_far = None
+        
+        for i in range(self.V):
+            if i not in self.non_start_nodes:
+                queue.put((i, [i]))
+        
+        while not queue.empty():
+            u, cur_list = queue.get()
+            dist = len(cur_list)
+            if self.dist[u] >= dist:
+                continue
+            self.dist[u] = dist
+                
+            if len(cur_list) > longest_so_far:
+                longest_so_far = len(cur_list)
+                best_pair_so_far = cur_list[:]
+            
+            for ad in self.graph[u]:
+                queue.put((ad, cur_list + [ad]))
+            
+        return best_pair_so_far
+
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        #construct graph
+        N = len(nums)
+        g = Graph(N)
+        nums.sort()
+        for i in range(N):
+            for j in range(i + 1, N):
+                if nums[j] % nums[i] == 0:
+                    g.add_edge(i, j)
+        
+		#do bfs
+        pair = g.bfs()
+        return [nums[idx] for idx in pair]

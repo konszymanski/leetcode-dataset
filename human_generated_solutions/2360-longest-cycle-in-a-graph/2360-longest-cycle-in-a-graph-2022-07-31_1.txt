@@ -1,0 +1,24 @@
+class Solution {
+    void dfs(int i, int &len, vector<int>& edges, vector<int> &preorder, int &ans, int st) {
+        preorder[i] = len++;
+        
+        if (edges[i] == -1)
+            return;
+        else if (preorder[edges[i]] == -1)
+            dfs(edges[i], len, edges, preorder, ans, st);
+        else if (preorder[edges[i]] >= st)
+            ans = max(ans, preorder[i] - preorder[edges[i]] + 1);
+    }
+public:
+    int longestCycle(vector<int>& edges) {
+        vector<int> preorder(edges.size(), -1);
+        int ans = -1;
+        int len = 0;
+        
+        for (int i = 0; i < edges.size(); i++)
+            if (preorder[i] == -1 && edges[i] != -1)
+                dfs(i, len, edges, preorder, ans, len);
+        
+        return ans;
+    }
+};

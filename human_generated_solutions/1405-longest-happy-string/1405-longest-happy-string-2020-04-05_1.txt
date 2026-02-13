@@ -1,0 +1,35 @@
+from collections import Counter
+class Solution:
+    def longestDiverseString(self, a: int, b: int, c: int) -> str:
+        result = [] # list of characters forming the happy string
+        remaining = Counter({\'a\':a,\'b\':b,\'c\':c,}) # freq dict of remaining characters
+        
+        # In each loop we update remaining and recompute 
+        (fence, _), (wedge, _) = remaining.most_common(2) # initial group
+        while remaining[fence] > 0 and remaining[wedge] > 0: # loop till no new groups could be formed
+            # add first fence
+            result.append(fence)
+            remaining[fence] -= 1
+
+            # (Optional) add second fence, if it wouldn\'t form triplet with first fence and last wedge
+            if len(result) >= 2 and result[-2] == fence:
+                pass
+            elif remaining[fence] > 0: # add second fence if any remaining
+                result.append(fence)
+                remaining[fence] -= 1
+            
+            # add wedge
+            result.append(wedge)
+            remaining[wedge] -= 1
+            
+            # recompute the fence and wedge char for next group
+            (fence, _), (wedge, _) = remaining.most_common(2)
+
+        # has remaining characters not consumed by loop, can append two maximum fences
+        if remaining[fence] > 0:
+            result.append(fence)
+            remaining[fence] -= 1
+            if remaining[fence] > 0:
+                result.append(fence)
+
+        return \'\'.join(result)

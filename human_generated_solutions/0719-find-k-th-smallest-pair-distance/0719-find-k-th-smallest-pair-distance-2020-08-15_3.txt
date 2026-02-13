@@ -1,0 +1,50 @@
+class Solution:
+    def smallestDistancePair(self, nums, k: int) -> int:
+        """
+        Given an array of integers (nums) and a parameter k,
+        this program uses binary search to determine the kth
+        smallest pair distance within nums.
+
+        :param nums: array of non-negative integers
+        :type nums: list[int]
+        :param k: defines order of smallest pair distance to
+                  find in nums
+        :type k: int
+        :return: value of kth smallest pair distance in nums
+        :rtype: int
+        """
+
+        def enough(distance) -> bool:
+            """
+            Given a candidate pair distance (distance), this
+            method determines whether there are at least k pair
+            distances less than or equal to distance.
+
+            :param distance: candidate pair distance
+            :type distance: int
+            :return: True if there are at least k pair distances
+                     within nums that are >= distance, else False
+            :rtype: bool
+            """
+            k_count = 0
+            fast = 1
+            for slow in range(len_nums):
+                while fast < len_nums and nums[fast] - nums[slow] <= distance:
+                    fast += 1
+                k_count += fast - slow - 1
+            return k_count >= k
+
+        """
+        Binary Search
+        """
+        nums.sort()
+        len_nums = len(nums)
+        left = 0
+        right = nums[-1] - nums[0]
+        while left < right:
+            pair_distance = left + (right - left) // 2
+            if enough( pair_distance ):
+                right = pair_distance
+            else:
+                left = pair_distance + 1
+        return left

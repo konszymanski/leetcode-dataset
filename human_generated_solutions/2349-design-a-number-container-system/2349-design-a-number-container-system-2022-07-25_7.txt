@@ -1,0 +1,27 @@
+import bisect  
+
+class NumberContainers(object):
+
+    def __init__(self):
+        self.pos = {}
+        self.nums = {}
+		
+    def change(self, index, number):
+	#Look if the index has been created already
+        if index in self.pos:
+		#If yes, update the old number\'s list of indexes
+            old = self.pos[index]
+            del self.nums[old][bisect.bisect_left(self.nums[old], index)]
+        self.pos[index] = number
+		#If the number already existed, insert to its list the new index
+        if number in self.nums:
+            bisect.insort(self.nums[number], index)
+        else:    
+            self.nums[number] = [index]
+			
+	#Look for the number, return the first position of its list of indexes            
+    def find(self, number):
+        if number in self.nums:
+            if len(self.nums[number]) >= 1:
+                return self.nums[number][0]
+        return -1

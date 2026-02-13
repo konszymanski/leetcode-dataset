@@ -1,0 +1,10 @@
+class Solution:
+    def sumEvenGrandparent(self, root: TreeNode, parents: list=[]) -> int:
+        node, s = root, 0
+        if node:
+            if len(parents) > 1:
+                if parents[-2] % 2 == 0:
+                    s += node.val
+            s += self.sumEvenGrandparent(node.left, parents + [node.val])
+            s += self.sumEvenGrandparent(node.right, parents + [node.val])
+        return s

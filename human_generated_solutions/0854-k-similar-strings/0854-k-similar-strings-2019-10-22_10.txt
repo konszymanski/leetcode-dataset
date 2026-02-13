@@ -1,0 +1,68 @@
+class Solution:
+    def kSimilarity(self, A: str, B: str) -> int:
+        d = collections.defaultdict(list)
+        c = collections.defaultdict(int)
+        self.k = 0
+        for i, j in zip(A, B):
+            if i != j:
+                d[i] += [j]
+                c[(i, j)] += 1
+        def f(i, dep, path):
+            if dep == depth:
+                self.k += 1
+                if i == start:
+                    nonlocal dep_path
+                    for i in range(depth + 1):
+                        path = path[1: ] + path[: 1]
+                        if tuple(path) in dep_path and start != path[0]:
+                            return
+                    dep_path += [tuple(path)]
+            else:
+                for j in d[i]:
+                    f(j, dep + 1, path + [i])
+        def g(a, b):
+            tc = collections.defaultdict(int)
+            for i in range(depth + 1):
+                tc[(a[i - 1], a[i])] += 1
+                tc[(b[i - 1], b[i])] += 1
+            for i, j in tc:
+                if tc[(i, j)] > c[(i, j)]:
+                    return True
+            return False
+        ans = 0
+        depth = 1
+        while d:
+            if depth == 6:
+                ans += len(c) // 6 * 5
+                break
+            dep_path = []
+            for i in d:
+                start = i
+                for j in d[i]:
+                    f(j, 0, [i])
+            n = len(dep_path)
+            p = collections.defaultdict(int)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if g(dep_path[i], dep_path[j]):
+                        p[dep_path[i]] += 1
+                        p[dep_path[j]] += 1
+            dep_path.sort(key = lambda x: p[x])
+            for path in dep_path:
+                tc = collections.defaultdict(int)
+                flag = False
+                for i in range(depth + 1):
+                    tc[(path[i - 1], path[i])] += 1
+                    if tc[(path[i - 1], path[i])] > c[(path[i - 1], path[i])]:
+                        flag = True
+                        break
+                if flag:
+                    continue
+                ans += depth
+                for i in range(depth + 1):
+                    d[path[i - 1]].remove(path[i])
+                    if not d[path[i - 1]]:
+                        d.pop(path[i - 1])
+                    c[(path[i - 1], path[i])] -= 1
+            depth += 1
+        return ans

@@ -1,0 +1,28 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+
+        # stack, and top index of stack
+        stack, TOP = [], -1
+
+        for star in asteroids:
+
+            while stack and stack[TOP] > 0 and star < 0:
+                if stack[TOP] + star < 0: 
+                    # Current star is bigger, previous TOP is dead after collision
+                    stack.pop()
+
+                elif stack[TOP] + star > 0: 
+                    # TOP is bigger, still alive.
+                    # Current star is smaller, dead after collision
+                    break    
+
+                else: 
+                    # Both current star and previous TOP are, of the same size, dead after collision
+                    stack.pop()
+                    break
+            else:
+                # Current start is alive after collision 
+                stack.append(star)        
+
+        # Final state of asteroids after all collisions                
+        return stack

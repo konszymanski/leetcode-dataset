@@ -1,0 +1,18 @@
+def maxScore(self, nums: List[int]) -> int:
+	n = len(nums)//2
+	@lru_cache(None)
+	def solve(oper, mask):
+		if(oper > n):
+			return 0
+		curr = 0
+		for i in range(2*n):
+			if((1 << i) & mask == 0):
+				n_mask1 = mask | (1 << i)
+				for j in range(i+1, 2*n):
+					if((1 << j) & mask == 0):
+						n_mask2 = n_mask1 | (1 << j)
+						x = solve(oper+1, n_mask2) + gcd(nums[i], nums[j]) * oper
+						curr = max(curr, x)
+		return curr
+
+	return solve(1, 0)

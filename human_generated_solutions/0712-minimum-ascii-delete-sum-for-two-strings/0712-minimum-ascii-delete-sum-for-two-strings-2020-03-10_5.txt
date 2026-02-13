@@ -1,0 +1,14 @@
+from functools import lru_cache
+
+class Solution:
+    def minimumDeleteSum(self, s1: str, s2: str) -> int:
+        
+        @lru_cache(None)
+        def fn(i, j): 
+            """Return sum of deleted chars for s1[:i] and s2[:j] to make them equal"""
+            if i == 0: return sum(map(ord, s2[:j]))
+            if j == 0: return sum(map(ord, s1[:i]))
+            if s1[i-1] == s2[j-1]: return fn(i-1, j-1)
+            else: return min(fn(i-1, j) + ord(s1[i-1]), fn(i, j-1) + ord(s2[j-1]))
+            
+        return fn(len(s1), len(s2))

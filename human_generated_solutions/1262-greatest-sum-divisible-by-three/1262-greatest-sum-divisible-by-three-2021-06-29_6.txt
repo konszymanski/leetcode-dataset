@@ -1,0 +1,44 @@
+class Solution:
+    def maxSumDivThreeTopDown(self, nums: List[int]) -> int:
+        # normal knapsack/subsequence dp
+        # at each position, pick OR don\'t pick...
+        # also keep 3 different states for each remainder
+        @functools.cache
+        def dp(i, remainder): 
+            if i == len(nums):
+                if remainder:
+                    return -math.inf 
+                else: 
+                    return 0
+            
+            # don\'t pick me
+            skip = dp(i+1, remainder)
+            
+            # pick me
+            pick = nums[i] + dp(i+1, (remainder + nums[i])%3)
+            
+            return max(pick, skip)
+        return dp(0,0)
+    # how to convert it into bottom up?
+    
+    # just convert brackets into square brackets ;)
+    
+    # and loop backwards since all `i` depends on `i+1`
+    def maxSumDivThree(self, nums: List[int]) -> int:
+        
+        # base case is 0, -inf, -inf
+        dp = [[0,-math.inf, -math.inf] for i in range(len(nums)+1)]
+        
+        for i in range(len(nums)-1,-1,-1): # i = , i != , +=
+            for rem in range(3):
+                val = nums[i]
+                
+                # don\'t pick  
+                skip = dp[i+1][rem]
+                
+                # pick me...
+                pick = val + dp[i+1][(rem+val)%3]
+
+                dp[i][rem] = max(pick, skip)
+        
+        return dp[0][0]

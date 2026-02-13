@@ -1,0 +1,39 @@
+"""
+approach: 
+replace all - with +- sign so that we can simply split the string 
+on + afterwards
+"""
+class Solution:
+    def solveEquation(self, equation: str) -> str:
+        equation = equation.replace(\'-\', \'+-\')
+        lhs, rhs = equation.split(\'=\')
+        lhs, rhs = lhs.split(\'+\'), rhs.split(\'+\')
+        
+        def process_sides(side):
+            x_val, val = 0, 0
+            for token in side:
+                if token == \'\':
+                    continue
+                elif \'x\' in token:
+                    if len(token) == 1:
+                        x_val+=1
+                    elif token == \'-x\':
+                        x_val+=-1
+                    else:
+                        x_val+=int(token[:-1])
+                else:
+                    val+=int(token)
+            return x_val, val
+        
+        lhs_x, lhs_val = process_sides(lhs)
+        rhs_x, rhs_val = process_sides(rhs)
+        if lhs_x == rhs_x:
+            if lhs_val == rhs_val:
+                return \'Infinite solutions\'
+            else:
+                return \'No solution\'
+        
+        x_val = lhs_x - rhs_x
+        val = rhs_val - lhs_val
+        val = int(val / x_val)
+        return \'x={}\'.format(val)

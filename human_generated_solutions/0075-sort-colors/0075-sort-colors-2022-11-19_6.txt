@@ -1,0 +1,23 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        l=0 #left pointer
+        mid=0 #traverse from left
+        r=len(nums)-1 #right pinter
+        while mid<=r:
+            if nums[mid]==0: #if found 0 put it at first of nums, so swap from left pointer
+                nums[mid],nums[l]=nums[l],nums[mid]
+                #after swapping move to increment indeces
+                mid+=1 
+                l+=1
+                
+            #if found 1 leave it as it is (should be bw 0 and 2)
+            elif nums[mid]==1: 
+                mid+=1
+                
+            #if found 2, so swap from right pointer
+            else: 
+                nums[mid],nums[r]=nums[r],nums[mid]
+                r-=1 #move the right pointer

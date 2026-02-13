@@ -1,0 +1,14 @@
+class Solution:
+    def largeGroupPositions(self, s: str) -> List[List[int]]:
+        groups = []
+        
+        start = 0
+        idx = 0
+        while idx <= len(s):
+            if idx == len(s) or s[idx] != s[start]:
+                if idx - start >= 3:
+                    groups.append([start, idx - 1])
+                start = idx
+            idx += 1
+            
+        return groups

@@ -1,0 +1,19 @@
+from collections import defaultdict
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        
+        def pairs(s):
+            dct = defaultdict(int)
+            for i in s:
+                dct[i] += 1
+            return dct
+        
+        S = pairs(s)
+        T = pairs(t)
+        res = 0
+        
+        for key in S.keys():    
+            if S[key] > T[key]:
+                res += S[key]-T[key]
+				
+        return res

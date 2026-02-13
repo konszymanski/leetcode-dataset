@@ -1,0 +1,11 @@
+def solution(self, s: str)->int
+	n = len(s)
+	dp = [0] * n
+	prev = defaultdict(lambda: -1)
+	for i in range(n):
+			if i == 0:
+				 dp[i] = 1
+			else:
+				dp[i] = dp[i - 1] + i - prev[s[i]]
+			prev[s[i]] = i
+	return sum(dp)

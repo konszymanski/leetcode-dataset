@@ -1,0 +1,21 @@
+class Solution:
+    def findSmallestSetOfVertices(self, n: int, edges: List[List[int]]) -> List[int]:
+        graph = collections.defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            
+        def dfs(vertex, visited: list, graph: dict, ans:list):
+            visited[vertex] = True
+            for node in graph[vertex]:
+                if not visited[node]:
+                    dfs(node, visited, graph, ans)
+                elif node in ans: ans.remove(node)
+            
+        visited = [False]*n
+        ans = set()
+        for i in range(n):
+            if not visited[i]:
+                dfs(i, visited, graph, ans)
+                ans.add(i)
+                
+        return ans

@@ -1,0 +1,7 @@
+def repeatedNTimes(self, A: List[int]) -> int:
+
+	seen = set()
+	for num in A:
+		if num in seen:
+			return num
+		seen.add(num)

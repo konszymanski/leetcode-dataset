@@ -1,0 +1,14 @@
+from collections import deque
+class Solution:
+    def deckRevealedIncreasing(self, deck: List[int]) -> List[int]:
+        deck.sort()
+        j=len(deck)-2
+        arr=deque()
+        arr.append(deck[-1])
+        print(arr)
+        while(j>=0):
+            t=arr.pop()
+            arr.appendleft(t)
+            arr.appendleft(deck[j])
+            j-=1
+        return list(arr)

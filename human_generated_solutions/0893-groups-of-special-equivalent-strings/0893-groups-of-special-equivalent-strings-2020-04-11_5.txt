@@ -1,0 +1,23 @@
+class Solution:
+    def numSpecialEquivGroups(self, A: List[str]) -> int:
+        l=[]
+        for s in A:
+            even=""
+            odd=""
+            for i in range(len(s)):
+                if i%2!=0:
+                    odd+=s[i]
+                    
+                else:
+                    even+=s[i]
+                    
+            odd = \'\'.join(sorted(odd))
+            even = \'\'.join(sorted(even)) 
+            # odd=sorted(odd)
+            # even=sorted(even)
+            
+            l.append(str(odd)+str(even))
+            
+        # print(l)    
+            
+        return len(set(l))

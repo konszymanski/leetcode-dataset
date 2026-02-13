@@ -1,0 +1,23 @@
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        
+        
+        pos_nums = sorted([positive for positive in satisfaction if positive >= 0])
+        neg_nums = sorted([negative for negative in satisfaction if negative < 0])[::-1]
+        
+        
+        current = sum(pos_nums)
+        
+        for i, v in enumerate(neg_nums):
+            if abs(v) < current:
+                pos_nums = [v] + pos_nums
+                current += v
+            else:
+                break
+
+                
+        answer = 0
+
+        for i,v in enumerate(pos_nums):
+            answer += ((i+1)*v)
+        return answer

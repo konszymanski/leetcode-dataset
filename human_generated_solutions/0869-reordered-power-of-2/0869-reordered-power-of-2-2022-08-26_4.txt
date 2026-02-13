@@ -1,0 +1,23 @@
+class Solution:
+    def reorderedPowerOf2(self, n: int) -> bool:
+        int32_powers_of_two = set()
+        for i in range(31):
+            int32_powers_of_two.add(1<<i)
+        
+        n_numbers = []
+        while n > 0:
+            n_numbers.append(n % 10)
+            n //= 10
+        
+        permutations = set()
+        def generate_permutations(cur_permutation, options):
+            if not options:
+                permutations.add(int(cur_permutation))
+                return
+            
+            for i in range(len(options)):
+                if cur_permutation == "" and options[i] == 0: continue
+                generate_permutations(cur_permutation + str(options[i]), [*options[:i], *options[i+1:]])
+        
+        generate_permutations("", n_numbers)
+        return permutations.intersection(int32_powers_of_two)

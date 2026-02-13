@@ -1,0 +1,23 @@
+class Solution:
+    """
+    Explanation:  We are essentialy, performing two steps:
+    
+    Step 1: Get inorder traversal and store in a list
+    Step 2: Find and return the minimum differece in the list
+    """
+    def inorder(self, root, inorderTraversal):
+        if root:
+            self.inorder(root.left, inorderTraversal) 
+            inorderTraversal.append(root.val)
+            self.inorder(root.right, inorderTraversal)
+        return inorderTraversal
+    
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        inorderTraversal = self.inorder(root, inorderTraversal = [])
+        
+        _min = sys.maxsize
+        
+        for i in range(len(inorderTraversal) - 1):
+            _min = min(_min, inorderTraversal[i + 1] - inorderTraversal[i])
+    
+        return _min

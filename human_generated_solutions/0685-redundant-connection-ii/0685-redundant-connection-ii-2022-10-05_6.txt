@@ -1,0 +1,32 @@
+def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
+        n = len(edges)
+        parents = dict()
+        case1 = []
+        for a,b in edges:
+            if b not in parents:
+                parents[b] = a
+            else: #b has two parents, this should only hit once
+                case1 = [(parents[b], b), (a,b)]
+        #case 1
+        #approach of detecting the cycle: travel in reverse: from parent to parent until child becomes parent
+        #keep in mind this method only works if you are already in the cycle and each node has only 1 parent
+        def cycle(edge):
+            a, b = edge
+            while a != b and a in parents:
+                a = parents[a]
+            return a == b
+        if case1:
+            return case1[0] if cycle(case1[0]) else case1[1]
+        #case 2
+        parents = list(range(n+1))
+        def find(i):
+            if parents[i] != i:
+                parents[i] = find(parents[i])
+            return parents[i]
+        for a,b in edges:
+            parent_a, parent_b = find(a), find(b)
+            if parent_a == parent_b:
+                return [a,b]
+            parents[parent_b] = parent_a
+        
+        return [-1, -1]

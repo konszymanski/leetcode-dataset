@@ -1,0 +1,41 @@
+def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+	# -- helper
+	def recurse(curM, curN, i):
+		if i > len(strs)-1: # end of path
+			return 0
+
+		if curM < 0 or curN < 0:
+			return 0
+
+		if curM > m or curN > n: # indv nodes greater than capacity limit
+			return 0
+
+		if (curM, curN, i) in memo:
+			return memo[(curM, curN, i)]
+
+		exclude = recurse(curM, curN, i+1)
+		# ----- NOTE [1]
+		if curM-edgeCost[i][0] >= 0 and curN-edgeCost[i][1] >= 0:
+			include = 1 + recurse(curM-edgeCost[i][0], curN-edgeCost[i][1], i+1)
+		else:
+			include = 0
+
+		result = max(include, exclude)
+
+		memo[(curM, curN, i)] = result
+		return result
+
+	# -- main
+	# peprocess each str to its equivalent freq tuple of 0,1
+	edgeCost = []
+	for s in strs:
+		zeros, ones = 0, 0
+		for ch in s:
+			if ch == "0":
+				zeros += 1
+			else:
+				ones += 1
+		edgeCost.append([zeros, ones])
+
+	memo = {}
+	return recurse(m, n, 0) # m, n, i

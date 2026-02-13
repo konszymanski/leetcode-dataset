@@ -1,0 +1,41 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    def helper(self,head ,root):
+        if head is None:
+            return True
+        
+        leftCheck = False
+        if root.left and head.val == root.left.val:
+            leftCheck = self.helper(head.next,root.left)
+        
+        rightCheck = False
+        if root.right and head.val == root.right.val:
+            rightCheck = self.helper(head.next,root.right)
+        
+        return leftCheck or rightCheck
+        
+        
+            
+    def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
+        if root is None:
+            return False
+        
+        if root.val == head.val:
+            if self.helper(head.next,root):
+                return True
+        
+        leftCheck = self.isSubPath(head,root.left)
+        rightCheck = self.isSubPath(head,root.right)
+        
+        return leftCheck or rightCheck

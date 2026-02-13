@@ -1,0 +1,23 @@
+class Solution:
+    def checkInclusion(self, target_string: str, string: str) -> bool:
+        
+        target_string = \'\'.join(sorted(target_string))
+        current_string = \'\'
+        
+        for char in string:
+            
+            # increase the window (equivalent to adding the next character to current string)
+            current_string += char
+            
+            # start doing business once the window size is size of target_string
+            if len(current_string) == len(target_string):
+                
+                # sort the current string and check if it equals the target_string
+                if \'\'.join(sorted(current_string)) == target_string:
+                    return True
+                
+                # shrink the window for next iteration (remove the leftmost character)
+                current_string = current_string[1:]
+        
+        # we couldn\'t find a permutation in the string, return False
+        return False

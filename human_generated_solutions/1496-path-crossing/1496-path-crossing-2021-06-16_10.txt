@@ -1,0 +1,29 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        
+        f={(0,0):1}
+        cux, cuy = 0,0
+        for  i in path:
+            
+            if i==\'N\':
+                if (cux , cuy+1) in f:
+                    return True
+                else:
+                    cuy+=1
+            elif i==\'E\':
+                if (cux+1,cuy) in f:
+                    return True
+                else:
+                    cux+=1
+            elif i==\'S\':
+                if (cux , cuy-1) in f:
+                    return True
+                else:
+                    cuy-=1
+            elif i==\'W\':
+                if (cux-1,cuy) in f:
+                    return True
+                else:
+                    cux-=1
+            f[(cux,cuy)]=1
+        return False

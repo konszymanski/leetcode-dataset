@@ -1,0 +1,11 @@
+class Solution:
+    def largestCombination(self, candidates: List[int]) -> int:
+        binary = ["{0:b}".format(candidate) for candidate in candidates] # Convert to Binary
+        res = 0
+        for i in range(1, max([len(b) for b in binary]) + 1):  # Use -i to count the least siginificant bit(LSB) to MSB if any
+            tmp = 0
+            for b in binary:
+                if i <= len(b) and b[-i] == \'1\': 
+                        tmp += 1
+            res = max(res, tmp)
+        return res

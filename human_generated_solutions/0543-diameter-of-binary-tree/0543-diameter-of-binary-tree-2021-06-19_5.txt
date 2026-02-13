@@ -1,0 +1,28 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+
+        def height(root: TreeNode):
+            if root == None:
+                return 0
+            left = height(root.left)
+            right = height(root.right)
+            return 1 + max(left, right)
+
+        def FindBinary(root: TreeNode):
+            if root == None:
+                return 0
+            h1 = height(root.left)
+            h2 = height(root.right)
+            op1 = h1+h2
+            op2 = FindBinary(root.left)
+            op3 = FindBinary(root.right)
+            return max(op1, op2, op3)
+
+        return FindBinary(root)

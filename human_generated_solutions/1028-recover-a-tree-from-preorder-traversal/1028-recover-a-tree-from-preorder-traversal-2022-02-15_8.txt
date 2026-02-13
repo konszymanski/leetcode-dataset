@@ -1,0 +1,62 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    def find_level(self , s):
+        if s[0] != "-":
+            return 0 , s
+        level = 0
+        while(s[0] == "-"):
+            level +=1
+            s = s[1:]
+        
+        return (level , s)
+    
+    def find_num(self , s):
+        if s[0] == "-":
+            return None
+        ans = ""
+        count = 0
+        for i in range(len(s)):
+            if s[i] == "-":
+                break
+            ans += s[i]
+            count +=1
+        
+        return (int(ans) , s[count:])
+    
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+        
+        s = traversal
+        levels = []
+        values = []
+        while(s):
+            level , s = self.find_level(s) 
+            num , s = self.find_num(s)
+            levels.append(level)
+            values.append(num)
+        
+        root = TreeNode(values[0])
+        
+        stack = [(root , 0)]
+        for i in range(1 , len(values)):
+            current_level = levels[i]
+            current_val = values[i]
+            
+            while(stack and current_level <= stack[-1][1]):
+                stack.pop()
+            node , level = stack[-1]
+            current_node = TreeNode(current_val)
+            
+            if node.left:
+                node.right = current_node
+            else:
+                node.left = current_node
+            
+            stack.append((current_node, current_level))
+        
+        return stack[0][0]

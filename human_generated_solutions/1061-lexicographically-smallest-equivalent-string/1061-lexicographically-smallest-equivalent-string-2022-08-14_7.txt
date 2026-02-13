@@ -1,0 +1,16 @@
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        parent = {ch : ch for ch in ascii_lowercase}
+        
+        def find(ch):            
+            while parent[ch] != ch: ch = parent[ch]            
+            return ch
+                
+        def union(ch1, ch2):
+            ch1_set, ch2_set = find(ch1), find(ch2)            
+            if ord(ch1_set) < ord(ch2_set): parent[ch2_set] = ch1_set
+            else:                           parent[ch1_set] = ch2_set
+                
+        for ch1, ch2 in zip(s1, s2): union(ch1, ch2)            
+                
+        return "".join([find(ch) for ch in baseStr])

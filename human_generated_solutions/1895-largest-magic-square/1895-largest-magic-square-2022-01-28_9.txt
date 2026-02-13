@@ -1,0 +1,28 @@
+class Solution:
+    def isMagicSquare(self, grid: List[List[int]], x, y, square_len):
+        length, width = len(grid), len(grid[0])
+        if x + square_len > length or y + square_len > width:
+            return False
+        sum_square = sum(grid[x][y:y+square_len])
+        for i in range(0, square_len):
+            row_sum = sum(grid[x+i][y:y+square_len])
+            col_sum = sum([grid[x+j][y+i] for j in range(0, square_len)])
+            if row_sum != sum_square or col_sum != sum_square:
+                return False
+        diagonal_sum1 = sum([grid[x+i][y+i] for i in range(0, square_len)])
+        diagonal_sum2 = sum([grid[x+square_len-1 -i][y+i] for i in range(0, square_len)])
+        if diagonal_sum1 != sum_square or diagonal_sum2 != sum_square:
+            return False
+        return True
+            
+                   
+    def largestMagicSquare(self, grid: List[List[int]]) -> int:
+        ans = 1
+        length = min(len(grid), len(grid[0]))
+        for i in range(0, len(grid)):
+            for j in range(0, len(grid[0])):
+                for len_dex in range(ans+1, length+1):
+                    if self.isMagicSquare(grid, i, j, len_dex):
+                        #print(len_dex)
+                        ans = max(ans, len_dex)
+        return ans

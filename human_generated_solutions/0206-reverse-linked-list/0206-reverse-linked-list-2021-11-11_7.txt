@@ -1,0 +1,8 @@
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        
+        last = None
+        while head:
+            last, head.next, head = head, last, head.next
+            
+        return last

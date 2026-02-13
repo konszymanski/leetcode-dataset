@@ -1,0 +1,19 @@
+class Solution:
+    def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+        memo={}
+        def dfs(src,dst,val):
+            if (src,dst,val) in memo:
+                return memo[(src,dst,val)]
+            if val<0:
+                return 0
+            if src==dst:
+                ans=1
+            else:
+                ans=0
+            for i in range(len(locations)):
+                if i==src:
+                    continue
+                ans=ans+dfs(i,dst,val-abs(locations[src]-locations[i]))
+            memo[(src,dst,val)]=ans
+            return memo[(src,dst,val)]
+        return dfs(start,finish,fuel)%1000000007

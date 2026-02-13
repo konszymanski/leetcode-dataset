@@ -1,0 +1,18 @@
+class Solution:
+    def longestDiverseString(self, a: int, b: int, c: int) -> str:
+        chars = "abc"
+        stock = []
+        if a: heapq.heappush(stock, (-a, 0))
+        if b: heapq.heappush(stock, (-b, 1))
+        if c: heapq.heappush(stock, (-c, 2))
+        prev, i = heapq.heappop(stock)
+        happy = chars[i] * (1 + (prev != -1))
+        prev += 2
+        while stock:
+            curr, j = heapq.heappop(stock)
+            if prev < 0:
+                heapq.heappush(stock, (prev, i))
+            d = 1 + (curr < (prev // 2) and curr != -1)  # abs(curr) > abs(prev) // 2 as we negate the counting
+            happy += chars[j] * d
+            prev, i = curr + d, j
+        return happy

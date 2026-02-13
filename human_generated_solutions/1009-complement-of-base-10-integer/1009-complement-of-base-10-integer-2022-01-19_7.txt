@@ -1,0 +1,5 @@
+class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        t=(str(bin(n).replace("0b", "")))
+        a="".join("1" if x==\'0\' else \'0\' for x in t)
+        return int(a,2)

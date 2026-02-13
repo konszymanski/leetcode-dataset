@@ -1,0 +1,16 @@
+class Solution:
+    #T=O(n), S=O(1)
+    def isMonotonic(self, nums: List[int]) -> bool:
+        #we don\'t know if the array is monotonic increasing or decreasing
+        #check both scenarios
+        increasing, decreasing = True, True
+        #iterate from index 0 to len-2 (range() excludes the last position)
+        for i in range(len(nums)-1):
+            #monotonic increasing should have next item greater than or equal to current item
+            if nums[i+1] < nums[i]:
+                increasing = False
+            #monotonic decreasing should have next item lesser than or equal to current item
+            if nums[i+1] > nums[i]:
+                decreasing = False
+        #either of condition should be Truthy for monotonicity
+        return increasing or decreasing

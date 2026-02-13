@@ -1,0 +1,41 @@
+class Solution(object):
+    def imageSmoother(self,M):
+        """
+        :type M: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        
+        wi_m = len(M)
+        he_m = len(M[0])
+        if wi_m <= 1 and he_m <= 1:
+            return M
+        M.append([0]*he_m)
+        M.insert(0,[0]*he_m)
+        N = []
+        for i in M:
+            i.append(0)
+            i.insert(0,0)
+        for i in range(1,wi_m+1,1):
+            N.append([])
+
+            for j in range(1,he_m+1,1):
+                n = 9
+                if i == 1 or j == 1 or i == wi_m or j == he_m:
+                    if (i,j) == (1,1) or (i,j) == (wi_m, he_m) or (i,j)==(1, he_m) or (i,j) == (wi_m, 1):
+                        n -= 5
+                        if i == 1 and i == wi_m or j == 1 and j == he_m:
+                            n -= 2
+
+                    else:
+                        if i == 1: 
+                            n -= 3
+                        if i == wi_m: 
+                            n-=3
+                        if j == 1: 
+                            n -= 3
+                        if j == he_m: 
+                            n-=3
+                   
+                a = M[i-1][j-1]+ M[i-1][j] + M[i-1][j+1] + M[i][j-1] + M[i][j] + M[i][j+1] +  M[i+1][j-1]+ M[i+1][j] + M[i+1][j+1]
+                N[i-1].append(int(a/n))
+        return N

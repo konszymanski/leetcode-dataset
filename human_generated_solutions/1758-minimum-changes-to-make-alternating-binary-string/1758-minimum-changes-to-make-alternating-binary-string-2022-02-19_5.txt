@@ -1,0 +1,6 @@
+def minOperations(self, s: str) -> int:
+        ref0 = \'01\'*(len(s)//2) + \'0\'*(len(s)%2)
+        ref1 = \'10\'*(len(s)//2) + \'1\'*(len(s)%2)
+        diff0 = sum([1 for i in range(len(s)) if s[i]!=ref0[i]])
+        diff1 = sum([1 for i in range(len(s)) if s[i]!=ref1[i]])
+        return min(diff0, diff1)

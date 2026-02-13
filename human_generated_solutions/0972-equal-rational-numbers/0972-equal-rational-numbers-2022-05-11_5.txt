@@ -1,0 +1,19 @@
+from fractions import Fraction
+
+class Solution:
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        def convert(s):
+            if "(" not in s:
+                return s
+            
+            integer, rep = s.split("(")
+            rep = rep[:-1]
+            
+            for _ in range(6):
+                rep += rep
+            
+            return integer+ rep
+        
+        c1, c2 = convert(s), convert(t)
+        
+        return float(c1) == float(c2)

@@ -1,0 +1,15 @@
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        dp=[]
+        for i in range(query_row+1):
+            temp=[]
+            for j in range(i+1):
+                temp.append(0.0)
+            dp.append(temp)
+        dp[0][0]=poured
+        for row in range(query_row):
+            for col in range(row+1):
+                remain=max(0, dp[row][col]-1)
+                dp[row+1][col]+=remain/2
+                dp[row+1][col+1]+=remain/2
+        return min(dp[query_row][query_glass],1)

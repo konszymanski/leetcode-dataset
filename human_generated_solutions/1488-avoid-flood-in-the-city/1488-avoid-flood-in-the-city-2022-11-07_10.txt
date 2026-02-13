@@ -1,0 +1,25 @@
+class Solution(object):
+    def avoidFlood(self, rains):
+        n = len(rains)
+        hmap = defaultdict(list)
+        for i in range(n):
+            if rains[i]>0:
+                ele = rains[i]
+                break
+        ans = [ele for i in range(n)]
+        full = defaultdict(int)
+        for i in range(n):
+            if rains[i] > 0 and rains[i] in full:
+                ind = bisect.bisect_left(hmap[0],full[rains[i]])
+                if ind == len(hmap[0]):
+                    return []
+                index = hmap[0].pop(ind)
+                ans[index] = rains[i]
+                ans[i] = -1
+                full[rains[i]] = i
+            elif rains[i] > 0:
+                full[rains[i]] = i
+                ans[i] = -1
+            else:
+                hmap[0].append(i)
+        return ans

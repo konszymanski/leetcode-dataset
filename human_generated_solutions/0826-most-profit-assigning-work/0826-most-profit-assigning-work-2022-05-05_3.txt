@@ -1,0 +1,21 @@
+def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+	n = len(difficulty)
+	arr = [(difficulty[i], profit[i]) for i in range(n)]
+	arr.sort()
+	max_profit = [n[1] for n in arr]
+	cur = 0
+	for i in range(n):
+		cur = max(max_profit[i], cur)
+		max_profit[i] = cur
+	profit = 0
+
+	for diff in worker:
+		l, r = 0, n - 1
+		while l < r:
+			m = (l + r + 1) >> 1
+			if arr[m][0] <= diff:
+				l = m
+			else:
+				r = m - 1
+		profit += max_profit[l] if arr[l][0] <= diff else 0
+	return profit

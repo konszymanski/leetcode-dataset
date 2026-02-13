@@ -1,0 +1,13 @@
+def minDiffInBST(self, root: TreeNode) -> int:
+        stack = []
+        prev = None
+        min_diff = float(\'inf\')
+        while stack or root:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+			min_diff = min(root.val - prev.val, min_diff) if prev else min_diff
+            prev = root
+            root = root.right
+		return min_diff

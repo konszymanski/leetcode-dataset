@@ -1,0 +1,69 @@
+class Solution:
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        """
+        n = len(path)
+        d = len(path[i])
+        l = len(path[i][j])
+        L = sum(l)
+        """
+        # build trie
+        # Time: O(n*d)
+        # Space: O(n)
+        root = {}
+        for path in paths:
+            curr = root
+            for d in path:
+                if d not in curr:
+                    curr[d] = {}
+                curr = curr[d]
+                
+        # hash and find duplicates
+        # Time: O(n * avg_n_children)
+        # Space: O(n + n_unique_id)
+		## each time we find a unique subtree, assign a unique ID
+        subtree_id = defaultdict(None)
+        subtree_id.default_factory = subtree_id.__len__
+		## group subtrees by ID. 
+        duplicates = defaultdict(list)
+        def hash_(node):
+            if not node:
+                return None
+			# sort keys and get hash code for each child
+			# concatenate them for the hash code of current node
+            hash_code = \'\'.join([
+                f\'({child}:{hash_(node[child])})\'
+                for child in sorted(node.keys())
+            ])
+			# get ID of the hash code, if not found, assign new ID as the length
+            id_ = subtree_id[hash_code]
+			# update duplicate list by ID
+            duplicates[id_].append(node)
+            return id_
+
+        hash_(root)
+        
+        # mark duplicate subtrees in trie
+        for subtrees in duplicates.values():
+            if len(subtrees) == 1:
+                continue
+            for subtree in subtrees:
+                subtree[\'is_dup\'] = True
+				
+        # dfs for output: generate paths for each non-duplicate folder
+        # Time: O(n)
+        # Space: O(1)
+        res = []
+        def dfs(node, path):
+			# if current folder is makred duplicate, terminate the path
+            if \'is_dup\' in node:
+                return
+			# if a non-empty path is found, put in result
+            if path:
+                res.append(path)
+
+            for k, v in node.items():
+                dfs(v, path + [k])
+            return 
+			
+        dfs(root, [])
+        return res

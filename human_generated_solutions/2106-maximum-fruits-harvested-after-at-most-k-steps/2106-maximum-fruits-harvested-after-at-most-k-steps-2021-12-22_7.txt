@@ -1,0 +1,51 @@
+class Solution:
+    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
+        fruits = [[-1, 0]] + fruits + [[1000000, 0]]    # add border to search easier
+        positions = [i[0] for i in fruits]              # help to search the position of fruits
+        get = {}                                        # dictionary to store the number of fruits we can get
+                                                        # from the startPos to the index (go only one side)
+        ans = 0
+        
+        # search the index of position p in the fruits (<= position p)
+        def search_index(p):                            
+            index = bisect.bisect_left(positions, p)
+            return index - 1 if positions[index] > p else index
+        
+        # --------------- go left only --------------------
+        left = start_index = search_index(startPos)     
+        pre = 0
+        while left >= 0 and startPos - positions[left] <= k:
+            get[left] = (pre + fruits[left][1])
+            pre = get[left]
+            left -= 1
+        left += 1                                       # the leftmost position we can go
+        ans = max(ans, pre)                             # the most fruits we can get when go left only
+        # -------------------------------------------------
+    
+        # --------------- go right only -------------------
+        right = start_index + 1
+        pre = 0
+        while right < len(positions) and positions[right] - startPos <= k:
+            get[right] = (pre + fruits[right][1])
+            pre = get[right]
+            right += 1
+        ans = max(ans, pre)                             # the most fruits we can get when go right only
+        # -------------------------------------------------
+        
+        # --------------- go  both sides --------------------
+        for i in range(left, start_index + 1):          # we want to go left upto positions[i]
+            left_fruits = get[i]                        # the fruits we can get on the left side
+            
+            # calculate the rightmost we can go if we want to go left upto position[i]
+            # check the distance between positions[i] and startPos to see we need to go right first or go left first
+            if startPos - positions[i] < k/3:           # go left first 
+                # find the index for position {startPos + k - (startPos - positions[i]) * 2}
+                right_position = search_index(-startPos + k + positions[i] * 2)
+            else:                                       # go right first
+                right_position = search_index(startPos + (k - (startPos - positions[i])) // 2)
+
+            # if right_position <= start_index, that means we can\'t reach any right side index
+            right_fruit = get[right_position] if right_position > start_index else 0
+            ans = max(ans, left_fruits + right_fruit)
+        # -------------------------------------------------
+        return ans

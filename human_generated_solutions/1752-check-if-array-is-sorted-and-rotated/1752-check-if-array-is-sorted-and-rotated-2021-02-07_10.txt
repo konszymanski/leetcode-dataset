@@ -1,0 +1,9 @@
+class Solution:
+    
+    def check(self, nums: List[int]) -> bool:
+        res = 0
+        n = len(nums)
+        for i in range(n):
+            if nums[i] > nums[(i+1) % n]:
+                res += 1
+        return res <= 1

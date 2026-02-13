@@ -1,0 +1,7 @@
+class ParkingSystem(object):
+    def __init__(self, big, medium, small):
+        self.spaces = [0, big, medium, small]
+
+    def addCar(self, carType):
+        self.spaces[carType] -= 1
+        return self.spaces[carType] >= 0

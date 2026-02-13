@@ -1,0 +1,74 @@
+# Note: # It is important to understand how to read this matrix. 
+		# If you have any questions, please post in the comments. I will try to answer them.
+
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        # simple intuitive dp implementation
+        dp=[[0 for _ in range(len(s))] for _ in range(len(s))]
+        res=0
+        
+        # One thing to note is we are reading from rows and ending at column i.e.
+		# the start of the string is with rows and end at column for eg in row 0, column 1 - we get string \'aa\' 
+		# as start is determined by row and end is determined by column for row 0, col 0, it is \'a\' 
+		# since starting and ending indexes are the same and violates 
+		# the condition in the question, hence, we don\'t count it twice. 
+        
+        
+        # Step 0
+        #  a a a
+        #a 0 0 0
+        #a 0 0 0
+        #a 0 0 0
+        
+        # every character is a palindrome of itself, so mark all the diagonals in matrix as 1
+        # every value to left of diagonals remains 0 as we are reading from left to right 
+		# with rows representing the starting index and column representing the ending index. 
+		# Values to left of diagonals dictate end index>start index which is not possible.
+        
+        for i in range(len(s)):
+            dp[i][i]=1
+            res+=1
+        
+        # Step 1
+        #  a a a
+        #a 1 0 0
+        #a 0 1 0
+        #a 0 0 1
+        
+        # every two character pairs that are same form a palindrome. 
+		# Keep in mind that substrings with different start indexes or end indexes 
+		# are counted as different substrings even they consist of same characters.
+		
+        for i in range(len(s)-1):
+            if s[i]==s[i+1]:
+                dp[i][i+1]=1
+                res+=1
+        
+        # Step 2
+        #  a a a
+        #a 1 1 0
+        #a 0 1 1
+        #a 0 0 1
+        print(dp)
+        
+        # i) final step where we take len(string)>2 
+        # ii) first loop i.e. length takes various lengths of string from 3 till len(s)
+        # iii) second loop i.e. i takes all variations of string of length 3 , then all string of length 4 and so on till it is in bounds
+        # iv) i is that starting index of every string and j is the ending index of every such string
+        # v) dp[i+1][j-1] checks if the string apart from the first and last character is already 
+		#     a palindrome and the first and last characters s[i] and s[j] are same then this new string is also a palindrome as represented by dp[i][j]=1
+		
+        for length in range(3, len(s)+1):
+            for i in range(len(s)-length+1):
+                j=i+length-1
+                if dp[i+1][j-1] and s[i]==s[j]:
+                    dp[i][j]=1
+                    res+=1
+        # Step 3
+        #  a a a
+        #a 1 1 1
+        #a 0 1 1
+        #a 0 0 1
+        
+        return res

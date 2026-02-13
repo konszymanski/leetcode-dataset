@@ -1,0 +1,32 @@
+class Solution:
+	
+	# Distance formula for 2 points
+    def distance(self, p1, p2):
+        x1, y1 = p1
+        x2, y2 = p2
+        
+        return math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2))
+        
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        # We will compute the square with pure mathematics formulas
+        # What we need to know is the following:
+        # All 4 sides of the square are equal
+        # Diagonals of a square are equal to (s)*(sqrt of 2) where s is the side
+        # We have 6 edges built with the points (complete graph of 4 vertices
+        # Lets compute
+        
+		# The order of points doesn\'t have to be the same, just make sure they form a valid square points (you can draw on paper)
+        edges = [(p1, p2), (p2, p4), (p4, p3), (p3, p1), (p1, p4), (p2, p3)]
+		
+		# All lengths between edges
+        edges_length = [self.distance(p1, p2) for p1, p2 in edges]
+        
+        # c returns list of (value, occurences)
+        c = Counter(edges_length).most_common()
+        
+		# All edges have to be same size, and diagonals same size
+        if len(c) != 2:
+            return False
+        
+        # First if denotes 4 sides and 2 diagonals and the second check is for the square diagonal/size ratio check
+        return (c[0][1] == 4 and c[1][1] == 2) and (int(c[1][0]) == (int(c[0][0] * math.sqrt(2))))

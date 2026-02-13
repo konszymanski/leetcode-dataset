@@ -1,0 +1,34 @@
+class Solution:
+    def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:
+        STONE = "#"
+        OBSTACLE = "*"
+
+        # move stones as far right in the area as they can go
+        for row in box:
+            furthest_empty_space = len(row) - 1 # the furthest space we can move a stone to (will be closest to the ground after rotation)
+			# starting at the end(bottom)
+            for index in range(len(row)-1,-1,-1):
+                if row[index] == STONE:
+                    # swap the stone with furthest right empty space
+                    row[index], row[furthest_empty_space] = row[furthest_empty_space], row[index]
+                    furthest_empty_space -= 1
+                elif row[index] == OBSTACLE:
+                    # if we reach an obstacle, update our value for which we can move stones to
+                    furthest_empty_space = index - 1
+
+        # rotate 90 degrees for answer
+        # we can rotate 90 degrees by transposing the matrix, then reversing each row
+		
+		# transpose - result[i][j] = box[j][i]
+        result = [[box[j][i] for j in range(len(box))] for i in range(len(box[0]))]
+		
+		# reverse rows
+        for row in range(len(result)):
+            left = 0
+            right = len(result[row]) - 1
+            while left < right:
+                result[row][left], result[row][right] = result[row][right], result[row][left]
+                left += 1
+                right -= 1
+                
+        return result

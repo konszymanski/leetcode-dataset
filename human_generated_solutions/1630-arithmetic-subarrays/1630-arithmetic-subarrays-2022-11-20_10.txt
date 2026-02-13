@@ -1,0 +1,29 @@
+class Solution:
+    def checkArithmeticSubarrays(self, nums: List[int], l: List[int], r: List[int]) -> List[bool]:
+
+        def is_arihmetic(l, r):
+            mn,mx = float(\'inf\'), -float(\'inf\')
+            for i in range(l, r+1):
+                mx = max(mx, nums[i])
+                mn = min(mn, nums[i])
+            
+            if (mx-mn) % (r-l) != 0:
+                return False
+
+            inc = (mx-mn) // (r-l)
+
+
+            if inc == 0:
+                return True
+
+            seen = set()
+            for i in range(l, r+1):
+                if (nums[i] - mn) % inc != 0:
+                    return False
+                if nums[i] in seen:
+                    return False
+                seen.add(nums[i])
+
+            return True
+        
+        return [is_arihmetic(lb,rb) for lb, rb in zip(l, r)]

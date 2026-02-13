@@ -1,0 +1,11 @@
+def smallestDistancePair(self, nums, k):
+        diffs = [0 for _ in range(1000000)]
+        
+        for i, num in enumerate(nums):
+            for num2 in nums[i + 1:]:
+                diffs[abs(num - num2)] += 1
+                
+        for i, diff in enumerate(diffs):
+            k -= diff
+            if k <= 0:
+                return i

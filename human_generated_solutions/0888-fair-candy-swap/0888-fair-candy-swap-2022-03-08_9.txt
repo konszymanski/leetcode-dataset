@@ -1,0 +1,14 @@
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        totA = sum(aliceSizes)
+        totB = 0
+        setB = set()
+        for n in bobSizes:
+            totB += n
+            setB.add(n)
+        for boxA in aliceSizes:
+		    # new_totB = new_totA -->
+		    # totB - boxB + boxA = totA - boxA + boxB
+            boxB = (totB + 2 * boxA - totA) // 2
+            if boxB in setB:   # O(1)
+                return [boxA, boxB]

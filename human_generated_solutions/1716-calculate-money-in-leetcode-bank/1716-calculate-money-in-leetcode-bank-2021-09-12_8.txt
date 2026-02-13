@@ -1,0 +1,22 @@
+class Solution:
+    def totalMoney(self, n: int) -> int:
+        
+        # 1. init monday money status : it have to be updated every monday
+        # ex) # i % 7 == 1 --> update monday init
+        monday_init = 1
+        cnt = monday_init
+        
+        # return this variable
+        money = 0
+        
+        # execute loop
+        for i in range(1, n+1):
+            # 2. except 1 at the beginning of the loop to update the monday money status
+            if i % 7 == 1 and i != 1:
+                monday_init +=1
+                # 3. restart the weekly beginning money (== update the init money)
+                cnt = monday_init
+            # 4. if i % 7 != 1, then add money
+            money += cnt
+            cnt +=1
+        return money

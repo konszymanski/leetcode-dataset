@@ -1,0 +1,30 @@
+def maxSumAfterPartitioning(self, A: List[int], K: int) -> int:
+        
+        def recur(arr, start, memo):
+            # base case
+            if start == len(arr):
+                return 0
+            
+            cur_max = float(\'-inf\')
+            res = 0
+            
+            # we want to loop over k elements, take the maximum and multiply
+            # then add it to the corresponding subproblem with the reduced
+            # array
+            for i in range(K):
+                if start+i == len(arr):
+                    break
+                cur_max = max(cur_max, arr[start+i])
+                # take the max of all possibilities
+                if start+i+1 in memo:
+                    res = max(res, (i+1)*cur_max + memo[start+i+1])
+                else:
+                    res = max(res, (i+1)*cur_max + recur(arr, start+i+1, memo))
+                    
+            # return the final result
+            memo[start] = res
+            return res
+        
+        memo = {}
+        recur(A, 0, memo)
+        return memo[0]

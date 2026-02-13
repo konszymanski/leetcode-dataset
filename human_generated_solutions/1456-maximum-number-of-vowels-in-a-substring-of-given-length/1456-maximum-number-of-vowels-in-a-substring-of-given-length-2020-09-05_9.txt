@@ -1,0 +1,16 @@
+class Solution:
+    def maxVowels(self, s: str, k: int) -> int:
+        vowels=\'aeiou\'
+        maxi=start=count=0
+        for i in range(start,k):
+            if s[i] in vowels:
+                count+=1
+        maxi=max(maxi,count)
+        for j in range(k,len(s)):
+            if s[start] in vowels:
+                count-=1
+            start+=1
+            if s[j] in vowels:
+                count+=1
+            maxi=max(maxi,count)
+        return maxi

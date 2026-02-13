@@ -1,0 +1,43 @@
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        class Union:
+            def __init__(self, n):
+                self.parent = [-1] * n
+                
+            def root(self, u):
+                if self.parent[u] < 0: return u
+                self.parent[u] = self.root(self.parent[u])
+                return self.parent[u]
+            
+            def is_connected(self, u, v):
+                return self.root(u) == self.root(v)
+            
+            
+            def connect(self, u, v):
+                if not self.is_connected(u,v): 
+                    heavy_root, light_root = sorted([self.root(u),self.root(v)],key=lambda node: self.parent[node])
+                    self.parent[heavy_root] = self.parent[heavy_root] + self.parent[light_root]
+                    self.parent[light_root] = heavy_root
+        
+        U = Union(n)
+        
+        A = [False] * (len(queries))
+        
+        #n = |edgelist|
+        #m = |queries|
+        
+        #nlogn
+        edgeList.sort(key=lambda edge: -edge[2])
+        
+        #mlogm
+        queries_idx = sorted(range(len(queries)),key=lambda idx: queries[idx][2])
+        
+        #m
+        for idx in queries_idx:
+            u,v,limit = queries[idx]
+            #n
+            while edgeList and edgeList[-1][-1] < limit:
+                w,x, dist = edgeList.pop()
+                U.connect(w,x)
+            A[idx] = U.is_connected(u,v)
+        return A

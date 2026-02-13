@@ -1,0 +1,19 @@
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        m = len(languages)
+        languages = [set(x) for x in languages]
+        
+        mp = {}
+        for u, v in friendships: 
+            if not languages[u-1] & languages[v-1]: 
+                for i in range(n):
+                    if i+1 not in languages[u-1]: mp.setdefault(u-1, set()).add(i)
+                    if i+1 not in languages[v-1]: mp.setdefault(v-1, set()).add(i)
+        
+        ans = inf
+        for i in range(n): 
+            val = 0
+            for k in range(m): 
+                if i in mp.get(k, set()): val += 1
+            ans = min(ans, val)
+        return ans

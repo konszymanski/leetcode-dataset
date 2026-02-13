@@ -1,0 +1,17 @@
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        # Recursion Solution : Time Limit Exceeded
+        return self.finder(text1 , text2 , 0 , 0 , 0)
+    
+        
+    def finder(self , s1 , s2 , i , j , leng):
+        if i == len(s1) or j == len(s2):
+            return leng
+        if s1[i] == s2[j]:
+            return self.finder(s1 , s2 , i + 1 , j + 1 , leng + 1)
+        else:
+            a = self.finder(s1 , s2 , i + 1 , j , leng) 
+            b = self.finder(s1 , s2 , i , j + 1 , leng)
+            
+            return max(a , b)
+Approach : In this i used basic approach in which if chars at i , j at their respective strings founds to be equal , we move to next step with +1 greater leng , else we have two cases we can either (move a next step from text1 OR move a next step from text2) , we find both cases and return max (a,b)

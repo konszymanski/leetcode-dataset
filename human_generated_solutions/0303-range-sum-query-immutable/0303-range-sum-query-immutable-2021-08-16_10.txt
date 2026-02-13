@@ -1,0 +1,29 @@
+class NumArray:
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+        self.n = len(self.nums)
+        self.tree = [0]*4*self.n  # why 4? check the reference!
+        self.build(1, 0, self.n-1)
+	
+    # builds the segment tree, x is curr index, l is left and r is right
+    def build(self, x, l, r):
+        if l == r: 
+            self.tree[x] = self.nums[l]
+        else:
+            m = (l+r)//2
+            self.build(2*x, l, m)
+            self.build(2*x+1, m+1, r)
+            self.tree[x] = self.tree[x*2]+self.tree[x*2+1]
+
+    # tl and tr are target left and target right
+	def _sum(self, x, l, r, tl, tr):
+        if tl > tr:
+            return 0
+        if l == tl and r == tr:
+            return self.tree[x]
+        m = (l+r)//2
+        return self._sum(x*2, l, m, tl, min(m, tr)) + self._sum(x*2+1, m+1, r, max(m+1, tl), tr)
+
+        
+    def sumRange(self, left: int, right: int) -> int:
+        return self._sum(1, 0, self.n-1, left, right)

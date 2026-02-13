@@ -1,0 +1,8 @@
+def getMoneyAmount(self, n):
+	@functools.cache
+	def cost(i, j):
+		if i >= j:
+			return 0
+		return min(max(cost(i, p - 1), cost(p + 1, j)) + p
+				   for p in range(i, j + 1))
+	return cost(1, n)

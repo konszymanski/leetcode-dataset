@@ -1,0 +1,14 @@
+class UndergroundSystem:
+	def __init__(self):
+		self.currentPassengers = defaultdict(tuple) # id -> (startStation, startTime)
+		self.travelTimes = defaultdict(list) # stationStart:stationEnd -> [t1,t2]
+
+	def checkIn(self, id: int, stationName: str, t: int) -> None:
+		self.currentPassengers[id] = (stationName, t)
+
+	def checkOut(self, id: int, stationName: str, t: int) -> None:
+		startStation, startTime = self.currentPassengers.pop(id)
+		self.travelTimes[f"{startStation}:{stationName}"].append(t - startTime)
+
+	def getAverageTime(self, startStation: str, endStation: str) -> float:
+		return mean(self.travelTimes[f"{startStation}:{endStation}"])

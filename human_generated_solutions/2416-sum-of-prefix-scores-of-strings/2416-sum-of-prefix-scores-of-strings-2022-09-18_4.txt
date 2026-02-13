@@ -1,0 +1,26 @@
+from collections import defaultdict
+class Solution:
+    def sumPrefixScores(self, words: List[str]) -> List[int]:
+        
+        sorted_words = words.copy()
+        sorted_words.sort()
+        
+        dp = defaultdict(lambda:-1)
+        final_ans = []
+        for word in words:
+            n = len(word)
+            temp_here_ans = 0
+            for i in range(1, n+1):
+                temp_start = word[0:i]
+                if dp[temp_start] == -1:
+                    ind_1 = bisect.bisect_left(sorted_words, temp_start)
+                    temp_end = word[0:i-1] + chr(ord(word[i-1])+1)
+                    ind_2 = bisect.bisect_left(sorted_words, temp_end)
+                    temp_here_ans += ind_2 - ind_1
+
+                    dp[temp_start] = ind_2 - ind_1
+                else:
+                    temp_here_ans += dp[temp_start]
+            final_ans.append(temp_here_ans)
+        
+        return final_ans

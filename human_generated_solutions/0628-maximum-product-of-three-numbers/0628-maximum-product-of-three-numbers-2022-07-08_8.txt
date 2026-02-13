@@ -1,0 +1,33 @@
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()
+        max1 = nums[-1]*nums[-2]*nums[-3]
+        max2 = nums[0]*nums[1]*nums[-1]
+        if max1 >= max2:
+            return max1
+        else:
+            return max2
+""""
+explanation: example 
+    list1=[1,2,3,4,5]
+    list2=[-100,-98,-1,2,3,4]
+    
+    >first sort the list so highest values goes right and then multiplay last 3 values this works for list1. but this leads wrong in some cases see list2
+    
+    > so generally if you multiplay 3 negative number we get negative value but in case of two values we get positive so here we used same approach.
+    
+    >we need to calculate for 2 maximum values max1 and max2 
+    
+    >max1 case is used for all positive numbers like list1
+    
+    >to calculate max1 we just multiply the last 3 elements in the list  list1=[3*4*5] =60, list2=[2*3*4]=24
+    
+    >now we calculate max2 .this is used for some negative values in the list or all negative values in the list
+    
+    >while calculate max2 we multiplay first 2 values because multiplying 2 values will get positive value  list2=[-100*-98] = 9800
+    
+    >now we need to multiplay the 9800 with highest value in the list2 so we will get highest value that 9800*4 =39200
+    
+    >now we have 2 maximum values max1 and max2
+    
+    >compare both values and return maximum value  """

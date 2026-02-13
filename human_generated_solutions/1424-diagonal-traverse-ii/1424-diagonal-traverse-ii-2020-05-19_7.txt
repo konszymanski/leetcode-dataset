@@ -1,0 +1,16 @@
+from collections import OrderedDict
+
+class Solution:
+    def findDiagonalOrder(self, nums: List[List[int]]) -> List[int]:
+        def g(nums):
+            nums = nums[::-1]
+            iters = OrderedDict({iter(nums.pop()): True})
+            while iters:
+                for it in reversed(iters.copy()):
+                    if (n := next(it, 0)):
+                        yield n
+                    else:
+                        del iters[it]
+                if nums:
+                    iters[iter(nums.pop())] = True
+        return list(g(nums))

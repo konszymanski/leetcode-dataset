@@ -1,0 +1,39 @@
+class Solution:
+    def getMaximumGold(self, grid: List[List[int]]) -> int:
+    
+        \'\'\'
+        Since input is small, we can use backtracking.
+        
+        We write a dfs function that "collects" the gold from grid[r][c], then recurses on all neighbors and puts the gold back when finished. 
+		We need to do this to avoid visiting cells more than once. We keep track of the max answer for each dfs call.
+        
+        Iterate over each cell in the grid, and try starting the dfs. Return the best answer.
+        
+        If k cells have gold, each dfs takes O(4^k) time, since we recurse to 4 neighbors.
+        We run the dfs on k cells, and iterate over m*n cells to find them.
+        Our total runtime is O((k*4^k) + mn).
+        
+        Space is O(k), since that is the largest depth of the recursion stack: a path with all gold spaces.
+        \'\'\'
+        
+        def dfs(r, c):
+            
+            if not (0 <= r < len(grid) and 0 <= c < len(grid[0])):
+                return 0
+            
+            if not grid[r][c]:
+                return 0
+            
+            tmp = grid[r][c]
+            grid[r][c] = 0
+            
+            best = 0
+            
+            for dr, dc in [(0,1), (0,-1), (1,0), (-1,0)]:
+                best = max(best, tmp + dfs(r+dr, c+dc))
+                
+            grid[r][c] = tmp
+            
+            return best
+        
+        return max(dfs(r,c) for r in range(len(grid)) for c in range(len(grid[r])))

@@ -1,0 +1,26 @@
+class Solution:
+    """
+    nums = [2,7,11,15]  target = 9
+    
+    compliment = { 9-2 = 7 : "0",
+            9-7 = 2 : "1",
+            9-11 =-2 : "2",
+            9 -15 = -6:"3" 
+    }
+	nums[0] =2 not in complement:
+			complement ={7:0}
+	nums[1] =7 in complement:
+			return 0,1
+	
+	
+    """
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        complement ={}
+        for i,v in enumerate(nums):
+            # if v = nums[i] in complement, we find a solution
+            if v in complement:
+                return complement[v],i
+            # if v = nums[i] not in complement, we store the compliment of the element into the dictionary.
+            else:
+                complement[target - v] = i
+        return -1

@@ -1,0 +1,13 @@
+class Solution:
+    def preimageSizeFZF(self, k: int) -> int:
+        lo, hi = 0, 1 << 32
+        while lo <= hi: 
+            mid = lo + hi >> 1
+            x, y = mid, 0 
+            while x: 
+                x //= 5
+                y += x
+            if y < k: lo = mid + 1
+            elif y > k: hi = mid - 1
+            else: return 5
+        return 0

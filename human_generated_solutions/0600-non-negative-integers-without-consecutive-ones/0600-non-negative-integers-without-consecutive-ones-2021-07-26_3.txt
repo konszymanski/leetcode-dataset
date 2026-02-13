@@ -1,0 +1,13 @@
+class Solution:
+    def findIntegers(self, n: int) -> int:
+        fib = [1, 2]
+        for _ in range(30): fib.append(fib[-2] + fib[-1])
+        
+        ans = prev = 0
+        for i in range(31, -1, -1): 
+            if n & (1<<i): 
+                ans += fib[i]
+                if prev: return ans
+                else: prev = 1
+            else: prev = 0
+        return ans + 1

@@ -1,0 +1,21 @@
+from bisect import bisect_left
+from functools import partial
+from itertools import accumulate
+from operator import itemgetter
+
+END_KEY = itemgetter(1)
+
+
+class Solution:
+    def maxTwoEvents(self, E: list[list[int]]) -> int:
+        E.sort(key=END_KEY)
+
+        cum_mx_value = self.cumulative_max_value(E)  # note that first value is "0"
+
+        bl = partial(bisect_left, E, key=END_KEY)  # bl(s) = largest index "i" such that, for all x in E[:i], x[1] < s
+
+        return max(cum_mx_value[bl(s)] + v for s, _, v in E)
+
+    @staticmethod
+    def cumulative_max_value(E: list[list[int]]) -> list[int]:
+        return list(accumulate((e[2] for e in E), func=max, initial=0))

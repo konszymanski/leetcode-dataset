@@ -1,0 +1,12 @@
+from collections import defaultdict
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        parity2count = defaultdict(int)
+        parity2count[0] = 1
+        parity = ret = 0
+        for n in arr:
+            if n%2:
+                parity = 1-parity
+            ret += parity2count[1-parity]
+            parity2count[parity] += 1
+        return ret%(1000000007)

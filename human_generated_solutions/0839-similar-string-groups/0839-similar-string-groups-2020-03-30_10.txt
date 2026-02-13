@@ -1,0 +1,57 @@
+class UnionFind(object):
+    def __init__(self, A):
+        self.parent = {a: a for a in A}
+        self.count = len(A)
+
+    def union(self, a, b):
+        root_a, root_b = self.find(a), self.find(b)
+        if root_a == root_b:
+            return
+
+        self.parent[root_a] = root_b
+        self.count -= 1
+
+    def find(self, a):
+        while self.parent[a] != a:
+            self.parent[a] = self.parent[self.parent[a]]
+            a = self.parent[a]
+        return a
+
+    def count_num(self):
+        return self.count
+
+    def connect(self, a, b):
+        return self.find(a) == self.find(b)
+
+class Solution(object):
+    def numSimilarGroups(self, A):
+        """
+        :type A: List[str]
+        :rtype: int
+        """
+        if not A:
+            return 0
+
+        if len(A) <= 1:
+            return len(A)
+
+        A = list(set(A))
+        uf = UnionFind(A)
+        for i in range(len(A) - 1):
+            for j in range(i + 1, len(A)):
+                if self.is_similar(A[i], A[j]):
+                    uf.union(A[i], A[j])
+        return uf.count_num()
+
+    def is_similar(self, a, b):
+        count = 0
+        p1, p2 = 0, 0
+        while p1 < len(a):
+            if a[p1] != b[p2]:
+                count += 1
+            if count > 2:
+                return False
+            p1 += 1
+            p2 += 1
+
+        return True

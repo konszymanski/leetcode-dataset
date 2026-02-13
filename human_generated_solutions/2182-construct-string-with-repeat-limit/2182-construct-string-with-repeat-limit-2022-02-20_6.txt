@@ -1,0 +1,52 @@
+def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        \'\'\'
+        Time: O(N)
+        Space: O(1)
+        \'\'\'
+        # Maintain frequency of all elements of s
+        charMap = Counter(s)
+        
+        # Create a sorted stack to keep track of order of characters
+		# Note: Size of stack can only be at most 26 (in worst case).
+        stack = list(charMap.keys())
+        stack.sort()
+        
+        currCount = 0
+        result = []
+        
+        while stack:
+            
+            char = stack[-1]
+            
+            # Exhaust all values from index until repeatLimit is hit
+            while currCount < repeatLimit and charMap[char] > 0:
+                result.append(char)
+                charMap[char] -= 1
+                currCount += 1
+                
+            # If this is the last element and all elements are exhauseted or we have reached the repeat limit
+            if len(stack) == 1 and (charMap[char] == 0 or currCount >= repeatLimit):
+                stack.pop()
+                break
+            
+            # All elements exhausted at this index but more elements are there in arr
+            if charMap[char] == 0:
+                stack.pop()                             
+            
+            # Still more elements at this index but repeatLimit is reached
+            elif currCount >= repeatLimit:
+                # Grab 1 the element that is lexicographically smaller
+                topElem = stack.pop()
+                elem = stack[-1]
+                result.append(elem)
+                charMap[elem] -= 1
+                
+                # If there was only 1 element in elem, remove it from stack
+                if charMap[elem] == 0:
+                    stack.pop()
+                stack.append(topElem)
+            
+            # Reset the currCount since we will grab repeatLimit elements again
+            currCount = 0
+        
+        return \'\'.join(result)

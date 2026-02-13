@@ -1,0 +1,29 @@
+# myclass Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        if not nums:
+            return []
+            
+        nums.sort()
+        dp = [0]*len(nums)
+        
+        # used to construct the subset after we find the largest size
+        construct = [-1]*len(nums)
+        best, best_i = -1, -1
+        
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[i]%nums[j]==0 and dp[i]<dp[j]:
+                    construct[i], dp[i] = j, dp[j]
+            dp[i] += 1
+            if dp[i] > best:
+                best, best_i = dp[i],i
+        #print(dp, construct)
+
+        # construct the result    
+        result = [nums[best_i]]
+        while(construct[best_i] >-1 ):
+            best_i = construct[best_i]
+            result.append(nums[best_i])
+            
+        
+        return result[::-1]

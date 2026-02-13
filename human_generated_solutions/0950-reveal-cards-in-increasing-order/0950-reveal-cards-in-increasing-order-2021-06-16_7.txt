@@ -1,0 +1,10 @@
+class Solution:
+    def deckRevealedIncreasing(self, deck: List[int]) -> List[int]:
+        deck = sorted(deck)
+        n = len(deck)
+        res = [deck[-1]]
+        deck.pop()
+        while len(res) != n:
+            res.insert(0, res.pop())
+            res.insert(0, deck.pop())
+        return res

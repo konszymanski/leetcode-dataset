@@ -1,0 +1,12 @@
+class Solution:
+    def getLucky(self, s: str, k: int) -> int:
+        #Initiate a blank string
+		alpha_numeric = ""
+        for i in s:
+            # Append the ASCII code of the each string character in that string 
+			alpha_numeric += str(ord(i) - 96)
+        for j in range(k):
+            # Convert the str elements of the string to int, Put them in a list and sum that list
+			alpha_numeric = sum(list(map(int, str(alpha_numeric))))
+        # After \'k\' iterations, return that sum
+		return alpha_numeric

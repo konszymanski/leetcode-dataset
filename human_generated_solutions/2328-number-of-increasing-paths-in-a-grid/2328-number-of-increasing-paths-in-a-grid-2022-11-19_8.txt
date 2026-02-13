@@ -1,0 +1,34 @@
+class Solution:
+    def countPaths(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n  = len(grid[0])
+        
+        memo = [[0] * n for _ in range(m)]
+        MAX = 10 ** 9 + 7
+        
+        def dfs(r, c, prev_val):
+            # basecase: if cell is out of bound or not forming increasing sequance
+            if r < 0 or c < 0 or r >= m or c >= n or grid[r][c] <= prev_val:
+                return 0
+            
+            if memo[r][c] != 0:
+                return memo[r][c]
+                  
+            # add up all possible paths from all 4 directions + 1 for current cell
+            res = 1+ (dfs(r-1, c, grid[r][c]) + 
+                      dfs(r+1, c, grid[r][c]) + 
+                      dfs(r, c-1, grid[r][c]) + 
+                      dfs(r, c+1, grid[r][c]))
+            
+            # mode the res by MAX because answer maybe very large
+            memo[r][c] = res % MAX
+                        
+            return memo[r][c]
+        
+        count = 0
+        for r in range(m):
+            for c in range(n):
+                # mode the res by MAX because answer maybe very large
+                count = (count + dfs(r, c, -1)) % MAX
+             
+        return count

@@ -1,0 +1,29 @@
+class Solution(object):
+    def minOperations(self, grid, x):
+        """
+        :type grid: List[List[int]]
+        :type x: int
+        :rtype: int
+        """
+        # it is always best to try to get all the numbers to be equal the median
+        # value, which is the value separating the highest from lowest values.
+        # we extract the grid into a 1D array and sort it
+        linear_grid = [cell for row in grid for cell in row]
+        linear_grid.sort()
+        # extract the median which is the middle value
+        median = linear_grid[len(linear_grid) // 2]
+
+        operations = 0
+        for num in linear_grid:
+            if num != median:
+                diff = abs(median - num)
+                # if the difference between a number in the array and the median cannot
+                # be divided by x, return -1 because this number will never be = median
+                if diff % x != 0:
+                    return -1
+
+                # increment the number of operations by the number of times we have to
+                # add or subtract x from num to get to median
+                operations += diff // x
+
+        return operations

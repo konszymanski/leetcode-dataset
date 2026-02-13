@@ -1,0 +1,24 @@
+from collections import deque
+class Solution:
+    def minCost(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        queue = deque()
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        visited = [[False for _ in range(n)] for _ in range(m)]
+        queue.append((0, 0, 0))
+        while queue:
+            i, j, cost = queue.popleft()
+            visited[i][j] = True
+            if i == m - 1 and j == n - 1:
+                return cost
+            for d, (di, dj) in enumerate(dirs):
+                i_new, j_new = i + di, j + dj
+                if i_new < 0 or i_new == m or j_new < 0 or j_new == n:
+                    continue
+                if visited[i_new][j_new]:
+                    continue
+                if grid[i][j] - 1 == d:
+                    queue.appendleft((i_new, j_new, cost))
+                    continue
+                queue.append((i_new, j_new, cost + 1))
+        return -1

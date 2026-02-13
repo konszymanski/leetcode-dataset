@@ -1,0 +1,20 @@
+class Solution:
+    def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+        ratio=sorted(((q,w) for q,w in zip(quality,wage)),key=lambda x:(x[1]/x[0]))
+        n=len(ratio)
+        L=[]
+        ans=sys.maxsize
+        flag=True
+        Sum=0 
+        for i in range(n):
+            idx=bisect_left(L,ratio[i][0])
+            if len(L)==k-1:
+                ans=min(ans,ratio[i][1]+(ratio[i][1]/ratio[i][0])*Sum)
+                if idx!=k-1:
+                    Sum-=L.pop()
+                    L.insert(idx,ratio[i][0])
+                    Sum+=ratio[i][0]
+            else:
+                L.insert(idx,ratio[i][0])
+                Sum+=ratio[i][0]
+        return ans

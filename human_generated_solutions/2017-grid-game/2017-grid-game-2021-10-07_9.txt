@@ -1,0 +1,12 @@
+class Solution:
+    def gridGame(self, grid: List[List[int]]) -> int:
+        cols = len(grid[0])
+        if cols == 1:
+            return 0
+        cols1 = cols - 1
+        for c in range(1, cols):
+            grid[0][cols1 - c] += grid[0][cols - c]
+            grid[1][c] += grid[1][c - 1]
+        return min(max(grid[0][i + 1] if i < cols1 else 0,
+                       grid[1][i - 1] if i > 0 else 0)
+                   for i in range(cols))

@@ -1,0 +1,12 @@
+import textwrap
+class Solution:
+    def divideString(self, s: str, k: int, fill: str) -> List[str]:
+        a=textwrap.fill(s,k).split()[::-1]
+        for i in range(len(a)):
+            if len(a[i])!=k:
+                string=fill*((k-len(a[i])))
+                # print(string)
+                a[i]+=string
+            else:
+                break
+        return a[::-1]

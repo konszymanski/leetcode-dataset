@@ -1,0 +1,27 @@
+class Solution:
+    def maxAbsoluteSum(self, nums: List[int]) -> int:
+    
+        global_max=-10**9
+        global_min=10**9
+            
+        curr_p_sum=0
+        curr_n_sum=0
+        
+        for i in range(len(nums)):
+            
+            curr_p_sum+=nums[i]
+            
+            if curr_p_sum<0:    
+                curr_p_sum=0
+            
+            elif curr_p_sum>=0: 
+     
+                global_max=max(curr_p_sum,global_max)
+            
+            curr_n_sum+=nums[i]
+            
+            if curr_n_sum>0:    curr_n_sum=0
+                
+            elif curr_n_sum<0:  global_min=min(global_min,curr_n_sum)
+                                            
+        return max(global_max,(-1*global_min))

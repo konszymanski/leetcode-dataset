@@ -1,0 +1,15 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        # it is convenient to imagine bars of height 0 at positions -1 and len(heights)
+        stack = [-1] 
+        heights.append(0)
+        maxArea = 0
+        for i in range(len(heights)):
+            while len(stack) >= 2 and heights[stack[-1]] > heights[i]:
+                maxArea = max(maxArea, (i - (stack[-2] + 1)) * heights[stack[-1]])
+                stack.pop()
+            if heights[i] == 0:
+                stack = [i]
+            else:
+                stack.append(i)
+        return maxArea

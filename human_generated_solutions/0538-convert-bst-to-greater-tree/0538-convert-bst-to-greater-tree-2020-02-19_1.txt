@@ -1,0 +1,19 @@
+class Solution:
+    def convertBST(self, root: TreeNode) -> TreeNode:
+        
+        def dfs(node):
+            
+            if node:
+                
+                dfs(node.right)
+                
+                node.val += dfs.greater_sum
+                dfs.greater_sum = node.val
+                
+                dfs(node.left)
+        
+        # ----------------------------------
+        dfs.greater_sum = 0
+        dfs(root)
+        
+        return root

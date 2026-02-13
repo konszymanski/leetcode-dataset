@@ -1,0 +1,19 @@
+class Solution(object):
+    
+    def customSortString(self, S, T):
+            
+        from collections import Counter
+		
+        result = ""
+        order_count = Counter(T)
+        
+        for key in S:
+            if key in order_count:
+                result = result + key * order_count[key]
+                order_count[key] = 0
+        
+        for key in order_count:
+            if order_count[key] > 0:
+                result = result + key*order_count[key]
+        
+        return result

@@ -1,0 +1,36 @@
+Python
+class Solution:
+    def minDepth(self, root):
+        if root is None:
+            return 0
+        # We will be using a queue
+		# For example, a binary tree
+		#             1
+		#           /   \\
+		#         2       3
+		#          \\     / \\
+		#           4   5   6
+		# If we populate the queue for all the nodes, the queue will look like:
+		# [1,2,3,4,5,6] <- inserted level by level, from left to right
+		# However, we always want to carry over the level information so here, we are creating
+		# a queue with tuples of tree node, level for elements
+        queue = deque([(root, 1)])
+
+        while len(queue) != 0:
+            node, level = queue.popleft()
+            if node:
+                if node.left is None and node.right is None:
+				# This is the leaf node, and if we find this node, 
+				# we can surely say this is the shallowest path in the tree
+				# Imagine this tree
+				#          1
+				#        /   \\
+				#      2       3
+				#     /
+				#   4
+				# Since we are scanning from top-down, left-right, once we get to the node 3, we
+				# can immediately tell that it is the shallowest path
+                    return level
+                else:
+                    queue.append((node.left, level+1))
+                    queue.append((node.right, level+1))

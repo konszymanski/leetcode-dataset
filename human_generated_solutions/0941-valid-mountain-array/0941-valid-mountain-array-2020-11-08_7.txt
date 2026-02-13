@@ -1,0 +1,15 @@
+class Solution:
+    def validMountainArray(self, arr) -> bool:
+        n = len(arr)
+        # boundary cases
+        # if range is small, if it is aligned on one side
+        if n < 3 or arr[0] > arr[1] or arr[-1] > arr[-2]:
+            return False
+        
+        i = 1
+        while arr[i-1] < arr[i]:
+            i += 1
+        while i < n and arr[i-1] > arr[i]:
+            i += 1
+        
+        return i == n

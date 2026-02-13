@@ -1,0 +1,26 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        from collections import defaultdict, Counter
+        graph = defaultdict(set)
+        node_indegree = Counter()
+        color_count = defaultdict(Counter)
+        for u, v in edges:
+            node_indegree[v] += 1
+            graph[u].add(v)
+        topological_sort = []
+        ans_set = set()
+        bfs_list = [node for node in range(len(colors)) if node_indegree[node] == 0]
+        while bfs_list:
+            node = bfs_list.pop()
+            color_count[node][colors[node]] += 1
+            topological_sort.append(node)
+            if graph[node]:
+                for adj_node in graph[node]:
+                    node_indegree[adj_node] -= 1
+                    for color, count in color_count[node].items():
+                        color_count[adj_node][color] = max(color_count[adj_node][color], count)
+                    if node_indegree[adj_node] == 0:
+                        bfs_list.append(adj_node)
+            else:
+                ans_set.add(max(color_count[node].values()))
+        return max(ans_set) if len(topological_sort) == len(colors) else -1

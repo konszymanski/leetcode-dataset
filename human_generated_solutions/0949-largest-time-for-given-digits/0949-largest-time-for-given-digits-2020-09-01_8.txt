@@ -1,0 +1,20 @@
+from itertools import permutations
+
+class Solution:
+    def largestTimeFromDigits(self, A: List[int]) -> str:
+        best_minutes = -1
+        for i in permutations(A):
+            hours = i[0] * 10 + i[1]
+            if hours >= 24:
+                continue
+            minutes = i[2] * 10 + i[3]
+            if minutes >= 60:
+                continue
+            total_minutes = hours * 60 + minutes
+            if total_minutes > best_minutes:
+                best_minutes = total_minutes
+                best = i
+        if best_minutes == -1:
+            return \'\'
+        best = [str(i) for i in best]
+        return \'\'.join(best[:2]) + \':\' + \'\'.join(best[2:])

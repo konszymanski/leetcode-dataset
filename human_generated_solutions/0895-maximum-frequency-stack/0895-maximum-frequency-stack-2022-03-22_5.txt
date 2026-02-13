@@ -1,0 +1,20 @@
+class FreqStack:
+    def __init__(self):
+        self.frequencies = {}
+        self.mostFreq = 0
+        self.stackofstacks = {}
+
+    def push(self, val: int) -> None:
+        value = 1 + self.frequencies.get(val, 0) 
+        self.frequencies[val] = value 
+        if (value > self.mostFreq):
+            self.mostFreq = value
+            self.stackofstacks[value] = [] 
+        self.stackofstacks[value].append(val) 
+
+    def pop(self) -> int:
+        result = self.stackofstacks[self.mostFreq].pop()
+        self.frequencies[result] -= 1
+        if not self.stackofstacks[self.mostFreq]: 
+            self.mostFreq -= 1
+        return result

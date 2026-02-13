@@ -1,0 +1,37 @@
+class Solution:
+    from collections import Counter
+    def maxDiff(self, num: int) -> int:
+        n = len(str(num))
+        num = str(num)
+        arr = [int(i) for i in num]
+        
+        first = arr[:]
+        second = arr[:]
+        
+        mark_1 = -1
+        mark_2 = -1
+        
+        for i in range(n):
+            if arr[0] == 1:
+                if arr[i] not in [1,0]:
+                    mark_1 = arr[i]
+                    break
+            else:
+                mark_1 = arr[0]
+                break
+        
+        for i in range(n):
+            if arr[i] != 9:
+                mark_2 = arr[i]
+                break
+        
+        for i in range(n):
+            if first[i] == mark_1 and arr[0] != 1:
+                first[i] = 1
+            elif first[i] == mark_1 and arr[0] == 1:
+                first[i] = 0
+            if second[i] == mark_2:
+                second[i] = 9
+        
+        
+        return int("".join(str(i) for i in second)) - int("".join(str(i) for i in first))

@@ -1,0 +1,43 @@
+class Solution:
+    def repeatedStringMatch(self, A: str, B: str) -> int:
+        times = (len(B) - 1) // len(A) + 1  # Ceiling.
+        kmp = self.kmpTable(B)  # build kmp pattern table
+
+        for i in range(0, 2):
+            index = self.search(kmp, A * (times + i), B)
+
+            if index is not None:
+                return times + i
+
+        return -1
+
+    def search(self, kmp, str, pattern):
+        j = 0  # num of patterns match in pattern (string B)
+
+        for i in range(len(str)):
+            while j > 0 and str[i] != pattern[j]:
+                j = kmp[j - 1]  # fall back to best known match in our kmp list
+
+            if str[i] == pattern[j]:
+                j += 1
+
+                if j == len(pattern):
+                    return i - (j - 1)
+
+        return None
+
+    def kmpTable(self, s: str):
+        kmp = [0] * len(s)
+
+        for i in range(1, len(s)):
+            idx = kmp[i - 1]
+
+            while idx > 0 and s[idx] != s[i]:
+                idx = kmp[idx - 1]  # trace backwards to find the last matching char
+
+            if s[i] == s[idx]:  # matches next char, increment our last known good case
+                idx += 1
+
+            kmp[i] = idx
+
+        return kmp

@@ -1,0 +1,9 @@
+class Solution:
+    def countConsistentStrings(self, allowed: str, words: List[str]) -> int:
+        d = set(allowed)
+        count=0
+        for word in words:
+            p = set(word)
+            if p.issubset(d):
+                count+=1
+        return count

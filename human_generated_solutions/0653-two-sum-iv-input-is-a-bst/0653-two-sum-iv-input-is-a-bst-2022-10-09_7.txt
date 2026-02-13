@@ -1,0 +1,13 @@
+class Solution:
+    def __init__(self):
+        self.seen = set()
+
+    def findTarget(self, root: TreeNode, k: int) -> bool:
+        
+        if not root: return False                   # edge cases
+        if k - root.val in self.seen: return True   # 
+        
+        self.seen.add(root.val)                     # cache the node values visited
+
+        return (self.findTarget(root.left,k) or     # recurse left and right
+                self.findTarget(root.right,k))

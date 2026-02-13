@@ -1,0 +1,32 @@
+from random import random, seed
+from math import pi, cos, sin, sqrt
+
+class Solution:
+
+    def __init__(self, radius: float, x_center: float, y_center: float):
+        
+        self._x_center = x_center
+        self._y_center = y_center
+        self._r = radius
+        
+        # Initialize random seed with system time
+        seed()
+
+    def randPoint(self) -> List[float]:
+        
+        # random theta from 0 to 2*pi
+        rand_theta = random() * 2 * pi
+        
+        # random radius from 0 to R
+        rand_radius = sqrt( random() ) * self._r
+        
+        # compute random point based on polar coordination
+        rand_x_coord = rand_radius * cos(rand_theta) + self._x_center
+        rand_y_coord = rand_radius * sin(rand_theta) + self._y_center
+        
+        return [rand_x_coord, rand_y_coord]
+    
+    
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(radius, x_center, y_center)
+# param_1 = obj.randPoint()

@@ -1,0 +1,23 @@
+class Log:
+    def __init__(self, log: str):
+        log_split = log.split(" ")
+        
+        self.original_log = log
+        self.identifier = log_split[0]
+        self.log_type = "digit" if log_split[1].isnumeric() else "letter"
+        self.log_text = " ".join(log_split[1:])
+        
+    # Custom lower than function for sorting.
+    def __lt__(self, other):
+        if self.log_text == other.log_text:
+            return self.identifier < other.identifier
+        return self.log_text < other.log_text
+        
+        
+
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        formatted_logs = [Log(log) for log in logs]
+        letter_logs = [formatted_log for formatted_log in formatted_logs if formatted_log.log_type == "letter"]
+        digit_logs = [formatted_log for formatted_log in formatted_logs if formatted_log.log_type == "digit"]
+        return [log.original_log for log in [*sorted(letter_logs), *digit_logs]]

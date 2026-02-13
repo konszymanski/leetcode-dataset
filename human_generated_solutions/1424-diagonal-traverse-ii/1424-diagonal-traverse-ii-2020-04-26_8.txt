@@ -1,0 +1,7 @@
+class Solution:
+    def findDiagonalOrder(self, nums):
+        diagonals = defaultdict(lambda: deque())
+        for row_id, row in enumerate(nums):
+            for col_id in range(len(row)):
+                diagonals[row_id + col_id].appendleft(row[col_id])
+        return list(chain(*diagonals.values()))

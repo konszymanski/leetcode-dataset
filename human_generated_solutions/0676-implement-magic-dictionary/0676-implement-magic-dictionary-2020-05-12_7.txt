@@ -1,0 +1,35 @@
+from collections import defaultdict
+
+class Node:
+    def __init__(self):
+        self.child = defaultdict(Node)
+        self.isEnd = False
+
+class MagicDictionary:
+
+    def __init__(self):
+        self.trie = Node()
+    
+    def buildDict(self, words: List[str]) -> None:
+        for w in words:
+            n = self.trie
+            for c in w:
+                n = n.child[c]
+            n.isEnd = True
+            
+    def searchWord(self, n: \'Node\', word: str) -> bool:
+        for c in word:
+            if c not in n.child:
+                return False
+            n = n.child[c]
+        return n.isEnd
+        
+
+    def search(self, word: str) -> bool:
+        n = self.trie
+        for i, c in enumerate(word):
+            if any(self.searchWord(n.child[k], word[i+1:]) for k in n.child if c != k):
+                return True
+            if c not in n.child:
+                return False
+            n = n.child[c]

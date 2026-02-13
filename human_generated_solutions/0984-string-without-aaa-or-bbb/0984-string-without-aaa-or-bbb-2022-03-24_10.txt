@@ -1,0 +1,63 @@
+class Solution:
+    def strWithout3a3b(self, a: int, b: int) -> str:
+        
+        more_char, less_char = \'\', \'\'
+        more_char_freq, less_char_freq = 0,0
+        
+        if(a > b):
+            more_char, less_char = \'a\', \'b\'
+            more_char_freq, less_char_freq = a, b
+        else:
+            more_char, less_char = \'b\', \'a\'
+            more_char_freq, less_char_freq = b, a
+            
+        
+        more_char_list = []
+        
+        while(more_char_freq > 0):
+            if(more_char_freq == 1):
+                more_char_list.append(more_char)
+                more_char_freq-=1
+            elif(more_char_freq >=2):
+                more_char_list.append(more_char+more_char)
+                more_char_freq-=2
+        
+        
+        
+        less_char_list = []
+        
+        for i in range(0, len(more_char_list)-1):
+            less_char_list.append(less_char)
+            less_char_freq-=1
+        
+        if(less_char_freq > 0):
+            
+            for i in range(0, len(less_char_list)):
+                less_char_list[i] = less_char_list[i]+less_char
+                less_char_freq-=1
+                
+                if(less_char_freq == 0):
+                    break
+        
+        if(less_char_freq > 0):
+            if(less_char_freq == 1):
+                less_char_list.append(less_char)
+            else:
+                less_char_list.append(less_char+less_char)
+    
+        result = \'\'
+        if(len(more_char_list) == len(less_char_list)):
+            
+            for more_char_str, less_char_str in zip(more_char_list, less_char_list):
+                result+=(more_char_str+less_char_str)
+            
+            return result
+        
+        elif(len(more_char_list) == len(less_char_list)+1):
+            
+            for i in range(0, len(less_char_list)):
+                result+=(more_char_list[i]+less_char_list[i])
+            
+            result+=more_char_list[-1]
+            
+            return result

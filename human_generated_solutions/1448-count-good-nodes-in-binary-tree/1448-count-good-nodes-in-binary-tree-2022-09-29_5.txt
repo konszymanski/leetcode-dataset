@@ -1,0 +1,11 @@
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        def helper(root, curMax):
+            if not root:
+                return 0
+            if root.val >= curMax:
+                curMax = root.val
+                return helper(root.left, curMax) + helper(root.right, curMax) + 1
+            else:
+                return helper(root.left, curMax) + helper(root.right, curMax)
+        return helper(root, float("-inf"))

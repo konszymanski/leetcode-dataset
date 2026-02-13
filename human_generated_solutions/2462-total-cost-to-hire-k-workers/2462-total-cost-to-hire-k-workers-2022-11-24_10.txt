@@ -1,0 +1,37 @@
+class Solution:
+    def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
+
+        # we can use two pointers and a min heap using the cost and index
+        candidates_heap = [(cost, idx, True) for idx, cost in enumerate(costs[:candidates])]
+        # get the secon start index
+        start_index = max(candidates, len(costs)-candidates)  # candidates can already overlap
+        candidates_heap += [(cost, idx, False) for idx, cost in enumerate(costs[start_index:], start_index)]
+
+        # heapify the thing
+        heapq.heapify(candidates_heap)
+        print(candidates_heap)
+        
+        # make two pointers
+        left = candidates - 1
+        right = len(costs)-candidates
+
+        # go through the process
+        result = 0
+        for _ in range(k):
+
+            # pop the worker
+            worker_cost, idx, is_left = heapq.heappop(candidates_heap)
+            print(worker_cost, is_left)
+            result += worker_cost
+
+            # update the heap
+            if left < right - 1:
+
+                # check wich pointer to update
+                if is_left:
+                    left += 1
+                    heapq.heappush(candidates_heap, (costs[left], left, True))
+                else:
+                    right -= 1
+                    heapq.heappush(candidates_heap, (costs[right], right, False))
+        return result

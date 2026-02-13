@@ -1,0 +1,14 @@
+class Solution:
+    def minimumOneBitOperations(self, n: int) -> int:
+        if n == 0: return 0
+
+        base = 1
+        while True:
+            base *= 2
+            if base > n:
+                base /= 2
+                break
+            elif base == n:
+                break
+
+        return int(base*2-1) - self.minimumOneBitOperations(n-base)

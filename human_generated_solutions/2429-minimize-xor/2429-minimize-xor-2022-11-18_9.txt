@@ -1,0 +1,14 @@
+class Solution:
+    def minimizeXor(self, num1: int, num2: int) -> int:
+        binarynum = bin(num1)[2:].rjust(len(bin(num2)[2:]),\'0\')     
+        cnt1 = binarynum.count(\'1\')
+        cnt2 = bin(num2)[2:].count(\'1\')
+        
+        if cnt1 == cnt2:
+            return num1
+        elif cnt1 < cnt2:
+            binarynum = binarynum[::-1].replace(\'0\',\'1\',cnt2-cnt1)[::-1]
+            return int(binarynum,2)
+        else:
+            binarynum = binarynum[::-1].replace(\'1\',\'0\',cnt1-cnt2)[::-1]
+            return int(binarynum,2)

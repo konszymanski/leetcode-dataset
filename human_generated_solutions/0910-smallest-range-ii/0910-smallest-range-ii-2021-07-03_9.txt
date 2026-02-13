@@ -1,0 +1,13 @@
+class Solution:
+		def smallestRangeII(self, nums: List[int], k: int) -> int:
+			newNums = [(x - k, True) for x in nums]
+			largest = max(newNums, key=lambda a: a[0])[0]
+			heapq.heapify(newNums)
+			result = abs(newNums[0][0]-largest)
+			while newNums[0][1]:
+				result = min(result, abs(newNums[0][0]-largest))
+				popped = heapq.heappop(newNums)
+				heapq.heappush(newNums, (popped[0] + 2*k, False))
+				largest = max(largest, popped[0] + 2*k)
+			result = min(result, abs(newNums[0][0]-largest))
+			return result

@@ -1,0 +1,22 @@
+def findSecondMinimumValue(self, root: TreeNode) -> int:
+	if not root:
+		return 0
+	min_val, second_min_val = root.val, float(inf)
+
+	stack = [root.left, root.right]
+
+	while stack:
+		node = stack.pop()
+		if node:
+			if node.val>min_val:
+				if node.val<second_min_val:
+					second_min_val = node.val
+				#all the nodes below will either be equal to second_min_val or greater than that
+				#so no need to check those
+				continue
+			elif node.val<=min_val:
+				if node.val<min_val:
+					second_min_val, min_val = min_val, node.val
+				stack.append(node.left)
+				stack.append(node.right)
+	return second_min_val if second_min_val<float(inf) else -1

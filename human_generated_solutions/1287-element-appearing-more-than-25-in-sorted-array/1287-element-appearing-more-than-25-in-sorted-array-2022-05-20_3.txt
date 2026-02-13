@@ -1,0 +1,7 @@
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        per = len(arr)//4
+        for i in arr:
+            occ = arr.count(i)
+            if occ > per:
+                return i

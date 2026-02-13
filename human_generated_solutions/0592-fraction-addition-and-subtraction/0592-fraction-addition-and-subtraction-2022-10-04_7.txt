@@ -1,0 +1,71 @@
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+
+        def parse_rational(s):
+            sign = 1
+            if s[0] == \'-\':
+                s = s[1:]
+                sign = -1
+            
+            (n, d) = s.split(\'/\')
+
+            return Rational(sign*int(n), int(d))
+
+        ans = Rational(0,1)
+        n = len(expression)
+        op = Rational.__add__
+        i = 0
+        while i < n:
+            j = i + 1
+            while j < n and expression[j] != \'+\' and expression[j] != \'-\':
+                j += 1
+
+            rat = parse_rational(expression[i:j])
+            ans = op(ans, rat)
+
+            if j < n:
+                if expression[j] == \'+\':
+                    op = Rational.__add__
+                else:
+                    op = Rational.__sub__
+
+            i = j + 1
+
+        return str(ans)
+
+class Rational:
+    # We represent a rational number as a pair (a, b) such that
+    # a is an integer, b is a natural number and gcd(a, b) = 1.
+    def __init__ (self, a: int, b: int):
+        assert b != 0
+
+        aa = abs(a)
+        bb = abs(b)
+        d = gcd(aa, bb)
+        
+        if (a < 0 and b > 0) or (a > 0 and b < 0):
+            self.a = -1 * (aa // d)
+        else:
+            self.a = aa // d
+
+        self.b = bb // d
+
+    def __str__(self):
+        return f"{self.a}/{self.b}"
+
+    def __add__ (self, r):
+        return Rational(self.a*r.b + self.b*r.a, self.b*r.b)
+
+    def __sub__ (self, r):
+        return Rational(self.a*r.b - self.b*r.a, self.b*r.b)
+
+    def __eq__ (self, r):
+        return self.a == r.a and self.b == r.b
+    def __ne__ (self, r):
+        return self.a != r.a or self.b != r.b
+
+    def gcd(self, c, d):
+        if d == 0:
+            return c
+
+        return gcd(d, c % d)

@@ -1,0 +1,41 @@
+class Solution(object):
+    def dfs(self, grid, t, row, col, visited):
+       if row < 0 or row > len(grid) - 1 or col < 0 or col > len(grid[0]) - 1:
+            return 0
+        
+        if row == len(grid) - 1 and col == len(grid[0]) - 1:
+            return 1
+        
+        visited.add((row, col))
+        
+        down = up = right = left = 0
+        
+        if row + 1 < len(grid) and grid[row + 1][col] <= t and (row + 1, col) not in visited:
+            down = self.dfs(grid, t, row + 1, col, visited)
+            
+        if row - 1 >= 0 and grid[row - 1][col] <= t and (row - 1, col) not in visited:
+            up = self.dfs(grid, t, row - 1, col, visited)
+            
+        if col + 1 < len(grid[0]) and grid[row][col + 1] <= t and (row, col + 1) not in visited:
+            right = self.dfs(grid, t, row, col + 1, visited)
+            
+        if col - 1 >= 0 and grid[row][col - 1] <= t and (row, col - 1) not in visited:
+            left = self.dfs(grid, t, row, col - 1, visited)
+            
+        return down or up or right or left
+    
+    def swimInWater(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not len(grid) or not len(grid[0]):
+            return 0
+        
+        t = grid[0][0]
+        visited = set()
+        while self.dfs(grid, t, 0, 0, visited) == 0:
+            t += 1
+            visited = set()
+        
+        return t

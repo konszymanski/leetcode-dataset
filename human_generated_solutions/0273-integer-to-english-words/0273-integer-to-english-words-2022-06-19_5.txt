@@ -1,0 +1,114 @@
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        if num==0:
+            return \'Zero\'
+        num=str(num)
+        s=len(num)%3
+        bx=[]
+        bx.append(num[:s])
+        for i in range(s,len(num),3):
+            bx.append(num[i:i+3])
+        
+        def answer(s):
+            x=\'\'
+            if len(s)==3:
+                if s[0]==\'1\':
+                    x+=\'One \'
+                if s[0]==\'2\':
+                    x+=\'Two \'
+                if s[0]==\'3\':
+                    x+=\'Three \'
+                if s[0]==\'4\':
+                    x+=\'Four \'
+                if s[0]==\'5\':
+                    x+="Five "
+                if s[0]==\'6\':
+                    x+=\'Six \'
+                if s[0]==\'7\':
+                    x+=\'Seven \'
+                if s[0]==\'8\':
+                    x+=\'Eight \'
+                if s[0]==\'9\':
+                    x+=\'Nine \'
+                if s[0]!=\'0\':
+                    x+=\'Hundred \'
+            if len(s[len(s)-2:])==2:
+                if s[len(s)-2]==\'1\':
+                    if s[len(s)-2:]==\'10\':
+                        x+=\'Ten \'
+                    if s[len(s)-2:]==\'11\':
+                        x+=\'Eleven \'
+                    if s[len(s)-2:]==\'12\':
+                        x+=\'Twelve \'
+                    if s[len(s)-2:]==\'13\':
+                        x+=\'Thirteen \'
+                    if s[len(s)-2:]==\'14\':
+                        x+=\'Fourteen \'
+                    if s[len(s)-2:]==\'15\':
+                        x+=\'Fifteen \'
+                    if s[len(s)-2:]==\'16\':
+                        x+=\'Sixteen \'
+                    if s[len(s)-2:]==\'17\':
+                        x+=\'Seventeen \'
+                    if s[len(s)-2:]==\'18\':
+                        x+=\'Eighteen \'
+                    if s[len(s)-2:]==\'19\':
+                        x+=\'Nineteen \'
+                    return x
+                
+                elif s[len(s)-2]==\'2\':
+                    x+=\'Twenty \'
+                elif s[len(s)-2]==\'3\':
+                    x+=\'Thirty \'
+                elif s[len(s)-2]==\'4\':
+                    x+=\'Forty \'
+                elif s[len(s)-2]==\'5\':
+                    x+=\'Fifty \'
+                elif s[len(s)-2]==\'6\':
+                    x+=\'Sixty \'
+                elif s[len(s)-2]==\'7\':
+                    x+=\'Seventy \'
+                elif s[len(s)-2]==\'8\':
+                    x+=\'Eighty \'
+                elif s[len(s)-2]==\'9\':
+                    x+=\'Ninety \'
+               
+            if len(s[len(s)-1:])==1:
+                if s[len(s)-1]==\'1\':
+                    x+=\'One \'
+                if s[len(s)-1]==\'2\':
+                    x+=\'Two \'
+                if s[len(s)-1]==\'3\':
+                    x+=\'Three \'
+                if s[len(s)-1]==\'4\':
+                    x+=\'Four \'
+                if s[len(s)-1]==\'5\':
+                    x+=\'Five \'
+                if s[len(s)-1]==\'6\':
+                    x+=\'Six \'
+                if s[len(s)-1]==\'7\':
+                    x+=\'Seven \'
+                if s[len(s)-1]==\'8\':
+                    x+=\'Eight \'
+                if s[len(s)-1]==\'9\':
+                    x+=\'Nine \' 
+            return x
+        ans=\'\'
+        f=-len(bx)
+        while f<0:
+            if bx[f]==\'\' or bx[f]==\'000\':
+                f+=1
+                continue
+            if f==-4:
+                ans+=answer(bx[f])
+                ans+=\'Billion \'
+            elif f==-3:
+                ans+=answer(bx[f])
+                ans+=\'Million \'
+            elif f==-2:
+                ans+=answer(bx[f])
+                ans+=\'Thousand \'
+            elif f==-1:
+                ans+=answer(bx[f])
+            f+=1
+        return(ans[:len(ans)-1])

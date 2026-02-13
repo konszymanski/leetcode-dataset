@@ -1,0 +1,16 @@
+def maxOperations(self, nums: List[int], k: int) -> int:
+        \'\'\'O(N) time complexity; where N is the length of nums\'\'\'
+        
+        num_operations = 0
+        d = {}  
+        
+        for num in nums:
+            if ((k-num) in d) and (d[k-num] > 0):
+                d[k-num] -= 1
+                num_operations += 1
+            elif num not in d:
+                d[num] = 1
+            else:
+                d[num] += 1
+                
+        return num_operations

@@ -1,0 +1,13 @@
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        height, removed_height, dummy, queue, lvl = defaultdict(lambda: -1), defaultdict(lambda: 0), TreeNode(-1), [root], 0
+        def dfs(root):
+            if not root: return -1
+            height[root.val] = 1 + max(dfs(root.left), dfs(root.right))
+            return height[root.val]
+        dfs(root)
+        while queue:
+            u,v = heapq.nlargest(2, queue + [dummy], key=lambda node: height[node.val])
+            for node in queue: removed_height[node.val] = lvl + height[u.val] * int(u.val != node.val) + height[v.val] * int(u.val == node.val)
+            queue, lvl = [child for node in queue for child in [node.left, node.right] if child], lvl + 1
+        return [removed_height[query] for query in queries]

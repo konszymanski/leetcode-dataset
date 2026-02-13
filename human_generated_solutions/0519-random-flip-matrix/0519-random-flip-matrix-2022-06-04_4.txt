@@ -1,0 +1,19 @@
+class Solution:
+
+    def __init__(self, m: int, n: int):
+        self.nums = m * n - 1
+        self.cols = n
+        self.flipped = set()
+        
+
+    def flip(self) -> List[int]:
+        rc = random.randint(0, self.nums)
+        while rc in self.flipped:
+            rc = random.randint(0, self.nums)
+            
+        self.flipped.add(rc)
+        return [rc // self.cols, rc % self.cols]
+    
+
+    def reset(self) -> None:
+        self.flipped = set()

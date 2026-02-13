@@ -1,0 +1,10 @@
+class Solution:
+    def mostCompetitive(self, N: List[int], K: int) -> List[int]:
+        i, moves = 0, len(N) - K
+        ans = []
+        for x in N:
+            while ans and moves and x < ans[-1]:
+                ans.pop()
+                moves -= 1
+            ans.append(x)
+        return ans[:K]

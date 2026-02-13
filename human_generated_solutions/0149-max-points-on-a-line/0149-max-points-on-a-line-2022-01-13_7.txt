@@ -1,0 +1,18 @@
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        ans = 1     # The minimum answer is 1, because every point must lie on at least one line. (Just itself)
+        for i in range(len(points)-1):      # Iterate every point. We don\'t need iterate the last one, because j = i+1
+			# create a new dict for every new point{slope: number of points}
+            dic = collections.defaultdict(lambda:1)    # Initialize the dict with default value 1, because the start point is already on the line!
+            cur_x, cur_y = points[i][0], points[i][1]
+            for j in range(i+1, len(points)):   # notice: We just need check the rest points, the points ahead have been checked before
+                if points[j][0] == cur_x:   # when the slope is infinity: x = n
+                    dic[\'inf\'] += 1
+                else:
+                    k = (cur_y-points[j][1])/(cur_x-points[j][0])
+                    dic[k] += 1
+            ans = max(ans, max(dic.values()))   
+
+            dic.clear()
+
+        return ans

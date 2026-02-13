@@ -1,0 +1,47 @@
+import math
+from collections import deque
+
+class Solution(object):
+    def shortestAlternatingPaths(self, n, red_edges, blue_edges):
+        # build the graph in hash table
+        graph = {i: [[], []] for i in range(n)}  # node: [red edges list], [blue edges list]
+        for [i, j] in red_edges:
+            graph[i][0].append(j)
+        for [i, j] in blue_edges:
+            graph[i][1].append(j)
+
+        res = [math.inf for _ in range(n)]  # we will keep min length in this list
+        res[0] = 0  # min length for the first node is 0
+        min_len = 0  # 
+
+        queue = deque()
+        queue.append((0, "r")) 
+        queue.append((0, "b")) 
+
+        seen = set() 
+
+        while queue:
+            level_size = len(queue)
+            min_len += 1
+
+            for _ in range(level_size):
+                node, color = queue.popleft()
+
+                if (node, color) not in seen:
+                    seen.add((node, color))  # in addition to vertex, we need to have the color too
+                                            
+                    # add all opposite color children in the queue
+                    if color == "r":
+                        for child in graph[node][1]:
+                            queue.append((child, "b"))
+                            res[child] = min(min_len, res[child])  # we reached to a child, so we have to update res[child]
+                    if color == "b":
+                        for child in graph[node][0]:
+                            queue.append((child, "r"))
+                            res[child] = min(min_len, res[child]) # we reached to a child, so we have to update res[child]
+
+        for i in range(n):
+            if res[i] == math.inf:
+                res[i] = -1
+
+        return res

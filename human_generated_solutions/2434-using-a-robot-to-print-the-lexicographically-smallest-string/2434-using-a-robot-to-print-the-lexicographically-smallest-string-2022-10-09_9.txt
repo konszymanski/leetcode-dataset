@@ -1,0 +1,17 @@
+from itertools import accumulate
+class Solution:
+    def robotWithString(self, s: str) -> str:
+        #calculate reverse cumulative min (skip first character as it\'s not needed)
+        cm = reversed(list(accumulate(reversed(s[1:]), min)))
+
+        t = []
+        ret = []
+        
+		# iterate in pairs of s and the cumulative min for next char (s[i], cm[i+1] (+1 not needed as we skip first above))
+        for char, curr_min in zip(s, cm):
+            t.append(char)
+            while t and t[-1] <= curr_min: 
+                ret += t.pop()
+
+		# Join result together, because we skipped the last s[-1] above (cm is one shorter than s), we need to add it inbetween ret and t 
+        return "".join(ret + [s[-1]] + t[::-1])

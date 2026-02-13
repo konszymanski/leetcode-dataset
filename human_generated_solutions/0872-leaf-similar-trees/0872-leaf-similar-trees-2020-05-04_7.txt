@@ -1,0 +1,16 @@
+def leafSimilar(self, root1: TreeNode, root2: TreeNode) -> bool:
+        first = self.get_leaf_dfs(root1)
+        second = self.get_leaf_dfs(root2)
+        if len(first) != len(second): return False
+        return sum([0 if i == j else 1 for i,j in zip(first, second)]) == 0
+        
+    def get_leaf_dfs(self, root):
+        out = []
+        def dfs(node):
+            if node:
+                left = dfs(node.left)
+                right = dfs(node.right)
+                if not left and not right: out.append(node.val)
+                return True
+        dfs(root)
+        return out

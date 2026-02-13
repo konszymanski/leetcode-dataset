@@ -1,0 +1,52 @@
+class Solution:
+    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
+        """Prefix Sum
+        Time: O(N) * 7
+        Space: O(N) * 5
+        """
+		# edge case
+        if len(fruits) == 1:
+            rightMax = startPos + k
+            leftMax = startPos - k
+            fruitPos = fruits[0][0]
+            if leftMax <= fruitPos <= rightMax:
+                return fruits[0][1]
+        
+		# store pos and # fruits in a hash table to reduce time complexity
+        d = defaultdict(int)
+        for pos, num in fruits:
+            d[pos] += num
+        
+        # record prefix sum of right side
+        right_sum_list = [0] * (k+1)
+        cumSum = 0
+        for step in range(k+1):
+            cumSum += d[startPos + step]
+            right_sum_list[step] = cumSum
+        
+        # record prefix sum of left side
+        left_sum_list = [0] * (k+1)
+        cumSum = 0
+        for step in range(k+1):
+            cumSum += d[startPos - step]
+            left_sum_list[step] = cumSum
+        
+        # step to right (including return to left side)
+        right_sum_res = right_sum_list.copy()
+        for step in range(k, -1, -1):
+			# calculate the remaining step to left side, and add the left side predix sum to the current result.
+			# note that we need to exclude sum at position 0, since it is duplicated in the right side and left side.
+            if k - 2*step > 0:
+                step_remain = k - 2*step
+                right_sum_res[step] += left_sum_list[step_remain] - left_sum_list[0]
+        
+        # step to left (including return to right side)
+        left_sum_res = left_sum_list.copy()
+        for step in range(k, -1, -1):
+			# calculate the remaining step to right side, the same as the above one.
+            if k - 2*step > 0:
+                step_remain = k - 2*step
+                left_sum_res[step] += right_sum_list[step_remain] - right_sum_list[0]
+				
+        # return the maximum result
+        return max(max(right_sum_res), max(left_sum_res))

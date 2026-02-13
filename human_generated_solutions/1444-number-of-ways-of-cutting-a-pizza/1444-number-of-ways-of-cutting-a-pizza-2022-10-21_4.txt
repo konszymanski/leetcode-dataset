@@ -1,0 +1,64 @@
+from collections import defaultdict
+from functools import lru_cache
+from itertools import product
+
+
+class Solution:
+    def ways(self, pizza: list[str], k: int) -> int:
+
+        # Find the last row and col
+        maxRow, maxCol = len(pizza) - 1, len(pizza[0]) - 1
+
+        # Calcualate the prefix sum of apples
+        prefix = defaultdict(int)
+        for row, col in product(range(maxRow + 1), range(maxCol + 1)):
+            prefix[(row, col)] = (
+                prefix[(row - 1, col)]
+                + prefix[(row, col - 1)]
+                - prefix[(row - 1, col - 1)]
+                + int(pizza[row][col] == "A")
+            )
+
+        # Check if a given submatrix has at least 1 apple
+        def isValid(minRow, maxRow, minCol, maxCol):
+            return (
+                prefix[(maxRow, maxCol)]
+                - prefix[(minRow - 1, maxCol)]
+                - prefix[(maxRow, minCol - 1)]
+                + prefix[(minRow - 1, minCol - 1)]
+            ) > 0
+
+        # Top-down DP: Recursively cutting the apple
+        @lru_cache(None)
+        def cut(k, minRow, minCol):
+
+            # If we have 0 cut remaining, check if the left over has at least 1 apple
+            if k == 0:
+
+                # Return 1 if yes else 0
+                return 1 if isValid(minRow, maxRow, minCol, maxCol) else 0
+
+            # Initialize a variable to store all ways we can cut the pizza
+            ways = 0
+
+            # Case 1: Horizontal cuts
+            for row in range(minRow, maxRow):
+
+                # Check if the top part of the pizza is valid
+                if isValid(minRow, row, minCol, maxCol):
+
+                    # If yes, continue to cut the bottom part of the pizza
+                    ways += cut(k - 1, row + 1, minCol)
+
+            # Case 2: Vertical cuts
+            for col in range(minCol, maxCol):
+
+                # Check if the left part of the pizza is valid
+                if isValid(minRow, maxRow, minCol, col):
+
+                    # If yes, continue to cut the right part of the pizza
+                    ways += cut(k - 1, minRow, col + 1)
+
+            return ways
+
+        return cut(k - 1, 0, 0) % (10 ** 9 + 7)

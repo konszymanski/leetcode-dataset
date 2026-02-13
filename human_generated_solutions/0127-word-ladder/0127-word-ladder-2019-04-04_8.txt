@@ -1,0 +1,35 @@
+class Solution1:
+    def ladderLength(self, beginWord, endWord, wordList):
+          """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype step: int
+        """
+        visited = set()
+        wordSet = set(wordList)
+        
+        queue = [(beginWord, 1)]
+        
+        while len(queue) > 0: #queue is not empty 
+            word, step = queue.pop(0)
+            #logging.debug(f"word: {word}, step:{step}")
+
+            #base case 
+            if word == endWord:
+                return step #get the result.
+            if word in visited: #better than multiple conditions later.
+                continue
+            #visited.add(word) # paint word as visited
+            
+            #traverse all the  variants 
+            for i in range(len(word)):
+                for j in range(0, 26): 
+                    ordinal = ord(\'a\') + j
+                    next_word = word[0:i] + chr(ordinal) + word[i + 1:]
+                    #logging.debug(f"changed_word: {next_word}")
+                    if next_word in wordSet: 
+                        queue.append((next_word, step + 1)) #contiue next stretch 
+            visited.add(word) # paint word as visited
+        
+        return 0

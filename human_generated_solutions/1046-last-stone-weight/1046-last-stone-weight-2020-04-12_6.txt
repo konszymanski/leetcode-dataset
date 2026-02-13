@@ -1,0 +1,15 @@
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        for i in range(len(stones) - 1):
+            stones.sort()
+            stones.append(stones.pop() - stones.pop()) 
+        return stones[0]
+		
+		
+		Follow me for more intresting programming questions :
+							https://www.github.com/shubhamthrills
+							https://www.instagaram.com/shubhamthrills
+							https://www.linkedin.com/in/shubhamsagar
+							
+							
+#Another Possible approch [If you don\'t want to decrease the length of loop every time]

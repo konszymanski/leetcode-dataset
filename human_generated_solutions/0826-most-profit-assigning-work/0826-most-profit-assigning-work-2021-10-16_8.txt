@@ -1,0 +1,39 @@
+def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+	pd = defaultdict(int)
+	l = len(difficulty)
+
+	for i in range(0, l):
+		#there might be different profit for same difficulty level
+		#so we pick the maximum one
+		pd[difficulty[i]] = max(pd[difficulty[i]], profit[i])
+
+	difficulty = sorted(set(difficulty))
+	l = len(difficulty)
+
+	for i in range(1, l):
+		#task with less difficulty might be more profitable
+		pd[difficulty[i]] = max(pd[difficulty[i]], pd[difficulty[i-1]])
+	
+	#since the array is sorted and everything is done as stated above
+	# we can just perform binary search and find the task with proper difficulty (equal or the nearest smaller)
+	
+	def binary_search(w):
+		s, e = 0, l-1
+		pos = -1
+		while s<=e:
+			mid = s+(e-s)//2
+			if difficulty[mid]==w:
+				return mid
+			elif difficulty[mid]<w:
+				pos = mid
+				s = mid+1
+			else:
+				e = mid-1
+		return pos
+
+	res = 0
+	for w in worker:
+		pos = binary_search(w)
+		if pos>=0:
+			res+=pd[difficulty[pos]]
+	return res

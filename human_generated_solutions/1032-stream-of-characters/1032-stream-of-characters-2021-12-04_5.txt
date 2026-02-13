@@ -1,0 +1,34 @@
+class TrieNode:
+    def __init__(self):
+        self.trie = {}
+    
+    def add_word(self, word):
+        curr = self.trie
+        for char in word:
+            if char not in curr:
+                curr[char] = {}
+            curr = curr[char]
+        curr[\'$\'] = True
+    
+    def find_query(self, prefix):
+        curr = self.trie
+        for char in prefix:
+            if char not in curr:
+                return False
+            curr = curr[char]
+            if \'$\' in curr:
+                return True
+        return False        
+                
+
+class StreamChecker:
+    def __init__(self, words: List[str]):
+        self.prefix = \'\'
+        #construct trie
+        self.t = TrieNode()
+        for word in words:
+            self.t.add_word(word[::-1])
+            
+    def query(self, letter: str) -> bool:
+        self.prefix += letter
+        return self.t.find_query(self.prefix[::-1])

@@ -1,0 +1,16 @@
+class Solution:
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+	    # Use counter for the subdomain counts.
+        cnts = collections.Counter()
+        ans = []
+        for s in cpdomains:
+		    # split the count and full domain.
+            cnt, dom = s.split(\' \')
+			# Break the domain out.
+            subs = dom.split(\'.\')
+			# For the different subs in our domain, join with all the other subs following it.
+            for i in range(len(subs)):
+			    # Update the counts.
+                cnts[\'.\'.join(subs[i:])] += int(cnt)
+	    # Retuen the count and domains.
+        return [f\'{v} {k}\' for k, v in cnts.items()]

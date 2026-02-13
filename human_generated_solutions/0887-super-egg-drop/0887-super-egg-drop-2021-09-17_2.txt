@@ -1,0 +1,16 @@
+class Solution:
+    def superEggDrop(self, k: int, n: int) -> int:
+        
+        @cache
+        def fn(n, k):
+            """Return min moves given n floors and k eggs."""
+            if k == 1: return n
+            if n == 0: return 0 
+            lo, hi = 1, n + 1
+            while lo < hi: 
+                mid = lo + hi >> 1
+                if fn(mid-1, k-1) < fn(n-mid, k): lo = mid + 1
+                else: hi = mid 
+            return 1 + max(fn(lo-1, k-1), fn(n-lo, k))
+        
+        return fn(n, k)

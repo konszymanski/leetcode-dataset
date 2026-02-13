@@ -1,0 +1,19 @@
+def findRelativeRanks(self, score):
+
+	my_dict = {}
+	score_copy = sorted(score, reverse=True)
+	for i, el in enumerate(score_copy):
+		if i == 0:
+			my_dict[el] = "Gold Medal"
+		elif i == 1:
+			my_dict[el] = "Silver Medal"
+		elif i == 2:
+			my_dict[el] = "Bronze Medal"
+		else:
+			my_dict[el] = str(i+1)
+
+	answer = []
+	for el in score:
+		answer.append(my_dict.get(el))
+
+	return answer

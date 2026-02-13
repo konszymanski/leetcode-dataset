@@ -1,0 +1,16 @@
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        st = set(nums)
+        
+        xor =0
+        for num in nums:
+            xor = xor^num
+        print(xor)
+        for item in nums:
+            if(item^xor in st):
+                ans = [item,item^xor]
+                return ans

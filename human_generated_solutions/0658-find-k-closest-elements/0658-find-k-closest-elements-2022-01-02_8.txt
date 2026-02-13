@@ -1,0 +1,28 @@
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # edge cases
+        if k == len(arr):
+            return arr
+        
+        if x <= arr[0]: 
+            return arr[:k]
+			
+        if x >= arr[-1]: 
+            return arr[-k:]
+
+		# the only difference between arr[mid:mid+k] and arr[mid+1:mid+k+1] is arr[mid] and arr[mid+k]
+		# compare x with (arr[mid]+arr[mid+k])/2 to decide to which half to discard	
+        
+        left, right = 0, len(arr) - k
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if x <= (arr[mid] + arr[mid+k]) / 2:
+                right = mid
+            else:
+                left = mid
+
+		# Similarly, compare x with (arr[left] + arr[right+k-1])/2 to decide use left or right
+        if x <= (arr[left] + arr[right+k-1]) / 2:
+            return arr[left:left+k]
+        else:
+            return arr[right:right+k]

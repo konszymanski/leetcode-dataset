@@ -1,0 +1,14 @@
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], start: int, end: int) -> bool:
+        def find(n):
+            while n != parent[n]:
+                n = parent[n]
+            return n
+       
+        parent = list(range(n))
+        for n1, n2 in edges:
+            p1 = find(n1)
+            p2 = find(n2)
+            parent[p1] = p2
+        
+        return find(start) == find(end)

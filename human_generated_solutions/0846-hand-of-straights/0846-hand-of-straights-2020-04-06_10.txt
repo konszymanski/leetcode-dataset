@@ -1,0 +1,29 @@
+from collections import Counter
+class Solution:
+    def isNStraightHand(self, hand: List[int], W: int) -> bool:
+        """
+        [1,2,3,6,2,3,4,7,8]
+        1:1 0
+        
+        2:2 1 0
+        3:2 1 0
+        4:1   0
+        
+        6:1   0 
+        7:1   0
+        8:1   0
+        """
+        count = Counter(hand)
+        #print(count)
+        for card in sorted(count.keys()):
+            while card in count:
+                for i in range(W):   
+                    need = card + i
+                    #print(need, count)
+                    if need not in count:
+                        return False
+                    else:
+                        count[need] -= 1
+                        if count[need] == 0:
+                            del count[need]
+        return True

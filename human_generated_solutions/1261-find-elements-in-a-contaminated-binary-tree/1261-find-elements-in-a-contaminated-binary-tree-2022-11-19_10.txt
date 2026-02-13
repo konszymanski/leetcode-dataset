@@ -1,0 +1,24 @@
+class FindElements:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.root=root
+        self.root.val=0
+        q=[self.root]
+        self.arr=[0]
+        while q:
+            for i in range(len(q)):
+                cur=q.pop(0)
+                if cur.left:
+                    cur.left.val=2*cur.val+1
+                    self.arr.append(cur.left.val)
+                    q.append(cur.left)
+                if cur.right:
+                    cur.right.val=2*cur.val+2
+                    self.arr.append(cur.right.val)
+                    q.append(cur.right)
+        
+
+    def find(self, target: int) -> bool:
+        if target in self.arr:
+            return True
+        return False

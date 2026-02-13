@@ -1,0 +1,3 @@
+class Solution:
+    def countNicePairs(self, nums: List[int]) -> int:
+        return sum(comb(c, 2) for c in Counter(n - int(str(n)[::-1]) for n in nums).values()) % 1_000_000_007

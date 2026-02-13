@@ -1,0 +1,17 @@
+class Solution(object):
+    def dominantIndex(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) == 1:
+            return 0
+        
+        largest = max(nums)
+        
+        for i in range(len(nums)):
+            if nums[i] == largest:
+                continue
+            if nums[i] * 2 > largest:
+                return -1
+        return nums.index(largest)

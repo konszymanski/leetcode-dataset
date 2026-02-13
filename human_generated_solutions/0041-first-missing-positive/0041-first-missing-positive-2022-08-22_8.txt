@@ -1,0 +1,11 @@
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+
+		# check presence of each value in [1, ..., N]
+		# missing value is N + 1 if every previous value is present
+        for v in range(1, len(nums)):
+
+            if v not in nums:
+                return v
+
+        return v + 1

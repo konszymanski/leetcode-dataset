@@ -1,0 +1,35 @@
+class Solution:
+    def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
+        cur = head
+        prev = cur
+        tmp = []
+        res = []
+        count = 0
+        mini = float(\'inf\')
+
+        while cur.next:
+            curValue = cur.val
+            if count >= 1:
+                prevValue = prev.val
+
+                if curValue > cur.next.val and curValue > prevValue:
+                    tmp.append(count + 1)
+                elif curValue < prevValue and curValue < cur.next.val:
+                    tmp.append(count + 1)
+
+                prev = prev.next
+                if len(tmp) > 1:
+                    mini = min(mini, tmp[-1] - tmp[-2])
+					#alternative
+					#maxi = max(maxi, tmp[-1] - tmp[0])
+
+            cur = cur.next
+            count += 1
+
+        if len(tmp) < 2:
+            return [-1, -1]
+        else:
+            return [mini, (tmp[-1] - tmp[0])] 
+			
+			#alternative
+			#return [mini, maxi]

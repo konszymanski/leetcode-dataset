@@ -1,0 +1,18 @@
+class Solution:
+    def areAlmostEqual(self, s1: str, s2: str) -> bool:
+        if s1 == s2:
+            return True
+        
+        if sorted(s1) != sorted (s2):
+            return False
+        count = 0
+        
+        if sorted(s1) == sorted (s2):
+            for char in range (0, len (s2)):
+                if s1[char] != s2[char]:
+                    count += 1
+
+        if (count ==2 or count == 0):
+            return True
+        
+        return False

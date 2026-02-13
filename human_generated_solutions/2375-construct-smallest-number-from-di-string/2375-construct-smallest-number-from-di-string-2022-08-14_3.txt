@@ -1,0 +1,21 @@
+class Solution:
+    def smallestNumber(self, pattern: str) -> str:
+        dq = [1] # [1,2,3,5,4,6]
+        tmp = [] # []
+        i = 2
+        for p in pattern:
+            if p == \'I\':
+                while tmp:
+                    dq.append(tmp.pop())
+                dq.append(i)
+                i += 1
+            else:
+                tmp.append(dq.pop())
+                dq.append(i)
+                i += 1
+        while tmp:
+            dq.append(tmp.pop())
+        s = \'\'
+        for i in dq:
+            s += str(i)
+        return s

@@ -1,0 +1,10 @@
+def numSpecialEquivGroups(self, A):
+	"""
+	:type A: List[str]
+	:rtype: int
+	"""
+	res = set()
+	for s in A:
+		s = \'\'.join(sorted(s[::2]) + sorted(s[1::2]))
+		res.add(s)
+	return len(res)

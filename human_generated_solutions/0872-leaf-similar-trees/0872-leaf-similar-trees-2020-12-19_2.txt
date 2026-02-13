@@ -1,0 +1,18 @@
+class Solution:
+    def leafSimilar(self, root1: TreeNode, root2: TreeNode) -> bool:
+        #
+        
+        def leafs(root):
+            if not root: return
+            stack = [root]; leaf = []
+            while stack:
+                node = stack.pop()
+                if not node:
+                    continue
+                stack.append(node.right)
+                stack.append(node.left)
+                if not (node.left or node.right):
+                    leaf.append(node.val)
+            return leaf
+        
+        return leafs(root1) == leafs(root2)

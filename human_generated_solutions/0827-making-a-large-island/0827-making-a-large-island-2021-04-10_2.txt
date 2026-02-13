@@ -1,0 +1,58 @@
+def largestIsland(self, grid: List[List[int]]) -> int:
+        
+        # Union Find Solution
+        # Time: O(N^2)
+        # Space: O(N^2)
+        
+        N = len(grid)
+        
+        # union find and size of components
+        uf = {
+            (r, c): (r, c)
+            for r in range(N)
+            for c in range(N)
+            if grid[r][c]
+        }
+        
+        size = {
+            (r, c): 1
+            for r in range(N)
+            for c in range(N)
+            if grid[r][c]
+        }
+        
+        def find(x):
+            if x != uf[x]:
+                uf[x] = find(uf[x])
+            return uf[x]
+        
+        def union(x, y):
+            rootx = find(x)
+            rooty = find(y)
+            if rootx != rooty:
+                uf[rootx] = rooty
+                size[rooty] += size[rootx]
+            
+        # union adjacant 1s
+        for r in range(N):
+            for c in range(N):
+                if grid[r][c]:
+                    for nr, nc in [[r+1, c], [r, c+1]]:
+                        if 0 <= nr < N and 0 <= nc < N and grid[nr][nc]:
+                            union((r,c), (nr,nc))
+        
+        # iterate all 0s to find the max area
+        max_area = 0
+        has_zero = False
+        for r in range(N):
+            for c in range(N):
+                if grid[r][c] == 0:
+                    has_zero = True
+                    adj_islands = set()
+                    for nr, nc in [[r+1, c], [r, c+1], [r-1, c], [r, c-1]]:
+                        if 0 <= nr < N and 0 <= nc < N and grid[nr][nc]:
+                            adj_islands.add(find((nr, nc)))
+                    area = 1 + sum(size[adj_island] for adj_island in adj_islands)
+                    max_area = max(max_area, area)
+                    
+        return max_area if has_zero else N * N

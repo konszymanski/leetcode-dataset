@@ -1,0 +1,11 @@
+class Solution:
+    def maximumImportance(self, n: int, roads: list[list[int]]) -> int:
+
+        arr = [0] * n       # Ex: roads = [[0,1],[1,2],[2,3],[0,2],[1,3],[2,4]] 
+
+        for a,b in roads:
+            arr[a]+= 1
+            arr[b]+= 1      #       arr = [2,3,4,2,1]
+
+        return sum(map(mul, sorted(arr), range(1,1+n)))
+                            #     ans is 1*1 + 2*2 + 2*3 + 3*4 + 4*5 = 53

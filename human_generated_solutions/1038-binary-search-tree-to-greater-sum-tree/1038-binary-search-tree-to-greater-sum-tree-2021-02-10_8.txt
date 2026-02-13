@@ -1,0 +1,14 @@
+class Solution:
+  def bstToGst(self, root: TreeNode) -> TreeNode:
+    node = root
+    stack = []
+    prefix = 0
+    while stack or node:
+      while node:
+        stack.append(node)
+        node = node.right
+      node = stack.pop()
+      prefix += node.val
+      node.val = prefix
+      node = node.left
+    return root

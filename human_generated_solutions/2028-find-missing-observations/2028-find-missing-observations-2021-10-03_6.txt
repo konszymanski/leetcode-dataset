@@ -1,0 +1,21 @@
+class Solution:
+    def missingRolls(self, rolls: List[int], mean: int, n: int) -> List[int]:
+        m = len(rolls)
+
+        missing_sum = mean * (m + n) - sum(rolls)
+
+        #find arr of length m such that sum(arr) == missing_sum
+
+        if missing_sum < 1 * n or missing_sum > 6 * n:
+            return []
+        
+        ans = [1] * n
+        
+        i = 0
+        this_sum = n
+        while this_sum < missing_sum:
+            ans[i] += 1
+            this_sum += 1
+            if ans[i] == 6:
+                i += 1
+        return ans

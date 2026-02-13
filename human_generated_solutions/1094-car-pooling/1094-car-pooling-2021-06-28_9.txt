@@ -1,0 +1,16 @@
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        
+        
+        pre = [0]*(1001)
+        
+        for i in trips:
+            pre[i[1]]+=i[0]
+            pre[i[2]]-=i[0]
+            
+        for j in range(1,len(pre)):
+            pre[j] += pre[j-1]
+            
+            if pre[j]>capacity:
+                return False
+        return True

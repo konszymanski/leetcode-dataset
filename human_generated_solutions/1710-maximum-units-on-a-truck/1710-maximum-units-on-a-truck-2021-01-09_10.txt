@@ -1,0 +1,14 @@
+def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+	heap = []
+	for box, count in boxTypes:
+		# push the count of each box in the max-heap
+		heapq.heappush(heap, [-count, box])
+
+	unit_count = 0
+	while heap and truckSize > 0:
+		top = heapq.heappop(heap)
+		box_count = min(truckSize, top[1])
+		unit_count += box_count * (-1 * top[0])
+		truckSize -= box_count
+
+	return unit_count

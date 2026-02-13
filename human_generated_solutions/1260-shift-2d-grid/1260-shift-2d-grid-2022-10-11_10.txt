@@ -1,0 +1,31 @@
+class Solution:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        
+        n = len(grid)
+        m  = len(grid[0])
+        
+        temp = float("inf")
+        
+        
+        for t in range(0,k):
+        
+            for i in range(0,n):
+
+                for j in range(0,m):
+
+                    if(i == 0 and j == 0 ):
+
+                        temp =  grid[i][j]
+
+                    else:
+
+                        t1 = grid[i][j]
+
+                        grid[i][j] = temp 
+
+                        temp = t1 
+
+            grid[0][0] = temp
+        
+        
+        return grid

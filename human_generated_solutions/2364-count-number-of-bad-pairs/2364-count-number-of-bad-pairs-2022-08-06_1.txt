@@ -1,0 +1,5 @@
+def countBadPairs(self, nums: List[int]) -> int:
+        good, n = Counter(), len(nums)
+        for i, num in enumerate(nums):
+            good[num - i] += 1
+        return (n - 1) * n // 2 - sum((v - 1) * v // 2 for v in good.values())

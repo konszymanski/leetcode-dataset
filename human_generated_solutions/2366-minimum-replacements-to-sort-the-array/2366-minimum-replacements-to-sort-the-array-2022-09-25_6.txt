@@ -1,0 +1,12 @@
+class Solution:
+    def minimumReplacement(self, nums: List[int]) -> int:
+        ans, prev = 0, nums[-1]
+        for i in range(len(nums) - 2, -1, -1):
+            quotient, remainder = divmod(nums[i], prev)
+            if remainder == 0:
+                ans += (quotient - 1)
+                prev = nums[i] // quotient
+            else:
+                ans += quotient
+                prev = nums[i] // (quotient + 1)
+        return ans

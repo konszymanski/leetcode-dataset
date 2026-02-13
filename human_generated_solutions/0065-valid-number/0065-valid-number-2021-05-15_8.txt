@@ -1,0 +1,10 @@
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        if "inf" in s or "Inf" in s:
+            return False
+        try:
+            complex(s) # for int, long, float and complex
+        except ValueError:
+            return False
+        
+        return True

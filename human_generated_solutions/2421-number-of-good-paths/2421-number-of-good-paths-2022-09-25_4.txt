@@ -1,0 +1,53 @@
+class Solution:
+    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        def find(root, x):
+            if root[x]==x:
+                return x
+            else:
+                root[x] = find(root, root[x])
+                return root[x]
+            
+        n = len(vals)
+        
+        nodes = {}
+        for i in range(n):
+            nodes[vals[i]] = nodes.get(vals[i], set([]))
+            nodes[vals[i]].add(i)
+        print("nodes:", nodes)
+        
+        adj = [[] for _ in range(n)]
+        for ai, bi in edges:
+            adj[ai].append(bi)
+            adj[bi].append(ai)
+        print("adj:", adj)
+        
+        keys = sorted(nodes.keys(), key = lambda x: x)
+        
+        root = list(range(n))
+        ans = len(root)
+        print("Init:", "root:", root, "ans:", ans)
+        for k in keys:
+            q = nodes[k]
+            for u in q:
+                for v in adj[u]:
+                    if vals[v]<=vals[u]:
+                        root_u = find(root, u)
+                        root_v = find(root, v)
+                        if root_u != root_v:
+                            root[root_u] = root_v
+            levels = {}
+            for u in q:
+                root_u = find(root, u)
+                levels[root_u] = levels.get(root_u, 0) + 1
+            cnt = sum([levels[i]*(levels[i]-1)//2 for i in levels])
+            ans = ans + cnt
+  
+            print("+ val", k, root, levels, cnt)
+        
+        print("ans:", ans)
+        print("=" * 20, "\
+")
+        return ans
+        pass
+
+print = lambda *a, **aa: ()

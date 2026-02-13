@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import defaultdict
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        # Convert the tree into a graph of adjacent matrix
+        # Leaves needs to be determined
+        # Then for every leaves we need to check for traverse
+        self.leaves=[]
+        self.isLeaf={}
+        self.adj=defaultdict(list)
+        self.res={}
+        
+        def formAdjMatrix(node):
+            if not node:
+                return
+            if node.left:
+                self.adj[node].append(node.left)
+                self.adj[node.left].append(node)
+            if node.right:
+                self.adj[node].append(node.right)
+                self.adj[node.right].append(node)
+                
+            if not node.left and not node.right:
+                self.leaves.append(node)
+                self.isLeaf[node]=True
+            formAdjMatrix(node.left)
+            formAdjMatrix(node.right)
+
+                
+        formAdjMatrix(root)
+        
+        
+        def dfs(parent,node, depth, base):
+            if depth>distance:
+                return 
+            if base!=node and self.isLeaf.get(node,False):
+                if depth<=distance and (node,base) not in self.res and (base,node) not in self.res:
+                    self.res[(node,base)]=True
+            for x in self.adj[node]:
+                if x!=parent:
+                    dfs(node,x,depth+1,base)
+                    
+        for x in self.leaves:
+            dfs(x,x,0,x)
+        return len(self.res)

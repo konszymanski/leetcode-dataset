@@ -1,0 +1,50 @@
+class Solution:
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        
+        
+        l = [] # (num, from which list)
+        for i,nums_l in enumerate(nums):
+            for n in nums_l:
+                l.append((n,i))
+        # sort
+        l.sort()
+        res = [l[0][0],l[-1][0]]
+        
+        # dict for counting each list have how many nums in the window
+        d = {}
+        
+        idx = 0 # window right side idx 
+        start_idx = 0 # window left side idx
+    
+        while idx < len(l):
+           
+            # push in
+            while idx < len(l) and len(d) < len(nums):
+                cur_n, cur_k = l[idx]
+                d[cur_k] = d.get(cur_k,0)+1
+                end_n = cur_n
+                idx+=1
+            
+            # pop out
+            while start_idx < idx and len(d) == len(nums):
+                
+                # compart to cur res
+                start_n = l[start_idx][0]
+                if end_n-start_n < res[1] - res[0]:
+                    res = [start_n,end_n]
+            
+            
+                del_n,del_k = l[start_idx]
+                d[del_k] -=1
+                # when count == 0, pop the list from dict
+                if d[del_k] == 0:
+                    del d[del_k]
+                
+                start_idx +=1
+                
+            
+            
+            
+      
+        
+        return res

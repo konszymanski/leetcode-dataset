@@ -1,0 +1,10 @@
+def isUgly(self, n: int) -> bool:
+        if not n:
+            return False
+        
+        for k in [2,3,5]:
+            while not n%k:
+                n //= k
+            if n == 1:
+                return True
+        return False

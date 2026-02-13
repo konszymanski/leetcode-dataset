@@ -1,0 +1,8 @@
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        #
+        smallsum,temp = nums[0],nums[0]
+        for i in nums[1:]:
+            temp += i
+            smallsum = min(smallsum,temp)
+        return max(1-smallsum,1)

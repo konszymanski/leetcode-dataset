@@ -1,0 +1,33 @@
+from math import ceil
+
+class Solution:
+    def is_arrive_on_time(self, distances: List[int], time_available: float, speed: int) -> bool:
+        time_required = 0
+        for distance in distances:
+            time_required = ceil(time_required)
+            time_required += distance / speed
+            if time_required > time_available:
+                return False
+
+        return True
+	
+    def minSpeedOnTime(self, distances: List[int], hour: float) -> int:
+        n = len(distances)
+        if hour - n + 1 <= 0:
+            return -1
+        
+        bot = 1
+        top = ceil(max(*distances, distances[-1] / (hour - n + 1)))
+        
+        min_speed = top
+        while bot <= top:
+            mid = (bot + top) // 2
+            
+            if self.is_arrive_on_time(distances, hour, mid):
+                min_speed = mid
+                top = mid - 1
+            
+            else:
+                bot = mid + 1
+        
+        return min_speed

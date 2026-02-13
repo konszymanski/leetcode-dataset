@@ -1,0 +1,19 @@
+class Solution:
+    def findLongestWord(self, s: str, dictionary: List[str]) -> str:
+        #Sort the dictionary by length and then lexographical order
+        dictionary.sort(key= lambda x: (-len(x),x))
+
+        for d in dictionary:   
+            count = 0
+            i = j = 0
+            while j < len(d) and i < len(s):
+				#Start counting whenever a character matches 
+                if s[i] == d[j]:
+                    j += 1
+                    count += 1
+                i += 1
+			#return as soon as you find all the characters from dictionary word in s
+            if count == len(d):
+                return d
+            
+        return \'\'

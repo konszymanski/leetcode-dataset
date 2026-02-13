@@ -1,0 +1,39 @@
+from bisect import bisect_right
+class Solution:
+    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
+        # We only care about highest beauty at a given price
+        # if we groupby price and then sort by beauty reversed
+        # only the first item in each group matters
+        # and while the beauty of the cheaper item is greater than that of the subsequent
+        # items at higher prices those subsequent items can be ignored
+        # From here we know that if any query is higher than the maximum price of 
+        # the items, we\'ll return whichever one has the most beauty
+        # You could have a set of items where the price is really low
+        # But then the Beauty is super high
+        # [1, 10000], [2,2], [3,100], [4,2000]... etc
+        # in this case, the [1, 10000] will superced all the subsequent items, 
+        # until an item with greater beauty is seen
+        # In this way we can further reduce the desired items
+        # if you only have one item you\'re just going to return that item as many times as you
+        # have queries unless the query value is less than the item\'s price
+        # Step 1: sort by price
+        # step 2: group by price
+        # step 3: reverse sort by beauty
+        # step 4: reduce item list by removing useless items
+        # ### THOUGHT ####
+        # At this point it could make sense to start processing the queries as well
+        # ### ANOTHER THOUGHT ###
+        # We\'re doing a LOT to the input upfront
+        # I think step 4 could be kind of pointless
+        # if we do 1-3 and then store the most valuable thing 
+        items = groupby(sorted(items, key = lambda x:x[0]), key = lambda x:x[0])
+        items = sorted([sorted(g)[-1] for _,g in items], key = lambda x:x[1])[::-1]
+        for i in range(len(queries)):
+            query = queries[i]
+            for item in items:
+                if query >= item[0]:
+                    queries[i] = item[1]
+                    break
+                else:
+                    queries[i] = 0
+        return queries

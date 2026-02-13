@@ -1,0 +1,19 @@
+class Solution:
+    def lexicalOrder(self, n: int) -> List[int]:
+        res = []
+        stack = [1] # 1 the root
+        
+        while stack:
+            res.append(stack[-1])
+            num = stack[-1] * 10 # to check whether it has children
+            if num <= n: # if it\'s valid, the means that this node has children, append it
+                if stack[-1] % 10 != 9: # right shift to visit its sibling
+                    stack[-1] = stack[-1] + 1
+                else: #if it\'s ending with "9", means it has no right siblings, then just discard it
+                    stack.pop()
+                stack.append(num)
+            else:
+                for t in range(stack[-1] + 1, min(n, stack[-1] // 10* 10 + 9) + 1): #it has no children, just add all its siblings to res and discard it
+                    res.append(t)
+                stack.pop()
+        return res

@@ -1,0 +1,49 @@
+from heapq import * 
+import heapq
+
+class Solution:
+    def medianSlidingWindow(self, nums, k: int) :
+        \'\'\'
+        the concept/idea is that, you need to get access to the median every time you add a new element in to the heap
+        also you need to remember to remove the passed one from the heap as well
+        \'\'\'
+        self.maxheap,self.minheap,result = [],[],[]
+        if not nums or len(nums) < k:
+            return []
+        for i in range(k-1):
+            self.add_element(nums[i])
+        for i in range(k-1,len(nums)):
+            self.add_element(nums[i])
+            tmpmedian = self.get_median()
+            result.append(tmpmedian)
+            self.delete_element(nums[i-k+1])
+        return result
+        
+    def get_median(self):
+        if len(self.maxheap) == len(self.minheap):
+            return (-self.maxheap[0] + self.minheap[0])/2
+        else:
+            return self.minheap[0]
+            
+    def add_element(self,nums):
+        heappush(self.maxheap,-heappushpop(self.minheap,nums))
+        if len(self.maxheap) > len(self.minheap):
+            heappush(self.minheap,-heappop(self.maxheap))
+    
+    def delete_element_in_heap(self, heap, num) -> None:
+        index = heap.index(num)
+        # delete in O(1)
+        # replace the value we want to remove with the last value
+        heap[index] = heap[-1]
+        del heap[-1]
+        
+        # Restore heap property thoughout the tree
+        if index < len(heap):
+            heapq._siftup(heap, index)
+            heapq._siftdown(heap, 0, index)
+    
+    def delete_element(self,nums):
+        if nums >= self.minheap[0]:
+            self.delete_element_in_heap(self.minheap,nums)
+            return
+        self.delete_element_in_heap(self.maxheap,-nums)

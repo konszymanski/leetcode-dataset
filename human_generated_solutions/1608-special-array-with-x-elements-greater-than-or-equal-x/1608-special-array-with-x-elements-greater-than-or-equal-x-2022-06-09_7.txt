@@ -1,0 +1,25 @@
+class Solution(object):
+    def specialArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        nums.sort()
+        def binarySearch(target):
+            l, r = 0, len(nums)-1
+            while l < r:
+                mid = l + (r-l)/2
+                if nums[mid] < target:
+                    l = mid + 1
+                else:
+                    r = mid
+                    
+            if nums[r] >= target:
+                return len(nums) - r
+            else:
+                return -1
+            
+        for num in range(len(nums)+1):
+            if num == binarySearch(num):
+                return num
+        return -1

@@ -1,0 +1,12 @@
+class Solution:
+    def partitionString(self, s: str) -> int:
+        e = "" 
+        g = []
+        for i in range(len(s)):  
+            if s[i] not in e: 
+                e = e+s[i]  
+            else: 
+                g.append(e) 
+                e = "" 
+                e = e+s[i] 
+        return len(g)+1

@@ -1,0 +1,30 @@
+class Solution:
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        ans = {}        
+        
+        def check(arr):
+            for i in range(0 , len(arr) - 1):
+                if arr[i] <= arr[i + 1]:
+                    continue
+                else:
+                    return False
+            
+            return True
+        
+            
+        def subsequences(nums , index , n , temp):
+            if index >= n:
+                if check(temp) and len(temp) > 1:
+                    ans[tuple(temp.copy())] = 1
+            else:
+                #pick
+                temp.append(nums[index])
+                subsequences(nums , index + 1 , n , temp)
+                
+                #not-pick
+                temp.pop()
+                subsequences(nums , index + 1 , n , temp)
+        
+        
+        subsequences(nums , 0 , len(nums) , [])
+        return ans

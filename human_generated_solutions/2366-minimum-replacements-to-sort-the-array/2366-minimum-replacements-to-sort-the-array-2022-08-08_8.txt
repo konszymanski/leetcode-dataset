@@ -1,0 +1,15 @@
+class Solution:
+    def minimumReplacement(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+
+		n = len(nums)        
+        temp = nums[-1]#starting from back as there is no point in splitting the last index
+        i = n-2
+        count = 0
+        while i>-1:
+            k = math.ceil(nums[i]/temp)
+            temp = nums[i]//(k)
+            count += k-1
+            i-=1
+        return count

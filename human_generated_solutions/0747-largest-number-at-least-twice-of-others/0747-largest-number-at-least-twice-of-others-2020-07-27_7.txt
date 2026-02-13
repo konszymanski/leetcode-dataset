@@ -1,0 +1,11 @@
+class Solution:
+    def dominantIndex(self, nums: List[int]) -> int:
+        largest = [float(\'-inf\'), -1]
+        secondLargest = [float(\'-inf\'), -1]
+        for i, num in enumerate(nums):
+            if num > largest[0]:
+                secondLargest = largest[:]
+                largest = [num, i]
+            elif num > secondLargest[0]:
+                secondLargest = [num, i]
+        return largest[1] if largest[0] >= 2 * secondLargest[0] else -1

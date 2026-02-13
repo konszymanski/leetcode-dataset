@@ -1,0 +1,25 @@
+class Solution:
+    def dfs_add_parent(self, node: TreeNode, parent: Optional[TreeNode] = None):
+        node.parent = parent
+        if node.right:
+            self.dfs_add_parent(node.right, node)
+        if node.left:
+            self.dfs_add_parent(node.left, node)
+            
+        
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        self.dfs_add_parent(root)
+        found_k_dist = []
+        visited = set()
+        def dfs_get_distance(node: TreeNode, current: int):
+            visited.add(node)
+            if current == k:
+                found_k_dist.append(node.val)
+				return
+            for neighbor in [node.parent, node.left, node.right]:
+                if neighbor and neighbor not in visited:
+                    dfs_get_distance(neighbor, current + 1)
+					
+        dfs_get_distance(target, 0)
+        
+        return found_k_dist

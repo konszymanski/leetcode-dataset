@@ -1,0 +1,16 @@
+l=max(arr)
+r=sum(arr)
+while l<r:
+          mid=l+(r-l)//2
+		  #lets check if mid is the mxsum. make sure that partitions possible for this mxsum==m
+		  partitions=get_partitions(mid)
+		  """
+		  def get_partitions(mxsum):
+				  count=1
+				  s=0
+				  for el in arr:
+					  s+=el
+					  if s>mxsum:
+						  count+=1
+						  s=el
+				return count

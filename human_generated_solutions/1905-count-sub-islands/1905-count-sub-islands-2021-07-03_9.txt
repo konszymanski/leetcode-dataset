@@ -1,0 +1,28 @@
+class Solution:
+    def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+        m, n = len(grid1), len(grid1[0])
+        for i in range(m):                          # Add grid1 to grid2, total time: O(m*n)
+            for j in range(n):
+                if grid2[i][j] == 1:
+                    grid2[i][j] += grid1[i][j]
+					
+        def dfs(i, j):                              # Find sub-island, return true if grid2[i][j] is part of an sub-island
+            if i < 0 or i > m-1 or j < 0 or j > n-1:# If out of bound, return True
+                return True      
+            if grid2[i][j] < 1: return True         # If met water or visited node, return True
+            tmp = grid2[i][j]
+            grid2[i][j] = -1                        # Mark as visited
+            a = dfs(i-1, j)                         # DFS on each direction
+            b = dfs(i+1, j)
+            c = dfs(i, j+1)
+            d = dfs(i, j-1)
+			# If current node is covered, return True if all 4 directions are also of the sub-island
+			# otherwise return False
+            return a and b and c and d if tmp == 2 else False  
+			
+        ans = 0
+        for i in range(m):                          # DFS on each (i, j), O(m*n) on nested loop + O(m*n) on DFS
+            for j in range(n):
+                if grid2[i][j] == 2 and dfs(i, j):  # DFS on only covered islands, dfs(i, j) will take only O(m*n) during iterating the ENTIRE matrix, since each node will only be visited once
+                    ans += 1
+        return ans

@@ -1,0 +1,46 @@
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from functools import cached_property
+from math import comb
+
+
+class Solution:
+    def numberOfGoodPaths(self, V: list[int], E: list[list[int]]) -> int:
+        n = len(V)
+
+        g = self.create_graph(E)
+        find, union = (uf := UF(n)).find, uf.union
+        output = n  # each individual node is path of length 1, so including them in output
+
+        for _, val_nodes in sorted(self.same_value_nodes(V).items()):
+            for u in val_nodes:
+                for v in g[u]:
+                    if V[u] >= V[v]:
+                        union(u, v)
+
+            for cluster_size in Counter(map(find, val_nodes)).values():
+                # one path for each pair so we find total number of pairs formed
+                # from each cluster of same value.
+                # note that if cluster_size is 1, then comb(1, 2) == 0
+                output += comb(cluster_size, 2)
+
+        return output
+
+    @staticmethod
+    def create_graph(edges: list[list[int]]) -> defaultdict[int, list[int]]:
+        g = defaultdict(list)
+
+        for u, v in edges:
+            g[u].append(v)
+            g[v].append(u)
+
+        return g
+
+    @staticmethod
+    def same_value_nodes(node_value: list[int]) -> defaultdict[int, list[int]]:
+        val_to_nodes = defaultdict(list)
+
+        for u, val in enumerate(node_value):
+            val_to_nodes[val].append(u)
+
+        return val_to_nodes

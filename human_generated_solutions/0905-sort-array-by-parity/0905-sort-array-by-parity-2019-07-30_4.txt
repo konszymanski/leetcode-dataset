@@ -1,0 +1,16 @@
+class Solution:
+    def sortArrayByParity(self, A):
+        output=[]
+        x= dict({"even":[],"odd":[]})
+        for i in A:
+            if i%2:
+                x["odd"].append(i)
+            else:
+                x["even"].append(i)
+
+        x["even"].sort()
+        x["even"]=x["even"][::-1]
+        x["odd"].sort()
+        x["odd"]=x["odd"][::-1]
+        output= x["even"]+x["odd"]
+        return output

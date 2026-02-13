@@ -1,0 +1,22 @@
+def totalMoney(self, n: int) -> int:
+        total = 0
+        if n == 0: return total
+        if n <= 7:
+            return self.getDay(1,n)
+            
+        # get full week
+        week = n // 7
+        for i in range(1,week+1, 1):
+            total += 7*(i+3)
+        
+        # get rest of days
+        rest = n % 7
+        for i in range(week+1, week+1+rest, 1):
+            total += i
+        return total
+        
+    def getDay(self, first, last):
+        total = 0
+        for i in range(first, last+1, 1):
+            total += i
+        return total

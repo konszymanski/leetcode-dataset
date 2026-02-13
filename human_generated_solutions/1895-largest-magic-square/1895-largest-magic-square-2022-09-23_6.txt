@@ -1,0 +1,53 @@
+class Solution:
+    def isMagic(self, row: int, col: int, sideLen: int, grid: List[List[int]], preSumRow: List[List[int]], preSumCol: List[List[int]]) -> bool:
+        # get sum of first row
+        summed = preSumRow[row][col + sideLen] - preSumRow[row][col]
+        # now go through all rows and immediately return once
+        # we encounter a sum unequal to the first one
+        for r in range(row + 1, row + sideLen):
+            cursum = preSumRow[r][col + sideLen] - preSumRow[r][col]
+            if cursum != summed:
+                return False
+        # now go through all columns and immediately return once
+        # we encounter a sum unequal to the first one
+        for c in range(col, col + sideLen):
+            cursum = preSumCol[c][row + sideLen] - preSumCol[c][row]
+            if cursum != summed:
+                return False
+        # compute the diagonal sums
+        # left upper to right lower corner
+        cursum = 0
+        for mid in range(sideLen):
+            cursum += grid[row + mid][col + mid]
+            if cursum > summed:
+                    return False
+        if cursum != summed:
+                return False
+        # right upper to left lower corner
+        cursum = 0
+        for mid in range(sideLen):
+            cursum += grid[row + mid][col + sideLen - mid - 1]
+            if cursum > summed:
+                    return False
+        if cursum != summed:
+                return False
+        return True
+    
+    def largestMagicSquare(self, grid: List[List[int]]) -> int:
+        numRows, numCols = len(grid), len(grid[0])
+        # make the prefix sum for faster summation
+        preSumRow = [[0] * (numCols + 1) for _ in range(numRows)]
+        preSumCol = [[0] * (numRows + 1) for _ in range(numCols)]
+        # just check all squares (with their size and position)
+        # starting with the biggest one, because then we can
+        # break as soon as find one (will be the biggest)
+        for row in range(numRows):
+            for col in range(numCols):
+                preSumRow[row][col + 1] = preSumRow[row][col] + grid[row][col]
+                preSumCol[col][row + 1] = preSumCol[col][row] + grid[row][col]
+        for sideLen in range(min(numRows, numCols), 1, -1):
+            for row in range(numRows - sideLen + 1):
+                for col in range(numCols - sideLen + 1):
+                    if self.isMagic(row, col, sideLen, grid, preSumRow, preSumCol):
+                        return sideLen
+        return 1

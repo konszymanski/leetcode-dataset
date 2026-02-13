@@ -1,0 +1,38 @@
+class Solution:
+    def restoreMatrix(self, rowSum: List[int], colSum: List[int]) -> List[List[int]]:
+        
+        
+        rowheap=[]
+        colheap=[]
+        
+        rowlength  = len(rowSum)
+        collength   = len(colSum)
+        
+        for i in range(rowlength):
+            heappush(rowheap,(rowSum[i],i))
+            
+        for i in range(collength):
+            heappush(colheap,(colSum[i],i))
+            
+            
+        
+        matrix = [[0 for _ in range(collength)] for _ in range(rowlength)]
+            
+        while rowheap and colheap:
+            
+            row,rowidx = heappop(rowheap)
+            col,colidx = heappop(colheap)
+            
+            if  row < col:
+                
+                matrix[rowidx][colidx] = row
+                if col- row !=0:
+                    heappush(colheap,(col-row,colidx))
+                
+            else:
+                
+                matrix[rowidx][colidx] = col
+                if  row - col!=0:
+                    heappush(rowheap,(row-col,rowidx))
+        
+        return matrix

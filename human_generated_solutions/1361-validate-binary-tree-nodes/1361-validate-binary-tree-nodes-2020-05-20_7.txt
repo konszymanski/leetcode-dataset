@@ -1,0 +1,49 @@
+from collections import deque
+
+
+class Solution:
+    def validateBinaryTreeNodes(self, n: int, leftChild, rightChild):
+        # Solution 1:
+
+        # if n == 1:
+        #     return True
+
+        # visited = set()
+
+        # queue = deque()
+
+        # for i in range(n):  # takes care of tree which does not starts with "0" 0<--1<--2<--3
+        #     if i not in visited:
+
+        #         queue.append(i)
+
+        #         while queue:
+        #             node = queue.popleft()
+
+        #             if not leftChild[node] == -1:
+        #                 queue.append(leftChild[node])
+
+        #                 if leftChild[node] in visited:  # takes care of bidirectional edges
+        #                     return False
+        #                 else:
+        #                     visited.add(leftChild[node])
+
+        #             if not rightChild[node] == -1:
+
+        #                 queue.append(rightChild[node])
+
+        #                 # takes care of bidirectional edges
+        #                 if rightChild[node] in visited:
+        #                     return False
+        #                 else:
+        #                     visited.add(rightChild[node])
+
+        # if len(visited) == n-1:  # takes care of not-connected nodes
+        #     return True
+        # else:
+        #     return False
+        """
+        time complexity : O(n), outer for loop only executes when all the nodes are not-connected single node
+        space complexity : O(n), visited set and queue store the node number
+
+        """

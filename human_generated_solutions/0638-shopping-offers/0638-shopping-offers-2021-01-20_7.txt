@@ -1,0 +1,28 @@
+# written by : Dhruv vavliya
+
+
+price = [2,3,4]
+special = [[1,1,0,4],[2,2,1,9]]
+needs = [1,2,1]
+
+def is_valid(sale,needs):
+    return all([ needs[i] >= sale[i] for i in range(len(needs))])          # if in sale ,gives more than recuirement
+
+def go(price,special,needs,dp):
+
+    key = tuple(needs)
+    if key in dp:
+        return dp[key]
+    ans = float(\'inf\')
+
+    for sale in special:                                                        # offer take or not
+        if is_valid(sale,needs):
+            remain = [ needs[i] - sale[i] for i in range(len(needs)) ]          # after taking offer ,remain things to buy
+            ans = min( ans , sale[-1] + go(price,special,remain,dp) )           # go to buy remain things
+    ans = min(ans ,sum( [needs[i]*price[i] for i in range(len(needs))] ))       # eventually ,buy remaining things saperately
+    dp[key] = ans
+    return ans
+
+def shopping_offers(price,special,needs):
+    dp = {}
+    return go(price,special,needs,dp)

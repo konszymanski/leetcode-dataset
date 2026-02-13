@@ -1,0 +1,31 @@
+def removeBoxes(self, boxes: List[int]) -> int:
+        #imagine the the same color boxes are in groups
+        #so [1,22,333,1,22,1]
+        #let i,j represent the boxes[i:j+1]
+        #so if (i,j) == (0, 8), the first 1 group can be combined with either second 1 group or third 1 group
+        #whichever group c_group combines with, you need to handle the middle groups separately
+        #and if you are combining with later groups, u must carry over the size of c_group
+        #so there are three sate parameters: (i, j, extra), extra contains the carry over from prev groups of same type as boxes[i]
+        n = len(boxes)
+        #Time -> O(n^3 * n), Space -> O(n^3)
+        @lru_cache(None)
+        def solve(i, j, extra):
+            if i > j: return 0
+            
+            #making the c_group
+            l = i
+            while l+1 <= j and boxes[l+1] == boxes[l]:
+                l += 1
+            size = (l - i + 1) + extra
+            
+            #you can choose not to combine c_group with other groups
+            ans =  size**2 + solve(l+1, j, 0)
+            
+            #you can choose to connect c_group with other groups
+            for nex in range(l+1, j+1):
+                if boxes[nex] == boxes[i]:
+                    ans = max(ans, solve(l+1, nex-1, 0) + solve(nex, j, size))
+            
+            return ans
+        
+        return solve(0, n-1, 0)

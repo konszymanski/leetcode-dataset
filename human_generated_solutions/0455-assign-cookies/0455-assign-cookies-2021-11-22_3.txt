@@ -1,0 +1,24 @@
+class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        
+        #Sort Greed Factor and Cookie Size
+        g.sort()
+        s.sort()
+        
+        #Initialise ans
+        ans = 0
+        
+        i = 0
+        j = 0
+        
+        while(i<len(g) and j<len(s)):
+            
+            #Cookie Assigned
+            if(s[j] >= g[i]):
+                ans += 1
+                j += 1
+                i += 1
+            #Search if any cookie will be enough for greed    
+            else:
+                j += 1
+        return ans

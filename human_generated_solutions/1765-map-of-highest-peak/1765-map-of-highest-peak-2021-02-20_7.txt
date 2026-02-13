@@ -1,0 +1,22 @@
+from collections import deque
+
+class Solution:
+    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:
+        q = deque()
+        for i in range(len(isWater)):
+            for k in range(len(isWater[0])):
+                if isWater[i][k] == 1:
+                    q.append((i, k, 0))
+        
+        visited = set([(i, k) for i, k, _ in q])
+        directions = ((0, 1), (0, -1), (1, 0), (-1, 0))
+        while q:
+            i, k, h = q.popleft()
+            isWater[i][k] = h
+            for x, y in directions:
+                nxt_i, nxt_k = i + x, k + y
+                if 0 <= nxt_i < len(isWater) and 0 <= nxt_k < len(isWater[0]) and (nxt_i, nxt_k) not in visited:
+                    visited.add((nxt_i, nxt_k))
+                    q.append((nxt_i, nxt_k, h+1))
+        
+        return isWater

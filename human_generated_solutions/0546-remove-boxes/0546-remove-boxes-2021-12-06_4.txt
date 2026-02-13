@@ -1,0 +1,25 @@
+from collections import defaultdict
+class Solution:
+    def removeBoxes(self, boxes: List[int]) -> int:
+        ind_dict = defaultdict(list)
+        
+        for i in reversed(range(len(boxes))):
+            ind_dict[boxes[i]].append(i)
+        
+        @lru_cache(maxsize = None)
+        def dfs(i, j, count):
+            
+            if j-i<1:
+                return 0
+            
+            forward_val = (count+1)**2 + dfs(i+1, j, 0)
+            jump_val = 0
+            for ind in ind_dict[boxes[i]]:
+                if ind>i and ind<j:
+                    temp =dfs(ind, j, count +1)+dfs(i+1, ind, 0)
+                    jump_val = max(jump_val, temp)
+            return max(jump_val, forward_val)
+            
+        res = dfs(0, len(boxes), 0)
+        
+        return res

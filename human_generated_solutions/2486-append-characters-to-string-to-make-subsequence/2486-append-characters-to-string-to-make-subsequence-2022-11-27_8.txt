@@ -1,0 +1,17 @@
+class Solution:
+    def appendCharacters(self, s: str, t: str) -> int:
+        N=len(s)
+        M=len(t)
+        count=0
+        si=0
+        for ti in range(M):
+            while si<N and s[si]!=t[ti]:
+                si+=1
+                
+            if si<N and s[si]==t[ti]:
+                si+=1
+                
+            else:
+                count+=1
+                
+        return count

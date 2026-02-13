@@ -1,0 +1,43 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        
+        steps = 0
+        
+        def coins(curr: TreeNode):
+            
+            nonlocal steps
+            
+            # If node is not empty
+            if curr:
+                
+                # Get no. of excess or required coin from the left subtree
+                left_coins = coins(curr.left)
+                
+                # Get no. of excess or required coins from the right subtree
+                right_coins = coins(curr.right)
+                
+                # Steps is ironically the abs values of no. of coins
+                # from left and right subtree, think about it as follows.
+                # 1. No. of coins required by a child node (required coins)
+                # 2. No. of coins can be given of by a child node (excess coins)
+                # In both the case, either a child node need to recieve
+                # some "n" amount of coins or need to send some "m" amount
+                # of coins. Each send and recieve operation is the no.
+                # of steps required to balance the tree.
+                steps += abs(left_coins) + abs(right_coins)
+                
+                # Return all the excess coins from the current node
+                # and keep "one" coin for itself
+                return (left_coins + right_coins + curr.val) - 1
+            
+            return 0
+        
+        coins(root)
+        
+        return steps

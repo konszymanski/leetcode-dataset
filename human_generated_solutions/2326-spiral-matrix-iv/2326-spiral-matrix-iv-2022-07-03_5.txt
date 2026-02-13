@@ -1,0 +1,75 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        matrix= [[-1 for j in range(n)] for i in range(m)]
+        
+        l=0     #left
+        r= n-1    #right
+        t=0  #top
+        b= m-1   #bottom
+        
+        if(head==None):
+            return matrix
+        
+        while(l<r and t<b):
+			# iterate top row from left to right
+            for i in range(l,r):
+                matrix[t][i] = head.val
+                if(head.next==None):       # check if head becomes NULL
+                    return matrix
+                head = head.next
+             
+			#iterate right column from top to bottom
+            for i in range(t,b):
+                matrix[i][r] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+            
+			#iterate bottom row from right to left
+            for i in range(r,l,-1):
+                matrix[b][i] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+            
+			#iterate left column from bottom to top
+            for i in range(b,t,-1):
+                matrix[i][l] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+                
+            l+=1
+            r-=1
+            t+=1
+            b-=1
+            
+		# if single remaining middle element
+        if(l==r and t==b):
+            matrix[l][r] = head.val
+            if(head.next==None):
+                    return matrix
+            head = head.next
+        
+		# if remaining vertical elements
+        elif(l==r):
+            for i in range(t,b+1):
+                matrix[i][l] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+                
+		# if remaining horizontal elements
+        elif(t==b):
+            for i in range(l,r+1):
+                matrix[t][i] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+            
+        return matrix

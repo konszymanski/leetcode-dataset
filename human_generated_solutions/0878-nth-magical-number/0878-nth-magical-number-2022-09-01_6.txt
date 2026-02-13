@@ -1,0 +1,16 @@
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        
+        
+        i = 1
+        count = 0
+        
+        while True:
+            
+            if i%a == 0 or i%b == 0:
+                count += 1
+            
+            if count == n:
+                return i % (10**9 + 7)
+            
+            i += 1

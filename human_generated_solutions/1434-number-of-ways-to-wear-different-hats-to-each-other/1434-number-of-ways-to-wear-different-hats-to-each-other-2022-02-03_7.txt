@@ -1,0 +1,33 @@
+class Solution:
+    def numberWays(self, hats: List[List[int]]) -> int:
+        # use hat masks in bottom up dp
+        n_hats, n_persons = 40, len(hats)                
+        
+        dp = [collections.defaultdict(int) for i in range(n_persons + 1)]
+        # dp[i] = dict hat_mask -> count using [:i] persons
+
+        curr = dp[0]
+        curr[0] = 1
+        prev = curr
+
+        for i in range(n_persons):
+            curr = dp[i + 1]
+            for key in prev:
+                curr[key] += prev[key]
+            for h in hats[i]:
+                bit = 1 << (h - 1)
+                for hat_mask in prev:
+                    if bit & hat_mask == 0:
+                        curr[bit | hat_mask] += prev[hat_mask]
+            prev = curr
+        
+        # answer is sum over all masks with n_persons 1 bits
+        masks = []
+        for m in dp[n_persons]:
+            count, mm = 0, m
+            while mm:
+                count += 1
+                mm = mm & (mm - 1)
+            if count == n_persons:
+                masks.append(m)                
+        return sum(dp[n_persons][m] for m in masks) % 1000000007

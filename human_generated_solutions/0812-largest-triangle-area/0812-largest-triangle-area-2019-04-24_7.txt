@@ -1,0 +1,15 @@
+import itertools
+class Solution:
+    def largestTriangleArea(self, points: List[List[int]]) -> float:
+        def d(x,y):
+            return ((x[0]-y[0])**2+(x[1]-y[1])**2)**.5
+        
+        def area(a,b,c):
+            p=.5*(d(a,b)+d(a,c)+d(b,c))
+            sq=p*(p-d(a,b))*(p-d(a,c))*(p-d(b,c))
+            return 0 if sq<0 else sq**.5
+        
+        ans=0
+        for a,b,c in itertools.combinations(points,3):
+            ans=max(ans,area(a,b,c))
+        return ans

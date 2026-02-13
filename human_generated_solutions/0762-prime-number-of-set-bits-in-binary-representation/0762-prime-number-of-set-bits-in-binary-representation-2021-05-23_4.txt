@@ -1,0 +1,20 @@
+def get_prime_list(n: int) -> list:
+    # Sieve of Eratosthenes
+    primes = [True]*(n+1)
+    primes[0] = primes[1] = False
+
+    i = 2
+    n = 32
+    while i*i < n:
+        if primes[i]:
+            j = i
+            while i*j < n:
+                primes[i*j] = False
+                j += 1
+        i+=1
+    return primes
+class Solution:
+    def countPrimeSetBits(self, left: int, right: int) -> int:
+        # first find prime between 1 to 32 ( 32 bit integer)
+        is_prime = get_prime_list(32)
+        return len(list(filter(lambda x: is_prime[bin(x).count(\'1\')], range(left,right+1))))

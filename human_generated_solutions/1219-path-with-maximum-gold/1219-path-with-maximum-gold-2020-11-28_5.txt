@@ -1,0 +1,16 @@
+class Solution:
+    def getMaximumGold(self, grid: List[List[int]]) -> int:
+        m,n = len(grid), len(grid[0])
+        
+        def dfs(i,j):
+            val, grid[i][j], ans = grid[i][j], 0, 0
+            for x,y in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+                if 0 <= x < m and 0 <= y < n and grid[x][y] > 0: ans=max(ans, dfs(x, y))
+            grid[i][j] = val
+            return val + ans
+        
+        ans = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]>0: ans = max(ans, dfs(i,j))
+        return ans

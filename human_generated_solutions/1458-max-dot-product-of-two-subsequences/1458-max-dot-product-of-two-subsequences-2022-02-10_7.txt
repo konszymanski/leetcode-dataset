@@ -1,0 +1,52 @@
+"""
+1458. Max Dot Product of Two Subsequences
+
+
+observations:
+Whenever we have a negative numbers and a cumulative product, we usually need
+to be careful since simply multiplying a number won\'t always increase
+or decrease a number due to sign flipping.
+
+Since it\'s a subsequence problem, we can naturally think of this problem as a LCS problem since it 
+shares similar optimal substructure to LCS, there our cost or value is accumulated by 1
+by doing a equality comparison. in this case, we need to form a candidate
+partial dot product with a entry in A and B, and how to include it to the optimal soln.
+
+you can also kind of think of it like edit distance
+
+we\'ll consider 4 cases:
+extend the prev accumulation with the partial dot product
+forget the prev accumulation and use the partial dot product
+increment i
+increment j
+
+complexity:
+O(m*n) timespace
+
+
+"""
+
+class Solution:
+        
+        
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        
+        m = len(nums1)
+        n = len(nums2)
+        
+        @cache
+        def dfs(i, j):
+            if i == m or j == n:
+                return float(\'-inf\')
+
+            product = nums1[i] * nums2[j]
+            
+            # 4 sub problems
+            extend = dfs(i+1, j+1) + product
+            forget = product                  # forget and pick this product
+            left_ret = dfs(i+1, j)
+            right_ret = dfs(i, j+1)
+            
+            return max(extend, forget, left_ret, right_ret)
+            
+        return dfs(0, 0)

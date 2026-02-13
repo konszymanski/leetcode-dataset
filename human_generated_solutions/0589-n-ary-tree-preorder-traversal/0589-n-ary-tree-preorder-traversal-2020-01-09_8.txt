@@ -1,0 +1,21 @@
+class Solution:
+    def preorder(self, root: \'Node\') -> List[int]:
+        
+        if not root:
+            # base case:
+            # empty node or empty tree
+            return []
+        
+        else:
+            # general case:
+
+            path = []
+
+            # Travese current node with preorder:
+            path.append( root.val )
+            
+            # Traverse children with preorder:
+            for child in root.children:
+                path += self.preorder( child )
+                
+            return path

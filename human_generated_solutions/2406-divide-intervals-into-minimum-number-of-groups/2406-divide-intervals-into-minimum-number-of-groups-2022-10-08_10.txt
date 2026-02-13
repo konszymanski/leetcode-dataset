@@ -1,0 +1,24 @@
+from sortedcontainers import SortedDict
+class Solution:
+    def minGroups(self, intervals: List[List[int]]) -> int:
+		
+		# When we call endpoints.values(), SortedDict will return 
+		# the values in order of increasing key. This is what we
+		# want from a left-to-right plane sweep.
+        endpoints = SortedDict()
+		
+		# Store endpoints in a dictionary. Keys will be endpoints, 
+		# and the value will be how many intervals are starting (positive int)
+		# or ending (negative int). 
+        for s, e in intervals:
+            endpoints[s] = endpoints.get(s, 0) + 1
+            endpoints[e + 1] = endpoints.get(e + 1, 0) - 1
+            
+		# Imitate a vertical plane sweep by traversing over endpoints
+		# of the intervals, keeping track of how many are currently
+		# overlapping, and setting max_overlap when appropriate.
+        max_overlap = curr_overlap = 0
+        for delta in endpoints.values():
+            curr_overlap += delta
+            max_overlap = max(curr_overlap, max_overlap)
+        return max_overlap

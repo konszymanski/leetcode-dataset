@@ -1,0 +1,23 @@
+class Fenwick:
+    def __init__(self, size: int):
+        self.partial = [0] * (size + 1)
+        self.length = size + 1
+    
+    def getCum(self, end: int, start: int) -> int:
+        return self.getSum(end) - self.getSum(start - 1)
+    
+    def getSum(self, index0: int) -> int:
+        start1 = index0 + 1
+        ans = 0
+        while start1 > 0:
+            ans += self.partial[start1]
+            start1 &= (start1 - 1)
+        return ans
+    
+    def addSum(self, i0:int, val: int):
+        start1 = i0 + 1
+        while True:
+            self.partial[start1] += val
+            start1 += start1 & (-start1)
+            if start1 >= self.length:
+                return

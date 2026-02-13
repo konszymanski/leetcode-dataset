@@ -1,0 +1,27 @@
+class TopVotedCandidate:
+
+    def __init__(self, persons: List[int], times: List[int]):
+        self.times = times 
+        self.winner = []
+        
+        pp = 0 
+        freq = {} # frequency table 
+        for p in persons: 
+            freq[p] = 1 + freq.get(p, 0)
+            if freq[p] >= freq.get(pp, 0): pp = p
+            self.winner.append(pp)
+
+
+    def q(self, t: int) -> int:
+        """Standard last-true binary search."""
+        lo, hi = -1, len(self.times)-1
+        while lo < hi: 
+            mid = lo + hi + 1 >> 1
+            if self.times[mid] <= t: lo = mid
+            else: hi = mid - 1
+        return self.winner[lo]
+
+
+# Your TopVotedCandidate object will be instantiated and called as such:
+# obj = TopVotedCandidate(persons, times)
+# param_1 = obj.q(t)

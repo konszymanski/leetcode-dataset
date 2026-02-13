@@ -1,0 +1,35 @@
+class Solution:
+    def maxTurbulenceSize(self, arr: List[int]) -> int:    
+        n = len(arr)
+        
+		# dp[i][0]: the length of the longest turbulent subarray of arr[0...i]
+		# dp[i][1]: difference between arr[i] and arr[i-1]
+        dp = [(1, 0)] * n
+		
+		# now that arr.length >= 1, so res is initiated to 1
+        res = 1
+        
+        for i in range(1, n):               
+            diff = arr[i] - arr[i-1]
+			
+			# current diff > 0 and previous diff <= 0
+			# => arr[i] can be appended to the end of last turbulent subarray
+            if diff > 0 and dp[i-1][1] <= 0:
+                dp[i] = (dp[i-1][0] + 1, diff)
+			
+			# current diff < 0 and previous diff >= 0
+			# => arr[i] can be appended to the end of last turbulent subarray
+            elif diff < 0 and dp[i-1][1] >= 0:
+                dp[i] = (dp[i-1][0] + 1, diff)
+			
+            else:
+				# arr[i] != arr[i-1]
+				# => dp[i] = (2, diff)
+                if diff != 0:
+                    dp[i] = (2, diff)
+				
+			
+			# update res in each loop
+            res = max(res, dp[i][0])
+
+        return res

@@ -1,0 +1,69 @@
+"""
+
+1039. Minimum Score Triangulation of Polygon
+
+Very similiar to other problems on DP on intervals (aka MCM). You don\'t particularily need
+the geometric intuition for this one. 
+
+I copy/pasted my soln for Burst Balloons and changed the following things:
+https://leetcode.com/problems/burst-balloons/discuss/1755801/python-2-ways-bottom-up-and-top-down-with-comments
+
+
+1. we want to find the minimum insted of maximum so:
+ret = 0
+to ret = float(\'inf\')
+
+ret = max(ret, prod + dfs(left, last) + dfs(last, right))
+to ret = min(ret, prod + dfs(left, last) + dfs(last, right))
+
+2. change the base case since we need a minimum sized triangle:
+
+if left >= right:
+    return 0
+    
+to if right - left + 1 < 3:
+    return 0
+
+3. no virtual window to account for boundaries. 
+
+the "balloon" we pop is the vertex value we pick, forming the triangle of the other polygonal edges.
+
+Complexity:
+
+It is O(n^3) for time and O(n^2) for space.
+
+
+
+
+"""
+
+  
+import inspect
+
+def stack_depth():
+    return len(inspect.getouterframes(inspect.currentframe())) - 1
+    
+    
+class SolutionDFS:
+    def minScoreTriangulation(self, nums: List[int]) -> int:        
+        @cache
+        def dfs(left, right):
+            #print("{indent}dfs({left},{right}) called".format(
+            #     indent="  " * stack_depth(), left=left,right=right))
+            
+            if right - left + 1 < 3: # equivalent to left + 1 = right 
+                return 0
+            
+            ret = float(\'inf\')
+            
+            for last in range(left + 1, right):
+                # remainder: we want to burst all the way to the left/right
+                prod = nums[left] * nums[last] * nums[right]
+                # note, here last is always skipped in the recursive calls below 
+                ret = min(ret, prod + dfs(left, last) + dfs(last, right))
+            
+            return ret
+         
+        return dfs(0, len(nums) - 1)
+    
+Solution = SolutionDFS

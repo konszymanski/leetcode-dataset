@@ -1,0 +1,46 @@
+class DSU:
+    def __init__(self,n):
+        self.par = [i for i in range(n)]
+
+    def find(self,x):
+        if self.par[x] != x:
+            self.par[x] = self.find(self.par[x])
+        return self.par[x]
+        
+    def union(self,x,y):
+        px,py = self.find(x),self.find(y)
+        if px == py:
+            return False
+        self.par[px] = py
+        return True
+
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], label: str) -> List[int]:
+        dsu = DSU(n)
+        answer = {}
+        def dfs(node):
+            count = collections.Counter()
+            lb = label[node]
+            count[lb] += 1
+            
+            for nei in graph[node]:
+                count += dfs(nei)
+
+            answer[node] = count[lb]
+            return count    
+        
+        graph = collections.defaultdict(list)
+        
+        for u,v in edges:
+            root = dsu.find(0)
+            if dsu.find(v) == root and dsu.find(u) != root:
+                u,v = v,u
+            graph[u].append(v)
+            dsu.union(u,v)
+          
+        dfs(0)
+                
+        res = []
+        for i in range(n):
+            res.append(answer.get(i,1))
+        return res

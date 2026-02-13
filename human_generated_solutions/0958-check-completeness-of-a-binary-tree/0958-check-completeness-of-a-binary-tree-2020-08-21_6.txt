@@ -1,0 +1,12 @@
+class Solution:
+    def isCompleteTree(self, root: TreeNode) -> bool:
+        index,count = 0,0
+        Q = collections.deque([(root,index)])
+        while Q:
+            u,index = Q.popleft()
+            count += 1
+            if u.left:
+                Q.append((u.left,2*index+1))
+            if u.right:
+                Q.append((u.right,2*index+2))
+        return index+1 == count

@@ -1,0 +1,29 @@
+class Solution:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], contained_boxes: List[List[int]], initial_boxes: List[int]) -> int:
+        candy_count = 0
+        available_boxes = set(initial_boxes)
+        visited_boxes = set(initial_boxes)
+        box_stack = initial_boxes
+        
+        while box_stack:
+            box_index = box_stack.pop()
+            candy_count += candies[box_index]
+            
+            for contained_index in contained_boxes[box_index]:
+                available_boxes.add(contained_index)
+                
+                if status[contained_index]:
+                    box_stack.append(contained_index)
+                    visited_boxes.add(contained_index)
+            
+            for key in keys[box_index]:
+                if key in visited_boxes:
+                    continue
+                
+                status[key] = 1
+                
+                if key in available_boxes:
+                    box_stack.append(key)
+                    visited_boxes.add(key)
+        
+        return candy_count

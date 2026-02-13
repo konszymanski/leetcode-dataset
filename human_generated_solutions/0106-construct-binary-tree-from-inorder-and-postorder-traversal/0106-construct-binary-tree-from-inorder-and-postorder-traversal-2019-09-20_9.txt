@@ -1,0 +1,16 @@
+def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        if not postorder or not inorder: return None
+        indx, root = 0, TreeNode(postorder[-1])
+        stack = [root]
+        for i in postorder[:-1][::-1]:
+            parent = stack[-1]
+            isRight = True
+            node = TreeNode(i)
+            while stack and inorder[~indx] == stack[-1].val:   # hit the rightmost node = stack[-1] go back to parent and then check left
+                parent = stack.pop()
+                isRight = False
+                indx += 1
+            if isRight: parent.right = node
+            else: parent.left = node
+            stack.append(node)
+        return root

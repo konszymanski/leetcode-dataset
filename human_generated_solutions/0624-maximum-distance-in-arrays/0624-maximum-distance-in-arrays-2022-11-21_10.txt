@@ -1,0 +1,20 @@
+class Solution:
+    def maxDistance(self, A: List[List[int]]) -> int:
+        minIdx = [-1, -1]
+        maxIdx = [-1, -1]
+
+        for i in range(len(A)):
+            if minIdx[0] == -1 or A[minIdx[0]][0] > A[i][0]:
+                minIdx = [i, minIdx[0]]
+            elif minIdx[1] == -1 or A[minIdx[1]][0] > A[i][0]:
+                minIdx = [minIdx[0], i]
+            
+            if maxIdx[0] == -1 or A[maxIdx[0]][-1] < A[i][-1]:
+                maxIdx = [i, maxIdx[0]]
+            elif maxIdx[1] == -1 or A[maxIdx[1]][-1] < A[i][-1]:
+                maxIdx = [maxIdx[0], i]
+
+        if minIdx[0] != maxIdx[0]:
+            return A[maxIdx[0]][-1] - A[minIdx[0]][0]
+        else:
+            return max(A[maxIdx[0]][-1] - A[minIdx[1]][0], A[maxIdx[1]][-1] - A[minIdx[0]][0])

@@ -1,0 +1,9 @@
+class Solution:
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        ans = inf 
+        rsm = 0 
+        for i, ch in enumerate(blocks): 
+            if ch == \'W\': rsm += 1
+            if i >= k and blocks[i-k] == \'W\': rsm -= 1
+            if i >= k-1: ans = min(ans, rsm)
+        return ans

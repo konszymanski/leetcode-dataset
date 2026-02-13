@@ -1,0 +1,71 @@
+class Solution:
+    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
+        
+        
+        def binary_search(prices,target):
+            
+            if target < prices[0]:
+                return - 1
+            
+            if target > prices[-1] :
+                return len(prices) - 1
+            
+            
+            low  = 0
+            high = len(prices) - 1
+            
+            while low <= high:
+                
+                m = (low + high) // 2
+                
+                if prices[m] == target:
+                    return m
+                elif prices[m] > target:
+                    high = m - 1
+                else:
+                    low = m + 1
+            
+            return high
+        
+		#Time -> O(NlogN) Space -> O(N)
+        #Logic ->
+		#Idea is that using hashmap we store the max possible beauty availble for each price
+		#after that we sort the price hashmap by key
+		#then we update the hashmap with max possible beauty for each price point move left to right
+		#in asc order of price points
+		#as we move from left to right we create a max marker, which will store max possible
+		#beauty from left to right and update the price hashmap with the max beauty
+		#we use binary search just to check if the price exsist in the available price list
+		#if it does we just index the sorted price array and access the max beauty from hashmap
+		#and append to answer
+		
+		#hashmap which will store max beauty avail for each price point
+        price = {}        
+        
+        for p,b in items:
+            beauty = price.get(p,0) 
+            price[p] = max(beauty,b)            
+        
+		#answer
+        output       = []
+		#we sort the avail price list so that next we can find the max possible value 
+		#for each price point as according to the req we check from price and less than avail prices
+        avail_prices = sorted(price.keys())
+		                       
+        max_ = 0
+        for p in avail_prices:
+            b    = price[p]
+            max_ = max(max_,b)
+            price[p]= max_
+                
+        for p in queries:
+            
+            max_   = 0
+            pIndex = binary_search(avail_prices,p)
+            
+            if pIndex != -1:
+                max_ = price[avail_prices[pIndex]]
+                                
+            output.append(max_)
+        
+        return output

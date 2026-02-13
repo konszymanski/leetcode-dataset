@@ -1,0 +1,15 @@
+def findTilt(self, root: TreeNode) -> int:
+        tilt = [0]
+        self.helper(root,tilt)
+        return tilt[0]
+    
+    
+    def helper(self,root,tilt):
+        if root is None:
+            return 0
+        if root.left is root.right:
+            return root.val
+        lt = self.helper(root.left,tilt)
+        rt = self.helper(root.right,tilt)
+        tilt[0] = tilt[0]+abs(lt-rt)
+        return lt+rt+root.val

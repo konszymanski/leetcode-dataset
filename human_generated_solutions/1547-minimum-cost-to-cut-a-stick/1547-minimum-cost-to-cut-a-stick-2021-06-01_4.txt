@@ -1,0 +1,7 @@
+def minCost(self, n: int, cuts: List[int]) -> int:
+        memo = {}
+        def dp(l, r):
+            if (l, r) not in memo:
+                memo[l, r] = min([dp(l, cut) + dp(cut, r) + (r - l) for cut in cuts if l < cut < r] or [0])
+            return memo[l, r]
+        return dp(0, n)

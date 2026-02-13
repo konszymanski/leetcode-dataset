@@ -1,0 +1,21 @@
+from collections import Counter, OrderedDict
+class FreqStack:
+
+    def __init__(self):
+        self.cnt = Counter()
+        self.q = OrderedDict()
+
+    def push(self, x: int) -> None:
+        self.cnt[x] += 1
+        if self.cnt[x] not in self.q:
+            self.q[self.cnt[x]] = []
+        #print(self.q)
+        self.q[self.cnt[x]].append(x)
+        
+    def pop(self) -> int:
+        k = next(reversed(self.q))
+        x = self.q[k].pop()
+        if not self.q[k]:
+            del self.q[k]
+        self.cnt[x] -= 1
+        return x

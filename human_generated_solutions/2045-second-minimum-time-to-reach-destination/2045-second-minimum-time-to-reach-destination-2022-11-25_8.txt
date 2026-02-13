@@ -1,0 +1,42 @@
+import heapq
+
+class Solution:
+    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+        graph = collections.defaultdict(list)
+        for v1, v2 in edges:
+            graph[v1].append(v2)
+            graph[v2].append(v1)
+        
+        heap = [(0, 1)]  # cost, vertices
+        costs = collections.defaultdict(lambda: [math.inf, math.inf])
+        
+        res = []
+        
+        while heap:
+            cost, node = heappop(heap)
+            
+            for neighbor in graph[node]:
+                new_cost = cost + time
+                
+                # Skip nodes we\'ve seen twice alredy
+                if costs[neighbor][1] != math.inf:
+                    continue
+                
+                # If target node, return early before incur wait cost
+                if neighbor == n:
+                    res.append(new_cost)
+                    if len(res) >= 2 and res[-1] != res[-2]:
+                        return res[-1]
+                
+                if (new_cost // change) % 2 == 1:
+                    new_cost += change - (new_cost % change)
+                
+                if neighbor not in costs or new_cost < costs[neighbor][0]:
+                    costs[neighbor][1] = costs[neighbor][0]
+                    costs[neighbor][0] = new_cost 
+                    heappush(heap, (new_cost, neighbor))
+                elif new_cost < costs[neighbor][1] and new_cost != costs[neighbor][0]:
+                    costs[neighbor][1] = new_cost 
+                    heappush(heap, (new_cost, neighbor))
+           
+        return costs[n][1]

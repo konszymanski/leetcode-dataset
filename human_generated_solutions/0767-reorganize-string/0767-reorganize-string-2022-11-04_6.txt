@@ -1,0 +1,16 @@
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+                                                              #  Ex: s = \'bttbtbzzztd\'
+                                                              #
+        n, c = len(s), Counter(s)                             #   c = {\'t\': 4, \'b\': 3, \'z\': 3, \'d\': 1}
+                                                              # 
+        arr = sorted([ch for ch in c], key = lambda x: -c[x]) #   arr = [\'t\',\'b\',\'z\',\'d\']
+ 
+        if c[arr[0]] > (len(s)+1)//2: return \'\'               #   <-- no solution if and only if more than half (n even) or half+1 (n odd)
+                                                              #       of the chars in s are the same letter.
+        
+        chars = list(chain(*[[ch]*c[ch] for ch in arr]))      #  chars = chain(*[[\'t\',\'t\',\'t\',\'t\'], [\'b\',\'b\',\'b\'], [\'z\',\'z\',\'z\'],[\'d\']])
+                                                              #        = [\'t\',\'t\',\'t\',\'t\',\'b\',\'b\',\'b\',\'z\',\'z\',\'z\',\'d\']      
+
+        return \'\'.join([chars[(n+i)//2] if i%2 else           # return \'\'.join([\'t\',\'b\',\'t\',\'z\',\'t\',\'z\',\'t\',\'z\',\'b\',\'d\',\'b\']) = "tbtztztzbdb"
+                        chars[    i//2] for i in range(n)])

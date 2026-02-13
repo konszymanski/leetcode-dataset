@@ -1,0 +1,31 @@
+class Solution:
+    def kMirror(self, k: int, n: int) -> int:
+        def createPalindromeBase(b: int):
+            l = 1
+            while True:
+                for i in range(b ** ((l - 1) // 2), b ** ((l + 1) // 2)):
+                    n = i
+                    pal = i
+                    if l % 2 == 1:
+                        n //= b
+                    while n:
+                        pal = pal * b + (n % b)
+                        n //= b
+                    yield pal
+                l += 1
+
+        pk = createPalindromeBase(k)
+        p10 = createPalindromeBase(10)
+
+        numbers = []
+        n10 = next(p10)
+        nk = next(pk)
+
+        while numbers.__len__() < n:
+            if n10 == nk:
+                numbers.append(n10)
+            if n10 < nk:
+                n10 = next(p10)
+            else:
+                nk = next(pk)
+        return sum(numbers)

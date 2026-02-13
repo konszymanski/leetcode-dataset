@@ -1,0 +1,14 @@
+def largeGroupPositions(self, s):
+        s += " " # artifial end to handle the case such as "aaa"
+        ret = []
+        c = 1 # count
+        
+        for i, x in enumerate(s[1:], 1):
+            if x == s[i-c]:
+                c += 1
+            else:
+                if c >= 3:
+                    ret.append([i-c, i-1])
+                c = 1
+                
+        return ret

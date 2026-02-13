@@ -1,0 +1,6 @@
+def deleteDuplicates(self, head):
+	if not head or not head.next:
+		return head
+	h = self.deleteDuplicates(head.next)
+	head.next = h if head.val != h.val else h.next
+	return head

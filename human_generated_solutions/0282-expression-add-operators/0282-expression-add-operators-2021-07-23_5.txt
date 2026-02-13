@@ -1,0 +1,30 @@
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        size = len(num)
+        
+        def solve(index: int, stack: list = None, built: str = None) -> List[str]:
+            if index >= size:
+                if sum(stack) == target:
+                    return [built]
+                else:
+                    return []
+            
+            res = []
+            
+            for i in range(index + 1, size + 1):
+                ns = num[index: i]
+                if ns[0] == \'0\' and i - index > 1:
+                    break
+                    
+                n = int(ns)
+                
+                if index == 0:
+                    res += solve(i, stack=[n], built=ns)
+                else:
+                    res += solve(i, stack=stack + [n], built=built + \'+\' + ns)
+                    res += solve(i, stack=stack + [-n], built=built + \'-\' + ns)
+                    res += solve(i, stack=stack[:-1] + [stack[-1] * n], built=built + \'*\' + ns)
+                
+            return res
+        
+        return solve(0)

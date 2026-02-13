@@ -1,0 +1,28 @@
+import collections
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        tree = collections.defaultdict(list)
+        for i,j in edges:
+            tree[i].append(j)  
+            tree[j].append(i)
+        
+        res = [0]*n 
+        visited = [False]*n
+        
+        def dfs(node):
+            visited[node] = True
+            count = [0]*26
+            for nei in tree[node]:
+                if visited[nei] == False:
+                    ret = dfs(nei)
+					
+                    for i in range(26):
+                        count[i] += ret[i]
+                    
+            count[ord(labels[node])%ord(\'a\')] += 1
+            res[node] = count[ord(labels[node])%ord(\'a\')]
+			
+            return count
+        
+        dfs(0)
+        return res

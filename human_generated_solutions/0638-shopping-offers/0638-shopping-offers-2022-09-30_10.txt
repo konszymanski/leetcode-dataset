@@ -1,0 +1,38 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        for i in range(len(price)):
+            temp = [0]*(len(price)+1)
+            temp[i] = 1
+            temp[-1] = price[i]
+            special.append(temp)
+        dp = {}
+        def solve(needs,i = 0):
+            if (i,tuple(needs)) in dp:
+                return dp[(i,tuple(needs))]
+            if [0]*len(needs) == needs:
+                return 0
+            elif i>= len(special):
+                return float(\'inf\')
+
+
+            is_valid = True
+            for k,val in enumerate(special[i][:-1]):
+                if val > needs[k]:
+                    is_valid = False
+
+            if is_valid:
+                # we take it or not take it
+                updated = []
+
+                for j in range(len(needs)):
+                    updated.append(needs[j]-special[i][j])
+
+                possible_1 = special[i][-1] + solve(updated,i)
+                possible_2 = solve(needs, i+1)
+                dp[(i,tuple(needs))] = min(possible_1, possible_2)
+                return dp[(i,tuple(needs))]
+            else:
+                # we dont take it 
+                dp[(i,tuple(needs))] = solve(needs, i+1)
+                return dp[(i,tuple(needs))]
+        return solve(needs, 0)

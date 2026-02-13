@@ -1,0 +1,20 @@
+class Solution:
+    def minimumObstacles(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        heap = list()
+        heapq.heappush(heap, (0, 0, 0))
+        visited = set()
+        visited.add((0,0))
+        
+        while len(heap) > 0:
+            k, i, j = heapq.heappop(heap)
+            if i == m-1 and j == n-1:
+                return k
+            for di,dj in [(-1,0), (1,0), (0,-1), (0,1)]:
+                i1 = i + di
+                j1 = j + dj
+                if 0 <= i1 < m and 0<= j1 < n:
+                    if (i1,j1) not in visited:
+                        visited.add((i1,j1))
+                        heapq.heappush(heap, (k+grid[i1][j1], i1, j1))

@@ -1,0 +1,16 @@
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        
+        ## Base case
+        if not root:
+            return False
+        
+        ## Base case
+        if not root.left and not root.right:
+            
+            # we have the path with targetSum
+            return targetSum == root.val
+        
+        ## General case:
+        return self.hasPathSum(root.left, targetSum - root.val) or \\
+                self.hasPathSum(root.right, targetSum - root.val)

@@ -1,0 +1,27 @@
+class Solution:
+    def longestUnivaluePath(self, root: TreeNode) -> int:
+        self.max_length = 0
+        self.dfs(root)
+        return self.max_length - 1 if self.max_length != 0 else 0
+
+
+    def dfs(self, root):
+        if not root:
+            return 0
+
+        left = self.dfs(root.left)
+        right = self.dfs(root.right)
+
+        left_with_root = left + 1 if root.left and root.val == root.left.val else 1
+        right_with_root = right + 1 if root.right and root.val == root.right.val else 1
+        with_root = left + right + 1 if root.left and root.right and root.val == root.right.val and root.val == root.left.val else 1
+
+        self.max_length = max(
+            self.max_length,
+            with_root,
+            left_with_root,
+            right_with_root
+        )
+
+        # current root can only select at most one child node
+        return max(left_with_root, right_with_root, 1)

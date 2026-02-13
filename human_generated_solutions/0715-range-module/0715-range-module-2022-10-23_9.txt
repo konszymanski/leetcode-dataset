@@ -1,0 +1,50 @@
+class RangeModule:
+
+    def __init__(self):
+        self.intervals = [[-inf,-inf], [inf, inf]]
+
+    def addRange(self, left: int, right: int) -> None:
+        right -= 1
+        idx = bisect_right(self.intervals, [left, inf]) - 1
+
+        if self.intervals[idx][1] >= right:
+            return 
+        
+        if self.intervals[idx][1] < left - 1:
+            start = idx + 1
+            idx += 1
+        else:
+            start = idx
+            left = self.intervals[idx][0]
+        
+        while right + 1 >= self.intervals[idx][0]:
+            right = max(right, self.intervals[idx][1])
+            idx += 1
+        
+        self.intervals[start:idx] = [[left, right]]
+
+    def queryRange(self, left: int, right: int) -> bool:
+        right -= 1
+        idx = bisect_right(self.intervals, [left, inf]) - 1
+
+        return self.intervals[idx][1] >= right
+
+    def removeRange(self, left: int, right: int) -> None:
+        right -= 1
+        idx = bisect_right(self.intervals, [left, inf]) - 1      
+
+        replacement = []
+        if self.intervals[idx][1] >= left:
+            replacement.append([self.intervals[idx][0], left - 1])
+            start = idx
+        else:
+            start = idx+1
+            idx += 1
+        
+        while right >= self.intervals[idx][0]:
+            if self.intervals[idx][1] > right:
+                self.intervals[idx][0] = right+1
+                break
+            idx += 1
+        
+        self.intervals[start: idx] = replacement

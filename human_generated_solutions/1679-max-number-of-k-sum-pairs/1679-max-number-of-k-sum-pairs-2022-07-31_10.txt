@@ -1,0 +1,11 @@
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        freq = defaultdict(int)
+        count = 0
+        for i, elem in enumerate(nums):
+            if freq[k-elem]:
+                count += 1
+                freq[k-elem] -= 1
+            else:
+                freq[elem] += 1
+        return count

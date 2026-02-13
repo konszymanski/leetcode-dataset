@@ -1,0 +1,11 @@
+def groupThePeople(self, groupSizes: List[int]) -> List[List[int]]:
+	hmap = collections.defaultdict(list)
+	res = []
+
+	for i, g in enumerate(groupSizes):
+		hmap[g].append(i)
+
+		if len(hmap[g]) == g:
+			res.append(hmap.pop(g))
+
+	return res

@@ -1,0 +1,18 @@
+from functools import lru_cache
+#dfs(i,row) means the number of color configuration based on current configuration of upper part(row)
+class Solution:
+    def colorTheGrid(self, m: int, n: int) -> int:
+        MN = m*n
+        M = 10**9+7
+        @lru_cache(None)
+        def dfs(i, row):
+            if i == MN:
+                return 1
+            r, c = divmod(i, m)
+            res, feasible_colors = 0, {0, 1, 2}
+            if r > 0: feasible_colors.discard(row[0])
+            if c > 0: feasible_colors.discard(row[-1])
+            for color in feasible_colors:
+                res += dfs(i+1,row[1:]+(color,))
+            return res%M
+        return dfs(0, tuple([3]*m))

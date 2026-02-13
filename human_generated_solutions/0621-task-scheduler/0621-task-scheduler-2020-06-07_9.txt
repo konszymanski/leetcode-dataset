@@ -1,0 +1,29 @@
+import collections
+import heapq
+
+class Solution:
+    def leastInterval(self, tasks, n):
+        t = collections.Counter(tasks)
+        step = 0
+        heap = []
+        for k, v in t.items():
+		    # put the element with largest count on the top of the heap. 
+			# Remember python heap model return the smallest element while using pop, so use -v instead of v
+            heapq.heappush(heap, (-v, k))
+        while heap:
+            temp = []
+            cnt = 0
+            mx_time = min(len(heap), n + 1)
+            while cnt < mx_time:
+                curtime, curele = heapq.heappop(heap)
+                step += 1
+                cnt += 1
+                if curtime < -1:
+                    temp.append((curtime + 1, curele))
+			# if you don\'t use if temp, them there will be a problem in the final loop.
+            if temp:
+			    #step += idle time	
+                step += n + 1 - mx_time
+            for tempitem in temp:
+                heapq.heappush(heap, tempitem)
+        return step

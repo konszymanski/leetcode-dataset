@@ -1,0 +1,5 @@
+from fractions import Fraction
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        ans = Fraction(eval(expression))
+        return \'/\'.join(map(str, ans.limit_denominator().as_integer_ratio()))

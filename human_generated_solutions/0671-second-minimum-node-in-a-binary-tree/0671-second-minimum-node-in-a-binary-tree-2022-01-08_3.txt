@@ -1,0 +1,19 @@
+from collections import deque
+
+class Solution:
+    def findSecondMinimumValue(self, root: Optional[TreeNode]) -> int:
+        queue = deque([root])
+        ans = float(\'inf\')
+
+        while queue:
+            node = queue.popleft()
+            if node.left and node.right:
+                larger = max(node.left.val, node.right.val)
+
+                if larger > node.val:
+                    ans = min(ans, larger)
+
+                queue.append(node.left)
+                queue.append(node.right)
+
+        return ans if ans != float(\'inf\') else -1

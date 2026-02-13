@@ -1,0 +1,12 @@
+class Solution:
+    def minimumDeviation(self, nums: List[int]) -> int:
+        pq = [-2*x if x&1 else -x for x in nums]
+        heapify(pq)
+        most = max(pq)
+        ans = most - pq[0]
+        while not pq[0]&1: 
+            x = heappop(pq)//2
+            heappush(pq, x)
+            most = max(most, x)
+            ans = min(ans, most - pq[0])
+        return ans

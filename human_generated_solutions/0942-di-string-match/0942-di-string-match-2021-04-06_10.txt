@@ -1,0 +1,19 @@
+class Solution:
+    def diStringMatch(self, s: str) -> List[int]:
+        perm = []
+        incr = 0
+        decr = len(s)
+		
+        for i in s:
+		
+            if i == \'I\':
+                perm.append(incr)
+                incr += 1
+				
+            if i == \'D\':
+                perm.append(decr)
+                decr -= 1
+				
+        perm.append(incr)
+		
+        return perm

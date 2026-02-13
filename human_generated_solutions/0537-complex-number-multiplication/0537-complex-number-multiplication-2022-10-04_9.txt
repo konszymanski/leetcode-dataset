@@ -1,0 +1,16 @@
+class Solution:
+    def complexNumberMultiply(self, num1: str, num2: str) -> str:
+        def complex(s):
+            r, im = s.split(\'+\')
+
+            return (int(r), int(im[:-1]))
+
+        def to_string(a, b):
+            return f"{a}+{b}i"
+
+        # The product of the complex numbers z1 = a + bi and z2 = c + di
+        # is given by (ac \u2212 bd) + (ad + bc)i.
+
+        (a, b) = complex(num1)
+        (c, d) = complex(num2)
+        return to_string(a*c - b*d, a*d + b*c)

@@ -1,0 +1,9 @@
+def findPairs(self, nums, k):
+		nums.sort()
+        res , dic= 0 , {}
+        for i in nums:
+            dic[i] = dic[i]+1 if i in dic else 1
+        for i in dic.keys():
+            if (i+k in dic and k>0) or (k==0 and dic[i]>1):
+                res += 1
+        return res

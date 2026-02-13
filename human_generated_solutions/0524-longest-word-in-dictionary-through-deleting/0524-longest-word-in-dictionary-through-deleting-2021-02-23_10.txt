@@ -1,0 +1,35 @@
+class Solution(object):
+    def findLongestWord(self, s, d):
+        """
+        :type s: str
+        :type d: List[str]
+        :rtype: str
+        """
+        res = \'\'
+        for word in d:
+            if self.check(s, word):
+                if len(word) > len(res) or len(word) == len(res) and word < res:
+                    # keep the longest
+                    # and small lexig...
+                    res = word
+        return res
+
+
+        
+    def check(self, s, w):
+        \'\'\'
+        check if the word 
+        can be formed by 
+        deleteing some letter from
+        s
+        \'\'\'
+        idx = 0
+        # use two pointer to go through s
+        # and check if s[i] match w[idx]
+        for l in s:
+            if l == w[idx]:
+                idx += 1
+                if idx == len(w):
+                    return True
+        
+        return False

@@ -1,0 +1,47 @@
+from random import randint
+from bisect import bisect_left
+
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        
+        self.rectangles = rects
+        
+        # record prefix sum of points number (i.e., acts like the CDF)
+        self.prefix_points_sum = []
+        
+        for x1, y1, x2, y2 in rects:
+            
+            # compute current number of points
+            cur_points = ( x2 - x1 + 1 ) * ( y2 - y1 + 1)
+            
+            # update to prefix table
+            if self.prefix_points_sum:
+                self.prefix_points_sum.append( self.prefix_points_sum[-1] + cur_points )
+                
+            else:
+                self.prefix_points_sum.append( cur_points )
+        
+            
+
+    def pick(self) -> List[int]:
+        
+        total_num_of_points = self.prefix_points_sum[-1]
+        
+        # get a random point serial, sampling from 1 ~ total number of points
+        random_point_serial = randint(1, total_num_of_points)
+        
+        # get the rectangle index by looking up prefix table with bisection
+        idx_of_rectangle = bisect_left(self.prefix_points_sum, random_point_serial)
+        
+        # get the point range of that rectangle by index
+        x1, y1, x2, y2 = self.rectangles[idx_of_rectangle]
+        
+        # compute the offset value between prefix sum and random point serial
+        offset = self.prefix_points_sum[idx_of_rectangle] - random_point_serial
+        
+        # compute corresponding x, y points coordination in that rectangle
+        x = offset % ( x2 - x1 + 1) + x1
+        y = offset // ( x2 - x1 + 1) + y1
+        
+        return [x, y]

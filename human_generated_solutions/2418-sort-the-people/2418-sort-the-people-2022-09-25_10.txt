@@ -1,0 +1,106 @@
+java:
+
+class Solution {
+    public String[] sortPeople(String[] n, int[] h) {
+        List<pair> A=new ArrayList<pair>();
+        for(int i=0;i<n.length;i++){
+            A.add(new pair(h[i],n[i]));
+        }
+        Collections.sort(A,(a,b)->b.first-a.first);
+        for(int i=0;i<n.length;i++){
+            n[i]=A.get(i).second;
+        }return n;
+    }
+    
+}
+class pair{
+        int first;
+        String second;
+        pair(int first,String second){
+            this.first=first;
+            this.second=second;
+        }
+    }
+
+method 2 using hashmap:
+
+public String[] sortPeople(String[] names, int[] heights) {
+        Map<Integer, String> map = new HashMap<>();
+        for (int i = 0; i < names.length; i++) {
+            map.put(heights[i], names[i]);
+        }        
+        Arrays.sort(heights);
+        String[] result = new String[heights.length];
+        int index = 0;
+        for (int i = heights.length - 1; i >= 0; i--) {
+            result[index] = map.get(heights[i]);
+            index++;
+        }
+        return result;
+    }
+
+method 3 using 2d array
+
+public String[] sortPeople(String[] names, int[] heights) {
+
+        //Space: O(N)
+        int[][] people = new int[names.length][2];
+        for (int i = 0; i < names.length; i++)
+            people[i]  = new int[] {heights[i], i};
+
+        //Time: O(NlgN); Space: O(lgN)
+        Arrays.sort(people, (a, b) -> b[0] - a[0]);
+
+        String[] res = new String[names.length];
+        //Time: O(N)
+        for (int i = 0; i < names.length; i++)
+            res[i] = names[people[i][1]];
+
+        return res;
+    }
+
+py3:
+
+def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:
+        return [name for h,name in sorted(zip(heights,names),reverse=True)];
+
+py:
+def sortPeople(self, names, heights):
+        """
+        :type names: List[str]
+        :type heights: List[int]
+        :rtype: List[str]
+        """
+        return [x for y,x in sorted(zip(heights,names),reverse=True) ]
+        
+
+c++;
+Priority Queue :
+
+vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+        
+        priority_queue<pair<int, string>> pq;
+        
+        for(int i = 0; i < heights.size(); i++){
+            pq.push({heights[i], names[i]});
+        }
+        
+        vector<string> ans;
+        
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ans;
+}
+method 2:
+vector<string> sortPeople(vector<string>& n, vector<int>& h) {
+        vector<pair<int,string>> A;
+        for(int i=0;i<n.size();i++){
+            A.push_back({h[i],n[i]});
+        }
+        sort(A.rbegin(),A.rend());
+        for(int i=0;i<n.size();i++){
+            n[i]=A[i].second;
+        }return n;
+    }

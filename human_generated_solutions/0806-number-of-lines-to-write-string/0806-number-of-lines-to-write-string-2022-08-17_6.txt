@@ -1,0 +1,10 @@
+class Solution:
+    def numberOfLines(self, widths: List[int], s: str) -> List[int]:
+        d = dict(zip([chr(i) for i in range(97, 123)], widths))
+        lineNumber, lineWidth = 1, 0
+        for _ in s:
+            if lineWidth + d[_] <= 100: lineWidth += d[_]
+            else:
+                lineNumber += 1
+                lineWidth = d[_]
+        return [lineNumber, lineWidth]

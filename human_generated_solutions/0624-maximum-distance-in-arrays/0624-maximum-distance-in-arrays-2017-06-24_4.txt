@@ -1,0 +1,21 @@
+def maxDistance(self, arrays):
+        """
+        :type arrays: List[List[int]]
+        :rtype: int
+        """
+        min_num=collections.defaultdict(list)
+        max_num=collections.defaultdict(list)
+        i=0
+        distance=0
+        for array in arrays:
+            min_num[array[0]].append(i)
+            max_num[array[-1]].append(i)
+            i+=1
+        for i in min_num:
+            for j in max_num:
+                if (j-i)>distance:
+                    if min_num[i]!=max_num[j]:
+                        distance=j-i
+                    elif len(min_num[i])>1:
+                        distance=j-i
+        return distance

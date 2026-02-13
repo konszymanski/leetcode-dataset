@@ -1,0 +1,24 @@
+class Solution:
+    def findLongestWord(self, s: str, dictionary: List[str]) -> str:
+        ans = ""
+        
+        # store for each starting letter the potential word. We don\'t store the word directly, but its index in the dictionary. 
+        # In addition we store \'0\' as pointer to the starting character. We will update the pointer in subsequent steps.
+        wordmap = defaultdict(list)
+        for i, word in enumerate(dictionary):
+            wordmap[word[0]].append((i,0))
+        
+        # Process all characters in s, left-to-right
+        for c in s:
+            candidates = wordmap[c] # select word candidates where the pointer points to the character c
+            wordmap[c] = [] # reset, since we picked them all up in the line before
+            for candidate in candidates: # let\'s check all candidates that we found in the wordmap
+                word_idx, word_pos = candidate
+                word_pos += 1 # increment pointer to the next character
+                if word_pos == len(dictionary[word_idx]): # we reached the end of the word, now check whether it\'s a better solution and update ans
+                    if word_pos > len(ans) or (word_pos == len(ans) and dictionary[word_idx] < ans):
+                        ans = dictionary[word_idx]
+                else: # we did not reach the end of the word and put the word with the character at the updated pointer position back into the wordmap
+                    wordmap[dictionary[word_idx][word_pos]].append((word_idx, word_pos))
+        
+        return ans

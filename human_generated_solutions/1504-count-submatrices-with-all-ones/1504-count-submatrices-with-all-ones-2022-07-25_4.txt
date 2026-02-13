@@ -1,0 +1,19 @@
+def numSubmat(self, mat: List[List[int]]) -> int:
+	m, n = len(mat), len(mat[0])
+	pref = [[0] for _ in range(m)]
+	for i in range(m):
+		for j in range(n):
+			pref[i].append(pref[i][-1] + mat[i][j])
+	ans = 0
+	for i in range(n+1):
+		for j in range(i+1, n+1):
+			diff = j-i
+			c = 0
+			for k in range(m):
+				if(diff == pref[k][j] - pref[k][i]):
+					c += 1
+				else:
+					ans += ((c+1)*c)//2
+					c = 0
+			ans += ((c+1)*c)//2
+	return ans

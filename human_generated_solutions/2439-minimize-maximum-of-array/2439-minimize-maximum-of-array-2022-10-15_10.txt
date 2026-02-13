@@ -1,0 +1,33 @@
+class Solution:
+    def minimizeArrayValue(self, nums: List[int]) -> int:
+        
+        def isPossible(arr,mid):
+            n = len(arr)
+            if arr[0] > mid:
+                return False
+            
+            p = arr[0]
+            for i in range(1,n):
+                d = mid - p
+                p = arr[i] - d 
+                if p > mid:
+                    return False
+                
+        
+            return True
+        
+        l,h = 1,max(nums)
+        
+        ans = h
+        
+        while l<=h:
+            
+            mid = (l+h)//2
+            
+            if isPossible(nums,mid):
+                ans = min(mid,ans)
+                h = mid-1
+            else:
+                l = mid+1
+        
+        return ans

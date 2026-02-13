@@ -1,0 +1,26 @@
+# maximum running time of N Computer.. 
+
+class Solution: 
+  def possible(self,battries,minute,n):
+   computer = 0 
+    i = len(battries)-1 
+    while battries[i]>=minute and i>=0:
+      computer+=1 
+      i-=1 
+    if computer+((sum(battries[:i+1]))//minute)>=n: 
+      return True
+    return False 
+    
+  def maxRunTime(self,n,battries):
+    battries.sort() 
+    low  = battries[0]
+    high= int(1e32)
+    ans = 1 
+    while low<=high:
+      minute = low+(high-low)//2 
+      if self.possible(battries,minute,n): 
+        ans = minute 
+        low=minute+1 
+      else:
+        high=minute-1 
+    return ans

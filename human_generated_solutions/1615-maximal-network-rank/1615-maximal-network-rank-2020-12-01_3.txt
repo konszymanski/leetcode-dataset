@@ -1,0 +1,35 @@
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        # Count roads for each city:
+        counter = [0]*n
+        for road in roads:
+            counter[road[0]]+=1
+            counter[road[1]]+=1
+
+        # Get cities with max number of roads
+        m = max(counter)
+        index = [i for i, val in enumerate(counter) if val == m]
+        
+        # If there\'s more than one - the result is twice the max minus one if they are connected
+        if len(index) > 1:
+            
+            # Find if there are two cities with max that are not connected
+            for i in index:
+                x = [y for y in index if [i, y] not in roads and [y, i] not in roads and i != y]
+                if len(x):
+                    return 2*m
+            else:
+                return 2*m-1
+        
+        # The result will be max + second max, minus one if they\'re connected
+        else:
+            first, first_val = index[0], m
+            counter[first] = 0
+            m = max(counter)
+            index = [i for i, val in enumerate(counter) if val == m]
+            
+            for i in index:
+                if [first, i] not in roads and [i, first] not in roads:
+                    return first_val + m
+                
+            return first_val + m - 1

@@ -1,0 +1,60 @@
+fmax  = lambda x,y  : x if x>y else y # this is 33%+ faster than the standard "max" function
+fmin  = lambda x,y  : x if x<y else y
+class Solution:
+    def minDays(self, bloomDay, m: int, k: int) -> int:
+        L0 = len(bloomDay)
+        if (m*k)>L0 or (not L0) or (m<1) or (k<1):
+            return -1
+        if (m*k)==L0:
+            return max(*bloomDay) if L0>1 else bloomDay[0]
+        #
+        get_res = lambda a,b: (b-a+1)%k
+        #
+        ids   = [ 1 for _ in bloomDay ]
+        id_ij = { 1 : [0,L0-1] }
+        residual = get_res(0,L0-1)
+        last  = 1
+        #
+        ordered = sorted([ (x,i) for i,x in enumerate(bloomDay) ])
+        #
+        result   = ordered[-1][0]
+        counting = L0
+        #
+        for i0 in reversed(range(L0)):
+            x,i = ordered[i0]
+            # Get rid of each max. values, one-by-one
+            id0 = ids[i]
+            if id0:
+                a,b       = id_ij[id0]
+                residual -= get_res(a,b)
+                ids[i]    = None
+                counting -= 1
+                #
+                # Check Left Side
+                if (i-1-a+1)>=k:
+                    id_ij[id0] = a,i-1
+                    residual  += get_res(a,i-1)
+                else:
+                    id_ij.pop(id0)
+                    counting -= len(    range(a,i)    )
+                    for j in range(a,i):
+                        ids[j] = None
+                #
+                # Check Right Side
+                if (b-(i+1)+1)>=k:
+                    new = last = last + 1
+                    id_ij[new] = i+1,b
+                    residual  += get_res(i+1,b)
+                else:
+                    new = None
+                    counting -= len( range(i+1,b+1) )
+                #
+                for j in range(i+1,b+1):
+                    ids[j] = new
+            #
+            if (counting-residual)>=(m*k) and (i0>0):
+                result = ordered[i0-1][0]
+            elif counting<(m*k):
+                break
+        #
+        return result

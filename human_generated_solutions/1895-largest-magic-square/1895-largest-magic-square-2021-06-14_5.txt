@@ -1,0 +1,40 @@
+class Solution:
+    def largestMagicSquare(self, grid: List[List[int]]) -> int:
+
+        @cache
+        def sumRow(a,b,k):
+            if k==1: return grid[a][b]
+            return grid[a][b] + sumRow(a,b+1,k-1)
+
+        @cache
+        def sumCol(a,b,k):
+            if k==1: return grid[a][b]
+            return grid[a][b] + sumCol(a+1,b,k-1)
+
+        @cache
+        def sumDiagDown(a,b,k):
+            if k==1: return grid[a][b]
+            return grid[a][b] + sumDiagDown(a+1,b+1,k-1)
+
+        @cache
+        def sumDiagUp(a,b,k):
+            if k==1: return grid[a][b]
+            return grid[a][b] + sumDiagUp(a-1,b+1,k-1)
+
+        @cache
+        def ismagicSq(a,b,k):
+            s = sumDiagDown(a,b,k)
+            return all([s == sumRow(i,b,k) for i in range(a,a+k)]) and \\
+                   all([s == sumCol(a,j,k) for j in range(b,b+k)]) and \\
+                   s == sumDiagUp(a+k-1, b, k)
+        
+        m = len(grid)
+        n = len(grid[0])
+        for k in range(min(m,n), 1, -1):
+            for i in range(m):
+                if i+k > m: continue
+                for j in range(n):
+                    if j+k > n: continue
+                    if ismagicSq(i,j,k): return k
+
+        return 1

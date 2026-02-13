@@ -1,0 +1,101 @@
+# Union Find data structure for having near constant time connectivity check (reverse ackermann function)
+class UnionFind:
+    
+    def __init__(self, n):
+        self.id = [i for i in range(n)]
+        self.n = n
+    
+    def find(self, i):
+        # while not root go to the parent
+        while(self.id[i] != i):
+            self.id[i] = self.id[self.id[i]]
+            i = self.id[i]
+        return i
+
+    def union(self, p, q):
+        idp = self.find(p)
+        idq = self.find(q)
+        
+        # already connected
+        if idp == idq:
+            return
+        
+        # connect the nodes
+        self.id[idp] = idq
+        
+        
+class Solution:
+    
+    def getIndexOfCell(self, i, j, row, col):
+        # return the index of cell to be used for unionfind
+        return i*col+j
+    
+    def latestDayToCross(self, row: int, col: int, cells: List[List[int]]) -> int:
+        
+        matrix = [0]*row
+        for i in range(row):
+            matrix[i] = [0]*col
+            
+        directions = [[0,1], [0,-1], [1,0], [-1,0]]
+        
+        # create the final matrix
+        for cell in cells:
+            i = cell[0]-1
+            j = cell[1]-1
+            matrix[i][j] = 1
+        
+        
+        n = row*col
+        uf = UnionFind(n+2) # two sentinel nodes 
+        
+        top_sentiel = n
+        bottom_sentinel = n+1
+        
+        # connect the sentinel nodes with either ends
+        for j in range(col):
+            uf.union(self.getIndexOfCell(0, j, row, col), top_sentiel)
+            uf.union(self.getIndexOfCell(row-1, j, row, col), bottom_sentinel)
+        
+        # connect all the zero cells in the matrix
+        for i in range(row):
+            for j in range(col):
+                if matrix[i][j] == 0:
+                    # connect all the neigbours which are also 0
+                    for d in directions:
+                        x = i+d[0]
+                        y = j+d[1]
+                        if 0<=x and 0<=y and x<row and y<col:
+                            if(matrix[x][y] == 0):
+                                uf.union(self.getIndexOfCell(x, y, row, col),
+                                         self.getIndexOfCell(i, j, row, col))
+        
+        # edge case when both ends are already connected, return true
+        if uf.find(top_sentiel) == uf.find(bottom_sentinel):
+            return len(cells)
+        
+        # else keep on making cells 0 and connecting via disjoint set
+        cell_index = len(cells)
+        
+        for cell in reversed(cells):
+            
+            cell_index -= 1
+            
+            i = cell[0]-1
+            j = cell[1]-1
+            matrix[i][j] = 0 # setting i,j back to land
+                        
+            # connect all the neigbours which are also 0
+            for d in directions:
+                x = i+d[0]
+                y = j+d[1]
+                if 0<=x and 0<=y and x<row and y<col:
+                    if(matrix[x][y] == 0):
+                        uf.union(self.getIndexOfCell(x, y, row, col),
+                                 self.getIndexOfCell(i, j, row, col))
+            
+            # return current cell index where both ends meet
+            if uf.find(top_sentiel) == uf.find(bottom_sentinel):
+                return cell_index
+            
+        # ideally it\'ll never reach here
+        return 0

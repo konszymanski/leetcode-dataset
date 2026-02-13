@@ -1,0 +1,196 @@
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+\'\'\'MEMOIZATION: Going from start two end via two paths simultaneously is
+same(mathematically) as going via one path and coming back via the other.
+This will help to apply DP.
+Spent almost a total of 5-6 hours, but worth.
+\'\'\'
+        dp = [[[-1 for i2 in range(n)] for j1 in range(n)] for i1 in range(n)]
+        maxCherries = 0
+        
+        def maxCherriesTwoPaths(i1, j1, i2):
+            # Space Optimization from O(N^4) to O(N^3)
+            # So with 3 variables, the 4th can be found using only 3-D storage.
+            j2 = i1 + j1 - i2
+            # Because i1 + j1 = i2 + j2 at all times.
+            
+            if i1 >= n or i2 >= n or j1 >= n or j2 >= n or grid[i1][j1] == -1 or grid[i2][j2] == -1:
+                return (- 10**9)
+            
+            # If both collectors reach the end. They will always reach the end simultaneously because
+			# they are taking the same total number of steps(and one at a time)
+			# from the same starting point to the same end point.
+            if i1 == n-1 and j1 == n-1:
+                return grid[-1][-1]
+                
+            if dp[i1][j1][i2] != -1:
+                return dp[i1][j1][i2]
+            else:
+                cherries = 0
+                if (i1 == i2) and (j1 == j2):
+                    cherries = grid[i1][j2]
+                else:
+                    cherries = grid[i1][j1] + grid[i2][j2]
+                # calls for exploring all paths
+                f1 = maxCherriesTwoPaths(i1, j1+1, i2)
+                f2 = maxCherriesTwoPaths(i1+1, j1, i2+1)
+                f3 = maxCherriesTwoPaths(i1+1, j1, i2)
+                f4 = maxCherriesTwoPaths(i1, j1+1, i2+1)
+                dp[i1][j1][i2] = cherries + max(f1, f2, f3, f4)
+                return dp[i1][j1][i2]
+        return max(maxCherries, maxCherriesTwoPaths(0,0, 0))
+        
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+\'\'\'BACKTRACKING: This is what I was willing to do in the very first place,
+but just did not approve of having two functions at the first go.\'\'\'
+        def toBegin(i, j, cherriesCollected):
+            nonlocal maxCherriesCollected
+            if i < 0 or j < 0 or grid[i][j] == -1:
+                return
+            
+            if i == 0 and j == 0:
+                maxCherriesCollected = max(maxCherriesCollected, cherriesCollected)
+            
+            cherry = grid[i][j]
+            grid[i][j] = 0
+            toBegin(i-1, j, cherriesCollected + cherry)
+            toBegin(i, j-1, cherriesCollected + cherry)
+            grid[i][j] = cherry
+        
+        def toEnd(i, j, cherriesCollected):
+            nonlocal maxCherriesCollected
+            if i >= n or j >= n or grid[i][j] == -1:
+                return
+            
+            if i == n-1 and j == n-1:
+                if i == 0 and j == 0:
+                    maxCherriesCollected = 1
+                    return
+                toBegin(i, j, cherriesCollected)
+            
+            cherry = grid[i][j]
+            grid[i][j] = 0
+            toEnd(i+1, j, cherriesCollected + cherry)
+            toEnd(i, j+1, cherriesCollected + cherry)
+            grid[i][j] = cherry
+        
+        toEnd(0, 0, 0)
+        return maxCherriesCollected
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+\'\'\'
+I have not been doing DP from much time, only been a couple of months learning it from basic,
+so it took me a lot of time like more than an hour and a half to come up with the below approach
+and same amount of time for the later failed backtracking approach which I could not write completely,
+to eventually figure out that my thought of DP(Greedy, the below one) approach
+will work wrong(for the 5th testcase and likewise).
+And I felt like I wasted all that time, but if I had not spent all that time,
+I would have never gained the insight into it that it dividing it into two travels
+works in the GREEDY fashion.
+It is DP but because of whole path tracking from forward to backwards,
+dividing it into two travels acts as GREEDY.
+\'\'\'
+        gridCopy = [row[:] for row in grid]
+        modify the grid to block all the unvisitable paths
+        for i in range(1, n):
+            if grid[i-1][0] == -1:
+                grid[i][0]
+        for j in range(1, n):
+            if grid[0][j-1] == -1:
+                grid[0][j] = -1
+        for i in range(1, n):
+            for j in range(1, n):
+                if grid[i][j-1] == -1 and grid[i-1][j] == -1:
+                    grid[i][j] = -1
+        
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] != -1:
+                    up, left = 0, 0
+                    if i-1 >= 0:
+                        up = grid[i-1][j]
+                    if j-1 >= 0:
+                        left = grid[i][j-1]
+                    grid[i][j] = grid[i][j] + max(up, left)
+
+        forwPicked = grid[-1][-1]
+        forw = forwPicked
+        i, j = n-1, n-1
+        while grid[i][j] != 0:
+            if i == 0:
+                while j > -1:
+                    grid[0][j] = 0
+                    j -= 1
+                break
+            if j == 0:
+                while i > -1:
+                    grid[i][0] = 0
+                    i -= 1
+                break
+                    
+            if grid[i][j] == grid[i-1][j] or grid[i][j] == 1 + grid[i-1][j]:
+                grid[i][j] = 0
+                i -= 1
+                if i == 0:
+                    continue
+            elif grid[i][j] == grid[i][j-1] or grid[i][j] == 1 + grid[i][j-1]:
+                grid[i][j] = 0
+                j -= 1
+                if j == 0:
+                    continue
+        
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] > 0 and gridCopy[i][j] == 1:
+                    grid[i][j] = 1
+                else:
+                    grid[i][j]  = 0
+                    
+        back = 0
+        for i in range(n-1, -1, -1):
+            for j in range(n-1, -1, -1):
+                if grid[i][j] != -1:
+                    down, right = 0, 0
+                    if i+1 < n:
+                        down = grid[i+1][j]
+                    if j+1 < n:
+                        right = grid[i][j+1]
+                    if grid[i][j]:
+                        grid[i][j] = 1 + max(down, right)
+                    else:
+                        grid[i][j] = max(down, right)
+        
+        back = grid[0][0]   
+        return forw + back 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+\'\'\'Initial try of backtracking, but unfulfilling\'\'\'
+		def pickMax(i, j, end, cherriesPicked, returning = False):
+            if i == end and j == end:
+                if grid[i][j] == 1:
+                    return 1
+                else:
+                    return 0
+            if grid[i][j] == -1 or ((returning == False) and (i == n or j == n)) or ((returning == True) and (i < 0 or j < 0)):
+                return 0
+            
+            else:
+                if returning:
+                    up, left = 0, 0
+                    if grid[i][j] == 1:
+                        up = 1 + recur(i - 1, j, end, cherriesPicked+1, True)
+                        left = 1 + recur(i, j - 1, end, cherriesPicked+1, True)
+                    up = 0 + recur(i - 1, j, end, cherriesPicked, True)
+                    left = 0 + recur(i, j - 1, end, cherriesPicked, True)
+                    return max(up, left)
+                else:
+                    down, right = 0, 0
+                    if grid[i][j] == 1:
+                        down = 1 + recur(i + 1, j, end, cherriesPicked+1, False)
+                        right = 1 + recur(i, j + 1, end, cherriesPicked+1, False)
+                    down = 0 + recur(i + 1, j, end, cherriesPicked, False)
+                    right = 0 + recur(i, j + 1, end, cherriesPicked, False)
+                    return max(down, right)

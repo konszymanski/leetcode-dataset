@@ -1,0 +1,43 @@
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        adj = defaultdict(set)
+        for u, v in edges:
+            adj[u].add(v)
+            adj[v].add(u)
+        path = [[bob, 0]]
+        bobSteps = dict()
+        aliceMaxScore = float(\'-inf\')
+
+        def dfsBob(parent, root, steps):
+            if root == 0:
+                for node, step in path:
+                    bobSteps[node] = step
+                return
+            for child in adj[root]:
+                if child == parent:
+                    continue
+                path.append([child, steps + 1])
+                dfsBob(root, child, steps + 1)
+                path.pop()
+        
+        def dfsAlice(parent, root, steps, score):
+            nonlocal aliceMaxScore
+            if (root not in bobSteps) or (steps < bobSteps[root]):
+                score += amount[root]
+            elif steps > bobSteps[root]:
+                score += 0
+            elif steps == bobSteps[root]:
+                score += amount[root] // 2
+            
+            if (len(adj[root]) == 1) and (root != 0):
+                aliceMaxScore = max(aliceMaxScore, score)
+                return
+            
+            for neighbor in adj[root]:
+                if neighbor == parent:
+                    continue
+                dfsAlice(root, neighbor, steps + 1, score)
+
+        dfsBob(-1, bob, 0)
+        dfsAlice(-1, 0, 0, 0)
+        return aliceMaxScore

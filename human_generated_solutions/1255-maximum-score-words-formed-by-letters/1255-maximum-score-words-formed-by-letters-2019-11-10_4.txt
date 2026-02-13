@@ -1,0 +1,14 @@
+def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+	c = collections.Counter(letters)
+	self.res = 0
+	def bt(i, cnt, scores):
+		if i == len(words):
+			self.res = max(self.res, scores)
+			return
+		bt(i+1, cnt, scores)
+		cur = collections.Counter(words[i])
+		if all(cur[k] <= cnt[k] for k in cur):
+			cur_score = sum(score[ord(c) - ord(\'a\')] for c in words[i])
+			bt(i+1, cnt-cur, scores + cur_score)
+	bt(0, c, 0)
+	return self.res

@@ -1,0 +1,36 @@
+\'\'\'
+w: BFS
+h: first we flip the 0 and 1 to be 1 and 0 and append water cell to queue
+	then we start from water cell, do the regular BFS for all the water cells
+\'\'\'
+import collections
+class Solution:
+    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:
+        m = len(isWater)
+        n = len(isWater[0])
+        
+        direction = [(0,1),(0,-1),(1,0),(-1,0)]
+		
+        queue = collections.deque([])
+        seen = set()
+        for i in range(m):
+            for j in range(n):
+                if isWater[i][j] == 1:
+                    isWater[i][j] = 0
+                    queue.append((i, j))
+                    seen.add((i,j))
+                else:
+                    isWater[i][j] = 1
+                    
+        while queue:
+            x, y = queue.popleft()
+            for dx, dy in direction:
+                nx = x + dx
+                ny = y + dy
+                if 0 <= nx < m and 0 <=ny<n and (nx,ny) not in seen and isWater[nx][ny]:
+                    isWater[nx][ny] = isWater[x][y] + 1
+                    queue.append((nx,ny))
+                    seen.add((nx,ny))
+        
+        #print(isWater)
+        return isWater

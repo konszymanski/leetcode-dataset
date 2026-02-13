@@ -1,0 +1,17 @@
+class Solution:
+    def largestValues(self, root: TreeNode) -> List[int]:
+        ans = []
+        if not root:
+            return ans
+        pre,post = [root],[]
+        while(pre):
+            curr_max = max(pre, key=lambda p: p.val)
+            ans.append(curr_max.val)
+            for el in pre:
+                if el:
+                    if el.left:
+                        post.append(el.left)
+                    if el.right:
+                        post.append(el.right)
+            pre,post = post,[]
+        return ans

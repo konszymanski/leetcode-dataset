@@ -1,0 +1,34 @@
+class Solution:
+    def findIntegers(self, n: int) -> int:
+        if n < 3:
+            return n + 1
+        
+        res = 0
+        binary = [\'0\', \'1\', \'10\']
+
+        for i in range(2, n):
+            new = list(binary[i])
+
+            if \'0\' in new:
+                if new[-1] == \'1\' and new[-2] == \'1\':
+                    for j in range(len(new)-1, -1, -1):
+                        if new[j] == \'0\':
+                            new[j] = \'1\'
+                            break
+                        new[j] = \'0\'
+                elif new[-1] == \'1\':
+                    new[-1] = \'0\'
+                    new[-2] = \'1\'
+                else:
+                    new[-1] = \'1\'
+
+                for j in range(len(new)):
+                    if j > 0 and new[j] == \'1\' and new[j-1] == \'1\':
+                        res += 1
+                        break
+            else:
+                new = [\'1\'] + [\'0\' for _ in range(len(binary[i]))]
+            
+            binary.append(\'\'.join(new))
+
+        return len(binary) - res

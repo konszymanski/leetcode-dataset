@@ -1,0 +1,13 @@
+class Solution:
+    def countConsistentStrings(self, allowed: str, words: List[str]) -> int:
+        pat = 0
+        for i in allowed:
+            pat |= 1<<(ord(i)-ord("a"))
+        ans = 0
+        for word in words:
+            temp = 0
+            for i in word:
+                temp |= 1<<(ord(i)-ord("a"))
+            if temp|pat==pat:
+                ans += 1
+        return ans

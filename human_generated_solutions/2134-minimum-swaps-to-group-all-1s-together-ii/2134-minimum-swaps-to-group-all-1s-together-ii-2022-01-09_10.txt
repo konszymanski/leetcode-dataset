@@ -1,0 +1,10 @@
+class Solution:
+    def minSwaps(self, nums: List[int]) -> int:
+        rsm = 0 
+        ans = inf 
+        ones = nums.count(1)
+        for i in range(len(nums) + ones): 
+            rsm += nums[i % len(nums)]
+            if i >= ones: rsm -= nums[i - ones]
+            ans = min(ans, ones - rsm)
+        return ans

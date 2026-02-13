@@ -1,0 +1,25 @@
+class Solution:
+    def totalStrength(self, strength: List[int]) -> int:
+        mod = 10 ** 9 + 7
+        ans = 0
+        min_stack = []
+        min_total = 0
+        running = 0
+        acc = list(itertools.accumulate(strength))
+        accacc = list(itertools.accumulate(acc))
+        acc.append(0)
+        accacc.append(0)
+        accacc.append(0)
+        for i, x in enumerate(strength):
+            left = i
+            while min_stack and min_stack[-1][0] >= x:
+                old_min, index = min_stack.pop()
+                running -= (old_min - x) * (acc[i - 1] * (left - index) - (accacc[left - 2] - accacc[index - 2]))
+                min_total -= (old_min - x) * (left - index)
+                left = index
+            min_stack.append((x, left))
+            min_total += x
+            running += min_total * x
+            ans += running
+            ans %= mod
+        return ans

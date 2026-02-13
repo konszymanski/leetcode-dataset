@@ -1,0 +1,40 @@
+class Solution:
+    def countGoodNumbers(self, n: int) -> int:
+        """
+        Given an integer n, this program determines the count
+        of good numbers modulo 10**9 + 7.
+
+        :param n: length of string
+        :type n: int
+        :return: count of good numbers modulo 10**9 + 7
+        :rtype: int
+        """
+
+        """
+        Algorithm:
+        - Count of good numbers for even-indexed (0-based) digits is 5.
+        - Count of good numbers for odd-indexed (0-based) digits is 4.
+        - Count of good numbers for a pair of digits is 5 x 4 = 20.
+        - For a string of length n, the count of good numbers is:
+        
+                20**(n // 2)        if n is even
+                20**(n // 2) * 5    if n is odd
+                
+                - \'//\' represents integer division.
+                - The extra factor of 5 accounts for the unpaired
+                  even-indexed digit when n is odd.
+        - To speed up the calculation, we take advantage of the fact
+          that any positive integer is the sum of powers of 2. For
+          example, if n = 50, n // 2 = 25 and is the sum of 16 + 8 + 1.
+          The count of good numbers is 20**25, or 20 * 20**8 * 20**16.
+        """
+        mod = 10**9 + 7
+        answer = 5**(n & 1)
+        n >>= 1
+        even_factor = 20
+        while n > 0:
+            if n & 1:
+                answer = (answer * even_factor) % mod
+            n >>= 1
+            even_factor = (even_factor**2) % mod
+        return answer

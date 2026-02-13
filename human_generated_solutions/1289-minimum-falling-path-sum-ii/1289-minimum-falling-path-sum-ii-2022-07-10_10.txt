@@ -1,0 +1,42 @@
+class TopTwo:
+    def __init__(self) -> None:
+        self.topTwo = []
+    
+    def add(self, num: int, index: int):
+        to_add: tuple = (num, index)
+        if len(self.topTwo) == 1 and num < self.topTwo[0][0]:
+            self.topTwo.insert(0, to_add)
+        elif len(self.topTwo) < 2:
+            self.topTwo.append(to_add)
+        elif num < self.topTwo[0][0]:
+            self.topTwo.pop()
+            self.topTwo.insert(0, to_add)
+        elif num < self.topTwo[1][0]:
+            self.topTwo[1] = to_add
+
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        rows, cols = len(matrix), len(matrix[0])
+        
+        if rows == 1 and cols == 1:
+            return matrix[0][0]
+        
+        dp = [[float(\'inf\')]*cols for _ in range(rows)]
+        dp[0] = matrix[0]
+    
+        top_two: topTwo = TopTwo()
+        for index, value in enumerate(matrix[0]):
+            top_two.add(value, index)
+        
+        for single_row in range(1, rows):
+            temp_top_two = TopTwo()
+            min_column: int = top_two.topTwo[0][1]
+            for single_col in range(cols):
+                if single_col != min_column:
+                    dp[single_row][single_col] = matrix[single_row][single_col] + top_two.topTwo[0][0]
+                else:
+                    dp[single_row][single_col] = matrix[single_row][single_col] + top_two.topTwo[1][0]
+                temp_top_two.add(dp[single_row][single_col], single_col)
+            top_two = temp_top_two
+            
+        return top_two.topTwo[0][0]

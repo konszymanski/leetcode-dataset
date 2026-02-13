@@ -1,0 +1,19 @@
+\r
+class Solution:\r
+    def checkStraightLine(self, coordinates: List[List[int]]) -> bool:\r
+        slope =0\r
+        for i in range(len(coordinates)-1):\r
+            x1,y1=coordinates[i]\r
+            x2,y2=coordinates[i+1]\r
+            if x2-x1==0:\r
+            #vertical line #m=slope\r
+                m=float(\'inf\')\r
+            else:\r
+                m=(y2-y1)/(x2-x1)\r
+            if slope==0:\r
+                slope=m\r
+            else :\r
+                if slope!=m:\r
+                    return False\r
+        return True \r
+        \r

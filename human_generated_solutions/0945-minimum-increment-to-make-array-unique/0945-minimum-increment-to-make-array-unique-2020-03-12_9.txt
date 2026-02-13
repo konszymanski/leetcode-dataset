@@ -1,0 +1,15 @@
+class Solution(object):
+    def minIncrementForUnique(self, A):
+        if len(A)==0:
+            return 0
+        count=1
+        A.sort()
+        count=0
+        prev=A[0]
+        for i in range(1,len(A)):
+            if A[i]<=prev:
+                prev +=1
+                count +=prev-A[i]
+            else:
+                prev=A[i]
+        return count

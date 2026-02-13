@@ -1,0 +1,19 @@
+class Solution:
+    def findFrequentTreeSum(self, root):
+        if not root:
+            return []
+        #
+        d = Counter()
+        def dfs(n):
+            # 1) Default Value (Null Sub-Tree)
+            s = 0
+            if n:
+                # 2) Fetch Sum
+                s     = n.val + dfs(n.left) + dfs(n.right)
+                # 3) Increase Sum Counter
+                d[s] += 1
+            return s
+        dfs(root)
+        #
+        f = max(d.values())
+        return [ k for k,v in d.items() if v==f ]

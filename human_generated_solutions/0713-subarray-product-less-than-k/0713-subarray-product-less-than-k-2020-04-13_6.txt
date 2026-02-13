@@ -1,0 +1,20 @@
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        res = 0
+        subArrProd = 1 # keep track of subarray product and advance left ptr
+        left = 0
+
+        for right, rightNum in enumerate(nums):
+            subArrProd *= rightNum
+
+            # maintain subArrProd < k before adding to result
+            while subArrProd >= k and left <= right:
+                subArrProd //= nums[left]
+                left += 1
+
+            if subArrProd < k:
+                l = right+1-left # length of current subarray, or # of sub-subarrays ending at current right ptr
+                res += l
+            else: # edge case: nums[right]>=k, no subarray ending at current right ptr could be added
+                pass
+        return res

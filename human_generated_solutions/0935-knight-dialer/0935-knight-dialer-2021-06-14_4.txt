@@ -1,0 +1,20 @@
+import numpy as np
+MOD = (10**9 + 7)
+oneMove = np.zeros((10, 10), dtype=np.int64)
+for i, j in ((1, 8), (1, 6), (2, 7), (2, 9), (3, 4), (3, 8), (4, 9), (4, 0), (6, 7), (6, 0)):
+    oneMove[i][j] = 1
+    oneMove[j][i] = 1
+class Solution:
+    def knightDialer(self, n: int) -> int:
+        n -= 1
+        currMove = oneMove
+        sumMoves = np.ones((10,), dtype=np.int64)
+        while n > 0:
+            if n & 1:
+                sumMoves = np.matmul(sumMoves, currMove)
+                sumMoves = np.mod(sumMoves, MOD)
+            n >>= 1
+            if n > 0:
+                currMove = np.matmul(currMove, currMove)
+                currMove = np.mod(currMove, MOD)
+        return np.sum(sumMoves) % MOD

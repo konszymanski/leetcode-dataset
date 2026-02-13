@@ -1,0 +1,15 @@
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        negCount = 0
+        matSum  = 0
+        minEle = float(\'inf\')
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] < 0:
+                    negCount += 1
+                matSum += abs(matrix[i][j])
+                minEle = min(minEle, abs(matrix[i][j]))
+                    
+        if negCount % 2 != 0:
+            return matSum - 2 * minEle
+        return matSum

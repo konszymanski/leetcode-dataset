@@ -1,0 +1,27 @@
+# Beat 75% Time and Memory
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+        res = [0]
+        self.dfs(root, start, res)
+        return res[0]
+    
+    def dfs(self, root: Optional[TreeNode], start: int, res: List[int]) -> int:
+        if not root: return 0
+        left = self.dfs(root.left, start, res)        
+        right = self.dfs(root.right, start, res)
+        if root.val == start:
+            temp = max(abs(left), abs(right))
+            res[0] = max(res[0], temp)
+            return 0
+        
+        if left > 0 or (root.left and root.left.val == start):
+            sumpath = left + abs(right) + 1
+            res[0] = max(res[0], sumpath)
+            return left + 1
+        elif right > 0 or (root.right and root.right.val == start):
+            sumpath = right + abs(left) + 1
+            res[0] = max(res[0], sumpath)
+            return right + 1        
+        
+        sumpath = max(abs(left), abs(right))
+        return -sumpath - 1

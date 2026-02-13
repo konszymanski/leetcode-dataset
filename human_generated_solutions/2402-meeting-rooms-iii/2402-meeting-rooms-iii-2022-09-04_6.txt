@@ -1,0 +1,50 @@
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        # sort the meetings by start time
+        meetings.sort()
+        
+        # priority queue 
+        queue = []
+        count = collections.defaultdict(int)
+        
+        # avaliable meeting room, sort by idx
+        ava = []
+        for idx in range(n):
+            heapq.heappush(ava, idx)
+        
+        for idx in range(len(meetings)):
+            start, end = meetings[idx]
+            dur = end - start
+            
+            # release the meeting room if the start time is greater than the
+            # end time
+            while queue and queue[0][0] <= start:
+                _, room_idx = heapq.heappop(queue)
+                heapq.heappush(ava, room_idx)
+            
+            # if there is an empty meeting room, find the smaller index room
+            if len(ava) > 0:
+                room_idx = heapq.heappop(ava)
+                heapq.heappush(queue, (end, room_idx))
+                count[room_idx] += 1
+            else:
+                end_time, next_end_room = heapq.heappop(queue)
+                
+                # At this moment, the meeting should be delayed
+                new_end_time = end_time + dur
+                
+                heapq.heappush(queue, (new_end_time, next_end_room))
+                count[next_end_room] += 1
+                
+        # Find the max count
+        ans = count[0]
+        ans_idx = 0
+        for idx in range(1, n):
+            # If there are multiple rooms
+            # return the room with the lowest number.
+            # so we use `>`
+            if count[idx] > ans:
+                ans_idx = idx
+                ans = count[idx]
+        
+        return ans_idx

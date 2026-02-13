@@ -1,0 +1,17 @@
+class Solution:
+    def numOfArrays(self, n: int, m: int, k: int) -> int:
+        @lru_cache(None)
+        def solve(size,maxNum,lis):
+            val=0
+            if size==1:
+                return lis==1
+            for mx in range(1,m+1):
+                if mx<maxNum:
+                    val+=solve(size-1,mx,lis-1)
+                else:
+                    val+=solve(size-1,maxNum,lis)
+            return val%1000000007
+            
+        ans=0
+        ans=solve(n+1,m+1,k+1)
+        return ans

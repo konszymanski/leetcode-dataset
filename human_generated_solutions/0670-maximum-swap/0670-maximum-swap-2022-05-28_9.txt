@@ -1,0 +1,24 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        digit_list = [x for x in list(str(num))]
+        
+        # make a max suffix array, going from right to left, hold the max number so far
+        max_to_the_right = [None] * len(digit_list)
+
+        max_index = -1
+        for digit_index in range(len(digit_list) -1, -1, -1):
+            if max_index == -1 or digit_list[digit_index] > digit_list[max_index]:
+                max_index = digit_index
+            
+            max_to_the_right[digit_index] = max_index
+                
+        # iterate from left to right
+        for i, d in enumerate(digit_list):
+            max_d_to_the_right = digit_list[max_to_the_right[i]]
+            
+            if d < max_d_to_the_right:           
+                index_to_replace_with = max_to_the_right[i]
+                digit_list[i], digit_list[index_to_replace_with] = digit_list[index_to_replace_with], digit_list[i]
+                return int(\'\'.join([d for d in digit_list]))
+        
+        return num

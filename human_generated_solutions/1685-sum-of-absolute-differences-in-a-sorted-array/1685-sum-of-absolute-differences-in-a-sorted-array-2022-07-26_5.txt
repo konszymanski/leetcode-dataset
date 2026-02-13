@@ -1,0 +1,22 @@
+class Solution:
+    def getSumAbsoluteDifferences(self, nums: List[int]) -> List[int]:
+        
+        def SUM(arr):
+            length= SUM = 0
+            for i in arr:
+                SUM+=i
+                length+=1
+            return SUM,length
+        
+        
+        r_sum,length = SUM(nums)
+        l_sum = 0
+        new_arr = []
+        
+        for index,curr_val in enumerate(nums):
+            r_sum -= curr_val    
+            new_value = (curr_val*index - l_sum) + abs(curr_val*(length-(index+1))-r_sum)
+            new_arr.append(new_value)
+            l_sum += curr_val
+
+        return new_arr

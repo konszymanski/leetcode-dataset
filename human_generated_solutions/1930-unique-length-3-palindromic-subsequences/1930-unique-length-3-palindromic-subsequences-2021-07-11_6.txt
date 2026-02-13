@@ -1,0 +1,25 @@
+class Solution(object):
+    def countPalindromicSubsequence(self, s):
+        n = len(s)
+        ans = 0
+        # loop through all 26 character Time: O(1)
+        for i in range(26):
+            
+            # Two pointer find the same charactor with the longest distance Time: O(N)
+            start = 0
+            end = n-1
+            while (ord(s[start]) - ord(\'a\') != i) and start < n-1:
+                start += 1
+            while (ord(s[end]) - ord(\'a\') != i) and end > 0:
+                end -= 1
+            
+            # if out-bounded change to next charactor
+            if start == n-1 or end == 0:
+                continue
+            
+            # find how many different alphabets in this string. Time: O(N)
+            alpha = collections.Counter(s[start+1:end])
+            # add to answer
+            ans += len(alpha.keys())
+        
+        return ans

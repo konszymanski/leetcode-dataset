@@ -1,0 +1,52 @@
+from math import ceil
+
+
+class Solution:
+    def smallestDivisor(self, nums, threshold: int) -> int:
+        """
+        Given an array of positive integers (nums) and a threshold
+        sum (threshold), this program determines the smallest
+        divisor that leads to a sum of threshold or less of nums
+        after division by the divisor.
+
+        :param nums: array of positive integers
+        :type nums: list[int]
+        :param threshold: maximum sum of elements in nums after
+               division by divisor performed on each element
+        :type threshold: int
+        :return: smallest divisor that leads to a sum of threshold
+                 or less of nums after division by divisor
+        :rtype: int
+        """
+
+        def big_enough(trial_divisor) -> bool:
+            """
+            This method determines whether the sum of all the
+            elements in nums is less than or equal to threshold
+            after each element is processed by trial_divisor.
+
+            :param trial_divisor: trial divisor
+            :type trial_divisor: int
+            :return: True if after each element of nums is divided
+                     by trial_divisor and rounded to the next
+                     higher integer, the sum of all the elements
+                     is <= threshold, else False
+            :rtype: bool
+            """
+            sum_nums = 0
+            for num in nums:
+                sum_nums += ceil(num / trial_divisor)
+            return sum_nums <= threshold
+
+        """
+        Binary Search
+        """
+        left = 1
+        right = max(nums) + 1
+        while left < right:
+            divisor = left + (right - left) // 2
+            if big_enough( divisor ):
+                right = divisor
+            else:
+                left = divisor + 1
+        return left

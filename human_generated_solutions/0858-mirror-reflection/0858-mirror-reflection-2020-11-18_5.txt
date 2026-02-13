@@ -1,0 +1,12 @@
+class Solution:
+    def mirrorReflection(self, p: int, q: int) -> int:
+       
+	   def step(right, up, distance):
+            if distance == p:
+                return 1 if (up and right) else 2 if up else 0
+            elif distance > p:
+                return step(not right, not up, distance % p)
+            else:
+                return step(not right, up, distance+q)
+        
+        return step(True, True, q)

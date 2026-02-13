@@ -1,0 +1,33 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        # Edge case - less than three moves:
+        if len(moves) < 3:
+            return "Pending"
+
+        #Check if A wins:
+        a = [a for i,a in enumerate(moves) if i%2==0]
+        x = Counter([x[0] for x in a])
+        y = Counter([x[1] for x in a])
+        
+        #If we have three of the same x\'s or y\'s - A won
+        if max(list(x.values())) == 3 or max(list(y.values())) == 3:
+            return "A"
+        
+        # Check diagonals:
+        if [1,1] in a:
+            if ([0,0] in a and [2,2] in a) or ([0,2] in a and [2,0] in a):
+                return "A"
+                
+        # Now check B:
+        a = [a for i,a in enumerate(moves) if i%2==1]
+        x = Counter([x[0] for x in a])
+        y = Counter([x[1] for x in a])
+        
+        if max(list(x.values())) == 3 or max(list(y.values())) == 3:
+            return "B"
+        
+        if [1,1] in a:
+            if ([0,0] in a and [2,2] in a) or ([0,2] in a and [2,0] in a):
+                return "B"
+        
+        return "Draw" if len(moves) == 9 else "Pending"

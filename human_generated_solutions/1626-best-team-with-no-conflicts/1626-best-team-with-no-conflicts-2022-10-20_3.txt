@@ -1,0 +1,9 @@
+def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        _, s = zip(*sorted(zip(ages, scores)))
+        n = len(s)
+        res = list(s)
+        for i in range(1, n):
+            for j in range(0, i):
+                if s[i] >= s[j]:
+                    res[i] = max(res[i], res[j] + s[i])
+        return max(res)

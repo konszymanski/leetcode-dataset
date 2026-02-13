@@ -1,0 +1,18 @@
+class Solution:
+    def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
+        if maxCost == 0 and s!=t:
+            return 1
+        res = 0
+        m={\'a\':1,\'b\':2,\'c\':3,\'d\':4,\'e\':5,\'f\':6,\'g\':7,\'h\':8,\'i\':9,\'j\':10,\'k\':11,\'l\':12,\'m\':13,\'n\':14,\'o\':15,\'p\':16,\'q\':17,\'r\':18,\'s\':19,\'t\':20,\'u\':21,\'v\':22,\'w\':23,\'x\':24,\'y\':25,\'z\':26}
+        l1=[]
+        l2=[]
+        for k in range(len(s)):
+            l1.append(m[s[k]])
+            l2.append(m[t[k]])
+        l = 0
+        for r in range(len(s)):
+            maxCost -= (abs(l2[r]-l1[r]))
+            if maxCost < 0:
+                maxCost += (abs(l2[l]-l1[l]))
+                l += 1
+        return r-l+1

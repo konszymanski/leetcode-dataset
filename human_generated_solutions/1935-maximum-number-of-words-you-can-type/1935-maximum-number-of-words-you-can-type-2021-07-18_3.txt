@@ -1,0 +1,19 @@
+class Solution(object):
+    def canBeTypedWords(self, text, brokenLetters):
+        """
+        :type text: str
+        :type brokenLetters: str
+        :rtype: int
+        """
+        text = text.split(" ")
+        if not brokenLetters:
+            return len(text)
+        
+        brokenLetters = set(brokenLetters)
+        ans = 0
+        for word in text:
+            new_set = set(word)
+            if not new_set.intersection(brokenLetters):
+                ans += 1     
+            
+        return ans

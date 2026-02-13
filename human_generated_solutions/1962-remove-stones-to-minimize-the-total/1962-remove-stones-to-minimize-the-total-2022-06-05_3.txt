@@ -1,0 +1,29 @@
+import heapq
+class Solution:
+    def minStoneSum(self, piles: List[int], k: int) -> int:
+        """
+		To use Max Heap, we need to convert all values to -ve  integers
+		"""
+		for i in range(len(piles)):
+            piles[i]= -1 * piles[i]
+        
+		"""
+		Creating heap of the given list
+		"""
+        heapq.heapify(piles)
+        
+		"""
+		while k > 0, applying the provided operation
+		to the maximum value
+		"""
+        while k:
+            a = heapq.heappop(piles)
+            a = a//2
+            heapq.heappush(piles, a)
+            k -= 1
+        
+		"""
+		The elements in the list are updated,
+		now the contain the minimum possible sum
+		"""
+        return abs(sum(piles))

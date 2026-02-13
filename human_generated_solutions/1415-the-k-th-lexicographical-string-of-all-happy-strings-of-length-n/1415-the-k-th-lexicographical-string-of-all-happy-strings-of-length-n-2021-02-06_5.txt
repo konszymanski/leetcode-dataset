@@ -1,0 +1,8 @@
+class Solution:
+    def getHappyString(self, n: int, k: int) -> str:
+        reverse_order = {\'a\':\'cb\', \'b\':\'ca\', \'c\':\'ba\'}
+        if n == 1:
+            return chr(96+k) if k<=3 else \'\'
+        else:
+            tmp = self.getHappyString(n-1,(k+1)//2)
+            return tmp if not tmp else tmp+reverse_order[tmp[-1]][k%2]

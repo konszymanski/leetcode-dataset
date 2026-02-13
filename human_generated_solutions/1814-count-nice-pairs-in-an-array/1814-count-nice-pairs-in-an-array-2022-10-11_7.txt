@@ -1,0 +1,6 @@
+def countNicePairs(self, nums: List[int]) -> int:
+    n = len(nums)
+    def rev(i):
+        return int(str(i)[::-1])
+    freq = Counter([nums[i] - rev(nums[i]) for i in range(n)])
+    return int(sum([c*(c-1)/2 for c in freq.values()]))%1000000007

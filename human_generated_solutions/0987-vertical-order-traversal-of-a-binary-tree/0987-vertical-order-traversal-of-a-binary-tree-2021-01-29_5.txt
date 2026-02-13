@@ -1,0 +1,25 @@
+class Solution:
+    def __init__(self):
+        self.point_list = []
+        
+    def dfs(self, root: TreeNode, x:int, y:int):
+        self.point_list.append([x,y,root.val]) # keep in list all points
+        if root.left:
+            self.dfs(root.left, x-1, y-1)
+        if root.right:
+            self.dfs(root.right, x+1, y-1)
+        
+    def verticalTraversal(self, root: TreeNode) -> List[List[int]]:
+        self.dfs(root, 0, 0)
+        self.point_list.sort(key = lambda a:a[2]) # sort by value
+        self.point_list.sort(key = lambda a:a[1], reverse = True) # sort by y
+        self.point_list.sort(key = lambda a:a[0]) # sort by x
+		
+        res = []
+        left = abs(self.point_list[0][0])
+        right = self.point_list[-1][0]
+		
+        for i in range(left+right+1):
+            res.append([j[2] for j in self.point_list if j[0]==i-left])
+			
+        return res

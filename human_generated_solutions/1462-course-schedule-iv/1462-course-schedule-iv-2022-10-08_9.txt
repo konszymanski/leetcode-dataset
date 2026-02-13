@@ -1,0 +1,49 @@
+def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        # to keep track of all the courses and their prerequisites
+        isReachable = [[False for _ in range(numCourses)] for _ in range(numCourses)]
+        
+        # to create a adjacency matrix
+        graph = defaultdict(list)
+        for p, c in prerequisites:
+            graph[c].append(p)
+        
+        # iterate over each courses and check of the prerequisites and mark them true in
+        # the matrix
+        for i in range(numCourses):
+            
+            # visited set to keep track of all the visited nodes
+            visited = set()
+            
+            # add the current course in queue
+            q = deque()
+            q.append(i)
+            
+            # run the loop untill loop is not empty
+            while q:
+                
+                # pop the left element from the queue
+                node = q.popleft()
+                
+                # mark [i][node] as true in the isReachable matrix
+                isReachable[i][node] = True
+                visited.add(node)
+                
+                # iterate over all the attached node of the graph
+                for n in graph[node]:
+                    
+                    # if the node is not visited add to queue
+                    if n not in visited:
+                        q.append(n)
+        
+        # to store the answer
+        ans = list()
+        
+        # iterate over each queries
+        for c, p in queries:
+            
+            # append the value stored in isReachable matrix [p][c]
+            ans.append(isReachable[p][c])
+            
+        # return the answer
+        return ans

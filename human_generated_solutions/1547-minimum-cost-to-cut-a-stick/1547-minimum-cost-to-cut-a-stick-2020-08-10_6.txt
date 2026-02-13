@@ -1,0 +1,27 @@
+class Solution:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        
+        
+        # adding ending points, and keep cut point sorted in ascending order
+        cuts = [0] + sorted(cuts) + [n]
+        
+        # ----------------------------------------------------------
+        
+		#use python native cache as memoization for DP
+        @cache
+        def dp(left, right):
+            
+            if right - left <= 1:
+                
+                ## Base case
+                # No need to cut when cut points is the same or adjacent
+                return 0
+            
+            
+            ## General case:
+            # find and compute the optimal cost with cut point k
+            
+            return min( dp(left,k) + dp(k, right) + (cuts[right] - cuts[left]) for k in range(left+1, right) )
+        
+        # ----------------------------------------------------------
+        return dp(0, len(cuts)-1)

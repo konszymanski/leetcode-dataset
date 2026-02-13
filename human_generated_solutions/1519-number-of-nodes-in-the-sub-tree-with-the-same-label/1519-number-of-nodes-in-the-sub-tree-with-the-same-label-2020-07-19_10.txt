@@ -1,0 +1,22 @@
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        #tree as adjacency list 
+        tree = dict()
+        for u, v in edges:
+            tree.setdefault(u, []).append(v)
+            tree.setdefault(v, []).append(u)
+            
+        def fn(k):
+            """Return frequency table of tree rooted at given node"""
+            seen.add(k) #mark as visited 
+            freq = [0]*26
+            freq[ord(labels[k])-97] = 1
+            for kk in tree[k]: 
+                if kk not in seen: freq = [x+y for x, y in zip(freq, fn(kk))]
+            ans[k] = freq[ord(labels[k])-97] #populate table 
+            return freq
+        
+        ans = [0]*n
+        seen = set()
+        fn(0)
+        return ans

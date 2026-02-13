@@ -1,0 +1,20 @@
+class Solution:
+    def tallestBillboard(self, rods: List[int]) -> int:
+        n = len(rods)
+        @lru_cache(None)
+        # i to track location in rods array, s1 for +- around 0 between two supports
+        def dp(i, s1):
+            #Base Case at end of array
+            if i == n-1:
+                if s1 == 0:
+                    return 0 # If we are balanaced just leave it
+                elif s1 - rods[i] == 0:
+                    return 0 # if we can use the last rod to balance second support, return 0
+                elif s1 + rods[i] == 0:
+                    return rods[i] # if we need the last rod to balance the first support, return value
+                else:
+                    return float(\'-inf\') # if we cannot balance, -inf
+            else:
+                #first option skip, second option add rod to result and balance, last one add to second support
+                return max(dp(i+1, s1), rods[i]+dp(i+1, s1+rods[i]), dp(i+1, s1-rods[i]))
+        return dp(0, 0)

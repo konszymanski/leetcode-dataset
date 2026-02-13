@@ -1,0 +1,54 @@
+from sortedcontainers import SortedList
+class Solution:
+    def fallingSquares(self, positions: List[List[int]]) -> List[int]:
+        # sorted list where value is a tuple of (leftside, length, height)
+        # iterate through squares and find which ranges it intersects,
+        #       updating the ranges and tracking the highest point
+        # add a new range with the appropriate height
+        # if this height is greater than tallest, replace tallest.
+        # append tallest to answer
+        
+        # add, del/pop, bisect, and __getitem__ are all O(log(n)) operations on SortedList
+        # number of operations is bounded by c*n times where n is the length of positions and c is a constant
+        # time complexity: O(n log(n))
+        # space complexity: O(n)
+        
+        
+        sl = SortedList()
+        ans = []
+        tallest = 0
+        
+        for left, length in positions:
+            idx = sl.bisect_left((left, 0, 0))
+            max_height = 0
+            if idx > 0:
+                # ls: left side, l: length, h: height
+                ls, l, h = sl[idx-1]
+                # left side of new square is within range
+                if ls + l > left:
+                    max_height = h
+                    del sl[idx-1]
+                    sl.add((ls, left-ls, h))
+                    # new square is in middle of range
+                    if ls + l > left + length:
+                        sl.add((left+length, ls+l-(left+length), h))
+            
+            right = left + length
+            # while right side of new square is to the right of left side of range
+            # (should only run n times total since ranges are being compressed on each iteration)
+            while idx < len(sl) and sl[idx][0] < right:
+                ls, l, h = sl[idx]
+                max_height = max(max_height, h)
+                # new square completely covers range
+                if ls + l <= right:
+                    sl.pop(idx)
+                # new square covers left side of range
+                else:
+                    del sl[idx]
+                    sl.add((right, ls + l - right, h))
+                    
+            tallest = max(max_height+length, tallest)
+            sl.add((left, length, max_height+length))
+            ans.append(tallest)
+            #print(sl)
+        return ans

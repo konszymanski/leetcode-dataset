@@ -1,0 +1,17 @@
+import collections
+class Solution:
+    def customSortString(self, order: str, str: str) -> str:
+        
+        
+        myStr=collections.Counter(str)
+        res=""
+        
+        for c in order:
+            if c in myStr:
+                res+=c*myStr[c]
+                myStr.pop(c)
+        #fill in the letters in myStr and not in order
+        for k,v in myStr.items():
+            res+=k*v
+            
+        return res

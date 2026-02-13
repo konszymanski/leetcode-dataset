@@ -1,0 +1,10 @@
+class Solution:
+    def findPairs(self, nums: List[int], k: int) -> int:
+        if (k == 0):
+            return len([item for item, count in collections.Counter(nums).items() if count > 1])
+        
+        nums = set(nums)
+        res = 0
+        for n in nums:
+            res += 1 if n-k in nums else 0
+        return res

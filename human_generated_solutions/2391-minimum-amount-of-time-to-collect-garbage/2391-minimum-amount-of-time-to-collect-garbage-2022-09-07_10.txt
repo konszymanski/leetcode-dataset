@@ -1,0 +1,24 @@
+class Solution:
+    def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+        st=\'\'
+        for xx in garbage:
+            st+=xx
+        ans=0
+        x=-1
+        y=-1
+        z=-1
+        for i in range(len(garbage)):
+            if "P" in garbage[i]:
+                x=(i)
+            if "G" in garbage[i]:
+                y=(i)
+            if "M" in garbage[i]:
+                z=(i)
+        for j in range(x):
+            ans+=travel[j]
+        for k in range(y):
+            ans+=travel[k]
+        for l in range(z):
+            ans+=travel[l]
+        ans+=len(st)
+        return ans

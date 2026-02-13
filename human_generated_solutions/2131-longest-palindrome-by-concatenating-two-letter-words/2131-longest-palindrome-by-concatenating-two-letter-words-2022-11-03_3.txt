@@ -1,0 +1,13 @@
+class Solution:
+    def longestPalindrome(self, words: list[str]) -> int:
+                                                            # Ex words = ["cc","ll","xx","cc","ll","lc","cl","gg", \'af\']
+
+        d = Counter(words)                                  # d = {\'cc\': 2, \'ll\': 2, \'xx\': 1, \'lc\': 1, \'cl\': 1, \'gg\': 1, \'af\': 1}
+        same = {n for n in d if n[0] == n[1]}               # same = {\'cc\', \'ll\', \'xx\', \'gg\'}
+        diff = set(d) - same                                # diff = {\'lc\', \'af\', \'cl\'}
+
+        return (2*sum({d[n]%2 for n in same}) +             # 2 * sum({0, 0, 1, 1}) = 2 * sum ({0, 1}) = 2+1    = 2
+               sum(d[n]//2 for n in same)*4 +               # sum(1, 1, 0, 0) * 4                               = 8   
+               2*sum(min(d[n[::-1]], d[n]) for n in diff))  # 2 * (min(1,1) + min(0,1) + min(1,1)) = 2(1+0+1)   = 4
+                                                            #                                                    \u2013\u2013\u2013
+                                                            # return                                              14 <-- answer

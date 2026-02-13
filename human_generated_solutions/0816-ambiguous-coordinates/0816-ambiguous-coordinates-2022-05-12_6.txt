@@ -1,0 +1,75 @@
+class Solution:
+    def ambiguousCoordinates(self, s: str) -> List[str]:
+        l=[]
+        s=s[1:-1]
+        for i in range(0,len(s)-1):
+            
+            l.append([s[:i+1],s[i+1:]])
+            
+        print(l)
+        res=[]
+        for x in l:
+            
+            a=x[0]
+            b=x[1]
+            
+            l1=[]
+            if (len(a)>=2 and a.count(\'0\')==len(a)) or (len(b)>=2 and b.count(\'0\')==len(b)):
+                continue
+            
+            
+            if a[0]==\'0\':
+                if len(a)==1:
+                    l1.append(a)
+                else:
+                    if a[1:][-1]!=\'0\':
+                        l1.append(a[0]+\'.\'+a[1:])
+            else:
+                
+                l1.append(a)
+                
+                for i in range(len(a)-1):
+                    m=a[:i+1]
+                    n=a[i+1:]
+                    
+                    if n.count(\'0\')==len(n):
+                        
+                        continue
+                    if n[-1]==\'0\':
+                        continue
+                    
+                    else:
+                        l1.append(m+\'.\'+n)
+                    
+            
+            l2=[]
+            
+            
+            if b[0]==\'0\':
+                if len(b)==1:
+                    l2.append(b)
+                else:
+                    if b[1:][-1]!=\'0\':
+                        l2.append(b[0]+\'.\'+b[1:])
+                    
+            
+            else:
+                
+                l2.append(b)
+                
+                for i in range(len(b)-1):
+                    m=b[:i+1]
+                    n=b[i+1:]
+                    #print(n)
+                    if n.count(\'0\')==len(n):
+                        continue
+                    elif n[-1]==\'0\':
+                        continue
+                    else:
+                        l2.append(m+\'.\'+n)
+            for i in l1:
+                for j in l2:
+                    
+                    x="("+i+\', \'+j+")"
+                    res.append(x)
+        return res

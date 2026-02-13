@@ -1,0 +1,12 @@
+import math
+class Solution:
+    def distinctNames(self, ideas: List[str]) -> int:
+        res = set()
+        for item in ideas:
+            res.add(item[1:])
+        #print(res)
+        n = len(res)
+        if n >= 2:
+            return math.factorial(n) // math.factorial(n-2)
+        else:
+            return 0

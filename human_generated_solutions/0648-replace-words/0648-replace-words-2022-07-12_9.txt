@@ -1,0 +1,23 @@
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        hash_map = defaultdict(list)
+        words_list = sentence.split(" ")
+        for i in words_list:
+			#sorting the dictionary of words because if we have two root words than can replace a word we must use the shorter one and it will be appended in the list accordingly
+            for j in sorted(dictionary, key=len):
+				#the .startswith() function will determine if the word \'j\' is the start of the word i 
+                if i.startswith(j):
+                    hash_map[i].append(j)
+        
+        new_words_list = []
+        for i in words_list:
+			#here k is a list of root words sorted in length we need the shortest one and hence k[0]
+            k = hash_map.get(i)
+            if k:
+                new_words_list.append(k[0])
+			#the .get() will return None if the key is not found in the hashmap i.e. the case for which we did not find any root word we replace that word as it is
+            else:
+                new_words_list.append(i)
+        
+        k = " ".join(new_words_list)
+        return k.strip()

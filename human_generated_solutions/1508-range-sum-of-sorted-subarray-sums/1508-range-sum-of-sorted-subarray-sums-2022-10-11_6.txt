@@ -1,0 +1,27 @@
+def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
+
+        # Array to keep the sum of all continuous subarrays
+        subArraySum = [num for num in nums]
+        
+        # This will have O(N^2) Time Complexity as we have two nested for loops
+        for i in range(n):
+            currSum = nums[i]
+            for j in range(i + 1, n):
+                currSum += nums[j]
+                subArraySum.append(currSum)
+                
+                
+                
+        # Sort the subarraySum array
+		# There are n * (n + 1) / 2  or (n^2 + n) / 2 values in this array
+		# Hence, time complexity to sort this array will be -> n^2 * log (n ^ 2)
+        subArraySum.sort()
+        
+        # Sum to return
+        result = 0
+        
+        # Find the sum between left and right indices
+        for i in range(left - 1, right): result += subArraySum[i]
+            
+        # Return the result modulo 10^9 + 7
+        return result % (pow(10,9) + 7)

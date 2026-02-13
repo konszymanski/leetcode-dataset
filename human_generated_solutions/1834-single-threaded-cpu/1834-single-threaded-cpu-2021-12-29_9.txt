@@ -1,0 +1,28 @@
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+		"""
+		Constraints:
+		- CPU processes task with shortest process time
+		- No delay between start and finish
+		- enqueTime, is when the task was available to process
+		Approach
+		- Sorting + heap
+		  - We can sort arry by enqueTime, process time
+		  - For each iteration; add task to the heap, and process task with lowest process time if the enquie time is right
+		  - Time, space: o(n log(n)), o(n)
+		"""
+        tasks = sorted([t + [i] for i, t in enumerate(tasks)])
+        heap, ans = [], []
+        last_enq = 0
+		#Process Tasks
+        for enq, pro, idx in tasks:
+            while heap and last_enq < enq:
+                p, i, e = heapq.heappop(heap)
+                last_enq = max(e, last_enq) + p
+                ans.append(i)
+            heapq.heappush(heap, (pro, idx, enq))
+        #Empty heap
+        while heap:
+            _, i, _ = heapq.heappop(heap)
+            ans.append(i)
+        return ans

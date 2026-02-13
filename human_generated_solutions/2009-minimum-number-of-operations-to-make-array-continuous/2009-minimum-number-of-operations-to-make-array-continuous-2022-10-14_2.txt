@@ -1,0 +1,23 @@
+def minOperations(self, nums: List[int]) -> int:
+        #binary search
+        n = len(nums)
+        ans = n-1
+        nums = sorted(set(nums))
+        extra = n - len(nums) #repeated elements
+        for i in range(len(nums)):
+            right = bisect_right(nums, n-1+nums[i]) #index of first element larger than n-1+nums[i]
+            ans = min(ans, len(nums) - right + i + extra)
+        return ans
+
+        #sliding window
+        n = len(nums)
+        ans = n - 1
+        nums = sorted(set(nums))
+        extra = n - len(nums)
+
+        j = 0
+        for i in range(len(nums)):
+            while j<len(nums) and nums[j] <= n - 1 + nums[i]:
+                j += 1
+            ans = min(ans, n - (j - i))
+        return ans

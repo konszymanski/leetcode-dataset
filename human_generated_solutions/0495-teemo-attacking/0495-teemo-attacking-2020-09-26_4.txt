@@ -1,0 +1,7 @@
+class Solution:
+    def findPoisonedDuration(self,t,d):
+		res = 0
+		if not t: return 0
+		for i in range(len(t)-1):
+			res += min(d,t[i+1]-t[i])
+		return res+d

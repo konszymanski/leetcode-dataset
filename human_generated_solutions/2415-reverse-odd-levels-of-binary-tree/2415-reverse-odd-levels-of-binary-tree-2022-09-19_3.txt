@@ -1,0 +1,19 @@
+class Solution:
+    def reverseOddLevels(self, root: TreeNode) -> TreeNode:
+
+        q, level = deque([root]), 0
+
+        while q[0]:
+
+            if level:
+                for i in range(len(q)>>1):
+                    q[i].val, q[-i-1].val = q[-i-1].val, q[i].val  # <-- reverse the node vals
+
+            for _ in range(len(q)):                                # <-- update the queue
+                node = q.popleft()
+                q.append(node.left)                
+                q.append(node.right)
+
+            level^= 1                                              # <-- toggle the level
+
+        return root

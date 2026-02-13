@@ -1,0 +1,12 @@
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # Idea: have a slow pointer pointing at the beginning and only move with condition.
+        # Condition: when iterating nums, if we encounter a nonzero, swap places with the slow and increase slow by 1.
+        slow = 0
+        for i in range(len(nums)):
+            if nums[i]!=0:
+                nums[i], nums[slow] = nums[slow], nums[i]
+                slow+=1

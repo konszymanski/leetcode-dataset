@@ -1,0 +1,32 @@
+def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        
+        subsets = list(range(n))
+
+        def f(x):
+            if subsets[x] != x:
+                subsets[x] = f(subsets[x])
+            return subsets[x]
+
+        def u(x,y):
+            prev = subsets[x]
+            subsets[x] = subsets[y]
+        
+        for i in range(n):
+            parentSubset = f(i)
+			# check for present children if they have already been discovered ( implying more than 1 parent ) or their subset is same as the parent (implying cycle)
+            if leftChild[i] != -1:
+                leftChildSubset = f(leftChild[i])
+                if leftChildSubset == parentSubset or leftChildSubset != leftChild[i]:
+                    return False
+                u(leftChildSubset,parentSubset)
+            if rightChild[i] != -1:
+                rightChildSubset = f(rightChild[i])
+                if rightChildSubset == parentSubset or rightChildSubset != rightChild[i]:
+                    return False
+                u(rightChildSubset,parentSubset)
+                
+        rootCount=0
+        for i in range(n):
+            if subsets[i] == i:
+                rootCount += 1
+        return True if rootCount == 1 else False

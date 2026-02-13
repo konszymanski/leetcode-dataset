@@ -1,0 +1,37 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        
+		# dummy head make it easier for us to handle special case on linked list with one node only
+        dummy_head = ListNode(-1, head)
+        pre_of_middle,slow, fast = dummy_head, head, head
+        
+        # use tortoise-and-hare algorithm to locate the middle node
+        while fast and fast.next:
+            
+            # locate the node before middle node
+            pre_of_middle = slow
+            
+            # tortoise move one step on each round
+            slow = slow.next
+            
+            # hare move two steps on each round
+            fast = fast.next.next
+            
+        
+        # locate the node after middle node
+        junction = slow.next
+        
+        # update linkage between previous one and next one
+        pre_of_middle.next = junction
+        
+        # delete and release middle node
+        del slow
+        
+        
+        return dummy_head.next

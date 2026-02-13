@@ -1,0 +1,11 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        points=[(0,0)] ; i=0 ; j=0
+        for p in path:
+            if p==\'N\': j+=1
+            if p==\'S\': j-=1
+            if p==\'E\': i+=1
+            if p==\'W\': i-=1
+            if (i,j) in points: return True
+            else: points.append((i,j))
+        return False

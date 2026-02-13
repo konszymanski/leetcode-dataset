@@ -1,0 +1,22 @@
+fmax = lambda x,y: x if x>y else y # 33% Faster than Default Max
+class Solution:
+    def robotSim(self, commands, obstacles) -> int:
+        setObs = { tuple(x) for x in obstacles }
+        best  = 0
+        i,j   = 0,0
+        di,dj = 0,1
+        for c in commands:
+            if   c == -2:
+                di,dj = -dj , di
+            elif c == -1:
+                di,dj =  dj , -di
+            else:
+                for _ in range(c):
+                    i += di # Advance one step
+                    j += dj
+                    if (i,j) in setObs: # If obstacle, retreat one step (and break)
+                        i -= di
+                        j -= dj
+                        break
+                best = fmax(best, i**2 + j**2 )
+        return best

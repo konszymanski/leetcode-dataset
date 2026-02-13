@@ -1,0 +1,25 @@
+class Solution:
+    
+    def minSubarray(self, arr, p):
+        
+        arr_sum = sum(arr)
+        if arr_sum%p==0:
+            return 0
+        
+        def sub_arr(arr, l):  #getting subarrays and getting sum of them
+            summ=[]
+            for i in range(len(arr)-l+1):  #l is length of subarray
+                summ.append(arr_sum - sum([arr[i+j] for j in range(l)]))
+
+            return summ
+        
+        bool = []
+
+        for l in range(1, len(arr)):
+            sub = sub_arr(arr, l)
+            for i in sub:
+               bool.append(i%p==0)
+            if any(bool) == True:
+                return l
+
+        return -1

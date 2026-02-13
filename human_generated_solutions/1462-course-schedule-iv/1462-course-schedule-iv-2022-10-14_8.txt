@@ -1,0 +1,10 @@
+def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        adj = [[False]*n for _ in range(n)]
+        for u,v in prerequisites: adj[u][v] = True
+        # Floyd - Warshal Implementation    
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    adj[i][j] |= adj[i][k] and adj[k][j]
+        # Finally Return query results 
+        return [adj[u][v] for u,v in queries]

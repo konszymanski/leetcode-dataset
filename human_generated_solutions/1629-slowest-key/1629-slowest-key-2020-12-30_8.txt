@@ -1,0 +1,13 @@
+class Solution:
+    def slowestKey(self, releaseTimes: List[int], keysPressed: str) -> str:
+        #
+        n = len(releaseTimes)
+        time = releaseTimes[0]
+        letter = keysPressed[0]
+        for i in range(1,n):
+            if releaseTimes[i]-releaseTimes[i-1] > time:
+                time = releaseTimes[i]-releaseTimes[i-1]
+                letter = keysPressed[i]
+            elif releaseTimes[i]-releaseTimes[i-1] == time and keysPressed[i] > letter:
+                letter = keysPressed[i]
+        return letter

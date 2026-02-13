@@ -1,0 +1,15 @@
+def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
+        #print(chr(root.val+97))
+        self.ans = []
+        self.call(root , chr(root.val+97))
+        return min(self.ans)
+    
+    def call(self , root , s):
+        if not root.left and not root.right:
+            self.ans.append(s)
+            
+        if root.left:
+            self.call(root.left , chr(root.left.val+97)+s)
+            
+        if root.right:
+            self.call(root.right , chr(root.right.val+97)+s)

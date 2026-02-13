@@ -1,0 +1,19 @@
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+        graph, visited = defaultdict(list), defaultdict(bool)
+
+        for src, dst in edges:
+            graph[src].append(dst)
+            graph[dst].append(src)
+
+        visited[0] = True
+        def dfs(src: int) -> int:
+            time = 0
+            for dst in graph[src]:
+                if not visited[dst]:
+                    visited[dst] = True
+                    time += dfs(dst)
+            if time or hasApple[src]:
+                return time + 2
+            return 0
+        return max(dfs(0) -2, 0)

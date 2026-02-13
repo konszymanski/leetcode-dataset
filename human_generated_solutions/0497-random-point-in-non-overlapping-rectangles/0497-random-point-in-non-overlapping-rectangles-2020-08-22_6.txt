@@ -1,0 +1,8 @@
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.W = list(itertools.accumulate((x[2]-x[0]+1)*(x[3]-x[1]+1) for x in rects))
+        self.rects = rects
+
+    def pick(self) -> List[int]:
+        return [(xr:=random.randint)((c := self.rects[(ans := bisect.bisect_left(self.W,xr(0,self.W[-1]) ))])[0],c[2]),xr(c[1],c[3])]

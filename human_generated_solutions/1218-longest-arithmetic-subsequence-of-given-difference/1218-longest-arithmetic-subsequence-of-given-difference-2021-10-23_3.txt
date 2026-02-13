@@ -1,0 +1,9 @@
+def longestSubsequence(self, arr: List[int], difference: int) -> int:
+	l = len(arr)
+	dic = defaultdict(int)
+	max_length = 0
+
+	for i in range(0, l):
+		dic[arr[i]] = dic[arr[i]-difference]+1
+		max_length = max(max_length, dic[arr[i]])
+	return max_length

@@ -1,0 +1,15 @@
+class Solution:
+    def minOperations(self, s: str) -> int:
+        count1 = 0
+        count2 = 0
+        s1 = \'01\'*(len(s) // 2)
+        s2 = \'10\'*(len(s) // 2)
+        if len(s) % 2 > 0:
+            s1 = s1 + \'0\'
+            s2 = s2 + \'1\'
+        for i in range(len(s)):
+            if not s1[i] == s[i]:
+                count1 += 1
+            if not s2[i] == s[i]:
+                count2 += 1
+        return min(count1, count2)

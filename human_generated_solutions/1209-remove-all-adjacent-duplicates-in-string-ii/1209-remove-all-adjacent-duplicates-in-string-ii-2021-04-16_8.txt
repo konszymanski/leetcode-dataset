@@ -1,0 +1,6 @@
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -> str:
+        for letter in s:
+            s = s.replace(letter * k, "")  if letter * k in s else s
+            
+        return s

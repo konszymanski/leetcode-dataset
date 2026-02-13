@@ -1,0 +1,12 @@
+def maxAscendingSum(self, A: List[int]) -> int:
+        mx,subsum = [],0
+        A.append(float(\'inf\'))        # added extra element to ignore problem with last element (forgotting to calculate last element) 
+        for i in range(len(A)-1):
+            if A[i] < A[i+1]:
+                subsum += A[i]                   # calculate sum until we reach a[i]>=a[i+1]
+            else:
+                mx.append(subsum + A[i])     # append all subarray sum including the last element in subarray
+                subsum = 0
+            if i == len(A) - 2:                # check if we meet last element
+                mx.append(subsum)
+        return max(mx) if mx else 0   # return max if it exists otherwise 0

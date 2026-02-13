@@ -1,0 +1,12 @@
+class Solution:
+    def maximum69Number (self, nums: int) -> int:
+        nums = str(nums)                          #changing integer to string
+        j = 1                                     #maximum number you can change atmost
+        for i in range(len(nums)):
+            if nums[i] == "6" and (j == 1):       #checking if the element is "6" and we are change only once
+                bef = nums[:i]                    #stored element before the element 6 using slicing
+                aft = nums[i+1:]                  #stored element after the element 6 using slicing
+                nums = bef + "9"+aft              #adding element in place of 6
+                j-=1                              # we will reduct 1. so that above condition cant satisfy again.
+        nums = int(nums)
+        return nums

@@ -1,0 +1,25 @@
+class Solution:
+    def digisum(self, n):
+        res = 0
+        
+        while n:
+            res += n % 10
+            n //= 10
+            
+        return res
+    
+    
+    def maximumSum(self, nums: List[int]) -> int:
+        hm = {}
+        
+        res = -1
+        for i in nums:
+            t = self.digisum(i)
+            
+            if t in hm:
+                res = max(res, hm[t] + i)
+                hm[t] = max(hm[t], i)
+            else:
+                hm[t] = i
+        
+        return res

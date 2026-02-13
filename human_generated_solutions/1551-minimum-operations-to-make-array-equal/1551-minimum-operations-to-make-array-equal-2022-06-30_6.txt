@@ -1,0 +1,15 @@
+class Solution:
+    def minOperations(self, n: int) -> int:
+        # Method 1 : Median
+        nums = []
+        for i in range(n):
+            nums.append(2*i + 1)
+        median_ish = nums[len(nums)//2]
+        count = 0
+        
+        for i in nums:
+            count += abs(i - median_ish)
+        
+        return count//2
+        # we divided it by 2 because increment and decrement operation can be done
+        # at the same time

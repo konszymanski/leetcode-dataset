@@ -1,0 +1,31 @@
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        if not head:
+            return head
+        
+        # find mid point 
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        # reverse the second half in-place
+        # slow.next: the start point of reverse
+        
+        head2 = None
+		curr = slow.next
+		slow.next = None
+        while slow.next:
+            next = curr.next
+            curr.next = head2
+            head2 = curr
+            curr = next
+        
+        # merge in-place
+        first, second = head, head2
+        
+        while second:
+            first.next, first = second, first.next
+            second.next, second = first, second.next
+        return

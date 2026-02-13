@@ -1,0 +1,20 @@
+class Solution:
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        t = tuple(map(int, list(s)))
+        seqs = {t}
+        tuples = {t}
+        while tuples:
+            new_tuples = set()
+            for t in tuples:
+                t_add = tuple((v + a) % 10 if i % 2 else v
+                              for i, v in enumerate(t))
+                if t_add not in seqs:
+                    seqs.add(t_add)
+                    new_tuples.add(t_add)
+                t_rot = tuple([t[i] for i in range(b, len(t))] +
+                              [t[i] for i in range(b)])
+                if t_rot not in seqs:
+                    seqs.add(t_rot)
+                    new_tuples.add(t_rot)
+            tuples = new_tuples
+        return "".join(map(str, min(seqs)))

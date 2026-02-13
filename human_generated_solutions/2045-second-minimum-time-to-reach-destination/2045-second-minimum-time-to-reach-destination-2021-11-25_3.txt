@@ -1,0 +1,28 @@
+class Solution(object):
+    def secondMinimum(self, n, edges, time, change):
+        hd = collections.defaultdict(list)
+        for i, j in edges:
+            hd[i].append(j)
+            hd[j].append(i)
+        # First, find the smallest and the second smallest steps from city 1 to every city via BFS.
+        first = [0] * (n + 1)
+        second = [0] * (n + 1)
+        dq = collections.deque([(1, 0)])
+        while len(dq) > 0:
+            node, steps = dq.popleft()
+            for next in hd[node]:
+                if second[next] == 0:
+                    if first[next] == 0:
+                        first[next] = steps + 1
+                        dq.append((next, steps + 1))
+                    elif steps + 1 > first[next]:
+                        second[next] = steps + 1
+                        dq.append((next, steps + 1))
+        # Simulate the change process of the signal light and calculate the time required for the second smallest steps 
+        # from the start point to the end point.
+        cost = 0
+        for i in range(second[n]):
+            if cost % (2 * change) >= change:
+                cost = (cost // (2 * change) + 1) * (2 * change)
+            cost += time
+        return cost

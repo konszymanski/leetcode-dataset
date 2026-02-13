@@ -1,0 +1,31 @@
+class Solution:
+    def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
+        res1 = []
+        res2 = []
+        # help function to merge two sorted lists
+        def merge(list1, list2):
+            i, j = 0, 0
+            res = []
+            while i<len(list1) and j<len(list2):
+                if list1[i] < list2[j]:
+                    res.append(list1[i])
+                    i+=1
+                else:
+                    res.append(list2[j])
+                    j+=1
+            res+= list1[i:]
+            res+=list2[j:]
+            return res
+        
+        # help function for inorder traverse tree
+        def inorder(root, my_list):
+            if not root:
+                return
+            inorder(root.left,my_list)
+            my_list.append(root.val)
+            inorder(root.right,my_list)
+            
+        inorder(root1, res1)
+        inorder(root2, res2)
+        ans = merge(res1, res2)
+        return ans

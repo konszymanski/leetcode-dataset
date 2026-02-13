@@ -1,0 +1,17 @@
+def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        res=set()
+        def backtracking(comb,startIndex,nums):
+            if(len(comb)>=2):
+                if(comb[-1]<comb[len(comb)-2]):
+                    return
+                res.add(comb[:])
+            if(startIndex>len(nums)):
+                return
+            for i in range(startIndex,len(nums)):
+					#comb.append(nums[i])
+                    comb+=(nums[i],)
+                    backtracking(comb,i+1,nums)
+					#comb.pop()
+                    comb=comb[:-1]
+        backtracking((),0,nums)
+        return res

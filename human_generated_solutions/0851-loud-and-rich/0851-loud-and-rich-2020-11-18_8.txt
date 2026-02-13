@@ -1,0 +1,14 @@
+class Solution:
+    def loudAndRich(self, richer: List[List[int]], quiet: List[int]) -> List[int]:
+        graph = {} # graph as adjacency list 
+        for x, y in richer: graph.setdefault(y, []).append(x)
+        
+        @lru_cache(None)
+        def fn(x): 
+            """Return richer & loudest person given person."""
+            ans = x
+            for xx in graph.get(x, []): 
+                if quiet[fn(xx)] < quiet[ans]: ans = fn(xx)
+            return ans 
+        
+        return [fn(x) for x in range(len(quiet))]

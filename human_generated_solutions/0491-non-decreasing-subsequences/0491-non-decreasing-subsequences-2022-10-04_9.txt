@@ -1,0 +1,23 @@
+class Solution:
+    def findSubsequences(self, xs: List[int]) -> List[List[int]]:
+        n = len(xs)
+        ans = set()
+
+        for i in range (1, n):
+            x = xs[i]
+
+            m = len(ans)
+            seqs = set()
+            for seq in ans:
+                if seq[-1] <= x:
+                    new_seq = list(seq)
+                    new_seq.append(x)
+                    seqs.add(tuple(new_seq))
+
+            for j in range(i):
+                if xs[j] <= x:
+                    ans.add((xs[j], x))
+
+            ans.update(seqs)
+
+        return ans

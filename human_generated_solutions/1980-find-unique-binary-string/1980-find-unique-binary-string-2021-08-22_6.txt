@@ -1,0 +1,2 @@
+def findDifferentBinaryString(self, nums: List[str]) -> str:
+	return bin((set(range(2**len(nums[0]))) - {int(i, 2) for i in nums}).pop())[2:].zfill(len(nums[0]))

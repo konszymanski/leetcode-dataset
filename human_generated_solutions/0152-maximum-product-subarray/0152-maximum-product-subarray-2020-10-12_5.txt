@@ -1,0 +1,10 @@
+def maxProduct(self, nums):
+        cumltv_max = cumltv_min= max_sofar = nums[0]
+        for i, num in enumerate(nums[1:], start=1):
+            # save the last cumulative min before updating it for later calculating cumulative max 
+            prv_cumltv_min = cumltv_min  
+            # compare these and take the minimum --> cur_value, last cumlative min x cur_value and last cum max x cuv_value
+            cumltv_min = min( cumltv_min*num, cumltv_max*num, num)
+            cumltv_max = max( prv_cumltv_min*num, cumltv_max*num, num) 
+            max_sofar = max(cumltv_max, max_sofar)
+        return max_sofar

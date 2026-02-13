@@ -1,0 +1,58 @@
+class Solution:
+    def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
+        beforeNodes = [n + 2 * i for i in range(m)]  # these are the starting nodes for a group
+        afterNodes = [n + 2 * i + 1 for i in range(m)]  # these are the ending nodes for a group
+        nodeSet = []
+        graph = defaultdict(list)
+        in_degree = defaultdict(int)
+        for i, (group_id, before_list) in enumerate(zip(group, beforeItems)):
+            nodeSet.append(i)
+            if group_id != -1:
+                graph[beforeNodes[group_id]].append(i)  # adding directed edge from before node to this node
+                graph[i].append(afterNodes[group_id])  # adding directed edge from current node to after node
+                in_degree[i] += 1
+                in_degree[afterNodes[group_id]] += 1
+
+            for node in before_list:
+				# different cases for connection. read properly
+                if group[i] == group[node]:
+                    graph[node].append(i)
+                    in_degree[i] += 1
+                elif group[i] == -1:
+                    if group[node] == -1:
+                        graph[node].append(i)
+                    else:
+                        graph[afterNodes[group[node]]].append(i)
+                    in_degree[i] += 1
+                else:
+                    if group[node] == -1:
+                        graph[node].append(beforeNodes[group[i]])
+                    else:
+                        graph[afterNodes[group[node]]].append(beforeNodes[group[i]])
+                    in_degree[beforeNodes[group[i]]] += 1
+
+        starts = deque()
+        for node in nodeSet + beforeNodes + afterNodes:
+            if not in_degree[node]:
+                starts.append(node)
+
+        res = []
+        for s in starts:
+            temp_res = []
+            sources = deque([s])
+            while sources:
+                cur = sources.popleft()
+                temp_res.append(cur)
+
+                for node in graph[cur]:
+                    in_degree[node] -= 1
+                    if not in_degree[node]:
+                        sources.append(node)
+            res += temp_res
+
+        res = [x for x in res if x < n]
+
+        if len(res) != n:
+            return []
+
+        return res

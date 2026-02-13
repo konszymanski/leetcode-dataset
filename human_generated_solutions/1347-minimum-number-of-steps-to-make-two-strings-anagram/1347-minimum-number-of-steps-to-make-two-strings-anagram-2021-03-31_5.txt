@@ -1,0 +1,4 @@
+def minSteps(s, t):
+    s, t = Counter(s), Counter(t)
+    complement = (s | t) - (s & t)
+    return sum(complement.values()) // 2

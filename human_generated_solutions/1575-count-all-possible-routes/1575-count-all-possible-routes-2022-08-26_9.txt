@@ -1,0 +1,21 @@
+class Solution:
+    def countRoutes(self, loc: List[int], start: int, finish: int, fuel: int) -> int:
+        #build two dimensional array where dp[fuel][loc] is the number of ways that you
+        #can reach finish from loc with that certain amount of fuel, we want to know 
+        #dp[fuel][start]
+        
+        mod = 1000000007
+        dp = [[-1 for i in range(len(loc))] for i in range(fuel+1)]
+        
+        def helper(cur,fuel):
+            if fuel < abs(loc[cur] - loc[finish]): return 0
+            if dp[fuel][cur] != -1: return dp[fuel][cur]
+            x = cur == finish
+            dp[fuel][cur]=x+sum(helper(i,fuel-abs(loc[i]-loc[cur])) for i in range(len(loc)) if i != cur)
+            return dp[fuel][cur]
+        
+        for f in range(1,fuel+1):
+            #start at start
+            dp[f][start] = helper(start,f)
+        
+        return dp[fuel][start]%mod

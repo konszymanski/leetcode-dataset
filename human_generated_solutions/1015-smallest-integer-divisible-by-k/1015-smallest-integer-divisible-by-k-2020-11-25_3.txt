@@ -1,0 +1,6 @@
+def smallestRepunitDivByK(self, K: int) -> int:
+    r = 0
+    for c in range(1, K+1):
+        r = (r*10 + 1)%K
+        if r == 0: return c
+    return -1

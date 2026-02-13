@@ -1,0 +1,25 @@
+def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:   
+        parents = list(range(26))
+
+        def find_parent(c):
+            return parents[ord(c) - ord(\'a\')]
+
+        def update_parent(pos, p):
+            curval = parents[pos]
+            for i, v in enumerate(parents):
+                if v == curval:
+                    parents[i] = p
+            parents[pos] = p
+
+        def process(c1, c2):
+            p1 = find_parent(c1)
+            p2 = find_parent(c2)
+            if p1 < p2:
+                update_parent(p2, p1)
+            elif p1 > p2:
+                update_parent(p1, p2)
+
+        for i in range(len(s1)):
+            process(s1[i], s2[i])
+
+        return \'\'.join(list(chr(find_parent(s)+ord(\'a\')) for s in baseStr))

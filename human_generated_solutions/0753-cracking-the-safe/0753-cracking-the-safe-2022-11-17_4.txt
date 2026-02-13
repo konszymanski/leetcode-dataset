@@ -1,0 +1,33 @@
+class Solution:
+    def crackSafe(self, n: int, k: int) -> str:
+        def dfs(path, visitedCombinations, targetNumVisited, combos):
+            # Base Case. We\'ve visited all possible combinations
+            if len(visitedCombinations) == targetNumVisited:
+                combos.append(\'\'.join([str(x) for x in path]))
+                return True
+            # This if/else is necessary to prevent Python from picking up the first element if n = 1
+            if n > 1:
+                lastDigits = \'\'.join([str(x) for x in path[-(n-1):]])
+            else:
+                lastDigits = \'\'
+            for i in range(k):
+                path.append(i)
+                newPwd = f\'{lastDigits}{i}\'
+                # We have not reached the minimum pwd length. Continue recursion
+                if len(newPwd) != n: 
+                    if dfs(path, visitedCombinations, targetNumVisited, combos):
+                        return True
+                if len(newPwd) == n and newPwd not in visitedCombinations:
+                    visitedCombinations[newPwd] = 1
+                    if dfs(path, visitedCombinations, targetNumVisited, combos):
+                        return True
+                    del visitedCombinations[newPwd]
+                path.pop()
+            return False
+                          
+        
+        # Empty visited Combinations hash set
+        visitedCombinations = {}
+        combos = []
+        dfs([], visitedCombinations, k**n, combos)
+        return combos[0]

@@ -1,0 +1,22 @@
+class Average:
+    def __init__(self):
+        self.sum = 0
+        self.count = 0
+
+    def add(self, val):
+        self.sum += val
+        self.count += 1
+
+    def average(self):
+        return self.sum/self.count
+
+class Solution:
+    def shortestPalindrome(self, s: str) -> str:
+        char_position_averages = defaultdict(Average)
+        end_i = 0
+        for i in range(len(s)):
+            char_position_averages[s[i]].add(i)
+            if s[i] == s[0] and all(each.average() == i/2 for each in char_position_averages.values()):
+                end_i = i+1
+
+        return \'\'.join(reversed(s[end_i:])) + s

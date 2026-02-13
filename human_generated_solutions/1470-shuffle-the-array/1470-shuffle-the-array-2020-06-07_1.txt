@@ -1,0 +1,5 @@
+def shuffle(self, nums: List[int], n: int) -> List[int]:
+ \xA0 \xA0 \xA0 \xA0res = []
+ \xA0 \xA0 \xA0 \xA0for i, j in zip(nums[:n],nums[n:]):
+ \xA0 \xA0 \xA0 \xA0 \xA0 \xA0res += [i,j]
+        return res

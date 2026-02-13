@@ -1,0 +1,47 @@
+class Solution:
+    def solveEquation(self, equation: str) -> str:
+        m = 1
+        cur = 0
+        is_cur = False
+        left = True
+        left_x = left_val = right_x = right_val = 0
+        equation += \'+\'
+        for c in equation:
+            if c.isdigit():
+                cur = cur * 10 + int(c)
+                is_cur = True
+            
+            elif c == \'=\':
+                left_val += cur * m
+                m = 1
+                cur = 0
+                is_cur = False
+                left = False
+            
+            elif c == \'x\':
+                n = cur * m if is_cur else m
+                if left:
+                    left_x += n
+                else:
+                    right_x += n
+                m = 1
+                cur = 0
+                is_cur = False
+            
+            else:
+                if left:
+                    left_val += cur * m
+                else:
+                    right_val += cur * m
+                m = 1 if c == \'+\' else -1
+                cur = 0
+                is_cur = False
+        
+        x = left_x - right_x
+        val = right_val - left_val
+        if x == 0 and val == 0:
+            return \'Infinite solutions\'
+        elif x == 0:
+            return \'No solution\'
+        
+        return f\'x={val // x}\'

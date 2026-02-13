@@ -1,0 +1,19 @@
+class Solution:
+    def prisonAfterNDays(self, cells, n: int):
+        day = 0
+        state = tuple(cells)
+        states = {state: 0}
+        rev_states = {0: state}
+        while day < n:
+            state = (0,) + tuple(int(state[i - 1] == state[i + 1])
+                                 for i in range(1, 7)) + (0,)
+            day += 1
+            if state not in states:
+                states[state] = day
+                rev_states[day] = state
+            else:
+                day_start_period = states[state]
+                return list(rev_states[day_start_period +
+                                       (n - day_start_period) %
+                                       (day - day_start_period)])
+        return list(rev_states[n])

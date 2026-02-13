@@ -1,0 +1,45 @@
+def countGoodStrings(self, low, high, zero, one) -> int:
+        # This problem is an Variation of Climbing Stairs Problem
+        # At any step you can choose to take either of one Step i.e Zero or One
+        # But Target will be varying here from (low-->high)
+        
+        # Time Complexity : O(High) , Space Complexity:O(High)
+        def tabulation():
+            
+            dp=[0]*(high+1)
+            dp[0]=1
+            mod=pow(10,9)+7
+            
+            for i in range(1,high+1):
+                if i>=zero:
+                    dp[i]+=dp[i-zero]
+                if i>=one:
+                    dp[i]+=dp[i-one]
+                
+                dp[i]=dp[i]%mod
+            return sum(dp[low:])%mod
+        return tabulation()
+        
+        # Memoization 
+        def memoization(target,memo):
+            if target<0:
+                return 0
+            
+            if target==0:
+                return 1
+            
+            if target in memo:
+                return memo[target]
+            
+            considerZero=memoization(target-zero,memo)
+            considerOne=memoization(target-one,memo)
+            
+            memo[target]=(considerZero+considerOne)
+            return memo[target]
+        
+        memo={}
+        total=0
+        mod=pow(10,9)+7
+        for target in range(low,high+1):
+            total+=memoization(target,memo)
+        return total%mod

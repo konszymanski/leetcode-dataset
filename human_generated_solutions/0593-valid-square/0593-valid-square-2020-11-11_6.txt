@@ -1,0 +1,18 @@
+def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+
+	p00, p01, p10, p11 = sorted([p1, p2, p3, p4])
+
+	# vectors
+	a0 = (p01[0] - p00[0], p01[1] - p00[1])
+	b0 = (p10[0] - p00[0], p10[1] - p00[1])
+	a1 = (p11[0] - p10[0], p11[1] - p10[1])
+	b1 = (p11[0] - p01[0], p11[1] - p01[1])
+
+	def vector_length(v):
+		return (v[0] ** 2 + v[1] ** 2) ** 0.5
+
+	def is_perpendicular(a, b):
+		\'\'\'dot product must be 0\'\'\'
+		return (a[0] * b[0] + a[1] * b[1]) == 0
+
+	return a0 == a1 and b0 == b1 and vector_length(a0) == vector_length(b0) != 0 and is_perpendicular(a0, b0)

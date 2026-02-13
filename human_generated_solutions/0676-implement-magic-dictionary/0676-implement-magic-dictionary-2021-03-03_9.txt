@@ -1,0 +1,20 @@
+class MagicDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.graph = defaultdict(list)
+
+    def buildDict(self, dictionary: List[str]) -> None:
+        for word in dictionary:
+            for i in range(len(word)):
+                self.graph[word[:i] + \'*\' + word[i + 1 : ]].append(word)
+        
+    def search(self, word: str) -> bool:
+        for i in range(len(word)):
+            curr = word[:i] + \'*\' + word[i + 1 : ]
+            if curr in self.graph:
+                if len(self.graph[curr]) > 1 or self.graph[curr][0] != word:
+                    return True
+        return False

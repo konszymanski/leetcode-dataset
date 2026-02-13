@@ -1,0 +1,14 @@
+class Solution(object):
+  def pivotArray(self, nums, pivot):
+    output = []
+    left = [i for i in nums if i < pivot]
+    right = [i for i in nums if i > pivot]
+    center = [i for i in nums if i == pivot]
+    output += left
+    output += center
+    output += right
+    return output
+
+obj = Solution()
+result = obj.pivotArray([9,12,5,10,14,3,10], 10)
+print(result)

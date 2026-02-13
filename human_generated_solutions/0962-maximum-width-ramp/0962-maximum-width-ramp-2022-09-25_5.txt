@@ -1,0 +1,14 @@
+class Solution:
+    def maxWidthRamp(self, nums):
+        stack, result = [0], 0
+        # create monotonic decreasing stack
+        for idx in range(1,len(nums)):
+            if nums[stack[-1]] > nums[idx]:
+                stack.append(idx)
+        for idx in range(len(nums)-1, -1,-1):
+            if not stack:
+                break
+            while stack and nums[stack[-1]] <= nums[idx] and stack[-1] <= idx:
+                i = stack.pop()
+                result = max(result, idx-i)
+        return result

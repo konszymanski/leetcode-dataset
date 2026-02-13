@@ -1,0 +1,58 @@
+class DSU:
+ 
+    def __init__(self):
+        self.parents = {}
+        self.components = 0
+ 
+ 
+    def add(self, p):
+        if p not in self.parents:
+            self.parents[p] = p
+            self.components += 1
+ 
+    def find(self, p):
+        if p not in self.parents:
+            self.add(p)
+            return p 
+ 
+        if p != self.parents[p]:
+            self.parents[p] = self.find(self.parents[p])
+ 
+        return self.parents[p]
+ 
+    def union(self, p1, p2):
+        r1, r2 = self.find(p1), self.find(p2)
+ 
+        if r1 != r2:
+            self.components -= 1
+            self.parents[r2] = r1 
+
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        """
+        each edge on path from q[0] -> q[1] should be lesser than q[2]
+        
+        we can use dijkistra but it will be TLE.. we will use greedy approach
+        
+        1. sort queries and edgeList on weights
+        2. Now, for lets say max_weight = 4, then for all edges weight less than 4, we union them
+        3. now if u and v belongs to same component, that means they are connected, so uf.find(u, v) will return same value , meaning they are connected with weight less than 4
+        
+        """
+        
+        uf = DSU()
+        ans = [False] * len(queries)
+        edge_i = 0
+        edgeList.sort(key=lambda k : k[2])
+        
+        for max_w, u, v, index in sorted([ [w, u, v, i] for i, (u, v, w) in enumerate(queries) ]):
+                
+            while edge_i < len(edgeList) and edgeList[edge_i][2] < max_w:
+                uf.union(edgeList[edge_i][0], edgeList[edge_i][1])
+                edge_i += 1
+            
+            if uf.find(u) == uf.find(v):
+                ans[index] = True
+        
+        return ans

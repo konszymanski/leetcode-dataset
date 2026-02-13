@@ -1,0 +1,12 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        (r, c) = (0, 0)
+        coors = {(r, c)}
+        for i in path:
+            if i == \'N\': c += 1
+            elif i == \'E\': r += 1
+            elif i == \'S\': c -= 1
+            else: r -= 1
+            if (r, c) in coors: return True
+            coors.add((r, c))
+        return False

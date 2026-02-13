@@ -1,0 +1,27 @@
+class Solution:
+    def numberOfArrays(self, s: str, k: int) -> int:
+        # Approach: dfs with memoization
+        self.s = s
+        self.k = k
+        self.kLen = len(str(self.k))
+        self.memo = dict()
+        res = self.dfs(0)
+        if int(self.s) <= k:
+            res += 1
+        return res
+
+    def dfs(self, index):
+        if index in self.memo:
+            return self.memo[index]
+        res = 0
+        for i in range(index, len(self.s) - 1):
+            if self.s[i + 1] == \'0\':
+                continue
+            if i + 1 - index > self.kLen or int(self.s[index:i + 1]) > self.k:
+                break
+            if len(self.s) - i - 1 <= self.kLen and int(self.s[i + 1:]) <= self.k:
+                res += 1
+            res += self.dfs(i + 1)
+            res = res % 1000000007
+        self.memo[index] = res
+        return res

@@ -1,0 +1,25 @@
+class Solution:
+    def smallestChair(self, times: List[List[int]], targetFriend: int) -> int:
+        tuples = []
+        for friend, (arrive, depart) in enumerate(times):
+            tuples.extend([(depart, 0, friend), (arrive, 1, friend)])
+        tuples.sort()
+        
+        chair = 0
+        available = []
+        assigned = defaultdict(int)
+        
+        for time, arr_dep, friend in tuples:
+            if arr_dep == 0: # departure
+                ch = assigned.pop(friend)
+                heapq.heappush(available, ch)
+            else: # arrival
+                if available:
+                    ch = heapq.heappop(available)
+                else:
+                    ch = chair 
+                    chair += 1
+                if friend == targetFriend:
+                    return ch
+                else:
+                    assigned[friend] = ch

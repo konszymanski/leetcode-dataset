@@ -1,0 +1,14 @@
+class Solution:
+    def maxVowels(self, s: str, k: int) -> int:
+        vowels = {\'a\',\'e\',\'i\',\'o\',\'u\'}
+        curr, counts, ans = collections.deque(), 0, 0
+        for a in s:
+            if a in vowels:
+                counts += 1
+            curr.append(a)
+            if len(curr) == k:
+                ans = max(ans, counts)
+                if curr[0] in vowels:
+                    counts -= 1
+                curr.popleft()
+        return ans

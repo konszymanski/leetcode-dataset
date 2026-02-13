@@ -1,0 +1,8 @@
+### Approach # 2 - Match using a frequency counter
+
+Basically the same underlying logic. Start with a frequency of all values in a hashmap. Match all duplicate values at once i.e. reduce frequency of `2*key` by frequency of `key`. If, at any point, we don\'t have enough `2*key` to match with `key`, we return `False`. At the end we can just return `True`, however the hashmap would still contain redundant values. Same running time as the first approach, except that this approach will run faster if there are many duplicates.
+
+* Time: `O(n * log n)`
+* Space: `O(n)`
+
+### Python

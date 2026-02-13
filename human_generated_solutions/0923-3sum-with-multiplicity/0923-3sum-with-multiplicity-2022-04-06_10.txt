@@ -1,0 +1,31 @@
+class Solution:
+    def threeSumMulti(self, arr: List[int], target: int) -> int:
+        arr.sort()
+        count = 0
+        for i in range(len(arr)-2):
+            low = i+1
+            high = len(arr)-1
+            while(low<high):
+                cur = arr[i] + arr[low] + arr[high]
+                if(cur==target):
+                    if(arr[low]!=arr[high]):
+                        multi_i = 1
+                        multi_j = 1
+                        while(low+1<high and arr[low]==arr[low+1]):
+                            multi_i += 1
+                            low += 1
+                        while(low<high-1 and arr[high]==arr[high-1]):
+                            multi_j += 1
+                            high -= 1
+                        count += (multi_i*multi_j) 
+                    else:
+                        rep = high-low
+                        count += (rep*(rep+1))//2
+                        break
+                    low+=1
+                    high-=1
+                elif(cur<target):
+                    low+=1
+                else:
+                    high-=1
+        return count%(10**9+7)

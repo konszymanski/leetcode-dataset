@@ -1,0 +1,5 @@
+class Solution(object):
+    def maxSubsequence(self, nums, k):
+        dup=sorted(nums)
+        for i in range(len(nums)-k): nums.remove(dup[i])
+        return nums

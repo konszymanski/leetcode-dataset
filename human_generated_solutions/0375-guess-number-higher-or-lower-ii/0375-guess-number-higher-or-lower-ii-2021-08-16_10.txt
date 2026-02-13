@@ -1,0 +1,16 @@
+class Solution:
+    def getMoneyAmount(self, n: int) -> int:
+        ans=-sys.maxsize
+        if n in (1,2):
+            return n-1
+        @lru_cache(None)
+        def dp(l,h):
+            if l>=h:
+                return 0
+            ans=sys.maxsize
+            for k in range(l,h+1):
+                a=dp(l,k-1)+k
+                b=dp(k+1,h)+k
+                ans=min(ans,max(a,b))
+            return ans
+        return dp(1,n)

@@ -1,0 +1,22 @@
+#Baraa
+class Solution:
+    def getAncestors(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        graph = collections.defaultdict(list)
+        parents = [set() for i in range(n)]
+        ranks = [0] * n
+        for a, b in edges:
+            graph[a].append(b)
+            ranks[b] += 1
+        deque = collections.deque()
+        for i in range(n):
+            if not ranks[i]:
+                deque.append(i)
+        while deque:
+            node = deque.popleft()
+            for child in graph[node]:
+                parents[child] |= parents[node]
+                parents[child].add(node)
+                ranks[child] -= 1
+                if not ranks[child]:
+                    deque.append(child)
+        return [sorted(list(s)) for s in parents]

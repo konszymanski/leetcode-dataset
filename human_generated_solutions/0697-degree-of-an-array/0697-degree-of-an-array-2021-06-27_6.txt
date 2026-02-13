@@ -1,0 +1,27 @@
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        f = defaultdict(int)
+        ma=0
+        d={}
+        n = len(nums)
+        
+        
+        for j in range(n):
+            
+            f[nums[j]]+=1
+            
+            if nums[j] not in d:
+                d[nums[j]] = [j,j]
+            else:
+                d[nums[j]][0] = min(d[nums[j]][0],j)
+                d[nums[j]][1] = max(d[nums[j]][1],j)
+            
+            ma = max(f[nums[j]],ma)
+            
+            
+        ans=9999999999
+        for k in set(nums):
+            if f[k] == ma:
+                ans= min(ans,  d[k][1]-d[k][0]+1)
+                
+        return ans

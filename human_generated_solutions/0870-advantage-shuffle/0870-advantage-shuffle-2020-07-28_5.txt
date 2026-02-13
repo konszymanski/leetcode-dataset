@@ -1,0 +1,20 @@
+class Solution:
+    def advantageCount(self, A: List[int], B: List[int]) -> List[int]:
+        res = [-1] * len(A)
+        sA = [(a,i) for i,a in enumerate(A)]
+        sB = [(b,i) for i,b in enumerate(B)]
+        heapq.heapify(sA)
+        heapq.heapify(sB)
+        remaining  = []
+        while sA:
+            a,i = heapq.heappop(sA)
+            b,j = heapq.heappop(sB)
+            if a>b:
+                res[j] = a
+            else:
+                remaining.append(a)
+                heapq.heappush(sB,(b,j))
+        for i in range(len(res)):
+            if res[i]==-1:
+                res[i]=remaining.pop()
+        return res

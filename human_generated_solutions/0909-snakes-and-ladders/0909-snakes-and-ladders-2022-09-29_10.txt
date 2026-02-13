@@ -1,0 +1,36 @@
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        n = len(board)
+        n_square = n*n
+        vis = [False]*(n_square + 1)
+        snake_or_ladder = {}
+        
+        reverse = False
+        count = 0
+        for i in board[::-1]:
+            level = i[::-1] if reverse else i
+            for j in level:
+                count+=1
+                if j!=-1:
+                    snake_or_ladder[count] = j
+            reverse = not reverse
+        
+        q = deque()
+        q.append(1)
+        vis[1] = True
+        step = 0
+        while q:
+            curr_level = deque()
+            for parent in q:
+                for i in range(1,7):
+                    curr = parent + i
+                    if curr in snake_or_ladder: curr = snake_or_ladder[curr]
+                    if curr > n_square: break
+                    if curr == n_square: return step+1
+                    if not vis[curr]:
+                        curr_level.append(curr)
+                        vis[curr] = True
+            q = curr_level
+            step+=1
+            
+        return step+1 if vis[n*n] else -1

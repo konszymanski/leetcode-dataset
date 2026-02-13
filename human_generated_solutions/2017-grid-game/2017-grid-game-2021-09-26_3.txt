@@ -1,0 +1,26 @@
+class Solution:
+    def gridGame(self, grid: List[List[int]]) -> int:
+        
+        #Populate a suffix sum array
+        suffix = [ele for ele in grid[0]]
+        suffixSum = 0
+        for i in range(len(suffix)-1,-1,-1):
+            suffix[i] = suffixSum
+            suffixSum += grid[0][i]
+            
+            
+        #Populate a prefix sum array
+        prefix = [ele for ele in grid[1]]
+        prefixSum = 0
+        for i in range(len(prefix)):
+            prefix[i] = prefixSum
+            prefixSum += grid[1][i] 
+            
+        #Want the lowest of the worst-case scenerio.
+        #Player 2 will attempt to pick the biggest of prefix[i] or suffix[i].
+        #Player 1 will attempt to pick the case that will minimize this.
+        lowest = float("inf")
+        for i in range(len(prefix)):
+            lowest = min(lowest, max(prefix[i], suffix[i]))
+            
+        return lowest

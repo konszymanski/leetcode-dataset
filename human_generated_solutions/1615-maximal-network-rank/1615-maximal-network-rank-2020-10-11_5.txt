@@ -1,0 +1,36 @@
+from collections import defaultdict
+
+
+class graph:
+    def __init__(self, n):
+        self.n = n
+        self.graph = defaultdict(set)
+        self.indegs = [0] * n
+
+    def addE(self, v, w):
+        self.graph[v].add(w)
+        self.graph[w].add(v)
+
+        self.indegs[v] += 1
+        self.indegs[w] += 1
+
+
+class Solution(object):
+    def maximalNetworkRank(self, n, roads):
+        g = graph(n)
+
+        for start, end in roads:
+            g.addE(start, end)
+
+        maxCount = -1
+        for i in range(n):
+            for j in range(i + 1, n):
+                common = -1 if i in g.graph[j] or j in g.graph[i] else 0
+                cur = g.indegs[i] + g.indegs[j] + common
+                maxCount = max(cur, maxCount)
+
+        return maxCount
+
+
+sol = Solution()
+print(sol.maximalNetworkRank(4, [[0, 1], [0, 3], [1, 2], [1, 3]]))

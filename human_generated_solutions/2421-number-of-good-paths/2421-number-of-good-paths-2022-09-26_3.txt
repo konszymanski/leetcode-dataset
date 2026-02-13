@@ -1,0 +1,78 @@
+class Solution:
+    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        g = defaultdict(list)
+        for l, r in edges:
+            l, r = sorted((l, r))
+            g[l].append(r)
+
+        def dfs(i):
+            # We are at the root of the tree
+            v = vals[i]
+
+            # We already count one node, the root itself
+            c = 0
+
+            # We obtain information from our children
+            r = {j: dfs(j) for j in g[i]}
+
+            # We add all of the counts for the paths they have which don\'t utilize our root
+            c += sum(r[j][1] for j in g[i])
+
+            # We update the counters to terminate nodes which can\'t pass through the root
+            e = filter_and_gather(v, r)
+
+            # We also add 1 for every path to our root from a child
+            c += sum(r[j][0][v] for j in g[i])
+
+            # We add 1 for every path that goes through the current root
+            seen = group_values(g[i], r)
+            c += products(seen.values())
+
+            return [e, c]
+
+        return dfs(0)[1] + len(vals)
+    
+    
+def group_values(gi, r):
+    seen = defaultdict(list)
+    for j in gi:
+        for value, amt in r[j][0].items():
+            seen[value].append(amt)
+    return seen
+    
+    
+def products(item_arrays):
+    c = 0
+    for items in item_arrays:
+        for a, b in combinations(items, 2):
+            c += a * b
+    return c
+
+
+# the other products implementation is surprisingly faster from benchmarks?
+# def products(item_arrays):
+#     c = 0
+#     for items in item_arrays:
+#         s = sum(items)
+#         c += s * s - sum(i*i for i in items)
+#     return c // 2
+
+
+
+# def filter_and_gather(v, r):
+#     e = Counter({v: 1})
+#     for result_i, result in r.items():
+#         result[0] = Counter({r_value: r_amt for r_value, r_amt in result[0].items() if v <= r_value})
+#         e += result[0]
+#     return e
+
+
+def filter_and_gather(v, r):
+    e = Counter({v: 1})
+    for result_i, result in r.items():
+        for r_value, r_amt in list(result[0].items()):
+            if v > r_value:
+                del result[0][r_value]
+            else:
+                e[r_value] += r_amt
+    return e

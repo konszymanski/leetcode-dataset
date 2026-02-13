@@ -1,0 +1,15 @@
+class Solution:
+    def nextBeautifulNumber(self, n: int) -> int:
+        if(n==0):return 1
+        for x in range(n+1,1000000000):
+            l=[]
+            count=0
+            for y in str(x):
+                l.append(int(y))
+            l1=set(l)
+            for z in l1:
+                a=l.count(z)
+                if(a==z and x>9):
+                    count+=1
+            if(count==len(list(l1))):
+                return x

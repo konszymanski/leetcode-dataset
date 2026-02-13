@@ -1,0 +1,9 @@
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+		hashmap={}
+        while headA:
+            hashmap[headA]=1
+            headA=headA.next
+        while headB and headB not in hashmap:
+            headB=headB.next
+        return headB

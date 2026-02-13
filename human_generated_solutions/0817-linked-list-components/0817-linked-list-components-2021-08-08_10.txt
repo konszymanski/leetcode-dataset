@@ -1,0 +1,22 @@
+#TIME COMPLEXITY - O(len(nums)+N)
+#SPACE COMPLEXITY - O(len(nums))
+class Solution:
+    def numComponents(self, head: Optional[ListNode], nums: List[int]) -> int:
+        hmap={}
+        for i in range(len(nums)):
+            if nums[i] not in hmap:
+                hmap[nums[i]]=1
+            else:
+                hmap[nums[i]]+=1
+        temp=head
+        cnt=0
+        while temp:
+            if temp.val in hmap:
+                curr=temp
+                while curr and curr.val in hmap:
+                    curr=curr.next
+                temp=curr
+                cnt+=1
+            else:
+                temp=temp.next
+        return cnt

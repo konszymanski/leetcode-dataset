@@ -1,0 +1,28 @@
+class Solution:
+    def prefixCount(self, words: List[str], pref: str) -> int:
+        trie = {}
+        
+        for word in words:
+            self.insert(trie, word)
+        return self.getPrefixCount(trie, pref)
+
+    def insert(self, trie, word):
+        for ch in word:
+            if ch not in trie:
+                trie[ch] = [1, {}]
+            else:
+                trie[ch][0] += 1
+        
+            trie = trie[ch][1]
+        
+            
+    def getPrefixCount(self, trie, pref):
+        lastNode = None
+        for ch in pref:
+            if ch not in trie:
+                return 0
+            
+            lastNode = trie[ch][0]
+            trie = trie[ch][1]
+            
+        return lastNode

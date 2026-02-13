@@ -1,0 +1,51 @@
+class Node:
+    def __init__(self):
+        self.children = {}
+        self.isWord = False
+        self.count = 0
+
+class Trie:
+    def __init__(self):
+        self.root = Node()
+    
+    def insert(self, word):
+        node = self.root
+        
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = Node()
+			# Increment occurrence of the current prefix in Trie
+            node.children[ch].count += 1
+            node = node.children[ch]
+        
+        node.isWord = True
+    
+    def search(self, word) -> int :
+        score = 0
+        node = self.root
+        
+        for ch in word:
+			# Add count for current prefix 
+            score += node.count
+            node = node.children[ch]
+			
+        # Add count for current word          
+        score += node.count
+            
+        return score
+
+class Solution:
+    def sumPrefixScores(self, words: List[str]) -> List[int]:
+        
+        trie = Trie()
+        
+        # Insert word in to trie
+        for word in words:
+            trie.insert(word)
+        
+        scores =[]
+        # Search words for all prefixes of current word
+        for word in words:
+            scores.append(trie.search(word))
+        
+        return scores

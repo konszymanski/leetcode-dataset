@@ -1,0 +1,20 @@
+class Solution:
+    def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        to_delete = set(to_delete) # O(1) lookup 
+        
+        def fn(node, pval):
+            """Return node upon deletion of required values."""
+            if not node: return 
+            if node.val in to_delete: 
+                node.left = fn(node.left, None)
+                node.right = fn(node.right, None)
+                return 
+            else: 
+                if not pval: ans.append(node)
+                node.left = fn(node.left, node.val)
+                node.right = fn(node.right, node.val)
+                return node 
+        
+        ans = []
+        fn(root, None)
+        return ans

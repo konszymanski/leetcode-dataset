@@ -1,0 +1,15 @@
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        
+        total_sum = sum(nums)
+        
+        cumulative_sum = 0
+        
+        for i in range(len(nums)):
+            
+            if cumulative_sum == (total_sum - cumulative_sum - nums[i]):
+                return i
+            else:
+                cumulative_sum += nums[i]
+        
+        return -1

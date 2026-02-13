@@ -1,0 +1,58 @@
+class Solution:
+    def kMirror(self, k: int, n: int) -> int:
+        count = 0
+        sum = 0
+        prevPalindromes = []
+        digits = 1
+        while count < n:
+            # generate a new batch of palindromes with predigined number of digits
+            palindromes = self.getPalindromes(prevPalindromes, digits)
+            for palindrome in palindromes:
+                base10 = int(palindrome)
+                baseK = self.toBase(base10, k)
+                # check if the number is palindrome in base K
+                if baseK[::-1] == baseK:
+                    sum += base10
+                    count += 1
+                    if count == n:
+                        break
+            digits += 1
+            # we are keeping even-digit palindromes for next 2 iterations
+            if digits % 2 == 1:
+                prevPalindromes = palindromes
+        return sum
+            
+    # generates palindromes with given number of digits and the palindromes from previous iteration
+    def getPalindromes(self, prevPalindromes : List[int], digits: int) -> List[int]:
+        
+        #initial cases
+        if len(prevPalindromes) == 0:
+            if digits == 1:
+                return [str(i) for i in range(1, 10)]
+            if digits == 2:
+                return [str(i) for i in range(11, 100, 11)]
+            
+        #calculate the half point where we need to cut the previous palindromes and append new string (appends)
+        halfPoint = (digits -1) // 2
+        
+        #generate new appends based if we need to get odd or even length
+        if digits % 2 == 0:
+            appends = [str(i) for i in range(11, 100, 11)]
+            appends.insert(0,\'00\')
+        else:
+            appends = [str(i) for i in range(10)]
+        
+        result = []
+        for prevPalindrome in prevPalindromes:
+            for append in appends:
+                # from previous palindrome ex. 1221 cut it and generate new palindromes 12xx21                 
+                result.append(prevPalindrome[:halfPoint]+append+prevPalindrome[halfPoint:2*halfPoint])           
+        return result
+    
+    # convert a number to a given base
+    def toBase(self, number: int, base: int) -> str:
+        result = ""
+        while number != 0:
+            result = str(number % base) + result
+            number = number // base
+        return result

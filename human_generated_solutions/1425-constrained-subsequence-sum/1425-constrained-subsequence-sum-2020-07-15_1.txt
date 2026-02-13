@@ -1,0 +1,16 @@
+class Solution:
+    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+        def helper(j):
+            if j < 0:
+                return 0
+            
+            max_val = 0
+            for i in range(1, k+1):
+                max_val = max(max_val, helper(j-i))
+            
+            return nums[j]+max_val
+        
+        ans = float("-inf")
+        for i in range(len(nums)):
+            ans = max(ans, helper(i))
+        return ans

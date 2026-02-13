@@ -1,0 +1,18 @@
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        def convertTimeToInt(timePoint: str) -> int:
+            hour, minute = timePoint.split(\':\')
+            return int(hour) * 60 + int(minute)
+        
+        heap = []
+        for timePoint in timePoints:
+            heappush(heap, convertTimeToInt(timePoint))
+        
+        firstTime, diff = heappop(heap), float(\'inf\')
+        prevTime = firstTime
+        while len(heap):
+            time = heappop(heap)
+            diff = min(diff, time - prevTime)
+            prevTime = time
+        diff = min(diff, 1440 + firstTime - prevTime)
+        return diff

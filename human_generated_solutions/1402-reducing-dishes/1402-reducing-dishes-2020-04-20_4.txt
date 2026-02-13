@@ -1,0 +1,16 @@
+def maxSatisfaction(self, satisfaction: List[int]) -> int:
+	satisfaction.sort()
+	length = len(satisfaction)
+	mem = defaultdict(int)
+	def func(i, time, satis):
+		if i >= length:
+			return 0
+		elif (i, time) in mem:
+			return mem[(i, time)]
+		else:
+			A = func(i+1, time+1, satis) + time*satis[i]
+			B = func(i+1, time, satis)
+			mem[(i, time)] = max(A, B)
+			return mem[(i, time)]
+
+	return func(0, 1, satisfaction)

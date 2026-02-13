@@ -1,0 +1,25 @@
+class Solution:
+    def reachNumber(self, target: int) -> int:
+        def gaussSum(n):
+            return n*(n+1)//2
+        
+        def binaryFind(lower, upper):
+            t = abs(target)
+            sums, n = -1, -1
+            while lower <= upper:
+                mid = (lower+upper)//2
+                if gaussSum(mid) >= t:
+                    sums, n = gaussSum(mid), mid
+                    upper = mid-1
+                else:
+                    lower = mid+1
+            return sums, n
+        
+                    
+        lower, upper = 0, 10**5
+        # find min n s.t. 1+2+...+n>=abs(target)
+        sums, n = binaryFind(lower, upper)
+        while sums%2 != abs(target)%2:
+            sums += n+1
+            n += 1
+        return n

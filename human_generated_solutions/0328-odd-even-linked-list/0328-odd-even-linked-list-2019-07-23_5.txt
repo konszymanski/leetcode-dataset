@@ -1,0 +1,13 @@
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        if not head:return None
+        even=head.next
+        i=head
+        j=even
+        while i.next and j.next:
+            i.next=j.next
+            i=i.next
+            j.next=i.next
+            j=j.next
+        i.next=even
+        return head

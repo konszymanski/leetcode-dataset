@@ -1,0 +1,12 @@
+class Solution:
+    def uncommonFromSentences(self, A: str, B: str) -> List[str]:
+        
+        # split each sentence into words
+        A, B = A.split(), B.split()
+        
+        # words that repeat only once
+        A1 = [x for x in A if A.count(x) == 1]
+        B1 = [x for x in B if B.count(x) == 1]
+        
+        # return uncommon words
+        return [w for w in A1 if w not in B] + [w for w in B1 if w not in A]

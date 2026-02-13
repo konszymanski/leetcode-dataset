@@ -1,0 +1,13 @@
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root: return None
+        
+        q = [root]
+        
+        while q:
+            n = q.pop(0)
+            n.left, n.right = n.right, n.left
+            if n.left: q.append(n.left)
+            if n.right: q.append(n.right)
+        
+        return root

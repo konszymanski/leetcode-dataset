@@ -1,0 +1,9 @@
+class Solution:
+    def mincostToHireWorkers(self, Q, W, K):
+        ans, csum, H = float(\'inf\'), 0, []
+        for q, w in sorted(zip(Q, W), key = lambda x: x[1] / x[0]):
+            csum += q
+            heapq.heappush(H, -q)
+            if len(H) > K: csum += heapq.heappop(H)
+            if len(H) == K: ans = min(ans, csum * w / q)
+        return ans

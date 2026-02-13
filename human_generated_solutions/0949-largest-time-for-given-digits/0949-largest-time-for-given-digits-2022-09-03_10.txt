@@ -1,0 +1,24 @@
+class Solution:
+    def largestTimeFromDigits(self, arr: List[int]) -> str:
+        result = \'\'
+        iterate = [2,3,5,9] #most cases are handled by this iterative list
+        arr.sort(reverse = True)
+        if arr[2] == 2 and arr[1] >=6 and arr[1] <=9:
+            iterate = [1, 9, 5, 9] #handle special cases
+        for index, value in enumerate( iterate ):
+            if index == 1 and h < 2:
+                value = 9
+            h = self.smallerThanKLargest(arr, value)
+            if h == -float(\'inf\'):
+                return \'\'
+            if index == 2: 
+                result += \':\'
+            result += str(h)
+        return result
+    
+    def smallerThanKLargest(self, arr, k):
+        for index, value in enumerate(arr):
+            if value <= k:
+                arr.pop(index)
+                return value
+        return -float(\'inf\')

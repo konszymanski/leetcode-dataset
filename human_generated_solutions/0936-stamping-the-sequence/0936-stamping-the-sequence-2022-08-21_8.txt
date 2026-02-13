@@ -1,0 +1,91 @@
+from typing import List
+
+
+class Solution:
+    def movesToStamp(self, stamp: str, target: str) -> List[int]:
+        # The stamp and target must start with the same letter and end with the same letter
+        if stamp[0] != target[0] or stamp[-1] != target[-1]:
+            return []
+
+        # The target must contain at least one occurrence of the full stamp
+        idx = target.rfind(stamp)
+        if idx == -1:
+            return []
+
+        res = [idx]
+        stampSize = len(stamp)
+        rightTargetOffset = idx + stampSize
+        leftTarget, rightTarget = target[:idx], target[rightTargetOffset:]
+
+        # Handle the right-most part that doesn\'t contain the full stamp; for it, the stamp can only spread further to the left
+        while rightTarget:
+            # Try reduction by the left
+            rightTargetSize = len(rightTarget)
+            for stampStartIdx in range(max(1, stampSize - rightTargetSize), stampSize):
+                if rightTarget.startswith(stamp[stampStartIdx:]):
+                    res.append(rightTargetOffset - stampStartIdx)
+                    subStampSize = stampSize - stampStartIdx
+                    rightTargetOffset += subStampSize
+                    rightTarget = rightTarget[subStampSize:]
+                    break
+            else:
+                # No reduction possible, so the problem is impossible
+                return []
+
+        while True:
+            # Find the next right-most occurrence of the full stamp, if any
+            idx = leftTarget.rfind(stamp)
+            if idx == -1:
+                break
+
+            res.append(idx)
+            rightTargetOffset = idx + stampSize
+            leftTarget, rightTarget = leftTarget[:idx], leftTarget[rightTargetOffset:]
+
+            # Handle a middle part that doesn\'t contain the full stamp; for it, the stamp can spread further both to the left and to the right
+            while rightTarget:
+                rightTargetSize = len(rightTarget)
+
+                # If the part is shorter than the stamp, then we can check whether the stamp contains it
+                if rightTargetSize < stampSize:
+                    idx = stamp.rfind(rightTarget)
+                    if idx != -1:
+                        res.append(rightTargetOffset - idx)
+                        rightTarget = ""  # Not needed but just for clarity
+                        break
+
+                # Otherwise, try maximum reduction by the right first and then by the left
+                for subStampSize in range(min(stampSize - 1, rightTargetSize), 0, -1):
+                    # Try reduction by the right first
+                    stampEndIdx = subStampSize
+                    if rightTarget.endswith(stamp[:stampEndIdx]):
+                        res.append(rightTargetOffset + rightTargetSize - stampEndIdx)
+                        rightTarget = rightTarget[:-stampEndIdx]
+                        break
+                    # And then by the left
+                    stampStartIdx = stampSize - subStampSize
+                    if rightTarget.startswith(stamp[stampStartIdx:]):
+                        res.append(rightTargetOffset - stampStartIdx)
+                        subStampSize = stampSize - stampStartIdx
+                        rightTargetOffset += subStampSize
+                        rightTarget = rightTarget[subStampSize:]
+                        break
+                else:
+                    # No reduction possible at all, so the problem is impossible
+                    return []
+
+        # Handle the left-most part that doesn\'t contain the full stamp; for it, the stamp can only spread further to the right
+        while leftTarget:
+            # Try reduction by the right
+            leftTargetSize = len(leftTarget)
+            for stampEndIdx in range(min(stampSize - 1, leftTargetSize), 0, -1):
+                if leftTarget.endswith(stamp[:stampEndIdx]):
+                    res.append(leftTargetSize - stampEndIdx)
+                    leftTarget = leftTarget[:-stampEndIdx]
+                    break
+            else:
+                # No reduction possible, so the problem is impossible
+                return []
+
+        res.reverse()
+        return res

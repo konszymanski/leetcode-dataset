@@ -1,0 +1,35 @@
+class Solution:
+    def flipLights(self, n: int, presses: int) -> int:
+        n = min(n, 6)
+        Possibilities = {
+            0: {0},
+            1: {1},
+            2: {0,2},
+            3: {1,3},
+            4: {0,2,4}
+        }
+        if presses>4:
+            presses = 4-presses%2
+        on_counts = Possibilities[presses]
+        outcomes = set()
+        for x in range(16):
+            cnt = bool(x&1)+bool(x&2)+bool(x&4)+bool(x&8)
+            if cnt not in on_counts:
+                continue
+            state = [0]*n
+            if x&1:
+                # press button 1
+                state = [v^1 for v in state]
+            if x&2:
+                # press button 2
+                state = [v^(i&1) for i,v in enumerate(state)]
+            if x&4:
+                # press button 3
+                state = [v^(i&1)^1 for i,v in enumerate(state)]
+            if x&8:
+                # press button 4
+                if n>0: state[0] ^= 1
+                if n>3: state[3] ^= 1
+            
+            outcomes.add(tuple(state))
+        return len(outcomes)

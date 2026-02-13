@@ -1,0 +1,7 @@
+class Solution:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        if len(word1) != len(word2):
+            return False
+    
+        C1, C2 = Counter(word1), Counter(word2)
+        return C1.keys() == C2.keys() and sorted(C1.values()) == sorted(C2.values())

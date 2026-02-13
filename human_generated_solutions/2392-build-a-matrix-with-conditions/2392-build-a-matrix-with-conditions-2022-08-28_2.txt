@@ -1,0 +1,52 @@
+class Solution:
+    def buildMatrix(self, k: int, rowConditions: List[List[int]], colConditions: List[List[int]]) -> List[List[int]]:
+        try:
+            row_conditions_topsort, row_node_to_index = self.top_sort(k, rowConditions)
+            col_conditions_topsort, col_node_to_index = self.top_sort(k, colConditions)
+            matrix = [[0 for _ in range(k)] for _ in range(k)]
+            
+            for n in range(1, k + 1):
+                row, col = row_node_to_index[n], col_node_to_index[n]
+                matrix[row][col] = n
+            
+            return matrix
+            
+            
+        except:
+            # If error thrown, kahn\'s algorithm detected a cycle
+            return []
+        
+    def top_sort(self, k, edges: tuple[int, int]) -> list[int]:
+        indegree = defaultdict(int)
+        graph = defaultdict(list)
+        
+        for n in range(1, k + 1):
+            indegree[n] = 0
+        
+        for u, v in edges:
+            graph[u].append(v)
+            indegree[v] += 1
+        
+        queue = deque()
+        topsort = []
+        for n in range(1, k + 1):
+            if indegree[n] == 0:
+                queue.append(n)
+        
+        while queue:
+            node = queue.popleft()
+            topsort.append(node)
+            
+            for nei in graph[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    queue.append(nei)
+        
+        if len(topsort) != k:
+            raise Exception()
+        
+        node_to_index = {}
+        for i, n in enumerate(topsort):
+            node_to_index[n] = i
+        
+        return topsort, node_to_index

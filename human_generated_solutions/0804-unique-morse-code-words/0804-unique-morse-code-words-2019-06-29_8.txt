@@ -1,0 +1,20 @@
+class Solution(object):
+    def uniqueMorseRepresentations(self, words):
+        """
+        :type words: List[str]
+        :rtype: int
+        """
+        letters = "abcdefghijklmnopqrstuvwxyz"
+        encodings = [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+		
+		# map letter to encoding
+        map = dict()
+        for letter, encoding in zip(letters,encodings):
+            map[letter] = encoding
+           
+		# for each word given, translate to Morse code using lookup table 
+        for i in range(len(words)):
+            words[i] = "".join([map[c] for c in words[i]])
+        
+		# count distinct encodings
+        return len(set(words))

@@ -1,0 +1,32 @@
+class Solution:
+    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+        hm = defaultdict(int) #to store the elements of the sliding window.
+        
+        total = 0
+		res = 0 
+        for i in range(k):
+            hm[nums[i]] += 1
+            total += nums[i]
+        
+		# if all keys of the hashmap(elements of window) are distinct, then store their sum in res.
+        if len(hm) == k:
+            res = total
+            
+        for i in range(k, len(nums)):
+			add = nums[i] #element to add in the window.
+            remo = nums[i - k] #element to remove from window.
+            
+			hm[add] += 1
+            hm[remo] -= 1
+            if hm[remo] == 0:
+                hm.pop(remo)
+                
+			total += add
+            total -= remo
+            
+			# if all keys of the hashmap(elements of window) are distinct,
+			# then take max of res and total(sum of current window)
+            if len(hm) == k:
+                res = max(res, total)
+        
+        return res

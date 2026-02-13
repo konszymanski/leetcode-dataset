@@ -1,0 +1,8 @@
+class Solution:
+    def findDifferentBinaryString(self, nums: List[str]) -> str:
+        length = len(nums)
+        for start in range(17):
+            bina = bin(start)[2:].zfill(length)
+            if(bina not in nums):
+                return bina
+        return ""

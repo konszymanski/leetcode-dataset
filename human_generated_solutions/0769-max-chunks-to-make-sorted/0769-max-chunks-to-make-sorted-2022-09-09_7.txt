@@ -1,0 +1,15 @@
+def maxChunksToSorted(self, arr: List[int]) -> int:
+        stack=[]
+        n = len(arr)
+        idx = 0
+        re = 0
+        for i in range(n):
+            bis = bisect.bisect(stack, arr[i])
+            stack.insert(bis, arr[i])
+            if stack == list(range(idx,i+1)):
+                re+=1
+                idx=i+1
+                stack.clear()
+            elif arr[i] == n-1 and i < n-1:
+                return re + 1
+        return re

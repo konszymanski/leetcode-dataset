@@ -1,0 +1,6 @@
+class Solution:
+    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
+        #
+        arr.sort()
+        difference = {k-v for k,v in zip(arr[1:],arr[:-1])}
+        return len(difference)==1

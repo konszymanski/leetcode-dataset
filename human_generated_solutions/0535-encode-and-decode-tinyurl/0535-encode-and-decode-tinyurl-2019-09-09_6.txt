@@ -1,0 +1,35 @@
+import string
+import random
+
+class Codec:
+    
+    def __init__(self):
+        self.urls_db = {}
+        self.base_url = \'http://tinyurl.com/\'
+        self.hash_size = 6
+
+    def encode(self, longUrl):
+        """Encodes a URL to a shortened URL.
+        
+        :type longUrl: str
+        :rtype: str
+        """
+        generated_str = \'\'.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(self.hash_size))
+        while generated_str in self.urls_db:
+            generated_str = \'\'.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(self.hash_size))
+        
+        self.urls_db[generated_str] = longUrl
+        return self.base_url + generated_str
+
+    def decode(self, shortUrl):
+        """Decodes a shortened URL to its original URL.
+        
+        :type shortUrl: str
+        :rtype: str
+        """
+        code = shortUrl.split(\'/\')[-1]
+        return self.urls_db[code]
+
+# Your Codec object will be instantiated and called as such:
+# codec = Codec()
+# codec.decode(codec.encode(url))

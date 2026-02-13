@@ -1,0 +1,17 @@
+class RLEIterator:
+
+    def __init__(self, encoding: List[int]):
+        self.sequences = []
+        for index in range(1, len(encoding), 2):
+            if encoding[index-1]:
+                self.sequences.append([encoding[index], encoding[index-1]])
+
+    def next(self, n: int) -> int:
+        while self.sequences and self.sequences[0][1] - n < 0:
+            n -= self.sequences[0][1]
+            self.sequences.pop(0)
+        if not self.sequences:
+            return -1
+        
+        self.sequences[0][1] -= n
+        return self.sequences[0][0]

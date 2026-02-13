@@ -1,0 +1,21 @@
+def validPalindrome(self, s: str) -> bool:
+	start, end = 0, len(s)-1
+
+	def check_palindrome(start, end):
+		while start<end:
+			if s[start]==s[end]:
+				start+=1
+				end-=1
+			else:
+				return False  
+		return True
+
+	while start<end:
+		if s[start]==s[end]:
+			start+=1
+			end-=1
+		else:
+			if check_palindrome(start+1, end) or check_palindrome(start, end-1):
+				return True
+			return False
+	return True

@@ -1,0 +1,26 @@
+class Solution:
+    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
+        pdict = collections.defaultdict(set)
+        ans = list()
+        visited = set()
+        def zero():
+            return 0
+        diff = collections.defaultdict(zero)
+        for i,j in pairs:
+            diff[i] += 1
+            diff[j] -= 1
+            pdict[i].add(j)
+        
+        def findStartNode():
+            full = list(diff.keys())
+            for node in full:
+                if diff[node] == 1:
+                    return node
+            return i
+        def arrange(node):
+            while len(pdict[node]) > 0:
+                arrange(pdict[node].pop())
+            ans.append(node)
+        arrange(findStartNode())
+        ans.reverse()
+        return [[ans[i], ans[i+1]] for i in range(len(ans)-1)]

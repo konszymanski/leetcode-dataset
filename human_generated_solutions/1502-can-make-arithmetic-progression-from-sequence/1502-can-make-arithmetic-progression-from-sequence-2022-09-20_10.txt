@@ -1,0 +1,22 @@
+class Solution(object):
+    def canMakeArithmeticProgression(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: bool
+        """
+        N = len(arr)
+        arr = set(arr)
+        n  = len(arr)
+        if n==1:
+            return True
+        elif n!=N:
+            return False
+        min_ = min(arr)
+        max_ = max(arr)
+        
+        d = (2*sum(arr) - 2*min_*n)/(n*(n-1))
+        
+        for i in range(min_,max_+1,int(d)):
+            if i not in arr:
+                return False
+        return True

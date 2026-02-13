@@ -1,0 +1,23 @@
+class Solution:
+    def numberOfPaths(self, grid: List[List[int]], k: int) -> int:
+        def dfs(i, j):    
+            if (i, j) in memo: return memo[(i, j)]
+            currVal = grid[i][j]
+            res = [0 for _ in range(k)]
+            for di, dj in [(0, 1), (1, 0)]:
+                ni, nj = i+di, j+dj
+                if ni < m and nj < n:
+                    cnts = dfs(ni, nj)
+                    for l, cnt in enumerate(cnts):
+                        if cnt == 0: continue
+                        res[(l + currVal) % k] += cnt % (10 ** 9 + 7)
+            
+            memo[(i, j)] = res
+            return res
+
+        m, n = len(grid), len(grid[0])
+        memo = {}
+        memo[(m-1, n-1)] = [0 for _ in range(k)]
+        memo[(m-1, n-1)][grid[-1][-1] % k] = 1
+        dfs(0, 0)
+        return memo[(0, 0)][0] % (10 ** 9 + 7)

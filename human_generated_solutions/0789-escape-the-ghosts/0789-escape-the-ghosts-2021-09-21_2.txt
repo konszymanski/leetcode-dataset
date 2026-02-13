@@ -1,0 +1,9 @@
+class Solution:
+    def escapeGhosts(self, ghosts: List[List[int]], target: List[int]) -> bool:
+        t_x, t_y = target
+        m_x, m_y = abs(t_x), abs(t_y)
+        for x, y in ghosts:
+            manhattan = abs(t_x - x) + abs(t_y - y)
+            if manhattan <= m_x + m_y:
+                return False
+        return True

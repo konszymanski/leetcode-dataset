@@ -1,0 +1,21 @@
+class Solution:
+    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
+        # Generating a dictionary with maximum number of appearing for each letter in words2
+		d = {}
+        for w in words2:
+            x = {}
+            for c in w:
+                x[c] = x.get(c, 0) + 1
+            for k in x.keys():
+                d[k] = max(d.get(k, 0), x.get(k, 0))
+
+        def is_universal(w):
+            p = {}
+            for c in w:
+                p[c] = p.get(c, 0) + 1
+            for k in d.keys():
+                if k not in p or p[k] < d[k]: # Checking wheather each letter accoured at least the maximum number it appeared in words2 words
+                    return False
+            return True
+            
+        return [a for a in words1 if is_universal(a)]

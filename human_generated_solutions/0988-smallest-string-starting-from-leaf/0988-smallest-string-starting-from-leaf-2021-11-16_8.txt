@@ -1,0 +1,20 @@
+class Solution:
+    def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
+        
+        get_char = lambda x: chr(x+ord(\'a\'))
+		
+        def foo2(root, path):
+            if not root.left and not root.right:
+                return get_char(root.val) + path
+            
+            char = get_char(root.val)
+            left = right = None
+            if root.left:
+                left = foo2(root.left, char+path)
+            if root.right:
+                right = foo2(root.right, char+path)
+            if left and right:
+                return min(left, right)
+            return left or right
+            
+        return foo2(root, "")

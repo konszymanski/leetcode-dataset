@@ -1,0 +1,9 @@
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        values = {\'0\':0, \'1\':1, \'2\':2, \'3\':3, \'4\':4, \'5\':5, \'6\':6, \'7\':7, \'8\':8, \'9\':9}
+        def convert(string):
+            num = 0
+            for i in string:
+                num = num*10 + values[i]
+            return num
+        return str(convert(num1)+convert(num2))

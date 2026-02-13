@@ -1,0 +1,23 @@
+# (allsum - sum1) % k == 0 ----> requirement, find a sum1 and remove it
+# sum1 = prefixsum2 - prefixsum1 ------> prefixsum2 is current sum, prefixsum1 is previous sum
+# (allsum - (prefixsum2 - prefixsum1)) % k == 0
+# (allsum - prefixsum2) % k == -prefixsum1 % k
+# (-allsum + prefixsum2) % k == prefixsum1 % k
+# if we find a range sum whose remainder difference with allsum that has appeared before, <---- use hash map to save lookup time
+# we can remove it to make the sum of the rest is divisible by P. At the same time we are looking for the shortest subarray(range sum).
+class Solution:
+    def minSubarray(self, nums: List[int], p: int) -> int:
+        sumMod = sum(nums) % p
+        if sumMod == 0: return 0
+        prefixsum = 0
+        remainder2idx = {0:-1}
+        minLen = len(nums)
+        for idx, n in enumerate(nums):
+            prefixsum += n
+            prefixsum %= p # (11 % p + 3) % p == (11 + 3) % p, it is remainder now
+            target = (-sumMod + prefixsum + p) % p # it is possible that -sumMod + prefixsum is less than 0, make remainder > 0
+            if target in remainder2idx:
+                minLen = min(minLen, idx - remainder2idx[target])
+            remainder2idx[prefixsum] = idx
+
+        return -1 if minLen == len(nums) else minLen

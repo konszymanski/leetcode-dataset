@@ -1,0 +1,25 @@
+# Approach 1: Recursive
+# Time:  O(n)
+# Space: O(H), where H is the height of binary tree
+
+def lcaDeepestLeaves(root):
+    """
+    :type root: TreeNode
+    :rtype: TreeNode
+    """
+    def dfs(root):
+        if not root: 
+            return 0, None
+        heightLeft,  lcaLeft  = dfs(root.left)
+        heightRight, lcaRight = dfs(root.right)
+        # If left subtree height is greater, then the result is whatever returned by the left as it has highest depth elements.
+        # Similarly if right subtree height is greater, then the result is whatever returned by the right as it has highest depth elements.
+        # If heights of both left and right subtrees are equal then the current node is the common ancestors of the deepest leaves.
+        if heightLeft > heightRight: 
+            return heightLeft + 1, lcaLeft
+        elif heightLeft < heightRight: 
+            return heightRight + 1, lcaRight
+        else:
+            return heightLeft + 1, root
+
+    return dfs(root)[1]

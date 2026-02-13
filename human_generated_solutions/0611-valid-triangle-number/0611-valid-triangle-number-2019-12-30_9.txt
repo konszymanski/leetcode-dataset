@@ -1,0 +1,4 @@
+class Solution:
+    def triangleNumber(self, nums: List[int]) -> int:
+        dic=collections.Counter(i for i in nums if i)
+        return sum(sum((n-1)*(n-2)//2 for n in range(3,i+1)) for i in dic.values())+sum((dic[a]-1)*dic[a]//2*dic[b] for a,b in itertools.permutations(dic,2) if dic[a]>1 and a*2>b)+sum(dic[a]*dic[b]*dic[c] for a,b,c in itertools.combinations(dic,3) if a+b>c and b+c>a and c+a>b)

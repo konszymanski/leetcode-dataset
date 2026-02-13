@@ -1,0 +1,15 @@
+class Solution:
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        def numSubarraysWithSumAtmostTarget(nums: List[int], goal: int) -> int:
+            if goal < 0: 
+                return 0
+            res, left, sz = 0, 0, len(nums)
+            for right in range(sz):
+                goal -= nums[right]
+                while goal < 0:
+                    goal += nums[left]
+                    left += 1
+                res += (right - left + 1)
+            return res
+        
+        return numSubarraysWithSumAtmostTarget(nums, goal) - numSubarraysWithSumAtmostTarget(nums, goal - 1)

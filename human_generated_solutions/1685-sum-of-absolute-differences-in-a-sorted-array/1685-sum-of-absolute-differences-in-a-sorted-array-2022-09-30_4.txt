@@ -1,0 +1,38 @@
+class Solution:
+    def getSumAbsoluteDifferences(self, nums: List[int]) -> List[int]:
+        
+        #Time -> O(N) Space -> O(1)
+		#Logic is that since the array is sorted 
+		#when I am at ith index, all numbers to the left of ith index would be <= ith number
+		#whereas all numbers to the right of ith index would be >= ith number
+		#Since we want absolute diff which needs to be positive so
+		#for numbers to its left since we will be subtracting each number by current number
+		# we get the base value which is product of (ith + 1 )*number and sub it from its prefix 
+		#whereas to its right we get the right sum which will be greater than (len(nums)-i-1) * ith
+		#so right diff would be rightsum - base
+		
+		#left sum
+        prefix = 0		
+        total  = sum(nums)
+        length = len(nums)
+		#answer
+        output = []
+        
+        for i in range(len(nums)):
+		
+            #current number
+            num = nums[i]
+			#add to the prefix
+            prefix += num
+            #we get the left difference
+			#where prefix <= target 
+            leftDiff  = (num * (i+1)) - prefix
+            
+			#to get rightDiff we get rightSum first 			
+            rightSum  = total - prefix            
+			#since rightSum is greater than the base
+            rightDiff = rightSum -(num * (length - i -1 ))
+            #current number abs differences
+            totalDiff = rightDiff + leftDiff
+            output.append(totalDiff)        
+        return output

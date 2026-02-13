@@ -1,0 +1,22 @@
+class Solution:
+    def totalStrength(self, strength: List[int]) -> int:
+        res = 0
+        prefix = [0]
+        stack = []
+        
+        for n in strength:
+            prefix.append(prefix[-1] + n)
+            
+        for i , n in enumerate(strength):
+            newStart = i
+            while stack and stack[-1][1] > n:
+                start, val = stack.pop()
+                total = prefix[i] - prefix[start]
+                res = res + (val*total)
+                newStart = start
+            stack.append([newStart,n])
+        
+        for start , val in stack:
+            total = (prefix[len(strength)]- prefix[start])
+            res = res + (val*total)
+        return res % (10**9 + 7)

@@ -1,0 +1,34 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        if len(connections) < n - 1:
+            return -1
+
+        parent_nodes = {i: i for i in range(n)}
+        rank_nodes = {i: 0 for i in range(n)}
+
+        def find(node):
+            if node != parent_nodes[node]:
+                parent_nodes[node] = find(parent_nodes[node])
+            return parent_nodes[node]
+
+        def merge(node_x, node_y):
+            parent_x = find(node_x)
+            parent_y = find(node_y)
+            if parent_x != parent_y:
+                rank_x = rank_nodes[parent_x]
+                rank_y = rank_nodes[parent_y]
+                if rank_x < rank_y:
+                    parent_nodes[parent_x] = parent_y
+                elif rank_x > rank_y:
+                    parent_nodes[parent_y] = parent_x
+                elif rank_x == rank_y:
+                    parent_nodes[parent_x] = parent_y
+                    rank_nodes[parent_y] += 1
+                return True
+            return False
+        
+        for u, v in connections:
+            if merge(u, v):
+                n -= 1
+           
+        return n - 1

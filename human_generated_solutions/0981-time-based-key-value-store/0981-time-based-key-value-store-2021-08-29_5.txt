@@ -1,0 +1,29 @@
+import bisect
+from collections import defaultdict
+
+class TimeMap:
+
+    def __init__(self):
+        self.values = defaultdict(list)
+        self.timestamps = defaultdict(list)
+        return
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.values[key].append(value)
+        self.timestamps[key].append(timestamp)
+        # Note: All the timestamps are strictly increasing hence no sorting required.
+        return
+
+    def get(self, key: str, timestamp: int) -> str:
+        res = ""
+        if key in self.timestamps:
+            # NOTE: If there are multiple such values returns the value associated with the largest timestamp_prev
+            pos = bisect.bisect_right(self.timestamps[key], timestamp)
+            res = self.values[key][pos-1] if pos else res
+        return res
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)

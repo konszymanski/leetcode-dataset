@@ -1,0 +1,54 @@
+class WordFilter:
+    
+    def __init__(self, words: List[str]):
+        self.prefixes={}
+        self.suffixes ={}
+        self.cache ={}
+        
+        
+        for i,word in enumerate(words):
+            self.addw(i,word)
+        
+    def addw(self,ind,word):
+	# store all possible prefixes
+        for i in range(1,len(word)+1):
+            if word[:i] in self.prefixes:
+                self.prefixes[word[:i]][ind]=ind
+            else:
+                self.prefixes[word[:i]]={ind:ind}
+				
+		# store all possible suffixes
+        for i in range(len(word)-1,-1,-1):
+            if word[i:] in self.suffixes:
+                self.suffixes[word[i:]][ind]=ind
+            else:
+                self.suffixes[word[i:]]={ind:ind}
+                
+
+    def f(self, prefix: str, suffix: str) -> int:
+        
+        if (suffix,prefix) in self.cache:
+            return self.cache[(suffix,prefix)]
+        
+        if prefix not in self.prefixes or suffix not in self.suffixes:
+            return -1
+        
+        mmax = -1
+        
+        if len(self.prefixes[prefix])<len(self.suffixes[suffix]):
+            for i in self.prefixes[prefix]:
+                if i in self.suffixes[suffix]:
+                    print(i)
+                    mmax = max(mmax,i)
+                    
+        else:
+            for i in self.suffixes[suffix]:
+                if i in self.prefixes[prefix]:
+                    mmax = max(mmax,i)
+                    
+        self.cache[(suffix,prefix)] = mmax
+        return mmax
+
+# Your WordFilter object will be instantiated and called as such:
+# obj = WordFilter(words)
+# param_1 = obj.f(prefix,suffix)

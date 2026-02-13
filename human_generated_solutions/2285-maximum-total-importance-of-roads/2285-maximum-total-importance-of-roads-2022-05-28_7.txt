@@ -1,0 +1,8 @@
+class Solution:
+    def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+        connectivity = [0]*n
+        for road in roads:
+            connectivity[road[0]]+=1
+            connectivity[road[1]]+=1
+        connectivity.sort()
+        return sum([(i+1)*connectivity[i] for i in range(n)])

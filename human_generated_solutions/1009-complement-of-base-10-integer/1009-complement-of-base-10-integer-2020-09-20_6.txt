@@ -1,0 +1,7 @@
+class Solution:
+    def bitwiseComplement(self, N: int) -> int:
+        if N==0:
+            return 1
+        p = int(log2(N))
+        mask = int(2**(p+1) - 1)
+        return N^mask

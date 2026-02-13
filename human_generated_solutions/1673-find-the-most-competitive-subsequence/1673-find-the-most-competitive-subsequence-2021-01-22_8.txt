@@ -1,0 +1,38 @@
+\'\'\'
+w: array, greedy
+h: for a fixed size of k, usually think about a sliding window+hashmap,
+    however, subsequence allow skipped item, so sliding window may not be applicable
+    then think about a backtrack, however, the length of nums array indicates that we 
+    could not find all the possible subsequence
+    Note that although subsequence allows skipped item, there is one important property
+    which is the relative order of the number must be the same as in the original array
+    which mean we have to add the item by following the order. so we may use a stack or
+    a queue.
+    note the definition of "competitive", the naive approach is that we find all the subsequence
+    and compare them at each index in parallel and filter out those ones have larger number at the same index, 
+    this is equal to that for each position in the subsequence, we only care if it is the smallest number
+    we can add from the number after current position, which indicate a greedy method to do the comparison
+    on the fly:
+    1) we scan the item one by one
+        if current item is less the previous item, we discard the previous
+        but we need to make sure we have enough items left to make the subsquence
+        of length k
+        
+        if now the current item is the smallest, we add it to the end of the array
+        
+    2) at the end, we only retrieve the [0:k] items as the find result
+
+\'\'\'
+
+class Solution:
+    def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
+        stack = [nums[0]]
+        n = len(nums)
+        
+        for i in range(1,n):
+            while stack and stack[-1] > nums[i] and k-len(stack) < n-i:
+                stack.pop()
+            
+            stack.append(nums[i])
+        
+        return stack[:k]

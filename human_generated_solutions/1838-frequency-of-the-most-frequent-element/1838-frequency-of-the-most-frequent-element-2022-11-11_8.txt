@@ -1,0 +1,22 @@
+class Solution:
+    def maxFrequency(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        prefix = []
+        sum = 0
+        for i in range(len(nums)):
+            sum += nums[i]
+            prefix.append(sum)
+
+        output = 1
+        l = 0
+        for r in range(1, len(nums)):
+            while l < r:
+                length = r - l + 1
+                expected = nums[r] * length
+                actual = prefix[r] - (0 if l - 1 < 0 else prefix[l - 1])
+                diff = expected - actual
+                if diff <= k:
+                    output = max(output, length)
+                    break
+                else: l += 1
+        return output

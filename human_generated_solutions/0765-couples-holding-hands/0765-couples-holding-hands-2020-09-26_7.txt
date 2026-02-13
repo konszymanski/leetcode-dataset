@@ -1,0 +1,43 @@
+class DSU:
+    def __init__(self, n):
+        self.parent = range(n)
+        self.rank = [0] * (n) 
+        self.count = n # record the number of component
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        xr, yr = self.find(x), self.find(y)
+        if xr != yr:
+            self.count -= 1 # we connect two component to one, so count -= 1
+            if self.rank[xr] < self.rank[yr]:
+                self.parent[xr] = yr
+            elif self.rank[xr] > self.rank[yr]:
+                self.parent[yr] = xr
+            else:
+                self.parent[yr] = xr
+                self.rank[xr] += 1
+            
+class Solution(object):
+    def minSwapsCouples(self, row):
+        """
+        :type row: List[int]
+        :rtype: int
+        """
+        N = len(row)// 2 #N couch
+        
+        edges = []
+        
+        for i in range(0, len(row), 2):
+            edges.append([row[i]//2, row[i+1]//2])
+            
+        dsu = DSU(N)
+        for u, v in edges:
+            dsu.union(u, v)
+            
+		#print(edges)	
+        #print(dsu.parent)
+        return N - dsu.count

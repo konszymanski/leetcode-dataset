@@ -1,0 +1,25 @@
+class Solution:
+    Inf = float(\'inf\')
+    def minAreaFreeRect(self, A):
+        #
+        L    = len(A)
+        res  = self.Inf
+        sqrt = math.sqrt
+        #
+        dist = lambda x1,y1,x2,y2: sqrt( (x2-x1)**2 + (y2-y1)**2 )
+        D    = defaultdict(list)
+        #
+        for i1 in range(L):
+            for i2 in range(i1+1,L):
+                x1,y1 = A[i1]
+                x2,y2 = A[i2]
+                C     = (x2+x1)/2. , (y2+y1)/2.
+                r2    = (x2-x1)**2 + (y2-y1)**2
+                #
+                if (C,r2) in D:
+                    for x3,y3 in D[C,r2]:
+                        res = min(res, dist(x1,y1,x3,y3)*dist(x2,y2,x3,y3) )
+                #
+                D[C,r2].append( (x1,y1) )
+        #
+        return 0 if res==self.Inf else res

@@ -1,0 +1,20 @@
+class Solution:
+    def numsSameConsecDiff(self, n: int, k: int) -> List[int]:
+        def bt(d, num, i):
+            num = num * 10 + d            
+            
+            if i == n:
+                result.append(num)
+                return 
+            
+            if d + k < 10:
+                bt(d + k, num, i + 1)
+                
+            if k > 0 and d - k >= 0:
+                bt(d - k, num, i + 1)
+            
+        result = []
+        for d in range(1, 10):
+            bt(d, 0, 1)
+        
+        return result

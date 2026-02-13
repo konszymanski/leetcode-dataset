@@ -1,0 +1,27 @@
+public int eatenApples(int[] apples, int[] days) {
+        int res = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a, b) -> a[0] - b[0]);
+        int length = apples.length;
+        for(int day = 0; day < 40001; day++){
+            if (day < length){
+                pq.add(new int[]{day + days[day]-1, apples[day]});
+            }
+            while (!pq.isEmpty()){
+                int[] cur = pq.peek();
+                if(cur[0] < day){
+                    pq.poll();
+                }else{
+                    break;
+                }
+            }
+            if (!pq.isEmpty()) {
+                int[] cur = pq.poll();
+                cur[1]--;
+                res += 1;
+                if(cur[1] > 0){
+                    pq.add(cur);
+                }
+            }
+        }
+        return res;
+    }

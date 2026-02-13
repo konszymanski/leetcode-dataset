@@ -1,0 +1,28 @@
+class Solution:
+    def maxWidthRamp(self, A: List[int]) -> int:
+        B = {}
+        for i in range(len(A)):
+            x = A[i]
+            if x in B:
+                B[x].append(i)
+            else:
+                B[x] = [i]
+                
+        mini = [float(\'inf\')]
+        maxi = [float(\'-inf\')]
+        for x in sorted(B.keys()):
+            mini.append(min(mini[-1], min(B[x])))
+            
+        for x in  sorted(B.keys(), reverse = True):
+            maxi.append(max(maxi[-1], max(B[x])))
+            
+        maxi = maxi[::-1][:-1]
+        mini = mini[1:]
+      
+        p = 0 
+        res = float(\'-inf\')
+        while p < len(mini):
+            res = max(res, maxi[p] - mini[p])
+            p += 1
+            
+        return res

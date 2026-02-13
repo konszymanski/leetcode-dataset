@@ -1,0 +1,71 @@
+class Solution:
+    def evaluate(self, expression: str) -> int:
+        return int(self.eval(expression))        
+        
+    def split(self, exp):
+        comps= [""]
+        bracks_count= 0
+        for c in exp:
+            if c==" " and bracks_count==0:
+                comps.append("")
+                continue
+            if c=="(":
+                bracks_count+=1
+            elif c==")":
+                bracks_count-=1
+            comps[-1]+=c
+
+        while len(comps)>1 and comps[-1]=="":
+            comps= comps[:-1]
+        return comps
+
+
+
+    def eval(self, exp, var_dict= {}):
+
+        exp= exp.lstrip(" ").rstrip(" ")
+        while len(exp)>2 and exp[0]==\'(\' and exp[-1]==")":
+            exp= exp[1:-1]
+            exp= exp.lstrip(" ").rstrip(" ")
+
+        try:
+            return float(exp)
+        except:
+            pass
+
+        try:
+            return var_dict[exp]
+        except:
+            pass
+
+        comps= self.split(exp)
+
+
+        if comps[0].lower()=="let":
+            exp_to_eval= comps[-1]
+            lets_to_eval= comps[1:-1]
+            if len(lets_to_eval)%2!=0:
+                raise Exception("!!! No of let assignments are bad... "+ exp)
+            for pair_id in range(0, len(lets_to_eval), 2):
+                var_name, var_val= lets_to_eval[pair_id], lets_to_eval[pair_id+1]
+                var_val= self.eval(var_val, var_dict= var_dict.copy())
+                var_dict.update({var_name: var_val})
+            return self.eval(exp_to_eval, var_dict=var_dict.copy())
+
+        elif comps[0].lower()=="add":
+            if len(comps)!=3:
+                raise Exception("!!! Too many values for mult... ", exp)
+            v1= self.eval(comps[1], var_dict= var_dict.copy())
+            v2= self.eval(comps[2], var_dict=var_dict.copy())
+            return v1+v2
+
+        elif comps[0].lower()=="mult":
+            if len(comps)!=3:
+                raise Exception("!!! Too many values for mult... ", exp)
+            v1= self.eval(comps[1], var_dict= var_dict.copy())
+            v2= self.eval(comps[2], var_dict=var_dict.copy())
+            return v1*v2
+
+        else:
+            print(var_dict)
+            raise Exception(exp)

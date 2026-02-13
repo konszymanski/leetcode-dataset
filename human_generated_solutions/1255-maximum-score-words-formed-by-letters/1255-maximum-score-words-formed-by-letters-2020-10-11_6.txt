@@ -1,0 +1,31 @@
+class Solution:
+	def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+		
+		def foo(i, words, counts, score, profit):
+			nonlocal res
+			
+			if i==len(words):
+				res = max(res, profit)
+				return
+			
+            # if possible take the word at index i
+			if all(counts[w] >= words[i][w] for w in words[i].keys()):
+				s = 0
+				for w in words[i].keys():
+					counts[w] -= words[i][w]
+					s += words[i][w] * score[ord(w)-ord(\'a\')]
+
+				foo(i+1, words, counts, score, profit+s)
+				
+				for w in words[i].keys():                    
+					counts[w] += words[i][w]
+			
+            # go deep without taking the word at index i
+			foo(i+1, words, counts, score, profit)
+					
+		res = 0
+		words = [collections.Counter(word) for word in words]
+		counts = collections.Counter(letters)
+        profit = 0
+		foo(0, words, counts, score, profit)
+		return res

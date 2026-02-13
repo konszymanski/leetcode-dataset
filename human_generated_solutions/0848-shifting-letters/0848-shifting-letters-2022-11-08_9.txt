@@ -1,0 +1,18 @@
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[int]) -> str:
+        """Reverse shifts array and add incremental sum at each position.
+        e.g. [3,5,9] would become -> [17,14,9]
+        Now iterate for each character in s and add this offset to form a new
+        character, considering that the new character should be a lower case
+        letter, we need to scale it down to be in ascii range 97-122.
+        """
+        num = 0
+        for r in range(len(shifts)-1, -1, -1): # Reverse the shifts array and sum at each index
+            new_sum = shifts[r] + num
+            shifts[r] += num
+            num = new_sum
+        a = [\'\']*len(s)
+        for i in range(len(s)):
+            new_ascii = (ord(s[i]) - ord(\'a\') + shifts[i]) % 26 + ord(\'a\')
+            a[i] = chr(new_ascii)
+        return \'\'.join(a)

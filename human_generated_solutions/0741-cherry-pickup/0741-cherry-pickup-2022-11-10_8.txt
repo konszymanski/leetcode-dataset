@@ -1,0 +1,38 @@
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+
+        @cache
+        def dp(x1, y1, x2):
+            y2 = x1+y1-x2
+
+            if not(0 <= x1 < len(grid) and 0 <= y1 < len(grid[0]) and 0 <= x2 < len(grid) and 0 <= y2 < len(grid[0])):
+                return -float(\'inf\')
+
+            if grid[x1][y1] == -1 or grid [x2][y2] == -1 :
+                return -float(\'inf\')
+
+            if x1 == len(grid)-1 and x2 == len(grid)-1 and y1 == len(grid[0])-1 and y1 == len(grid[0])-1 :
+                if grid[x1][y1] == 1 :
+                    return 1 
+                else :
+                    return 0 
+
+            if x1 == x2 and y1 == y2 :
+                if grid[x1][y1] == 1 :
+                    return 1+max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+                else:
+                    return max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+            else :
+                if grid[x1][y1] == 1 and grid[x2][y2] == 1:
+                    return 2+max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+                elif grid[x1][y1] == 1:
+                    return 1+max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+                elif grid[x2][y2] == 1:
+                    return 1+max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+                else:
+                    return max(dp(x1+1, y1, x2+1), dp(x1+1, y1, x2), dp(x1, y1+1, x2+1), dp(x1, y1+1, x2))
+        
+        if dp(0,0,0) == -float(\'inf\'):
+            return 0
+        else :
+            return dp(0,0,0)

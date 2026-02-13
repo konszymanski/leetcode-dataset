@@ -1,0 +1,11 @@
+class Solution:
+    def canConstruct(self, s: str, k: int) -> bool:
+        \'\'\'
+        For a palindrome, its odd-count character has to be less than or eqaul to one. 
+        Then in order to get k many palindromic substrings, the number of odd-count chracters in s has to be less than
+        or equal to k \'\'\'
+        
+        if len(s) < k:
+            return False
+        freq = Counter(s)
+        return sum(1 for val in freq.values() if val % 2 != 0) <= k

@@ -1,0 +1,35 @@
+class Solution:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        # the time will be collected to \'time\' array, 
+		# but first let\'s put the dist and speed to keep track of correct speed for dist
+		# after we sort
+        time = []
+        
+        for i in range(len(position)):
+            time.append((position[i], speed[i]))
+        time.sort(key=lambda x: x[0])
+    
+        # let\'s calculate the time keeping the decimal points in place
+        for idx, distSpeed in enumerate(time):
+            time[idx] = float(target - distSpeed[0]) / distSpeed[1]
+        
+        # We know that if the car behind takes more time to reach the target
+        # then, that means the two car is separated, so we will increase the fleet count
+        fleetCount = 0
+        
+        # fleetLeaderTime represent, whenever we find new fleet,
+        # we want every car in the fleet to take less time than the
+        # head(lead) of the fleet\'s time taken
+        fleetLeaderTime = 0
+        
+        for i in range(len(time) - 1, -1, -1):
+            curr = time[i]
+            # if currCar\'s time need to achieve the target is less than
+            # the head of fleet, then the car is part of the fleet
+            # otherwise, we found separate fleet, so increment, and update the
+            # \'fleetLeaderTime\'
+            if curr > fleetLeaderTime:
+                fleetCount += 1
+                fleetLeaderTime = curr
+        
+        return fleetCount

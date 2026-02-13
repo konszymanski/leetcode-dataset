@@ -1,0 +1,9 @@
+class Solution:
+    def countSegments(self, s: str) -> int:
+        x,i=0,0
+        s+=" " #This is done so that we can make every string equivalent with respect to trailing whitespaces so we can count them uniformly
+        while i<len(s)-1:
+            if s[i]!=\' \' and s[i+1]==\' \':
+                x+=1
+            i+=1
+        return x

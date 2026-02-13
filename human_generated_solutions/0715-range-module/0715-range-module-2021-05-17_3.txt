@@ -1,0 +1,61 @@
+from sortedcontainers import SortedDict
+
+class RangeModule:
+
+    def __init__(self):
+        self.track = SortedDict()
+
+    def addRange(self, left: int, right: int) -> None:
+        start, end = left, right
+        drop = []
+        # find overlap range
+        for s, e in self.track.items():
+            if e < start:
+                continue
+            
+            if s > end:
+                continue
+            # update boundary
+            start = min(s, start)
+            end = max(e, end)
+			# track overlap interval start time
+            drop.append(s)
+        
+		# delete overlap interval
+        while drop:
+            del self.track[drop.pop()]
+        
+		#insert new one
+        self.track[start] = end
+
+    def queryRange(self, left: int, right: int) -> bool:
+		#check if there is a interval cover left and right
+        for s, e in self.track.items():
+            if s <= left and right <= e:
+                return True
+        
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+		# find overlap intervals and delete them
+        start, end = left, right
+        drop = []
+        for s, e in self.track.items():
+            if e < start:
+                continue
+            
+            if s > end:
+                continue
+                
+            start = min(start, s)
+            end = max(end, e)
+            drop.append(s)
+        
+        while drop:
+            del self.track[drop.pop()]
+        # insert new interval
+        if start < left:
+            self.track[start] = left
+        
+        if end > right:
+            self.track[right] = end

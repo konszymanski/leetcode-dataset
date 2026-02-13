@@ -1,0 +1,30 @@
+class Codec:
+    def serialize(self, root):
+        result, q = [], []
+        if root: q.append(root)
+        for n in q:        
+            if n:
+                result.append(str(n.val))
+                q += n.left, n.right
+            else:
+                result.append("null")
+        return ",".join(result)
+                    
+
+    def deserialize(self, data):
+        if len(data) == 0: return None        
+        nodes, q, pos = data.split(","), deque(), 1
+        root = TreeNode(int(nodes[0]))
+        q.append(root)
+        while q:
+            n = q.popleft()
+            if nodes[pos] != "null":
+                n.left = TreeNode(int(nodes[pos]))
+                q.append(n.left)
+            pos += 1
+            if nodes[pos] != "null":
+                n.right = TreeNode(int(nodes[pos]))
+                q.append(n.right)
+            pos += 1
+            
+        return root

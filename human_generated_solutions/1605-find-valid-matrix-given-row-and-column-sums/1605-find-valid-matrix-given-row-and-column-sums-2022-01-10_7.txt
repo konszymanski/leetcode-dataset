@@ -1,0 +1,17 @@
+class Solution:
+    def restoreMatrix(self, rowSum: List[int], colSum: List[int]) -> List[List[int]]:
+        m=len(rowSum)
+        n=len(colSum)
+        
+        arr=[[0 for j in range(n)] for i in range(m)]
+        
+        for i in range(m):
+            
+            for j in range(n):
+                
+                x=min(rowSum[i],colSum[j])
+                arr[i][j]=x
+                
+                rowSum[i]-=x
+                colSum[j]-=x
+        return arr

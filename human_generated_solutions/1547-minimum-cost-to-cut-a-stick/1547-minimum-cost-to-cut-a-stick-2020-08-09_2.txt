@@ -1,0 +1,13 @@
+class Solution:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        
+        @lru_cache(None)
+        def fn(lo, hi): 
+            """Return cost of cutting [lo, hi]."""
+            cc = [c for c in cuts if lo < c < hi] #collect cuts within this region 
+            if not cc: return 0
+            ans = inf
+            for mid in cc: ans = min(ans, fn(lo, mid) + fn(mid, hi))
+            return ans + hi - lo
+        
+        return fn(0, n)

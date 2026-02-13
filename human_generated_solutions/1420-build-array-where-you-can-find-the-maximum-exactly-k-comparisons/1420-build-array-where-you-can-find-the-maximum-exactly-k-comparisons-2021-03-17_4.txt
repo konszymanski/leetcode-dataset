@@ -1,0 +1,12 @@
+class Solution:
+    def numOfArrays(self, n: int, m: int, k: int) -> int:
+        
+        @cache
+        def fn(i, x, k): 
+            """Return number of ways to build arr[i:] with current max at x and remaining cost at k."""
+            if n - i < k: return 0 # impossible 
+            if m - x < k: return 0 # impossible 
+            if k == 0: return x**(n-i)
+            return x*fn(i+1, x, k) + fn(i+1, x+1, k-1) + fn(i, x+1, k) - (x+1)*fn(i+1, x+1, k)
+        
+        return fn(0, 0, k) % 1_000_000_007

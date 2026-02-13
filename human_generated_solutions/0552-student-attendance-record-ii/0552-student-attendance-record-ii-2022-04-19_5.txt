@@ -1,0 +1,22 @@
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        hsh = {}
+        if n==1:
+            return 3
+        md = (10**9)+7
+        def helper(rem,countA,endL):
+            if countA>1 or endL>=3:
+                return 0
+            
+            if (rem,countA,endL) in hsh:
+                return hsh[(rem,countA,endL)]
+            
+            if rem==0:
+                hsh[(rem,countA,endL)] = 1
+            else:
+                hsh[(rem,countA,endL)] = (helper(rem-1,countA,0)%md + helper(rem-1,countA+1,0)%md  + helper(rem-1,countA,endL+1)%md)%md
+            return hsh[(rem,countA,endL)]
+                
+                
+        
+        return helper(n,0,0)

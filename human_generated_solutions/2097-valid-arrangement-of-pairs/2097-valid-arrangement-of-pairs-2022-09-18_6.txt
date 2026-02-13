@@ -1,0 +1,29 @@
+class Solution:
+    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
+        graph, indegree, outdegree = defaultdict(deque), defaultdict(int), defaultdict(int)
+        nodes, temp, path = set(), 0, []
+        for edge in pairs:
+            graph[edge[0]].append(edge[1])
+            indegree[edge[1]] += 1
+            outdegree[edge[0]] += 1
+            nodes.add(edge[0]); nodes.add(edge[1])
+        
+        def findStart(nodes: Set[int]) -> int:
+            start = 0
+            for curNode in nodes:
+                if outdegree[curNode] - indegree[curNode] == 1:
+                    return curNode
+                if outdegree[curNode] > 0:
+                    start = curNode
+            return start
+        
+        def dfs(path: List[List[int]], curr: int) -> None:
+            deque = graph[curr]
+            while deque:
+                node = deque.popleft()
+                dfs(path, node)
+                path.append([curr, node])
+                
+        start = findStart(nodes)
+        dfs(path, start)
+        return list(reversed(path))

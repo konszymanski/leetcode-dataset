@@ -1,0 +1,44 @@
+"""
+similar to Maximum Sum Subarray of Size K https://www.notion.so/paulonteri/Sliding-Window-f6685a15f97a4ca2bb40111e2b264fb2#891e1ba6076b4454a9175a553393f295
+
+    [1, 2, 3, 4,]  <= array
+    [1, 3, 6, 10] <= cummulative sums
+    10 -1 =  19  = 2+3+4
+    6 -1  =   5  = 2+3
+
+if we store the cumulative sum for every point (idx) in the array,
+    if (sum2-sum1) % k = 0
+    then the numbers between sum2-sum1 add up to a multiple of k
+
+if you find duplicated sum%k values, then that the sub array between those two indexes will actually be the solution.
+(sum2-sum1) % k = 0
+sum2%k - sum1%k = 0
+sum2%k = sum1%k
+
+"""
+
+
+class Solution:
+    def checkSubarraySum(self, nums, k):
+        if len(nums) < 2:
+            return False
+
+        # 0: -1 is for edge case that current sum mod k == 0
+        # for when the current running sum is cleanly divisible by k
+        # e.g: nums = [4, 2], k = 3
+        sums = {0: -1}  # 0
+        cumulative_sum = 0
+        for idx, num in enumerate(nums):
+            cumulative_sum += num
+            remainder = cumulative_sum % k
+
+            # if current_sum mod k is in dict and index idx - sums[remainder] > 1, we got the Subarray!
+            # we use 2 not 1 because the element at sums[remainder] is not in the subarray we are talking about
+            if remainder in sums and idx - sums[remainder] >= 2:
+                return True
+
+            # if current sum mod k not in dict, store it so as to ensure the further values stay
+            if remainder not in sums:
+                sums[remainder] = idx
+
+# space can be easily improved to O(k) be only storing k elements in sums

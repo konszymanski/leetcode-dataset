@@ -1,0 +1,45 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def nodesBetweenCriticalPoints(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: List[int]
+        """
+        # variables to keep track of critical indices
+        first_critical_index, last_critical_index, previous_critical_index = None, None, None
+        # variable to track the index of each node
+        index = 1
+        # variable to save the value of the previously visited node
+        previous_val = None
+        # variables to save the min and max distances between critical points
+        _min, _max = None, None
+
+        while head and head.next:
+            if previous_val is None:
+                previous_val = head.val
+
+            else:
+                # if this is a critical point
+                if (head.val > previous_val and head.val > head.next.val) or \\
+                (head.val < previous_val and head.val < head.next.val):
+                    first_critical_index = index if first_critical_index is None else first_critical_index
+                    last_critical_index = index
+                    if previous_critical_index is not None:
+                        if _min is None:
+                            _min = index - previous_critical_index
+                        else:
+                            _min = min(_min, index - previous_critical_index)
+                    previous_critical_index = index
+                
+                previous_val = head.val
+            head = head.next
+            index += 1
+        
+        if last_critical_index is not None and first_critical_index is not None:
+            _max = last_critical_index - first_critical_index
+
+        return [-1, -1] if _max is None or _min is None else [_min, _max]

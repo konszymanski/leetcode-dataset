@@ -1,0 +1,78 @@
+class Solution:
+    def imageSmoother(self, img: List[List[int]]) -> List[List[int]]:
+        m = len(img)
+        #print(m)
+        n = len(img[0])
+        res = [ [0]*n for i in range(m)]
+
+        #print(res)
+        r = c = left = right = top = down =  topright = topleft = btmright = btmleft=  0
+        while r  < m:
+            c = 0
+            while c < n:
+                total = 1
+                
+                v = img[r][c]
+                if r-1 >=0 and c >=0:
+                    top = img[r-1][c]
+                    total +=1
+                else:
+                    top = 0
+                
+                if r+1 < m and c >=0:
+                    down = img[r+1][c]
+                    total +=1
+                else:
+                    down = 0
+                
+                if r >= 0 and c-1 >=0:
+                    left = img[r][c-1]
+                    total +=1
+                else:
+                    left = 0
+                
+                
+                if r >=0 and c+1 < n:
+                    #print(r,c+1)
+                    right = img[r][c+1]
+                    total +=1
+                else:
+                    right = 0
+                 
+                
+                if r-1 >=0 and c+1 < n:
+                    topright = img[r-1][c+1]
+                    total +=1
+                else:
+                    topright = 0
+                
+                if r-1 >=0 and c-1 >=0:
+                    topleft = img[r-1][c-1]
+                    total +=1
+                else:
+                    topleft = 0
+                
+                if r+1 < m and c-1 >=0:
+                    btmleft = img[r+1][c-1]
+                    total +=1
+                else:
+                    btmleft = 0
+                
+                
+                if r+1 < m and c+1 < n:
+                    btmright = img[r+1][c+1]
+                    total +=1
+                else:
+                    btmright = 0
+                
+                
+                
+                t = (v +top+down+left+right+btmright+btmleft+topright+topleft)/total
+                #if r == 0 and c == 1:
+                #    print (v,top,down,left,right,btmright,btmleft, topright,topleft, total)
+                #print(r,c,math.floor(t))
+                res[r][c] = math.floor(t)
+                c+=1
+            r += 1
+            
+        return res

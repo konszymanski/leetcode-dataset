@@ -1,0 +1,8 @@
+class Solution:
+    def countArrangement(self, n: int) -> int:
+        
+        @cache
+        def dfs(rem):
+            return sum(dfs(rem - {i}) for i in rem if i%len(rem) == 0 or len(rem)%i == 0) if len(rem) > 1 else 1
+        
+        return dfs(frozenset(range(1, n+1)))

@@ -1,0 +1,32 @@
+class DSU(object):
+    def __init__(self, n):
+        self.count = n
+        self.p = range(n)
+    
+    def find(self, x):
+        if x != self.p[x]:
+            self.p[x] = self.find(self.p[x])
+        return self.p[x]
+    
+    def union(self, x, y):
+        xp, yp = self.find(x), self.find(y)
+        if xp == yp: return False
+        self.count -= 1
+        self.p[xp]= yp
+        return True
+
+    
+class Solution(object):
+    def minSwapsCouples(self, row):
+        """
+        :type row: List[int]
+        :rtype: int
+        """
+        n = len(row)
+        dsu = DSU(n)
+
+        for i in range(0, n, 2):
+            dsu.union(i, i+1)
+            dsu.union(row[i], row[i+1])
+        
+        return n/2 - dsu.count

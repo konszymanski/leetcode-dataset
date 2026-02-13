@@ -1,0 +1,33 @@
+class Solution(object):
+    def validMountainArray(self, A):
+        """
+        :type A: List[int]
+        :rtype: bool
+        """
+        if len(A) < 3: return False 
+        
+		#base case check 
+        if A[0] > A[1]: return False 
+        \'\'\'
+		First loop\'s purpose is to find the peak and index of the peak
+		\'\'\'
+        peak = 0
+        index = 0 
+        for i in xrange(0, len(A) - 1):
+            if A[i] > A[i+1]:
+                peak = A[i]
+                index = i
+                break
+            #rule is that no number can\'t be equal    
+            if A[i] == A[i + 1]:
+                return False 
+       
+	   \'\'\'
+	   second loop\'s purpose is to make sure that all number from range peak +1 to end of array are in descending order
+	   \'\'\'
+        for i in xrange(index + 1, len(A) - 1):
+            if A[i] <= A[i + 1] or A[i] > peak:
+                return False 
+        
+		#return true if the input makes it through both loops
+        return True

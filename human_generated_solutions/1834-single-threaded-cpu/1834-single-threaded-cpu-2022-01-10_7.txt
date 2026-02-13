@@ -1,0 +1,39 @@
+from heapq import heappush, heappop
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        minHeap=[]
+        
+        #maintain orignal indexing
+        for i in range(len(tasks)):
+            a,b=tasks[i]
+            tasks[i]=[a,b,i]
+        
+        #sort by enqueue time
+        tasks.sort(key= lambda x: x[0])
+
+        order=[]
+        curTime=tasks[0][0]
+        minHeap=[(tasks[0][1],tasks[0][2])]
+        i=1
+        
+        
+        while i<len(tasks):
+            
+            #handles multiple contenders
+            while(i<len(tasks) and tasks[i][0]<=curTime):
+                heappush(minHeap,(tasks[i][1],tasks[i][2]))
+                i+=1
+            
+            if minHeap:
+                processingTime,index=heappop(minHeap)
+                order.append(index)
+                curTime+=processingTime
+                
+            #case where CPU stays idle
+            else:
+                curTime=tasks[i][0]
+        
+        while minHeap:
+            order.append(heappop(minHeap)[1])
+        
+        return order

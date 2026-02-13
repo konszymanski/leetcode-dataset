@@ -1,0 +1,28 @@
+class Solution:
+    @functools.lru_cache(None)
+    def helper(self, idx, hold):
+        if idx == len(self.nums):
+            return 0, 1
+        elif hold is None or hold < self.nums[idx]:
+            # take
+            length1, times1 = self.helper(idx+1, self.nums[idx])
+            length1 += 1
+            
+            # not take
+            length2, times2 = self.helper(idx+1, hold)
+            
+            # if both take and not take are same length, pick both
+            # otherwise, pick the longer LIS one
+            if length1 == length2:
+                return length2, times1 + times2
+            elif length1 > length2:
+                return length1, times1
+            else:
+                return length2, times2
+        else:
+            return self.helper(idx+1, hold)
+    
+    def findNumberOfLIS(self, nums: List[int]) -> int:
+        if not nums: return 0  # special case, no LIS
+        self.nums = nums
+        return self.helper(0, None)[1]

@@ -1,0 +1,14 @@
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        
+        for i in range(len(nums)):  #decrease array elements by their index value
+            nums[i] -= i
+    
+        c = Counter(nums)     # count occurance which make pair
+        ans = 0
+        for k,v in c.items():
+            if v>1:
+                ans += (v-1)*(v)//2  # find no of pairs which can be formed
+        n = len(nums)
+    
+        return (n*(n-1)//2) - ans

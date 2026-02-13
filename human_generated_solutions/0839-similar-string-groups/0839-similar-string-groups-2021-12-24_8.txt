@@ -1,0 +1,47 @@
+def off_by_two(s1, s2):
+            count = 0
+            for i in range(len(s1)):
+                if s1[i] != s2[i]:
+                    count+=1
+                    if count > 2:
+                        return False
+            return True
+        
+        
+        graph = {}
+        
+        
+        for word in strs:
+            for other_word in strs:
+                if off_by_two(word, other_word):
+                    graph[word] = graph.get(word,set())
+                    graph[word].add(other_word)
+                    
+                    graph[other_word] = graph.get(other_word,set())
+                    graph[other_word].add(word)
+                    
+        visited = set()
+        def dfs(node):
+            if node in visited:
+                return
+            if node not in graph:
+                return
+            
+            visited.add(node)
+            
+            for nei in graph[node]:
+                dfs(nei)
+            
+                
+            
+            
+            
+            
+        groups = []
+        count = 0
+        
+        for node in graph:
+            if node not in visited:
+                count+=1
+                dfs(node)
+        return count

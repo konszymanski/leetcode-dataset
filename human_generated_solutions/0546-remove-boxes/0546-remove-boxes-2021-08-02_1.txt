@@ -1,0 +1,15 @@
+class Solution:
+    def removeBoxes(self, boxes: List[int]) -> int:
+        
+        @cache
+        def fn(lo, hi, k): 
+            """Return max score of removing boxes from lo to hi with k to the left."""
+            if lo == hi: return 0 
+            while lo+1 < hi and boxes[lo] == boxes[lo+1]: lo, k = lo+1, k+1
+            ans = (k+1)*(k+1) + fn(lo+1, hi, 0)
+            for mid in range(lo+2, hi): 
+                if boxes[lo] == boxes[mid]: 
+                    ans = max(ans, fn(lo+1, mid, 0) + fn(mid, hi, k+1))
+            return ans 
+                
+        return fn(0, len(boxes), 0)

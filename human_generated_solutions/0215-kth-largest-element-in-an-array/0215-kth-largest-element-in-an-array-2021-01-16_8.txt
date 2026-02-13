@@ -1,0 +1,39 @@
+\'\'\'
+w: bucket?
+h:  1) create a map of length len(nums), key is each value of range(min(nums), max(nums)+1)
+    2) put the num in the map with the same value of key:
+    e.g [3,2,3,1,2,4,5,5,6]:
+    1: [1]     1 item
+    2: [2,2]   2 items
+    3: [3,3]   2 items
+    4: [4]     1 items
+    5: [5,5]   2 items
+    6: [6]     1 items
+    
+    3) start from the largest value, check how many number remaining before we meet th K-th largest value
+
+O(N) time, O(N) space
+\'\'\'
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return -1
+        
+        max_ = max(nums)
+        min_ = min(nums)
+        maps = {n:0 for n in range(min_, max_+1) }
+        for num in nums:
+            maps[num]+=1
+        
+        print(list(maps.keys()))
+        # Please note, the keys of the dictionary is not 
+        # necessarily sorted, it just perserved the insertion order
+        # when I generate the dictionary as
+        # maps = {n:0 for n in range(min_, max_+1) }
+        # but we can now take this advantage to get a 
+        # sorted key without sorting
+        for key in list(maps.keys())[::-1]:
+            if k - maps[key] <= 0:
+                return key
+            else:
+                k -= maps[key]

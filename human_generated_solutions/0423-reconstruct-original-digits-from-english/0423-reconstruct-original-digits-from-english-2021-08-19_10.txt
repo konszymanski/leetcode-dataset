@@ -1,0 +1,36 @@
+class Solution:
+    def originalDigits(self, s: str) -> str:
+        
+        # zero - U (z) 
+        # one - count (o) - 0,2,4
+        # two - U (w) 
+        # three - count (h) - 8 
+        # four 0 U (u)
+        # five - count (f) - 4 
+        # six - U (x)
+        # seven - count (s) - 6
+        # eight - U (g)
+        # nine - count (i) - 5,6,8
+        
+        chars = Counter(s)
+        res = [0]*10
+        
+        res[0] = chars["z"]
+        res[2] = chars["w"]
+        res[4] = chars["u"]
+        res[6] = chars["x"]
+        res[8] = chars["g"]
+        
+        res[3] = chars["h"]-res[8]
+        res[5] = chars["f"]-res[4]
+        res[7] = chars["s"]-res[6]
+        
+        res[9] = chars["i"]-(res[5]+res[6]+res[8])
+        res[1] = chars["o"]-(res[0]+res[2]+res[4])
+
+        result = []
+        for pos, val in enumerate(res):
+            if val > 0:
+                result.append(str(pos)*val)
+        
+        return "".join(result)

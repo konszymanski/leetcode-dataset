@@ -1,0 +1,10 @@
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        ans = 0 
+        freq = [defaultdict(int) for _ in range(len(nums))] # arithmetic sub-seqs
+        for i, x in enumerate(nums): 
+            for ii in range(i): 
+                diff = x - nums[ii]
+                ans += freq[ii].get(diff, 0)
+                freq[i][diff] += 1 + freq[ii][diff]
+        return ans

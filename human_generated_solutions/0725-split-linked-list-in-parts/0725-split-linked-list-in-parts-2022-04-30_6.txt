@@ -1,0 +1,48 @@
+import math
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    """
+    we can solve this problem by counting counting the total number of nodes.
+    let\'s say, total number of nodes = n
+    first_node keeps track of the pointer of the first node for each part
+    curr is updated to the last node for each part. once last node of a part is 
+    reached, the first_node is updated to the next node and we set the curr.next = None 
+    (to break the part)
+    finally curr is updated to first_node as well.
+    """
+    def count_nodes(self, head):
+        count = 0
+        cur = head
+        while cur is not None:
+            count+=1
+            cur = cur.next
+        return count
+    
+    def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
+        n = self.count_nodes(head)
+        first_node = head
+        curr = head
+        result = []
+        
+        nodes_remaining = n
+        parts_remaining = k
+        while parts_remaining > 0:
+            val = math.ceil(nodes_remaining / parts_remaining)
+            if val == 0:
+                result.append(None)
+                parts_remaining-=1
+            else:
+                result.append(first_node)
+                for i in range(val-1):
+                    curr = curr.next
+                first_node = curr.next
+                curr.next = None
+                curr = first_node
+                nodes_remaining -= val
+                parts_remaining -= 1
+            # print(result)
+        return result

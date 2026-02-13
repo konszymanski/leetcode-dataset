@@ -1,0 +1,28 @@
+def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+	# DFS function to add parent pointer to all nodes and get the start node
+	def addParent(node, parent):
+		if not node:
+			return
+
+		node.parent = parent # mutating node and adding parent pointer
+		if node.val == start: # get the start node
+			nonlocal startNode 
+			startNode = node
+
+		addParent(node.left, node)
+		addParent(node.right, node)
+	
+	# DFS function to calculate root to leaf maximum depth, here root is start node
+	def maxDepth(node):
+		if not node or node in seen:
+			return 0
+
+		seen.add(node)
+
+		return 1 + max(maxDepth(node.left), maxDepth(node.right), maxDepth(node.parent))
+
+	seen = set()
+	startNode = None
+	addParent(root, None)
+
+	return maxDepth(startNode) - 1 # -1 to exclude the startNode

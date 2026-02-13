@@ -1,0 +1,8 @@
+class Solution:
+  def recoverFromPreorder(_, traversal: str):
+    postorder = [(len(x), int(y)) for x,y in re.findall(\'(-*)(\\d+)\', traversal)[::-1]]
+    def loop(depth):
+      if postorder and postorder[-1][0] > depth:
+        dashes, value = postorder.pop()
+        return TreeNode(value, loop(dashes), loop(dashes))
+    return loop(-1)

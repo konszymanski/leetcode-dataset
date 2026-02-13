@@ -1,0 +1,6 @@
+## **Method 1: Brute Force** *[Gives TLE]*
+Intuitively we can take these steps:
+1. Simply consider the initial speed k to be 1.
+2. Calculate the total time T required to finish all the  piles.
+3. If T is greater than the given time limit H, we increment k and repeat steps 1, 2, 3
+4. If T is <= H then we return k as our answer.

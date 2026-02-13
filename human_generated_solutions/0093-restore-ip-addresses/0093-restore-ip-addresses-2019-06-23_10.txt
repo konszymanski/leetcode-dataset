@@ -1,0 +1,35 @@
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        res = []
+        def backtrack(ongoing_path, index,s):
+            if len(ongoing_path) >4:
+                return
+            if index>=len(s):
+                if len(ongoing_path)==4:
+                    res.append(".".join(ongoing_path))
+                    return
+                else:
+                    return
+            
+            
+
+            # case of 0
+            if s[index]==\'0\':
+                return backtrack(ongoing_path+[\'0\'], index+1,s)
+            
+
+            #now 3 cases to check size 1, size 2 and size 3
+            
+            #1 size
+            backtrack(ongoing_path+[s[index]], index+1, s)
+            
+            if index<=len(s)-2 :
+                #2 size
+                backtrack(ongoing_path+[ s[index:index+2] ], index+2, s)
+            
+            if index<=len(s)-3 and int(s[index:index+3]) <= 255:
+                #3 size
+                backtrack(ongoing_path+[ s[index:index+3] ], index+3, s)
+        
+        backtrack([],0,s)
+        return res

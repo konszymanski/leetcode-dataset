@@ -1,0 +1,5 @@
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+        import re
+        new_str = re.sub(r"((\\w)\\2{2,})", (r"\\2")*2, s)
+        return new_str

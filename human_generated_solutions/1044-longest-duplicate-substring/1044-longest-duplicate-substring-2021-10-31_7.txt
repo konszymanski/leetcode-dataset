@@ -1,0 +1,57 @@
+class State:
+    def __init__(self, length=0, link=-1):
+        self.length = length
+        self.link = link
+        self.next = {}
+        self.word = ""
+
+class SAM:
+    def __init__(self, s):
+        self.states = []
+        self.states.append(State())
+        self.last = 0
+        self.longest_length = 0
+        self.longest_word = ""
+        for c in s:
+            self.add(c)
+    
+    def add(self, c):
+        curr = len(self.states)
+        p = self.last
+        self.states.append(State(self.states[p].length + 1))
+        self.states[curr].word = self.states[p].word + c
+        while p != -1 and c not in self.states[p].next:
+            self.states[p].next[c] = curr
+            p = self.states[p].link
+        if p ==-1:
+            self.states[curr].link = 0
+        else:
+            q = self.states[p].next[c]
+            if self.states[q].length == self.states[p].length + 1:
+                self.states[curr].link = q
+                if self.states[q].length > self.longest_length:
+                    self.longest_length = self.states[q].length
+                    self.longest_word = self.states[q].word
+            else:
+                clone = len(self.states)
+                self.states.append(State(self.states[p].length + 1, self.states[q].link))
+                self.states[clone].next = deepcopy(self.states[q].next)
+                self.states[clone].word = self.states[p].word + c
+                if self.states[clone].length > self.longest_length:
+                    self.longest_length = self.states[clone].length
+                    self.longest_word = self.states[clone].word
+                while p != -1 and c in self.states[p].next and self.states[p].next[c] == q:
+                    self.states[p].next[c] = clone
+                    p = self.states[p].link
+                self.states[q].link = clone
+                self.states[curr].link = clone
+        self.last = curr
+    
+    def getLongest(self):
+        return self.longest_word
+        
+
+class Solution:
+    def longestDupSubstring(self, s: str) -> str:
+        sam = SAM(s)
+        return sam.getLongest()

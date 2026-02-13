@@ -1,0 +1,23 @@
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        pq: List[Tuple[int, int]] = []
+        eaten: int = 0
+
+        i: int = 0
+        while i < len(apples) or pq:
+            while pq and pq[0][0] < i:
+                heapq.heappop(pq)
+
+            if i < len(apples) and apples[i]:
+                heapq.heappush(pq, (i + days[i] - 1, apples[i]))
+
+            if pq:
+                date, edible = heapq.heappop(pq)
+                eaten += 1
+                edible -= 1
+                if edible:
+                    heapq.heappush(pq, (date, edible))
+
+            i += 1
+
+        return eaten

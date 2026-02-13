@@ -1,0 +1,16 @@
+class Solution:
+    def repeatedStringMatch(self, a: str, b: str) -> int:
+        
+        n1=len(a)
+        n2=len(b)
+        
+        k=math.ceil(n2/n1)
+        print(k)
+        x=a*k
+        
+        if b in x:
+            return k
+        elif b in x+a:
+            return k+1
+        else:
+            return -1

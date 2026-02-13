@@ -1,0 +1,16 @@
+class Solution:
+    def longestObstacleCourseAtEachPosition(self, obstacles: List[int]) -> List[int]:
+        LISList = []
+        for idx, elem in enumerate(obstacles):
+            if len(LISList) == 0 or LISList[-1] <= elem:
+                # Append to LIS if new element is >= last element in LIS
+                LISList.append(elem)
+                # update obstacles[i] to the current length of LIS
+                obstacles[idx] = len(LISList)
+            else:
+                # Find the index of the smallest number > elem
+                pos = bisect_right(LISList, elem)
+                # Replace that number with elem
+                # and update obstacles[idx] with the position where the smallest num was found + 1
+                LISList[pos], obstacles[idx] = elem, pos + 1
+        return obstacles

@@ -1,0 +1,33 @@
+class Solution:
+    
+    def isMagic(self, grid: List[List[int]]) -> bool:
+        tgt = sum(grid[0])
+        for row in grid:
+            if sum(row) != tgt:
+                return False
+        for i in range(len(grid)):
+            if sum([row[i] for row in grid]) != tgt:
+                return False
+        if sum([grid[i][i] for i in range(len(grid))]) != tgt:
+            return False
+        if sum([grid[i][len(grid)-i-1] for i in range(len(grid))]) != tgt:
+            return False
+        return True
+    
+    def getSquareSizes(self, grid, i, j) -> List[int]:
+        M, N = len(grid), len(grid[0])
+        return list(range(2, min(M-i, N-j)+1))
+    
+    def largestMagicSquare(self, grid: List[List[int]]) -> int:
+        # brute force strategy
+        # start w/ top left corner and check squares
+        M, N = len(grid), len(grid[0])
+        ret = 1
+        for i in range(M):
+            for j in range(N):
+                for size in self.getSquareSizes(grid, i, j):
+                    if size <= ret:
+                        continue # don\'t check square, if not even possible to be largest
+                    if self.isMagic([row[j:j+size] for row in grid[i:i+size]]):
+                        ret = size
+        return ret

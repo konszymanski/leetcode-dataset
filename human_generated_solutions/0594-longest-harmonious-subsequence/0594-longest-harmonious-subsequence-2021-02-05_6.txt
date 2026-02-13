@@ -1,0 +1,21 @@
+\'\'\'
+w: hashmap
+h: since the difference of the number in resulted array has to be one
+    1) we count the frequency of each number
+    2) for each number we look for number + 1 and number -1
+        then length is 1) frequency of number + frequency of number + 1 if any
+                       2) frequency of number + frequency of number - 1 if any
+\'\'\'
+import collections
+class Solution:
+    def findLHS(self, nums: List[int]) -> int:
+        res = 0 
+        cnt = collections.Counter(nums)
+        
+        for k in cnt:
+            if k - 1 in cnt:
+                res = max(res, cnt[k]+cnt[k-1])
+            if k + 1 in cnt:
+                res = max(res, cnt[k]+cnt[k+1])
+    
+        return res

@@ -1,0 +1,14 @@
+class Solution:
+    def findDiagonalOrder(self, nums: List[List[int]]) -> List[int]:
+        hm = defaultdict(list)
+        
+        for i in range(len(nums)):
+            for j in range(len(nums[i])):
+                hm[i + j].append(nums[i][j])
+                
+        res = []
+        for i in hm.values():
+            while i:
+                res.append(i.pop())
+                
+        return res

@@ -1,0 +1,33 @@
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        adj = defaultdict(list)
+        for u, v in enumerate(edges):
+            if v == -1:
+                continue
+            adj[u].append(v)
+            
+        def bfs(node):
+            q = deque([node])
+            dist = [float(\'inf\')] * N
+            dist[node] = 0
+            while q:
+                curr = q.popleft()
+                for nei in adj[curr]:
+                    if dist[nei] == float(\'inf\'):
+                        dist[nei] = dist[curr] + 1
+                        q.append(nei)
+            return dist
+        
+        N = len(edges)
+        d1 = bfs(node1)
+        d2 = bfs(node2)
+        
+        res = float(\'inf\')
+        resIdx = -1
+        for i, (a, b) in enumerate(zip(d1, d2)):
+            if max(a, b) < res:
+                res = max(a, b)
+                resIdx = i
+        return resIdx
+    # Time: O(n)
+    # Space: O(n)

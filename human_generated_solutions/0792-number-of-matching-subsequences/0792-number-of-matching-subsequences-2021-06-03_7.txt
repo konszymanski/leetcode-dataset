@@ -1,0 +1,27 @@
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        root = {\'$\': 0, \'#\': 0}
+        for word in words:
+            curr = root
+            for c in word:
+                if c not in curr:
+                    curr[c] = {\'$\': 0, \'#\': 0}
+                    curr[\'#\'] += 1
+                curr = curr[c]
+            curr[\'$\'] += 1
+        q = deque([root])
+        ans = 0
+        for c in s:
+            for _ in range(len(q)):
+                curr = q.pop()
+                if c in curr:
+                    curr[\'#\'] -= 1
+                    if curr[c][\'$\']:
+                        ans += curr[c][\'$\']
+                        curr[c][\'$\'] = 0
+                    if curr[c][\'#\']:
+                        q.appendleft(curr[c])
+                    del curr[c]
+                if curr[\'#\']:
+                    q.appendleft(curr)
+        return ans

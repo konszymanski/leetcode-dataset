@@ -1,0 +1,14 @@
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        lo,hi = 1,1000*1000*1000*1000*1000
+        ans=hi
+        ab = a*b/gcd(a,b)
+        while lo <= hi :
+            mid = (lo+hi)>>1
+            cnt = mid//a+mid//b-mid//ab
+            if cnt>=n :
+                ans = mid
+                hi = mid-1
+            else :
+                lo = mid+1
+        return ans % (1000_000_007)

@@ -1,0 +1,23 @@
+def minRemoveToMakeValid(self, s: str) -> str:
+        status_dict = {}
+        stack = []
+       
+        # keep indexe\'s status in status_dict. If a parenthesis is valid
+        # mark it as True else False. use stack to check it\'s validity
+        for idx, ch in enumerate(s):
+            if ch == "(":
+                stack.append(idx)
+            elif ch == ")" and len(stack) > 0:
+                    status_dict[idx] = True
+                    status_dict[stack[-1]] = True
+                    stack.pop()
+       
+        res = []
+        for idx, ch in enumerate(s):
+            if ch == "(" or ch == ")":
+                if idx in status_dict: # only append the parenthesis which are valid
+                    res.append(ch)
+            else:
+                res.append(ch)
+       
+        return "".join(res)

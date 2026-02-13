@@ -1,0 +1,16 @@
+def smallestFromLeaf(self, root: TreeNode) -> str:
+	smallest = None
+	stack = [(root, [root.val])]
+
+	while stack:
+		root, path = stack.pop()
+		if not root.left and not root.right: 
+			if not smallest:
+				smallest = path[::-1]
+			else:
+				smallest = min(path[::-1], smallest)
+		if root.left
+			stack.append((root.left, path + [root.left.val]))
+		if root.right:
+			stack.append((root.right, path + [root.right.val]))
+	return \'\'.join(chr(number + ord(\'a\')) for number in smallest)

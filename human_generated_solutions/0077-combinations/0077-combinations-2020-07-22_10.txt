@@ -1,0 +1,13 @@
+class Solution:
+    def combine(self, n, k):
+        res = []
+        def dfs(A):
+            if len(A)==k:
+                return res.append(list(A))
+            x = A[-1]+1 if A else 1
+            for i in range(x,n+1):
+                A.append(i)
+                dfs(A)
+                A.pop()
+        dfs([])
+        return res

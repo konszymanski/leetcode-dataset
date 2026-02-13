@@ -1,0 +1,24 @@
+class Solution:
+    def findRelativeRanks(self, nums: List[int]) -> List[str]:
+        # Prepare a medal list, an empty result list and an empty dictionary
+        Medal = ["Gold Medal", "Silver Medal", "Bronze Medal"]
+        size = len(nums)
+        res = [""]*size
+        my_map = {}
+        
+        # Set the dictionary
+        # Key is the number, value is the index of the number in the orginal input list
+        for i in range(size):
+            my_map[nums[i]] = i
+            
+        # Sort the input list in the descending order
+        nums.sort(reverse=True)
+        
+        # Set the result list using the sorted input list and the dictionary
+        for i in range(size):
+            if i < 3:
+                res[my_map[nums[i]]] = Medal[i]            
+            else:
+                res[my_map[nums[i]]] = str(i+1)
+                
+        return res

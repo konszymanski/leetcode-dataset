@@ -1,0 +1,6 @@
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        target = sorted(heights)
+
+        output = list(map(lambda x: 1 if x[0] != x[1] else 0, zip(heights, target)))
+        return output.count(1)

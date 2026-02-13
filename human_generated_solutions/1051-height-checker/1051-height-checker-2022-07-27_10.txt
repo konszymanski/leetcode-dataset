@@ -1,0 +1,19 @@
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        x = [x for x in heights]
+        n = len(heights)
+        for i in range(n-1):
+            swapped= False
+            for j in range(n-i-1):
+                if heights[j]>heights[j+1]:
+                    y = heights[j]
+                    heights[j]=heights[j+1]
+                    heights[j+1]=y
+                    swapped= True
+            if not swapped:
+                break
+        count = 0 
+        for i in range(n):
+            if heights[i]!=x[i]:
+                count+=1
+        return count

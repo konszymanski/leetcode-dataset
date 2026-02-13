@@ -1,0 +1,7 @@
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        length = len(s) # compute the length of the string
+        for i in range(1,length//2+1): # run the loop for length / 2 times
+            if length % i == 0 and s[:i] * (length//i) == s: if length mod i is equal to zero and the string upto i * length divided by i is equal to s then return True 
+                return True
+        return False

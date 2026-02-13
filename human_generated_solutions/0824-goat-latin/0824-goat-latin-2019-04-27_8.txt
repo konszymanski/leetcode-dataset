@@ -1,0 +1,6 @@
+def translate(i: int, w: str) -> str:
+    return (w if w[0].lower() in \'aeiou\' else w[1:] + w[0]) + \'ma\' + i * \'a\'
+
+class Solution:
+    def toGoatLatin(self, s: str) -> str:
+        return \' \'.join(translate(i, w) for i, w in enumerate(s.split(), 1))

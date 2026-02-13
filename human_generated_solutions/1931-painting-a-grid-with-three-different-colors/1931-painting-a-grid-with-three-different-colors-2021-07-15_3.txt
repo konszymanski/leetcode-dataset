@@ -1,0 +1,16 @@
+class Solution:
+    def colorTheGrid(self, m: int, n: int) -> int:
+        
+        @cache
+        def fn(i, j, mask): 
+            """Return number of ways to color grid."""
+            if j == n: return 1 
+            if i == m: return fn(0, j+1, mask)
+            ans = 0 
+            for x in 1<<2*i, 1<<2*i+1, 0b11<<2*i: 
+                mask0 = mask ^ x
+                if mask0 & 0b11<<2*i and (i == 0 or (mask0 >> 2*i) & 0b11 != (mask0 >> 2*i-2) & 0b11): 
+                    ans += fn(i+1, j, mask0)
+            return ans % 1_000_000_007
+        
+        return fn(0, 0, 0)

@@ -1,0 +1,21 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> "Node":
+        N = len(grid)
+
+        def dfs(r, c, width):
+            if width == 1:
+                return Node(grid[r][c], 1, None, None, None, None)
+
+            width >>= 1
+            children = [
+                dfs(r, c, width),  # TL
+                dfs(r, c + width, width),  # TR
+                dfs(r + width, c, width),  # BL
+                dfs(r + width, c + width, width),  # BR
+            ]
+            if all(x.isLeaf and x.val == children[0].val for x in children):
+                return Node(children[0].val, 1, None, None, None, None)
+
+            return Node(1, 0, *children)
+
+        return dfs(0, 0, N)

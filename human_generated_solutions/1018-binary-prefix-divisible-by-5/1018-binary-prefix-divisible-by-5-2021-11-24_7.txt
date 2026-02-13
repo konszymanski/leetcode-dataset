@@ -1,0 +1,10 @@
+def prefixesDivBy5(self, nums: List[int]) -> List[bool]:
+        l=[]
+        su=""
+        for i in nums:
+            su+=str(i)
+            if int(su,2)%5==0:
+                l.append(True)
+            else:
+                l.append(False)
+        return l

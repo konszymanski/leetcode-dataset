@@ -1,0 +1,26 @@
+def findFarmland(self, land: List[List[int]]) -> List[List[int]]:
+        m,n = len(land), len(land[0])
+        dirs = [[1,0],[0,1]]
+        res = []
+        
+        def isInBounds(i,j):
+            return 0 <= i < m and 0 <= j < n
+        
+        def isGroup(i,j):
+            return land[i][j] == 1
+        
+        def isValid(i,j):
+            return isInBounds(i,j) and isGroup(i,j)
+        
+        def getMaxBounds(i,j):
+            return max([dfs(i+x,j+y) for x,y in dirs if isValid(i+x,j+y)], default=(i,j))
+                
+        def dfs(i,j):
+            land[i][j] = 0
+            return getMaxBounds(i,j)
+            
+        for i,j in product(range(m), range(n)):
+            if isValid(i,j):   
+                res.append([i,j,*dfs(i,j)])
+                
+        return res

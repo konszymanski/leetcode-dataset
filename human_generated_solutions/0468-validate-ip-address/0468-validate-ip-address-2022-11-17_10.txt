@@ -1,0 +1,24 @@
+class Solution(object):
+    def validIPAddress(self, queryIP):
+        """
+        :type queryIP: str
+        :rtype: str
+        """
+        # start with IPv4, split by "." char
+        retval = queryIP.split(".")
+        # if split ok and there is exactly 4 items in the array, it might be IPv4
+        if len(retval) > 1 and len(retval) == 4:
+            # check for each item, of every character in each item is int, length is lower than 4 and higher than 0 and first char is not 0
+            if len([x for x in retval if len([c for c in x if c in "0123456789"]) == len(x) and len(x) < 4 and len(x) > 0 and int(x) <= 255 and not (len(x) > 1 and x[0] == "0")]) == 4:
+                # if every item OK, return "IPv4"
+                return "IPv4"
+
+        # IPv6, split by ":" char
+        retval = queryIP.split(":")
+        # if split ok and there is exactly 8 items in the array, it might be IPv6
+        if len(retval) > 1 and len(retval) == 8:
+            # check for each item, if every character in each item is correct char, length is equal or lower than 4 and higher than 0
+            if len([x for x in retval if len(x) <= 4 and len(x) > 0 and all([c in "0123456789abcdefABCDEF" for c in x]) ]) == 8:
+                return "IPv6"
+        
+        return "Neither"

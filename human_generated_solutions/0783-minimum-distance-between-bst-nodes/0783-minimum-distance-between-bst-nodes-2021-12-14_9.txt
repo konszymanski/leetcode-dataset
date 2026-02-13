@@ -1,0 +1,13 @@
+class Solution:
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+        
+        def traverse(node):
+            if not node:
+                return []
+            return traverse(node.left) + [node.val] + traverse(node.right)
+        
+        arr = traverse(root)
+        res = float("inf")
+        for i in range(len(arr)-1):
+            res = min(res, arr[i+1] - arr[i])
+        return res

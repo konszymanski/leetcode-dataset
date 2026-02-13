@@ -1,0 +1,14 @@
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        #defining range if k positive or negative
+        #ranger[start, end]
+        ranger= [1, abs(k+1)] if k>0 else [k, 0]
+        mylist = []
+        #run every number
+        for c in range(len(code)):
+            sum = 0
+            #go through the range
+            for index in range(ranger[0], ranger[1]):
+                sum += code[(c+index)%len(code)]
+            mylist.append(sum)
+        return mylist

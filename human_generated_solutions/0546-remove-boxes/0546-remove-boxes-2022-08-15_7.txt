@@ -1,0 +1,20 @@
+class Solution:
+    def removeBoxes(self, boxes: List[int]) -> int:
+        @lru_cache(None)
+        def helper(begin: int, end: int, num_left: int) -> int:
+			"""
+			:num_left: extra boxes of color boxes[begin] to the left of A[begin..<end]
+			"""
+            if begin == end:
+                return 0
+            mid = next(dropwhile(lambda mid: boxes[mid] == boxes[begin], range(begin, end)), end)
+            num_heads = mid - begin + num_left
+            option1 = num_heads ** 2 + helper(mid, end, 0)
+            option2 = (
+                helper(mid, i, 0) + helper(i, end, num_heads)
+                for i in range(mid, end) 
+                if boxes[i] == boxes[begin]
+            )
+            return max(0, option1, *option2) # use python function max(arg1, arg2, *args[, key])
+        #
+        return helper(0, len(boxes), 0)

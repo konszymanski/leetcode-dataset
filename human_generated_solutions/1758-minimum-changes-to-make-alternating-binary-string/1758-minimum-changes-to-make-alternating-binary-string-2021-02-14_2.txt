@@ -1,0 +1,9 @@
+def minOperations(self, s: str) -> int:
+        a = b = 0
+        for i, c in enumerate(s):
+          # if ord(c) - ord(\'0\') == i % 2:
+            if c == chr(ord(\'0\') + i % 2):
+                a += 1
+            else:
+                b += 1
+        return min(a, b)

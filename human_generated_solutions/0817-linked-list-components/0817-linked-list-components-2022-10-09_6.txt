@@ -1,0 +1,12 @@
+class Solution(object):
+    def numComponents(self, head, nums):
+        s=len(nums)
+        while head.next:
+            print(head.val)
+            print(head.next.val)
+            if head.val in nums:
+                if head.next.val in nums:
+                    s-=1
+            head=head.next
+            print(count)
+        return s

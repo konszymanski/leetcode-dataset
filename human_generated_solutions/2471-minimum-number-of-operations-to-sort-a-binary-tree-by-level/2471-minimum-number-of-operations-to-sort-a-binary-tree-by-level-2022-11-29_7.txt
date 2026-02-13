@@ -1,0 +1,36 @@
+class Solution:
+    def minimumOperations(self, root: Optional[TreeNode]) -> int:
+        """
+        Find the minimum number of swaps to sort the array of each level.
+        While iterating over the array, 
+        check the current element, and if not in the correct index, 
+        replace that element with the index of the element which should have come.
+        """
+        def min_swaps(arr):
+            orig_map = {}
+            for i, val in enumerate(arr):
+                orig_map[val] = i
+                
+            swaps = 0
+            sorted_arr = sorted(arr)
+            for i, val in enumerate(sorted_arr):
+                if orig_map[val] != i:
+                    swaps+=1
+                    orig_map[arr[i]] = orig_map[val]
+                    arr[i], arr[orig_map[val]] = arr[orig_map[val]], arr[i]
+                    orig_map[val] = i
+            return swaps
+        
+        total_swaps = 0
+        que = deque([root])
+        while len(que):
+            arr = []
+            for _ in range(len(que)):
+                node = que.popleft()
+                arr.append(node.val)
+                if node.left:
+                    que.append(node.left)
+                if node.right:
+                    que.append(node.right)
+            total_swaps+=min_swaps(arr)
+        return total_swaps

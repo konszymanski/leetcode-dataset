@@ -1,0 +1,32 @@
+class RandomizedCollection:
+
+    def __init__(self):
+        self.freq = {}  # if ans contains 2,2,3, count of same elements present in ans, so freq[::] = 0, 2, 1
+        self.ans = []  
+
+    def insert(self, val: int) -> bool:
+        if val not in self.freq:
+            self.freq[val] = 1
+            self.ans.append(val)
+            return True
+        else:
+            self.freq[val] += 1
+            self.ans.append(val)
+            return False
+
+    def remove(self, val: int) -> bool:
+        if val in self.freq:  
+            if self.freq[val] > 1:   # when the element occurs more than one time in the array
+                self.freq[val] -= 1
+                self.ans.remove(val)
+            else:                    # occurs 1 time
+                self.freq.pop(val)   
+                self.ans.remove(val)
+            return True
+        else:                        # is not present
+            return False
+
+    def getRandom(self) -> int:
+        n = len(self.ans)  
+        rand = randint(0, n - 1)  # doing all this so index does not go out of range
+        return self.ans[rand]

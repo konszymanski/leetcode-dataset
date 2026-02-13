@@ -1,0 +1,12 @@
+def subarraySum(self, nums: List[int], k: int) -> int:
+
+    res = 0
+    complementary = collections.defaultdict(int)
+
+    for acc_sum in itertools.accumulate(nums):
+        if acc_sum - k in complementary:
+            res += complementary[acc_sum-k]
+        complementary[acc_sum] +=1
+        res += acc_sum == k
+
+    return res

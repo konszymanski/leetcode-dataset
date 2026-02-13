@@ -1,0 +1,22 @@
+def subsets(self, nums: List[int]) -> List[List[int]]:
+        # create list for storing subsets
+        ans = []
+        
+		# initialize stack with empty subset and next position equal to 0
+        stack = [(0,[])]
+        
+        while stack:
+            
+			# retrieve last subset in a stack and its\' corresponding next position
+            next_pos, subset = stack.pop()
+			
+			# save current subset
+            ans.append(subset)
+            
+			# append each available element starting from next position
+			# to the current subset and append it to the stack increasing next 
+			# position by one
+            for i in range(next_pos,len(nums)):
+                stack.append((i+1,subset+[nums[i]]))
+        
+        return ans

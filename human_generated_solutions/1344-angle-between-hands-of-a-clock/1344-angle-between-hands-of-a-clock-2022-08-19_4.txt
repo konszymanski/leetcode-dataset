@@ -1,0 +1,19 @@
+class Solution:
+    def angleClock(self, hour: int, minutes: int) -> float:
+        
+        #Angle traversal by hourhand
+        hAngle = 30*(hour%12)
+        
+        #Angle traversal by minuteshand
+        mAngle = 6*(minutes%60)
+        
+        #Extra traversal by hourhand based on minutes hand
+        extraAngle = (minutes/60)*30
+        
+        hAngle+=extraAngle
+        
+        #Angle difference
+        diff = abs(hAngle-mAngle)
+        
+        #Always prefer acute angle
+        return min(diff,360-diff)

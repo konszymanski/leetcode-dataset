@@ -1,0 +1,20 @@
+def countMaxOrSubsets(self, nums: List[int]) -> int:
+        maxi = Or = 0
+        n = len(nums)
+        for num in nums:
+            Or |= num 
+            maxi = max(Or, maxi)
+            
+        dp = defaultdict(lambda : -1)
+        def solve(i, val):
+            
+            if i >= n: return val == maxi
+            if dp[i, val] != -1: return dp[i, val]
+   
+            no = solve(i + 1, val)
+            pick = solve(i + 1, val | nums[i])
+        
+            dp[i, val] = no + pick
+            return no + pick
+
+        return solve(0, 0)

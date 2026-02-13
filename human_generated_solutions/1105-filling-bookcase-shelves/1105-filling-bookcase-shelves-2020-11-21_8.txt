@@ -1,0 +1,40 @@
+class Solution:
+    def minHeightShelves(self, books: List[List[int]], shelf_width: int) -> int:
+        """
+        93.62% faster O(n^2) & 35% less mem O(n)
+        
+        options:
+        1. put it on next shelf
+        2. fit it on current shelf
+        
+        code translation: for each book
+        1. put it on a new shelf
+        2. try to move as many prev books as possible to current new shelf
+            see if total shelf min height is less than before
+            update max height and width left of current shelf
+        """
+        # dp[i] = min height of whole bookshelf at i books
+        dp = [0]
+        
+        for i in range(len(books)):
+            w = books[i][0]
+            h = books[i][1]
+            
+            # put book on new level
+            width_left_curr_level = shelf_width - w
+            max_height_curr_level = h
+            
+            # calc total height of shelf initially when book on new level
+            min_height_total = dp[i] + max_height_curr_level
+            
+            # try to move prev books on new level - see if can reduce total shelf height
+            j = i - 1
+            while width_left_curr_level - books[j][0] >= 0 and j >= 0:
+                max_height_curr_level = max(max_height_curr_level, books[j][1])
+                # min(prev book stays on last level, prev book move to new level) - pick min option
+                min_height_total = min(min_height_total, dp[j] + max_height_curr_level) 
+                width_left_curr_level -= books[j][0]
+                j -= 1
+            dp.append(min_height_total)
+        
+        return dp[-1]

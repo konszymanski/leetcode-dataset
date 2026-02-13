@@ -1,0 +1,29 @@
+class Solution:
+    def maxProduct(self, root: Optional[TreeNode]) -> int:
+        
+        def postorder(node, tree_sums):
+            # postorder traversal to get subtree sums
+            if not node:
+                return 0
+            
+            leftsum = postorder(node.left, tree_sums)
+            rightsum = postorder(node.right, tree_sums)
+            subtree_sum = node.val + leftsum + rightsum
+            tree_sums.append(subtree_sum) 
+            return subtree_sum
+            
+        tree_sums = []
+        total = postorder(root, tree_sums) 
+        
+        # notice the parabola
+        crit_point = total / 2
+        closest = float(\'inf\')
+        dist = float(\'inf\')
+        for x in tree_sums:
+            if abs(crit_point - x) < dist:
+                closest = x
+                dist = abs(crit_point - closest)
+            
+        # https://math.stackexchange.com/questions/2416119/ 
+        # if you worry about overflow
+        return (closest * (total - closest)) % (10**9 + 7)

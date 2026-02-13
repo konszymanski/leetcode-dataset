@@ -1,0 +1,35 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+
+  graph = []
+
+  def init_graph(self,  node):
+    if node.left:
+      self.graph[node.val].append(node.left.val)
+      self.graph[node.left.val].append(node.val)
+      self.init_graph(node.left)
+    if node.right:
+      self.graph[node.val].append(node.right.val)
+      self.graph[node.right.val].append(node.val)
+      self.init_graph(node.right)
+
+  def height(self, v, p):
+    if v == None:
+      return -1
+    else:
+      m = -1
+      for u in self.graph[v]:
+        if u != p:
+          m = max(m, self.height(u, v))
+      return 1 + m
+
+  def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+    self.graph = [[] for _ in range(10**5 + 1)]
+    self.init_graph(root)
+    return self.height(start, -1)

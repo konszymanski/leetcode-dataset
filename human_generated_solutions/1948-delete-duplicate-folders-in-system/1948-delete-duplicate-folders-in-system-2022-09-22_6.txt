@@ -1,0 +1,38 @@
+class Solution:
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        
+        # build the trie
+        trie = {}
+        for path in paths:
+            current = trie
+            for p in path:
+                if p not in current:
+                    current[p] = {}
+                current = current[p]
+        
+        # calculate signature for all nodes on the trie
+        sig_counter = collections.Counter()
+        def dfs(node):
+            sig = []
+            for key in sorted(node.keys()):
+                sig.append(key + "(" + dfs(node[key]) + ")")
+            node[\'#\'] = "".join(sig)
+            if sig:
+                sig_counter[node[\'#\']] += 1
+            return node[\'#\']        
+        dfs(trie)
+        
+        # traverse the trie and keep only sig_counter < 2
+        outputs = []
+        def dfsOutput(node, path):
+            for key in node:
+                if key != \'#\':
+                    sig = node[key][\'#\']
+                    if sig_counter[sig] < 2:
+                        output = path.copy()
+                        output.append(key)
+                        outputs.append(output)
+                        dfsOutput(node[key], output)
+        dfsOutput(trie, [])
+        
+        return outputs

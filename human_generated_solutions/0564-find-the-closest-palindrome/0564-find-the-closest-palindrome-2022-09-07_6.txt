@@ -1,0 +1,17 @@
+def nearestPalindromic(self, n):
+        def convertPalindromic(n):
+            if n<=11: return min(n, 9)
+            if len(str(n))%2:
+                return int(str(n)[:len(str(n))//2] + str(n)[len(str(n))//2] + str(n)[:len(str(n))//2][::-1])
+            else:
+                return int(str(n)[:len(str(n))//2] + str(n)[:len(str(n))//2][::-1])
+        
+        mid_power = len(n)-len(n)//2-len(n)%2
+        n = int(n)
+        candidates = [n, n-10**mid_power, n+10**mid_power, n-10**(max(0,mid_power-1))]
+        diff, ans = float(\'inf\'), float(\'inf\')
+        for candidate in candidates:
+            palindrom = convertPalindromic(candidate)
+            if palindrom != n if abs(palindrom-n) < diff or (abs(palindrom-n)==diff and ans>palindrom):
+                diff, ans = abs(palindrom-n), palindrom
+        return str(ans)

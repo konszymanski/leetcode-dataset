@@ -1,0 +1,22 @@
+from functools import lru_cache
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        @lru_cache(maxsize=None)
+        def bestscore(i, j1, j2):
+            \'\'\'the best score attainable by two robots in positions (i, j1) and (i, j2)\'\'\'
+            if i >= rows or j1 < 0 or j2 >= cols: return 0
+            
+            max_score = 0
+            for f in range(3):
+                for k in range(3):
+                    leftbelow = j1+f-1
+                    rightbelow = j2+k-1
+                    if leftbelow >= rightbelow: continue
+                    max_score = max(max_score, bestscore(i+1, leftbelow, rightbelow))
+                    
+            return max_score + grid[i][j1] + grid[i][j2]
+        
+        return bestscore(0, 0, cols-1)

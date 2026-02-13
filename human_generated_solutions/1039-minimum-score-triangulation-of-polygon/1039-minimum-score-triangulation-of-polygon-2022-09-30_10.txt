@@ -1,0 +1,17 @@
+class Solution:
+    def minScore(self, values, i, j):
+        if i + 1 == j:
+            return 0
+        if (i, j) in self.cache:
+            return self.cache[(i, j)]
+        res = float(\'inf\')
+        for k in range(i + 1, j):
+            curr = values[i] * values[j] * values[k] + self.minScore(values, i, k) + self.minScore(values, k, j)
+            res = min(res, curr)
+        self.cache[(i, j)] = res
+        return res
+    
+    def minScoreTriangulation(self, values: List[int]) -> int:
+        n = len(values)
+        self.cache = {}
+        return self.minScore(values, 0, n - 1)

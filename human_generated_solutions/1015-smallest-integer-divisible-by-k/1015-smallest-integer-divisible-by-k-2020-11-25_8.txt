@@ -1,0 +1,22 @@
+class Solution:
+    def smallestRepunitDivByK(self, K: int) -> int:
+        
+
+        if (K % 2 == 0) or (K % 5 == 0):
+            
+            # Quick response on special cases
+            # 11111...1 is always not divisible by 2 and by 5
+            return -1
+        
+        
+        # initialization
+        remainder = 0
+        
+        # scan for each sequence 111...1 with length N
+        for N in range(1, K+1):
+            
+            # update remainder on modulo K
+            remainder = (remainder * 10 + 1) % K 
+            
+            if remainder == 0:
+                return N

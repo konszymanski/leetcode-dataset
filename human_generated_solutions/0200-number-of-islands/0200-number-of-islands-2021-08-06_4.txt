@@ -1,0 +1,26 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        
+        if not grid: return 0
+        
+        def DO_DFS(grid, row, col):
+			# base case of this problem . checking for boundary condition .
+			# so that our DFS couldn\'t cross the boundary of the grid
+            if row >= 0 and col >= 0 and row < len(grid) and col < len(grid[0]) and grid[row][col] == \'1\':
+                grid[row][col] = \'0\'
+                # performing DFS on all 4 direction 
+                DO_DFS(grid, row+1, col)
+                DO_DFS(grid, row-1, col)
+                DO_DFS(grid, row, col+1)
+                DO_DFS(grid, row, col-1)
+        
+        isLand = 0
+        
+        rows, cols = len(grid), len(grid[0])
+        
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == \'1\':
+                    DO_DFS(grid, row, col)
+                    isLand += 1
+        return isLand

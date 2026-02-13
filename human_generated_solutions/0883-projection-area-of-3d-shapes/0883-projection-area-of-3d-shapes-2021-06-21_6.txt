@@ -1,0 +1,19 @@
+class Solution:
+    def projectionArea(self, grid: List[List[int]]) -> int:
+        # initialize the parts of the sum
+        p_xy = 0
+        p_xz = 0
+        p_yz = 0
+        # simply iterate over the grid and watch where the bins are present (bird-view)
+        for i in grid:
+            for j in i:
+                if j > 0:
+                    p_xy += 1
+        # find the maximum shadow from one side prospective, which overrules the smaler bins            
+        for i in grid:
+            p_xz += max(i)
+        # do the same with the second bottom dimension         
+        for i in zip(*grid):
+            p_yz += max(i)
+            
+        return p_xy + p_xz + p_yz

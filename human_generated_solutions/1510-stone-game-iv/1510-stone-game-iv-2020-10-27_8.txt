@@ -1,0 +1,50 @@
+class Solution:
+    def winnerSquareGame(self, n: int) -> bool:
+        """
+        Given n stones and two players picking up stones, this
+        program uses dynamic programming to determine whether
+        the player going first can win the game with the constraint
+        that a player can only pick up a non-zero square of an
+        integer number of stones at a time.
+        
+        :param n: number of stones
+        :type n: int
+        :return: True if Alice can win the game, else False
+        :rtype: bool
+        """
+        
+        """
+        Create list of all non-zero squares of an integer that
+        are less than or equal to n.  Add one square to simplify
+        the dynamic programming.
+        """
+        squares = []
+        square = 1
+        increase = 3
+        while square <= n:
+            squares.append(square)
+            square += increase
+            increase += 2
+        squares.append(square)
+        
+        """
+        Dynamic Programming:
+        - Create dp array with an entry for each possible number
+          of stones between 0 and n.
+        - For each number of stones, a win can be achieved by
+          the first player if an available move leaves the second
+          player in a losing position.
+        - A win cannot be achieved if every available move leaves
+          the second player in a winning position.
+        - Return the dp value for n.
+        """
+        dp = [None] * (n + 1)
+        dp[0] = False
+        for k in range(1, n + 1):
+            s = 0
+            dp[k] = False
+            while squares[s] <= k and not dp[k]:
+                if not dp[k - squares[s]]:
+                    dp[k] = True
+                s += 1
+        return dp[-1]

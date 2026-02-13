@@ -1,0 +1,44 @@
+class Solution:
+    def nextGreaterElement(self, n: int) -> int:
+        import heapq
+        import bisect
+        
+        MAX = 2**31-1
+        
+        n = str(n)
+        n = [int(i) for i in n]
+        switch_part = []
+        minheap = []
+        switch_pos = -1
+        res = []
+        for i in range(len(n)-1, -1, -1):
+            if i<len(n)-1 and n[i] < n[i+1]:
+                switch_pos = i
+                break
+            heapq.heappush(minheap, n[i])
+        if switch_pos == -1: #No possible location to switch
+            return -1
+        
+        for iterator in range(len(minheap)):
+            switch_part.append(heapq.heappop(minheap))
+        
+        #find first number that is larger than target, then re-organize the remaining numbers from small to large
+        target = n[switch_pos]
+        k = bisect.bisect_right(switch_part, target)
+        temp = n[switch_pos]
+        n[switch_pos] = switch_part[k]
+        switch_part[k] = temp
+        
+        i=0
+        while i<=switch_pos:
+            res.append(n[i])
+            i+=1
+            
+        for i in switch_part:
+            res+=[i]
+        res = [str(i) for i in res]
+        res = int(\'\'.join(res))
+        if res > MAX:
+            return -1
+        else:
+            return res

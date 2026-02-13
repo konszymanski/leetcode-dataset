@@ -1,0 +1,36 @@
+def iterative(self, root, val):
+        node = root
+        while node:
+            if node.val < val:
+                if node.right:
+                    node = node.right
+                else:
+                    node.right = TreeNode(val)
+                    break
+            else:
+                if node.left:
+                    node = node.left
+                else:
+                    node.left = TreeNode(val)
+                    break
+        return root if root else TreeNode(val)
+                    
+        
+    def recursive(root, val):
+        if not root: return TreeNode(val)
+        def rec(node, val):
+            if node:
+                if val > node.val:
+                    if node.right:
+                        node.right = rec(node.right, val)
+                    else:
+                        node.right = TreeNode(val)
+                        
+                elif val < node.val:
+                    if node.left:
+                        node.left = rec(node.left, val)
+                    else:
+                        node.left = TreeNode(val)
+                return node
+        rec(root, val)
+        return root

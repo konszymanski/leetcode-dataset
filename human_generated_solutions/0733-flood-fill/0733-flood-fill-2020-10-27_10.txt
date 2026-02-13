@@ -1,0 +1,19 @@
+def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+        
+        color_to_fill = image[sr][sc]
+        queue = deque()
+        seen = set()
+        queue.append((sr, sc))
+        while queue:
+            popped = queue.popleft()
+            seen.add(popped)
+            image[popped[0]][popped[1]] = newColor
+            
+            directions = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+            for diff_x, diff_y in directions:
+                new_x = popped[0] + diff_x
+                new_y = popped[1] + diff_y
+                if 0 <= new_x < len(image) and 0 <= new_y < len(image[0]) and (new_x, new_y) not in seen and image[new_x][new_y] == color_to_fill:
+                    queue.append((new_x, new_y))
+        
+        return image

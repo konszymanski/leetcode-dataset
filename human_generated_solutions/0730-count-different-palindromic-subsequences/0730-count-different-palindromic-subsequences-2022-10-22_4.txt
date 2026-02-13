@@ -1,0 +1,39 @@
+def countPalindromicSubsequences(self, s: str):
+    M = 10**9 + 7
+
+    #find the first and last apperance/index of each characters
+    #time -> O(4*n) because there are only 4 characters
+    #space -> O(4*n)
+    fwd = deque()
+    dic = defaultdict(lambda: -1)
+    for i in range(len(s)-1,-1,-1):
+        ch = s[i]
+        dic[ch] = i
+        fwd.appendleft(dic.copy())
+    bwd = []
+    dic = defaultdict(lambda: -1)
+    for i,ch in enumerate(s):
+        dic[ch] = i
+        bwd.append(dic.copy())
+    
+    @lru_cache(None)
+    def dp(i,j):
+        if i > j:
+            return 0
+
+        ans = 0
+
+        for l in (\'a\',\'b\',\'c\',\'d\'):
+            m = fwd[i][l]
+            n = bwd[j][l]
+
+            if m == -1 or n < i or m > j: #curr_ch not in substring
+                continue
+
+            ans += 1  # +1 for unique char, eg: a
+            if m < n: #1+ for aa
+
+                ans += 1 + dp(m+1,n-1) #all the subsequences from the middle section with curr_ch in front and end
+                
+        return ans%M
+    return dp(0, len(s)-1)

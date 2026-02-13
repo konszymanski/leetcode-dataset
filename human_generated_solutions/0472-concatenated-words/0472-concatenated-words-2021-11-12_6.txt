@@ -1,0 +1,37 @@
+class Solution:
+def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+	trie={}
+	for w in words:
+		root=trie
+		for s in w:
+			if s not in root:
+				root[s]={}
+			root=root[s]
+		root["$"]=True
+
+	@lru_cache(None)
+	def find(w):
+		if not w:
+			return True
+		tmp=trie
+		val=False
+		for i,s in enumerate(w):
+			if s not in tmp:
+				break
+			tmp=tmp[s]
+			if "$" in tmp:
+				val|= find(w[i+1:])
+				if val:
+					break
+		return val
+
+	res=[]
+	for w in words:
+		root=trie
+		for i,s in enumerate(w):
+			root=root[s]
+			if "$" in root:
+				if i!=len(w)-1 and find(w[i+1:]):
+					res.append(w)
+					break
+	return res

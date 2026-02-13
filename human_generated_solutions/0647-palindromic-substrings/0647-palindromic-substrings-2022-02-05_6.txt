@@ -1,0 +1,16 @@
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        
+        @lru_cache(maxsize=None)
+        def dfs(start, end):
+            if s[start:end+1] == s[start:end+1][::-1]:
+                result.add((start, end))
+            
+            # loop with one less character
+            if start < end:
+                dfs(start + 1, end)
+                dfs(start, end-1)
+            
+        result = set()
+        dfs(0, len(s) - 1)
+        return len(result)

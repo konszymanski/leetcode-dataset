@@ -1,0 +1,22 @@
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        # First we update our licensePlate.
+        # Then sort words by length.
+        # Later iterate through words and maintain check = True and then we
+        # iterate through set(licensePlate) and if ch not in word or 
+		# licensePlate.count(ch) > word.count(ch) then we update check = False 
+		# and break the loop. Else after the loop ends we see if check == True
+		# we return that word immediately; since we already sorted words, keeping smaller words first.
+		
+        licensePlate = "".join(letter.lower() for letter in licensePlate if letter.isalpha()) 
+        words.sort(key=len) 
+
+        for word in words:
+            check = True
+            for ch in set(licensePlate):
+                if ch not in word or licensePlate.count(ch) > word.count(ch):
+                    check = False
+                    break
+            
+            if check == True:
+                return word

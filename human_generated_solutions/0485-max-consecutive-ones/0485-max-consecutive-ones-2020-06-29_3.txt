@@ -1,0 +1,2 @@
+def findMaxConsecutiveOnes2(self, nums):
+	return max(list(map(len, ("".join(list(map(str, nums)))).split(\'0\'))))

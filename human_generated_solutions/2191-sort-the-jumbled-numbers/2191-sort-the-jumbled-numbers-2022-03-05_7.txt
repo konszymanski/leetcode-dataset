@@ -1,0 +1,7 @@
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        def tval(val):
+            val = str(val)
+            return int("".join([ str(mapping[int(val[i])]) for i in range(len(val))]))
+        nums.sort(key = lambda e:tval(e))
+        return nums

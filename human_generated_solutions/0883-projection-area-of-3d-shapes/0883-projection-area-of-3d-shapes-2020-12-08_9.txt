@@ -1,0 +1,7 @@
+class Solution:
+    def projectionArea(self, grid: List[List[int]]) -> int:
+        #
+        rowmaxs = [max(i) for i in grid]
+        colmaxs = [max(i) for i in zip(*grid)]
+        zeros = sum(j == 0 for i in grid for j in i)
+        return len(rowmaxs)*len(colmaxs)+sum(rowmaxs)+sum(colmaxs)-zeros

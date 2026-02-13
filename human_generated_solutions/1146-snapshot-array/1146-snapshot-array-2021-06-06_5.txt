@@ -1,0 +1,41 @@
+# nums = {}
+# nums[index] = []
+# nums[index][i] = (snap_id, val)
+# set replaces current val if snap_id == nums[index][-1][0]
+# else set appends current val and snap_id
+# snap just increments snap_id and returns old snap_id
+# get does a binary search on nums[index] for the target snap_id and returns the associated value
+
+# nums[5] = [(15, 4)]
+# get(5, 13) => 0
+# get(5, 16) => 4
+
+class SnapshotArray:
+
+    def __init__(self, length: int):
+        self.snap_id = 0
+        self.nums = defaultdict(list)
+
+    def set(self, index: int, val: int) -> None:
+        if not self.nums[index] or self.nums[index][-1][0] < self.snap_id:
+            self.nums[index].append((self.snap_id, val))
+        else:
+            self.nums[index][-1] = (self.snap_id, val)
+
+    def snap(self) -> int:
+        self.snap_id += 1
+        return self.snap_id - 1
+
+    def get(self, index: int, snap_id: int) -> int:
+        l, r = 0, len(self.nums[index])
+        while l < r:
+            m = (l + r) // 2
+            if self.nums[index][m][0] == snap_id:
+                return self.nums[index][m][1]
+            elif self.nums[index][m][0] < snap_id:
+                l = m + 1
+            else:
+                r = m
+        if l == 0:
+            return 0
+        return self.nums[index][l-1][1]

@@ -1,0 +1,37 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        n = len(colors)
+        # Convert the colors from chars to index 0:a - 25:z
+        colors = [ord(color)-ord(\'a\') for color in colors]
+        
+        # Topo sort the graph
+        graph = [[] for _ in range(n)]
+        degree = [0] * n
+        for prev, curr in edges:
+            graph[prev].append(curr)
+            degree[curr] += 1
+        
+        dp = [[0 for _ in range(26)] for _ in range(n)]
+        q = deque([node for node in range(n) if degree[node] == 0])
+        
+        count = 0
+        result = -1
+        while q:
+            curr = q.popleft()
+            dp[curr][colors[curr]] += 1
+            result = max(result, dp[curr][colors[curr]])
+            count += 1
+            if count == n:
+                # Cycle detected, or reached the largest node index
+                break
+            for neighbor in graph[curr]:
+                for i in range(26):
+                    # Pass the largest color value to the neighbor
+                    dp[neighbor][i] = max(dp[neighbor][i], dp[curr][i])
+                degree[neighbor] -= 1
+                if degree[neighbor] == 0:
+                    q.append(neighbor)
+            
+        if count < n or q:
+            return -1
+        return result

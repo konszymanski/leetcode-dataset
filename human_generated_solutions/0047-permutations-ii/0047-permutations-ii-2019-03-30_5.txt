@@ -1,0 +1,19 @@
+class Solution:
+    def _permute(self, nums, s, k):
+        if len(s) == k:
+            self.permutations.append(s[:])
+        
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            
+            s.append(nums[i])
+            self._permute(nums[:i] + nums[i+1:], s, k)
+            s.pop()
+            
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        self.permutations = []
+        
+        self._permute(sorted(nums), [], len(nums))
+        
+        return self.permutations

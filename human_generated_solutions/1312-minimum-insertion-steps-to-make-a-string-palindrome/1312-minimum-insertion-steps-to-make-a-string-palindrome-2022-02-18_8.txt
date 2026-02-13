@@ -1,0 +1,15 @@
+def minInsertions(self, s: str) -> int:
+        # s = list(s)
+        mem = [[-1 for _ in range(len(s))] for _ in range(len(s))]
+        def recursive(st, end, s):
+            if st >= end: return 0
+            if mem[st][end] != -1: return mem[st][end]
+            c1 = c2 = 0
+            if s[st] == s[end]:
+                return recursive(st+1, end-1, s)
+            
+            c1 = 1 + recursive(st+1, end, s)
+            c2 = 1 + recursive(st, end-1, s)
+            mem[st][end] = min(c1, c2)
+            return mem[st][end]
+        return recursive(0, len(s) - 1, s)

@@ -1,0 +1,58 @@
+def maxTwoEvents(self, events: List[List[int]]) -> int:
+        #keep track of max value of finished event so far, that means u can add its value to curr_event
+        proc = []
+        ans = m = 0  # m represents max value of finished event so far
+        for s,e,v in events:
+            proc.append( (s, True, v) )     # time, is_start, val
+            proc.append( (e+1, False, v) )  # use e+1 (inclusive)
+        proc.sort()  # sort by time
+        
+        for time, is_start, val in proc:
+            if is_start:
+                ans = max(ans, m+val)
+            else:
+                m = max(m, val)
+        return ans
+    
+        #heap solution: use heap to keep track of max finished event so far, same as prev approach
+        events.sort()
+        max_prev_val, res = 0, 0
+        int_heap = []
+        for s, e, v in events:
+            heapq.heappush(int_heap, (e, v))
+            while int_heap and int_heap[0][0] < s:
+                _, val = heapq.heappop(int_heap)
+                max_prev_val = max(max_prev_val, val)
+            res = max(res, v + max_prev_val)
+        return res
+    
+    
+        #dp approach with binary search
+        events.sort(key=lambda x: x[1])#sorting by end day
+        n = len(events)
+        
+        dp = [0]*n
+        c_max = 0
+        for i in range(n):
+            c_max = max(c_max, events[i][2])
+            dp[i] = c_max
+        
+        ans = 0
+        for i in range(n-1, -1, -1):
+            startDay = events[i][0]
+            
+            ans = max(ans, events[i][2])
+            
+            L = 0; R = i
+            while L < R:
+                M = (L+R+1)//2
+                
+                if events[M][1] >= startDay:
+                    R = M-1
+                else:
+                    L = M
+            
+            if events[L][1] < startDay:
+                ans = max(ans, dp[L] + events[i][2])
+        
+        return ans

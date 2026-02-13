@@ -1,0 +1,13 @@
+class Solution:
+    def findKthBit(self, n: int, k: int) -> str:
+        def highestPowerOf2(n):
+            return math.pow(2, int(math.log(n,2)))
+        def findKthBit(k):
+            if(k==0): return 0
+            if(k==1): return 1
+            t = highestPowerOf2(k)
+            if t*2-1==k: return 1
+            d = k - (t-1)
+            return 1 if findKthBit(t-d-1)==0 else 0
+        
+        return str(findKthBit(k-1))

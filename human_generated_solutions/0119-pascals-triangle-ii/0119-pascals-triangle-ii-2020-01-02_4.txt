@@ -1,0 +1,19 @@
+from math import factorial
+
+class Solution:
+    
+    def comb(self, n, m):
+        
+        if n == m or m == 0:
+            return 1
+        else:
+            return factorial(n) // ( factorial(m) * factorial(n-m) )
+
+        
+    def getRow(self, rowIndex: int) -> List[int]:
+        
+        # the coefficient of level k is as following
+        #
+        # C(k,0), C(k,1), ... , C(k,k)
+        
+        return [ self.comb(rowIndex,i) for i in range(0, rowIndex+1) ]

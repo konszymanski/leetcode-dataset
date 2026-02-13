@@ -1,0 +1,18 @@
+class Solution:
+    def minDominoRotations(self, A: List[int], B: List[int]) -> int:
+        l=len(A)
+        if not l:return
+        d=collections.defaultdict(lambda:0)
+        da=collections.defaultdict(lambda:0)
+        db=collections.defaultdict(lambda:0)
+        for i in range(l):
+            if A[i]!=B[i]:
+                d[A[i]]+=1
+                da[A[i]]+=1
+                d[B[i]]+=1
+                db[B[i]]+=1
+            else:
+                d[A[i]]+=1
+        for k,v in d.items():
+            if v>=l:return min(da[k], db[k])
+        return -1

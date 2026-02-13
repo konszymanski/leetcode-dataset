@@ -1,0 +1,8 @@
+def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+	front = head #points to the front of the linked list
+	while head and head.next: #while we aren\'t at the end of the list
+		if head.val == head.next.val: #if the next node has the same value
+			head.next = head.next.next #skip it
+		else: #not a duplicate
+			head = head.next #otherwise move forward
+	return front #return the front of the linked list

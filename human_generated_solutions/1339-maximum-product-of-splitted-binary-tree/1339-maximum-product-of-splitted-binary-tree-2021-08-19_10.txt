@@ -1,0 +1,24 @@
+class Solution:
+    def maxProduct(self, root: Optional[TreeNode]) -> int:
+        \'\'\'
+        1. build a sum tree
+        2. check for max product
+        \'\'\'
+        mod = pow(10,9)+7
+        def recur(node):
+            if node==None:
+                return 0
+            left,right = recur(node.left),recur(node.right)
+            node.val += left + right
+            return node.val
+        tot = recur(root)
+        
+        def find_max_prod(node,maxprod):
+            if node==None:
+                return maxprod
+            maxprod = find_max_prod(node.left,maxprod)
+            maxprod = find_max_prod(node.right,maxprod)
+            maxprod = max(maxprod,(root.val-node.val)*(node.val))
+            return maxprod
+        
+        return find_max_prod(root,0)%mod

@@ -1,0 +1,10 @@
+class Solution:
+    def scoreOfParentheses(self, S: str) -> int:
+        pwr, ans = 0, 0
+        for i in range(1, len(S)):
+            if S[i] == "(": pwr += 1
+            elif S[i-1] == "(":
+                ans += 1 << pwr
+                pwr -= 1
+            else: pwr -= 1
+        return ans

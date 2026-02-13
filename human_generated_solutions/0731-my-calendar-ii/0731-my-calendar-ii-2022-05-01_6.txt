@@ -1,0 +1,22 @@
+class MyCalendarTwo:
+    def __init__(self):
+		# calendar with freq pair: [start, 1], [start, 2], [end, -2], [end, -1]
+        self.c = []
+    
+    def book(self, start: int, end: int) -> bool:
+        l = bisect.bisect_left(self.c, [start, 0])
+        r = bisect.bisect_left(self.c, [end, 0])
+        # scan pass
+        for _, freq in self.c[l:r]:
+            if abs(freq) > 1:
+                return False
+		start_freq = 1 if l <= 0 else (self.c[l-1][1] + 1 if (self.c[l-1][1] > 0) else -self.c[l-1][1])
+        end_freq = -1 if r >= len(self.c) else (self.c[r][1] - 1 if self.c[r][1] < 0 else -self.c[r][1])
+        if start_freq > 2 or -end_freq > 2:
+            return False
+        # update pass
+        for i in range(l, r):
+			self.c[i][1] += (1 if self.c[i][1] > 0 else -1)
+        self.c.insert(l, [start, start_freq])
+        self.c.insert(r + 1, [end, end_freq])
+        return True

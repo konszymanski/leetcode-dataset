@@ -1,0 +1,39 @@
+class Solution:
+    def countDigitOne(self, n: int) -> int:
+        \'\'\'
+        Each digit represents an integer as: 
+            digit * 10 ** power
+            
+        Solution for 10**x - 1 is x * 10 ** (x-1)
+            e.g. for 999: 3 * 100 = 300, for 9999: 4000
+        
+        Then solution for digit becomes:
+            digit * x * 10 ** (x-1) + exception
+        Where exception is the 1\'s that showed up in that order of digit.
+        
+        If digit is 2 or more, exception is 10**x, 
+            e.g. There are 100 one-hundreds until 200.
+        
+        But digit 1 requires us to know less
+        significant digits:
+            e.g. There are 46 one-hundreds until 145.
+            Digit 1 can\'t tell the number of one-hundreds alone.
+        
+        So I stored less significant digits in "seen".
+        \'\'\'
+        
+        if n<1: return 0
+        
+        def ansForDigit(digit, power, seen):
+            if not power or not digit: #zero digits and last digit
+                return digit > 0
+            
+            tens = [int(seen) + 1, 10**power][digit != 1]
+            return digit * power * 10 ** (power - 1) + tens
+        
+        def ans(n, power, seen):
+            if not n:
+                return 0
+            return ansForDigit(n % 10, power, seen) + ans(n // 10, power + 1, str(n % 10) + seen)
+        
+        return ans(n, 0, \'\')

@@ -1,0 +1,28 @@
+import math
+
+class Solution:
+    def ord(self, x):
+        if x in [0,1,2,3,4]:
+            return (0)
+        base = 0
+        k=1
+        while 5**k <= x:
+            base = base + math.floor(x/(5**k))
+            k += 1
+        return(base)    
+    def preimageSizeFZF(self, k: int) -> int:
+        est = 4*k
+        curr = self.ord(est)
+        print(curr)
+        
+        if curr == k:
+            return(5)
+        else:
+            while curr < k:
+                est = est + 1
+                curr = self.ord(est)
+                print(curr)
+            if curr != k:
+                return(0)
+            else:
+                return(5)

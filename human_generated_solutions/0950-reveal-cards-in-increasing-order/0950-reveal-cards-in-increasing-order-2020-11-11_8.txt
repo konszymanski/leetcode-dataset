@@ -1,0 +1,10 @@
+def deckRevealedIncreasing(self, deck):
+	# reverse the process
+	deck.sort(reverse=True)
+	res = collections.deque([deck[0]])
+
+	for x in deck[1:]:
+		res.appendleft(res.pop())
+		res.appendleft(x)
+
+	return res

@@ -1,0 +1,14 @@
+class Solution:
+    def partitionString(self, s: str) -> int:
+
+        chSet, ans = set(), 1
+
+        for ch in s:
+
+            if ch in chSet:
+                chSet.clear()
+                ans+= 1
+
+            chSet.add(ch)
+
+        return  ans

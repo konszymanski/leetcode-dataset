@@ -1,0 +1,20 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> \'Node\':
+        def helper(left, right, down, up):
+            if left == right and up == down:
+                return Node(grid[up][left], 1, None, None, None, None)
+            
+            midlr = (left + right) // 2
+            midud = (down + up) // 2
+            
+            bl = helper(left, midlr, midud + 1, up)
+            br = helper(midlr + 1, right, midud + 1, up)
+            tl = helper(left, midlr, down, midud)
+            tr = helper(midlr + 1, right, down, midud)
+            
+            if tl.val == tr.val == bl.val == br.val and tl.isLeaf and tr.isLeaf and bl.isLeaf and br.isLeaf:
+                return Node(tl.val, 1, None, None, None, None)
+
+            return Node(1, 0, tl, tr, bl, br)
+        
+        return helper(0, len(grid) - 1, 0, len(grid) - 1)

@@ -1,0 +1,7 @@
+import numpy
+class Solution:
+    def construct2DArray(self, original, m, n):
+        try:
+            return numpy.reshape(original, (m, n)).tolist()
+        except ValueError:
+            return []

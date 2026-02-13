@@ -1,0 +1,83 @@
+"""
+368. Largest Divisible Subset
+
+problem:
+
+if we have (a,b), let\'s define "pair divisibility" as a % b = 0 or b % a = 0
+which means the larger is divible by the smaller.
+
+this is basically a longest increasing (resp. decreasing) subset problem where 
+we want to find (and return) the longest chain of numbers such that this divisibility
+relation applies to the solution set. Additionally, we actually want to return the chain, not just the cardinality of the set.
+ 
+What the "chain" means here is that two consecutive numbers within the chain fuffill the pairwise divisibility relation above. 
+
+for a, b, c in increasing order, note that this condition is transitive, that is
+  b % a = 0
+  c % b = 0
+= c % a = 0 by transitivity.
+
+Which lets us efficiently build up a chain iteratively by sorting the input first.
+
+like most LIS problems in a naive brute force solution, there is a 
+O(n*2^n) solution from following the decision tree.  This can be optimized
+to O(2^n) by optimizing the O(n) loop to O(1) using a suitable data structure
+
+these types of problems usualy have a O(n^2) or O(n^3) solution, usually using DP
+
+----
+
+basic bottom up DP approach:
+
+in general, the basic lis bottom up template is:
+
+<preprocess input>
+dp = [a good minimum for _ in range(len(input))]
+
+for i in range(len(input))
+   for j in range(i)
+      does this meet some condition?
+            dp[i] = consider dp[i] and dp[j], and nums[i] and nums[j] in a problem specific way
+
+where dp[i] represents the length of the longest/largest subset that meets the condition ending with element i in the input
+
+unlike basic LIS, we also want to bookeep the actual chain (subset) of numbers
+and return it, which can be done either when computing the dp table, or afterwards.
+
+
+O(n log n + n^2 + n) time
+O(n) space
+"""
+
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        nums = sorted(nums)         # O(n log n) time
+        
+        dp = [1] * n       
+        parents = [-1] * n                       # track predecessor
+        longest = 0                              # pointer at longest subset
+        
+        # O(n^2) time
+        # loop over indices that end at position i inclusive
+        for i in range(1, n):
+            # loop over possible subsets
+            for j in range(i):
+                # can we add it to our chain? 
+                if nums[i] % nums[j] == 0:
+                    # is it a longer chain?
+                    if dp[i] < dp[j] + 1:
+                        dp[i] = dp[j] + 1
+                        parents[i] = j
+                    
+            # track where the longest ends
+            if dp[i] > dp[longest]:
+                longest = i
+                
+        # reconstruct actual path by walking the parent pointers in O(n) time
+        ret = []
+        while longest >= 0:
+            ret.append(nums[longest])
+            longest = parents[longest]
+            
+        return reversed(ret)

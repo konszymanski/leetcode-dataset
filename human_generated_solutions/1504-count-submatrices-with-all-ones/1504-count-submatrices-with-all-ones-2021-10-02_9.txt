@@ -1,0 +1,19 @@
+def numSubmat(self, mat: List[List[int]]) -> int:
+	r, c = len(mat), len(mat[0])
+	for i in range(0, r):
+		for j in range(c-2, -1, -1):
+			if mat[i][j]==1:
+				mat[i][j]+=mat[i][j+1]
+
+	count = 0
+
+	for i in range(0, r):
+		for j in range(0, c):
+			min_width = mat[i][j]
+			k = i
+			while k<r:
+				min_width = min(min_width, mat[k][j])
+				count+=min_width
+				k+=1
+
+	return count

@@ -1,0 +1,25 @@
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        
+        if len(seats)<=2:
+            return 1
+        
+        p1,p2,maxZeros,conZero=0,0,0,0
+        
+        while p2<len(seats):
+            
+            if seats[p1]==0 and seats[p2]==0:
+                    conZero=p2-p1+1
+                    maxZeros=max(maxZeros,conZero) if p1==0 or p2==len(seats)-1 else max(maxZeros,math.ceil(conZero/2))
+                    p2+=1
+                    
+            elif seats[p1]==1 and seats[p2]==1:
+                    p1,p2=p2,p2+1
+                    
+            elif seats[p1]!=seats[p2]:
+                    conZero=abs(p2-p1)
+                    maxZeros=max(maxZeros,conZero) if p2==len(seats)-1 else max(maxZeros,math.ceil(conZero/2))
+                    p1=p2 if seats[p2]==1 else p1 #ie: exchange pointers in the next iter if p1 is free and p2 is occupied
+                    p2=p2+1
+            
+        return maxZeros

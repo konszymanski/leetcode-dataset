@@ -1,0 +1,69 @@
+class DoublyListNode:
+    def __init__(self, val=None, prev=None, next=None):
+        self.val = val
+        self.prev = prev
+        self.next = next
+        
+class MyCircularDeque:
+    
+    def __init__(self, k: int):
+        self.k = k
+        self.size = 0
+        self.dummy = DoublyListNode(-1)
+        self.front = self.rear = self.dummy
+
+    def insertFront(self, value: int) -> bool:
+        if self.size == self.k:
+            return False
+        self.dummy.next = DoublyListNode(value, self.dummy, self.dummy.next)
+        self.front = self.dummy.next
+        if self.front.next:
+            self.front.next.prev = self.front
+        self.size += 1
+        if self.size == 1:
+            self.rear = self.front
+        return True
+
+    def insertLast(self, value: int) -> bool:
+        if self.size == self.k:
+            return False
+        self.rear.next = DoublyListNode(value, self.rear)
+        self.rear = self.rear.next
+        self.size += 1
+        if self.size == 1:
+            self.front = self.rear
+        return True
+
+    def deleteFront(self) -> bool:
+        if self.size == 0:
+            return False
+        self.front = self.front.next
+        self.dummy.next = self.front
+        if self.front:
+            self.front.prev = self.dummy
+        self.size -= 1
+        if self.size == 0:
+            self.front = self.rear = self.dummy
+        return True
+
+    def deleteLast(self) -> bool:
+        if self.size == 0:
+            return False
+        self.rear = self.rear.prev
+        self.rear.next = None
+        self.size -= 1
+        if self.size == 0:
+            self.front = self.rear
+        return True
+
+    def getFront(self) -> int:
+        return self.front.val
+
+    def getRear(self) -> int:
+        return self.rear.val
+
+    def isEmpty(self) -> bool:
+        return self.size == 0
+
+    def isFull(self) -> bool:
+        return self.size == self.k

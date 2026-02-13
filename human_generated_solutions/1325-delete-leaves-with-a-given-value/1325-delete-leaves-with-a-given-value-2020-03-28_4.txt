@@ -1,0 +1,6 @@
+class Solution:
+    def removeLeafNodes(self, r, t):
+        if r:
+            r.left = self.removeLeafNodes(r.left, t)
+            r.right = self.removeLeafNodes(r.right, t)
+            return None if (r.left is r.right is None) and (r.val == t) else r

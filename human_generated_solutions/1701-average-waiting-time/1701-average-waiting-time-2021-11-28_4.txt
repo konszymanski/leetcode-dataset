@@ -1,0 +1,11 @@
+class Solution:
+    def averageWaitingTime(self, customers: List[List[int]]) -> float:
+        
+        prevFinishTime = customers[0][0] + customers[0][1]
+        totalWaitTime = customers[0][1]
+        
+        for c in customers[1:]:
+            totalWaitTime += max(prevFinishTime - c[0] + c[1], c[1])
+            prevFinishTime = max(prevFinishTime + c[1], c[0] + c[1])
+        
+        return (totalWaitTime) / len(customers)

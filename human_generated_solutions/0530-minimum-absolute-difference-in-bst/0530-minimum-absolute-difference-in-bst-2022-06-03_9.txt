@@ -1,0 +1,19 @@
+class Solution:
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        
+        def helper(root,lst):
+             if not root  :
+                    return 
+             lst.append(root.val)
+             if root.right:
+                helper(root.right,lst)
+             if root.left:
+                helper(root.left, lst)
+            
+             return (lst)
+            
+        ans= helper(root,[])
+        ans.sort()
+        num=[]
+        for i in range(1,len(ans)):
+            num.append(a

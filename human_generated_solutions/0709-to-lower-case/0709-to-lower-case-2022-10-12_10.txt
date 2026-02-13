@@ -1,0 +1,10 @@
+class Solution:
+    def toLowerCase(self, s: str) -> str:
+        alphabet = \'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\'
+        ans = \'\'
+        for i in s:
+            try:
+                ans += alphabet[alphabet.index(i) % 26]
+            except ValueError:
+                ans += i
+        return ans

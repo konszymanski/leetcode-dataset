@@ -1,0 +1,24 @@
+from heapq import *
+
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        
+        # sort the trips by start location
+        trips.sort(key=lambda x: x[1])
+
+        max_load, curr_load = 0, 0
+        END, LOAD = 0, 1
+        min_heap = []
+        
+        for load, start, end in trips:
+            # drop all the passengers that the trip have ended
+            while (min_heap and start >= min_heap[0][END]):
+                curr_load -= min_heap[0][LOAD]
+                heappop(min_heap)
+            
+            # add the trip info to the heap identified by the end location
+            heappush(min_heap, (end, load))
+            curr_load += load
+            max_load = max(max_load, curr_load)
+
+        return max_load <= capacity

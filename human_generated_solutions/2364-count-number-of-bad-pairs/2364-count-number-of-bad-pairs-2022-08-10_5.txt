@@ -1,0 +1,15 @@
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        n = len(nums)
+        totalPairs, goodPairs = (n*(n-1)) // 2, 0
+        freq = {}
+        
+        for i in range(n):
+            diff = i - nums[i]
+            freq[diff] = freq[diff] + 1 if diff in freq else 1
+        
+        
+        for v in freq.values():
+            goodPairs += (v * (v-1)) // 2
+        
+        return totalPairs - goodPairs

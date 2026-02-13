@@ -1,0 +1,37 @@
+# Algotithm:
+# step-1: Transfer the question to a graph
+# step-2: Recursively find the path
+# Graph Node Object
+class Node:
+    def __init__(self):
+        self.outNode = []
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+		# Transfer the course to a graph.
+        graph = defaultdict(Node)
+        for nxt, prev in prerequisites:
+            graph[prev].outNode.append(nxt)
+           
+		# Searching the target from start recursively
+        @cache
+        def helper(start, target):
+			# fail case: cannot find 
+            if len(graph[start].outNode) == 0:
+                return False
+			# success case: find the node
+            if target in graph[start].outNode:
+                return True
+			# recursively find 
+            for nextCourse in graph[start].outNode:
+                if helper(nextCourse, target):
+                    return True
+            return False
+        
+		# returned variable
+        res = []
+        for nxt, prev in queries:
+            if nxt not in graph or prev not in graph:
+                res.append(False)
+            else:
+                res.append(helper(prev, nxt))
+        return res

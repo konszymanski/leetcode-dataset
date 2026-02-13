@@ -1,0 +1,21 @@
+def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+	def check(arr, rev):
+		if(not rev): arr = arr[::-1]
+		for i in range(1, len(arr)):
+			if(arr[i] <= arr[i-1]): return 1
+		return 0
+	q = [root]
+	flag = 0
+	while(q):
+		l = len(q)
+		flag = (flag+1)%2
+		temp = [i.val for i in q]
+		if(check(temp, flag)):
+			return 0
+		for _ in range(l):
+			t = q.pop(0)
+			if(t.val%2 != flag):
+				return 0
+			if(t.left): q.append(t.left)
+			if(t.right): q.append(t.right)
+	return 1

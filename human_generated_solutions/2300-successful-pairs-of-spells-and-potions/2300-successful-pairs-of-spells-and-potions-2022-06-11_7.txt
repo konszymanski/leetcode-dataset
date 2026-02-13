@@ -1,0 +1,26 @@
+class Solution:
+    def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+        
+        potions.sort()
+        res = []
+        for spell in spells:
+            res.append(self.search(spell, potions, success))
+        return res 
+    
+    def search(self, spell, potions, success):
+        
+        start, end = 0, len(potions) - 1
+        
+        while start + 1 < end:
+            mid = start + (end - start) // 2
+            val = potions[mid] * spell
+            if val < success:
+                start = mid
+            elif val >= success:
+                end = mid
+            
+        if potions[start] * spell >= success:
+            return len(potions) - start
+        if potions[end] * spell >= success:
+            return len(potions) - end
+        return len(potions) - end - 1

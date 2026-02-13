@@ -1,0 +1,67 @@
+class Solution:
+    
+    def judge_winner( self, board ):
+        
+        for player_token in {\'X\',\'O\'}:
+            
+            # check horizontal straight line
+            for y in range(3):
+                
+                if all( [ board[y][x] == player_token for x in range(3) ] ):
+                    return player_token
+            
+            # check vertical straight line
+            for x in range(3):
+                if all( [ board[y][x] == player_token for y in range(3) ] ):
+                    return player_token
+                
+            
+            # check diagnonal line
+            if all( [ board[diag][diag] == player_token for diag in range(3) ] ):
+                return player_token
+            
+            # check anti-diagnoal line
+            if all( [ board[diag][2-diag] == player_token for diag in range(3) ] ):
+                return player_token
+        
+        
+        # if no winner by now, return \'=\'
+        return \'=\'
+        
+        
+    
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        
+        board = [ [ \'#\' for i in range(3)] for j in range(3) ]
+        
+        
+        turn = 0;
+        for one_move in moves:
+            
+            y, x = one_move
+            
+            if turn % 2 == 0:
+                # A make one move
+                board[y][x] = \'X\'
+                
+                
+            else:
+                # B make one move
+                board[y][x] = \'O\'
+            
+            # A and B take turns to play
+            turn += 1
+            
+        winner_token = self.judge_winner( board )
+        
+        if winner_token == \'X\':
+            return \'A\'
+        
+        elif winner_token == \'O\':
+            return \'B\'
+        
+        else:
+            if turn ==9:    
+                return \'Draw\'
+            else:
+                return \'Pending\'

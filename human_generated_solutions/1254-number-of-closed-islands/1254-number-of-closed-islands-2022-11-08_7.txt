@@ -1,0 +1,49 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        class UnionFind:
+            def __init__(self, size):
+                self.parent = list(range(size))
+                self.rank = [0] * size
+            def find(self, i):
+                if self.parent[i] != i:
+                    self.parent[i] = self.find(self.parent[i])
+                return self.parent[i]
+            def union(self, x, y):
+                parX = self.find(x)
+                parY = self.find(y)
+                if parX != parY:
+                    if self.rank[parX] > self.rank[parY]:
+                        self.parent[parY] = parX
+                    elif self.rank[parX] < self.rank[parY]:
+                        self.parent[parX] = parY
+                    else:
+                        self.parent[parY] = parX
+                        self.rank[parX] += 1
+            
+        nRow = len(grid)
+        nCol = len(grid[0])
+        uf = UnionFind(nRow * nCol)
+        
+        for i, row in enumerate(grid):
+            for j, val in enumerate(row):
+                if val == 0:
+                    if i > 0 and grid[i-1][j] == 0:
+                            uf.union(i * nCol + j, (i - 1) * nCol + j)
+                    if j > 0 and grid[i][j - 1] == 0:
+                            uf.union(i * nCol + j, i * nCol + j - 1)
+        
+        setInside = set()
+        setOutside = set()
+        
+        for i, row in enumerate(grid):
+            for j, val in enumerate(row):
+                if val == 0:
+                    elem = i * nCol + j
+                    elemPar = uf.find(elem)
+                    if i == 0 or i == nRow - 1 or j == 0 or j == nCol - 1:
+                        setOutside.add(elemPar)
+                    else:
+                        setInside.add(elemPar)
+        setInside.difference_update(setOutside)
+    
+        return len(setInside)

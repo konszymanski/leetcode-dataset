@@ -1,0 +1,16 @@
+def canChange(self, start: str, target: str) -> bool:
+	q, av = collections.deque(), set([\'L\', \'R\'])
+
+	for i, c in enumerate(start):
+		if c in av: q.append((i, c))
+
+	for i, c in enumerate(target):
+		if c in av:
+			if not q: return False
+
+			ind, char = q.popleft()
+			if c != char: return False
+			elif c == \'R\' and i < ind: return False 
+			elif c == \'L\' and i > ind: return False 
+
+	return not q

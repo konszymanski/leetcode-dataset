@@ -1,0 +1,44 @@
+class Solution(object):
+    def andFunction(self, array):
+        return all(array)
+
+    def orFunction(self, array):
+        return any(array)
+
+    def notFunction(self, array):
+        return not(array[0])
+
+    def parseBoolExpr(self, expression):
+        """
+        :type expression: str
+        :rtype: bool
+        """
+        stack = []
+        functionMapper = {
+            \'&\': self.andFunction,
+            \'|\': self.orFunction,
+            \'!\': self.notFunction
+        }
+
+        for token in expression:
+            if token == \')\':
+                temp = []
+                while stack[len(stack)-1] != \'(\':
+                    temp.append(stack.pop())
+                stack.pop()
+                op = stack.pop()
+
+                func = functionMapper[op]
+                stack.append(func(temp))
+
+            else:
+                if token == \'t\':
+                    stack.append(True)
+                elif token == \'f\':
+                    stack.append(False)
+
+                elif token == \',\':
+                    continue
+                else:
+                    stack.append(token)
+        return stack[0]

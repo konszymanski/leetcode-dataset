@@ -1,0 +1,11 @@
+class Solution(object):
+    def maxSatisfied(self, customers, grumpy, X):
+        i = original_satisfied = new_satisfied = max_new_satisfied = 0
+        for j in range(len(customers)):
+            original_satisfied += customers[j] * (not grumpy[j])
+            new_satisfied += customers[j] * grumpy[j]                        
+            if j - i == X:
+                new_satisfied -= customers[i] * grumpy[i]
+                i += 1
+            max_new_satisfied = max(max_new_satisfied, new_satisfied)
+        return original_satisfied + max_new_satisfied

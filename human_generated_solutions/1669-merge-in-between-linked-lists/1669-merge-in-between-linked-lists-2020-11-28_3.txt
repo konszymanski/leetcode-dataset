@@ -1,0 +1,14 @@
+def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
+	prea = postb = None
+	dummy = cur = ListNode(next=list1)
+	for i in range(b+1):
+		if i == a: prea = cur
+		cur = cur.next
+	postb = cur.next
+
+	prea.next = list2
+	while list2.next:
+		list2 = list2.next
+
+	list2.next = postb
+	return dummy.next

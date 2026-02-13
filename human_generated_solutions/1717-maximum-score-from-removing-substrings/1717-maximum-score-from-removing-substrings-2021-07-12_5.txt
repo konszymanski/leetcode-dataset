@@ -1,0 +1,34 @@
+class Solution:
+    def maximumGain(self, s: str, x: int, y: int) -> int:
+        points = 0
+        if x >= y:
+            stack = []
+            for c in s:
+                if stack and c == "b" and stack[-1] == "a":
+                    stack.pop()
+                    points += x
+                else:
+                    stack.append(c)
+            new_stack = []
+            for c in stack:
+                if new_stack and c == "a" and new_stack[-1] == "b":
+                    new_stack.pop()
+                    points += y
+                else:
+                    new_stack.append(c)
+        else:
+            stack = []
+            for c in s:
+                if stack and c == "a" and stack[-1] == "b":
+                    stack.pop()
+                    points += y
+                else:
+                    stack.append(c)
+            new_stack = []
+            for c in stack:
+                if new_stack and c == "b" and new_stack[-1] == "a":
+                    new_stack.pop()
+                    points += x
+                else:
+                    new_stack.append(c)
+        return points

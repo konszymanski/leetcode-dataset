@@ -1,0 +1,46 @@
+class Event:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+    def before(self, event):
+        return self.end <= event.start
+
+    def after(self, event):
+        return event.end <= self.start
+
+    def conflict(self, event):
+        return not (self.after(event) or self.before(event))
+
+
+class Node:
+    def __init__(self, event=None):
+        self.event = event
+        self.left = None
+        self.right = None
+
+    def insert(self, node):
+        if self.event.conflict(node.event):
+            return False
+        if self.event.before(node.event):
+            if not self.left:
+                self.left = node
+                return True
+            return self.left.insert(node)
+        if not self.right:
+            self.right = node
+            return True
+        return self.right.insert(node)
+
+
+class MyCalendar:
+    def __init__(self):
+        self.root = None
+
+    def book(self, start: int, end: int) -> bool:
+        event = Event(start, end)
+        node = Node(event)
+        if not self.root:
+            self.root = node
+            return True
+        return self.root.insert(node)

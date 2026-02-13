@@ -1,0 +1,10 @@
+# Python
+class Solution:
+    def diagonalSum(self, A):
+        n   = len(A)
+        res = 0
+        for i in range(n):
+            res += A[i][i] + A[i][n-1-i]
+        # x: Index of Element Repeated (when n is Odd)
+        x = (n-1)//2
+        return res - A[x][x] if n&1 else res

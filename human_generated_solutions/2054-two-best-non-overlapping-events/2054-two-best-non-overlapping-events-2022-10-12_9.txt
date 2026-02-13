@@ -1,0 +1,11 @@
+class Solution(object):
+    def maxTwoEvents(self, events):
+        """
+        :type events: List[List[int]]
+        :rtype: int
+        """
+        res, bestStart = 0, 0
+        for x in reversed(sorted([(0, event[0], event[2]) for event in events] + [(1, event[1], event[2]) for event in events], key = lambda x : (x[1], x[0]))):
+            bestStart = max(bestStart, x[2]) if x[0] == 0 else bestStart
+            res = max(res, x[2] + bestStart) if x[0] == 1 else res
+        return res

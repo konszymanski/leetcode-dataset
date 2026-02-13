@@ -1,0 +1,24 @@
+class Solution:
+    def __init__(self):
+        self.arr = []
+    def inOrder(self,root):
+        if root is None:
+            return []
+        else:
+            self.inOrder(root.left)
+            self.arr.append(root.val)
+            self.inOrder(root.right)
+        return self.arr
+    
+    def balanced(self,left,right,nums):
+        if left > right:
+            return None
+        else:
+            mid = (left + right)//2
+            root = TreeNode(nums[mid])
+            root.left = self.balanced(left,mid-1,nums)
+            root.right = self.balanced(mid+1,right,nums)
+        return root
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        nums = self.inOrder(root)
+        return self.balanced(0,len(nums)-1,nums)

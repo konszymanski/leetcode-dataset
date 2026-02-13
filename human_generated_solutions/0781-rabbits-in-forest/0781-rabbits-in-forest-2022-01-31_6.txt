@@ -1,0 +1,25 @@
+class Solution(object):
+    def numRabbits(self, answers):
+        """
+        :type answers: List[int]
+        :rtype: int
+        """
+        d = dict()
+        for val in answers:
+            if val not in d.keys():
+                d[val] = 0
+            d[val] += 1
+        sums = 0
+        for key in d.keys():
+            multiple = key + 1
+            count = d[key]
+            if count<=multiple:
+                count = multiple
+                sums += multiple
+                continue
+            temp = 0
+            if count % multiple != 0:
+                temp = 1
+                count = count - (count%multiple)
+            sums = sums + (count) + (multiple)*temp
+        return sums

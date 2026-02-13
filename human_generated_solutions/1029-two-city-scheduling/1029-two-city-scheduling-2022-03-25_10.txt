@@ -1,0 +1,21 @@
+from functools import lru_cache
+
+class Solution:
+    @lru_cache(None)
+    def dp(self, index, a_count):
+        if index == self.length:
+            if a_count == self.length // 2:
+                return 0
+            return math.inf
+        
+        choose_a = self.costs[index][0] + self.dp(index+1, a_count+1)
+        choose_b = self.costs[index][1] + self.dp(index+1, a_count)
+        
+        return min(choose_a, choose_b)
+
+    def twoCitySchedCost(self, costs: List[List[int]]) -> int:
+        self.length = len(costs)
+        self.costs = costs
+        
+        self.dp.cache_clear()
+        return self.dp(0, 0)

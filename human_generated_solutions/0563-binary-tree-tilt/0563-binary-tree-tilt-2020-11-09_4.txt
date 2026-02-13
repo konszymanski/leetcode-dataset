@@ -1,0 +1,9 @@
+class Solution:
+    def findTilt(self, root: TreeNode) -> int:
+        def dfs(root):
+            if not root:
+                return 0, 0
+            ls, lt = dfs(root.left)    
+            rs, rt = dfs(root.right)    
+            return root.val + ls + rs, abs(ls - rs) + lt + rt
+        return dfs(root)[1]

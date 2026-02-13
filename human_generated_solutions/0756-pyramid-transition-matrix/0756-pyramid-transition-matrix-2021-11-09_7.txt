@@ -1,0 +1,28 @@
+def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+	dic = {}
+	for a in allowed:
+		if a[:2] not in dic:
+			dic[a[:2]] = []
+		dic[a[:2]].append(a[2])
+
+	l = len(bottom)
+	stack = [([], bottom, 0, l-1)]
+	done = set()
+	done.add(bottom)
+
+	while stack:
+		till, current, pos, limit = stack.pop()
+		if limit==0:
+			return True
+		if pos==limit:
+			bottom = "".join(till)
+			#I got time limit error because of not using this line
+			#if a bottom is already seen, means it\'s work has already been done
+			if bottom not in done:
+				stack.append(([], bottom, 0, limit-1))
+				done.add(bottom)
+		else:
+			if current[pos:pos+2] in dic:
+				for c in dic[current[pos:pos+2]]:
+					stack.append((till+[c], current, pos+1, limit))
+	return False

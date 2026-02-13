@@ -1,0 +1,58 @@
+from collections import deque
+from itertools import combinations
+from math import hypot
+
+
+class Solution:
+    def maximumDetonation(self, bombs: list[list[int]]) -> int:
+        n = len(bombs)
+        g = [[] for _ in range(n)]
+
+        for i, j in combinations(range(n), 2):
+            (x1, y1, r1), (x2, y2, r2) = bombs[i], bombs[j]
+
+            if (d := hypot(x1 - x2, y1 - y2)) <= r1:
+                g[i].append(j)
+
+            if d <= r2:
+                g[j].append(i)
+
+        return self.max_size_of_a_component_dfs(g)
+        # return self.max_size_of_a_component_bfs(g)
+
+    @staticmethod
+    def max_size_of_a_component_dfs(g: list[list[int]]) -> int:
+        n = len(g)
+
+        def dfs(u: int, visited: list[bool]) -> int:
+            visited[u] = True
+
+            return 1 + sum(dfs(v, visited) for v in g[u] if not visited[v])
+
+        return max(dfs(i, [False] * n) for i in range(n))
+
+    @staticmethod
+    def max_size_of_a_component_bfs(g: list[list[int]]) -> int:
+        n = len(g)
+
+        q = deque()
+
+        def bfs(start: int) -> int:
+            visited = [False] * n
+
+            def add_to_q(node: int):
+                q.append(node)
+                visited[node] = True
+
+            add_to_q(start)
+
+            while q:
+                u = q.popleft()
+
+                for v in g[u]:
+                    if not visited[v]:
+                        add_to_q(v)
+
+            return sum(visited)
+
+        return max(bfs(i) for i in range(n))

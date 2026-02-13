@@ -1,0 +1,43 @@
+class Solution:
+    def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
+        n = len(arr)
+        a = 0
+        c = 0
+        
+        prev = -1
+        for i in range(len(arr)):
+            if arr[i]>=prev:
+                a += 1
+                prev = arr[i]
+            else:
+                break
+        prev = 1e9 + 1
+        for i in range(len(arr)-1, -1, -1):
+            if i<a:
+                break
+            if arr[i]<=prev:
+                c += 1
+                prev = arr[i]
+            else:
+                break
+            
+        # print(a, c)
+        ans = max(a, c)
+
+        cnt = 0
+        
+        left = arr[:a]
+        right = arr[n-c:]
+        
+        i = 0
+        j = 0
+        
+        while i<len(left) and j<len(right):
+            if right[j] >= left[i]:
+                ans = max(ans, i+1 + (len(right)-j))
+                i += 1
+            else:
+                j += 1
+        
+       
+        return n-ans

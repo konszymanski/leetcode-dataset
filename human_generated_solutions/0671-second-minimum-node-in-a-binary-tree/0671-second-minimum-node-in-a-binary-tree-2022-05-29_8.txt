@@ -1,0 +1,25 @@
+class Solution:
+    def findSecondMinimumValue(self, root: Optional[TreeNode]) -> int:
+        # bfs
+        # maintain two variables min1 = root.val and min2 = math.inf
+        # any node value can be in 5 situations
+        # when we see a node, its val can be 
+        # node.val < min1 : not possible as root.val is minimum in the subtree
+        # node.val == min1 : search this subtree
+        # min1<node.val < min2: update min2, but don\'t search this subtree as this node val will be the smallest in this subtree
+        # node.val == min2: don\'t search this subtree, as min2 will be smallest in its subtree
+        # node.val > min2: don\'t search this subtree
+
+        q = deque()
+        q.append(root)
+        min1 = root.val
+        min2 = float(\'inf\')
+        while q:
+            node = q.popleft()
+            if node:
+                if min1<node.val<min2:
+                    min2 = node.val
+                elif node.val == min1:
+                    q.append(node.left)
+                    q.append(node.right)
+        return min2 if min2 < float(\'inf\') else -1

@@ -1,0 +1,2 @@
+def minStartValue(self, nums: List[int]) -> int:
+	return 1-min(0, min(accumulate(nums)))

@@ -1,0 +1,44 @@
+class Solution:
+    def lsis(self, ppl):
+        # lambdas to avoid hardcoding [0] and [1] :)
+        score = lambda idx: ppl[idx][0]
+        age = lambda idx: ppl[idx][1]
+        
+        # suffix DP / knapsack 
+        # at each index -> include in subsequence / skip :)
+        @functools.cache
+        def dp(i, prev = -1): 
+            if i == len(ppl): return 0
+            
+            # skip this player
+            res = dp(i+1, prev)
+            
+            # pick this player
+            if age(i) >= prev:
+                res = max(res, score(i) + dp(i+1, age(i)))
+            
+            return res
+        
+        # return dp(0) # let\'s try bottom up 1D DP
+        dp_next = [0]*1001 
+        dp_cur = [0]*1001
+        
+        for i in range(len(ppl)-1,-1,-1):
+            for prev in range(1000,-1,-1):
+                res = dp_next[prev]
+                if age(i) >= prev:
+                    res = max(res, score(i) + dp_next[age(i)])
+                dp_cur[prev] = res
+            dp_next = dp_cur
+            dp_cur = [0]*1001
+        
+        return dp_next[0]
+    
+    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        ppl = [(score, age) for score, age in zip(scores, ages)]
+        
+        # let it get sorted by score, so I need to only check ages later
+        ppl.sort()
+        
+        # now find Largest Sum Increasing Subsequence of ages ;)
+        return self.lsis(ppl)

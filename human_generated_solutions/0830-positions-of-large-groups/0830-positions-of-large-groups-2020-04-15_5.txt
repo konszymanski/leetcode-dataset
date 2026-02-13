@@ -1,0 +1,14 @@
+from itertools import groupby
+
+class Solution(object):
+    def largeGroupPositions(self, S):
+        ans, i = [], 0
+
+        for ch, g in groupby(S):   # produces groups of repeated values (e.g. "aaabbaCCC" => "a" x 3, "b" x 2, "a" x 1, "C" x 3)
+            group_size = len(list(g))
+
+            if group_size >= 3: 
+			    ans.append([i, i + group_size - 1])
+            i += group_size
+			
+        return ans

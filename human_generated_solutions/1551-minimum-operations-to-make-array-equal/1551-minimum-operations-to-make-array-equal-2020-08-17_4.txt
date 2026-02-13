@@ -1,0 +1,24 @@
+class Solution:
+    def minOperations(self, n: int) -> int:
+        
+        # balance point is n
+        # left hand side is lighter
+        # right hand side is heavier
+        balance_point = n
+        
+        
+        diff_accumulation = 0
+        
+        odd = 1
+        
+        # accumulate all the differnce between small odds to balance point
+        while odd < n:
+            
+            diff_accumulation += (balance_point - odd)
+            
+            # move to next odd number
+            odd += 2
+        
+        # each operation contribute one pair of +1 on left hand side / -1 on right hand side
+        # so the accumulation of difference is the answer
+        return diff_accumulation

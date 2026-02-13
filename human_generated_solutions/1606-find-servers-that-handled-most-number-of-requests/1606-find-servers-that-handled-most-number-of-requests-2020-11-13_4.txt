@@ -1,0 +1,29 @@
+#Runtime: TLE
+class Solution:
+    def busiestServers(self, k: int, arrival: List[int], load: List[int]) -> List[int]:
+        
+        requests_handled = collections.defaultdict(int)
+        servers = [] # server heap (end_time, server_id)
+        free_servers = set(range(k))
+        
+        for i, (t, c) in enumerate(zip(arrival, load)):
+            
+            while servers and servers[0][0] <= t:
+                free_servers.add(heapq.heappop(servers)[1])
+            
+            if free_servers:
+                
+                # find first free server
+                target_server = i % k
+                while target_server not in free_servers:
+                    target_server = (target_server + 1) % k
+                
+                # mark the server as busy
+                free_servers.remove(target_server)
+                
+                # add the server to the server heap
+                heapq.heappush(servers, (t + c, target_server))
+                requests_handled[target_server] += 1
+        
+        maxi = max(requests_handled.values())
+        return [server for server in requests_handled if requests_handled[server] == maxi]

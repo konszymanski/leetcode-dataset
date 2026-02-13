@@ -1,0 +1,34 @@
+class Solution(object):
+    def nthMagicalNumber(self, n, a, b):
+        """
+        :type n: int
+        :type a: int
+        :type b: int
+        :rtype: int
+        """
+        def gcd(a, b): # function to calculate greatest common divisor of two numbers (Example: gcd(4, 6) = 2)
+            while b > 0: # while b is greater than 0
+                a, b = b, a % b # a = b, b = a mod b
+            return a # return a
+
+        MOD=1000000007 # modulo number from question
+        lcm = (a * b) // gcd(a, b) # integer division operator (//) is used to perform integer division.
+        low = min(a, b) # lowest number of a and b
+        high = low * n # upper limit of the range (For example: if a = 2, b = 3, and n=4 then high = 8(2*4))
+        while (low <= high): # Binary Search implementation
+            mid = (low + high) // 2 
+            \'\'\'
+                    mid     mid       mid
+            count= ------ + ------ - ------ 
+                     a        b       lcm
+            
+            type count:int
+            where, (mid//lcm) is the common numbers which are divisible by both a and b.    
+            \'\'\'
+            count = mid // a + mid // b - mid // lcm 
+            if count==n and (mid % a == 0 or mid % b == 0): # For optimization --> if count is equal to n and mid is divisible by a or b
+                return mid % MOD 
+            elif (count < n):
+                low = mid + 1 # if count is less than n, then increase low by 1
+            else:
+                high = mid - 1 # if count is greater than n, then decrease high by 1

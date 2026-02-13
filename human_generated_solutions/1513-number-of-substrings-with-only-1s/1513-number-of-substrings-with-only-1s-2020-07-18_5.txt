@@ -1,0 +1,37 @@
+class Solution:
+    def numSub(self, s: str) -> int:
+        
+        # padding one dummy zero as ending symbol
+        s = s + \'0\'
+        
+        idx, first_1_idx, last_1_idx = 0, None, None
+        prev = None
+        size = len(s)
+        
+        counter = 0
+        
+        while idx < size:
+            
+            if s[idx] == \'1\':
+                if first_1_idx is None:
+                    # head index of 1s
+                    first_1_idx = idx
+                    
+            else:
+                if prev == \'1\':
+                    # tail index of 1s
+                    last_1_idx = idx - 1
+                    
+                    # length of current contiguous 1s
+                    len_of_1 = last_1_idx - first_1_idx + 1
+                    
+                    # update count of substrings with 1s
+                    counter += len_of_1 * ( len_of_1 + 1 ) // 2 
+                    
+                    # clear index for new capture of 1s
+                    first_1_idx, last_1_idx = None, None
+                    
+            prev = s[idx]
+            idx = idx + 1
+            
+        return counter % (10**9 + 7)

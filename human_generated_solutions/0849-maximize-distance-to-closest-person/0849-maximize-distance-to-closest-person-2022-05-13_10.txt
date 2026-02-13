@@ -1,0 +1,26 @@
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        pre = False
+        nexmt= False
+        maxc=0
+        count=0
+        i=0
+        while i<len(seats):
+            if seats[i]==0 :
+                if i> 0 and seats[i-1]==1: pre=True 
+                while i< len(seats) and seats[i]==0: 
+                    count+=1 
+                    i+=1
+                if i<len(seats) and seats[i]==1:
+                    nexmt=True
+            if pre==True and nexmt==True:
+                pre=False
+                nexmt=False
+                count= math.ceil(count/2)
+            elif (pre==True and nexmt==False) or (pre ==False and nexmt==True):
+                pre=False 
+                nexmt=False
+            maxc=max(maxc,count)
+            count=0
+            i+=1
+        return maxc

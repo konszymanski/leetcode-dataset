@@ -1,0 +1,35 @@
+class Solution:
+    l = \'left\'
+    r = \'right\'
+    
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        if not head: return None
+        
+        nums = []
+        while head:
+            nums.append(head.val)
+            head = head.next
+        
+        mid = len(nums) // 2
+        treeNode = TreeNode(nums[mid])
+        
+        self.binarySearchTree(nums[:mid], self.l, treeNode)
+        self.binarySearchTree(nums[(mid + 1):], self.r, treeNode)
+        
+        return treeNode
+            
+            
+    def binarySearchTree(self, nums, direction, treeNode):
+        if len(nums) <= 0: return
+        
+        mid = len(nums) // 2
+        left, right = nums[:mid], nums[(mid + 1):]
+        
+        if direction == self.l:
+            treeNode.left = TreeNode(nums[mid])
+            self.binarySearchTree(left, self.l, treeNode.left)
+            self.binarySearchTree(right, self.r, treeNode.left)
+        else:
+            treeNode.right = TreeNode(nums[mid])
+            self.binarySearchTree(left, self.l, treeNode.right)
+            self.binarySearchTree(right, self.r, treeNode.right)

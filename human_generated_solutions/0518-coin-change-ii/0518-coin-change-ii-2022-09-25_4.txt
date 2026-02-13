@@ -1,0 +1,20 @@
+class Solution:
+    
+    def brute(self, coins, i, target):
+        if target == 0:
+            return 1
+        
+        if i >= len(coins):
+            return 0
+        
+        coin = coins[i]
+        c1 = 0
+        if (target - coin) >= 0:
+            c1 = self.brute(coins, i, target - coin)
+        
+        c2 = self.brute(coins, i + 1, target)
+        
+        return c1 + c2
+
+    def change(self, amount: int, coins: List[int]) -> int:
+        return self.brute(coins, 0, amount)

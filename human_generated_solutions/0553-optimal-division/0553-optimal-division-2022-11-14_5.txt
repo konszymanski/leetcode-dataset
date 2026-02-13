@@ -1,0 +1,14 @@
+class Solution:
+    def optimalDivision(self, nums: List[int]) -> str:
+        k = str(nums[0])
+        k += \'/(\'
+        lens = len(nums)
+        if lens >2:
+            for i in nums[1:]:
+                 k += str(i) + \'/\'
+        elif lens ==2:
+            return str(nums[0]) + \'/\' + str(nums[1])
+        else:
+            return str(nums[0])
+        lens = len(k)
+        return k[:lens-1] + \')\'

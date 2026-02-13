@@ -1,0 +1,10 @@
+class Solution:
+    def evaluateTree(self, root: TreeNode) -> bool:
+
+        if root.val < 2: return root.val
+
+        l, r,v = (self.evaluateTree(root.left),
+                  self.evaluateTree(root.right),
+                  root.val^1)
+        
+        return l&r or l&v or r&v

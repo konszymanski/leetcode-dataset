@@ -1,0 +1,55 @@
+import numpy as np
+class Solution:
+    def kthSmallestProduct(self, nums1: List[int], nums2: List[int], k: int) -> int:
+        A = np.sort(nums1)
+        B = np.sort(nums2)
+        Aneg, Azero, Apos = A[A < 0], A[A == 0], A[A > 0]
+
+        def f(x):
+            # Count number of a * b <= x, casing on the sign of a
+            countZero = len(Azero) * len(B) if x >= 0 else 0
+            countPos = np.searchsorted(B, x // Apos, side="right").sum()
+            countNeg = len(Aneg) * len(B) - np.searchsorted(B, (-x - 1) // (-Aneg), side="right").sum()
+            return countNeg + countZero + countPos
+
+        lo = -(10 ** 10)
+        hi = 10 ** 10
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if f(mid) >= k:
+                hi = mid
+            else:
+                lo = mid + 1
+        return hi
+    
+#         A, B = nums1, nums2
+#         n, m = len(A), len(B)
+#         A1,A2 = [-a for a in A if a < 0][::-1], [a for a in A if a >= 0]
+#         B1,B2 = [-a for a in B if a < 0][::-1], [a for a in B if a >= 0]
+
+#         neg = len(A1) * len(B2) + len(A2) * len(B1)
+#         if k > neg:
+#             k -= neg
+#             s = 1
+#         else:
+#             k = neg - k + 1
+#             B1, B2 = B2,B1
+#             s = -1
+
+#         def count(A, B, x):
+#             res = 0
+#             j = len(B) - 1
+#             for i in range(len(A)):
+#                 while j >= 0 and A[i] * B[j] > x:
+#                     j -= 1
+#                 res += j + 1
+#             return res
+
+#         left, right = 0, 10**10
+#         while left < right:
+#             mid = (left + right) // 2
+#             if count(A1, B1, mid) + count(A2, B2, mid) >= k:
+#                 right = mid
+#             else:
+#                 left = mid + 1
+#         return left * s

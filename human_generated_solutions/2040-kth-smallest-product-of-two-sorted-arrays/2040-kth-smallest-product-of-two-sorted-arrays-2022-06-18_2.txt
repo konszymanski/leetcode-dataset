@@ -1,0 +1,83 @@
+class Solution:
+    def kthSmallestProduct(self, nums1: List[int], nums2: List[int], k: int) -> int:
+        """
+        Binary Search
+        find first number that makes countSmallerOrEqual(number) >= k
+        return number
+        """
+        boundary = [nums1[0]*nums2[0], nums1[0] * nums2[-1], nums1[-1] * nums2[0], nums1[-1] * nums2[-1]]
+        low, high = min(boundary), max(boundary)
+        while low + 1 < high:
+            mid = low + (high - low) // 2
+            if self.countSmallerOrEqual(mid, nums1, nums2) >= k:
+                high = mid
+            else:
+                low = mid + 1
+        if self.countSmallerOrEqual(low, nums1, nums2) >= k:
+            return low
+        else:
+            return high
+    
+    def countSmallerOrEqual(self, m, nums1, nums2):
+        """
+        Two pointers solution
+        use monotonic property of both nums1 and nums2
+        return the number of products nums1[i] * nums2[j] <= m
+        l1, l2 = len(nums1), len(nums2)
+           
+        1) if m >= 0, 
+        ***Given nums1[i] < 0***
+        find j such that nums2[j] >= m/nums1[i]
+        i increases - > nums1[i] increases -> m/nums1[i] decreases -> index j decreases
+        j monotonically moves left
+        return j:l2 -> l2 - j + 1
+        *** Given nums1[i] = 0
+        return l2
+        ***Given nums1[i] > 0***
+        find j such that nums2[j] <= m/nums1[i]
+        i increases - > nums1[i] increases -> m/nums1[i] decreases -> index j decreases
+        j monotonically moves left
+        return 0:j -> j + 1
+
+        2) if m < 0, 
+        ***Given nums1[i] < 0***
+        find j such that nums2[j] >= m/nums1[i]
+        i increases - > nums1[i] increases -> m/nums1[i] increases -> index j increases
+        j monotonically moves right
+        return j:l2 -> l2 - j + 1
+        *** Given nums1[i] = 0
+        return 0
+        ***Given nums1[i] > 0***
+        find j such that nums2[j] <= m/nums1[i]
+        i increases - > nums1[i] increases -> m/nums1[i] increases -> index j increases
+        j monotonically moves right
+        return 0:j -> j + 1
+        
+        """
+        l1, l2 = len(nums1), len(nums2)
+        ans = 0
+        if m >= 0:
+            j1, j2 = l2-1, l2-1
+            for i in range(l1):
+                if nums1[i] < 0:
+                    while j1 >=0 and nums2[j1] >= m/nums1[i]:
+                        j1 -= 1
+                    ans += l2 - j1 - 1
+                elif nums1[i] > 0:
+                    while j2 >=0 and nums2[j2] > m/nums1[i]:
+                        j2 -= 1
+                    ans += j2 + 1
+                else:
+                    ans += l2
+        else:
+            j1, j2 = 0, 0
+            for i in range(l1):
+                if nums1[i] < 0:
+                    while j1 < l2 and nums2[j1] < m/nums1[i]:
+                        j1 += 1
+                    ans += l2 - j1
+                elif nums1[i] > 0:
+                    while j2 < l2 and nums2[j2] <= m/nums1[i]:
+                        j2 += 1
+                    ans += j2
+        return ans

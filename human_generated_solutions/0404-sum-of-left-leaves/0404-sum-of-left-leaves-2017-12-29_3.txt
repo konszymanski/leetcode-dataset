@@ -1,0 +1,18 @@
+def sumOfLeftLeaves(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def helper(root, left_flag):
+            if not root.left and not root.right and left_flag:
+                self.total += root.val
+            if root.left:
+                helper(root.left, True)
+            if root.right:
+                helper(root.right, False)
+            return self.total
+                
+        if not root:
+            return 0
+        self.total = 0
+        return helper(root, False)

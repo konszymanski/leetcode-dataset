@@ -1,0 +1,35 @@
+# written by : Dhruv vavliya
+
+x = 5
+target = 501
+
+from functools import lru_cache
+@lru_cache(None)
+def go(x,target):
+    if target == 1:
+        return 1                               # 5/5 (only 1 possible soln)
+
+    op =0
+    current=x
+    while current < target:
+        current*=x                              # 5*5*5*5
+        op+=1
+    if current == target:                       # if target achieve
+        return op
+
+    # almost nearest target ,then increase
+    if op == 0:                                 # 5/5 + ....  (2 operations)
+        ans = 2 + go(x,target-1)
+    else:
+        ans = op + go(x,target-current//x)     # (target-current) but current*5 extra multiplied
+
+    # increase than target, then decrease
+    if current-target < target:                # if (current - target) lies outside of target then,only consider one case
+        ans = min(ans ,op+1 + go(x,current-target))    # op+1 for additionally *x then decrease
+    return ans
+
+
+def express_number(x ,target):
+    return go(x,target)
+
+print(express_number(x,target))

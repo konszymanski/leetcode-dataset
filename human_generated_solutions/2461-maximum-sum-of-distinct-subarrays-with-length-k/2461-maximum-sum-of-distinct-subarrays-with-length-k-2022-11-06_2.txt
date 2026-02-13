@@ -1,0 +1,24 @@
+class Solution:
+    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+
+        sm, c = sum(nums[:k]), Counter(nums[:k])        #        sm : running sum of the [i:i+k]     
+
+        multiples = set(n for n in ctr if ctr[n] > 1)   #         c : counter for digits in [i:i+k]
+        ans = sm if not multiples else 0                # multiples : list of repeated digits in [i:i+k]
+                                                        #       ans : max sum for distinct [i:i+k]
+        for old, new in zip(nums, nums[k:]):            # <-- sliding window [i:i+k] 
+
+            if old == new: continue                     # <-- no change to sm, multiples, or ans if 
+													    #     old == new for new window
+
+            c[old]-= 1                                  # <-- update c and sm for new window
+            c[new]+= 1                                  #
+            sm+= new - old                              #
+
+            if c[old] == 1: multiples.remove(old)       # <-- counter for new window
+            if c[new] >  1: multiples.add(new)          #
+
+            if not multiples: ans = max(ans, sm)        # <-- if elements of the new window are 
+			                                            #     distinct, update ans as necessary
+
+        return ans

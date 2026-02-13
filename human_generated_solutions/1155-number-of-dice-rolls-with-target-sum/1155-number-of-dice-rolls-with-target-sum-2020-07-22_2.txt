@@ -1,0 +1,38 @@
+MOD = 10 ** 9 + 7  # the fact that this is prime will come in useful later
+
+def count_combos(dice: int, faces: int, target: int) -> int:
+    # Shortcut if target is unattainable.
+    if target < dice or target > dice * faces:
+        return 0
+
+	# Slight optimization: because problem is symmetric, choose smaller target.
+	mirror_target = dice * (faces + 1) - target
+	if mirror_target < target:
+		target = mirror_target
+
+    # If we had unlimited faces, the following line would give the answer:
+    combo_count = choose_mod(target - 1, dice - 1)
+
+    # But the above may include combinations where one or more dice are
+    # assigned a greater value than the number of faces, so we must reduce
+    # the total count to compensate.
+    max_bad_dice = (target - dice) // faces  # at most dice/2
+    for bad_dice in range(1, max_bad_dice + 1):
+        # We can get a "bad" solution by solving a sub-problem and then
+        # adding `faces` to any die (like rolling 7-12 on a 6-sided die).
+        # Do this for each of our "bad" dice.
+        pips_to_withhold = bad_dice * faces
+        sub_count = choose_mod(target - 1 - pips_to_withhold, dice - 1)
+        ways_to_choose_bad = choose_mod(dice, bad_dice)
+        sub_combo = sub_count * ways_to_choose_bad % MOD
+
+        # We alternate subtracting and adding this sub-combo; just as the
+        # initial calculation included bad combinations, the count of bad
+        # solutions with one bad die double-counts all bad solutions with
+        # two bad dice, and so on.
+        if bad_dice % 2 == 1:
+            combo_count -= sub_combo
+        else:
+            combo_count += sub_combo
+
+    return combo_count % MOD

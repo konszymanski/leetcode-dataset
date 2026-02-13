@@ -1,0 +1,15 @@
+class Solution:
+    def minimumDifference(self, nums: List[int]) -> int:
+        n = len(nums) // 3
+        mid, left, right = nums[n: 2 * n], [-num for num in nums[:n]], nums[2 * n:]
+        leftSum, rightSum = [-sum(left)], [sum(right)]
+        heapify(left)
+        heapify(right)
+        for num in mid:
+            heappush(left, -num)
+            leftSum.append(leftSum[-1] + num + heappop(left))
+        for num in mid[::-1]:
+            heappush(right, num)
+            rightSum.append(rightSum[-1] + num - heappop(right))
+        rightSum = rightSum[::-1]
+        return min(leftSum[i] - rightSum[i] for i in range(n + 1))

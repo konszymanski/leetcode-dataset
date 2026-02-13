@@ -1,0 +1,8 @@
+def countBadPairs(self, nums: List[int]) -> int:
+    #nums[i] + j - i = nums[j]
+    #nums[i] - i = nums[j] - j, so group these pairs
+    #final answer = all pairs - grouped_pairs, because we want nums[i] - i != nums[j] - j
+    n = len(nums)
+    freqMap = Counter([nums[i] - i for i in range(n)])
+    
+    return int(n*(n-1)/2 - sum([freq*(freq-1)/2 for freq in freqMap.values()]))

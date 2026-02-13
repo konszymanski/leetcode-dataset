@@ -1,0 +1,18 @@
+class Solution:
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        b = b % len(s)
+
+        def dfs(s: str) -> None:
+            if s in seen:
+                return
+            seen.add(s)
+
+            add: str = \'\'.join([c if i % 2 == 0 else str((int(c) + a) % 10) for i, c in enumerate(s)])
+            dfs(add)
+
+            rotate: str = s[-b:] + s[:-b]
+            dfs(rotate)
+
+        seen: Set[str] = set()
+        dfs(s)
+        return min(seen)

@@ -1,0 +1,35 @@
+from collections import defaultdict
+
+class Solution:
+    def reorderedPowerOf2(self, n: int) -> bool:
+        # Step #1: Get the digits of `n` and count their occurrences
+        # - Time: O(log(n))
+        # - Space: O(1), as `digitCounts` has maximum 10 entries
+        tmpValue, numDigits, digitCounts = n, 0, defaultdict(int)
+        while tmpValue != 0:
+            numDigits += 1
+            tmpValue, digit = divmod(tmpValue, 10)
+            digitCounts[digit] += 1
+
+        # Step #2: Identify the smallest power of 2 that has the same number of digits as `n`
+        # - Time: O(log(n))
+        # - Space: O(1)
+        minTargetValue = 10 ** (numDigits - 1)
+        powerOf2 = 1 << ceil(log2(minTargetValue))
+
+        # Step #3: Out of the powers of 2 that have the same number of digits as `n` (there are maximum four), check if any has the same digits as `n`
+        # For this, we count digit occurrences and compare to the ones from step #1
+        # - Time: O(log(n))
+        # - Space: O(1), as `powerOf2DigitCounts` has maximum 10 entries
+        maxTargetValue = 10 * minTargetValue - 1
+        while powerOf2 <= maxTargetValue:
+            tmpValue, powerOf2DigitCounts = powerOf2, defaultdict(int)
+            while tmpValue != 0:
+                numDigits += 1
+                tmpValue, digit = divmod(tmpValue, 10)
+                powerOf2DigitCounts[digit] += 1
+            if powerOf2DigitCounts == digitCounts:
+                return True
+            powerOf2 <<= 1
+
+        return False

@@ -1,0 +1,22 @@
+def mostBooked(self, n: int, meet: List[List[int]]) -> int:
+	count = [0] * n
+	meet.sort()
+	avlbl = SortedList([i for i in range(n)])
+	hold = []
+	for i, j in meet:
+		while(hold and hold[0][0] <= i):
+			_, room = heappop(hold)
+			avlbl.add(room)
+		if(avlbl):
+			room = avlbl.pop(0)
+			start = i
+		else:
+			start, room = heappop(hold)
+		heappush(hold, (start + (j-i), room))
+		count[room] += 1
+	m, ans = -1, -1
+	for i in range(n):
+		if(m < count[i]):
+			m = count[i]
+			ans = i
+	return ans

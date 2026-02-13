@@ -1,0 +1,33 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        # initialize two pointers
+        left, right = 0, 0
+        runningSum = 0
+        count = 0
+
+        # loop till the end
+        while right < len(nums):
+            # add the next number to the running sum
+            runningSum += nums[right]
+            # and calculate the score
+            # : right - left gives us the distance between two numbers
+            # : it\'s +1 because when those elements are the same
+            # : the distance should be 1 otherwise the score\'d be 0 
+            score = (right - left + 1) * runningSum
+            
+            # normalize the score if it is more than k
+            while score >= k:
+                # reduce the interval from left, and adjust all three:
+                # -> running sum
+                runningSum -= nums[left]
+                # -> the left pointer
+                left += 1
+                # -> and the score
+                score = (right - left + 1) * runningSum
+            
+            # add the distance to the count
+            count += (right - left + 1)
+            # move to the next element
+            right += 1
+        
+        return count

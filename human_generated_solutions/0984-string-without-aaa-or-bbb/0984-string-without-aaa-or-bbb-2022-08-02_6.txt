@@ -1,0 +1,16 @@
+def strWithout3a3b(self, a: int, b: int) -> str:
+        res = ""
+        while a + b > 0:
+            if res[-2 :] == \'aa\':
+                b -= 1
+                res += "b"
+            elif res[-2 :] == "bb":
+                a -= 1
+                res += "a" 
+            elif a >= b:
+                a -= 1
+                res += "a"
+            else:
+                b -= 1
+                res += "b"
+        return res

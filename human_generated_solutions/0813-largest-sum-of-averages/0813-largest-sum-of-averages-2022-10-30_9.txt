@@ -1,0 +1,21 @@
+def largestSumOfAverages(self, nums: List[int], k: int) -> float:
+    n = len(nums)
+
+    @lru_cache(None)
+    def dp(i, k):
+        if k < 0:
+            return -inf
+        
+        if i == n:
+            return 0
+        
+        ans = -inf
+        c_sum = 0
+        for j in range(i, n):
+            c_sum += nums[j]
+            c_average = c_sum/(j - i + 1)
+            ans = max(ans, c_average + dp(j+1, k-1))
+        
+        return ans
+    
+    return dp(0, k)

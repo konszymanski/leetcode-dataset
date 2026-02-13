@@ -1,0 +1,21 @@
+class Solution:
+    def minTaps(self, n, ranges):
+        # Shameless Range conversion
+		for i,x in enumerate(ranges):
+            ranges[i] = [i-x,i+x]
+        # Sorting Step
+        ranges.sort(reverse=True) # Reverse, so pop() behaves like popleft()
+        # Main Loop
+        x, res = 0.5, 0 # Try to water points in the middle
+        while x<n:
+            b = -1
+            while ranges and ranges[-1][0]<=x: 
+                # Idea: 1) Query/Pop all points Starting before "x"
+                #       2) Pick the one reaching furthest
+                #       3) After one fail, points start at x<a (leave for later)
+                b = max(b,ranges.pop()[1])
+            if b<0 or b<x: # We didn\'t find anything, or b<x (we never watered "x" at all)
+                return -1
+            x = b + 0.5
+            res += 1
+        return res

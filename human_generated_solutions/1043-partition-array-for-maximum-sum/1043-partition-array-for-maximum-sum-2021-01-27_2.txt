@@ -1,0 +1,28 @@
+class Solution:
+    def maxSumAfterPartitioning(self, A, k):
+        
+        L     =  len(A)
+        memo  =  {}
+        
+        def dp(i):
+            
+            if i==L:
+                return 0
+            
+            if i in memo:
+                return memo[i]
+            
+            m, best  =  0, 0
+            
+            for j in range(i,min(L,i+k)):
+                
+                m     =  max(A[j],m)
+                
+                s     =  (j-i+1)*m + dp(j+1)
+                
+                best  =  max(best,s)
+            
+            memo[i] = best
+            return best
+        
+        return dp(0)

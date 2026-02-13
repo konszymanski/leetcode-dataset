@@ -1,0 +1,10 @@
+class Solution:
+    def numWays(self, W: List[str], T: str) -> int:
+        n, m = len(W[0]), len(T)
+        counts = [Counter([w[i] for w in W]) for i in range(n)]
+        @lru_cache(None)
+        def help(i,j):
+            if n - i < m - j: return 0
+            if j == m: return 1
+            return (counts[i][T[j]] * help(i+1,j+1) + help(i+1,j)) % (10**9+7)
+        return help(0, 0)

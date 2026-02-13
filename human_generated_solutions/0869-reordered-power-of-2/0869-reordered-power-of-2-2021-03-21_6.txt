@@ -1,0 +1,20 @@
+class Solution:
+    def reorderedPowerOf2(self, N: int) -> bool:
+        
+        # digit <-> occurrence mapping of N
+        signature_of_N = Counter(str(N))
+        
+        
+        # check each possible power of 2
+        for i in range(32):
+            
+            # get power of 2 by bitwise operation
+            power_of_2 = 1 << i
+                
+            if Counter( str(power_of_2) ) == signature_of_N:
+                
+                # Accept if at least one power of 2\'s mapping is the same with N\'s mapping
+                return True
+        
+        # Reject otherwise
+        return False

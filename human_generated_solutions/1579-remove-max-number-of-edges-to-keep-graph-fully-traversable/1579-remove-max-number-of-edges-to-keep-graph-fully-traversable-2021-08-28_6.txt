@@ -1,0 +1,39 @@
+class Solution:
+    def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+        def create_adjlist():
+            d = defaultdict(lambda: defaultdict(list))
+            for type, v1, v2 in edges:
+                d[v1][type].append(v2)
+                d[v2][type].append(v1)
+            return d
+        adjlist = create_adjlist()
+        edge_cnt = Counter(t for t, _, _ in edges)
+        
+        def dfs(vertex: int, allowed_edges: List[int], visited: Set[int] = None) -> Set[int]:
+            if visited is None:
+                visited = set()
+            visited.add(vertex)
+            for type in allowed_edges:
+                for v in adjlist[vertex][type]:
+                    if v not in visited:
+                        dfs(v, allowed_edges, visited)
+            return visited
+        
+        removed = 0
+        # Step 1: Count subgraphs of type 3 edges, and remove redundant ones
+        visited, subgraph = set(), 0
+        for i in range(1, n+1):
+            if i not in visited:
+                dfs(i, [3], visited)
+                subgraph += 1
+        removed += edge_cnt[3] - (n - subgraph)
+        edge_cnt[3] -= removed
+        # Step 2: Check connectivity by Alice, and remove redundant edges
+        if len(dfs(1, [1, 3])) < n:
+            return -1
+        removed += edge_cnt[1] + edge_cnt[3] - (n-1)
+        # Step 3: Similar for Bob
+        if len(dfs(1, [2, 3])) < n:
+            return -1
+        removed += edge_cnt[2] + edge_cnt[3] - (n-1)
+        return removed

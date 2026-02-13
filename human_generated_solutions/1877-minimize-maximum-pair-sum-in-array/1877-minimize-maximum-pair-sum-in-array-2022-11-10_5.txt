@@ -1,0 +1,13 @@
+class Solution:
+    def minPairSum(self, nums: List[int]) -> int:
+        h = []
+        heapq.heapify(nums)
+        for i in range(len(nums)):
+            h.append(heapq.heappop(nums))
+            
+        right = len(h)-1
+        m = 0
+        for left in range(len(h)//2):
+            m = max(m, (h[left]+h[right]))
+            right -= 1
+        return m

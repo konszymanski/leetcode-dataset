@@ -1,0 +1,41 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        """
+        Counts closed islands in the given grid
+        :param grid: Grid representing area
+        :return: Count of closed islands
+        """
+        count = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                # If a piece of land is encountered make a dfs method call to check if it belongs to a closed island
+                if grid[i][j] == 0 and self.isClosedIsland(grid, i, j):
+                    count += 1
+        
+        return count
+
+    def isClosedIsland(self, grid: List[List[int]], i: int, j: int) -> bool:
+        """
+        Starting from i and j checks if the island which current block belongs to, is a closed island or not
+        :param grid: Grid representing area
+        :return: Boolean stating whether current island is closed or not
+        """
+        # Check if i,j does not represent a valid block in given grid
+        if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]):
+            return False
+        
+        #If water is encountered or node is already visited
+        if grid[i][j] != 0:
+            return True
+        
+        # Mark the node visited
+        grid[i][j] = 2
+        
+        # Make recursive calls to each adjacent positions
+        res = True
+        res &= self.isClosedIsland(grid, i-1, j)
+        res &= self.isClosedIsland(grid, i+1, j)
+        res &= self.isClosedIsland(grid, i, j-1)
+        res &= self.isClosedIsland(grid, i, j+1)
+        
+        return res

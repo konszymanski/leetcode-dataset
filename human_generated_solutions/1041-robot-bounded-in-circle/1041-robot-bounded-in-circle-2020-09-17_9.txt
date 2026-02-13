@@ -1,0 +1,16 @@
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+		instructions *= 4
+		turns = [(0, 1), (-1,0), (0, -1), (1, 0)]
+		face = 0
+		x, y = 0, 0
+		for instruction in instructions:
+			if instruction == \'L\':
+                face += 1
+            elif instruction == \'R\':
+                face -= 1
+			else:
+				dx, dy = turns[face%4]
+				x += dx
+				y += dy
+		return x == 0 and y == 0

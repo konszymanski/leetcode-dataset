@@ -1,0 +1,36 @@
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        n=len(arr)
+        if n<=3:
+            return arr[0]
+        if n==4:
+            a,b,c,d=arr[0],arr[1],arr[2],arr[3]
+            if a==b or a==c or a==d:
+                return a
+            elif b==c or b==d :
+                return b
+            elif c==d :
+                return c
+        else:
+            a,b,c,d,e=arr[0],arr[n//4],arr[n//2],arr[n//2+n//4],arr[n-1]
+        if a==b or a==c or a==d or a==e:
+            return a
+        elif b==c or b==d or b==e:
+            return b
+        elif c==d or c==e:
+            return c
+        elif d==e:
+            return d
+        cache={}
+        for i in (a,b,c,d,e):
+            cache[i]=0
+        
+        v,b,n,m=arr[n//8],arr[(n//8)*3],arr[(n//8)*5],arr[(n//8)*7]
+        
+        for x in (v,b,n,m):
+            if x in cache:
+                cache[x]+=1
+        y=max(cache.values())
+        for x in cache:
+            if cache[x]==y:
+                return x

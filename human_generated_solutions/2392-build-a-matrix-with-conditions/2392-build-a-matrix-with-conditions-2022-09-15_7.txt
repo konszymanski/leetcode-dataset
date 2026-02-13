@@ -1,0 +1,97 @@
+class Solution:
+    def buildMatrix(self, k: int, rowConditions: List[List[int]], colConditions: List[List[int]]) -> List[List[int]]:
+        returner = [[0 for _ in range(k)] for _ in range(k)]
+        
+        first =[[0 for _ in range(k)] for _ in range(k)]
+        second = [[0 for _ in range(k)] for _ in range(k)]
+        
+        vertical = defaultdict(list)
+        horizontal = defaultdict(list)
+        vertical_in = defaultdict(int)
+        horizontal_in = defaultdict(int)
+        
+        ## initialize in-degrees
+        for i in range(1, k + 1):
+            vertical_in[i] = 0
+            horizontal_in[i] = 0
+            
+        ## initialize directed graph
+        for row in rowConditions:
+            vertical[row[0]].append(row[1])
+            vertical_in[row[1]] += 1
+        for col in colConditions:
+            horizontal[col[0]].append(col[1])
+            horizontal_in[col[1]] += 1
+        
+        verti_order = []
+        verti_queue = deque()
+        verti_visited = set()
+        for key in vertical_in.keys():
+            if (vertical_in[key] == 0):
+                verti_queue.append(key)
+        
+        if (len(verti_queue) == 0):
+            return []
+        
+        ## find the vertical ordering
+        cycle = False
+        while (verti_queue):
+            cur = verti_queue.popleft()
+            
+            verti_order.append(cur)
+            verti_visited.add(cur)
+            for neighbour in vertical[cur]:
+                if (neighbour in verti_visited):
+                    cycle = True
+                    break
+                vertical_in[neighbour] -= 1
+                if (vertical_in[neighbour] == 0):
+                    verti_queue.append(neighbour)
+            if (cycle):
+                break        
+        if (cycle):
+            return []
+        
+        ## find the horizontal ordering
+        hori_order = []
+        hori_queue = deque()
+        hori_visited = set()
+        for key in horizontal_in.keys():
+            if (horizontal_in[key] == 0):
+                hori_queue.append(key)
+        if (len(hori_queue) == 0):
+            return []
+        cycle = False
+        
+        while (hori_queue):
+            cur = hori_queue.popleft()
+            hori_order.append(cur)
+            hori_visited.add(cur)
+            for neighbour in horizontal[cur]:
+                if (neighbour in hori_visited):
+                    cycle = True
+                    break
+                horizontal_in[neighbour] -= 1
+                if (horizontal_in[neighbour] == 0):
+                    hori_queue.append(neighbour)
+            if (cycle):
+                break
+        
+        if (cycle):
+            return []
+       
+        if (len(verti_order) != k or len(hori_order) != k):
+            return []
+        
+        ## fill the vertical and horizontal matrix
+        for i in range(k):
+            for j in range(k):
+                first[i][j] = verti_order[i]
+                second[i][j] = hori_order[j]
+        
+        ## overlap the vertical and horizontal matrix to get the final matrix
+        for i in range(k):
+            for j in range(k):
+                if (first[i][j] == second[i][j]):
+                    returner[i][j] = first[i][j]
+        return returner

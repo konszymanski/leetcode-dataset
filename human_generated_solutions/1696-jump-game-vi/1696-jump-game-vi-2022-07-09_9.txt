@@ -1,0 +1,18 @@
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        
+        n=len(nums)
+        dp=[-float(\'inf\')]*n
+        
+        dp[n-1]=nums[-1]
+        p_q=[[-dp[n-1],n-1]]
+        heapq.heapify(p_q)
+        
+        for i in range(n-2,-1,-1):
+            while p_q[0][1]>(i+k):
+                heapq.heappop(p_q)
+                
+            dp[i]=nums[i]-p_q[0][0]
+            heapq.heappush(p_q,[-dp[i],i])
+                
+        return dp[0]

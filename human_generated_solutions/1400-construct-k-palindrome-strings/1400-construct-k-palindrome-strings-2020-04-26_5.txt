@@ -1,0 +1,31 @@
+# The approach of the problem is that -
+# 1) even length palindromes will have even no. of characters
+# 2) odd length palindromes will have odd no. of characters
+# 3) we can have only one letter in odd length palindrome which has odd occurence. 
+
+# For eg:
+#     s="aabbcccdd" Here, a->2     k=4
+#                         b->2  
+#                         c->3
+#                         d->2
+                
+#     now, "aa", "bb", "cc", "dcd", So, each odd occurence character can be adjusted in only one string to make it an odd plaindrome string. So, if we have no. of odd occurence characters greater than k, then we cannot have k palindrome strings.           
+class Solution:
+    def canConstruct(self, s: str, k: int) -> bool:
+        
+        if len(s)==k:
+            return True
+        if len(set(s))==k:
+            return True
+        
+        if len(s)<k:
+            return False
+        
+        count=0
+        d=collections.Counter(s)
+        print(d)
+        l=list(d.keys())
+        for i in range(len(l)):
+            if d[l[i]]%2==1:
+                count+=1
+        return count<=k

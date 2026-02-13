@@ -1,0 +1,5 @@
+def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+    current = [set(c) for c in bottom]
+    while len(current) > 1:
+        current = [set(a[2] for a in allowed if a[0] in left and a[1] in right) for left, right in zip(current[:-1], current[1:])]
+    return bool(len(current[0]))

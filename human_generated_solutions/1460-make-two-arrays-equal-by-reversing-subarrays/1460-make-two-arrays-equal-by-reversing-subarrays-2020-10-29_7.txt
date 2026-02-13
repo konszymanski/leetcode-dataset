@@ -1,0 +1,37 @@
+class Solution(object):
+    def canBeEqual(self, target, arr):
+        """
+        :type target: List[int]
+        :type arr: List[int]
+        :rtype: bool
+        """
+        def reverse(lst, left, right):
+		
+            lst[left:right+1]= reversed(lst[left:right+1])
+			
+            return lst
+         
+        left=0
+        right=1
+        
+        while left <right and left < len(target) and right<len(target):
+            i=left
+            
+            while i < len(target) and target[i]==arr[i]:
+                i+=1
+            
+            left=i
+            right=left+1       
+            while right < len(target) and target[left]!=arr[right]:
+                right+=1
+            if left < len(target) and right< len(target): 
+                #print(left, right, arr, target)
+                arr=reverse(arr, left, right)
+                #print(left, right, arr, target)
+                if arr==target:
+                    break
+            
+            left+=1
+            right=left+1
+            
+        return target==arr

@@ -1,0 +1,13 @@
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        languages = [set(lst) for lst in languages]
+        incommunicado_friends = set()
+        for friend_1, friend_2 in friendships:
+            if not languages[friend_1 - 1] & languages[friend_2 - 1]:
+                incommunicado_friends.add(friend_1 - 1)
+                incommunicado_friends.add(friend_2 - 1)
+        if not incommunicado_friends:
+            return 0
+        return min(sum(language not in languages[friend]
+                       for friend in incommunicado_friends)
+                   for language in range(1, n + 1))

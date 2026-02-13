@@ -1,0 +1,41 @@
+from collections import deque
+
+class Solution:
+    def maximumInvitations(self, favorite: List[int]) -> int:
+        indegrees = [0]*len(favorite)
+        for f in favorite:
+            indegrees[f] += 1
+        queue = deque([i for i, c in enumerate(indegrees) if c == 0])
+        levels = [0]*len(favorite)
+        visited = [False]*len(favorite)
+        while len(queue) > 0:
+            i = queue.popleft()
+            visited[i] = True
+            f = favorite[i]
+            # start level is 0, note that parts of a cycle with inbound favorites will get a degree
+            levels[f] = max(levels[f], levels[i]+1)
+            indegrees[f] -= 1
+            if indegrees[f] == 0:
+                queue.append(f)
+
+        def count_cycle(i):
+            count = 0
+            while True:
+                # once we return to the beginning we would have already visited it
+                if visited[i]:
+                    return count
+                visited[i] = True
+                count += 1
+                i = favorite[i]
+        
+        chain_count = 0
+        max_cycle = 0
+        for i in range(len(favorite)):
+            if not visited[i]:
+                # 2 cycle loop
+                if i == favorite[favorite[i]]:
+                    chain_count += levels[i] + 1
+                else:
+                    max_cycle = max(max_cycle, count_cycle(i))
+
+        return max(chain_count, max_cycle)

@@ -1,0 +1,14 @@
+class Solution:
+    def appendCharacters(self, s: str, t: str) -> int:
+ 
+        tLen, i = len(t), 0             # <-- tLen is the single pointer
+
+        for ch in s:                    # <-- iterate thru s
+
+            if ch == t[i]: i += 1       # <-- if a match, increment the t pointer
+                
+            if i == tLen: return 0      # <-- if we hit the end of t no later than
+                                        #     the end of s, no charsneed be appended
+
+        return tLen - i                 # <-- if not, return the count of chars in t
+                                        #     past the t pointer

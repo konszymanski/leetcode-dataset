@@ -1,0 +1,36 @@
+class Solution:
+    def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+        prev_level = 0
+        prev_val = float("-inf")
+        
+        # using bfs below
+        q = [(root, 0)] # each el in deque contain node and level
+        while len(q):
+            node, level = q.pop(0)
+            
+            level_is_even = level % 2 == 0
+            val_is_even =  node.val % 2 == 0
+            
+            # check condition about levels and values
+            if level_is_even and val_is_even:
+                return False
+            if not level_is_even and not val_is_even:
+                return False
+            
+             # check condition about order of values
+            if level == prev_level:
+                if level_is_even and node.val <= prev_val:
+                    return False
+                if not level_is_even and node.val >= prev_val:
+                    return False
+                
+            prev_level = level
+            prev_val = node.val
+            
+            if node.left:
+                q.append((node.left, level + 1))
+                
+            if node.right:
+                q.append((node.right, level + 1))
+        
+        return True

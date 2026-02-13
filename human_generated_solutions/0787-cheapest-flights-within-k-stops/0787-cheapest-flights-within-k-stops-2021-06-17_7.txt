@@ -1,0 +1,11 @@
+def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+
+        prices = [inf] * n
+        prices[src] = 0
+        for _ in range(k+1):
+            next_prices = [d for d in prices]
+            for a, b, p in flights:
+                if prices[a] + p < next_prices[b]:
+                    next_prices[b] = prices[a] + p
+            prices = next_prices
+        return prices[dst] if prices[dst] != inf else -1

@@ -1,0 +1,7 @@
+def hIndex(self, citations: List[int]) -> int:
+        length = len(citations)
+        class Range():
+            def __getitem__(self, key):
+                return length - key <= citations[key]
+        index = bisect.bisect_left(Range(), True, 0, length)
+        return length - index if index < length else 0

@@ -1,0 +1,17 @@
+class Solution:
+    def numberOfArrays(self, s: str, k: int) -> int:
+        n = len(s)
+        m = len(str(k))
+        M = 10**9 + 7
+		
+        dp = [0]*(n+1)
+        dp[0] = dp[1] = 1
+		
+        for i in range(2,n+1):                          # check s[:i]
+            if i < n and s[i] == \'0\':
+                continue
+            for j in range(1,m+1):                      # s[:i-j] + s[i-j:i]
+                if i>=j and s[i-j] != \'0\' and int(s[i-j:i]) <= k:
+                    dp[i] += dp[i-j]
+            dp[i] %= M
+        return dp[-1]%M

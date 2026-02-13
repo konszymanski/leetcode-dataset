@@ -1,0 +1,36 @@
+class Solution:
+    def matrixScore(self, grid: List[List[int]]) -> int:
+        rows = len(grid)
+        cols = len(grid[0])
+        # for rows MSB is importnat 
+        for r in range(rows):
+            if grid[r][0] == 0:
+                for c in range(cols):
+                    if grid[r][c] == 0:
+                        grid[r][c] = 1
+                    else:
+                        grid[r][c] = 0
+        # for cols no of ones are important 
+        for c in range(cols):
+            zero = 0
+            for r in range(rows):
+                if grid[r][c] == 0:
+                    zero += 1
+            ones = rows - zero
+            if zero > ones:
+                for r in range(rows):
+                    if grid[r][c] == 0:
+                        grid[r][c] = 1
+                    else:
+                        grid[r][c] = 0
+        
+        score = 0 
+        for r in range(rows):
+            mul = 1
+            for c in range(cols-1,-1,-1):
+                score += (grid[r][c] * mul)
+                mul *= 2
+        return score
+    
+    #TC -->O(m*n)
+    #SC --> O(n)

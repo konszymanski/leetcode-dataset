@@ -1,0 +1,24 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
+        arr_dict,lst,asci={},[],97
+        for i in range(26):
+            arr_dict[i]=chr(asci)
+            asci+=1
+        def helper(root,string):
+            if root.left is None and root.right is None:
+                string+=arr_dict[root.val]
+                lst.append(string[::-1])
+                return
+            string+=arr_dict[root.val]
+            if root.left:
+                helper(root.left,string)
+            if root.right:
+                helper(root.right,string)
+        helper(root,"")
+        return sorted(lst)[0]

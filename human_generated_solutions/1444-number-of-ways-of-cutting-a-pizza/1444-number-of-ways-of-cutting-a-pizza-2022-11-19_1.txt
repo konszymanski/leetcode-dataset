@@ -1,0 +1,48 @@
+class Solution:
+    def ways(self, pizza: List[str], k: int) -> int:
+        m,n = len(pizza),len(pizza[0])
+        
+		# apple count of the rectangle 
+        # -- top left corner (x,y), bottom right corner is (m-1,n-1)
+        @cache
+        def bottomRight(x,y):
+            # print(x,y)
+            if x>=m or y>=n:
+                return 0
+            
+            res = bottomRight(x+1,y) + bottomRight(x,y+1) - \\
+                  bottomRight(x+1,y+1) + (pizza[x][y]==\'A\')
+            # print("bottomRight",x,y,res)
+            assert res>=0
+            return res
+            
+        @cache
+        def dp(x,y,k):
+            if bottomRight(x,y)<k:
+				# not enough apples left, so 0 possible cuts
+                return 0
+            if k==1:
+                return 1
+            
+            res = 0
+            # cut on x
+            for xx in range(x+1,m):
+                assert bottomRight(x,y)-bottomRight(xx,y) >= 0
+                if bottomRight(x,y)-bottomRight(xx,y) == 0:
+					# No apple on this cut
+                    continue
+                res += dp(xx,y,k-1)
+                    
+            # cut on y
+            for yy in range(y+1,n):
+                assert bottomRight(x,y)-bottomRight(x,yy)>=0
+                if bottomRight(x,y)-bottomRight(x,yy)==0:
+					# No apple on this cut
+                    continue
+                res += dp(x,yy,k-1)
+            
+            # print("dp",x,y,res)
+            assert res>=0
+            return res % (10**9+7)
+        
+        return dp(0,0,k)

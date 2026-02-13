@@ -1,0 +1,13 @@
+class Solution:
+    def solve(self, nums, x, cnt):
+        if x == 0:
+            return cnt
+        if len(nums) == 0:
+            return float("inf")
+        x1 = self.solve(nums[1:], x-nums[0], cnt+1)
+        x2 = self.solve(nums[:-1], x-nums[-1], cnt+1)
+        return min(x1, x2)
+    
+    def minOperations(self, nums: List[int], x: int) -> int:
+        ans = self.solve(nums, x, 0)
+        return -1 if ans == float("inf") else ans

@@ -1,0 +1,43 @@
+class Solution:
+    def findIndex(self,arr,x):
+        low,high =0, len(arr)-1
+        while low<=high:
+            mid = (low+high)//2
+            if arr[mid]==x:return mid
+            if arr[mid]<x:
+                low = mid+1
+            else:
+                high = mid-1
+        return low
+    
+    def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+        #sort by wage per quality
+        n = len(wage)
+        
+        lst = [(wage[i],quality[i],wage[i]/quality[i]) for i in range(n)]
+        lst.sort(key = lambda x: x[2])
+        
+        tmp = [lst[i][1] for i in range(k-1)]
+        summ = 0
+        for i in tmp:summ+=i
+       # Doing sorting by wage/quality is correct
+       # Now for evey window from k-1 to n .... 
+       # Find the k-1 items before such that sum of their qualities are least
+       # base_sal = wage[i]/quality[i]
+       # They will all take base_sal per quality = wage_this_time 
+       # This can be an answer  
+        tmp.sort()
+        best = float(\'inf\')
+        for i in range(k-1,n):
+            basic_salary = lst[i][2]
+            tot = lst[i][1] + summ
+            new = basic_salary * tot
+            if new<best:best=new
+            #print(\'Ans till now =\',best)
+            idx = self.findIndex(tmp,lst[i][1])
+            if idx<k-1:
+                tmp.insert(idx,lst[i][1])
+                summ -= tmp[-1]
+                tmp.pop()
+                summ += lst[i][1]
+        return best

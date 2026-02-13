@@ -1,0 +1,63 @@
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        matrix= [[-1 for j in range(n)] for i in range(m)]
+       
+        left = 0
+        right = n-1
+        top = 0
+        bottom = m-1
+       
+        if not head:
+            return matrix
+       
+        while(left < right and top < bottom):
+            for i in range(left,right):
+                matrix[top][i] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+               
+            for i in range(top,bottom):
+                matrix[i][right] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+               
+            for i in range(right,left,-1):
+                matrix[bottom][i] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+               
+            for i in range(bottom,top,-1):
+                matrix[i][left] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+               
+            left += 1
+            right -=1
+            top +=1
+            bottom -=1
+           
+        if(left == right and top == bottom):
+            matrix[left][right] = head.val
+            if(head.next==None):
+                    return matrix
+            head = head.next
+       
+        elif(left == right):
+            for i in range(top,bottom + 1):
+                matrix[i][left] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+               
+        elif(top == bottom):
+            for i in range(left,right +1):
+                matrix[top][i] = head.val
+                if(head.next==None):
+                    return matrix
+                head = head.next
+           
+        return matrix

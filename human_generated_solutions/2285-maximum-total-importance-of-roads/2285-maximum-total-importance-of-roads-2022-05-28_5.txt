@@ -1,0 +1,14 @@
+class Solution:
+	def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+		numRoad = {}
+		for road in roads:
+			for city in road:
+				if city not in numRoad.keys():
+					numRoad[city] = 1
+				else:
+					numRoad[city] += 1
+
+		numRoadSorted = sorted(numRoad.items(), key=lambda x: x[1], reverse=True)
+
+		# v: [city, number of connected roads]
+		return sum([v[1]*(n-i) for (i, v) in enumerate(numRoadSorted)])

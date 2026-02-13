@@ -1,0 +1,7 @@
+class Solution:
+    def numberOfBeams(self, bank: List[str]) -> int:
+        laser, n = [], len(bank[0])
+        bank = list(filter(("0"*n).__ne__, bank))    
+        for i in range(len(bank)-1):
+            laser.append(bank[i].count("1")*bank[i+1].count("1"))
+        return sum(laser)

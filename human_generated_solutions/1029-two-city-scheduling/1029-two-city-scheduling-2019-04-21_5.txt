@@ -1,0 +1,43 @@
+def twoCitySchedCost(self, cost):
+        cost.sort(key=lambda x: x[0] - x[1])
+        n = len(cost) // 2
+        res = 0
+        for i in range(len(cost)):
+            n -= 1
+            if n < 0:
+                res += cost[i][1]
+            else:
+                res += cost[i][0]
+        return res
+    
+    def twoCitySchedCost(self, cost):
+        n = len(cost) // 2
+        dp = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
+        for i in range(1, n + 1):
+            dp[i][0] = dp[i - 1][0] + cost[i - 1][0]
+        for i in range(1, n+1):
+            dp[0][i] = dp[0][i - 1] + cost[i - 1][1]
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                dp[i][j] = min(dp[i - 1][j] + cost[i + j - 1][0], dp[i][j - 1] + cost[i + j - 1][1])
+        return dp[-1][-1]
+        
+                
+    
+    def twoCitySchedCost_bt(self, costs):
+        def backtrack(costs,p1,p2,cp1,cp2,i):
+            if i > len(costs):
+                return 
+            if p1 < 0 and p2 < 0:
+                return 
+            if p1 == 0 and p2 ==0:
+                self.tc = min(cp1+cp2,self.tc)
+                return 
+            else:
+                if i < len(costs):
+                    backtrack(costs,p1-1,p2, cp1+costs[i][0] ,cp2,i+1)
+                    backtrack(costs,p1 , p2-1,cp1 ,cp2+costs[i][1],i+1)
+        p  = len(costs)//2
+        self.tc = sys.maxsize
+        backtrack(costs,p,p,0,0,0)
+        return self.tc

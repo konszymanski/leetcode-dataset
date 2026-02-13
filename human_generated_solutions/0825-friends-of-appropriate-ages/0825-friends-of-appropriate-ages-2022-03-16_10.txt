@@ -1,0 +1,31 @@
+import bisect
+class Solution:
+    def numFriendRequests(self, ages: List[int]) -> int:
+        ages.sort()
+        new_ages = []
+        counts = []
+        for a in ages:
+            if new_ages and new_ages[-1] == a:
+                counts[-1] += 1
+            else:
+                new_ages.append(a)
+                counts.append(1)
+        prefix = [0]
+        for c in counts:
+            prefix.append(prefix[-1]+c)
+        ages = new_ages
+        total_requests = 0
+        for i, age in enumerate(ages):
+            min_age = age / 2 + 7
+            j = bisect.bisect_right(ages, min_age)
+            # we can\'t friend someone older than us
+            if j > i:
+                continue
+            # get number of people younger than `age` multiplied by number of people with `age`
+            total_requests += (prefix[i]-prefix[j])*counts[i]
+        # for any ages with more than 1 person, sum all possible requests n*(n-1)
+        # but make sure that the age requirement is met (which is really only for young kids)
+        # 6 < (6/2+7=10)
+        # 16 > (16/2+7=15)
+        total_requests += sum(n*(n-1) for a, n in zip(ages, counts) if a > (a / 2 + 7))
+        return total_requests

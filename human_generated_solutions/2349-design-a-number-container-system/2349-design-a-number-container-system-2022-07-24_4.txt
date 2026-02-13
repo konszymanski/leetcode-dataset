@@ -1,0 +1,27 @@
+class Node:
+    def __init__(self):
+        self.idxs = set()
+        self.minimal = float("inf")
+
+class NumberContainers:
+
+    def __init__(self):
+        self.number2index = defaultdict(Node)
+        self.index2number = dict()
+
+        
+    def change(self, index: int, number: int) -> None:
+        if index in self.index2number:
+            value = self.index2number[index]
+            self.number2index[value].idxs.remove(index)
+            if len(self.number2index[value].idxs) == 0:
+                del self.number2index[value]
+            elif self.number2index[value].minimal == index:
+                self.number2index[value].minimal = min(self.number2index[value].idxs)
+        self.number2index[number].idxs.add(index)
+        self.number2index[number].minimal = min(self.number2index[number].minimal, index)
+        self.index2number[index] = number
+            
+
+    def find(self, number: int) -> int:
+        return self.number2index[number].minimal if self.number2index[number].minimal != float("inf") else -1

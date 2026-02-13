@@ -1,0 +1,35 @@
+class Solution:
+    def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        leafs = self.bfs(root)
+        return self.LCA(root, leafs)
+        
+    def bfs(self, node):
+        q = [node]
+        while q:
+            level = []
+            for i in range(len(q)):
+                node = q.pop(0)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+                level.append(node)
+            if not q:
+                return level #return a list
+        
+        
+    def LCA(self, node, nodes): #nodes going to be list of deepest nodes
+        if not node:
+            return None
+        
+        if node in nodes:
+            return node
+        
+        left = self.LCA(node.left, nodes)
+        right = self.LCA(node.right, nodes)
+        
+        if left and right:
+            return node
+        
+        else:
+            return left or right

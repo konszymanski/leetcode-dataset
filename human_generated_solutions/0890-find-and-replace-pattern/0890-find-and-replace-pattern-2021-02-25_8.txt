@@ -1,0 +1,9 @@
+class Solution:
+    def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
+        res = []
+        p_indices = \'\'.join(map(str,[pattern.index(i) for i in pattern]))
+        for w in words:
+            w_indices = \'\'.join(map(str,[w.index(j) for j in w]))
+            if w_indices in p_indices:
+                res.append(w)
+        return res

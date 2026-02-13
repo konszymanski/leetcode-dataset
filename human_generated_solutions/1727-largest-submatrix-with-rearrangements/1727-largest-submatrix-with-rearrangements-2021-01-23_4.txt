@@ -1,0 +1,37 @@
+from typing import List
+import numpy as np #for printing
+class Solution:
+    def largestSubmatrix(self, matrix: List[List[int]]) -> int:
+        
+        m = len(matrix)
+        n = len(matrix[0])
+
+        #get prefix sum of rows (reset upon hitting 0)
+        for j in range(n):
+            for i in range(m):
+                #for each column iterate down the rows and calculate prefix sum
+                if i > 0:
+                    if matrix[i][j] != 0:
+                        #0 means reset
+                        matrix[i][j] += matrix[i-1][j]
+        
+        #print(np.array(matrix))
+
+        #iterate through each row, sort, and compute max area
+        maxArea = 0
+        for row in matrix:
+            row.sort()
+            #iterate from right to left and compute area for each set of number
+            index = len(row) - 1
+            while index >= 0:
+                #get value
+                value = row[index]
+                #keep going left if it\'s still the same value
+                while index-1 >= 0 and row[index-1] == value:
+                    index -= 1
+                #compute area (we multiply value by the number of items to the right including itself)
+                area = value * (len(row)-index)
+                if area > maxArea:
+                    maxArea = area
+                index -= 1
+        return maxArea

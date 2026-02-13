@@ -1,0 +1,32 @@
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        def dfs(node, depth): # -> returns the height
+            if node is None:
+                return -1
+            depths[node.val] = depth
+            h = max(dfs(node.left, depth + 1), dfs(node.right, depth + 1)) + 1
+            heights[node.val] = h
+            return h
+        
+        depths = defaultdict(int) # node.val --> depth
+        heights = defaultdict(int) # node.val --> height
+        levels = defaultdict(list) # depth --> [(height, node.val)]
+        dfs(root, 0)
+        for val, d in depths.items():
+            levels[d].append((-heights[val], val))
+            levels[d].sort() # O(1) operations, since the list has only 2 elements at most
+            if len(levels[d]) > 2:
+                levels[d].pop()
+                
+        ans = []
+        for q in queries:
+            d = depths[q]
+            if len(levels[d]) == 1:
+                ans.append(d - 1)
+            elif levels[d][0][1] == q:
+                ans.append(d - levels[d][1][0])
+            else:
+                ans.append(d - levels[d][0][0])
+        return ans
+    # Time: O(N + Q) where N is the number of nodes in the tree and Q the number of queries
+    # Space: O(N + Q) for the depths, heights and levels dictionaries: O(N); and for the output: O(Q)

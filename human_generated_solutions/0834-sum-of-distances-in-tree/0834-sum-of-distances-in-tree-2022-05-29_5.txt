@@ -1,0 +1,81 @@
+ROOT = 0  # any node in tree can be picked as tree
+ROOT_PARENT = -1  # we can take any value not in [0, 1, 2, ... (len(nodes in the given tree) -1)]
+
+
+class Solution:
+    def sumOfDistancesInTree(self, n: int, edges: list[list[int]]) -> list[int]:
+        """
+        :param n:
+        :param edges:
+        :return:
+        """
+        g = self.create_undirected_graph(edges, n)
+
+        # tree_nodes[i] = number of nodes in tree rooted at node "i" assuming a tree has been from "g" 
+        #                 constructed considering "ROOT" as root
+        tree_nodes, sum_of_distances_from_root = self.post_order_traversal(g)
+
+        # distances[i] = sum of distances from i to all the other nodes in the tree represented by "g"
+        distances = [0] * len(g)
+        distances[ROOT] = sum_of_distances_from_root  # we calculated this in post order traversal
+
+        def preorder(rt: int, parent: int):
+            """
+            updating distances[c] using distances[rt] where c is child of "rt", hence doing preorder traversal
+            :param rt:
+            :param parent: parent of "rt"
+            """
+            for c in g[rt]:
+                if c != parent:
+                    distances[c] = (
+                            (n - tree_nodes[c])  # rt -> c increase this much distance
+                            +
+                            (distances[rt] - tree_nodes[c])  # rt -> c decrease this much distance
+                    )
+                    preorder(c, rt)
+
+        preorder(ROOT, ROOT_PARENT)
+
+        return distances
+
+    @staticmethod
+    def post_order_traversal(g: list[list[int]]) -> tuple[list[int], int]:
+        """
+        tree_nodes[i] = number of nodes in tree rooted at node "i" assuming a tree has been from "g" 
+                        constructed considering "ROOT" as root
+        returning tuple (tree_nodes, sum of distances from ROOT to all nodes in the tree represented by "g")
+        :param g:
+        :return:
+        """
+        tree_nodes = [0] * len(g)
+
+        def postorder(rt: int, parent: int) -> int:
+            """
+            :param rt:
+            :param parent: parent of "rt"
+            :return: sum of distances from "rt" to all nodes rooted at "rt"
+            """
+            tree_nodes[rt], sum_of_distances = 1, 0
+
+            for c in g[rt]:
+                if c != parent:
+                    sum_of_distances_from_c = postorder(c, rt)
+
+                    tree_nodes[rt] += tree_nodes[c]
+                    sum_of_distances += sum_of_distances_from_c + tree_nodes[c]
+
+            return sum_of_distances
+
+        sum_of_distances_from_root = postorder(ROOT, ROOT_PARENT)
+
+        return tree_nodes, sum_of_distances_from_root
+
+    @staticmethod
+    def create_undirected_graph(edges: list[list[int]], n: int) -> list[list[int]]:
+        g = [[] for _ in range(n)]
+
+        for u, v in edges:
+            g[u].append(v)
+            g[v].append(u)
+
+        return g

@@ -1,0 +1,27 @@
+class Solution:
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+        
+        # list with two element
+        # the first for the previous element
+        # the second for the min value
+        pre_mn = [-float("inf"), float("inf")]
+        
+        def dfs(tree):
+            
+            if not tree:
+                return
+            
+            # Keep going to the left
+            dfs(tree.left)
+            
+            # if we can\'t go further, update min and pre
+            pre_mn[1] = min(pre_mn[1], abs(tree.val) - pre_mn[0])
+            pre_mn[0] = tree.val
+            
+            # keep traversing in-order
+            dfs(tree.right)
+        
+        dfs(root)
+        
+        # return min (the second element in the list)
+        return pre_mn[1]

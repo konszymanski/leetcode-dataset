@@ -1,0 +1,32 @@
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        dictionary = {}
+        
+        """
+        Traverse nums1 to see which numbers are not in dictionary,
+        if not in dictionary we add it to the dictionary with value 1.
+        """
+        for index in nums1:
+            if index not in dictionary:
+                dictionary[index] = 1
+                
+        """
+        Traverse nums2 to see which numbers are already in dictionary. Also 
+        make sure that we stop at value 2 so we do not add the number (key) 
+        more than once. 
+        """
+        for index in nums2:
+            if index in dictionary and dictionary[index] != 2:
+                dictionary[index] += 1
+        
+        """
+        Check which keys have a value of 2, this means that they appear in
+        both lists at least once. Add those keys to a new list then output
+        the new list.
+        """
+        newList = []
+        for key, value in dictionary.items():
+            if value == 2:
+                newList.append(key)
+                
+        return newList

@@ -1,0 +1,14 @@
+import heapq as hq
+
+class SeatManager:
+
+    def __init__(self, n: int):
+        self.unreservedSeats = list(range(1, n+1))
+        hq.heapify(self.unreservedSeats)
+
+    def reserve(self) -> int:
+        loc = hq.heappop(self.unreservedSeats)
+        return loc
+
+    def unreserve(self, seatNumber: int) -> None:
+        hq.heappush(self.unreservedSeats, seatNumber)

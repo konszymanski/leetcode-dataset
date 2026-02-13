@@ -1,0 +1,30 @@
+from sortedcontainers import SortedList
+
+class NumberContainers:
+
+    def __init__(self):
+        self.n2i = {}
+        self.i2n = {}
+
+    def change(self, index: int, number: int) -> None:
+        if index in self.i2n and self.i2n[index] != number:
+            orig_num = self.i2n[index]
+            self.n2i[orig_num].discard(index)
+            
+        if number not in self.n2i:
+            self.n2i[number] = SortedList()
+        else:
+            self.n2i[number].discard(index)
+            
+        self.i2n[index] = number
+        self.n2i[number].add(index)
+        #print(\'change\', index, number, self.n2i[number])
+
+    def find(self, number: int) -> int:
+        if number in self.n2i:
+            if len(self.n2i[number]) > 0:
+                return self.n2i[number][0]
+            else:
+                return -1
+        else:
+            return -1

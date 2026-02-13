@@ -1,0 +1,49 @@
+class StockPrice:
+
+    def __init__(self):
+        self.priceInfo = dict()
+        self.minHeap = []
+        self.maxHeap = []
+        self.latestTimestamp = None 
+        
+    def update(self, timestamp: int, price: int) -> None:
+        
+        self.priceInfo[timestamp] = price
+        
+        heapq.heappush(self.maxHeap, [-price, timestamp]) # note we\'re doing -price to simulate maxHeap in python
+        heapq.heappush(self.minHeap, [price, timestamp])
+        
+        if self.latestTimestamp is None or timestamp>self.latestTimestamp:
+            self.latestTimestamp = timestamp
+
+    def current(self) -> int:
+        return self.priceInfo[self.latestTimestamp]
+
+    def maximum(self) -> int:
+        price, timestamp = self.maxHeap[0]
+        price = abs(price)
+        
+        # cleaning the invalid values from heap
+        while self.priceInfo[timestamp] != price:
+            heapq.heappop(self.maxHeap)
+            price, timestamp = self.maxHeap[0]
+            price = abs(price)
+        
+        return price
+    
+    def minimum(self) -> int:
+        price, timestamp = self.minHeap[0]
+        
+        # cleaning the invalid values from heap
+        while self.priceInfo[timestamp] != price:
+            heapq.heappop(self.minHeap)
+            price, timestamp = self.minHeap[0]
+        
+        return price
+
+# Your StockPrice object will be instantiated and called as such:
+# obj = StockPrice()
+# obj.update(timestamp,price)
+# param_2 = obj.current()
+# param_3 = obj.maximum()
+# param_4 = obj.minimum()

@@ -1,0 +1,55 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def findTarget(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: bool
+        """
+        # # using hash set
+        # vals = set()
+        # def inorder(node):
+        #     if node:
+        #         if inorder(node.left):
+        #             return True
+        #         if k - node.val in vals:
+        #             return True
+        #         vals.add(node.val)
+        #         if inorder(node.right):
+        #             return True
+        #     return False
+        # return inorder(root)
+        
+        # two pointer
+        stack_forward = []
+        stack_backward = []
+        p = root
+        while p:
+            stack_forward.append(p)
+            p = p.left
+        p = root
+        while p:
+            stack_backward.append(p)
+            p = p.right
+        while stack_forward and stack_backward:
+            if stack_forward[-1].val == stack_backward[-1].val:
+                break
+            if stack_forward[-1].val + stack_backward[-1].val == k:
+                return True
+            if stack_forward[-1].val + stack_backward[-1].val < k:
+                p = stack_forward.pop().right
+                while p:
+                    stack_forward.append(p)
+                    p = p.left
+            else:
+                p = stack_backward.pop().left
+                while p:
+                    stack_backward.append(p)
+                    p = p.right
+        return False

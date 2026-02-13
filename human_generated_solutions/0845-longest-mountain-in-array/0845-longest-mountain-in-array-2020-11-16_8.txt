@@ -1,0 +1,17 @@
+def longestMountain(self, A: List[int]) -> int:
+	if len(A) < 3: return 0
+	maxrange = 0
+	left = 0
+	mode = \'plato\'
+
+	for i in range(1, len(A)):
+		if A[i] == A[i-1]: mode = \'plato\'
+		elif A[i] > A[i-1]:
+			if mode in [\'plato\', \'descend\']:
+				left = i - 1
+				mode = \'ascend\'
+		elif mode in [\'ascend\', \'descend\']:
+			maxrange = max(maxrange, i + 1 - left)
+			mode = \'descend\'
+
+	return maxrange

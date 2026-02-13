@@ -1,0 +1,155 @@
+from functools import cache
+from typing import List
+
+
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        # return self.memoization(nums)
+        # return self.dynamic_programming(nums)
+        # return self.dynamic_programming_space_optimized(nums)
+        return self.dynamic_programming_more_space_optimized(nums)
+
+    @staticmethod
+    def memoization(nums: List[int]) -> bool:
+        @cache
+        def play(start: int, end: int) -> int:
+            """
+            Player-1 plays with nums[start:end + 1]. Output of the function is
+            how much more points can player 1 score.
+            :param start:
+            :param end:
+            :return:
+            """
+            if start > end:
+                return 0  # nums[start:end + 1] is empty. Player-1 can not gain any point from empty array
+
+            s, e = nums[start], nums[end]
+            l, r = play(start + 1, end), play(start, end - 1)
+
+            # There are two options:
+            # 1. player-1 selects "s" and player-2 gets "l" points
+            # 2. player-1 selects "e" and then player-2 gets "r" points
+            # In situation 1, player-1 effective points = s - l
+            # In situation 2, player-1 effective points = e - r
+            # As player-1 plays optimally, so it will choose that option
+            # which increase its score, so we return max of both situation.
+
+            return max(s - l, e - r)
+
+        return play(0, len(nums) - 1) >= 0
+
+    @staticmethod
+    def dynamic_programming(nums: List[int]) -> bool:
+        """
+        let n = len(nums)
+        for 0 <= i < n and 0 <= j < n we define a matrix of size m X n, DP in the following way,
+
+        DP[i, j] = how many more points player-1 gets if subarray nums[i:j + 1] is chosen. if
+                   DP[i, j] < 0, it means player-1 will receive -DP[i, j] many fewer points
+                   than player-2 once the game ends
+
+        DP[i, j] = {
+                      1.   0                                if      i > j
+
+                      2.  nums[i]                          else if i == j
+
+                      3.  max(                             otherwise
+                            nums[i] - dp[i + 1][j],
+                            nums[j] - dp[i][j - 1]
+                        )
+        }
+
+        :param nums:
+        :return: DP[0, n - 1] >= 0
+        """
+        n = len(nums)
+        dp = [[0] * n for _ in range(n)]  # #1 is already satisfied
+
+        for i in range(n)[::-1]:
+            dp[i][i] = nums[i]  # by #2
+
+            for j in range(i + 1, n):
+                s, e = nums[i], nums[j]
+                l, r = dp[i + 1][j], dp[i][j - 1]
+                dp[i][j] = max(s - l, e - r)  # by #3
+
+        return dp[0][n - 1] >= 0
+
+    @staticmethod
+    def dynamic_programming_space_optimized(nums: List[int]) -> bool:
+        """
+        let n = len(nums)
+        for 0 <= i < n and 0 <= j < n we define a matrix of size m X n, DP in the following way,
+
+        DP[i, j] = how many more points player-1 gets if subarray nums[i:j + 1] is chosen. if
+                   DP[i, j] < 0, it means player-1 will receive -DP[i, j] many fewer points
+                   than player-2 once the game ends
+
+        DP[i, j] = {
+                      1.   0                                if      i > j
+
+                      2.  nums[i]                          else if i == j
+
+                      3.  max(                             otherwise
+                            nums[i] - dp[i + 1][j],
+                            nums[j] - dp[i][j - 1]
+                        )
+        }
+
+        :param nums:
+        :return: DP[0, n - 1] >= 0
+        """
+        n = len(nums)
+        dp = [0] * n
+
+        for i in range(n)[::-1]:
+            cur_dp = [0] * n  # #1 is already satisfied
+
+            cur_dp[i] = nums[i]  # by #2
+
+            for j in range(i + 1, n):
+                s, e = nums[i], nums[j]
+                l, r = dp[j], cur_dp[j - 1]
+                cur_dp[j] = max(s - l, e - r)  # by #3
+
+            dp = cur_dp
+
+        return dp[n - 1] >= 0
+
+    @staticmethod
+    def dynamic_programming_more_space_optimized(nums: List[int]) -> bool:
+        """
+        let n = len(nums)
+        for 0 <= i < n and 0 <= j < n we define a matrix of size m X n, DP in the following way,
+
+        DP[i, j] = how many more points player-1 gets if subarray nums[i:j + 1] is chosen. if
+                   DP[i, j] < 0, it means player-1 will receive -DP[i, j] many fewer points
+                   than player-2 once the game ends
+
+        DP[i, j] = {
+                      1.   0                                if      i > j
+
+                      2.  nums[i]                          else if i == j
+
+                      3.  max(                             otherwise
+                            nums[i] - dp[i + 1][j],
+                            nums[j] - dp[i][j - 1]
+                        )
+        }
+
+        :param nums:
+        :return: DP[0, n - 1] >= 0
+        """
+        n = len(nums)
+        dp = [0] * n
+
+        for i in range(n)[::-1]:
+            dp[i] = nums[i]  # by #2
+
+            for j in range(i + 1, n):
+                s, e = nums[i], nums[j]
+                l, r = dp[j], dp[j - 1]
+                
+                dp[j] = max(s - l, e - r)  # bt #3
+
+        return dp[n - 1] >= 0

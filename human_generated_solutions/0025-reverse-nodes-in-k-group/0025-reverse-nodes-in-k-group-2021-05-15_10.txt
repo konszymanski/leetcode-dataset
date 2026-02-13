@@ -1,0 +1,31 @@
+def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        if not head:
+            return None
+        
+        q = head
+        prev = None
+        stack = []
+        while True:
+            
+			# Append to stack
+            i = 0
+            while i < k and q:
+                stack.append(q)
+                q = q.next
+                i += 1
+            
+			# Exit condition
+            if not len(stack) or len(stack) < k:
+                break
+
+			# Using valid stack form reversed list
+            while len(stack) > 0:
+                p = stack.pop()
+                if not prev:
+                    head = prev = p
+                else:
+                    prev.next = p
+                    prev = p
+            prev.next = q
+        
+        return head

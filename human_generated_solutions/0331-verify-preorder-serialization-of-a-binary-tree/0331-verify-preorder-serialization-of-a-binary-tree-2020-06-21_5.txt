@@ -1,0 +1,19 @@
+class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        ## RC ##
+		## APPROACH : GREEDY ##
+		## LOGIC ##
+		#	1. we start with root node, so slots = 1
+		#	2. Each node consumes 1 slot and adds 2 slots so. -1 + 2
+		#	3. Null node consumes 1 slot
+		## TIME COMPLEXICITY : O(N) ##
+		## SPACE COMPLEXICITY : O(1) ##
+        
+        nodes = 1
+        for node in preorder.split(\',\'):
+            nodes -= 1
+            if nodes < 0:
+                return False
+            if node != \'#\':
+                nodes += 2
+        return nodes == 0

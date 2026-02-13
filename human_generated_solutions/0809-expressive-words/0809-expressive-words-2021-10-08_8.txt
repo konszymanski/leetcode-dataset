@@ -1,0 +1,38 @@
+class Solution:
+    def expressiveWords(self, s: str, words) -> int:
+
+        def condenseWord (s):
+            wordTable = []
+            repeatCounter = 1
+            condenseWord = ""
+            for i in range(len(s)):
+                if i == 0:
+                    continue
+                if s[i] == s[i-1]:
+                    repeatCounter += 1
+                else:
+                    condenseWord += s[i-1]
+                    wordTable.append(repeatCounter)
+                    repeatCounter = 1
+                    
+            else:
+                condenseWord += s[len(s)-1]
+                wordTable.append(repeatCounter)
+                
+            return condenseWord, wordTable
+    
+        
+        matchCounter = 0
+        sampleCondenseWord, sampleWordTable = condenseWord(s)
+        for word in words:
+            testCondenseWord, testWordTable = condenseWord(word)
+            if sampleCondenseWord == testCondenseWord:
+                for i in range(len(sampleCondenseWord)):
+                    if sampleWordTable[i] >= 3 and sampleWordTable[i] < testWordTable[i]:
+                        break
+                    if sampleWordTable[i] < 3 and sampleWordTable[i] != testWordTable[i]:
+                        break
+                else:
+                    matchCounter += 1
+        
+        return matchCounter

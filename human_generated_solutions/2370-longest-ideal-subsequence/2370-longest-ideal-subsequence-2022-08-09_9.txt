@@ -1,0 +1,11 @@
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        dp = [0 for i in range(27)]
+        ans = 1
+        for i in s:
+            char = ord(i)-97
+            temp = [dp[i] for i in range(27)]
+            for j in range(max(0,char-k),min(26,char+k)+1):
+                temp[char] = max(temp[char], dp[j]+1)
+            dp = temp
+        return max(dp)

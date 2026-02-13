@@ -1,0 +1,41 @@
+This is optimization of recursive approach  using DP (Above approach is Recursive )(Accepted)
+
+
+class Solution(object):
+    def minFallingPathSum(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        
+        n=len(matrix)
+        
+        dp=[[-1 for y in range(n)] for x in range(n)]
+
+        
+        def A(row,col):
+            if col<0 or col>n-1:return float(\'inf\')
+            
+            if row==n-1:
+                dp[row][col]=matrix[row][col]
+                return matrix[row][col]
+            
+            if dp[row][col]!=-1:
+                return dp[row][col]
+            
+            
+            
+            a=matrix[row][col]+A(row+1,col+1)
+            b=matrix[row][col]+A(row+1,col)
+            c=matrix[row][col]+A(row+1,col-1)
+            
+            dp[row][col]=min(a,b,c)
+            
+            return dp[row][col]
+            
+        
+        
+        m=float(\'inf\')
+        for x in range(n):
+            A(0,x)
+        return min(dp[0])

@@ -1,0 +1,52 @@
+def maxTaskAssign(self, tasks: List[int], workers: List[int], pills: int, strength: int) -> int:
+        
+        maxTasks = min(len(tasks), len(workers))
+        workers.sort()
+        tasks.sort()
+        #u can try a greedy approach, I spent days and it got better but it didnt work 100% time
+        #but binarySearch approach guarantees the correct solution
+        #because u can develop a checking algorithm to check if answer is correct
+        
+        def isValid(maxTask):
+            #find all the workers who can do the c_strongestTask with/without the pill, put them in a que
+            #if the first item in que doesnt require pill, use it, otherwise
+            #use the last item in que to do the c_task -> this frees up stronger guys to do weaker tasks without pill
+            #the next_strongestTask can be handelled by all items in the que, but add some new ones aswell
+            #repeat the same process
+            #this whole process can be done in Time->O(N), Space->O(N)
+            
+            #u can also use binarySearch here,Time->O(NlogN), &, 
+            #pretty sure Space->O(N) because u have to find some way to keep track of workers on which pill was used
+            canHandle = deque([])
+            t_i = maxTask-1; w_i = len(workers)-1
+            pill = pills
+            while t_i >= 0:
+                c_task = tasks[t_i]
+                
+                while w_i >= 0 and workers[w_i] + strength >= c_task:
+                    canHandle.append(workers[w_i])
+                    w_i -= 1
+                if not canHandle: #no worker available to do this task
+                    return False
+                
+                if canHandle[0] >= c_task: #strongest available worker can do this task withoutpill
+                    canHandle.popleft()
+                #need to use a pill
+                elif pill:
+                    canHandle.pop()
+                    pill -= 1
+                #no pills left :(
+                else:
+                    return False
+                t_i -= 1
+            return True
+        
+        L = 0; R = maxTasks
+        while L < R:
+            M = (L+R+1)//2
+            if isValid(M):
+                L = M
+            else:
+                R = M-1
+        
+        return L

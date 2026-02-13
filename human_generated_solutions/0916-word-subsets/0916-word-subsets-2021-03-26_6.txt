@@ -1,0 +1,34 @@
+class Solution:
+    def wordSubsets(self, A: List[str], B: List[str]) -> List[str]:
+        
+        # union operation in Counter() means updating with maximum occurrence
+        max_occurrence_of = lambda d1, d2: (d1 | d2)
+        
+        # intersection operation in Counter() means updating with minimum occurrence
+        min_occurrence_of = lambda d1, d2: (d1 & d2)
+        
+        
+        ## dictionary
+        # key: distinct character
+        # value: max occurence of distinct character among words in B
+        max_char_occ_dict_of_b = Counter()
+        
+        
+        # compute maximum occrrence of distinct character
+        
+        for b in B:
+            max_char_occ_dict_of_b = max_occurrence_of( max_char_occ_dict_of_b, Counter(b) )
+        
+
+        # if Counter(a) can cover max_char_occ_dict_of_b, than a is universal word
+        
+        universal_words = []
+        
+		# scan each word in A
+        for a in A:
+            
+            if min_occurrence_of( Counter(a), max_char_occ_dict_of_b ) == max_char_occ_dict_of_b:
+                
+                universal_words.append( a )
+                
+        return universal_words

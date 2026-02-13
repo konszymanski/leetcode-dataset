@@ -1,0 +1,44 @@
+class Solution:
+    def ways(self, pizza: List[str], k: int) -> int:
+        
+        if len(pizza) == 0:
+            return 0
+        
+        m = len(pizza)
+        n = len(pizza[0])
+        
+        
+        preSum = [[0] * (n+1) for _ in range(m+1)]
+        
+        for row in range(m-1,-1,-1):
+            for col in range(n-1,-1,-1):
+                print(row,col)
+                preSum[row][col] = preSum[row+1][col] + preSum[row][col+1] - preSum[row+1][col+1] + (pizza[row][col] == "A")
+            
+        @lru_cache(None)   
+        def dfs(row,col,cuts):
+            
+            if preSum[row][col] == 0:
+                return 0
+            
+            if cuts == 0:
+                return 1
+            
+            count = 0
+            
+            #Cut Horizontally
+            for cut_row in range(row+1,m):
+                
+                if preSum[cut_row][col] < preSum[row][col]:
+                    count = count + dfs(cut_row,col,cuts-1)
+            
+            #Cut Vertically
+            
+            for cut_col in range(col+1,n):
+                
+                if preSum[row][cut_col] < preSum[row][col]:
+                    count = count + dfs(row,cut_col,cuts-1)
+                        
+            return count
+                    
+        return(dfs(0,0,k-1))%(10**9+7)

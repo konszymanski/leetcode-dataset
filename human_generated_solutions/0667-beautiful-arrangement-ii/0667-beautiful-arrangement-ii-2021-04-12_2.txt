@@ -1,0 +1,11 @@
+class Solution:
+    def constructArray(self, n: int, k: int) -> List[int]:
+        i, j = 1, n; ret = [i] 
+        while i < j:
+            if (k > 1) ^ (ret[-1] == i):
+                i += 1; ret.append(i)
+            else:
+                ret.append(j); j -= 1
+            k -= 1
+                
+        return ret

@@ -1,0 +1,23 @@
+import math
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        
+        # initialize left and right pointers: left is 1(min rate koko can eat), right is max rate koko can eat
+        left, right = 1, max(piles)
+        # set min rate(our result) to max since we know koko can finish at this rate
+        min_k = right
+        
+        # binary search range left...right (1...max in piles)
+        while left <= right:
+            rate_k = (left + right)  // 2
+            # divide pile by eating rate and round up, add to hours
+            hours = 0
+            for pile in piles:
+                hours += math.ceil(pile / rate_k)
+            # if we can finish before the guards come, we can check smaller half of range for a smaller k rate
+            if hours <= h:
+                min_k = min(min_k, rate_k)
+                right = rate_k - 1
+            else:
+                left = rate_k + 1
+        return min_k

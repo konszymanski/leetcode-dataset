@@ -1,0 +1,3 @@
+class Solution:
+    def earliestFullBloom(self, pts: List[int], gts: List[int]) -> int:
+        return max((ptt := ptt + pt if \'ptt\' in locals() else pt) + gt for gt, pt in reversed(sorted(zip(gts, pts))))

@@ -1,0 +1,12 @@
+def maxCoins(self, piles: List[int]) -> int:
+        if not piles:
+            return 0
+        piles.sort()
+        res = 0
+        
+        n = len(piles)
+        index = n-2
+        for i in range(n//3):
+            res += piles[index]
+            index -= 2
+        return res

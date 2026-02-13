@@ -1,0 +1,54 @@
+class MyCircularDeque:
+
+    def __init__(self, k: int):
+        self.q = []
+        self.k = k
+        self.size = 0
+
+    def insertFront(self, value: int) -> bool:
+        if self.size == self.k:
+            return False
+        self.q.insert(0, value)
+        self.size += 1
+        return True
+
+    def insertLast(self, value: int) -> bool:
+        if self.size == self.k:
+            return False
+        self.q.append(value)
+        self.size += 1
+        return True
+
+    def deleteFront(self) -> bool:
+        if self.size > 0:
+            self.q.pop(0)
+            self.size -= 1
+            return True
+        return False
+
+    def deleteLast(self) -> bool:
+        if self.size > 0:
+            self.q.pop()
+            self.size -= 1
+            return True
+        return False
+
+    def getFront(self) -> int:
+        if self.size == 0:
+            return -1
+        if self.size > 0:
+            return self.q[0]
+        return False
+
+    def getRear(self) -> int:
+        if self.size == 0:
+            return -1
+        if self.size > 0:
+            return self.q[-1]
+        return False
+
+    def isEmpty(self) -> bool:
+        return self.size == 0
+
+    def isFull(self) -> bool:
+        return self.size == self.k

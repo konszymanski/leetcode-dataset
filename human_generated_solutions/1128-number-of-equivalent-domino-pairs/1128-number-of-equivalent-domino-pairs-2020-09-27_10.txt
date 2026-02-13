@@ -1,0 +1,6 @@
+def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+	cnt = [0]*73  # (Explanation for 73 in discussion below)
+	while dominoes: 
+		d = dominoes.pop()
+		cnt[9*max(d) - 8*min(d) - 1] += 1
+	return sum([n*(n-1)//2 for n in cnt])

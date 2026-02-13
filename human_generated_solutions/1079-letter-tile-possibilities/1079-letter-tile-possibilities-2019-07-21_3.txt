@@ -1,0 +1,25 @@
+class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        import functools, operator
+        factorial = (1, 1, 2, 6, 24, 120, 720, 5040)
+        
+        def calculate(nums):
+            if sum(nums) == 0:
+                return 0
+            numerator = factorial[sum(nums)]
+            denominator = functools.reduce(operator.mul, (factorial[x] for x in nums), 1)
+            return numerator // denominator
+        
+        occurrence = collections.Counter(tiles).values()
+        result = 0
+        cache = dict()
+        for choice in itertools.product(*(range(x + 1) for x in occurrence)):
+            choice = tuple(sorted(choice))
+            if not choice in cache.keys():
+                # print("Cache miss: ", end = "")
+                cache[choice] = calculate(choice)
+            # else:
+            #     print("Cache hit: ", end = "")
+            # print(choice, cache[choice])
+            result += cache[choice]
+        return result

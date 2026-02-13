@@ -1,0 +1,11 @@
+def bstToGst(self, root: TreeNode) -> TreeNode:
+        def change(value,root):
+            if root is None:
+                return value
+            root.val=root.val+change(value,root.right)
+            left=change(root.val,root.left)
+            if root.left:
+                return left
+            return root.val
+        change(0,root)
+        return root

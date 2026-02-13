@@ -1,0 +1,58 @@
+def countOfAtoms(self, s: str) -> str:
+        def getElement(i):
+            element = [s[i]]
+            i += 1
+
+            while (i < len(s) and
+                   ord(\'a\') <= ord(s[i]) <= ord(\'z\')):
+                element.append(s[i])
+                i += 1
+                
+            return i, \'\'.join(element)
+            
+            
+        def getValue(i):
+            value = 0
+                
+            while (i < len(s) and
+                   ord(\'0\') <= ord(s[i]) <= ord(\'9\')):
+                value = 10 * value + int(s[i])
+                i += 1
+
+            return i, (1 
+                       if value == 0
+                       else value)
+        
+        
+        stack = [defaultdict(lambda: 0)]
+        i = 0
+        
+        while i < len(s):
+            if s[i] == \'(\':
+                stack.append(defaultdict(lambda: 0))
+                i += 1
+                
+            elif s[i] == \')\':
+                counter = stack.pop()
+                i += 1
+                i, multiplier = getValue(i)
+                
+                for element, count in counter.items():
+                    counter[element] *= multiplier
+                    stack[-1][element] += counter[element]
+                    
+            else:
+                i, element = getElement(i)
+                i, count = getValue(i)
+                stack[-1][element] += count
+                
+        builder = []
+        for element in sorted(stack[0].keys()):
+            count = stack[0][element]
+            count = (str(count) 
+                     if count > 1 
+                     else \'\')
+            
+            builder.append(element + count)
+            
+        return \'\'.join(builder)

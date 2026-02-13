@@ -1,0 +1,37 @@
+class Solution:
+    def imageSmoother(self, M: List[List[int]]) -> List[List[int]]:
+        # validate matrix size
+        m = len(M)
+        if m < 1:
+            return M
+        n = len(M[0])
+        
+        # initialize output matrix
+        s = [[0 for _ in range(n)] for _ in range(m)]
+        
+        for i in range(m):
+            for j in range(n):
+                # add self
+                c = 1
+                v = M[i][j]
+                
+                # iterate through all adjacent cells
+                for k in [(-1,-1),(-1,0),(-1,1),(0,1),(1,1),(1,0),(1,-1),(0,-1)]:
+                    x = i + k[0]
+                    y = j + k[1]
+                    
+                    # check if cell is out of bound
+                    if x < 0 or x >= m:
+                        continue
+                    if y < 0 or y >= n:
+                        continue
+                    
+                    # add valid cell
+                    c += 1
+                    v += M[x][y]
+                    
+                # find smooth value
+                s[i][j] = v // c
+        
+        # yay!
+        return s

@@ -1,0 +1,17 @@
+class Solution:
+    def minimumDeviation(self, nums: List[int]) -> int:
+        heap = [-n*2  if n%2 else -n for n in set(nums)]
+        heapify(heap)
+
+        min_n, max_n = -max(heap), -heap[0]
+        min_dev = max_n - min_n
+
+        while max_n % 2 == 0:
+            new_n = max_n // 2
+            while new_n&1 == 0 and new_n>>1 > min_n:
+                new_n >>= 1
+
+            heapreplace(heap, -new_n)
+            min_n, max_n = min(new_n, min_n), -heap[0]
+            min_dev = min(max_n - min_n, min_dev)
+        return min_dev

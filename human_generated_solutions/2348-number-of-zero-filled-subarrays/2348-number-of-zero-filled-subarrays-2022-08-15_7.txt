@@ -1,0 +1,13 @@
+class Solution:
+    def zeroFilledSubarray(self, nums: List[int]) -> int:
+        # Using formula -->> n * (n + 1) / 2
+        # Count zeros subarray, total no of subarray using count n is n * (n + 1) / 2
+        res = 0
+        zeros = 0
+        for i in range(len(nums)):
+            if nums[i] != 0:
+                res += (zeros * (zeros + 1)) // 2
+                zeros = 0
+            else:
+                zeros += 1
+        return res + (zeros * (zeros + 1)) // 2

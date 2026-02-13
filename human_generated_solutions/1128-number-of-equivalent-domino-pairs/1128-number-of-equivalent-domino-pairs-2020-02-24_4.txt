@@ -1,0 +1,17 @@
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        dic = collections.defaultdict(int)
+        res = 0
+        for dom in dominoes:
+            # sort so that we get a consistent key
+            sdom = tuple(sorted(dom))
+            
+            # if we haven\'t seen it before that means there
+            # is no pair. if we have seen x number before
+            # that means we can make x pairs
+            if sdom in dic:
+                res += dic[sdom]
+                
+            # record that we have seen it
+            dic[sdom] += 1
+        return res

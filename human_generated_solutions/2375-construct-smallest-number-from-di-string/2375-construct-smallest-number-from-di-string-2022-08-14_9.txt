@@ -1,0 +1,21 @@
+class Solution:
+    def smallestNumber(self, pattern: str) -> str:
+        pattern += pattern[-1]
+        output = [0] * (len(pattern))
+        start = 1
+        stack = []
+        for i, p in enumerate(pattern):
+            if p == \'I\':
+                output[i] = start
+                start += 1
+                while stack:
+                    popped_idx = stack.pop()
+                    output[popped_idx] = start
+                    start += 1
+            else:
+                stack.append(i)
+        while stack:
+            popped_idx = stack.pop()
+            output[popped_idx] = start
+            start += 1
+        return \'\'.join([str(i) for i in output])

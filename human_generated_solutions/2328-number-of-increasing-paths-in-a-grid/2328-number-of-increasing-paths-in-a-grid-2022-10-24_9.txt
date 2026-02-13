@@ -1,0 +1,14 @@
+class Solution:
+    def countPaths(self, grid: List[List[int]]) -> int:
+        G, D  = defaultdict(list), defaultdict(lambda: 0)
+        for i, j in product(range(len(grid)), range(len(grid[0]))):
+            for k,l in [(i+1,j), (i-1,j), (i,j+1),(i,j-1)]:
+                if 0 <= k < len(grid) and 0 <= l < len(grid[0]) and grid[k][l] > grid[i][j]: 
+                    G[(i,j)].append((k,l))
+        def dfs(v):
+            if D[v]: return D[v]
+            for u in G[v]: D[v] += dfs(u)
+            D[v] += 1
+            return D[v]
+        for v in product(range(len(grid)), range(len(grid[0]))): dfs(v)
+        return sum(D.values()) % (10 ** 9 + 7)

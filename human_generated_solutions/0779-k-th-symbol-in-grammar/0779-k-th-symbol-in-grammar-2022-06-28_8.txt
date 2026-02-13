@@ -1,0 +1,27 @@
+class Solution:
+    def kthGrammar(self, n: int, k: int) -> int:
+        if n==1 and k==1:  #Lowest valid min Value
+            return 0
+        m = (2**(n-1))//2
+        if k <= m:
+            return self.kthGrammar(n-1, k) #keeping k constant
+        
+        else: #Kth index lies after mid of (n-1)th row
+            return 1 ^ self.kthGrammar(n-1, k-m) #Reducing k - mid times
+        
+        
+"""Algorithm 
+TC : O(n-1)
+Sc : O(n-1)
+
+Intution
+
+Dry run for n , k = 2, 0 and 2, 2
+Value you will get it
+
+
+
+
+Reference link >> https://www.youtube.com/watch?v=5P84A0YCo_Y&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=13 
+
+"""

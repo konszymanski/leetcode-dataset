@@ -1,0 +1,11 @@
+class Solution:
+    def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
+        result = [ ]
+        dd = collections.defaultdict(list)
+        if not matrix: return result
+        for i in range(0, len(matrix)):
+            for j in range(0, len(matrix[i])):
+                    dd[i+j+1].append(matrix[i][j])
+        for _, value in dd.items():
+            result += (value[::-1])
+        return result

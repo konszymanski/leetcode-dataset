@@ -1,0 +1,14 @@
+class Solution:
+    def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
+        n = len(dist)
+        buckets = [0] * n
+        for i in range(n):
+            arrival = math.ceil(dist[i] / speed[i])
+            if arrival < n:
+                buckets[arrival] += 1
+        killed = 0
+        for i in range(n):
+            if killed + buckets[i] > i:
+                return i
+            killed += buckets[i]
+        return n

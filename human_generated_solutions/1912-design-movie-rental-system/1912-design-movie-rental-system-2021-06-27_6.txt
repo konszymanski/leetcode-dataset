@@ -1,0 +1,58 @@
+class MovieRentingSystem:
+
+    def __init__(self, n: int, entries: List[List[int]]):
+        # unrent
+        self.unrent = collections.defaultdict(list)
+        self.rentset = collections.defaultdict(dict)
+        # rent
+        self.q = []
+        self.dropset = collections.defaultdict(int) # lazy removal
+        # price
+        self.data = collections.defaultdict(dict) # record the price of each movie/shop
+        for entry in entries:
+            s, m, p = tuple(entry)
+            self.data[m][s] = p
+            heapq.heappush(self.unrent[m], (p, s)) # sort by price then shop id
+
+    def search(self, movie: int) -> List[int]: # O(lgn)
+        top = 5
+        res = []        
+        reserve = []
+        while top and self.unrent[movie]:
+            shop = self.unrent[movie][0][1]
+            if shop in self.rentset[movie] and self.rentset[movie][shop] > 0: # lazy removal
+                self.rentset[movie][shop] -= 1
+                heapq.heappop(self.unrent[movie]) 
+            else:
+                p, s = heapq.heappop(self.unrent[movie])
+                res.append(shop)
+                reserve.append((p, s))
+                top -=1
+        while reserve: # push back after dumping
+            heapq.heappush(self.unrent[movie], reserve.pop())
+        return res
+    
+    def rent(self, shop: int, movie: int) -> None: # O(lgn)
+        self.rentset[movie][shop] = self.rentset[movie].get(shop, 0) + 1
+        heapq.heappush(self.q, (self.data[movie][shop], shop, movie))
+        
+    def drop(self, shop: int, movie: int) -> None: # O(lgn)
+        self.dropset[shop, movie] += 1
+        heapq.heappush(self.unrent[movie], (self.data[movie][shop], shop))
+   
+    def report(self) -> List[List[int]]: # O(lgn)
+        top = 5
+        res = []        
+        reserve = []
+        while top and self.q:
+            if (self.q[0][1], self.q[0][2]) in self.dropset and self.dropset[self.q[0][1], self.q[0][2]] > 0:
+                self.dropset[self.q[0][1], self.q[0][2]] -= 1
+                heapq.heappop(self.q) # lazy removal
+            else:
+                p, s, m = heapq.heappop(self.q)
+                res.append([s, m])
+                reserve.append((p, s, m))
+                top -= 1
+        while reserve: # push back after dumping
+            heapq.heappush(self.q, reserve.pop())
+        return res

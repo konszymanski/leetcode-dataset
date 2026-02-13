@@ -1,0 +1,20 @@
+class Solution:
+    def numSubarrayBoundedMax(self, nums: List[int], left: int, right: int) -> int:
+        i = 0
+        j = 0
+        n = len(nums)
+        
+        count = 0
+        ans = 0
+        
+        while i<=j and j<n:
+            if left <= nums[j] and nums[j] <= right:
+                ans += (j - i + 1)
+                count = (j - i + 1)
+            elif right < nums[j]:
+                i = j + 1
+                count = 0
+            else:
+                ans += count
+            j += 1
+        return ans

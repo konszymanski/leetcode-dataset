@@ -1,0 +1,12 @@
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        def backtrack(start, path):
+            if start == len(s):
+                return len(path)
+            res = 0
+            for i in range(start + 1, len(s) + 1):
+                if s[start:i] not in path:
+                    res = max(res, backtrack(i, path | {s[start:i]}))
+            return res
+        
+        return backtrack(0, set())

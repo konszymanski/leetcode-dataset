@@ -1,0 +1,3 @@
+class Solution:
+    def totalHammingDistance(self, nums: List[int]) -> int:
+        return sum(sum(num >> shift & 1 for num in nums) * sum((num >> shift & 1 ^ 1 for num in nums)) for shift in range(30))

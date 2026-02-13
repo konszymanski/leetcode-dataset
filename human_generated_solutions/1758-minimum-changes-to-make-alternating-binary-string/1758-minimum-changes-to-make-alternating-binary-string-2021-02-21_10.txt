@@ -1,0 +1,8 @@
+class Solution:
+    def minOperations(self, s: str) -> int:
+        length = len(s)
+        s = int(s, 2)
+        a = int("".join(str(i % 2) for i in range(length)), 2)
+        diff = bin(s ^ a)
+        num = sum(1 for i in diff if i == "1")
+        return min(num, length - num)

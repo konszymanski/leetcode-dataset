@@ -1,0 +1,10 @@
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        freq, ans = collections.defaultdict(int), 0
+        for n in nums:
+            if freq[k - n]:
+                freq[k - n] -= 1
+                ans += 1
+            else:
+                freq[n] += 1
+        return ans

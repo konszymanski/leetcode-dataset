@@ -1,0 +1,28 @@
+from collections import deque
+class Solution:
+    def __init__(self):
+        self.dq = deque(maxlen=20)
+        self.rand10_calls = 0
+
+    def get_1_from_dq(self):
+        if len(self.dq) == 0:
+		    #return rand7()
+            return self.add_new_to_dq() #reduce 7/40th calls to rand7()
+        return self.dq.popleft()
+
+    def add_new_to_dq(self):
+        out = rand7()
+        self.dq.append(out)
+        return out
+
+    def rand10(self):
+        self.rand10_calls += 1
+        opt = self.rand10_calls % 10
+        if opt < 7:
+            out = self.get_1_from_dq()
+        else:
+            out = 7
+            while out < 8:
+                e0 = self.add_new_to_dq()
+                out = 7 + e0 // 2
+        return out

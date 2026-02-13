@@ -1,0 +1,31 @@
+# Explanation: Let\'s think the other way around for a second:
+#           3 -> 10 = 3,6,5,10 (multiply or subtract) ( << 1 , -1)
+#       This is the same as:
+#           10 -> 3 = 10,5,6,3 (divide   or sum     ) ( >> 1 , +1) 
+#
+# Since Bit destruction is somewhat easier:
+#     - Pop everything, until we reach the required bit length  (adding before reaching len(X) is inefficient (or equal at best))
+#         - Notice that we can\'t pop if we don\'t have a zero at the last bit (we might need to sum one before)
+#     - Then add the difference between X, and Y:
+#         - If Y was already higher, divide it by 2 before (but ensure there is a zero at last bit)
+#
+# By looking at the algorithm, we need actually to:
+#     - Pop everything while Y>X
+#     - Add the difference between [X,Y]
+#
+class Solution:
+   def brokenCalc(self, X, Y):
+       # Easy Edge Case, X is higher (or equal since X-Y = 0)
+       if Y<=X:
+           return X-Y # We can do nothing but subtract
+       #
+       # Y is bigger, now let\'s think the other way around
+       n  = 0
+       while Y>X:
+           if Y&1:
+               Y += 1
+               n += 1
+           Y >>= 1
+           n  += 1
+       n += X-Y # sum to Y until we reach X
+       return n

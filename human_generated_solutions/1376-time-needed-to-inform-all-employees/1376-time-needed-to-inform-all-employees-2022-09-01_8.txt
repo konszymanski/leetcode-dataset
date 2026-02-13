@@ -1,0 +1,14 @@
+from collections import defaultdict 
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        dic=defaultdict(lambda:[])
+        lst=[headID]
+        for i in range(len(manager)):
+            dic[manager[i]].append(i)
+        while lst:
+            x=lst.pop(0)
+            tm=informTime[x]
+            for i in range(len(dic[x])):
+                lst.append(dic[x][i])
+                informTime[dic[x][i]]+=tm
+        return max(informTime)

@@ -1,0 +1,20 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        @cache
+        def solve(curr_position, steps):
+            # Don\'t go overboard (whether left or right)
+			# don\'t go farther than the number of steps you are allowed to take
+            if curr_position < 0 or curr_position >= arrLen or curr_position > steps:
+                return 0
+            
+            # Base:
+			# No steps left and you are at position 0
+            if steps == 0 and curr_position == 0:
+                return 1
+            
+            # Move right (position + 1), move left (position - 1), stay where you are
+            # Whether you move or not, it counts for a step
+			# Therefore the steps variable will decrease
+            return solve(curr_position + 1, steps-1) + solve(curr_position - 1, steps-1) + solve(curr_position, steps-1)
+            
+        return solve(0, steps) % 1_000_000_007

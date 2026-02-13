@@ -1,0 +1,13 @@
+class Solution:
+    def largestValues(self, root: TreeNode) -> List[int]:
+        def levelOrder(root , level):
+            if not root:
+                return
+            if level > len(queue) - 1:
+                queue.append([])
+            queue[level].append(root.val)
+            levelOrder(root.left , level + 1)
+            levelOrder(root.right , level + 1)
+        queue = []
+        levelOrder(root , 0)
+        return [max(level) for level in queue]

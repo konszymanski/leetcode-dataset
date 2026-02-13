@@ -1,0 +1,47 @@
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        
+        # Segment Tree
+        # use a segment tree to trace the count of each possible value in instructions
+        # Time: O(nlogm)
+        # Space: O(m)
+        
+        m = max(instructions)
+        tree = [0] * (2 * m)
+        
+        def update(n):
+			# convert the number to tree index
+            i = m + n - 1
+
+            while i > 0:
+                tree[i] += 1
+                i >>= 1
+        
+        def query(n):
+			# query the total count of the numbers in range [1, n], or [1, n + 1)
+			# convert left and right boundary to tree index by + m - 1
+            left = m
+            right = n + m
+			
+            res = 0
+            
+            # note that the interval is [left, right)
+            while left < right:
+                if left & 1:
+                    res += tree[left]
+                    left += 1
+                if right & 1:
+                    right -= 1
+                    res += tree[right]
+                
+                left >>= 1
+                right >>= 1
+                
+            return res
+        
+        cost = 0
+        for i, v in enumerate(instructions):
+            cost += min(query(v-1), i - query(v))
+            update(v)
+            
+        return cost % (10 ** 9 + 7)

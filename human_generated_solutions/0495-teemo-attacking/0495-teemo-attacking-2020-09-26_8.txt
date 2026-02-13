@@ -1,0 +1,28 @@
+class Solution:
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        
+        output = 0
+        n = len(timeSeries)
+        
+        if n == 0:
+            # Quick response for empty attack time-series
+            return 0
+        
+        
+        # for the first attack
+        output += duration
+        
+        # scan from second attack to last attack
+        for i in range(1, n):
+            
+            time_gap = timeSeries[i] - timeSeries[i-1]
+            
+            if time_gap < duration:
+                # has overlap between two attacks
+                output += time_gap
+                
+            else:
+                # no overlap between two attacks
+                output += duration
+                
+        return output

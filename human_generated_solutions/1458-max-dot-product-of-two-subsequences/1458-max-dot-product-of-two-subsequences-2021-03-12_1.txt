@@ -1,0 +1,17 @@
+class Solution:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+
+		@functools.lru_cache(None)
+        def helper(i, j):
+            if i == len(nums1) or j == len(nums2):
+                return 0
+            return max(nums1[i]*nums2[j] + helper(i+1, j+1), helper(i+1, j), helper(i, j+1))
+        
+        # 1. Find the maximum dot product
+        res = helper(0, 0)
+        
+        # 2. If the best option is zero and zero is not in nums1 or nums2, find the maximum pair nums[i] * nums[j]
+        if res == 0 and (0 not in nums1 + nums2):
+            return min(nums1, key = abs) * min(nums2, key = abs)
+        
+        return res

@@ -1,0 +1,20 @@
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[List[int]]) -> str:
+        
+        def convert(c, ch):
+            return chr((ord(c.upper()) + ch - 65) % 26 + 65).lower()
+        
+        n, l = len(s), list(s)
+        changes = [0] * (n+1)
+        
+        for shift in shifts:
+            changes[shift[0]] += 1 if shift[2] == 1 else -1
+            changes[shift[1] + 1] += 1 if shift[2] == 0 else -1
+            
+        for i in range(1, n+1):
+            changes[i] += changes[i-1]
+            
+        for i, c in enumerate(l):
+            l[i] = convert(c, changes[i])
+            
+        return \'\'.join(l)

@@ -1,0 +1,14 @@
+class SnapshotArray:
+    def __init__(self, length: int):
+        self.dict = defaultdict(int)
+        self.snap_arr = []
+		
+    def set(self, index: int, val: int) -> None:
+        self.dict[index] = val
+		
+    def snap(self) -> int:
+        self.snap_arr.append(self.dict.copy())
+        return len(self.snap_arr) - 1
+		
+    def get(self, index: int, snap_id: int) -> int:
+        return self.snap_arr[snap_id][index]

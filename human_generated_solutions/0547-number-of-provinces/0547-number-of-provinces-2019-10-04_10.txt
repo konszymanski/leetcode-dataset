@@ -1,0 +1,23 @@
+class Solution(object):
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        circles = 0
+        length = len(M)
+        visited = [False] * length
+
+        def dfs(person):
+            if visited[person]: return
+            visited[person] = True
+            for friend, is_friend in enumerate(M[person]):
+                if is_friend and not visited[friend]:
+                    dfs(friend)
+
+        for person in xrange(length):
+            if visited[person]: continue
+            circles += 1
+            dfs(person)
+            
+        return circles

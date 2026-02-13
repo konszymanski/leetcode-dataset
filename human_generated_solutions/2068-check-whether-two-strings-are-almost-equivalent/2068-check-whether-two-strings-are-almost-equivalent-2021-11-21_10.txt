@@ -1,0 +1,8 @@
+class Solution:
+    def checkAlmostEquivalent(self, word1: str, word2: str) -> bool:
+        
+        words = set(word1+word2) 
+        for ch in words:
+            if abs(word1.count(ch) - word2.count(ch)) > 3:
+                return False      
+        return True

@@ -1,0 +1,20 @@
+def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
+        # words = ["abc","deq","mee","aqq","dkd","ccc"], pattern = "abb 
+        output = []
+        new_pattern = self.create_new_pattern(pattern)
+        for word in words:
+            current_pattern = self.create_new_pattern(word)
+            if new_pattern == current_pattern:
+                output.append(word)
+        return output
+    
+    def create_new_pattern(self, word): # word = "abb", word = "mee"
+        current_alpha = "a"
+        seen = {}
+        new_pattern = ""
+        for letter in word:
+            if letter not in seen:
+                seen[letter] = current_alpha  # when word ="abb" seen =  {\'a\': \'a\', \'b\': \'b\'}, when word ="mee" seen =  {\'m\': \'a\', \'e\': \'b\'} 
+                current_alpha = chr(ord(current_alpha)+1)
+            new_pattern += seen[letter] # when word ="abb" new_pattern = "abb", when word ="abb" new_pattern = "abb"
+        return new_pattern

@@ -1,0 +1,22 @@
+from heapq import heappush, heappop
+from collections import defaultdict
+class Solution:
+    def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
+        self.incoming= defaultdict(int)
+        self.outgoing = defaultdict(list)
+        for prev,nxt in relations:
+            self.outgoing[prev-1].append(nxt-1)
+            self.incoming[nxt-1] +=1
+        
+        heap = []
+        for k in range(n):
+            if self.incoming[k]==0:
+                heappush(heap, ( time[k],k))
+        
+        while heap:
+            finish_time,idx = heappop(heap)
+            for neigh in self.outgoing[idx]:
+                self.incoming[neigh] -=1
+                if self.incoming[neigh]==0:
+                    heappush(heap, (finish_time+ time[neigh], neigh))
+        return finish_time

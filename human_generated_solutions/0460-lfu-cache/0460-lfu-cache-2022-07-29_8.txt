@@ -1,0 +1,83 @@
+from collections import OrderedDict, defaultdict
+
+
+class LFUCache:
+    def __init__(self, capacity: int):
+
+        # Initialize the capacity
+        self.capacity = capacity
+
+        # Initialize the hashmap to map freq -> ordered hashmap of (key,value) pairs.
+        self.freqToKey = defaultdict(OrderedDict)
+
+        # Initialize the hashmap to map key -> freq
+        self.keyToFreq = defaultdict()
+
+        # Initialize the minimum frequency to 1 
+        self.minFreq = 1
+
+    def get(self, key: int) -> int:
+
+        # If the key doesn\'t exist, return -1
+        if key not in self.keyToFreq:
+            return -1
+
+        # Move (key,value) pair one frequency up
+        self.freqToKey[self.keyToFreq[key] + 1][key] = self.freqToKey[self.keyToFreq[key]].pop(key)
+
+        # If the minimum frequency is the same as the freq of the current key and there isn\'t any more (key,value) pair after moved such key 1 frequency up, increment the minimum frequency by 1 
+        if (
+            self.minFreq == self.keyToFreq[key]
+            and len(self.freqToKey[self.keyToFreq[key]]) == 0
+        ):
+            self.minFreq = self.keyToFreq[key] + 1
+
+        # Increment the frequency of the current key in the keyToFreq hashmap by 1
+        self.keyToFreq[key] += 1
+
+        # Return the value
+        return self.freqToKey[self.keyToFreq[key]][key]
+
+    def put(self, key: int, value: int) -> None:
+
+        # If the key exists,
+        if key in self.keyToFreq:
+
+            # Move (key,value) pair one frequency up and update its value
+            self.freqToKey[self.keyToFreq[key]].pop(key)
+            self.freqToKey[self.keyToFreq[key] + 1][key] = value
+
+            # If the minimum frequency is the same as the freq of the current key and there isn\'t any more (key,value) pair after moved such key 1 frequency up, increment the minimum frequency by 1 
+            if (
+                self.minFreq == self.keyToFreq[key]
+                and len(self.freqToKey[self.keyToFreq[key]]) == 0
+            ):
+                self.minFreq = self.keyToFreq[key] + 1
+
+            # Increment the frequency of the current key in the keyToFreq hashmap by 1
+            self.keyToFreq[key] += 1
+
+        # Elif the key doesn\'t exist,
+        else:
+
+            # Add it to the keyToFreq hashmap
+            self.keyToFreq[key] = 1
+
+            # Add the (key,value) pair to the freqToKey hashmap
+            self.freqToKey[self.keyToFreq[key]][key] = value
+
+            # Decrement the capacity by 1
+            self.capacity -= 1
+
+            # If we run out of capacity
+            if self.capacity < 0:
+
+                # Remove the first (key,value) pair at the minimum frequency from both hashmaps 
+                key, value = self.freqToKey[self.minFreq].popitem(last=False)
+                self.keyToFreq.pop(key)
+
+                # Increment the capacity
+                self.capacity +=1
+
+            # Set the minimum frequency to 1
+            self.minFreq = 1

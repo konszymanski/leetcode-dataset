@@ -1,0 +1,13 @@
+class Solution:
+    def sortByBits(self, arr: List[int]) -> List[int]:
+        li_tuples_nums_binaries = []
+
+        for i in arr:
+            binary = bin(i)
+            li_tuples_nums_binaries.append([binary.count(\'1\'), i])
+
+        li_tuples_nums_binaries.sort()
+        result = []
+        for b, i in li_tuples_nums_binaries:
+            result.append(i)
+        return result

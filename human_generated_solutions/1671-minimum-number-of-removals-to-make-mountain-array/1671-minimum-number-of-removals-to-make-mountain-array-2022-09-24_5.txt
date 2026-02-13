@@ -1,0 +1,61 @@
+class Solution(object):
+    def minimumMountainRemovals(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        def binarySearch(array, target):
+            left =  0
+            right=  len(array)
+            while left < right:
+                mid = (left+right)//2
+                if array[mid] < target:
+                    left = mid+1
+                elif array[mid] > target:
+                    right = mid
+                else:
+                    return mid
+            return right 
+        
+        ln = len(nums)
+        longestSeqLeft = [1] * ln
+        longestSeqRight = [1] * ln
+        lsl = [nums[0]]
+        lsr = [nums[-1]]
+        leftLen = [1] * ln
+        rightLen = [1] * ln
+        for i in range(1, ln):
+            if nums[i] > lsl[-1]:
+                lsl.append(nums[i])
+                leftLen[i] = leftLen[i-1]+1
+            else:
+                idx = binarySearch(lsl, nums[i])
+                lsl[idx] = nums[i]
+                leftLen[i] = leftLen[i-1]
+            
+            if nums[ln-1-i] > lsr[-1]:
+                lsr.append(nums[ln-1-i])
+                rightLen[ln-1-i] = rightLen[ln-i]+1
+            else:
+                idx2 = binarySearch(lsr, nums[ln-1-i])
+                lsr[idx2] = nums[ln-1-i]
+                rightLen[ln-1-i] = rightLen[ln-i]
+        maxKept = 1
+        def binarySearchRight(arr, target):
+            left = 0
+            right = len(arr)
+            while left < right:
+                mid = (left+right)//2
+                if arr[mid] <= target:
+                    left = mid+1
+                else:
+                    right = mid
+            return left 
+                
+        left = binarySearchRight(leftLen, 1)
+        right = ln-1-binarySearchRight(rightLen[::-1], 1)
+        for i in range(left, right+1):
+            equal = 1 if nums[i] == nums[i+1] else 0
+            if leftLen[i] + rightLen[i+1] - equal > maxKept:
+                maxKept = leftLen[i] + rightLen[i+1] - equal
+        return ln - maxKept

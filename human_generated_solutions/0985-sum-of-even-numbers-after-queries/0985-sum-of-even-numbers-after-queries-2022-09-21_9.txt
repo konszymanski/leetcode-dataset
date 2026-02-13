@@ -1,0 +1,15 @@
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        lst=[]
+        su=0
+        for k in nums:
+            if k%2==0:
+                su+=k
+        for x,y in queries:
+            if nums[y]%2==0:
+                su-=nums[y]
+            nums[y]+=x
+            if nums[y]%2==0:
+                su+=nums[y]
+            lst.append(su)
+        return lst

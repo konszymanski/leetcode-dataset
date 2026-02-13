@@ -1,0 +1,50 @@
+class Solution(object):
+    def solveEquation(self, equation):
+
+        fn,fx = False, False
+        fl = -1
+        n,x = 0,0
+        t=\'\'
+        
+        if equation[0] not in [\'+\',\'-\']:
+            equation = \'+\' + equation
+            
+        for c in equation[::-1]:
+            if c==\'x\':
+                fx,fn = True,False
+            elif c.isdigit():
+                if fx==False: fn=True
+                t = c+t
+            else:
+                if t==\'\': 
+                    t=\'1\'    
+                if c==\'+\':
+                    if fn:
+                        n += fl*int(t)
+                    elif fx:
+                        x += fl*int(t)
+                elif c==\'-\':
+                    if fn:
+                        n -= fl*int(t)
+                    elif fx:
+                        x -= fl*int(t)
+                elif c==\'=\':
+                    if fn:
+                        n += fl*int(t)
+                    elif fx:
+                        x += fl*int(t)
+                    fl=1
+                if c in [\'+\',\'-\',\'=\']:
+                    t=\'\'
+                    fx,fn = False,False
+                
+        if x!=0:
+            n = n/x
+            x = 1
+            
+        if x==0 and n!=0:
+            return "No solution"
+        elif x==0:
+            return "Infinite solutions"
+        else:
+            return "x="+str(-1*n)

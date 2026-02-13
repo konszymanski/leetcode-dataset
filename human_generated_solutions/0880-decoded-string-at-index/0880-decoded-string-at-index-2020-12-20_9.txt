@@ -1,0 +1,16 @@
+class Solution:
+    def decodeAtIndex(self, S: str, K: int) -> str:
+        length = 0; L = []
+        for c in S:
+            if c.isdigit():
+                length *= int(c)
+            else:
+                length += 1
+			L.append(length)
+            if length >= K: break
+                
+        k = K - 1; i = len(L) - 1
+        while S[i].isdigit():
+            k %= L[i-1]; i = bisect_left(L, k + 1, hi = i)
+            
+        return S[i]

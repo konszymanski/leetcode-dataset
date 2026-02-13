@@ -1,0 +1,12 @@
+def averageWaitingTime(customers):
+        chef_timeline = 0
+        waiting_time = 0
+        
+        for customer in customers:
+            if chef_timeline < customer[0]:
+                chef_timeline = customer[0]
+            
+            waiting_time += chef_timeline - customer[0] + customer[1]
+            chef_timeline += customer[1]
+            
+        return waiting_time*1.0 / len(customers)

@@ -1,0 +1,45 @@
+# Approach 1: Sliding window
+# to find maximum substring of \'T\' which contains at most k \'F\' or maximum substring of \'F\' which contains at most k \'T\'. 
+# Time complexity: O(n)
+# Space complexity: O(1)
+def maxConsecutiveAnswers(answerKey, k):
+    """
+    :type answerKey: str
+    :type k: int
+    :rtype: int
+    """
+    res = 0 
+    answerKey = list(answerKey)
+    n = len(answerKey)
+    
+    # let\'s find the maximum substring of \'T\' which contains k \'F\'
+    # \'l\' points to the left side of the window and \'r\' points to its right side
+    l = cnt = 0
+    for r in range(n):
+        # we want to cap number of \'F\'s, so keep counting them
+        if answerKey[r] == "F":
+            cnt += 1
+        # as soon as number of \'F\'s goes above our desired limit of \'k\', shrink the window to make it valid again
+        while(cnt>k):
+            if answerKey[l] == "F":
+                cnt -= 1
+            l += 1
+        # every time keep track of the current \'valid\' window size and if it\'s larger than \'res\' update \'res\' with new max
+        res = max(res, r-l+1)
+
+    # let\'s find the maximum substring of \'F\' which contains k \'T\'
+    # \'l\' points to the left side of the window and \'r\' points to its right side
+    l = cnt = 0
+    for r in range(n):
+        # we want to cap number of \'T\'s, so keep counting them
+        if answerKey[r] == "T":
+            cnt += 1
+        # as soon as number of \'T\'s goes above our desired limit of \'k\', shrink the window to make it valid again
+        while(cnt>k):
+            if answerKey[l] == "T":
+                cnt -= 1
+            l += 1
+        # every time keep track of the current \'valid\' window size and if it\'s larger than \'res\' update \'res\' with new max
+        res = max(res, r-l+1)
+
+    return res

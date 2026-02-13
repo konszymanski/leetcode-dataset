@@ -1,0 +1,21 @@
+class Solution:
+  def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+    dummy = TreeNode(low)
+    setattr(dummy, \'left\' if root.val < low else \'right\', root)
+    queue = deque([dummy])
+    
+    while queue:
+      node = queue.popleft()
+      for leafName in [\'left\', \'right\']:
+        leaf = getattr(node, leafName)
+        if leaf != None:
+          if leaf.val < low:
+            setattr(node, leafName, leaf.right)
+            queue.append(node)
+          elif high < leaf.val:
+            setattr(node, leafName, leaf.left)
+            queue.append(node)
+          else:
+            queue.append(leaf)
+      
+    return getattr(dummy, \'left\' if root.val < low else \'right\')

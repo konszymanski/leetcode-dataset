@@ -1,0 +1,26 @@
+from heapq import *
+class Solution:
+    def minDifference(self, nums: List[int]) -> int:
+        if len(nums) <= 4:
+            return 0
+        
+        maxHeap, minHeap = [], []
+        
+        for n in nums:
+            heappush(maxHeap, -n)
+            heappush(minHeap, n)
+            if len(maxHeap) > 4:
+                heappop(maxHeap)
+                heappop(minHeap)
+                
+        # e.g. [1,5,0,10,14]
+		#print(maxHeap)        #[-10, -5, 0, -1]
+        #print(minHeap)         #[1, 5, 14, 10]
+        
+        minNums = sorted([-1*n for n in maxHeap])            # [0, 1, 5, 10]
+        maxNums = sorted(minHeap, reverse = True)            # [10, 14, 5, 1]
+        
+        res = float("inf")      
+        for i in range(4):
+            res = min(res, maxNums[3-i]-minNums[i])
+        return res

@@ -1,0 +1,23 @@
+from collections import deque
+
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root1: return root2
+        if not root2: return root1
+        
+        new_root = TreeNode()
+        queue = deque([(root1, root2, new_root)])
+        
+        while queue:
+            n1, n2, n = queue.popleft()
+            if n1: n.val = n1.val
+            if n2: n.val += n2.val
+
+            if (n1 and n1.left) or (n2 and n2.left):
+                n.left = TreeNode()
+                queue.append((n1.left if n1 else None, n2.left if n2 else None, n.left))
+            if (n1 and n1.right) or (n2 and n2.right):
+                n.right = TreeNode()
+                queue.append((n1.right if n1 else None, n2.right if n2 else None, n.right))
+
+        return new_root

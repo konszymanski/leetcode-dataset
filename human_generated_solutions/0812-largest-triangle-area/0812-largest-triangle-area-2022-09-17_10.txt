@@ -1,0 +1,26 @@
+class Solution:
+    
+    def fun(self, points):
+        # Assign the minimum value to our answer
+        max_ar = float(\'-inf\')
+       
+        # Combine every points with every other points and calculate the area.
+        # No selected points should match, then it won\'t form triangle.
+        for x1, y1 in points:
+            for x2, y2 in points:
+                for x3, y3 in points:
+                    if [x1, y1] != [x2, y2] and [x1, y1] != [x3, y3] and [x2, y2] != [x3, y3]:
+
+                        # Formula to calculate the area of a triangle
+                        # for three coordinate points.
+                        ar = x1*y2 + x2*y3 + x3*y1 - y1*x2 - y2*x3 - y3*x1
+                        ar = ar / 2
+                        
+                        # Save the maximum area computed from every triangle 
+                        max_ar = max(max_ar, ar)
+
+        return max_ar
+        
+    
+    def largestTriangleArea(self, points: List[List[int]]) -> float:
+        return self.fun(points)

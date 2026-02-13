@@ -1,0 +1,15 @@
+def wordBreak(s, wordDict):
+	result = []
+	def backtrack(start, path):
+		# base case/constraint
+		if start == len(s):
+			result.append(\' \'.join(path))
+			return
+		# iterate through remaining characters
+		for i in range(start, len(s) + 1):
+			# if the remaning characters form a valid word, only then try to backtrack 
+			# with the starting index being the end index of the previous valid word
+			if start[start: i] in wordDict:
+				backtrack(i, path + [s[start: i]])
+	backtrack(0, [])
+	return result

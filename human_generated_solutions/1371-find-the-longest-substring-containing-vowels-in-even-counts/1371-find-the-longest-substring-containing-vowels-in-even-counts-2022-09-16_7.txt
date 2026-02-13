@@ -1,0 +1,15 @@
+def findTheLongestSubstring(self, s: str) -> int:
+        vowels = {\'a\': 16, \'e\': 8, \'i\': 4, \'o\': 2, \'u\': 1}
+        vote_dict = {0: -1}
+        vcount = 0
+        ans = 0
+        for idx, c in enumerate(s):
+            if c in vowels.keys():
+                vcount = vcount ^ vowels[c]
+            
+            if vcount in vote_dict.keys():
+                ans = max(ans, idx - vote_dict[vcount])
+            else:
+                vote_dict[vcount] = idx
+                
+        return ans

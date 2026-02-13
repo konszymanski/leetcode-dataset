@@ -1,0 +1,19 @@
+class Solution:
+    def __init__(self):
+        self.under20=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+                 "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen",
+                 "Eighteen","Nineteen"]
+        self.tens=["","Ten","Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+        self.places=["","Hundred","Thousand","Million","Billion"]
+        self.placethresholds=[0,1000,1000000,1000000000,3000000000] #3billion cuz max input is ~2.4bill
+        self.placedivision=[0,100,1000,1000000,1000000000]
+    def numberToWords(self, num: int) -> str:
+        return("Zero" if num == 0 else \' \'.join(filter(None,self.helper(num))))
+    def helper(self,num):
+        if num < 20:
+            return [self.under20[num]]
+        elif num < 100:
+            return [self.tens[num//10]]+self.helper(num%10)
+        for i in range(len(self.placethresholds)-1,-1,-1):
+            if self.placethresholds[i-1] <= num < self.placethresholds[i]:
+                return self.helper(num//self.placedivision[i])+[self.places[i]]+self.helper(num%self.placedivision[i])

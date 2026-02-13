@@ -1,0 +1,30 @@
+class DSU:
+    def __init__(self, numNodes: int) -> None:
+        self.parent = [0] * numNodes
+        for i in range(numNodes):
+            self.parent[i] = i
+            
+    def find(self, node: int) -> int:
+        if self.parent[node] == node:
+            return node
+        self.parent[node] = self.find(self.parent[node])
+        return self.parent[node]
+    
+    def union(self, node1: int, node2: int) -> None:
+        node1, node2 = self.find(node1), self.find(node2)
+        self.parent[node1] = node2
+
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        sz, maxElement, ans = len(nums), max(nums), 0
+        dsu, groupSizeMap = DSU(maxElement + 1), defaultdict(int)
+        for idx, elem in enumerate(nums):
+            for factor in range(2, round(sqrt(elem)) + 1):
+                if elem % factor == 0:
+                    dsu.union(elem, factor)
+                    dsu.union(elem, elem // factor)
+        for i in range(sz):
+            parent = dsu.find(nums[i])
+            groupSizeMap[parent] += 1
+            ans = max(ans, groupSizeMap[parent])
+        return ans

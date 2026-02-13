@@ -1,0 +1,23 @@
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        
+        if not root:
+            return 1
+        
+        def check(node):
+            if not node:
+                return 0
+            
+            lef = check(node.left)
+            rig = check(node.right)
+            
+            if lef==-1 or rig==-1 or abs(lef-rig)>1:
+                return -1
+            
+            return 1+ max(lef,rig)
+            
+            
+        if check(root)!=-1:
+            return 1
+        else:
+            return 0

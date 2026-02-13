@@ -1,0 +1,169 @@
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        # constant declarations
+        upper="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        lower=upper.lower()
+        digits = "0123456789"
+        
+        # variables
+        count=defaultdict(int)
+        element_name = None
+        element_name_parse_start=False
+        element_count =""
+        bracket_stacks = [[]]
+        buffer = []
+        
+        # function to parse out the complete number if a digit is seen, 
+        # the function takes the character, that was seen as a digit and 
+        # the generator object to get the remaining (yet to be read) part of formula
+        def parseout_number(ch,gen):
+            nonlocal buffer
+            num=""
+            try:
+                while ch in digits:
+                    num += ch
+                    ch = next(gen)
+                # after number is parsed out and a non-number character is seen, 
+                # add that non-number character to the buffer to be read next, dont miss parsing it
+                buffer.append(ch)
+            except StopIteration:
+                # while iterating to find the end digit of the number, we have reached the end of the formula, 
+                # meaning the digit ch and subsequent characters were numbers and were the last thing in the formula
+				# the code, outside of try-catch handles all the possible scenerios of parsing the number out, 
+				# so do nothing here. move along
+                pass
+            # if we saw a number, return it as integer, else return empty string
+            if num != "":
+                return int(num)
+            else:
+                return ""
+        
+        #generator expression
+        formula_chars = (ch for ch in formula)
+        
+        # iterate over all characters
+        for char in formula_chars:
+            
+            # add the character emitted by generator into buffer for processing
+            buffer.append(char)
+            
+            # process what ever is in the buffer queue
+            while buffer:
+                ch = buffer.pop(0)
+                
+                # if the character is an upper case character
+                # set the a flag to indicate start of a new element name
+                # check if the previous elementname was added to the processing_stack (bracket_stacks)
+                # if not then add it, noting one atom for that element
+                # set the character to element_name variable
+                if ch in upper:
+                    element_name_parse_start=True
+                    if element_name is not None and element_count == "":
+                        bracket_stacks[-1].append([element_name,1])
+                    element_name = ch
+                # if character is lowercase, just concat it to the element_name
+                elif ch in lower:
+                    element_name += ch
+                # if character is a numerical digit, then parse that number out completely as integer
+                # set the flag to indicate the reading the element name is done
+                # store the element name and it\'s corresponding count into the processing_stack
+                # reset the variables element_name and element_count, ready for next element
+                elif ch in digits:
+                    element_name_parse_start=False
+                    element_count = parseout_number(ch,formula_chars)
+                    bracket_stacks[-1].append([element_name,element_count])
+                    element_count = ""
+                    element_name = None
+                # if open bracket is seen, check if reading the element_name flag is still True
+                # if it is then that element has one atom only
+                # add it to the processing stack
+                # set the flag to indicate that reading the \'element_name\' is done and 
+                # add another processing stack top the top of the \'bracket_stacks\'
+                # this new processing stack will have the atom details within the bracket
+                # finally, reset all other variables to ensure 
+				# clean slate for the new child \'processing-stack\' before exiting the code-block
+                elif ch == "(":
+                    if element_name_parse_start:
+                        bracket_stacks[-1].append([element_name,1])
+                    element_name_parse_start=False
+                    element_count = ""
+                    bracket_stacks.append([]) # new processing stack
+                    element_name = None
+                
+                # if a bracket is closed
+                # make sure we account for one atom of element, if a number was not seen before closing the bracket
+                # set the flag to indicate we are done reading element_name
+                # check what is the next character after the bracket close char. 
+				# if it\'s a digit, then parse that number out 
+                # that number is the multiplier for the current processing stack
+                # which means we will need to multiply every atom/element count by the multiplier
+                # at this point the current processing stack 
+				# which was created as part of opening the bracket is processed
+                # so, merge what we found into the parent processing stack by 
+                # extending the parent processing stack with the results of the child stack
+                elif ch == ")":
+                    if element_name_parse_start:
+                        bracket_stacks[-1].append([element_name,1])
+                    element_name = None
+                    element_name_parse_start=False
+                    braket_multiplier = ""
+                    try:
+                        next_ch= next(formula_chars)
+                        braket_multiplier = parseout_number(next_ch,formula_chars)
+                    except StopIteration:
+                        pass
+                    
+                    if braket_multiplier == "":
+                        braket_multiplier = 1
+					# pop the child processing - stack to be processed
+                    process_this = bracket_stacks.pop()
+                    
+					#processing
+                    for idx,_ in enumerate(process_this):
+                        process_this[idx][1] = process_this[idx][1]*braket_multiplier
+					
+					#merging processed child stack with the parent stack
+                    bracket_stacks[-1].extend(process_this)
+        
+        # if the new element name seen flag is set then process that 
+        # atom by adding it\'s element-name and atom count to the current processing stack
+        if element_name_parse_start:
+            if element_name is not None:
+                if element_count != "":
+                    bracket_stacks[-1].append([element_name,int(element_count)])
+                else:
+                    bracket_stacks[-1].append([element_name,1])
+        
+        # pop the top-level processing-stack, this should contain a \'flattened\' version of the atoms and their counts
+        # note that the counts of elements are not aggregated yet, 
+        # eg:If Oxygen was seen within a bracket and also seen outside that bracket, 
+        # then we\'ll have two entries for Oxygen. We\'ll aggregate them next...
+        count_pairs = bracket_stacks.pop()
+        
+        # aggregate all the \'flattened\' data in \'count_pairs\' variable, using a dictionary
+        for element_name,element_count in count_pairs:
+            count[element_name]+= element_count
+        
+        # preparing the output string...
+        # create a list meant to hold the \'words\' of the output string, based on the description
+        output=[]
+        
+        # fetch the keylist
+        elements_list = list(count.keys())
+        
+        #sort it
+        elements_list.sort()
+        
+        # for each element in the sorted keylist, if the element has more 
+        # than 1 atom, append the atom and it\'s count
+        # if element has only 1 atom only append the atom name, 
+        # but don\'t append the atom\'s count (which is 1)
+        for element in elements_list:
+            if count[element] > 1:
+                output.append(element)
+                output.append(str(count[element]))
+            else:
+                output.append(element)
+        
+        # output will now have an list of words representation of what we need. turn the list into a string and return it
+        return "".join(output)

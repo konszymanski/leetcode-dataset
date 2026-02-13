@@ -1,0 +1,22 @@
+def getPermutation(self, n: int, k: int) -> str:
+    self.k = k
+    
+    def backtrack(s, rest):
+        if not rest:
+            self.k -= 1
+            if self.k == 0:
+                return s
+            return \'\'
+            
+        for i in range(len(rest)):
+            if self.k > math.factorial(len(rest)-1):
+                self.k -= math.factorial(len(rest)-1)
+                continue
+            old = s
+            s += rest[i]
+            ans = backtrack(s, rest[:i]+rest[i+1:])
+            if ans: return ans
+            s = old
+        return \'\'
+    nums = list(map(str, range(1, n+1)))
+    return backtrack(\'\', nums)

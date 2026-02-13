@@ -1,0 +1,72 @@
+class UnionFind:
+    def __init__(self):
+        self.p = []
+        self.rank = []
+
+    def join(self, a, b):
+        a, b = self.find(a), self.find(b)
+        if a == b:
+            return a
+
+        if self.rank[a] >= self.rank[b]:
+            self.rank[a] += self.rank[b]
+            self.p[b] = a
+            return a
+        else:
+            self.rank[b] += self.rank[a]
+            self.p[a] = b
+            return b
+
+    def find(self, a):
+        while a != self.p[a]:
+            a = self.p[a]
+        return a
+            
+    def next(self):
+        try:
+            return len(self.p)
+        finally:
+            self.p.append(len(self.p))
+            self.rank.append(1)
+
+
+class Solution:
+    def regionsBySlashes(self, grid) -> int:
+        uf = UnionFind()
+        upper = [0] * len(grid[0])
+        work = [0] * len(grid[0])
+        
+        for r, row in enumerate(grid):
+            upper, work = work, upper
+            for c, val in enumerate(list(row)):
+                if val == "\\\\":
+                    if r > 0 and c > 0:    # Common case
+                        work[c] = left       # Set the upper value to the left neighbor\'s value
+                        left = upper[c]      # Set the left value to the upper neighbor\'s value
+                    elif r > 0:            # Left edge of the grid
+                        work[c] = uf.next()  # Allocate a new id for the upper value
+                        left = upper[c]      # Set the left value to the upper neighbor\'s value
+                    elif c > 0:            # Top edge of the grid
+                        work[c] = left       # Set the upper value to the left neighbor\'s value
+                        left = uf.next()     # Allocate a new id for the left value
+                    else:                  # Upper-left corner
+                        work[c] = uf.next()  # Allocate a new id for the upper value
+                        left = uf.next()     # Allocate a new id for the left value
+                elif val == " ":
+                    if r > 0 and c > 0:    # Common case
+                        work[c] = left = uf.join(upper[c], left)  # Join the upper and left values
+                    elif r > 0:            # Left edge of the grid
+                        work[c] = left = upper[c]   # Inherit the upper neighbor\'s value
+                    elif c > 0:            # Top edge of the grid
+                        work[c] = left              # Inherit the left neighbor\'s value
+                    else:                  # Upper-left corner
+                        work[c] = left = uf.next()  # Allocate the first id to the first square
+                else:
+                    if r > 0 and c > 0:    # Common case
+                        uf.join(upper[c], left)  # Join the upper and left values
+                    elif r == 0 and c == 0:  # Upper-left corner
+                        uf.next()              # Just allocate a throway id for the small upper-left triangle
+                    work[c] = left = uf.next()  # Allocate a new id for both the upper and left values
+        
+        # Count the number of unique parents
+        return len(set(uf.find(i) for i in uf.p))

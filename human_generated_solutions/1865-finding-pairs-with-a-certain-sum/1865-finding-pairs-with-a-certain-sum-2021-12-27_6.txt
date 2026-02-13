@@ -1,0 +1,53 @@
+class FindSumPairs:
+
+    def __init__(self, nums1: List[int], nums2: List[int]):
+        
+        self.A = nums1
+        self.B = nums2
+        
+        # maintain mapping between distinct number and occurrence for array A
+        self.dictA = Counter(self.A)
+        
+        # maintain mapping between distinct number and occurrence for array B
+        self.dictB = Counter(self.B)
+
+        
+    def add(self, index: int, val: int) -> None:
+        
+        # update mapping for B
+        old_val = self.B[index] 
+        
+        self.B[index] += val
+        new_val = self.B[index]
+        
+        self.dictB[old_val] -= 1
+        
+        if self.dictB[old_val] == 0:
+            del self.dictB[old_val]
+        
+        self.dictB[new_val] += 1
+		return
+
+
+    def count(self, tot: int) -> int:
+        # Goal:
+        #
+        # Find the method count of a + b = total, 
+        # where a comes from array A, and b comes from array B
+        
+        # apply the concept learned from Leetcode #1 Two sum
+        # a + b = total <=> b = total - a 
+		
+		
+        # speed-up by dictionary
+        counter = 0
+
+        for num_a, occ_a in self.dictA.items():
+            
+            b = tot - num_a
+            occ_b = self.dictB.get(b, 0)
+            
+            # update the method count of a + b = total
+            counter += occ_a * occ_b
+                    
+        return counter

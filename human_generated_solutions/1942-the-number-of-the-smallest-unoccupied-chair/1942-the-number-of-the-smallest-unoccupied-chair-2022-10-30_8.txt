@@ -1,0 +1,28 @@
+class Solution(object):
+    def smallestChair(self, times, targetFriend):
+        """
+        :type times: List[List[int]]
+        :type targetFriend: int
+        :rtype: int
+        """
+        events = []
+        for gid, arrleavetimes in enumerate(times):
+            events.append((gid, arrleavetimes[0], 1))
+            events.append((gid, arrleavetimes[1], 0))
+        events.sort(key = lambda x: (x[1], x[2]))
+        friendsToChairMap = {}
+        
+        chairsHeap = range(len(times))
+        heapq.heapify(chairsHeap)
+        
+        for (gid, t, typee) in events:
+            if typee == 1:
+                chair = heapq.heappop(chairsHeap)
+                friendsToChairMap[gid] = chair
+                if gid == targetFriend:
+                    break
+            else:
+                chair = friendsToChairMap[gid]
+                heapq.heappush(chairsHeap, chair)
+        
+        return friendsToChairMap[targetFriend]

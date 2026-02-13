@@ -1,0 +1,26 @@
+class Solution:
+    def ways(self, P: List[str], k: int) -> int:
+        m, n = len(P), len(P[0])
+        
+        Q = [[0] * n for _ in range(m)] #cumulative count of apples from right to left and bottom to up
+        for i in range(m - 1, -1, -1):
+            rowCount = 0
+            for j in range(n - 1, -1, -1):
+                rowCount += (P[i][j] == \'A\')
+                Q[i][j] = rowCount if i == m-1 else rowCount + Q[i + 1][j]
+        
+        M = 10**9 + 7
+        
+        @lru_cache(None)
+        def dp(i, j, k):
+            if Q[i][j] < k: return 0 #less apples than pieces
+            if k == 1: return 1
+            ans = 0
+            for x in range(i + 1, m): #horizontal cut at x
+                if Q[i][j] - Q[x][j] > 0: #cut must contain atleast one apple.
+                    ans+=dp(x, j, k - 1)
+            for y in range(j + 1, n): #vertical cut at y
+                if Q[i][j] - Q[i][y] > 0:
+                    ans+=dp(i, y, k - 1)
+            return ans % M
+        return dp(0,0,k)

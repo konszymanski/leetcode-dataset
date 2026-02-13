@@ -1,0 +1,5 @@
+from fractions import Fraction
+
+class Solution:
+    def judgePoint24(self, cards: List[int]) -> bool:    
+        return any([any([True if f1(d, f2(c, f3(a, b))) == 24 or f1(f2(a, b), f3(c, d)) == 24 else False for (f1, f2, f3) in product([add, sub, mul, lambda x, y: x / y if y else 0], repeat=3)]) for (a, b, c, d) in set(permutations(map(Fraction, cards)))])

@@ -1,0 +1,11 @@
+def findLeastNumOfUniqueInts(self, arr, k):
+        from collections import Counter
+        count = sorted(Counter(arr).items(), key=lambda x: x[1])  # sort dictionary by value increasing and get it as tuple
+        removed = 0  # number of removed items
+        for key, val in count: 
+            if k >= val:  
+                k -= val
+                removed += 1
+            else:
+                break
+        return len(count)-removed  # number of remained elements

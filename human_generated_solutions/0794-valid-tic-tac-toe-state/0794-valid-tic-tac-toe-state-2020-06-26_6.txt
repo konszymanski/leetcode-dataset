@@ -1,0 +1,23 @@
+class Solution:
+    def validTicTacToe(self, board: List[str]) -> bool:
+        def wins(c: str) -> bool:
+            cols = map(lambda x:\'\'.join(x), zip(*board))
+            diags = map(lambda x:\'\'.join(x),
+                        ((board[i][i] for i in range(3)),
+                         (board[i][-i-1] for i in range(3))))
+            return any(row == c * 3 for row in itertools.chain.from_iterable((board, cols, diags)))
+        
+        Xwins = wins(\'X\')
+        Owins = wins(\'O\')
+        
+        if Xwins and Owins:
+            return False
+        
+        countX = sum(row.count(\'X\') for row in board)
+        countO = sum(row.count(\'O\') for row in board)
+        
+        if not Xwins and not Owins:
+            return countX == countO or countX == countO + 1
+        if Xwins:
+            return countX == countO + 1
+        return countX == countO

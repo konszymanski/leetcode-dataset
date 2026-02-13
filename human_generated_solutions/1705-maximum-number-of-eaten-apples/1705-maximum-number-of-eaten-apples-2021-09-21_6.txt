@@ -1,0 +1,16 @@
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        from heapq import heappush, heappop
+        applesHeap = [] 
+        maxDays = max((idx + i)  for idx, i in enumerate(days)) # find out the maximum number of days you could have apples available.
+        applesEaten = 0
+        for i in range(1, maxDays + 1):
+            # apples grow daily, add everydays harvest as one pile (ith day) to the apples heap from the tree until its available as first thing in the morning.
+            if i - 1 < len(days): heappush(applesHeap, [i - 1 + days[i - 1], apples[i - 1]])
+            while applesHeap and applesHeap[0][0] < i: heappop(applesHeap) # Next, remove rotten apples.
+            if applesHeap: # if any piles are available, take it. 
+                ae, ac = heappop(applesHeap)
+                if ac >= 1: # check if the pile is empty.
+                    applesEaten += 1 # eat an apple.
+                    if ac - 1 > 0: heappush(applesHeap, [ae, ac - 1]) # put the pile back to heap if there are some or any remaining apples.
+        return applesEaten

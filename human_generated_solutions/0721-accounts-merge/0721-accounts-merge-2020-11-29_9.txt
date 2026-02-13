@@ -1,0 +1,16 @@
+class UF:
+    def __init__(self):
+        self.id = {}
+    
+    def union(self, p, q):
+        i = self.find(p)
+        j = self.find(q)
+        self.id[i] = j
+    
+    def find(self, p):
+        if p not in self.id:
+            self.id[p] = p
+        while p != self.id[p]:
+            self.id[p] = self.id[self.id[p]]
+            p = self.id[p] 
+        return p

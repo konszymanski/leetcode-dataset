@@ -1,0 +1,29 @@
+\'\'\'
+w: linked list + stack
+   for such type of question, we could only know the value of node when we get there,
+   then using a stack to store the previous information should do the job, the key here is 
+   how to construct the stack. In stead of only storing the value, we store (value, index) so
+   we can modify the final result in O(1) on the fly
+h:  1) create a list res to store the result
+    2) every time we walk along the linked list
+        1) we append 0 to res
+            if the current val > stack[-1][0]:
+                we keep pop and change res[StoredIndex] = current val
+		2) we append (current val, current index) to a stack
+\'\'\'
+class Solution:
+    def nextLargerNodes(self, head: ListNode) -> List[int]:
+        res = []
+        stack = []
+        idx = 0
+        while head:
+            res.append(0)
+            curVal = head.val
+            while stack and stack[-1][0] < curVal:
+                _, pidx = stack.pop()
+                res[pidx] = curVal
+            
+            stack.append((curVal, idx))
+            idx += 1
+            head = head.next
+        return res

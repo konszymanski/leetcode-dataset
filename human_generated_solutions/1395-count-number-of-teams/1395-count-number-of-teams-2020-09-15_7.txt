@@ -1,0 +1,28 @@
+class Solution:
+    def numTeams(self, rating: List[int]) -> int:
+        n = len(rating)
+        if n < 3:
+            return 0
+        
+        g = [0] * n # <- Greater count
+        s = [0] * n # <- Smaller count
+        res = 0 # <- number of teams
+        
+        # For each soldier, we search the next greater and smaller
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if rating[j] > rating[i]: 
+                    g[i] += 1
+                else:
+                    s[i] += 1
+        
+        # Now, we looking for the "last number" . If rating[i] < rating[j] then g[j] are the following possible numbers
+        #                                       .    rating[i] > rating[j]      s[j] 
+        for i in range(n - 2):
+            for j in range(i + 1, n):
+                if rating[j] > rating[i]:
+                    res += g[j]
+                else:
+                    res += s[j]
+        
+        return res

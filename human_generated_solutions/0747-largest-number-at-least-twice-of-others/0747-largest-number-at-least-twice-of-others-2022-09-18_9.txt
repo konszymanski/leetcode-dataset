@@ -1,0 +1,12 @@
+**UPVOTE PLEASE**
+
+EXPLAINATION:
+1) FIND MAX ELEMENT IN LIST AND ITS INDEX STORE IT AND REMOVE FROM LIST
+2)NOW ITERATE THE LIST IF ANY ELEMENT *2 IS GRATER THAT MAX RETURN -1 ELSE MAX INDEX
+
+
+def dominantIndex(self, nums):
+        l=max(nums);k=nums.index(l);nums.remove(l);
+        for i in nums: 
+            if i*2>l: return -1;
+        return k;

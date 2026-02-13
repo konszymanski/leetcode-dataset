@@ -1,0 +1,7 @@
+# Runtime: 45 ms, faster than 40.21% of Python3 online submissions for Count Odd Numbers in an Interval Range.
+# Memory Usage: 13.9 MB, less than 64.89% of Python3 online submissions for Count Odd Numbers in an Interval Range.
+class Solution:
+    def countOdds(self, low, high):
+        if high%2!=0:
+            high += 1
+        return high//2-low//2

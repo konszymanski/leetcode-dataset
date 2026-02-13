@@ -1,0 +1,29 @@
+class Solution:
+    def Util(self, cur, stored, n, mem):
+        
+        if cur > n or stored > n:
+            return sys.maxsize
+        
+        if cur == n:
+            return 0
+        
+        if (cur, stored) in mem:
+            return mem[(cur, stored)]
+        
+        if stored == 0:
+            return 1 + self.Util(cur, 1, n, mem)
+        
+        if cur != stored:
+            ans = 1 + min(self.Util(cur + stored, stored, n, mem), self.Util(cur, cur, n, mem))
+            
+        else:      
+            ans = 1 + self.Util(cur + stored, stored, n, mem)
+            
+        mem[(cur, stored)] = ans
+        return ans
+            
+    def minSteps(self, n: int) -> int:
+        if n == 0 or n == 1:
+            return 0
+        mem = dict()
+        return self.Util(1, 0, n, mem) # initially, we have 1\'A\' and 0 number of \'A\'s copied

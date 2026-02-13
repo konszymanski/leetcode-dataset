@@ -1,0 +1,24 @@
+def lcs(text1, text2, n, m):
+    # base condition (if one of the string string length is zero we just have to return zero)
+    if n == 0 or m == 0:
+        return 0
+
+    # success condition if the character at last of both string match then we just have to decrement
+    # length of both strings
+    if text1[n-1] == text2[m - 1]:
+        return 1 + lcs(text1, text2, n-1, m-1)
+    else:
+
+        # success condition if the character at last of both string match then we just have to decrement
+        # length of either of string
+        return max(lcs(text1, text2, n-1, m), lcs(text1, text2, n, m-1))
+
+
+class Solution(object):
+    def longestCommonSubsequence(self, text1, text2):
+        """
+        :type text1: str
+        :type text2: str
+        :rtype: int
+        """
+        return lcs(text1, text2, len(text1), len(text2))

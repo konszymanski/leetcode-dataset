@@ -1,0 +1,22 @@
+class Solution:
+    def productQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        def min_arr(x):
+            k = bin(x)[2:]
+            k = k[::-1]
+            ans = []
+            for i in range(0, len(k)):
+                if (k[i] == \'1\'):
+                    ans.append(2**i)
+            return ans
+        nums = min_arr(n)
+        prod = [1]
+        for i in range(len(nums)):
+            k = (prod[-1]*nums[i])
+            prod.append(k)
+        res = []
+        for i in range(len(queries)):
+            b = prod[queries[i][1]+1]
+            a = prod[queries[i][0]]
+            res.append((b//a))
+            res[i] = res[i]%(10**9 + 7)
+        return res

@@ -1,0 +1,8 @@
+def repeatedNTimes(self, A: List[int]) -> int:
+        
+        counts = [0]*10001
+        
+        for val in A:
+            if counts[val] == 1:
+                return val
+            counts[val] += 1

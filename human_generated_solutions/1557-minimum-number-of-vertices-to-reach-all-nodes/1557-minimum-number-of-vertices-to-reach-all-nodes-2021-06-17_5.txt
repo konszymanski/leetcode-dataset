@@ -1,0 +1,18 @@
+class Solution:
+    def findSmallestSetOfVertices(self, n: int, edges: List[List[int]]) -> List[int]:
+        """
+        We want to get all of the vertices that have an indegree of zero
+        So we can build our graph in reverse order
+        Then we loop through and check which nodes have no children
+        Because if this is the reverse order of the graph the ones with no children are the targets
+        """
+        graph = [[] for i in range(n)]
+        
+        for e in edges:
+            graph[e[1]].append(e[0])
+        
+        output = []
+        for k in range(len(graph)):
+            if len(graph[k]) == 0:
+                output.append(k)
+        return output

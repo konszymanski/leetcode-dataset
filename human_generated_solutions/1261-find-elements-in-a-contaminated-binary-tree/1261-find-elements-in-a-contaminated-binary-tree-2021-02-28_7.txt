@@ -1,0 +1,22 @@
+class FindElements:
+
+    def __init__(self, root: TreeNode):
+        self.element = set()
+        root.val = 0
+        stack = []
+        while stack or root:
+            while root:
+                self.element.add(root.val)
+                if root.left:
+                    root.left.val = root.val * 2 + 1
+                stack.append(root)
+                root = root.left
+            
+            root = stack.pop()
+            if root.right:
+                root.right.val = root.val * 2 + 2
+            root = root.right
+            
+
+    def find(self, target: int) -> bool:
+        return target in self.element

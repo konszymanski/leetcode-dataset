@@ -1,0 +1,23 @@
+class MagicDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.m = collections.defaultdict(list)
+
+    def buildDict(self, dictionary: List[str]) -> None:
+        for word in dictionary:
+            self.m[len(word)] += [word]
+        
+    def search(self, searchWord: str) -> bool:
+        if len(searchWord) not in self.m: return False
+        wordList = self.m[len(searchWord)]
+        
+        for word in wordList:
+            cnt = 0
+            for i in range(len(searchWord)):
+                if searchWord[i] != word[i]: cnt += 1
+                if cnt > 1: break
+            if cnt == 1: return True           
+        return False

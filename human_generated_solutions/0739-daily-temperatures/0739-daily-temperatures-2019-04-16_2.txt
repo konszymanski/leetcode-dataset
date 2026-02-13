@@ -1,0 +1,56 @@
+#brute force 
+class Solution1:
+    def dailyTperatures(self, nums: \'List[int]\') -> \'List[int]\':
+        res = [0] * len(nums)
+        for i in range(len(nums)):
+            for j in range(i, len(nums)):
+                if nums[j] > nums[i]:
+                    res[i] = j - i 
+                    break #guarentee the soonest 
+        return res  
+    
+#Use array to remember
+class Solution2:
+    def dailyTemperatures(self, nums):
+        """
+        Runtime: 976 ms, faster than 8.40%
+        Memory Usage: 16.6 MB, less than 11.02% 
+        """
+        nxt = [float(\'inf\')] * 102
+        res = [0] * len(nums)
+        for i in range(len(nums) - 1, -1, -1):
+            #Use 102 so min(nxt[t]) has a default value
+            j= min(nxt[t] for t in range(nums[i]+1, 102))
+            if j< float(\'inf\'):
+                res[i] = j- i
+            nxt[nums[i]] = i
+        return res  
+    #Use stack to remember
+class Solution3:
+    def dailyTemperatures(self, nums):
+        res = [0] * len(nums)
+        stack = [] #indexes from hottest to coldest
+        for i in range(len(nums) - 1, -1, -1):
+            while stack and nums[i] >= nums[stack[-1]]:
+                stack.pop() #remove lower and not soonest 
+            if stack:
+                res[i] = stack[-1] - i
+            stack.append(i)
+        return res       
+    
+    # A more elegant stack 
+    
+class Solution5:
+    def dailyTemperatures(self, nums: \'List[int]\') -> \'List[int]\':
+        """
+        Runtime: 300 ms, faster than 74.12%
+        Memory Usage: 16.6 MB, less than 9.45%
+        """
+        res = [0] * len(nums)
+        stack = []
+        for i in range(len(nums)):
+            while stack and nums[i] > nums[stack[-1]]: #find the higher
+                cur = stack.pop()
+                res[cur] = i - cur
+            stack.append(i)                    
+        return res

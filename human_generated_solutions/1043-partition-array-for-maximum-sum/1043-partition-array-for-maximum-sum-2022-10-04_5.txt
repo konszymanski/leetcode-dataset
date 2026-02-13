@@ -1,0 +1,18 @@
+class Solution:
+    def maxSumAfterPartitioning(self, arr: List[int], k: int) -> int:
+        @cache
+        def max_sum_after_partitioning(k, index):
+            if index == len(arr):
+                return 0
+            current_max = float(\'-inf\')
+            ans = float(\'-inf\')
+            length = 0
+            for i in range(index, min(len(arr),index+k)):
+                length += 1
+
+                current_max = max(current_max, arr[i])
+                ans = max(ans, current_max*length + max_sum_after_partitioning(k, i+1))
+
+
+            return ans
+        return max_sum_after_partitioning(k, 0)

@@ -1,0 +1,27 @@
+def smallestRangeII(self, nums: List[int], k: int) -> int:
+  minimum = min(nums)
+  maximum = max(nums)
+
+  # Simple cases first
+  if maximum - minimum <= k:
+    return maximum - minimum
+  if maximum - minimum >= 4 * k:
+    return maximum - minimum - 2 * k
+
+  gap = max(1, (maximum - minimum) // len(nums))
+  num_buckets = (maximum - minimum) // gap + 1
+  buckets = [[maximum, minimum] for _ in range(num_buckets)]
+
+  # Find the minimum and maximum values for each bucket
+  for num in nums:
+    idx = (num - minimum) // gap
+    buckets[idx] = [min(buckets[idx][0], num), max(buckets[idx][1], num)]
+
+  # Try each gap between buckets to find the best one
+  ret = maximum - minimum
+  prev = buckets[0][1]
+  for bucket in buckets[1:]:
+    if bucket[1] > minimum:
+      ret = min(ret, max(maximum - k, prev + k) - min(minimum + k, bucket[0] - k))
+      prev = bucket[1]
+  return ret

@@ -1,0 +1,13 @@
+@ Code Author Naveen Kumar Vadlamudi
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        res = []
+        # O(N * K)
+        for val in nums:
+                digits = list(str(val))
+                transformed = \'\'
+                for v in digits:
+                    transformed += str(mapping[int(v)])
+                res.append((val,int(transformed)))
+        # O (N Log N)       
+        return [ k for k,v in sorted(res, key = lambda item: item[1])]

@@ -1,0 +1,10 @@
+def diagonalSort(self, A: List[List[int]]) -> List[List[int]]:
+        n, m = len(A), len(A[0])
+        d = defaultdict(list)
+        for i in range(n):
+            for j in range(m):
+                heappush(d[i - j], A[i][j])
+        for i in range(n):
+            for j in range(m):
+                A[i][j] = heappop(d[i - j])
+        return A

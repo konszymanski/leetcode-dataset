@@ -1,0 +1,26 @@
+class Solution:
+    def totalStrength(self, arr: List[int]) -> int:
+        N = len(arr)
+        stack = []
+        left = [0] * len(arr)
+        for i in range(len(arr)):
+            while stack and arr[stack[-1]] > arr[i]:
+                stack.pop()
+            left[i] = left[stack[-1]]+(i-stack[-1])*arr[i] if stack else (i+1)*arr[i]
+            stack.append(i)
+
+        stack = []
+        right = [0] * len(arr)
+        for i in range(len(arr)-1,-1,-1):
+            while stack and arr[stack[-1]] > arr[i]:
+                stack.pop()
+            right[i] = right[stack[-1]]+(stack[-1]-i)*arr[i] if stack else (N-i)*arr[i]
+            stack.append(i)
+
+        leftAcc = [0] + list(itertools.accumulate(left))
+        rightAcc = [0] + list(itertools.accumulate(reversed(right)))
+
+        total, ans = leftAcc[-1], 0
+        for i in range(N):
+            ans += (total - leftAcc[i] - rightAcc[N-(i+1)])*arr[i]
+        return ans % int(1e9+7)

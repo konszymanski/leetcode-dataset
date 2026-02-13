@@ -1,0 +1,21 @@
+def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+    #sum of nums remains the same
+    #with each operation number of items increase by 1
+    
+    def isValid(limit):
+        changes = 0
+        for n in nums:
+            if n > limit:
+                changes += math.ceil(n/limit) - 1
+        return changes <= maxOperations
+    
+    L = 1; R = max(nums)
+    while L < R:
+        M = (L+R)//2
+        
+        if isValid(M):
+            R = M
+        else:
+            L = M+1
+    
+    return L

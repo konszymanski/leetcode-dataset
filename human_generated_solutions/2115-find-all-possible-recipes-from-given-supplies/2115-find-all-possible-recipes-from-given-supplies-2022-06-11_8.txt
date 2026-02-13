@@ -1,0 +1,35 @@
+def find_all_recipes(recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+	supplies = set(supplies)
+	graph = {}
+	visited = set()
+	res = []
+
+	for recipe, ingredient in zip(recipes, ingredients):
+		graph[recipe] = ingredient
+
+	def dfs(node: str) -> bool:
+		if node in visited:
+			return False
+
+		visited.add(node)
+
+		if node not in graph:
+			return False
+
+		for dependency in graph[node]:
+			# if ingredient of recipe exist in supplies, it\'s good to go
+			# if ingredient of recipe doesn\'t exist in supplies, then use dfs to check if
+			# it hasn\'t been used(visited) and exist on graph means it comes from another recipies then good to go
+			# if ingredient of recipe doesn\'t exist and ( already used (visited) or doesn\'t come from another recipes then 
+			# we need to return false since we don\'t have enough ingredient to follow current recipe
+			if dependency not in supplies and not dfs(dependency):
+				return False
+
+		res.append(node)
+		supplies.add(node)
+		return True
+
+	for recipe in recipes:
+		dfs(recipe)
+
+	return res

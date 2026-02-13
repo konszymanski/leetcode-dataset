@@ -1,0 +1,28 @@
+class Solution:
+    def spiralMatrixIII(self, rows: int, cols: int, rStart: int, cStart: int) -> List[List[int]]:
+        def turn():
+            nonlocal direction
+            if direction == \'r\': direction = \'d\'
+            elif direction == \'d\': direction = \'l\'
+            elif direction == \'l\': direction = \'u\'
+            else: direction = \'r\'
+        
+        def walk():
+            nonlocal x, y
+            if direction == \'r\': x, y = x + 1, y
+            elif direction == \'d\': x, y = x, y + 1
+            elif direction == \'l\': x, y = x - 1, y
+            else: x, y = x, y - 1
+        
+        cnt, total, l, direction = 1, rows * cols, 1, \'r\'
+        y, x, ans = rStart, cStart, [[rStart, cStart]]
+        while cnt < total:
+            for _ in range(2):
+                for _ in range(l):
+                    walk()
+                    if 0 <= y < rows and 0 <= x < cols:
+                        ans.append([y, x])
+                        cnt += 1
+                turn()
+            l += 1
+        return ans

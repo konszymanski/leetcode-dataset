@@ -1,0 +1,18 @@
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        
+        N, MAX_SIZE  = len(nums), 1001
+        
+        temp_sum, counts = 0, [0] * MAX_SIZE
+        
+        for num in nums:
+            counts[num] += 1
+        
+        for i, cnt  in enumerate(counts):
+            
+            if N - temp_sum == i:
+                return i
+            
+            temp_sum += cnt
+        
+        return -1

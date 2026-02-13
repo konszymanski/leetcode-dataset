@@ -1,0 +1,35 @@
+class Solution:
+    def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
+        ## RC ##
+        ## APPROACH : BINARY SEARCH ##
+        ## Similar to Leetcode: 410. Split Array Largest Sum ##
+        ## Similar to Leetcode: 875. Koko Eating Bananas ##
+        
+        ## TIME COMPLEXICITY : O(NlogN) ##
+        ## SPACE COMPLEXICITY : O(1) ##
+        
+        # How many bouquets are possible with t days ?
+        def bouquet_count( t ):
+            count = 0
+            res = 0
+            for i in range(n):
+                if bloomDay[i] <= t:    
+                    count += 1
+                    if count == k:      # if consecutive k days are less than t. we count it as one Valid bouquet formation
+                        count = 0
+                        res += 1
+                else:
+                    count = 0           # watchout, reset count if even one day is more than t.
+            return res
+        
+        n = len(bloomDay)
+        if m * k > n: return -1
+        
+        lo, hi = min(bloomDay), max(bloomDay)
+        while(lo <= hi):
+            mid = lo + (hi - lo)//2
+            if bouquet_count(mid) >= m:
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        return lo                       # return lo

@@ -1,0 +1,16 @@
+class Solution:
+    def minSwap(self, A: List[int], B: List[int]) -> int:
+        # to store min number of swaps of two status: not swap and swap
+        n_swap, swap = 0, 1
+        for i in range(1, len(A)):
+            # Case III: ith pair of (a, b) could be any status
+            if max(A[i - 1], B[i - 1]) < min(A[i], B[i]):
+                n_swap = min(n_swap, swap)
+                swap = n_swap + 1
+            # Case I: same status of ith and (i-1)th pair of (a, b)
+            elif A[i - 1] < A[i] and B[i - 1] < B[i]:
+                swap += 1
+            # Case I: diff status of ith and (i-1)th pair of (a, b)
+            else:
+                n_swap, swap = swap, n_swap + 1
+        return min(n_swap, swap)

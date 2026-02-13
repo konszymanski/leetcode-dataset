@@ -1,0 +1,4 @@
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        c = Counter(nums)
+        return sum(min(c[k-n], c[n]) for n in c.keys()) >> 1

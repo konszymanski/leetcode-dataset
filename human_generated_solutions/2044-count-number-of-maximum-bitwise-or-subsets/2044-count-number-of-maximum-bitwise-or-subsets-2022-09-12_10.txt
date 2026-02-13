@@ -1,0 +1,21 @@
+class Solution:
+    def countMaxOrSubsets(self, nums: List[int]) -> int:
+        self.ans = 0
+        maxor = 0
+        for num in nums:
+            maxor |= num
+        
+        n = len(nums)
+        
+        def fun(i,curr):
+            if i==n:
+                return
+            fun(i+1, curr)
+            x = curr|nums[i]
+            
+            if x==maxor:
+                self.ans+=1
+            fun(i+1,x)
+        
+        fun(0,0)
+        return self.ans

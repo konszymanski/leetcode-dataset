@@ -1,0 +1,12 @@
+def maximumRequests(n, requests):
+	# s: one subset represented by a bitmask. e.g. len(requests) = 3 and s = 5 (0b101), that means 1st and 3rd request are picked.
+	def check(s):
+		ctr = [0] * n
+		cnt = 0
+		for i, req in enumerate(requests):
+			if (s>>i) & 1:
+				cnt += 1
+				ctr[req[0]] += 1
+				ctr[req[1]] -= 1
+			return -1 if any(ctr) else cnt    # a valid subset should make net change be 0
+	return max(check(s) for s in range(1<<len(requests)))

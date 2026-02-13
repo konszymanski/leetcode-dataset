@@ -1,0 +1,14 @@
+def swimInWater(self, grid: List[List[int]]) -> int:
+	n = len(grid)
+	heap = [(grid[0][0], [0, 0])]
+	vis = {(0, 0)}
+	ans = 0
+	while(True):
+		ht, [i, j] = heappop(heap)
+		ans = max(ans, ht)
+		if(i == j == n-1):
+			return ans
+		for x, y in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+			if(0<=i+x<n and 0<=j+y<n and (i+x, j+y) not in vis):
+				vis.add((i+x, j+y))
+				heappush(heap, (grid[i+x][j+y], [i+x, j+y]))

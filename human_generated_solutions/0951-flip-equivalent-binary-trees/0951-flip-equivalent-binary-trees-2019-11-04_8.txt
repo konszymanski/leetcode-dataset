@@ -1,0 +1,41 @@
+from collections import deque
+class Solution:
+    def flipEquiv(self, root1: TreeNode, root2: TreeNode) -> bool:
+        if not root1 and not root2: return True
+        if not root1 or not root2: return False
+        return self.rbfs(deque([root1]), deque([root2]))
+    
+    def rbfs(self, deq1, deq2):
+        if len(deq1) != len(deq2): return False
+        for i in range(len(deq1)):
+            if self.match(deq1[0], deq2[0]):
+                self.add_children(deq1, deq2)
+            elif not len(deq1) % 2: # flip and check again
+                self.flip(deq2)
+                if not self.match(deq1[0], deq2[0]): # flipping didn\'t help so fail
+                    return False
+                self.add_children(deq1, deq2)
+            else:
+                return False
+            deq1.popleft()
+            deq2.popleft()
+        if deq1: return self.rbfs(deq1, deq2)
+        return True
+    
+    def add_children(self, deq1, deq2):
+        if deq1[0] is not None: 
+            deq1.append(deq1[0].left)
+            deq1.append(deq1[0].right)
+            deq2.append(deq2[0].left)
+            deq2.append(deq2[0].right)
+            
+    def flip(self, deq):
+        val = deq.popleft()
+        val2 = deq.popleft()
+        deq.appendleft(val)
+        deq.appendleft(val2)
+        
+    def match(self, i, j):
+        if i is None and j is None: return True
+        if i is None or j is None: return False
+        return i.val == j.val

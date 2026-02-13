@@ -1,0 +1,32 @@
+class Solution:
+    def nextGreaterElement(self, n: int) -> int:
+        
+		#Step - 1
+        nums = list(map(int, str(n)))
+        
+		#Step - 2
+        indx = len(nums) - 2
+        while indx >= 0 and nums[indx] >= nums[indx + 1]:
+            indx -= 1
+        if indx == -1:
+			return -1               #If no is a decreasing sequence (eg. 5421)
+        
+		#Step - 3
+        indx2 = len(nums) - 1
+        while nums[indx2] <= nums[indx]:
+            indx2 -= 1
+        
+		#Step - 4
+        nums[indx], nums[indx2] = nums[indx2], nums[indx]
+		
+		#Step - 5
+        nums[indx+1 :] = reversed(nums[indx+1 :])
+        
+		#Step - 6
+        res = \'\'
+        for n in nums:
+            res += str(n)
+        res = int(res)
+        
+		#Step - 7
+        return res if res <= 2 ** 31 - 1 else -1

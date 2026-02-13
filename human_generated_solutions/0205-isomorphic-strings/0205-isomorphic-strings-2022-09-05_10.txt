@@ -1,0 +1,3 @@
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        return list({a: b for a, b in zip(t, s)}.keys()) == list({a: b for a, b in zip(s, t)}.values())

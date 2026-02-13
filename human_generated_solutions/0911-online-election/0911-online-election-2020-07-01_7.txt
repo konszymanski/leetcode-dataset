@@ -1,0 +1,21 @@
+class TopVotedCandidate:
+
+    def __init__(self, persons: List[int], times: List[int]):
+        self.times = times
+        self.winner = {times[0]: persons[0]}
+        c = Counter({persons[0]: 1})
+        maxCount = 1
+        for i in range(1, len(times)):
+            p = persons[i]
+            c[p] += 1
+            if c[p] >= maxCount:
+                maxCount = c[p]
+                self.winner[times[i]] = p
+            else:
+                self.winner[times[i]] = self.winner[times[i-1]]                
+
+    def q(self, t: int) -> int:
+        if t in self.winner:
+            return self.winner[t]
+        i = bisect.bisect(self.times, t)
+        return self.winner[self.times[i-1]]

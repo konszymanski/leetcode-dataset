@@ -1,0 +1,10 @@
+def countSubarrays(self, nums: List[int], k: int) -> int:
+        win_sum = cnt = 0
+        lo = -1
+        for hi, num in enumerate(nums):
+            win_sum += num
+            while lo < hi and win_sum * (hi - lo) >= k:
+                lo += 1
+                win_sum -= nums[lo]
+            cnt += hi - lo
+        return cnt

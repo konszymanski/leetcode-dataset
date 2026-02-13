@@ -1,0 +1,12 @@
+class Solution:
+    def largestTimeFromDigits(self, arr: List[int]) -> str:
+		# create regex for valid times
+        time_re = re.compile(\'[01][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]\')
+        ans = \'\'
+        for a,b,c,d in itertools.permutations(arr):
+			# concat each number into a time string
+            each_time = str(a) + str(b) + \':\' + str(c) + str(d)
+			# compare each valid time string to the max so far.
+            if time_re.match(each_time):
+                ans = max(ans, each_time)
+        return ans

@@ -1,0 +1,18 @@
+class Solution:
+    def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+        m, n = len(maze), len(maze[0])
+        node = tuple(entrance)
+        q = deque([node])
+        level = 0
+        visited = set([node])
+        while q:
+            for _ in range(len(q)):
+                i, j = q.popleft()
+                if (i != entrance[0] or j != entrance[1]) and (i == 0 or j == 0 or i == m - 1 or j == n - 1):
+                    return level
+                for x, y in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
+                    if 0 <= x < m and 0 <= y < n and maze[x][y] == \'.\' and (x, y) not in visited:
+                        q.append((x, y))
+                        visited.add((x, y))
+            level += 1
+        return -1

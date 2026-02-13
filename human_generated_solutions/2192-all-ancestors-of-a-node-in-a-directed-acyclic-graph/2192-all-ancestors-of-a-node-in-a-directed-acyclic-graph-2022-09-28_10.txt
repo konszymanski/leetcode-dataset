@@ -1,0 +1,42 @@
+from collections import defaultdict
+
+class Solution:
+    def getAncestors(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        
+        ans_map = {}
+    
+        # neighbor_map for reserve graph with node pointing to its neighbors
+        neighbor_map = defaultdict(list)
+        
+        for src, dest in edges:
+            neighbor_map[dest].append(src)
+        
+        # For every node traverse the reversed map
+        # We need all the nodes we can reach to from ith node
+        for i in range(n):
+            if(i not in ans_map):
+                ans_map[i] = self.traverse_map(i, neighbor_map, ans_map)
+
+        # Finally for ans traverse map and return sorted order of sets
+        ans = []
+        for i in range(0, n):
+            ans.append(sorted(ans_map[i]))
+        return ans
+        
+    def traverse_map(self, node, neighbor_map, ans_map):
+        
+        # If node is present in ans_map this means that it is already traversed and we can just return the set value
+        if(node in ans_map):
+            return ans_map[node]
+        
+        # Initially dependent nodes are empty
+        dep_nodes = set()
+        # Traverse all neighbors using neighbor_map
+        for neighbor in neighbor_map[node]:
+            # Traverse all neighbors and store ans to make sure it will not be traversed  again
+            ans_map[neighbor] = self.traverse_map(neighbor, neighbor_map, ans_map)
+            # Add neighbor in dep_nodes and all the nodes with can be reached from neighbor
+            dep_nodes.add(neighbor)
+            dep_nodes.update(ans_map[neighbor])
+            
+        return dep_nodes

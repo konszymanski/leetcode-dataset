@@ -1,0 +1,38 @@
+@dataclass
+class Node:
+    arr: list[int]
+
+    # keeps track of current item in the "arr"
+    idx: int = field(init=False, default=0)
+
+    def move_ptr(self):
+        """
+        increasing self.idx by 1
+        :return:
+        """
+        self.idx += 1
+
+    def reached_to_end(self) -> bool:
+        return self.idx >= self.size
+
+    @property
+    def size(self) -> int:
+        """
+        :return: length of "arr"
+        """
+        return len(self.arr)
+
+    @property
+    def val(self):
+        return self.arr[self.idx]
+
+    ###########################################################
+    def __lt__(self, other: \'Node\') -> bool:
+        return self.val < other.val
+
+    def __eq__(self, other: \'Node\') -> bool:
+        return self.val == other.val
+
+    def __gt__(self, other: \'Node\') -> bool:
+        return self.val > other.val
+    ###########################################################

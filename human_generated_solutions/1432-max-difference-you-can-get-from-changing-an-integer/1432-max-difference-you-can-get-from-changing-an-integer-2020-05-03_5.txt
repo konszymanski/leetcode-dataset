@@ -1,0 +1,33 @@
+class Solution:
+    def maxDiff(self, num: int) -> int:
+        strs = str(num)        
+        n = [c for c in strs]
+        
+        g1, g2 = n, n
+        
+        # --------------------------------------------------        
+        # To generate maximum
+        for i, c in enumerate(g1):
+            if int(n[i]) < 9:
+                g1 = strs.replace(n[i], \'9\')
+                break
+                
+        g1 = \'\'.join(c for c in g1)        
+        # --------------------------------------------------
+        
+        # To generate minimum
+        for i, c in enumerate(g2):
+            nn = g2[0]            
+            if int(n[i]) <= 9 and c != \'1\' and i == 0:
+                g2 = strs.replace(n[i], \'1\')       
+                break
+            
+            elif 0 < int(n[i]) <= 9 and n[i] != nn and  i > 0:
+                g2 = strs.replace(n[i], \'0\')
+                break
+                                
+        g2 = \'\'.join(c for c in g2)        
+        # ----------------------------------------------
+        
+        op = int(g1) - int(g2)
+        return op

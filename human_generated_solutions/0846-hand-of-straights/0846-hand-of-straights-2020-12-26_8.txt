@@ -1,0 +1,9 @@
+class Solution:
+    def isNStraightHand(self, hand: List[int], W: int) -> bool:
+        freq = Counter(hand)
+        for x in sorted(freq): 
+            if freq[x]: 
+                for dx in range(1, W): 
+                    if freq[x+dx] < freq[x]: return False 
+                    freq[x+dx] -= freq[x]
+        return True

@@ -1,0 +1,39 @@
+from typing import Optional, Tuple
+
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left: Optional[\'TreeNode\'] = None, right: Optional[\'TreeNode\'] = None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Solution:
+    def lcaDeepestLeaves(self, root: TreeNode) -> TreeNode:
+        """
+        @see https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/discuss/146808/C++JavaPython-One-Pass/301421
+        @also see https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/discuss/1090557/Python-BFS-%2B-LCA
+        Note that this is same problem as problem: 865
+        :param root:
+        :return:
+        """
+
+        def post_order(rt: Optional[TreeNode]) -> Tuple[int, Optional[TreeNode]]:
+            """
+            :param rt:
+            :return: (depth, first treenode having larger depth in post order traversal)
+            """
+            if rt is None:
+                return 0, None
+
+            (lh, lr), (rh, rr) = post_order(rt.left), post_order(rt.right)
+
+            if lh < rh:
+                return 1 + rh, rr
+            elif lh > rh:
+                return 1 + lh, lr
+            else:
+                return 1 + lh, rt
+
+        return post_order(root)[1]

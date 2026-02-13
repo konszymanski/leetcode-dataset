@@ -1,0 +1,58 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from collections import deque
+from collections import defaultdict
+
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        count = 0
+        hmap = defaultdict(list)
+        
+        # Standard Post-Order Traversal Recipe
+        res_temp = []
+        q = deque([])
+        
+        if not root:
+            return res
+        
+        stack = [root, ]
+        
+        while stack:
+            node = stack.pop()
+            res_temp.append(node)
+            
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        
+        while res_temp:
+            q.append(res_temp.pop())
+        # End of Post order traversal Recie
+
+       # Actual Logic begins
+        
+        while q:
+            node = q.popleft()
+            if not node.left and not node.right:
+                hmap[node].append(1)
+            else:
+                left = hmap[node.left] if node.left else []
+                right = hmap[node.right] if node.right else []
+
+                for l in left:
+                    for r in right:
+                        if l + r <= distance:
+                            count += 1
+                
+                heights = left + right
+                heights = [c+1 for c in heights]
+                hmap[node] = heights
+                    
+            
+        return count

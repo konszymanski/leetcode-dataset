@@ -1,0 +1,9 @@
+import heapq
+class Solution:
+    def minArraySum(self, nums: List[int], k: int) -> int:
+        nums = [-num for num in nums]
+        heapify(nums)
+        while k:
+            k -= 1
+            heappush(nums, -((-heappop(nums) + 1) // 2))
+        return -sum(nums)

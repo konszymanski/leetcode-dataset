@@ -1,0 +1,2 @@
+def next(state):
+            return tuple([1 if i>0 and i<len(state)-1 and state[i-1] == state[i+1] else 0 for i in range(len(state))])

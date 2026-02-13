@@ -1,0 +1,30 @@
+from collections import deque
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        
+        ROWS, COLUMNS = len(grid), len(grid[0])
+        DIRECTIONS = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+        
+        def dfs(row, column):
+            queue = deque()
+            queue.append((row, column))
+            visited.add((row, column))
+            area = 1
+            while queue: 
+                current_row, current_column = queue.pop()
+                for direction in DIRECTIONS:
+                    neighbour_row, neighbour_column = current_row + direction[0], current_column + direction[1]
+                    if neighbour_row in range(ROWS) and neighbour_column in range(COLUMNS) and grid[neighbour_row][neighbour_column] == 1 and (neighbour_row, neighbour_column) not in visited:
+                        queue.append((neighbour_row, neighbour_column))
+                        visited.add((neighbour_row, neighbour_column))
+                        area += 1
+            return area
+                
+        visited = set()
+        max_area = 0
+        for row in range(ROWS):
+            for column in range(COLUMNS):
+                if grid[row][column] == 1 and (row, column) not in visited:
+                    max_area = max(max_area, dfs(row, column))
+                    
+        return max_area

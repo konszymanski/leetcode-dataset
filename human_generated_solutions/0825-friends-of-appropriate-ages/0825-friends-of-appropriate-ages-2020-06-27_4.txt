@@ -1,0 +1,27 @@
+class Solution:
+    def numFriendRequests(self, ages: List[int]) -> int:
+        ## RC ##
+        ## APPROACH  : BINARY SEARCH ##
+        ## 1. Sort by age
+        ## 2. index i person will not send friend request to ages[i]+1, ages[i]+2 ....
+        ## 3. index i person will not send friend request to elements whose age is less than (0.5 * ages[i] + 7)
+        ## 4. Using binary search we can find upper and lower limit, persons which fall in this range, can send friend requests (remove 1, ith person itself)
+        
+        ages.sort()
+        count = 0
+        for i in range(len(ages)):
+            left = bisect.bisect_right( ages, (0.5 * ages[i]) + 7 )
+            right = bisect.bisect_right( ages, ages[i])
+            count += max(0, right - left - 1)                       # you cannot have negative count
+        return count
+    
+        ## APPROACH : COUNTER ##
+        ages = collections.Counter(ages)
+        ans = 0
+        for ageA, countA in ages.items():
+            for ageB, countB in ages.items():
+                if ageA * 0.5 + 7 >= ageB: continue
+                if ageA < ageB: continue
+                ans += countA * countB
+                if ageA == ageB: ans -= countA
+        return ans

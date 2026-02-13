@@ -1,0 +1,28 @@
+# Hash Map + BFS
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        stops = collections.defaultdict(list)
+        for bus, route in enumerate(routes):
+            for stop in route:
+                stops[stop].append(bus)
+        
+        if source not in stops or target not in stops:
+            return -1
+        
+        q = collections.deque([source])
+        visited = set([source])
+        busCounts = 0
+        while q:
+            sameLevelCounts = len(q)
+            for _ in range(sameLevelCounts):
+                current = q.popleft()
+                if current == target:
+                    return busCounts
+                for bus in stops[current]:
+                    for stop in routes[bus]:
+                        if stop not in visited:
+                            visited.add(stop)
+                            q.append(stop)
+                    routes[bus] = [] # set visited route to empty
+            busCounts += 1   
+        return -1

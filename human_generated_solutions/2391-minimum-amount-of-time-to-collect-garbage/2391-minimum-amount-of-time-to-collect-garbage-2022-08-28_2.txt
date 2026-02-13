@@ -1,0 +1,29 @@
+def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+    count_paper,count_glass,count_metal=0,0,0
+    paper_idx,glass_idx,metal_idx=-1,-1,-1
+
+    for i in range(len(garbage)):
+        if \'P\' in garbage[i]:
+            # update index and count of paper
+            paper_idx=i
+            count_paper+=garbage[i].count(\'P\')
+        if \'G\' in garbage[i]:
+            # update index and count of glass
+            glass_idx=i
+            count_glass+=garbage[i].count(\'G\')
+        if \'M\' in garbage[i]:
+            # update index and count of metal
+            metal_idx=i
+            count_metal+=garbage[i].count(\'M\')
+
+    # calculate cumulative time
+    time=[]
+    time.append(0)
+    for i in range(len(travel)):
+        time.append(time[-1]+travel[i])
+
+    res=0
+    res+=(time[paper_idx] if paper_idx!=-1 else 0) +(time[glass_idx] if glass_idx!=-1 else 0) + (time[metal_idx] if metal_idx!=-1 else 0)
+    
+    res+=count_paper+count_glass+count_metal
+    return res

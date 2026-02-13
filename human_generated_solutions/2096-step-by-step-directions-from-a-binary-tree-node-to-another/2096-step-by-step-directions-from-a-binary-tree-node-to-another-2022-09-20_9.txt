@@ -1,0 +1,61 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
+        def generate_parent(node, parent):
+            nonlocal parents
+            if not node:
+                return
+            parents[node] = parent
+            generate_parent(node.left, node)
+            generate_parent(node.right, node)
+        
+        def reach_start(node):
+            if not node:
+                return None
+            if node.val == startValue:
+                return node
+            left = reach_start(node.left)
+            if left:
+                return left
+            
+            right= reach_start(node.right)
+            if right:
+                return right
+            
+            return None
+         
+        def gen_path(node, visited, parents):
+            nonlocal res
+            if not node or node in visited:
+                return False
+            if node.val == destValue:
+                return True
+            visited.add(node)
+            
+            left = gen_path(node.left, visited, parents)
+            if left:
+                res += "L"
+                return True
+            right = gen_path(node.right, visited, parents)
+            if right:
+                res += "R"
+                return True
+            parent = gen_path(parents[node], visited, parents)
+            if parent:
+                res += "U"
+                return True
+            
+        parents = {}
+        generate_parent(root, None)
+
+        res = ""
+        startNode = reach_start(root)
+        if not startNode:
+            return ""
+        gen_path(startNode, set(), parents)
+        return res[::-1]

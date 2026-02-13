@@ -1,0 +1,11 @@
+class Solution:
+    def largestCombination(self, A: List[int]) -> int:
+        n = len(A)
+        ans= 0
+        for i in range(32):
+            maxCol = 0
+            for j in range(n):
+                if (A[j]>>i) & 1 == 1:
+                    maxCol += 1
+            ans = max(ans,maxCol)
+        return ans

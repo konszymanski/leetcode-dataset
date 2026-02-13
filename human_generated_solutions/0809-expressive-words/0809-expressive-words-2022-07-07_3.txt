@@ -1,0 +1,54 @@
+class Solution:
+    def expressiveWords(self, s: str, words: List[str]) -> int:
+        
+        #generate the pairs <letter,repeated_len> for every string
+        def pairs(s):
+            original = []
+            prev = \'$\' 
+            s+=\'$\' #to make sure the last character of string is not left out.
+
+            count = 1
+            for i in s:
+                if prev == i:
+                    count+=1
+                else:
+                    original.append((prev,count))
+                    prev = i
+                    count=1 
+            return original
+                
+        original = pairs(s)
+        
+        count = 0
+        for w in words:
+            #generate the pair for every word w
+            woriginal = pairs(w)
+            
+            #if the dont have same length, then not stretchy 
+            if len(original)!=len(woriginal): continue
+            
+            o,wo = original,woriginal
+            match = True
+            for i in range(len(original)):
+                
+                #the unique letters present should match in-order
+                if o[i][0]==wo[i][0]:
+                    #if the counts of both the letters are same, no worries
+                    if o[i][1]==wo[i][1]:
+                        continue
+                    else:
+                        #check if the word has smaller length and the original has 3+ len so that we can convert 
+                        if wo[i][1]<o[i][1] and o[i][1]>=3:
+                            continue
+                        else:
+                            match = False
+                            break
+                else:
+                    #the letters itself dont match
+                    match = False
+                    break
+                   
+            #if everything works
+            if match: count+=1
+                
+        return count

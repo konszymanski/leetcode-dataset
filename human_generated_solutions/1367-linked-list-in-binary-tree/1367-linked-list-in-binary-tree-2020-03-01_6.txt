@@ -1,0 +1,16 @@
+from functools import lru_cache
+
+class Solution:
+    def isSubPath(self, head: ListNode, root: TreeNode) -> bool:
+        
+        @lru_cache(None)
+        def fn(node, root): 
+            if not node: return True 
+            if not root: return False 
+            
+            if root.val == node.val: 
+                return fn(node.next, root.left) or fn(node.next, root.right) or fn(head, root.left) or fn(head, root.right)
+            else: 
+                return fn(head, root.left) or fn(head, root.right)
+                    
+        return fn(head, root)

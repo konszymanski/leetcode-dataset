@@ -1,0 +1,24 @@
+class Solution:
+    
+    def __init__(self):
+        self.sol = 0
+    
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        def solve(node):
+            if not node:
+                return []
+            if not node.left and not node.right:
+                # node, depth
+                return [[0, 0]]
+            else:
+                cur = []
+                l = solve(node.left)
+                r = solve(node.right)
+                for n in l: n[1] += 1
+                for n in r: n[1] += 1
+                for n in r:
+                    for n1 in l:
+                        if n[1] + n1[1] <= distance: self.sol += 1
+                return l+r
+        solve(root)
+        return self.sol

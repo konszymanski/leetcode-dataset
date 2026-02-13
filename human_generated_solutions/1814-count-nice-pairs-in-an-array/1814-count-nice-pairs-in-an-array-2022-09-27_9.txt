@@ -1,0 +1,15 @@
+class Solution:
+    def reverse(self, num: int) -> int:
+        res = 0
+        while num != 0:
+            res = res * 10 + num % 10
+            num //= 10
+        return res
+    
+    def countNicePairs(self, nums: List[int]) -> int:
+        reverseDiffMap, ans = defaultdict(int), 0
+        for num in nums:
+            if reverseDiffMap[num - self.reverse(num)] > 0:
+                ans = (ans + reverseDiffMap[num - self.reverse(num)]) % 1000000007
+            reverseDiffMap[num - self.reverse(num)] += 1
+        return ans

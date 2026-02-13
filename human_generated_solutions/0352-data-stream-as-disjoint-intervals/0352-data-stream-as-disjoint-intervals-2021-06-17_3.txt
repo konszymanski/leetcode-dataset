@@ -1,0 +1,22 @@
+from sortedcontainers import SortedList 
+
+class SummaryRanges:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.data = SortedList() 
+
+    def addNum(self, val: int) -> None:
+        k = self.data.bisect_left([val, val])
+        if k and val <= self.data[k-1][1] or k < len(self.data) and self.data[k][0] == val: return 
+        if (k == 0 or self.data[k-1][1]+1 < val) and (k == len(self.data) or val+1 < self.data[k][0]): self.data.add([val, val])
+        elif k and self.data[k-1][1]+1 == val: 
+            self.data[k-1][1] += 1
+            if k < len(self.data) and val+1 == self.data[k][0]: 
+                self.data[k-1][1] = self.data.pop(k)[1]
+        elif k < len(self.data) and val+1 == self.data[k][0]: self.data[k][0] -= 1
+
+    def getIntervals(self) -> List[List[int]]:
+        return list(self.data)

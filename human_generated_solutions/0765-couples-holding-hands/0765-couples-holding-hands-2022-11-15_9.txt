@@ -1,0 +1,17 @@
+class Solution:
+    def minSwapsCouples(self, row: List[int]) -> int:
+        n = len(row)
+        def swap(idx, tgt):
+            for i in range(idx, n):
+                if row[i] == tgt:
+                    row[idx], row[i] = row[i], row[idx]
+                    return 1
+            return 0
+
+        output = 0
+        for i in range(0, n, 2):
+            num = row[i]
+            if num % 2 == 0: target = num + 1
+            else: target = num - 1
+            if row[i + 1] != target: output += swap(i + 1, target)
+        return output

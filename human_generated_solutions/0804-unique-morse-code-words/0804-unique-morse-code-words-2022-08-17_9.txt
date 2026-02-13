@@ -1,0 +1,5 @@
+class Solution:
+    def uniqueMorseRepresentations(self, words: List[str]) -> int:
+        morse_codes = [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+        encode = lambda word: [morse_codes[ord(c) - ord(\'a\')] for c in word]
+        return len({"".join(encode(word)) for word in words})

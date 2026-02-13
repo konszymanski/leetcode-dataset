@@ -1,0 +1,22 @@
+# Time complexity = O(n^2)
+# Space complexity = 2n = O(n)
+
+class Solution:
+    def maxIncreaseKeepingSkyline(self, grid: List[List[int]]) -> int:
+        num_rows, num_cols = len(grid), len(grid[0])
+        max_rows, max_cols = [0] * num_rows, [0] * num_cols
+        result = 0
+        
+        for i in range(num_rows):
+            max_rows[i] = max(grid[i])
+        
+        for i in range(num_cols):
+            max_cols[i] = -1
+            for j in range(num_rows):
+                max_cols[i] = max(max_cols[i], grid[j][i])
+        
+        for i in range(num_rows):
+            for j in range(num_cols):
+                result += abs(grid[i][j] - min(max_rows[i], max_cols[j]))
+        
+        return result

@@ -1,0 +1,68 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        
+        board = [[0]*3 for _ in range(3)]
+        
+        i = 0
+        while i < len(moves):
+            x = moves[i][0]
+            y = moves[i][1]
+            if i % 2 == 0:
+                board[x][y] = 7
+            else:
+                board[x][y] = 5
+            i+=1
+            
+        print(board)
+            
+            # across row
+        for i in range(len(board)):
+            if sum(board[i]) == 21:
+                return "A"
+            elif sum(board[i]) == 15:
+                return "B"
+
+        # across cols
+        for j in range(3):
+            s = 0
+            for i in range(3):
+                s = s+board[i][j]
+            if s == 21:
+                return "A"
+            elif s == 15:
+                return "B"
+
+        # diagonals
+        i = 0
+        j = 0
+        s = 0
+        while i < len(board) and j < len(board[0]):
+            s+=board[i][j]
+            i+=1
+            j+=1
+        if s == 21:
+            return "A"
+        if s == 15:
+            return "B" 
+
+        i = 0
+        j = 2
+        s = 0
+        while i<3 and j >= 0:
+            s+=board[i][j]
+            i+=1
+            j-=1
+    
+        if s == 21:
+            return "A"
+        if s == 15:
+            return "B"
+
+        
+    
+    
+    
+        if len(moves) == 9:
+            return "Draw"
+
+        return "Pending"

@@ -1,0 +1,15 @@
+class Solution:
+    def findMaxLength(self, nums: List[int]) -> int:
+		# Saves the index of the first occurence of a given difference
+        firstIndex = {0: -1}
+        freq = [0, 0]
+        maxlen = 0
+        for i, x in enumerate(nums):
+            freq[x] += 1
+            diff = freq[1]-freq[0]
+			# We look to find a subarray starting at index 0 that would cancel out our current difference
+            if diff in firstIndex:
+                maxlen = max(maxlen, i-firstIndex[diff])
+            if diff not in firstIndex:
+                firstIndex[diff] = i
+        return maxlen

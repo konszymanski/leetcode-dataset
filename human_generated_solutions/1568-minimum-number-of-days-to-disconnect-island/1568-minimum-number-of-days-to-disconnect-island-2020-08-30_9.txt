@@ -1,0 +1,39 @@
+class Solution:
+    def minDays(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0]) # dimension 
+        grid = "".join("".join(map(str, x)) for x in grid)
+        
+        @lru_cache(None)
+        def fn(s): 
+            """Return True if grid is disconnected."""
+            row, grid = [], []
+            for i, c in enumerate(s, 1):
+                row.append(int(c))
+                if i%n == 0: 
+                    grid.append(row)
+                    row = []
+                    
+            def dfs(i, j): 
+                """"""
+                grid[i][j] = 0
+                for ii, jj in (i-1, j), (i, j-1), (i, j+1), (i+1, j):
+                    if 0 <= ii < m and 0 <= jj < n and grid[ii][jj]: dfs(ii, jj)
+                return 1
+            return sum(dfs(i, j) for i in range(m) for j in range(n) if grid[i][j])
+        
+        #bfs 
+        queue = [grid]
+        level = 0 
+        seen = {grid}
+        while queue: 
+            tmp = []
+            for node in queue: 
+                if fn(node) == 0 or fn(node) >= 2: return level 
+                for i in range(m*n):
+                    if node[i] == "1": 
+                        nn = node[:i] + "0" + node[i+1:]
+                        if nn not in seen: 
+                            seen.add(nn)
+                            tmp.append(nn)
+            queue = tmp
+            level += 1

@@ -1,0 +1,28 @@
+#Baraa
+class Solution:
+    def maxAbsoluteSum(self, nums: List[int]) -> int:
+        """
+        Very similar to maximum subarray problem
+        but instead of only searching for positive sums we have to start looking for negative summations
+        as they can be turned into positive using abs()
+        
+        1-we store positive summations in a variable as long as it is positive it means
+          we still can get high positive values out of it
+          
+        2- we store negative summations in a variable as long as its negative it means we still can get high positive value out of it after using abs() however once it becomes positibe it won\'t be needed, why?
+        
+        because abs(pos + negative) < abs(negative)
+        """
+        n = len(nums)
+        max_abs_sum = 0
+        curr_neg_sum = 0
+        curr_pos_sum = 0
+        for i in range(n):
+            curr_neg_sum += nums[i]
+            curr_pos_sum += nums[i]
+            if curr_neg_sum > 0:
+                curr_neg_sum = 0
+            if curr_pos_sum < 0:
+                curr_pos_sum = 0
+            max_abs_sum = max(max_abs_sum, abs(curr_neg_sum), curr_pos_sum)
+        return max_abs_sum

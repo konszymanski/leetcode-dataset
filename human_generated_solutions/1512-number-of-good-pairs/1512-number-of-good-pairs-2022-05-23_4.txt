@@ -1,0 +1,8 @@
+class Solution(object):
+    def numIdenticalPairs(self, nums):
+        count = [0] * 101
+        goodPairs = 0
+        for num in nums:
+            goodPairs += count[num]  # Increase goodPairs by the current count
+            count[num] += 1  # Increment the count of the number
+        return goodPairs

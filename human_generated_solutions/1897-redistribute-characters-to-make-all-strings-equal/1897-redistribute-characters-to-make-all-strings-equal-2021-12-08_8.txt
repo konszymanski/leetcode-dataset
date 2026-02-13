@@ -1,0 +1,3 @@
+class Solution:
+    def makeEqual(self, words: List[str]) -> bool:
+        return all(list(map(lambda a:a%len(words)==0, collections.Counter(functools.reduce(lambda a,b:a+b,words)).values())))

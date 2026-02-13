@@ -1,0 +1,14 @@
+class Solution:
+    def canChange(self, S: str, T: str) -> bool:
+        si, ti, n = 0, 0, len(S)
+
+        while si < n:
+            if S[si] != "_":
+                while ti < n and T[ti] == "_":
+                    ti += 1
+                if ti == n or S[si] != T[ti] or S[si] == "L" and si < ti or S[si] == "R" and si > ti:
+                    return False
+                ti += 1
+            si += 1
+
+        return all(T[i] == "_" for i in range(ti, n))

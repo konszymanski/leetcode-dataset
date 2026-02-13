@@ -1,0 +1,39 @@
+class Solution(object):
+    def canReorderDoubled(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: bool
+        """
+        n = len(arr)
+        freq_dict = {}
+        
+        # create counter
+        freq_dict = collections.Counter(arr)
+
+        # deal with zeros
+        if 0 in freq_dict:
+            if freq_dict[0] % 2 == 1:
+                return False
+            else:
+                freq_dict[0] = 0
+        
+        for k in freq_dict.keys():
+            if freq_dict[k] == 0:
+                continue
+            else:
+                temp_k = k
+                # walk up the chain
+                while temp_k * 2 in freq_dict:
+                    temp_k = temp_k * 2
+                # walk down and process all numbers within the chain. mark the counts as 0
+                while temp_k % 2 == 0 and temp_k / 2 in freq_dict:
+                    freq_dict[temp_k / 2] -= freq_dict[temp_k]
+                    freq_dict[temp_k] = 0
+                    temp_k = temp_k / 2
+                    if freq_dict[temp_k] < 0:
+                        return False
+                
+        for k in freq_dict.keys():
+            if freq_dict[k] != 0:
+                return False  
+        return True

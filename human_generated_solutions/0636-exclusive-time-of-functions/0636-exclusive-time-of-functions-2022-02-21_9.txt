@@ -1,0 +1,29 @@
+class Solution:
+    def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
+        total_execution_time = [0] * n
+        # assume log is sorted based on timestamp
+        # otherwise just sort it
+        
+        stack_func = []
+        for index_log in range(len(logs)):
+            func_id, is_start, timestamp = self.parse_log(logs[index_log])
+            # add the most recent interval to the top stack function
+            if stack_func:
+                (func_id_top, is_start_top, timestamp_top) = stack_func[-1]
+                total_execution_time[func_id_top] += timestamp - timestamp_pre
+            # update func stack
+            if is_start:
+                stack_func.append((func_id, is_start, timestamp))
+            else:
+                stack_func.pop()
+            # store last event, in order to compute the most recent interval
+            timestamp_pre = timestamp
+         
+        return total_execution_time
+                
+    def parse_log(self, log):
+        func_id, is_start, timestamp = log.split(":")
+        func_id = int(func_id)
+        is_start = True if is_start == "start" else False
+        timestamp = int(timestamp) if is_start else int(timestamp) + 1
+        return (func_id, is_start, timestamp)

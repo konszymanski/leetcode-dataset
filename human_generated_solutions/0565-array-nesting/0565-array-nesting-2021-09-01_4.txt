@@ -1,0 +1,20 @@
+class Solution:
+    def arrayNesting(self, nums: List[int]) -> int:
+        seenInd=set()
+        start=0
+        res=1
+        
+        while start<len(nums):
+            if start in seenInd:
+                start+=1
+                continue
+            
+            count=1
+            nextInd=nums[start]
+            seenInd.add(start)
+            while nextInd not in seenInd:
+                count+=1
+                res=max(res,count)
+                seenInd.add(nextInd)
+                nextInd=nums[nextInd]
+        return res

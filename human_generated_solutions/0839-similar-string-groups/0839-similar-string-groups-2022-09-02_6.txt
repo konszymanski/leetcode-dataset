@@ -1,0 +1,39 @@
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.num_sets = n
+
+    def find(self, a):
+        if a != self.parent[a]:
+            self.parent[a] = self.find(self.parent[a])
+        return self.parent[a]
+
+    def union(self, a, b):
+	    a, b = self.find(a), self.find(b)
+        if a != b:
+            self.num_sets -= 1
+            self.parent[b] = a
+
+    def __len__(self):
+        return self.num_sets
+
+
+def similar(first: str, second: str) -> bool:
+    distance = 0
+    for first_letter, second_letter in zip(first, second):
+        if first_letter != second_letter:
+            distance += 1
+        if distance > 2:
+            return False
+    return True
+
+
+class Solution:
+    def numSimilarGroups(self, strs: List[str]) -> int:
+        n = len(strs)
+        connected_components = DisjointSetUnion(n)
+        for i in range(n):
+            for j in range(n):
+                if similar(strs[i], strs[j]):
+                    connected_components.union(i, j)
+        return len(connected_components)

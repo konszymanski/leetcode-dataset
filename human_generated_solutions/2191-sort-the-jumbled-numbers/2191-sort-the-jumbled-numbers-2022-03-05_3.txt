@@ -1,0 +1,13 @@
+def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        
+        def convert(num):
+            if num == 0: 
+                return mapping[0]
+            mapped, multiplier = 0, 1
+            while num:
+                mapped += multiplier * mapping[num%10]
+                multiplier *= 10
+                num = num // 10
+            return mapped
+        
+        return sorted(nums, key=convert)

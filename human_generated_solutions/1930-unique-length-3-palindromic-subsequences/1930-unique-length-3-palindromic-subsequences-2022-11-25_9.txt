@@ -1,0 +1,24 @@
+def countPalindromicSubsequence(self, s: str) -> int:
+        inds = collections.defaultdict(list) #char : [list of indices it appears]
+        res = 0
+
+        #create the hashmap
+        for i, ch in enumerate(s) :
+            inds[ch].append(i)
+
+        #for every charecter ch in hashmap, 
+        #the distinct charecters in between the first and last occurence of ch is added to the result
+        for key in inds.keys() :
+            first, last = inds[key][0], inds[key][-1]
+            #no chars in between
+            if first == last :
+                continue
+            #for all keys in hashmap, 
+            #check if this charecter appears in between the chosen first and last index
+            for cur_key in inds.keys() :
+                arr = inds[cur_key]
+                ind = bisect.bisect(arr, first)
+                if ind < len(arr) and arr[ind] < last :
+                    res += 1
+        
+        return res

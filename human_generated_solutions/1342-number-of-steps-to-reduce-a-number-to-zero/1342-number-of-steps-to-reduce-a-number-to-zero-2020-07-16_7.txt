@@ -1,0 +1,4 @@
+class Solution:
+    def numberOfSteps (self, num: int) -> int:
+        bin_num = bin(num)[2:]
+        return collections.Counter(bin_num)[\'1\'] + len(bin_num) - 1

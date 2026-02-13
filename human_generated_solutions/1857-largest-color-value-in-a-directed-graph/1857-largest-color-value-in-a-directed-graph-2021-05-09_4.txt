@@ -1,0 +1,38 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        graph = {}
+        indeg = [0] * len(colors)
+        for u, v in edges: 
+            indeg[v] += 1
+            graph.setdefault(u, []).append(v)
+            
+        # Kahn\'s algo
+        roots = [x for x in range(len(colors)) if indeg[x] == 0]
+        
+        stack = roots.copy()
+        nodes = []
+        while stack: 
+            x = stack.pop()
+            nodes.append(x)
+            for xx in graph.get(x, []):
+                indeg[xx] -= 1
+                if indeg[xx] == 0: stack.append(xx)
+        if len(nodes) < len(colors): return -1 # cycle detected 
+        
+        @cache
+        def fn(x): 
+            """Return distribution of (maximized) colors at given node."""
+            ans = [0]*26
+            ans[ord(colors[x]) - 97] = 1
+            for xx in graph.get(x, []): 
+                val = fn(xx)
+                for i in range(26): 
+                    if i == ord(colors[x]) - 97: ans[i] = max(ans[i], 1 + val[i])
+                    else: ans[i] = max(ans[i], val[i])
+            return ans 
+        
+        ans = [0]*26 
+        for root in roots: 
+            val = fn(root)
+            for i in range(26): ans[i] = max(ans[i], val[i])
+        return max(ans)

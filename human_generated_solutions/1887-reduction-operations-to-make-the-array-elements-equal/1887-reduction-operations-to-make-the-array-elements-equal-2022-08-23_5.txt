@@ -1,0 +1,17 @@
+class Solution:
+    def reductionOperations(self, nums: List[int]) -> int:
+
+        nums = Counter(nums)
+        h = []
+        for (k, v) in nums.items():
+            heapq.heappush(h, (k, v))
+
+        heapq.heappop(h)
+        cnt = 1
+        ans = 0
+        while h:
+            num, occurrences = heapq.heappop(h)
+            ans += occurrences * cnt
+            cnt += 1
+
+        return ans

@@ -1,0 +1,19 @@
+class Solution:
+    @cache
+    def dfs(self, level, idx, nxt):
+        if len(level) == 1:
+            return True
+        if len(level) - 1 == len(nxt):
+            return self.dfs(nxt, 0, \'\')
+        if idx == len(level) - 1:
+            return False
+        for char in self.pyramids[level[idx] + level[idx + 1]]:
+            if self.dfs(level, idx + 1, nxt + char):
+                return True
+        return False
+    
+    def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+        self.pyramids = defaultdict(list)
+        for pyramid in allowed:
+            self.pyramids[pyramid[:2]].append(pyramid[2])
+        return self.dfs(bottom, 0, \'\')

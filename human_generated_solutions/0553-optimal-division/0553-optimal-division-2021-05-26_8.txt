@@ -1,0 +1,4 @@
+class Solution:
+    def optimalDivision(self, nums) -> str:
+        return ("/".join(map(str, nums)) if len(nums) < 3 else
+                f"{nums[0]}/({\'/\'.join(map(str, nums[1:]))})")

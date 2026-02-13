@@ -1,0 +1,76 @@
+from collections import deque
+
+
+class Solution:
+    def maximumGain(self, s: str, x: int, y: int) -> int:
+        """
+        Given a string s, x points for \'ab\' removal, and y points
+        for \'ba\' removal, this program determines the maimum
+        number of points for \'ab\' and \'ba\' removal.
+
+        :param s: string of characters
+        :type s: str
+        :param x: points for \'ab\' remaoval
+        :type x: int
+        :param y: points for \'ba\' removal
+        :type y: int
+        :return: maximum removal points
+        :rtype: int
+        """
+
+        """
+        Initialize:
+        - stack_forward is used to manage the removal of the
+          higher scoring substring while processing the string
+          from left to right.
+        - stack_reverse is used to manage the removal of the
+          lower scoring substring while processing the string
+          from right to left.
+        """
+        stack_forward = deque()
+        stack_reverse = deque()
+
+        """
+        Determine which substring is higher scoring and assign
+        it to target.
+        """
+        if x > y:
+            target = \'ab\'
+            max_points = x
+            min_points = y
+        else:
+            target = \'ba\'
+            max_points = y
+            min_points = x
+
+        """
+        Process string from left to right, removing the higher
+        scoring substring.
+        """
+        points = 0
+        for char in s:
+            if char == target[1]:
+                if stack_forward and stack_forward[-1] == target[0]:
+                    stack_forward.pop()
+                    points += max_points
+                else:
+                    stack_forward.append(char)
+            else:
+                stack_forward.append(char)
+
+        """
+        Process string from right to left, removing the lower
+        scoring substring. At the start of processing, the contents
+        of the string are in stack_forward.
+        """
+        while stack_forward:
+            char = stack_forward.pop()
+            if char == target[1]:
+                if stack_reverse and stack_reverse[-1] == target[0]:
+                    stack_reverse.pop()
+                    points += min_points
+                else:
+                    stack_reverse.append(char)
+            else:
+                stack_reverse.append(char)
+        return points

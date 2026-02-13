@@ -1,0 +1,73 @@
+class Node(object):
+    def __init__(self, key, data=None):
+        self.key = key
+        self.data = data
+        self.children = {}
+
+class Trie:
+    def __init__(self):
+        self.head = Node(None)
+        
+    def insert(self, string: str) -> None:
+        current_node = self.head
+
+        for char in string:
+            if char not in current_node.children:
+                current_node.children[char] = Node(char)
+            current_node = current_node.children[char]
+        current_node.data = string
+        
+    def search(self, string: str) -> bool:
+        current_node = self.head
+
+        for char in string:
+            if char in current_node.children:
+                current_node = current_node.children[char]
+            else:
+                return False
+
+        if current_node.data:
+            return True
+        else:
+            return False
+
+    def startsWith(self, prefix: str) -> bool:
+        current_node = self.head
+        words = []
+
+        for p in prefix:
+            if p in current_node.children:
+                current_node = current_node.children[p]
+            else:
+                return []
+
+        current_node = [current_node]
+        next_node = []
+        while True:
+            for node in current_node:
+                if node.data:
+                    words.append(node.data)
+                next_node.extend(list(node.children.values()))
+            if len(next_node) != 0:
+                current_node = next_node
+                next_node = []
+            else:
+                break
+
+        return words
+
+
+class Solution:
+    def prefixCount(self, words: List[str], pref: str) -> int:
+  
+        trie = Trie()
+        count = defaultdict(int)
+        for word in words:
+            trie.insert(word)
+            count[word] += 1
+        result = trie.startsWith(pref)
+        res = 0 
+     
+        for word in result:
+            res += count[word]
+        return res

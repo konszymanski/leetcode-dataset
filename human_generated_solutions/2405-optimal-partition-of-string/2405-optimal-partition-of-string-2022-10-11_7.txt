@@ -1,0 +1,17 @@
+class Solution:
+    def partitionString(self, s: str) -> int:
+        back=0
+        seen=set()
+        res=[]
+        for i in range(len(s)):
+            if s[i] in seen:
+                seen=set()
+                res.append(s[back:i])
+                back=i
+                seen.add(s[i])
+            else:
+                seen.add(s[i])
+        if len(seen)!=0:
+            return len(res)+1
+        else:
+            return len(res)

@@ -1,0 +1,52 @@
+class Solution:
+    def findInMountainArray(self, target: int, mountain_arr: \'MountainArray\') -> int:
+        length = mountain_arr.length() - 1
+        if mountain_arr.get(0) == target:
+            return 0
+        min_idx = sys.maxsize
+        if mountain_arr.get(length) == target:
+            min_idx = length
+
+        //check left of peak first 
+        l,r = 0, length
+        while l <= r:
+            middle = (l + r) // 2
+            val = mountain_arr.get(middle)
+            if middle < length:
+                if val == target:
+                    min_idx = min(min_idx,middle)
+                plus1 = mountain_arr.get(middle+1)
+                if val < plus1:
+                    if val < target:
+                        l = middle + 1
+                    else:
+                        r = middle -  1
+                else:
+                    r = middle - 1
+            else:
+                break
+        
+        //check right of peak next
+        l, r = 0, length
+        while l <= r:
+            middle = (l + r) // 2
+            val = mountain_arr.get(middle)
+            if middle < length:
+                if val == target:
+                    min_idx = min(min_idx,middle)
+                plus1 = mountain_arr.get(middle+1)
+                if val > plus1:
+                    if val > target:
+                        l = middle + 1
+                    else: 
+                        r = middle - 1
+                else:
+                    l = middle + 1
+            else:
+                break
+
+
+
+        // if we have not found the element, its time to just 
+        // return -1 
+        return min_idx if min_idx != sys.maxsize else -1

@@ -1,0 +1,42 @@
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        adjacent = defaultdict(set)
+        to_name = {}
+        
+        for acc in accounts: # (1)
+            name = acc[0]
+            for email in acc[1:]:
+                adjacent[acc[1]].add(email)
+                adjacent[email].add(acc[1])
+                to_name[email] = name
+            
+        visited = set()
+        
+        def dfs(node):
+            if node in visited:
+                return []
+            
+            visited.add(node)
+            components = [node]
+            
+            for v in adjacent[node]:
+                components.extend(dfs(v))
+            
+            return components
+        
+        result = []
+        
+        for email in adjacent:
+            if email not in visited:
+                name = to_name[email]
+                result.append([name] + sorted(dfs(email))) # (2)
+        
+        return result
+    
+    # (KEY IDEA) This problem sounds like we should be finding connections, so think of connected components. We can\'t use an account name to determine overlaps, because several accounts can have the same name. Instead, we focus on the emails. For each account, we can draw an undirected line between the first email to the rest of the emails. Then, we can see if any of the accounts overlap in emails by finding all the connected components.
+    # (1) Draw an undirected line between first email to the rest of the emails.
+    # (2) Find all connected components associated with this account name.

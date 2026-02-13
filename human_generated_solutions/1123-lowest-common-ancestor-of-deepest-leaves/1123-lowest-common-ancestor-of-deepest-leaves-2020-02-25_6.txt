@@ -1,0 +1,36 @@
+class Solution:
+    
+    
+    def lcaDeepestLeaves(self, root: TreeNode) -> TreeNode:
+        
+        def helper( node: TreeNode, depth: int ) -> TreeNode:
+            
+            if not node:
+                # Base case aka stop condition
+                # current node is leaf node
+                return (None, depth)
+            
+            else:
+                
+                left_lca, left_depth = helper( node.left, depth+1 )
+                right_lca, right_depth = helper( node.right, depth+1 )
+                
+                if left_depth < right_depth : 
+                    
+                    # right sub-tree is deeper
+                    return (right_lca, right_depth )
+                
+                elif left_depth >  right_depth: 
+                    
+                    # left sub-tree is deeper
+                    return (left_lca, left_depth )
+                
+                else:
+                    
+                    # both sub-tree is of the same depth
+                    # current node is ancestor of leave
+                    # depth from root to deepest NULL node = left_depth = right_depth
+                    return ( node, left_depth )
+                
+        # ----------------------
+        return helper( node = root, depth = 0 )[0]

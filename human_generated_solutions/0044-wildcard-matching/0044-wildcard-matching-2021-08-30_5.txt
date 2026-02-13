@@ -1,0 +1,16 @@
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+		@cache
+		def dp(i, j):
+			if j >= len(p):
+				return i == len(s)
+			# When s reaches the end, p must be empty or contains only * (since * can also be used to represent empty string)
+			if i >= len(s):
+				return not p[j:] or p[j:] == \'*\'*len(p[j:])
+			# Since \'*\' can be used to represent any sequence of characters including empty string, we can either increment i or j.
+			if p[j] == \'*\':
+				return dp(i+1, j) or dp(i, j+1)
+			if p[j] in {s[i], \'?\'}:
+				return dp(i+1, j+1)
+			return False
+		return dp(0, 0)

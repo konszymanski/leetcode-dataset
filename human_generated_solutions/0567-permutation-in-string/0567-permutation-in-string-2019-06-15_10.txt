@@ -1,0 +1,30 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        char_frequency, windowStart, matched = {}, 0, 0
+		
+		# Intially add all the elements in the pattern into a hashmap along with their frequencies
+        for letter in s1:
+            if letter not in char_frequency:
+                char_frequency[letter] = 0
+            char_frequency[letter] += 1
+        #
+		# Now go through the pattern and if you find any letter which is also present in the hashmap
+		# decrease the frequency and if the frequency is zero then there is a match
+        for windowEnd in range(len(s2)):
+            if s2[windowEnd] in char_frequency:
+                char_frequency[s2[windowEnd]] -= 1
+                if char_frequency[s2[windowEnd]] == 0:
+                    matched += 1
+            #If the number of matches is equal to number if letters in the pattern then return True
+            if matched == len(char_frequency):
+                return True
+            
+			# Intially when you reach to the point where length of the pattern is equals to and greater than length of the string,  then consider the windowStart. If it is present in the hashmap decrease the  frequency and slide the window i.e., increment the windowStart 
+            if windowEnd >= len(s1) - 1:
+                if s2[windowStart] in char_frequency:
+                    if char_frequency[s2[windowStart]] == 0:
+					#If the frequency is equal to zero then decrement the match
+                        matched -= 1
+                    char_frequency[s2[windowStart]] += 1
+                windowStart += 1
+        return False

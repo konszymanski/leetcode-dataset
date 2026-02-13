@@ -1,0 +1,37 @@
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+         
+        r=len(grid)
+        c=len(grid[0])
+        
+        # base case
+        if grid[0][0] or grid[r-1][c-1]:
+            return -1
+        
+#       it\'s better to define the directioln first instead to define in the bfs main function
+        direction=[(1,0),(0,1),(-1,0),(0,-1),(1,1),(-1,-1),(1,-1),(-1,1)]
+        
+#       initialize the queue with starting index and starting shell 
+        q=deque([(0,0,1)])
+        
+        while q:
+            
+            x,y,no_cell=q.popleft()
+            
+#           condition to return the result   
+            if x==r-1 and y==c-1:
+                return no_cell
+
+            for d in direction:
+                nx=x+d[0]
+                ny=y+d[1]
+                
+#               check for boundry condition and block places in the grid
+                if 0<=nx<r and 0<=ny<c and grid[nx][ny]==0:
+                   
+#                   changing the grid value so that we don\'t traverse again through it 
+#                   instead of using the seen/visited set we just change the grid value to mark it as visited 
+                    
+                    grid[nx][ny]=1
+                    q.append((nx,ny,no_cell+1))
+        return -1

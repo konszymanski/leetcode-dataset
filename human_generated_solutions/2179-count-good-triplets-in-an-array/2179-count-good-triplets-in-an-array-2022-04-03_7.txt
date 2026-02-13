@@ -1,0 +1,53 @@
+class Solution:
+    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
+        n=len(nums1)
+        mp={}
+        new_nums2=[0]*n
+		# reorder nums2 into new_nums2 wrt nums1 in such a way that nums1 is considered in increasing order
+		# now find no of increasing triplets in new_nums2 using merge sort
+        for i in range(n):
+            mp[nums1[i]]=i
+        for i in range(n):
+            new_nums2[i]=mp[nums2[i]]
+        smaller,greater=[0]*n,[0]*n
+        def merge(arr):
+            m=len(arr)
+            if m<=1:
+                return arr
+            mid=m//2
+            left_arr=merge(arr[0:mid])
+            right_arr=merge(arr[mid:m])
+            ll,hh=len(left_arr),len(right_arr)
+            new_arr=[]
+            i,j=0,0
+            while i<ll and j<hh:
+                if right_arr[j]<left_arr[i]:
+                    y=right_arr[j]
+                    idx=bisect.bisect_right(left_arr,y)
+                    smaller[y]+=idx
+                    new_arr.append(y)
+                    j+=1
+                else:
+                    x=left_arr[i]
+                    idx=bisect.bisect_right(right_arr,x)
+                    greater[x]+=hh-idx
+                    new_arr.append(x)
+                    i+=1
+            while i<ll:
+                x=left_arr[i]
+                idx=bisect.bisect_right(right_arr,x)
+                greater[x]+=hh-idx
+                new_arr.append(x)
+                i+=1
+            while j<hh:
+                y=right_arr[j]
+                idx=bisect.bisect_right(left_arr,y)
+                smaller[y]+=idx
+                new_arr.append(y)
+                j+=1
+            return new_arr
+        merge(new_nums2)
+        ans=0
+        for i in range(n):
+            ans+=smaller[i]*greater[i]
+        return ans

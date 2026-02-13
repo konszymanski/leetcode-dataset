@@ -1,0 +1,11 @@
+def breakPalindrome(self, p: str) -> str:
+        n=len(p)
+        l=list(p)
+        if n==1:
+            return ""
+        for i in range(n//2):
+            if l[i]>"a":
+                l[i]="a"
+                return \'\'.join(map(str, l))
+        l[-1]="b"
+        return \'\'.join(l)

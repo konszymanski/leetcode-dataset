@@ -1,0 +1,75 @@
+class Solution:
+    def makesquare(self, matchsticks) -> bool:
+        """
+        Given an array of match sticks (matchsticks), this program
+        uses depth-first search with backtracking to determine
+        whether they can be arranged into a perfect square.
+
+        :param matchsticks: array of matchsticks
+        :type matchsticks: list[int]
+        :return: True if matchsticks can be arranged into a
+                 square, else False
+        :rtype: bool
+        """
+
+        """
+        Base Cases:
+        - If the sum of the match stick lengths (sum_matchsticks)
+          is not an even multiple of 4, return False.
+        - If a match stick length is greater than the side length
+          of the square (side_length), return False
+        """
+        sum_matchsticks = sum(matchsticks)
+        if sum_matchsticks % 4:
+            return False
+        side_length = sum_matchsticks // 4
+        if max(matchsticks) > side_length:
+            return False
+
+        """
+        Initialize:
+        - Sort matchsticks so that longer match sticks are
+          allocated to the sides of a square first.
+        - Initialize the remaining side lengths of the square
+          (sides) to the side length (side_length).
+        """
+        matchsticks.sort(reverse=True)
+        sides = [side_length] * 4
+
+        def dfs(sticks, sides) -> bool:
+            """
+            Given an array of remaining match sticks (sticks)
+            and the current state of the sides of a square (sides),
+            this routine uses depth-first search with backtracking
+            to determine whether the match sticks can be arranged
+            into a perfect square.
+
+            :param sticks: array of match sticks
+            :type sticks: list[int]
+            :param sides: remaining side lengths
+            :type sides: list[int]
+            :return: True if match sticks can be arranged into
+                     a square, else False
+            :rtype: bool
+            """
+            if not sticks and sum(sides) == 0:
+                return True
+            stick = sticks[0]
+            for k in range(4):
+                if stick <= sides[k]:
+                    sides[k] -= stick
+                    if dfs(sticks[1:], sides):
+                        return True
+                    sides[k] += stick
+
+                    """
+                    If a match stick was added to an empty side
+                    (no match sticks), stop here rather than add
+                    it to another empty side and get the same
+                    result.
+                    """
+                    if sides[k] == side_length:
+                        break
+            return False
+
+        return dfs(matchsticks, sides)

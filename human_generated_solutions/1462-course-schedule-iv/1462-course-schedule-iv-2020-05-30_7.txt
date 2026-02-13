@@ -1,0 +1,37 @@
+class Solution:
+    def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:       
+        def build_memo_dfs(cur_course):
+            # [1] Start building a set of ALL courses that 
+            # come after cur_course. This will only get calculated once.
+            all_following = set()
+            for next_course in G[cur_course]:
+                all_following.add(next_course)
+                if next_course in memo:
+                    # [3] So you can look it up when it is a next_course.
+                    all_following = all_following | memo[next_course]
+                else:
+                    all_following = all_following | build_memo_dfs(next_course)
+            # [2] Then save it for later.
+            memo[cur_course] = all_following
+            return all_following
+        
+        # Build the graph.
+        G = collections.defaultdict(list)
+        for prereq, course in prerequisites:
+            G[prereq].append(course)
+            G[course]
+        
+        # Collapse the graph so every key in memo holds 
+        # a set of ALL courses that come after it.
+        memo = collections.defaultdict(set)
+        for course in G:
+            build_memo_dfs(course)
+        
+        # Now we have constant time look-ups for our queries.
+        output = []
+        for prereq, course in queries:
+            if course in memo[prereq]:
+                output.append(True)
+            else:
+                output.append(False)
+        return output

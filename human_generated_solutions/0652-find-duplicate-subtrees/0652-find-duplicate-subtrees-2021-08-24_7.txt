@@ -1,0 +1,47 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from collections import defaultdict
+
+class Solution:
+    
+    def traverse(self, node: TreeNode, dups: Dict, subs: Set) -> Tuple:
+        
+        # If node not null
+        if node:
+            
+            # Get left subtree
+            l_subtree = self.traverse(node.left, dups, subs)
+            
+            # Get right subtree
+            r_subtree = self.traverse(node.right, dups, subs)
+            
+            # Make current subtree
+            subtree = (node.val, l_subtree, r_subtree)
+            
+            # Increament the duplicated variable, this stores
+            # number of occurrence of a subtree
+            dups[subtree] = dups[subtree] + 1
+            
+            # If subtree occurs twice store it to a list.
+            # Here comparing number of occurrence excatly to 2 has some
+            # benifits. As each tree node is different object, using
+            # a set also doesn\'t work.
+            if dups[subtree] == 2:
+                subs.add(node)
+            
+            # Return the newly formed subtree
+            return subtree
+        
+        # Return None
+        return None
+    
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        dups = defaultdict(lambda: 0)
+        res = set()
+        self.traverse(root, dups, res)
+        return list(res)

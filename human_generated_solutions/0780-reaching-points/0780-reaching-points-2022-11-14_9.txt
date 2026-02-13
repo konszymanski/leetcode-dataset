@@ -1,0 +1,49 @@
+class Solution:
+    def reachingPoints(self, sx: int, sy: int, tx: int, ty: int) -> bool:
+        # if both of sx, sy are even, only evens can be generated, but not all evens can be generated 
+        # as such, if you have any odds only in the end target, return false 
+        if (sx % 2 == sy % 2 == 0) and ((tx % 2 != 0) or (ty % 2 != 0)) : 
+            return False 
+        # or if you have matches that are exactly equal, return True 
+        elif (sx == sy == tx == ty) or (sx == tx and sy == ty) : 
+            return True
+        else : 
+            # otherwise, return the euclidean gcd procession 
+            return self.euclidean_gcd(sx, sy, tx, ty)
+
+    def euclidean_gcd(self, sx, sy, tx, ty) : 
+        # loop while tx and ty are greater than or equaal to their target 
+        # count = 0 
+        # loop zero printing can be commented out 
+        # self.print_euclidean_progression(sx, sy, tx, ty, count)
+        while (tx >= sx) and (ty >= sy) :
+            # if these are equal to each other, break 
+            if tx == ty : 
+                break
+            # otherwise, depending on which is larger 
+            elif tx > ty : 
+                # if the other target is above their start still 
+                if ty > sy : 
+                    # modulo reduction to remainder 
+                    tx %= ty 
+                else : 
+                    # if it is at the target, return the modulo result for gcd 
+                    return (tx - sx) % ty == 0 
+            else : 
+                # see above section for logic breakdown 
+                if tx > sx : 
+                    ty %= tx 
+                else : 
+                    return (ty - sy) % tx == 0 
+            # increment count 
+            # count += 1 
+            # loop repeats with new values 
+            # self.print_euclidean_progression(sx, sy, tx, ty, count)
+        # either you broke early due to tx == ty or you completed thee loop when they are less than the valuation 
+        # could still be the case that sx == tx and sy == ty 
+        # handled by above edge cases for non-loop progression variant 
+        # return (sx == tx and sy == ty)
+        return False 
+    
+    def print_euclidean_progression(self, sx, sy, tx, ty, count) : 
+        print("At count ", count, " the values of sx, sy are ", (sx, sy), " and the values of tx, ty are ", (tx, ty))

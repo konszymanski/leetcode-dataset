@@ -1,0 +1,60 @@
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+        dict_index = {}
+        seen = set()
+        
+        for i in range(len(s)):
+            if s[i] not in seen:
+                seen.add(s[i])
+                dict_index[s[i]] = [i]
+            else:
+                dict_index[s[i]].append(i)
+        
+        print("dict_index: ", dict_index)
+        print("seen: ", seen)
+
+        n = len(s)
+        total = 0
+        
+        for i in seen:
+            if len(dict_index[i]) == 1:
+                left_bracket = -1
+                right_bracket = n
+                # Rule of product
+                total += (dict_index[i][0] - left_bracket)*(right_bracket - dict_index[i][0])
+            else:
+                right_bracket = n
+                while dict_index[i]:
+                    cur = dict_index[i].pop()
+                    left_bracket = dict_index[i][-1] if dict_index[i] else -1
+                    # Rule of product
+                    total += (cur - left_bracket)*(right_bracket - cur)
+                    right_bracket = cur
+            
+        return total
+
+# Input: s = "ABC"
+# Output: 10
+# Explanation: All possible substrings are: "A","B","C","AB","BC" and "ABC".
+# Every substring is composed with only unique letters.
+# Sum of lengths of all substring is 1 + 1 + 1 + 2 + 2 + 3 = 10
+
+if __name__ == \'__main__\':
+
+    # Example 1
+    s = "ABC"
+    solution = Solution()
+    print(f"s = {s}")
+    print(f"uniqueLetterString = {solution.uniqueLetterString(s)}")
+
+    # Example 2
+    s = "ABA"
+    solution = Solution()
+    print(f"s = {s}")
+    print(f"uniqueLetterString = {solution.uniqueLetterString(s)}")
+
+    # Example 3
+    s = "LEETCODE"
+    solution = Solution()
+    print(f"s = {s}")
+    print(f"uniqueLetterString = {solution.uniqueLetterString(s)}")

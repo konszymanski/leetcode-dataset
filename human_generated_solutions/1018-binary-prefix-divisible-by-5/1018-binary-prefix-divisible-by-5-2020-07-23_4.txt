@@ -1,0 +1,13 @@
+def prefixesDivBy5(self, A: List[int]) -> List[bool]:
+       
+        cum = 0
+        ans = []
+        
+        for i in range(len(A)):
+            cum <<= 1    # based on binary
+            cum += (A[i])
+            if cum % 5 == 0:
+                ans.append(True)
+            else:
+                ans.append(False)
+        return ans

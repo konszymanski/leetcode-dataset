@@ -1,0 +1,35 @@
+class CBTInserter:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.root = root
+        
+        self.queue = collections.deque([])
+        q = collections.deque([self.root])
+        
+        while q:
+            node = q.popleft()
+            
+            if not node.left or not node.right:
+                self.queue.append(node)
+            
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+            
+    def insert(self, val: int) -> int:
+        if self.queue[0].left and self.queue[0].right:
+            self.queue.popleft()
+        
+        if not self.queue[0].left:
+            self.queue[0].left = TreeNode(val)
+            self.queue.append(self.queue[0].left)
+            return self.queue[0].val
+        
+        if not self.queue[0].right:
+            self.queue[0].right = TreeNode(val)
+            self.queue.append(self.queue[0].right)
+            return self.queue[0].val
+        
+    def get_root(self) -> Optional[TreeNode]:
+        return self.root

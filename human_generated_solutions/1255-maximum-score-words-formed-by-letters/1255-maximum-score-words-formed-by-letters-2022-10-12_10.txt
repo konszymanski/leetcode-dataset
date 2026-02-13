@@ -1,0 +1,31 @@
+class Solution:
+    from collections import Counter
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        master_count = Counter("".join(letters))
+        count_arr = [Counter(i) for i in words]
+        def dfs(final,path,remaining,index):
+            if index == len(words):
+                if path:
+                    
+                    final.append(sum(score[ord(i) - ord(\'a\')] for i in "".join(path)))
+                return
+            temp_count = count_arr[index]
+            if all(remaining[i] >= temp_count[i] for i in temp_count):
+                
+                for i in temp_count:
+                    remaining[i] -= temp_count[i]
+                dfs(final,path+[words[index]],remaining,index+1)
+                for i in temp_count:
+                    remaining[i] += temp_count[i]
+            dfs(final,path,remaining,index+1)
+            
+            
+        
+        final = []
+        path = []
+        remaining = Counter("".join(letters))
+        dfs(final,path,remaining,0)
+        try:
+            return max(final)
+        except:
+            return 0

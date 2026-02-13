@@ -1,0 +1,10 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+	
+		# recursive definition of binom(n, k)
+        def binom(n, k) -> int:
+            if k == 0:
+                return 1
+            return (n - k + 1) * binom(n, k - 1) // k
+        
+        return binom(m + n - 2, min(m - 1, n - 1))

@@ -1,0 +1,16 @@
+n = len(grid)
+        m = len(grid[0])
+        
+		#the max length square will be min of both the dimensions always.
+        l =  min(n,m)
+        
+		# traverse from max length to length > 1 by a step of -1.
+        for k in range(l, 1, -1):
+			# n - k + 1 and m - k + 1 is to make sure that the matrix does not go out of bound
+            for i in range(n-k+1):
+                for j in range(m-k+1):
+					# here i, j is the index of the top-left element of matrix
+					# k is the length = n of a n*n square matrix 
+                    if isMagicSquare(i, j, k):
+                        return k
+        return 1 # always the least sized magic square

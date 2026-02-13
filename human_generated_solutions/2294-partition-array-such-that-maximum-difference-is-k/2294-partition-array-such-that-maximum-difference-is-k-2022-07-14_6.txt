@@ -1,0 +1,8 @@
+def partitionArray(self, nums: List[int], k: int) -> int:
+	ans = 0
+	nums.sort()
+	i = 0
+	while(i < len(nums)):
+		i = bisect_right(nums, nums[i]+k, i)
+		ans += 1
+	return ans

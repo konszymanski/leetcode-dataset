@@ -1,0 +1,33 @@
+def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        G = defaultdict(set)
+        N = len(amount)
+        for u, v in edges:
+            G[u].add(v)
+            G[v].add(u)
+        
+        par = [0] * N  # store parents of every node this will be helpful for traversing from bob to root
+        def dfs(i, p = -1):
+            par[i] = p 
+            for nei in G[i]:
+                if p == nei: continue
+                dfs(nei, i)
+        
+        dfs(0)
+        dq = deque([[0, bob, 0, -1]])
+        res = -inf
+        vis = [0] * N
+        while dq:
+            ali, b, cost, ap = dq.popleft()
+            if ali == b: # alice and bob at same postion
+                cost += amount[ali] // 2
+            elif not vis[ali]:   
+                cost += amount[ali]   # alice reaching the current node first 
+            if b != -1: vis[b] = 1    # mark bob visited nodes
+            if len(G[ali]) == 1 and ap in G[ali]:  # check for leaf node 
+                res = max(res, cost)  # store max net result of alice at every leaf node
+            
+            bp = -1 if b == -1 else par[b]   # if bob reaches root then there will no parent so take -1
+            for nei in G[ali]:
+                if ap == nei: continue
+                dq.append([nei, bp, cost, ali])
+        return res

@@ -1,0 +1,10 @@
+from bisect import bisect_left
+from itertools import accumulate
+from random import random
+
+class Solution:
+    def __init__(self, w):
+        self.acc = list(accumulate(w))
+
+    def pickIndex(self) -> int:
+        return bisect_left(self.acc, random() * self.acc[-1])

@@ -1,0 +1,52 @@
+import heapq
+
+class Solution:
+    def getMedian(self, maxHeap: List[int], minHeap: List[int]) -> float:
+        # minHeap stores larger half and maxHeap stores small half elements
+        # So data is like -> [maxHeap] + [minHeap]
+        # if total no of element is odd, then maxHeap contains more elements than minHeap
+        if len(maxHeap)==0: return 0
+        elif len(maxHeap)!=len(minHeap): return -maxHeap[0]
+        else: return (-maxHeap[0]+minHeap[0])/2
+
+    def adjustHeapSize(self, maxHeap: List[int], minHeap: List[int]) -> None:
+        while len(maxHeap)<len(minHeap) or len(maxHeap)>len(minHeap)+1:
+            if len(maxHeap)>len(minHeap)+1:
+                removedMaxHeapItem = -heapq.heappop(maxHeap)
+                heapq.heappush(minHeap, removedMaxHeapItem)
+            else:
+                removedMaxHeapItem = heapq.heappop(minHeap)
+                heapq.heappush(maxHeap, -removedMaxHeapItem)
+
+    def addElement(self, maxHeap: List[int], minHeap: List[int], num: int, k: int) -> None:
+        median = self.getMedian(maxHeap, minHeap)
+        if num<=median: #Insert to maxHeap
+            heapq.heappush(maxHeap, -num)
+        else:
+            heapq.heappush(minHeap, num)
+        #print(num, maxHeap, minHeap, \'Before add adjust\')
+        self.adjustHeapSize(maxHeap, minHeap)
+
+    def removeElement(self, maxHeap: List[int], minHeap: List[int], num: int) -> None:
+        median = self.getMedian(maxHeap, minHeap)
+        #print(num, "Remove", maxHeap, minHeap, median)
+        if num<=median: #Insert to maxHeap
+            maxHeap.remove(-num)
+            heapq.heapify(maxHeap)
+        else:
+            minHeap.remove(num)
+            heapq.heapify(minHeap)
+        #print(num, maxHeap, minHeap, \'Before remove adjust\')
+        self.adjustHeapSize(maxHeap, minHeap)
+
+    def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
+        maxHeap, minHeap, output = [], [], []
+        for i in range(len(nums)):
+            self.addElement(maxHeap, minHeap, nums[i], k)
+            #print(maxHeap, minHeap, \'Added\', nums[i])
+            if i>=k-1:
+                output.append(self.getMedian(maxHeap, minHeap))
+                #print(nums, i, i-k+1)
+                self.removeElement(maxHeap, minHeap, nums[i-k+1])
+                #print(maxHeap, minHeap, \'Removed\', nums[i-k+1])
+        return output

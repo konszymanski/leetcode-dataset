@@ -1,0 +1,1 @@
+return sum(map(lambda x: ((1+len(x))*len(x)//2)%(10**9+7), s.split(\'0\')))

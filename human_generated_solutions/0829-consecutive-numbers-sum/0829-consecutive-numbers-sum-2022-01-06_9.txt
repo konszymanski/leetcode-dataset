@@ -1,0 +1,14 @@
+class Solution:
+    def consecutiveNumbersSum(self, n: int) -> int:
+        count = 1
+        for i in range(2, n):
+            mid = n / i
+            if mid <= i // 2:
+                break
+            if i % 2 == 0: # i is even
+                if (mid / 0.5) % 2  == 1: # mid is x.5, x \u2208 positive integer
+                    count += 1
+            else:          # i is odd
+                if mid % 1 == 0:          # mid is x, x \u2208 positive integer
+                    count += 1
+        return count

@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minimumOperations(self, root: Optional[TreeNode]) -> int:
+        def minSwap(arr, n): #function to count minimum number of swaps to make array sorted
+            ans = 0
+            temp = arr.copy()
+            h = {}
+            temp.sort()
+
+            for i in range(n):
+                h[arr[i]] = i
+            init = 0
+
+            for i in range(n):
+                if (arr[i] != temp[i]):
+                    ans += 1
+                    init = arr[i]
+                    arr[i], arr[h[temp[i]]] = arr[h[temp[i]]], arr[i]
+                    h[init] = h[temp[i]]
+                    h[temp[i]] = i
+
+            return ans
+        
+        def levelorder(root, ans):
+            if root:
+                q = []
+                q.append(root)
+                
+                while q:
+                    sublist = [] #sublist will store all the nodes at current level in sequense.
+                    q_len = len(q)
+                    for node in q:
+                        sublist.append(node.val)
+                    ans += minSwap(sublist, len(sublist)) #count swaps required to sort current level
+                    
+                    while q_len > 0:
+                        node = q.pop(0)
+                        if node.left:
+                            q.append(node.left)
+                        if node.right:
+                            q.append(node.right)
+                        q_len -= 1
+            return ans
+        
+        return levelorder(root, 0)

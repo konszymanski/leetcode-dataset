@@ -1,0 +1,29 @@
+def countPrimeSetBits(self, L: int, R: int) -> int:
+        map_ = set()
+        map_.add(2)
+        map_.add(3)
+        map_.add(5)
+        map_.add(7)
+        map_.add(11)
+        map_.add(13)
+        map_.add(17)
+        map_.add(19)
+        
+        count = 0
+        for ele in range(L,R+1):
+            if bin(ele).count(\'1\') in map_:
+                count = count+1
+        return count
+#         for ele in range(L,R+1):
+#             ans = self.countbits(ele)
+#             if ans in map_:
+#                 count = count+1
+#         return count
+        
+#     def countbits(self,num):
+#         count = 0
+#         while num>0:
+#             res = num & (-num)
+#             num = num-res
+#             count = count+1
+#         return count

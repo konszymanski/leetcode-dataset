@@ -1,0 +1,49 @@
+class Solution:
+    def reachableNodes(self, edges: List[List[int]], maxMoves: int, n: int) -> int:
+        ans = 0
+        dis = [float(\'inf\')]*n
+        dis[0] = 0
+        adj = [[] for i in range(n)]
+        moves = defaultdict(lambda:0)
+        for i,j,dist in edges:
+            adj[i].append((j,dist))
+            adj[j].append((i,dist))
+        
+        heap = [(0,0)]
+        vis = [False]*n
+        
+        while heap:
+            #print(\'OUR HEAP\',heap)
+            dist , node = heapq.heappop(heap)
+            # Don\'t visit a node more than once
+            if vis[node] == True: continue
+            # If dist to reach node x is greater than maxMoves then we do not consider the node
+            if dist > maxMoves: continue
+            # Incrment ans by 1 and mark the node visited as we do in dijkstra
+            ans += 1
+            #print(\'Incrementing ans for node =\',node)
+            vis[node] = True
+            # leftmoves tells how many moves are left after reaching node
+            leftmoves = maxMoves - dist
+            # Now check for all adjacent nodes
+            for vertex,wt in adj[node]:
+                # Now let\'s check how far we can go from the node to adjacent node ->vertex
+                if leftmoves > wt : moves[(node,vertex)] = wt
+                else :moves[(node,vertex)] = leftmoves
+                # Now find new distance to reach the node -> vertex
+                #if vis[vertex] == True:continue
+                newDis = dist + wt + 1
+                # +1 because dis[(a,b)] = 10 means there are 10 nodes between them so we take 11 steps
+                if newDis < dis[vertex]:
+                    dis[vertex] = newDis
+                    heapq.heappush(heap,(newDis,vertex))
+        #print(ans)
+        for i,j,dist in edges:
+            # how far can we go from node i to node j
+            # how far can we go from node j to node i
+            # their sum if more than dist -> make is dist
+            total = moves[(i,j)] + moves[(j,i)]
+            if total > dist : total = dist
+            ans += total
+        
+        return ans

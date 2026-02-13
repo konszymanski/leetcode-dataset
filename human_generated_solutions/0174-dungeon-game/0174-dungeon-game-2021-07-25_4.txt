@@ -1,0 +1,79 @@
+def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
+	grid = dungeon
+	trgtX, trgtY = len(grid)-1, len(grid[0])-1
+
+	if trgtX == trgtY == 0:
+		if grid[0][0] > 0:
+			return 1
+		else:
+			return abs(grid[0][0])+1
+
+	h = []
+	from heapq import heappush, heappop
+
+	startNode = (-1*grid[0][0], (0,0)) # max heap to give priority to least cost 
+	heappush(h, startNode) 
+	dirs = [(1,0), (0,1)]
+	cost_so_far = {(0,0): grid[0][0]}
+
+	lowestHealth = max(0, -grid[0][0]) # --- NOTE [1] 
+
+	while h:
+		cost, node = heappop(h)
+		x, y = node
+
+		lowestHealth = max(cost, neededHealth) # --- NOTE [2]
+
+		if (x,y) == (trgtX, trgtY):
+			break
+
+		for dir in dirs:
+			newX, newY = x+dir[0], y+dir[1]
+			if newX <= len(grid)-1 and newY <= len(grid[0])-1:
+				edgeCost = -1*grid[newX][newY]
+				newCost = cost + edgeCost
+				if (newX, newY) not in cost_so_far or ( (newX, newY) in cost_so_far and cost_so_far[(newX, newY)] > newCost ):
+					cost_so_far[(newX, newY)] = newCost
+					heappush(h, ((newCost, (newX, newY))))
+
+	# print(cost_so_far)
+	# return cost_so_far[(trgtX, trgtY)] + 1
+	return lowestHealth + 1  # ----- NOTE [3]
+
+
+	# NOTE [1]
+	# -------
+	# if 0,0 cell is +ve -> then starting value of lowest health = 0
+	# if 0,0 cell is -ve -> starting value of lowest health = the +ve value of grid[0][0])
+	
+	# lowestHealth = max(0, -grid[0][0])  
+	
+	# -- OR --
+	
+	# lowestHealth = 0
+        if grid[0][0] < 0:
+            lowestHealth = abs(grid[0][0])
+			
+	# if value of cell is +ve -> i don\'t need health points
+	# neededHealth is always going to be a +ve number
+	# we need to do this because initialHeath has to be determined based on
+	# ->   the highest damage encountered along the way
+	# ->   not the the overall pathCost by the time we reach target
+
+	# we could have used DFS with a reqular stack and we wouldve arrived to the solution (slower)
+	# Disjktra is to speed up the search while making sure optimality is gauaranteed
+	# pure greedy is not gauarnteed
+
+	# NOTE [2]
+	# ---------
+	# We use max() bcuz our heap is a max-heap (costs are with opp sign) (by taking max() 
+	# -> we are in reality choosing the lowest health points)
+	
+	
+	
+	# NOTE [3]
+	# --------
+	# If at any point his health point drops to 0 or below, he dies immediately.
+	# neededhealth is either a:
+	#   a) optimal pathCost is +ve -> zero ->                but we add 1 because min allowed health points = 1 (otherwise knight dies)  
+	#   b) optimal pathCost is -ve -> abs(that -ve value) -> but we add 1 to stay above 0 by the time we reach the princess at the end of the quest

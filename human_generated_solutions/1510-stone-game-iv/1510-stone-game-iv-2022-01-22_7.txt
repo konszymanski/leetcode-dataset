@@ -1,0 +1,35 @@
+class Solution(object):
+    def winnerSquareGame(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        starterWins = dict()
+        # This dictionary stores the result of whether a player can win starting from n stones
+        starterWins[1] = True # Alice wins when she moves with 1 stones left
+        starterWins[0] = False # Alice loses if it\'s her turn to play and no stones are left
+        
+        def canWin(x):
+            # This function searches for all possible ways that a player can win given
+            # ...  x stones
+            if x in starterWins:
+                return starterWins[x]
+            
+            one = 1
+            square = 1
+            while square <= x:
+                res = not canWin(x-square)
+                # square is a valid move as it is less than x
+                # After this move if the next player canWin then it means the current
+                # player cannot win. But if the next player can\'t win then the current player
+                # definitely wins.
+                if res:
+                    starterWins[x] = True
+                    return True
+                one += 1
+                square = one*one
+            # We have tried all possible squares and could not win
+            starterWins[x] = False
+            return False
+        
+        return canWin(n)

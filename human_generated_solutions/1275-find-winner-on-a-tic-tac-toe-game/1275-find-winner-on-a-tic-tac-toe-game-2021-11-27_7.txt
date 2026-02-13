@@ -1,0 +1,31 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        grid = [["C" for _ in range(3)] for _ in range(3)]
+        
+        cnt = 0 
+        for idx, move in enumerate(moves):
+            i, j = move[0], move[1]
+            if idx % 2 == 0:
+                grid[i][j] = "A"
+                cnt += 1
+            else: 
+                grid[i][j] = "B"
+                cnt += 1
+       
+        for i in range(3):
+            if grid[i][0] == grid[i][1] == grid[i][2] and grid[i][0] in [\'A\', \'B\']:
+                
+                return grid[i][0]
+            elif grid[0][i] == grid[1][i] == grid[2][i] and grid[0][i] in [\'A\', \'B\']:
+                
+                return grid[0][i]
+     
+        if grid[0][0] == grid[1][1] == grid[2][2] and grid[0][0] in [\'A\', \'B\']:
+            return grid[0][0]
+        if grid[0][2] == grid[1][1] == grid[2][0] and grid[0][2] in [\'A\', \'B\']:
+            return grid[0][2]
+      
+        if cnt == 9:
+            return "Draw"
+        else:
+            return "Pending"

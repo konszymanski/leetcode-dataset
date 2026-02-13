@@ -1,0 +1,4 @@
+class Solution:
+    def arrayRankTransform(self, arr: List[int]) -> List[int]:
+        rank = {ele: i + 1 for i, ele in enumerate(sorted(set(arr)))}
+        return list(map(rank.get, arr))

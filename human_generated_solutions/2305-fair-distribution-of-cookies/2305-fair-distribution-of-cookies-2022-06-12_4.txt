@@ -1,0 +1,22 @@
+class Solution:
+    def distributeCookies(self, cookies: List[int], k: int) -> int:
+        cookies.sort()
+        
+        if k == len(cookies):
+            return cookies[-1]
+        children = [0] * k
+        children[-1] = cookies.pop()
+        
+        ans = math.inf
+        def dfs(i):
+            nonlocal ans
+            if i == len(cookies):
+                ans = min(ans, max(children))
+                return
+            for j in range(k):
+                children[j] += cookies[i]
+                if children[j] < ans:
+                    dfs(i + 1)
+                children[j] -= cookies[i]
+        dfs(0)
+        return ans

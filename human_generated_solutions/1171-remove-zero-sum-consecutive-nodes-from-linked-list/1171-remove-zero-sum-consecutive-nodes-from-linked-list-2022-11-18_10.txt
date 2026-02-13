@@ -1,0 +1,51 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
+
+        # make a sentinel node
+        sentinel = ListNode(next=head)
+
+        # go through the nodes and retain the sums up to a certain point
+        shortened = True
+        while shortened:
+
+            # make a dict for the sums
+            sums = dict()
+
+            # reset the shortened boolean
+            shortened = False
+
+            # go through the node starting at the current head
+            node = sentinel
+            sums = dict()
+            prev_sum = 0
+            while node:
+
+                # make the current sum
+                current_sum = prev_sum + node.val
+
+                # check if current sum already occured
+                if current_sum in sums:
+                    
+                    # if it was in we attach our new head
+                    sums[current_sum].next = node.next
+
+                    # set the boolean
+                    shortened = True
+
+                    # break from the loop
+                    break
+                
+                # update the sums dict
+                sums[current_sum] = node
+                
+                # set the next node and update prev sum
+                prev_sum = current_sum
+                node = node.next
+            
+        # return the new linked list
+        return sentinel.next

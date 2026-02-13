@@ -1,0 +1,55 @@
+from collections import deque
+
+class Solution:
+    def canChange(self, start: str, target: str) -> bool:
+        n = len(start)
+        
+        seen_left = deque([])
+        seen_right = deque([])
+        target_left = deque([])
+        target_right = deque([])
+        
+        for i in range(n):
+            if start[i] == "R": seen_right.append(i)
+            if start[i] == "L": seen_left.append(i)
+            if target[i] == "L": target_left.append(i)
+            if target[i] == "R": target_right.append(i)
+            
+        
+        for i in range(n):
+            if start[i] == "L":
+                if not target_left: return False
+                
+                next_left_target_index = target_left.popleft()
+                
+                if next_left_target_index > i:
+                    return False
+                
+                
+                # irrelevant
+                while seen_right and seen_right[0] < next_left_target_index:
+                    seen_right.popleft()
+                
+                # blocking between actual and target
+                if seen_right and next_left_target_index <= seen_right[0] <= i:
+                    return False
+            
+        for i in range(n):
+            cur_i = n-1-i
+            if start[cur_i] == "R":
+                if not target_right: return False
+                
+                next_right_target_index = target_right.pop()
+                
+                if next_right_target_index < cur_i:
+                    return False
+                
+                # irrelevant
+                while seen_left and seen_left[-1] > next_right_target_index:
+                    seen_left.pop()
+                
+                # blocking between actual and target
+                if seen_left and cur_i <= seen_left[-1] <= next_right_target_index:
+                    return False
+            
+        return len(target_left) == 0 and len(target_right) == 0

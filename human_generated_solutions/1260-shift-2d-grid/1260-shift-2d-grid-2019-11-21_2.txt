@@ -1,0 +1,23 @@
+def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        #dimensions:
+		NR = len(grid)
+        NC = len(grid[0])
+        vec = [0] * NR * NC #initialize the vector.
+        #If k is greater than the length of vector, 
+		#the shift will repeat itself in a cycle; 
+		#hence, we only care about the remainder.
+        k = k % (NR * NC)  
+        
+		#step 1: put the matrix row by row to the vector.
+        for i in range(NR):
+            for j in range(NC):
+                vec[i * NC + j] = grid[i][j]
+				
+        #step 2: rotate vector k times by direct shift approach
+        vec = vec[-k:] + vec[:-k]
+		
+        # step 3: put vector to matrix back the same way
+        for i in range(NR):
+            for j in range(NC):
+                grid[i][j] = vec[i * NC + j]
+        return grid

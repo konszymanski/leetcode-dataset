@@ -1,0 +1,69 @@
+class Solution:
+    
+    
+    def findMaximumNaive(self,  nums: List[int]) -> int:
+        
+        """
+        O(N^2)
+        """
+        runningMax = 0
+        N = len(nums)
+        
+        for i in range(N-1):
+            for j in range(i+1, N): 
+                runningMax = max(runningMax, nums[i] ^ nums[j])
+            
+        return runningMax
+    
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        """
+        
+        mashup of hamming distance like problems and 2sum.
+        
+        take advantage of the 32 bit representation of the numbers in question
+        
+        generate mask bits starting 100000000, 110000000.... 111111111
+            
+        we want 1 on the lsb (on the left side)
+        so we iterate a full 32 bits and set up
+        
+        find pair -> find max possible xor till ith index
+        
+       note the commutative group properties (with action = xor)
+        a^b = c; b^c = a; a^c = b
+        where:
+        a = prefix of arr[j] till ith
+        b = maxPossible xor till ith-1 + set ith bit
+        
+        This is important since we\'re asking is there 2 numbers with the prefix.
+        
+        Time: O(32N) -> O(N)
+        
+        """
+
+        maximum = 0
+        mask = 0
+        
+        for i in range(30, -1, -1):
+            one = 1 << i
+            mask = mask | one   
+            
+            # generate prefixes with bitwise mask for ith bit
+            prefixes = set()
+            for num in nums:
+                # bitwise and clear except relevent bits in mask
+                prefixes.add(mask & num)
+                
+            # corresponds to ith bit of maximum
+            test = maximum | one
+            
+            # now traverse the prefixes, asking, is there two numbers with a opposite 
+            # prefix?
+            for prefix in prefixes:
+                # like two sum
+                # confirm that we have two numbers with the opposite bits
+                if prefix ^ test in prefixes:
+                    maximum = test
+                    break
+                    
+        return maximum

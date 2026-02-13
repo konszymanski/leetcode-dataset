@@ -1,0 +1,21 @@
+class NumberContainers:
+    def __init__(self):
+        self.indexes = dict()
+        self.numbers = dict()
+        
+    def change(self, index: int, number: int) -> None:
+        self.indexes[index] = number
+        if number not in self.numbers:
+            self.numbers[number] = []
+        heapq.heappush(self.numbers[number], index)
+        
+    def find(self, number: int) -> int:
+        if number not in self.numbers:
+            return -1
+        while self.numbers[number]:
+            index = self.numbers[number][0]
+            if self.indexes[index] != number:
+                heapq.heappop(self.numbers[number])
+                continue
+            return index
+        return -1

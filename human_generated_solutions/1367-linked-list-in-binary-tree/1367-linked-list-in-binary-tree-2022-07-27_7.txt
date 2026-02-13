@@ -1,0 +1,19 @@
+class Solution:
+    flag=False
+    flag2=False
+    temp1=None
+    def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
+        if Solution.flag2==False:
+            Solution.temp1=head
+            Solution.flag2=True
+        if head==None and Solution.flag==True:
+            return True
+        elif root==None:
+            return False
+        if head.val==root.val:
+            head=head.next
+            Solution.flag=True
+        else:
+            head=Solution.temp1
+            Solution.flag=False
+        return self.isSubPath(head,root.left) or self.isSubPath(head,root.right)

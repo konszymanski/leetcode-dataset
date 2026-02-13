@@ -1,0 +1,12 @@
+class Solution:
+    def postorder(self, root: \'Node\') -> List[int]:
+        
+        def dfs(node):
+            """Populate ans via post-order traversal."""
+            if not node: return 
+            for child in node.children: dfs(child)
+            ans.append(node.val)
+            
+        ans = []
+        dfs(root)
+        return ans

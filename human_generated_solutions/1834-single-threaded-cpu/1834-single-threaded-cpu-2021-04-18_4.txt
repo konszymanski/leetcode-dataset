@@ -1,0 +1,41 @@
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        # Priority queue of available tasks (primary is execution time, secondary is index)
+        available_tasks = []
+        # Append index of task to the end
+        for i,task in enumerate(tasks):
+            task.append(i)
+        
+        # Sort tasks by enqeue time
+        tasks = sorted(tasks)
+        # Make a deque of the sorted tasks (for eas)
+        tasks = deque(tasks)
+        
+        # Get the first task
+        first_task = tasks.popleft()
+        heapq.heappush(available_tasks, (first_task[1], first_task[2]))
+        
+        # The final order of execution
+        order = []
+        # Initialize time to be from the first task
+        time = first_task[0]
+        while available_tasks or tasks:
+            
+            # If there are no available tasks
+            if not available_tasks:
+                # Go to the next in the processing line
+                _, p, i = tasks.popleft()
+                heapq.heappush(available_tasks, (p, i))
+            else:
+                # Get the next task in the heap
+                next_task = heapq.heappop(available_tasks)
+                # Add the processing time
+                time += next_task[0]
+                order.append(next_task[1])
+
+                # Add all tasks that are NOW available to the priority queue
+                while tasks and tasks[0][0] <= time:
+                    _, p, i = tasks.popleft()
+                    heapq.heappush(available_tasks, (p, i))
+                
+        return order

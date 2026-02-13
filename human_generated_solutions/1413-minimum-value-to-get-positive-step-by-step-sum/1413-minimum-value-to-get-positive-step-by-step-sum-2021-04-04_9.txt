@@ -1,0 +1,14 @@
+def minStartValue(self, nums: List[int]) -> int:
+	# this is to make sure that the first step doesn\'t result in less than 1
+	v = 1-nums[0] if nums[0]<0 else 1
+	s = v
+	
+	for n in nums:
+		s+=n
+		# if in this step the number becmes less than 1, alter the value
+		# we just need to add the extra portion that\'s needed to make it 1
+		# thus we get the minimal result
+		if s<1:
+			v+=abs(s-1)
+			s = 1
+	return v

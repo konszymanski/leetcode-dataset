@@ -1,0 +1,9 @@
+def maxScoreSightseeingPair(self, A: List[int]) -> int:
+        best_i = 0
+        res = 0
+        for i, v in enumerate(A):
+            # here v - i is actually `A[j] - j` in the formula
+            res = max(res, v - i + best_i)
+            # here we store `A[i] + i`
+            best_i = max(best_i, v + i)
+        return res

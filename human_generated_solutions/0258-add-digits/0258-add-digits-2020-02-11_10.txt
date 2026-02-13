@@ -1,0 +1,13 @@
+class Solution:
+    def addDigits(self, num: int):
+        # Solution 1: iterative,
+        # Runtime : O(n), where n is the number of digits
+        # Space : O(n)
+        s = str(num)
+        while num > 9:
+            result = 0
+            for each in s:
+                result += int(each)
+            num = result
+            s = str(num)
+        return int(s)

@@ -1,0 +1,28 @@
+from heapq import heappop, heapify, heappush
+class Solution:
+    def longestDiverseString(self, a: int, b: int, c: int) -> str:
+        maxHeap = list()
+        if a > 0:
+            heappush(maxHeap, (-a, \'a\'))
+        if b > 0:
+            heappush(maxHeap, (-b, \'b\'))
+        if c > 0:
+            heappush(maxHeap, (-c, \'c\'))
+        
+        res = ""
+        while maxHeap:
+            count, st = heappop(maxHeap)
+            if len(res) >= 2 and f"{res[-2]}{res[-1]}" == f"{st}{st}":
+                if not maxHeap:
+                    return res
+                scount, sst = heappop(maxHeap)
+                res += sst
+                if scount < -1:
+                    heappush(maxHeap, (scount+1, sst))
+                heappush(maxHeap, (count, st))
+                continue
+            res += st
+            if count < -1:
+                heappush(maxHeap, (count+1, st))
+                
+        return res

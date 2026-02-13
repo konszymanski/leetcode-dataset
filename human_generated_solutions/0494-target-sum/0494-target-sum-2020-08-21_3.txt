@@ -1,0 +1,46 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        
+        if not nums: 
+            return 0
+        
+        s = sum(nums)
+        if target > s: # impossible to get
+            return 0
+        
+        
+        # Let dp[i][j] represent the number of possible ways to get sum j using the first i numbers.
+        # Note there are (s * 2 + 1) possible sums (hence the nubmer of columns)
+        dp = [[0 for _ in range(s*2+1)] for _ in range(len(nums))]
+        
+        # Base Case: using only the first number.
+        # Note this number locates at index s+nums[0] because the first s entries correspond to negative numbers.
+        dp[0][s+nums[0]] += 1
+        dp[0][s-nums[0]] += 1
+        
+        # General Case
+        
+        # Subproblem: use the first i numbers
+        for i in range(1, len(nums)):
+            
+            # Loop for each number in range [-s, s]
+            for j in range(s*2 + 1):
+                
+                # (j - nums[i] >= 0) is to make sure we don\'t get negative indices
+                if (j - nums[i] >= 0 and dp[i-1][j-nums[i]] > 0):
+                    
+                    # We force ourselves to use num[i]. Then the complement is (j - nums[i]).
+                    # There are dp[i-1][j-nums[i]] ways to get a sum of (j-nums[i]) using the first (i-1) numbers.  
+                    # Hence, we increment the count dp[i][j] by this amount.
+                    dp[i][j] += dp[i-1][j-nums[i]]
+                    
+                # (j + nums[i] <= s ** 2) is to make sure we don\'t get index out of range
+                if (j + nums[i] <= s * 2 and dp[i-1][j+nums[i]] > 0):
+                    
+                    # We force ourselves to use -num[i] (NOTE THE MINUS SIGN HERE!). Then the complement is (j + nums[i]).
+                    # There are dp[i-1][j+nums[i]] ways to get a sum of (j+nums[i]) using the first (i-1) numbers.  
+                    # Hence, we increment the count dp[i][j] by this amount.
+                    dp[i][j] += dp[i-1][j+nums[i]]
+        
+        # Note our target locates at index s+target because the first s entries correspond to negative numbers
+        return dp[-1][target+s]

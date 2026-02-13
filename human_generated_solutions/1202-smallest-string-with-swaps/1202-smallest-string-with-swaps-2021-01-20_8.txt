@@ -1,0 +1,35 @@
+class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        n = len(s)        
+        edges = [set() for _ in range(n)]         
+        for a, b in pairs:
+            edges[a].add(b)
+            edges[b].add(a)
+        
+		# find the groups of connected indices
+        groups = []
+        visited_roots = set()
+        for root in range(n):
+            if root not in visited_roots and len(edges[root]) > 0:
+			    # start DFS for finding all the elements from this root
+                group_indices = set([root])
+                visited_roots.add(root)
+                to_visit = [root]
+                while len(to_visit) > 0:
+                    i_next = to_visit.pop()
+                    for c in edges[i_next]:
+                        if c not in group_indices:
+                            group_indices.add(c)
+                            visited_roots.add(c)
+                            to_visit.append(c)
+                groups.append(group_indices)
+
+		# output the sorted string within each group of indices
+        out = list(s)
+        for indices in groups:
+            chars = sorted([s[i] for i in indices])
+            indices = sorted(indices)
+            for i, c in zip(indices, chars):
+                out[i] = c
+        
+        return \'\'.join(out)

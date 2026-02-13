@@ -1,0 +1,20 @@
+class Solution:
+    def findNumOfValidWords(self, words: List[str], puzzles: List[str]) -> List[int]:
+        words = [sorted(set(w)) for w in words]
+        puzzles = [(p[0], set(p)) for p in puzzles]
+        
+        dic = defaultdict(list)
+        for w in words:
+            for c in w:
+                dic[c].append(w)
+
+        rsts = []
+        for f, puzzle in puzzles:
+            rst = 0
+            print(puzzle, dic[f])
+            for w in dic[f]:
+                if all([(c in puzzle) for c in w]):
+                    rst+=1
+            rsts.append(rst)
+            break
+        return rsts

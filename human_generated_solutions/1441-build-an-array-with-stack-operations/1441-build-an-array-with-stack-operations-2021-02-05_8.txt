@@ -1,0 +1,13 @@
+class Solution:
+    def buildArray(self, target: List[int], n: int) -> List[str]:
+        output, target_trk = [], [] # target_trk is used to break the function if target stack has been built. 
+        for x in range(1, n+1):
+                if x in target:
+                    output.append("Push")
+                    target_trk.extend([x]) # .extend had to be used instead of .append
+                    if target_trk == target:
+                        return output # loop breaks with a return if target_trk = target
+                else:
+                    output.append("Push")
+                    output.append("Pop")
+        return output

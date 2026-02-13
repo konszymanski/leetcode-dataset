@@ -1,0 +1,12 @@
+def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+	if k == 1: return nums
+	rwindow = [(-val, i) for i, val in enumerate(nums[:k])]
+	heapq.heapify(rwindow)
+	res = [-rwindow[0][0]]
+
+	for i in range(k, len(nums)):
+		while rwindow[0][1] <= i - k: heapq.heappop(rwindow)
+		heapq.heappush(rwindow, (-nums[i], i))
+		res.append(-rwindow[0][0])
+
+	return res

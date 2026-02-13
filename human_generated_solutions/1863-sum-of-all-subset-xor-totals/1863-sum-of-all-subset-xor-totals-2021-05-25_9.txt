@@ -1,0 +1,21 @@
+class Solution:
+    def subsetXORSum(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        
+        res = [[]]
+        tot = 0
+        
+        # generate subset
+        for num in nums:
+            res += [[num] + i  for i in res ]
+            
+        # remove []
+        if [] in res:
+            res.remove([])
+            
+       
+        for r in res:
+            tot += functools.reduce(lambda x, y: x^y , r)  
+            
+        return tot

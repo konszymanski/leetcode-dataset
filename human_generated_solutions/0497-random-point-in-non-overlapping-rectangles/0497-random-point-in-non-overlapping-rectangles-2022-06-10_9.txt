@@ -1,0 +1,17 @@
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.rects = rects
+        self.presum = [0]
+        for ai, bi, xi, yi in rects:
+            self.presum.append(self.presum[-1]+(xi-ai+1) * (yi-bi+1))
+
+    def pick(self) -> List[int]:
+        val = random.randint(1, self.presum[-1])
+        idx = bisect.bisect_left(self.presum, val) -1
+        ai, bi, xi, yi = self.rects[idx]
+        return [random.randint(ai, xi), random.randint(bi, yi)]
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(rects)
+# param_1 = obj.pick()

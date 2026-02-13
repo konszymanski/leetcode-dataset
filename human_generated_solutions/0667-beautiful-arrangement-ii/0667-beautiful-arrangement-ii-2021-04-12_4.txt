@@ -1,0 +1,8 @@
+def constructArray(self, n: int, k: int) -> List[int]:
+	dq = deque(range(1, n+1))
+	res = []
+	for i in range(k):
+		pop = dq.popleft if i & 1 else dq.pop
+		res.append(pop())
+	res.extend(reversed(dq) if k & 1 else dq)  # to make sure the diff stays 1
+	return res

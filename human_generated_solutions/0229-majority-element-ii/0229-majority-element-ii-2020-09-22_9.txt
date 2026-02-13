@@ -1,0 +1,15 @@
+class Solution:
+    def majorityElement(self, nums: List[int]) -> List[int]:
+        my_dict = defaultdict(int)
+        for n in nums:
+            my_dict[n]+=1
+			# it isO(1) space because when it becomes more than 2 we remove one, so it stays 2 all the time
+            if len(my_dict) == 3:
+                dic = defaultdict(int)
+                for key, val in my_dict.items():
+                    if val > 1:
+                        dic[key] = val-1
+                
+                my_dict = dic
+        # double check - we can get wrong results
+        return [n for n in my_dict.keys() if nums.count(n) > len(nums)/3]

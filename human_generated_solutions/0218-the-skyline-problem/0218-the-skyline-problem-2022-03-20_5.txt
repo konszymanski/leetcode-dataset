@@ -1,0 +1,29 @@
+class Solution:
+    
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        
+        sky = []  # O(2*Number of buildings)
+        op = []   # O(N) space 
+        
+        for i, j ,k in buildings: #Time is O(number of buildings)
+            sky.append([i,-k])
+            sky.append([j,k])
+        
+        sky.sort() #Time is O(log(2*number of buildings)) which is typically = O(Log(N))
+
+        #priority queue 
+        pq = [0]
+        prev_max = 0
+
+        for i in sky:  #time taken for this loop is O(2N) which is typically = O(N)         
+            if i[1]<0:
+                pq.append(i[1]*-1)          
+            else:
+                pq.remove(i[1])
+            
+            curr_max = max(pq)
+            if prev_max != curr_max:
+                op.append([i[0],curr_max])
+                prev_max = curr_max
+        
+        return op

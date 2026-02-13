@@ -1,0 +1,7 @@
+def maxNumberOfBalloons(self, text):
+        """
+        :type text: str
+        :rtype: int
+        """
+        word = "balloon"
+        return min(text.count(key)//word.count(key) for key in set(word))

@@ -1,0 +1,19 @@
+class FindSumPairs:
+    def __init__(self, nums1: List[int], nums2: List[int]):
+        self.arr = []
+        for i in range(len(nums2)):
+            for j in range(len(nums1)):
+                self.arr.append(nums2[i] + nums1[j])
+        self.n = len(nums1)
+        self.counter = collections.Counter(self.arr)
+        
+    def add(self, index: int, val: int) -> None:
+        start = index*self.n
+        end = start + self.n
+        for i in range(start, end):
+            self.counter[self.arr[i]] -= 1
+            self.arr[i] += val
+            self.counter[self.arr[i]] += 1
+            
+    def count(self, tot: int) -> int:
+        return self.counter[tot]

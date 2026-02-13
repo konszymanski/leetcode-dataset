@@ -1,0 +1,36 @@
+class Solution:
+    def maximumScore(self, n: List[int], kk: int) -> int:
+        
+        vmin = n[kk]
+        for i in range(kk,-1,-1):
+            if n[i]<vmin:
+                vmin = n[i]
+            else:
+                n[i] = vmin
+
+        vmin = n[kk]
+        for i in range(kk,len(n)):
+            if n[i]<vmin:
+                vmin = n[i]
+            else:
+                n[i] = vmin
+
+        good = 0
+        li = 0
+        ri = len(n)-1
+        while li<=kk and ri>= kk:
+            vmin = min(n[li],n[ri])
+            if vmin*(ri-li+1)>good:
+                good = min(n[li],n[ri])*(ri-li+1)
+            
+            if li == ri:
+                break
+                
+            while li<kk and n[li]==vmin:
+                li += 1
+                
+            while ri>kk and n[ri]==vmin:
+                ri -= 1
+            
+        
+        return good

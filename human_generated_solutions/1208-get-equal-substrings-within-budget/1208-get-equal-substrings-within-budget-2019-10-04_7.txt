@@ -1,0 +1,22 @@
+class Solution:
+    def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
+        
+        distance=[abs(ord(s[index])-ord(t[index])) for index in range(len(s))]    #distance vector for character pairs
+        left=0               #left bracket of sliding window
+        right=0              #right bracket of sliding window
+        current=0            #current sum
+        maxlen=0
+        while(right!=len(s)):
+            if current+distance[right]<=maxCost:      #when we can expand the window
+                current+=distance[right]                #expand
+                right+=1
+            else:                                     #when we cannot expand the window
+                if left==right:                         
+                    left+=1
+                    right+=1
+                else:
+                    maxlen=max(maxlen,right-left)
+                    current-=distance[left]
+                    left+=1 
+        maxlen=max(maxlen,right-left)
+        return maxlen

@@ -1,0 +1,15 @@
+class Solution:
+    def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
+        p = {val[0]: val for val in pieces}
+        
+        i = 0
+        while i < len(arr):
+            if arr[i] in p:
+                for val in p[arr[i]]:
+                    if i == len(arr) or arr[i] != val:
+                        return False
+                    i += 1
+            else:
+                return False
+        
+        return True

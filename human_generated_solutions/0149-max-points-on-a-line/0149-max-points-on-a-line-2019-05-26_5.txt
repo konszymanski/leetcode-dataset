@@ -1,0 +1,30 @@
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        if len(points) <= 2:
+            return len(points)
+
+        def normalize_slope(dy, dx):
+            g = gcd(dy, dx)
+            return (dy // g, dx // g)
+
+        def count_max_points_from(point):
+            slope_to_times = defaultdict(int)
+            max_points = vertical = overlap = 0
+            for p in points:
+                dy, dx = p[1] - point[1], p[0] - point[0]
+                if dx == 0 and dy == 0:
+                    overlap += 1
+                    continue
+                if dx == 0:
+                    vertical += 1
+                    continue
+                slope = normalize_slope(dy, dx)
+                slope_to_times[slope] += 1
+                max_points = max(max_points, slope_to_times[slope])
+            return max(max_points, vertical)+ overlap
+
+        max_points = 0
+        for point in points:
+            max_points = max(max_points, count_max_points_from(point))
+
+        return max_points

@@ -1,0 +1,39 @@
+from collections import defaultdict, deque
+
+class Solution:
+    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        counts = defaultdict(lambda: 0)
+        for i in s:
+            counts[i]+=1
+        
+        letter_ordering = deque(sorted(counts.items()))
+        
+        s = \'\'
+        count = 0
+        while(len(letter_ordering)>1):
+            current_l, current_c = letter_ordering.pop()
+            if count==repeatLimit: # can\'t add any more of current letter
+                next_l, next_c = letter_ordering.pop()
+                s+=next_l
+                next_c-=1
+                count=0
+                if next_c > 0: # if you used the last instance of the next letter, don\'t push it back.
+                    letter_ordering.append((next_l, next_c))
+                letter_ordering.append((current_l, current_c)) # since we didn\'t use current, re-add it.
+            else: # add current letter
+                s += current_l
+                current_c -=1
+                if current_c > 0:
+                    count+=1
+                    letter_ordering.append((current_l, current_c))
+                else: # we\'ve used all of the letter, reset count since the next loop will have a different letter
+                    count=0
+
+        # if the letter_ordering is empty, return current string
+        if len(letter_ordering)==0:
+            return s
+        
+        # otherwise, append the appropriate suffix
+        last_l, last_c = letter_ordering.pop()
+        s += last_l*min(repeatLimit-count, last_c)
+        return s

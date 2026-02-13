@@ -1,0 +1,36 @@
+class Solution:
+    def uniquePathsIII(self, grid) -> int:
+
+        rows = len(grid)
+        cols = len(grid[0])
+        non_obs = 0
+
+        for i, line in enumerate(grid):
+            for j, cell in enumerate(line):
+                if cell == 1:
+				    grid[st_row][st_col] = 0
+                    st_row, st_col = i, j
+                    non_obs += 1
+                elif cell == 0:
+                    non_obs += 1
+        
+        def count_paths(row, col, crossed):
+
+            if row < 0 or row >= rows or col < 0 or col >= cols:
+                return 0
+
+            if grid[row][col] == 2 and crossed == non_obs:
+                return 1
+
+            if grid[row][col] != 0:
+                return 0
+
+            grid[row][col] = -1
+            cnt = sum([count_paths(row+1, col, crossed + 1),
+                       count_paths(row-1, col, crossed + 1),
+                       count_paths(row, col+1, crossed + 1),
+                       count_paths(row, col-1, crossed + 1)])
+            grid[row][col] = 0
+            return cnt
+
+        return count_paths(st_row, st_col, 0)

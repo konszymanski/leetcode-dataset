@@ -1,0 +1,16 @@
+class Solution:
+    
+    # Without pow function
+    def countGoodNumbers(self, n: int) -> int:
+        mod = 10**9 + 7
+        ost = 1 if n % 2 == 0 else 5
+        n = n // 2
+        s = bin(n)[-1:1:-1]
+        res = 1
+        pow20 = 20
+        for ch in s:
+            if ch == \'1\':
+                res = (res * pow20) % mod    
+            pow20 = pow20**2 % mod
+
+        return (res*ost) % mod

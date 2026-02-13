@@ -1,0 +1,27 @@
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        #base cases
+        if not s1 and not s2:
+            return baseStr
+        if not baseStr:
+            return None
+        #build graph : O(1)
+        graph = defaultdict(set)
+        for i in range(len(s1)):
+            graph[s1[i]].add(s2[i])
+            graph[s2[i]].add(s1[i])
+
+        #dfs to find the smallest in each component
+        def dfs(c, visited):
+            smaller = c
+            visited.add(c)
+            for nei in graph[c]:
+                if nei not in visited:
+                    smaller = min(smaller, dfs(nei, visited))
+            return smaller
+        
+        #find all the smallest mapped char in lower case letters : O(n)
+        result = {c:dfs(c,set()) for c in \'abcdefghijklmnopqrstuvwxyz\'}
+        
+        #return the joined smaller of all unconnected char components
+        return \'\'.join([result[c] for c in baseStr])

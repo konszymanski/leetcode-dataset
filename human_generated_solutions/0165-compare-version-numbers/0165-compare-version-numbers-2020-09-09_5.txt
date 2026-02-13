@@ -1,0 +1,44 @@
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        """
+        This program compares two version numbers and determines
+        whether one outranks the other or the two version numbers
+        are equal in rank.
+
+        :param version1: version 1 number
+        :type version1: str
+        :param version2: version 2 number
+        :type version2: str
+        :return: -1 if version1 < version2
+                  1 if version2 > version1
+                  0 if version1 and version2 equal
+        :rtype: int
+        """
+        
+        """
+        Split version numbers into their respective components.
+        """
+        version1_list = version1.split(\'.\')
+        version2_list = version2.split(\'.\')
+        
+        """
+        Compare components of each version number and return with
+        the result as soon as an inequality is found. If one version
+        number has fewer components than the other, an implied zero
+        is used for the missing components of the shorter-length
+        version number for comparison purposes.
+        """
+        while version1_list or version2_list:
+            if version1_list:
+                num1 = int( version1_list.pop( 0 ) )
+            else:
+                num1 = 0
+            if version2_list:
+                num2 = int( version2_list.pop( 0 ) )
+            else:
+                num2 = 0
+            if num1 > num2:
+                return 1
+            elif num2 > num1:
+                return -1
+        return 0

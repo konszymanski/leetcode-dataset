@@ -1,0 +1,21 @@
+def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+    ts = sum(nums)
+    if ts % k != 0:
+        return False
+    its = int(ts/k)
+    used = [False] * len(nums)
+    nums.sort(reverse=True)
+    def helper(t, k, idx):
+        if k == 0:
+            return True
+        if t == 0:
+            return helper(its, k - 1, 0)
+        else:
+            for i in range(idx, len(nums)):
+                if not used[i] and t - nums[i] >= 0:
+                    used[i] = True
+                    if helper(t - nums[i], k, i + 1):
+                        return True
+                    used[i] = False
+                
+    return helper(its, k, 0)

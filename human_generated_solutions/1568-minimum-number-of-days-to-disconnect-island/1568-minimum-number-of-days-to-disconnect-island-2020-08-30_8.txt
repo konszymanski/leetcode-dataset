@@ -1,0 +1,54 @@
+from collections import defaultdict
+
+
+class Solution:
+    def minDays(self, grid: List[List[int]]) -> int:
+        def bfs():
+            count = 1
+            mask = 1 << nodes[0]
+            pool = [nodes[0]]
+            while pool:
+                n = pool.pop()
+                for nei in adj[n]:
+                    if mask & (1 << nei) == 0:
+                        pool.append(nei)
+                        mask |= 1 << nei
+                        count += 1
+            if count < len(nodes):
+                return True
+            return False
+
+        adj = defaultdict(set)
+        height = len(grid)
+        width = len(grid[0])
+        move = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        nodes = []
+        for i in range(height):
+            for j in range(width):
+                if grid[i][j]:
+                    isolate = True
+                    node = i * width + j
+                    nodes.append(node)
+                    for i1, j1 in move:
+                        i1 += i
+                        j1 += j
+                        if 0 <= i1 < height and 0 <= j1 < width and grid[i1][j1]:
+                            adj[node].add(i1 * width + j1)
+                            isolate = False
+                    if isolate:
+                        return 0
+        if len(nodes) <= 2:
+            return len(nodes)
+        if bfs():
+            return 0
+        for k in list(nodes):
+            v = adj[k]
+            for node in v:
+                adj[node].remove(k)
+            nodes.remove(k)
+            if bfs():
+                return 1
+            nodes.append(k)
+            for node in v:
+                adj[node].add(k)
+        return 2

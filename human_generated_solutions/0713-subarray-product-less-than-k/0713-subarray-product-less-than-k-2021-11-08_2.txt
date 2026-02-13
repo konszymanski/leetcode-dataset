@@ -1,0 +1,14 @@
+def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+	if k <= 1 : return 0 # edge cases
+	prod = 1
+	cnt = left= 0
+	for right in range(len(nums)):
+		prod *= nums[right] # expand window
+		while prod >= k: # shrink window
+			prod /= nums[left]
+			left += 1
+		if prod < k: 
+		\'\'\'if [5,2,6] is current window then product is less than 100 => [5], [5,2], [5,2,6] was counted while expanding right => right - left + 1 for each case => 1 for [5], 2 for [5,2] and [2], 3 for [5,2,6], [2,6] and [6] respectively\'\'\'
+			cnt += right - left + 1
+	return cnt 
+	# like if you find it useful (look for #jyothisable tag for my answers)

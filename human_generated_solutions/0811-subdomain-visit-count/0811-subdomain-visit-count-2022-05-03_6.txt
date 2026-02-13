@@ -1,0 +1,13 @@
+class Solution:
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+        
+        res = collections.defaultdict(int)
+        
+        for domain in cpdomains:
+            count, domain = domain.split()
+            count = int(count)
+            domains_list = domain.split(\'.\')
+            for i in range(len(domains_list)):
+                res[".".join(domains_list[i:])] += count
+
+        return ["{} {}".format(count, domain) for domain, count in res.items()]

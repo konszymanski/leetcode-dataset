@@ -1,0 +1,32 @@
+def maxCandies(self, status, candies, keys, containedBoxes, initialBoxes):
+	
+        q = collections.deque()
+        for b in initialBoxes:
+            q.append(b)
+        
+        res = 0
+        updated = True
+        while q and updated:
+            updated = False
+            size = len(q)
+            for i in range(size):
+                cur = q.popleft()
+                if status[cur] == 1: # process unlocked box
+                    # collect candies
+                    res += candies[cur]
+                    
+                    # collect keys
+                    if len(keys[cur]) != 0:
+                        updated = True
+                        for j in range(len(keys[cur])):
+                            status[keys[cur][j]] = 1
+                
+                    # collect boxes
+                    for j in range(len(containedBoxes[cur])):
+                        updated = True
+                        q.append(containedBoxes[cur][j])
+                
+                else: # re-enqueue box in case new key or box discovered
+                    q.append(cur)
+                
+        return res

@@ -1,0 +1,38 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        
+        #answer -> number of sub arrays
+        count  = 0
+        #start pointer of window
+        start  = 0
+        #current window sum
+        windowSum = 0
+        #current window length
+        windowLen = 0
+        
+        #last pointer of window
+        for end in range(len(nums)):
+            
+            #current num
+            num        = nums[end]            
+            #we add that to the window sum
+            windowSum += num
+            #we increment the window length
+            windowLen += 1
+            
+            #we check if the requirement is broken ??
+            while (windowSum * windowLen) >= k:
+                
+                #get the leftmost pointer
+                left       = nums[start]
+                #sub it from the window as we shrink it now
+                windowSum -= left                
+                #shrink the window length
+                windowLen -= 1
+                #shrink it by moving left pointer to right
+                start     += 1
+            
+            #answer
+            count += end - start + 1
+        
+        return count

@@ -1,0 +1,29 @@
+class Solution:
+    def avoidFlood(self, rains: List[int]) -> List[int]:
+        n = len(rains)
+        ans = [1 for _ in range(n)]
+        times = defaultdict(list)
+        for day, lake in enumerate(rains):
+            times[lake].append(day)
+        for row in times.values():
+            row.reverse()
+            
+        h = [] # heap that stores the next drying events by urgency
+        for day, lake in enumerate(rains):
+            if lake:
+                row = times[lake]
+                # if the row has only 1 element, we don\'t need to dry
+                if len(row) >= 2:
+                    row.pop()
+                    j = row[-1]
+                    heappush(h, j)
+                ans[day] = -1
+            # if it doesn\'t rain and the heap is not empty (which means that some drying event is available)
+            elif h:
+                j = heappop(h)
+                if j < day:
+                    return []
+                ans[day] = rains[j]
+        return ans if not h else []
+    # Time: O(N * log(N))
+    # Space: O(N)

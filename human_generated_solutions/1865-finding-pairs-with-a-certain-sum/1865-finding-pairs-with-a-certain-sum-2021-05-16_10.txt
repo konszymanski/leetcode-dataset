@@ -1,0 +1,20 @@
+class FindSumPairs:
+    def __init__(self, nums1: List[int], nums2: List[int]):
+      self.cache1 = Counter(nums1)
+      self.cache2 = Counter(nums2)
+      self.nums2 = nums2
+      
+    def add(self, index: int, val: int) -> None:
+	  # Decrement the frequency of that particular element since it will be changed
+      self.cache2[self.nums2[index]] -= 1
+      self.nums2[index] += val
+	  # Add the new value
+      self.cache2[self.nums2[index]] += 1
+        
+    def count(self, tot: int) -> int:
+      res = 0
+      for num in self.cache1:
+        comp = tot - num
+        if comp in self.cache2:
+          res += (self.cache1[num] * self.cache2[comp])
+      return res

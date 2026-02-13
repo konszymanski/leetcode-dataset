@@ -1,0 +1,39 @@
+def shortestPathAllKeys(self, grid: List[str]) -> int:
+	def bfs(x, y, k):
+		q = [(x, y, 0)]
+		cost = 0
+		while(q):
+			l = len(q)
+			cost += 1
+			for _ in range(l):
+				i, j, mask = q.pop(0)
+				for di, dj in dir:
+					ni, nj = i+di, j+dj
+					if(0<=ni<m and 0<=nj<n and mask not in vis[ni][nj]):
+						char = grid[ni][nj]
+						if(char == "#"): continue
+						if(char in ".@"):
+							vis[ni][nj].add(mask)
+							q.append((ni, nj, mask))
+						elif(char.islower()):
+							n_mask = mask | (1<<(ord(char)-97))
+							vis[ni][nj].add(n_mask)
+							if(n_mask == 2**k - 1):
+								return cost
+							q.append((ni, nj, n_mask))
+						elif(mask & 1<<(ord(char)-65)):
+							vis[ni][nj].add(mask)
+							q.append((ni, nj, mask))
+		return -1
+	m, n = len(grid), len(grid[0])
+	dir = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+	k = 0
+	for i in range(m):
+		for j in range(n):
+			if(grid[i][j].islower()):
+				k += 1
+			elif(grid[i][j] == "@"):
+				si, sj = i, j
+	vis = [[set() for _ in range(n)] for _ in range(m)]
+	vis[si][sj].add(0)
+	return bfs(si, sj, k)

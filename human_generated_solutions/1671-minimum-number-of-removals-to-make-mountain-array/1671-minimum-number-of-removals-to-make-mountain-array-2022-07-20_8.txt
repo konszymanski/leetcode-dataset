@@ -1,0 +1,30 @@
+class Solution:
+    def minimumMountainRemovals(self, nums: List[int]) -> int:
+        n=len(nums)
+        
+        inc=[0 for i in range(n)]
+        dec=[0 for j in range(n)]
+        
+        for i in range(n):
+            mx=0
+            for j in range(i):
+                if nums[j]<nums[i]:
+                    mx=max(mx,inc[j])
+                    
+            inc[i]=mx+1
+            
+        for i in range(n-1,-1,-1):
+            mx=0
+            for j in range(n-1,i,-1):
+                if nums[i]>nums[j]:
+                    mx=max(mx,dec[j])
+            dec[i]=mx+1
+            
+        print(inc)
+        print(dec)
+        mx=0
+        
+        for i in range(n):
+            if inc[i]!=1 and dec[i]!=1:
+                mx=max(mx,inc[i]+dec[i]-1)
+        return n-mx

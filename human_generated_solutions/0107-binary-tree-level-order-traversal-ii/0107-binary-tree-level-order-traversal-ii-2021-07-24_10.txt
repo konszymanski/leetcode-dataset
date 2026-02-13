@@ -1,0 +1,45 @@
+from collections import deque
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+	
+        # exclude the empty case of root
+        if not root:
+            return []
+        
+        # define queue to record elements
+        queue = deque()
+        queue.append(root)
+        
+        # define a new list to receive the result
+        result = []
+        
+        # start BFS
+        # traverse every level from top to bottom
+        while queue:
+            # define a list to receive the result for every level
+            level_result = []
+            # traverse the elements in one level    
+            for _ in range(len(queue)):
+                # find the 1st element
+                node = queue.popleft()
+                
+                # find the neighbor
+                if node.left:
+                    # put the neighbor back to the queue
+                    queue.append(node.left)
+                # find the neighbor
+                if node.right:
+                    # put the neighbor back to the queue
+                    queue.append(node.right)
+                
+                # when one level finishes the traversal 
+                # put the node value into the level result
+                level_result.append(node.val)
+            
+            # when finish one level traversal 
+            # put the level result into the result outside the traversal
+            result.append(level_result)
+        
+        # to obtain the final result, we reverse the result above
+        result.reverse()
+        return result

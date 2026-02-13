@@ -1,0 +1,21 @@
+class Solution:
+    def minSpeedOnTime(self, a: List[int], k: float) -> int:
+        def isFeasible(m):
+            n = len(a)
+            d = 0
+            for i in range(n-1):
+                d += math.ceil(a[i]/m) 
+            d += (a[-1] / m)
+            return d
+                
+        def binary_search(l,r):
+            ans = -1
+            while l <= r:
+                m = (l+r)//2
+                if isFeasible(m)>k:
+                    l = m+1
+                else:
+                    ans = m
+                    r = m-1
+            return ans
+        return binary_search(1, int(1e9))

@@ -1,0 +1,17 @@
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        F =[];dp = {};Id = {}
+        for i,j in sorted(factory):
+            t = len(F)
+            for k in range(j):
+                F.append(i)
+                Id[len(F)-1] = t + j
+        robot.sort()
+
+        @lru_cache(None)
+        def fun(x,y):
+            if x == len(robot): return 0
+            if y == len(F): return 1e15 
+            return min(fun(x+1,y+1) + abs(robot[x] - F[y]), fun(x,Id[y]))
+
+        return fun(0,0)

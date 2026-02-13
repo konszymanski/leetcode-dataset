@@ -1,0 +1,19 @@
+def ambiguousCoordinates(self, s: str) -> List[str]:
+	results = set()
+	isvalid = lambda x: len(str(int(x))) == len(x)
+
+	def getvalidnums(s):
+		nums = []
+		if isvalid(s): nums.append(s)
+		for i in range(1, len(s)):
+			if isvalid(s[:i]) and isvalid(s[i:][::-1]) and s[i:] != \'0\':
+				nums.append(f\'{s[:i]}.{s[i:]}\')
+		return nums
+
+	for i in range(2, len(s)-1):
+		lnums = getvalidnums(s[1:i])
+		rnums = getvalidnums(s[i:-1])
+		for x, y in product(lnums, rnums):
+			results.add(f\'({x}, {y})\')
+
+	return results

@@ -1,0 +1,40 @@
+class UnionF:
+    def __init__(self, n):
+        self.rank = [1 for _ in range(n)]
+        self.par = [i for i in range(n)]
+        self.n = n
+        
+    def find(self, n):
+        # Path Compression + Finds root
+        while n != self.par[n]:
+            self.par[n] = self.par[self.par[n]]
+            n = self.par[n]
+        return n
+    
+    def union(self, n1, n2):
+        p1, p2 = self.find(n1), self.find(n2)
+        # If they aren\'t already unioned, union them
+        if p1 != p2:
+            if self.rank[p1] > self.rank[p2]:
+                self.rank[p1] += 1
+                self.par[p2] = p1
+            else:
+                self.rank[p2] += 1
+                self.par[p1] = p2
+
+class Solution:
+    def maximumDetonation(self, bombs: List[List[int]]) -> int:
+        n = len(bombs)
+        union = UnionF(n)
+        
+        for i in range(n):
+            for j in range(i):
+                x1, y1, r1 = bombs[i][0], bombs[i][1], bombs[i][2]
+                x2, y2, r2 = bombs[j][0], bombs[j][1], bombs[j][2]
+                
+                distance = sqrt((x2-x1)**2 + (y2-y1)**2)
+                # Bombs would detonate eaach other
+                if distance <= (r1 + r2):
+                    union.union(i, j) 
+        # Max rank is also the same as number of detonated bombs (connected componenets)
+        return max(union.rank)

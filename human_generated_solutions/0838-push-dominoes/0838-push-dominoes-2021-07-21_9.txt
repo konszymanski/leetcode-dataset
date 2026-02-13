@@ -1,0 +1,49 @@
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+	
+        # init ans
+        answer = \'\'
+        # set up so we don\'t need to worry about ends of loop
+        dom = \'L\' + dominoes + \'R\'
+        # trailing var of last non dot, to help us populate large swathes
+        prev = 0
+        for i in range(1, len(dom)):
+            # if this element is a \'.\', then we don\'t know what to do with it yet
+            # so let\'s just continue iterating on to the next element
+            if dom[i] == \'.\':
+				continue
+				
+            # if we are here then the current element is not a \'.\'
+            # let\'s update a var j to keep track of how many \'.\' we have passed
+            j = i - prev - 1
+			
+            # now we add on the previous element to the answer
+            # if still zero then we don\'t add
+            # this prevents adding on the \'L\' we added to dom
+            # also this won\'t get called for the final \'R\' we added as only prev
+            if prev:
+                answer += dom[prev]
+				
+            # now let\'s check if we have no conflict
+            # e.g. if we had \'L.....L\' then we need to add on 5 L\'s (also same for \'R.....R\')
+            # the first \'L\' got appended in the above step of adding prev
+            # and the next \'L\' will get appended in the next step
+            if dom[prev] == dom[i]:
+                answer += dom[prev]*j
+				
+            # now what about the opposite
+            # e.g. we have \'L.....R\' then we would never populate the middle
+            # so we need to add on 5 \'.\'
+            elif dom[prev] == \'L\' and dom[i] == \'R\':
+                answer += \'.\'*j
+				
+            # else we must be in a sitch where we have:
+            # e.g. \'R....L\' and they collide
+            # if we have an even number then we add on m/2 R then m/2 L
+            # if we have an odd number then the middle element must be a \'.\'
+            else:
+                answer += \'R\'*(j//2) + \'.\'*(j%2) + \'L\'*(j//2)
+				
+            # update our trailing var as this iteration the element was not \'.\'
+            prev=i
+        return answer

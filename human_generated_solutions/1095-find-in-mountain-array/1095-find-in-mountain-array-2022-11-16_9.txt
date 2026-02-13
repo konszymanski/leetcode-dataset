@@ -1,0 +1,51 @@
+# """
+# This is MountainArray\'s API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class MountainArray:
+#    def get(self, index: int) -> int:
+#    def length(self) -> int:
+
+class Solution:
+    def findPeak(self, mountain_arr, left, right):
+        mid = left + (right - left)//2
+        print(left, right)
+        if left == right:
+            return left
+        if mountain_arr.get(mid) < mountain_arr.get(mid + 1):
+            return self.findPeak(mountain_arr, mid + 1, right)
+        return self.findPeak(mountain_arr, left, mid)
+
+    def binarySearch(self, target, mountain_arr, left, right, isReversed):
+        leftValue = mountain_arr.get(left)
+        rightValue = mountain_arr.get(right)
+        while left<=right:
+            mid = left + (right - left)//2
+            midValue = mountain_arr.get(mid)
+            
+            
+            if isReversed == False:
+                if target == midValue:
+                    return mid
+                elif target < midValue:
+                    right = mid - 1
+                elif target > midValue:
+                    left = mid + 1
+            
+            else:
+                if target == midValue:
+                    return mid
+                elif target > midValue:
+                    right = mid - 1
+                elif target < midValue:
+                    left = mid + 1
+                
+        return float(\'inf\')
+
+    def findInMountainArray(self, target: int, mountain_arr: \'MountainArray\') -> int:
+        size = mountain_arr.length()
+        peakIdx = self.findPeak(mountain_arr, 0, size - 1)
+        target = min(self.binarySearch(target, mountain_arr, 0, peakIdx, False), self.binarySearch(target, mountain_arr, peakIdx, size - 1, True))
+        if target == float(\'inf\'):
+            return - 1
+        return target

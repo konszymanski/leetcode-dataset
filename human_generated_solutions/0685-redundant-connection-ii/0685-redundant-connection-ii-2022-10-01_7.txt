@@ -1,0 +1,62 @@
+from dataclasses import dataclass
+from functools import cached_property
+from typing import List
+
+class Solution:
+    def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
+        """
+        There is a tree with directed edges from parent to children.
+
+        An new edge is added. One of the following cases may occur,
+        1. no loop and one node has two parent
+        2. there is a loop and root (a node with no in degree) is part of it. So
+           every node has one parent
+        3. there is a loop and node, other than root, is not part of it. So one
+           node has two parent
+
+        In case 1 and 3, there is a node with exactly 2 parent, while the other
+        nodes (except root) have 1 parent as usual. In case 2, all nodes (including
+        root) has exactly 1 parent.
+
+        Our first task is to identify if there is a node with 2 parent (case 1 and
+        3). In case, all the nodes have a parent, remove any edge from the loop. And
+        in case there is a node with two parent, then remove one the edges responsible
+        for 2 parent creation. Doing so, need to make sure, we pick edge with the highest
+        index from given "edges"
+
+        :param edges:
+        :return:
+        """
+        n = len(edges)  # a tree will have n - 1 edges and one edge is added into it, so
+        # length of list "edges" is number of nodes
+
+        in_degrees = [-1] * (n + 1)  # stores edge-index for edge ending with v
+
+        i1, i2 = -1, -1
+        # if i1 and i2 are not -1 then they are pointers to indices in "edges" list
+        # In case node v has double parent, then i1 abd i2 are the first and second
+        # indices of the edge which has ending at node v
+
+        # checking for case 1 or 3
+        for i, (_, v) in enumerate(edges):
+            if (i1 := in_degrees[v]) != -1:
+                # case 1 or 3
+                i2 = i  # note that i1 < i2
+                break
+            else:
+                in_degrees[v] = i
+
+        # if at this point, i2 is -1 then it means there is no node with two parent
+
+        # for checking loop (case 2 and 3), we will be using Union-Find algo
+        uf = UF(n + 1)
+
+        for i, (u, v) in enumerate(edges):
+            if i != i2 and not uf.union(u, v):
+                if i2 == -1:  # no node got 2 parent, so returning the edge creation loop
+                    return [u, v]
+                else:
+                    # case 3
+                    return edges[i1]
+
+        return edges[i2]

@@ -1,0 +1,10 @@
+# Written by : Dhruv Vavliya
+nums = [1,2,3,4]
+
+def max_product(nums):
+    nums.sort(reverse=True)
+    a = nums[0]*nums[1]*nums[2]
+    b = nums[0]*nums[-1]*nums[-2]
+    return max(a,b)
+
+print(max_product(nums))

@@ -1,0 +1,24 @@
+class Solution:
+    def countBinarySubstrings(self, s):
+        if not s:
+            return 0
+        # now,flag: Current Count, Character being counted
+        now,flag = 0,s[0]
+        # prev: Previous Count (of opposite Character)
+        prev     = 0
+        #
+        # res: Number of valid combinations
+        res = 0
+        for x in s:
+            if x==flag:
+                now += 1 # If x is the same character, increase counter
+            else:
+                # Change Detected, Add (to res) the maximum number of combinations with previous count
+                res     += min(now,prev)
+                # Replace "prev"
+                prev     = now
+                # Start new Count
+                now,flag = 1,x
+        # Edge Case: last Count exited the loop without flushing to "res"
+        res += min(now,prev)
+        return res

@@ -1,0 +1,19 @@
+class Solution:
+    def maximumScore(self, nums: List[int], k: int) -> int:
+        # We start with both left and right pointers at index k and
+        # initial score as nums[k]
+        res, minimum, left, right, sz = nums[k], nums[k], k, k, len(nums)
+        while left > 0 or right < sz - 1:
+            # If nums[left - 1] < nums[right + 1], we increment right to
+            # accomodate one more element in right subarray
+            if (nums[left - 1] if left else 0) < (nums[right + 1] if right < sz - 1 else 0):
+                right += 1
+            # If nums[left - 1] >= nums[right + 1], we decrement left to
+            # accomodate one more element in left subarray
+            else:
+                left -= 1
+            # Update the minimum
+            minimum = min(minimum, nums[left], nums[right])
+            # Update the optimal score
+            res = max(res, minimum * (right - left + 1))
+        return res

@@ -1,0 +1,42 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def flipEquiv(self, root1: TreeNode, root2: TreeNode) -> bool:
+        
+        \'\'\'
+        We think of root1 as the "match" tree, that we are looking to match 
+        by flipping parts of root2, the "flipper".
+        
+        We want to traverse the match, while trying a flip and a non-flip at each node in the flipper.
+        This makes sure we try every combination of flips, and exit early when they don\'t match.
+        Recursively do this.
+        If the regular version matches or the flipped version matches, we return true.
+        \'\'\'
+        
+        def dfs(match, flipper):
+            
+            # Both are None.
+            if not match and not flipper:
+                return True
+            
+            # Only one is None, so they don\'t match.
+            if not (match and flipper):
+                return False
+            
+            # They both exist, but values don\'t match.
+            if match.val != flipper.val:
+                return False
+            
+            # No flip.
+            regular = dfs(match.left, flipper.left) and dfs(match.right, flipper.right)
+            
+            # Flip.
+            flipped = dfs(match.left, flipper.right) and dfs(match.right, flipper.left)
+            
+            return regular or flipped
+        
+        return dfs(root1, root2)

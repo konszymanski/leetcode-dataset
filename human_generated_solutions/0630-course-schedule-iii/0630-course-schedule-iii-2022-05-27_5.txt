@@ -1,0 +1,17 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+		# Greedy approach would be to choose those courses whose course duration is less and deadline is more, by this we could choose maximum courses.
+        courses.sort(key=lambda course: course[1])
+        maxCourses = []
+        heapq.heapify(maxCourses)
+        daysTaken = 0
+        for courseDuration, courseDeadline in courses:
+            heapq.heappush(maxCourses, -courseDuration)
+            daysTaken += courseDuration
+			# If daysTaken is more than the course deadline then the current course couldn\'t be taken.
+			# Since we only require to have maximum number of courses, since the current course is already in the heap, we could pop a course with maximum duration. By this, the number of courses will not change.
+            if daysTaken > courseDeadline:
+				# Multiply by -1 to undo the original negation done before pushing
+				poppedDuration = -heapq.heappop(maxCourses) 
+				daysTaken -= poppedDuration
+        return len(maxCourses)

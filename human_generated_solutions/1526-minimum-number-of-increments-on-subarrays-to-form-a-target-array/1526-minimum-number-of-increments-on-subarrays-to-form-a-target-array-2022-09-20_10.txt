@@ -1,0 +1,6 @@
+def minNumberOperations(self, target: List[int]) -> int:
+        result = target[0]
+        for idx in range(len(target)):
+            if idx+1 < len(target) and target[idx]<target[idx+1]:
+                result += target[idx+1]-target[idx]
+        return result

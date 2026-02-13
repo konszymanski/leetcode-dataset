@@ -1,0 +1,20 @@
+class Solution:
+    def largeGroupPositions(self, S):
+        current_group = []
+        current_length = []
+        current_max = 0 
+        answer = []
+        from itertools import groupby     
+        for key, group in groupby(S):
+            current_group.append(list(group))
+        #print(current_group)
+        for j in range(0,len(current_group)):
+            current_length.append([current_max,current_max + len(current_group[j])-1])
+            current_max = current_max + len(current_group[j])
+        for k in range(0,len(current_group)):
+            if len(current_group[k])>= 3:
+                answer.append(current_length[k])
+        if len(answer)>=1:
+            return answer
+        else:
+            return []

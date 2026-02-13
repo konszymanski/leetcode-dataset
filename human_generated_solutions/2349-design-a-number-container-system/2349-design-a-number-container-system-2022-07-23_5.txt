@@ -1,0 +1,31 @@
+from sortedcontainers import SortedSet
+class NumberContainers:
+
+    def __init__(self):
+        self.d1 = defaultdict(SortedSet)
+        self.d2 = {}
+        
+
+    def change(self, index: int, number: int) -> None:
+        if index in self.d2:
+            self.d1[self.d2[index]].discard(index)
+            self.d2[index]=number
+            self.d1[number].add(index)
+            
+        else:
+            self.d2[index]=number
+            self.d1[number].add(index)
+
+    def find(self, number: int) -> int:
+        #print(self.d1)
+        if number in self.d1 and len(self.d1[number])>0:
+            return self.d1[number][0]
+        else:
+            return -1
+            
+
+
+# Your NumberContainers object will be instantiated and called as such:
+# obj = NumberContainers()
+# obj.change(index,number)
+# param_2 = obj.find(number)

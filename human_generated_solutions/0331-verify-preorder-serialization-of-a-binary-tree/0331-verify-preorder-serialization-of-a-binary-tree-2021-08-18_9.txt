@@ -1,0 +1,7 @@
+def isValidSerialization(self, preorder: str) -> bool:
+        res = 1
+        for c in preorder.split(\',\'):
+            if not res:
+                return False
+            res += 1 if c != \'#\' else -1
+        return not res

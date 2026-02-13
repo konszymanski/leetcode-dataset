@@ -1,0 +1,45 @@
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        N = len(board)
+        seen = set()
+        queue = collections.deque()
+        queue.append((1,0))
+        flatten = self.getFlattenBoard(board)
+        
+        # bfs
+        while queue:
+            label, step = queue.popleft()
+            if flatten[label] != -1:
+                label = flatten[label]
+            if label == N * N:
+                return step
+            
+            # Get the next steps
+            for x in range(1 ,7):
+                nextLabel = label + x
+                if nextLabel <= N * N and nextLabel not in seen:
+                    seen.add(nextLabel)
+                    queue.append((nextLabel,step + 1))
+        return -1
+        
+    
+    def getFlattenBoard(self, board): 
+        N = len(board)
+        # Use i to keep track of the direction of labels
+        i = 0
+        # The first cell in the flatten array is the extra element so the index in board can match the index in flatten array
+        flatten = [-1] 
+        
+        #Iterating from the bottom row 
+        for row in range(N-1, -1, -1):
+            # store labels from left to right
+            if i % 2 == 0:
+                for col in range(N):
+                    flatten.append(board[row][col])
+            #store labels from right to left
+            else: 
+                for col in range(N-1,-1,-1):
+                    flatten.append(board[row][col])
+            i += 1 
+        
+        return flatten

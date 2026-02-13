@@ -1,0 +1,11 @@
+from functools import lru_cache
+
+class Solution:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        cuts.sort()
+        @lru_cache(maxsize=None)
+        def helper(n,cuts):
+            if len(cuts)==0:
+                return 0
+            return n+min(helper(c,cuts[:i])+helper(n-c,tuple(map(lambda x:x-c,cuts[i+1:]))) for i,c in enumerate(cuts))
+        return helper(n,tuple(cuts))

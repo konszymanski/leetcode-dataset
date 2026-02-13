@@ -1,0 +1,15 @@
+class Solution(object):
+    def timeRequiredToBuy(self, tickets, k):
+        ans = 0
+        
+		# people at the front will always get 1 ticket first
+		# get minimum to know how many times a person will queue and buy before kth person
+        for tix in range(k+1):
+            ans += min(tickets[tix], tickets[k])
+
+		# contrary to people at the front, 
+		# kth person will only go behind everyone *(people initially behind k)* for tickets[k]-1 times 
+        for tix in range(k+1, len(tickets)):
+            ans += min(tickets[tix], tickets[k]-1)
+            
+        return ans

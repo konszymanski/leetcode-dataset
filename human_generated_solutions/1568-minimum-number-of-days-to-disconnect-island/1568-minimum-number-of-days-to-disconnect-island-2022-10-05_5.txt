@@ -1,0 +1,42 @@
+class Solution:
+    def minDays(self, grid: List[List[int]]) -> int:
+        articulationPoint, time, numRows, numCols = False, 0, len(grid), len(grid[0])
+        directions, lands, islands = [[1, 0], [-1, 0], [0, 1], [0, -1]], 0, 0
+        depth = [[-1] * numCols for _ in range(numRows)]
+        low = [[-1] * numCols for _ in range(numRows)]
+        parent = [[-1] * numCols for _ in range(numRows)]
+        
+        
+        def articulationPointDFS(row: int, col: int) -> None:
+            nonlocal grid, depth, low, parent, numRows, numCols, time, articulationPoint
+            depth[row][col] = time; time += 1
+            low[row][col], children = depth[row][col], 0
+            for direction in directions:
+                newRow, newCol = row + direction[0], col + direction[1]
+                if newRow >= 0 and newRow < numRows and newCol >= 0 and newCol < numCols and grid[newRow][newCol] == 1:
+                    if depth[newRow][newCol] == -1:
+                        children += 1
+                        parent[newRow][newCol] = (row * numCols) + col
+                        articulationPointDFS(newRow, newCol)
+                        low[row][col] = min(low[row][col], low[newRow][newCol])
+                        if low[newRow][newCol] >= depth[row][col] and parent[row][col] > -1:
+                            articulationPoint = True
+                    elif newRow * numCols + newCol != parent[row][col]:
+                        low[row][col] = min(low[row][col], depth[newRow][newCol])
+            if parent[row][col] == -1 and children > 1:
+                articulationPoint = True
+            
+        for row in range(numRows):
+            for col in range(numCols):
+                if grid[row][col] == 1:
+                    lands += 1
+                    if depth[row][col] == -1:
+                        articulationPointDFS(row, col)
+                        islands += 1
+        if islands == 0 or islands >= 2: 
+            return 0
+        if lands == 1: 
+            return 1
+        if articulationPoint: 
+            return 1
+        return 2

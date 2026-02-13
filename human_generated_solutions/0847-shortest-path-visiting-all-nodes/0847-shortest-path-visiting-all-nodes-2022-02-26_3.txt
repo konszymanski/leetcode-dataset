@@ -1,0 +1,34 @@
+from collections import deque
+
+class Solution:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        if len(graph[0]) == 0:
+            return 0
+        
+        n = len(graph)
+        
+        q = deque()
+        
+        for i in range(n):
+            q.append((i, frozenset([i])))
+        seen = set(q)
+        
+        steps = 0
+        
+        while q:
+            temp = deque()
+            while q:
+                cur, mask = q.popleft()
+                mask = list(mask)
+                for node in graph[cur]:
+                    mask.append(node)
+                    nextMask = frozenset(mask)
+                    if len(nextMask) == n:
+                        return steps + 1
+                    if (node, nextMask) not in seen:
+                        temp.append((node, nextMask))
+                        seen.add((node, nextMask))
+                    mask.pop()
+            steps += 1
+            q = temp
+        return steps

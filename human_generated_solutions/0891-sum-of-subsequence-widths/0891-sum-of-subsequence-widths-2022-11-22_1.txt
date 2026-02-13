@@ -1,0 +1,17 @@
+class Solution:
+    def sumSubseqWidths(self, nums: List[int]) -> int:
+        MOD = 10**9 + 7
+        n = len(nums)
+        nums.sort()
+
+        dp = [0] * n
+
+        p = 2
+        temp = nums[0]
+
+        for i in range(1, n):
+            dp[i] = ((dp[i-1] + ((p-1)*nums[i])%MOD)%MOD - temp)%MOD
+            p = (2*p)%MOD
+            temp = ((2*temp)%MOD + nums[i])%MOD
+        
+        return dp[n-1]

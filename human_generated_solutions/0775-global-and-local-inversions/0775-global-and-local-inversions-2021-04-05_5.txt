@@ -1,0 +1,29 @@
+class Solution:
+    def isIdealPermutation(self, A: List[int]) -> bool:
+        
+        global_inversion, local_inversion = 0, 0
+        
+        size = len(A)
+        
+        for cur_idx, cur_num in enumerate(A):
+            
+            ## for global inversion
+            if cur_num > cur_idx:
+                
+                # current number is too big, update with the count of mismatch on smaller elements
+                global_inversion += cur_num - cur_idx
+                
+            elif cur_num < cur_idx:
+                
+                # current number is too small, update with the count of mismatch on larger elements
+                global_inversion += cur_idx - cur_num - 1
+                
+            
+            ## for local inversion
+            if (cur_idx < size-1) and (A[cur_idx] > A[cur_idx+1]):
+                
+                # current number is out of order, update with current mismatch pair
+                local_inversion += 1
+        
+        
+        return global_inversion == local_inversion

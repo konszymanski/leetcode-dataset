@@ -1,0 +1,8 @@
+def atMostNGivenDigitSetDFS(self, digits: List[str], n: int) -> int:
+	digits = list(map(int, digits))
+
+	def count_nums_with_prefix(prefix=0):
+		if prefix > n: return 0
+		return sum(count_nums_with_prefix(prefix * 10 + d) for d in digits) + 1
+
+	return count_nums_with_prefix() - 1

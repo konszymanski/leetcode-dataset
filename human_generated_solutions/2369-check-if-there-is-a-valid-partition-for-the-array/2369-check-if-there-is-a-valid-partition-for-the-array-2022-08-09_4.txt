@@ -1,0 +1,14 @@
+import re
+
+class Solution:
+    def validPartition(self, nums: List[int]) -> bool:
+        s = ["c"]
+        for a,b in zip(nums,nums[1:]):
+            if a==b:
+                s.append("a")
+            elif a+1==b:
+                s.append("b")
+            else:
+                s.append("c")
+        s = "".join(s)
+        return bool(re.fullmatch("(.a|.aa|.bb)+", s))

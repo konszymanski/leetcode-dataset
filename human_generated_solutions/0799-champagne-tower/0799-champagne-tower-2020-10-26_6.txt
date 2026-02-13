@@ -1,0 +1,11 @@
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        last_row = [ poured ]
+        for i in range(query_row):
+            curr_row = [0] * (i + 2)
+            for col in range(len(last_row)):
+                excess = max(last_row[col] - 1, 0) / 2
+                curr_row[col] += excess 
+                curr_row[col + 1] += excess
+            last_row = curr_row
+        return min(last_row[query_glass], 1)

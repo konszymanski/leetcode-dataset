@@ -1,0 +1,12 @@
+class Solution:
+    def countMaxOrSubsets(self, nums: List[int]) -> int:
+        n, t, ans = len(nums), reduce(ior, nums), 0
+        def dfs(i, cur):
+            nonlocal ans
+            if i == n: 
+                ans += (reduce(ior, cur) if cur else 0) == t
+                return
+            dfs(i + 1, cur + (nums[i],))
+            dfs(i + 1, cur)
+        dfs(0, ())
+        return ans

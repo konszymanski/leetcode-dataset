@@ -1,0 +1,21 @@
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort()
+        length = len(satisfaction)
+        if satisfaction[-1] <= 0:
+            return 0
+        ind = -1
+        for i in range(length):
+            if satisfaction[i] >= 0:
+                ind = i
+                break
+        diff, res = 0, 0
+        for i in range(ind, length):
+            diff += satisfaction[i]
+            res += (i - ind + 1) * satisfaction[i]
+        pos = ind - 1
+        while pos >= 0:
+            res = max(res, res + diff + satisfaction[pos])
+            diff += satisfaction[pos]
+            pos -= 1
+        return res

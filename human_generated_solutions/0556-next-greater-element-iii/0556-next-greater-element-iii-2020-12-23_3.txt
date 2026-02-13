@@ -1,0 +1,11 @@
+from itertools import permutations
+
+class Solution:
+    def nextGreaterElement(self, n: int) -> int:
+        all_nums_of_same_digits = [int(\'\'.join(i)) for i in set(permutations(str(n)))]
+        all_nums_of_same_digits.sort()
+        i = all_nums_of_same_digits.index(n)
+        try:
+            return all_nums_of_same_digits[i + 1] if all_nums_of_same_digits[i + 1] <= 2**31 else -1
+        except:
+            return -1

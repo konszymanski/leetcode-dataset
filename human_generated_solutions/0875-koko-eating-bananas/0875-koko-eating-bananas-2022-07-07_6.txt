@@ -1,0 +1,8 @@
+class Solution:
+    def minEatingSpeed(self, A, h):
+        l, r = 1, max(A)
+        while l < r:
+            mid = (l + r) // 2
+            if h < sum(ceil(a / mid) for a in A): l = mid + 1
+            else: r = mid
+        return l

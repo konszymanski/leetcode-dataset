@@ -1,0 +1,40 @@
+from heapq import heappush, heappop
+class Solution(object):
+    def longestDiverseString(self, a, b, c):
+        """
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: str
+        """
+        counts = []
+        if a: heappush(counts, (-a, \'a\'))
+        if b: heappush(counts, (-b, \'b\'))
+        if c: heappush(counts, (-c, \'c\'))
+            
+        ret = []
+        while len(counts) > 1:
+            c1, l1 = heappop(counts)
+            c2, l2 = heappop(counts)
+			# if they have the same amount left
+            if c1 == c2:
+                ret.append(l1)
+                ret.append(l2)
+                c1 += 1
+                c2 += 1
+			# if the first letter has more left, use two of that
+            else:
+                ret.extend([l1, l1])
+                ret.append(l2)
+                c1 += 2
+                c2 += 1
+            if c1 < 0:
+                heappush(counts, (c1, l1))
+            if c2 < 0:
+                heappush(counts, (c2, l2))
+               
+		# use the remaining letter
+        if counts:
+            c, l = heappop(counts)
+            ret.extend([l]*min(2, -c))
+        return "".join(ret)

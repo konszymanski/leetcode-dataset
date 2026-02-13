@@ -1,0 +1,13 @@
+def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+	def dfs(n, t):
+		if not n and not t: return True
+		if not n or not t: return False
+		return n.val == t.val and dfs(n.left, t.left) and dfs(n.right, t.right)
+
+	stack = [s]
+	while stack:
+		n = stack.pop()
+		if n.val == t.val and dfs(n, t): return True
+		if n.left: stack.append(n.left)
+		if n.right: stack.append(n.right)
+	return False

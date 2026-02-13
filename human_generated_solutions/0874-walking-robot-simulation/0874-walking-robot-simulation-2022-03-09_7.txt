@@ -1,0 +1,24 @@
+class Solution:
+    def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+        x,y = 0,0
+        d ={(x,y):True for x,y in obstacles}
+        direction = \'N\'
+        left = {\'N\':\'W\',\'E\':\'N\',\'S\':\'E\',\'W\':\'S\'}
+        right = {\'N\':\'E\',\'E\':\'S\',\'S\':\'W\',\'W\':\'N\'}
+        best = 0
+        for i in commands:
+            if i == -1:direction = right[direction]
+            elif i == -2:direction = left[direction]
+            else:
+                a,b = 0,0
+                if direction == \'N\':b+=1
+                elif direction == \'E\':a+=1
+                elif direction == \'S\':b-=1
+                else:a-=1
+                for _ in range(i):
+                    if (x+a,y+b)  in d:break
+                    x+=a
+                    y+=b
+            tmp = x**2 + y**2
+            if  tmp > best : best = tmp
+        return best

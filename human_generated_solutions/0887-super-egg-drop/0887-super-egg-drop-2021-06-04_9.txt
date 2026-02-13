@@ -1,0 +1,29 @@
+def superEggDrop(self, eggs: int, floors:int) -> int:
+
+        def binomial(n, r):
+            if r>n: return 0
+            r, ans = min(r, n-r), 1
+            for i in range(n, n-r, -1): ans *= i  # numerator
+            for i in range(2, r+1): ans //= i     # denominator
+            return ans
+        
+        lo, hi  = 1, floors
+        
+        while lo <= hi:
+            mid = (lo+hi)//2
+            
+            # maximum floors that can be covered using "mid" drops, with given eggs
+            max_floors = 0
+            for i in range(1, eggs+1):
+                max_floors += binomial(mid,i)
+                
+                # if more floors can be covered, try a lower "mid"
+                if max_floors >= floors: 
+                    hi = mid-1
+                    break
+            
+            # if max_floors do not cover all floors, try a higher "mid"
+            if max_floors< floors:
+                lo = mid+1
+
+        return lo

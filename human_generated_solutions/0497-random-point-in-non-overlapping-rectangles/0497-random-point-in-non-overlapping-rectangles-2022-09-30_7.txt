@@ -1,0 +1,16 @@
+import random
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.res=[(0,)]
+        for i,j,k,l in rects:
+            area=self.res[-1][0]+(l-j+1)*(k-i+1)
+            self.res.append((area, i, j, k-i+1))
+    def pick(self) -> List[int]:
+        num=random.random()
+        area=int(num*(self.res[-1][0]))
+        index=bisect_left(self.res, (area+1,))
+        diff=area-self.res[index-1][0]
+        x=self.res[index][1]+diff%self.res[index][-1]
+        y=self.res[index][2]+diff//self.res[index][-1]
+        return [x, y]

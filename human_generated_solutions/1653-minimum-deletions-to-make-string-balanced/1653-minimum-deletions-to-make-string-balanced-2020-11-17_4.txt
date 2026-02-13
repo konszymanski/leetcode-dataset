@@ -1,0 +1,27 @@
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        """
+        Given a string s, this program determines the minimum
+        number of deletions in s needed to make s balanced.
+        
+        At any point in s, it can be balanced by deleting all
+        b\'s to the left and all a\'s to the right. This program
+        scans s, determines the number of deletions at each
+        point, and returns the minimum.
+
+        :param s: string containing only a\'s and b\'s
+        :type s: str
+        :return: minimum number of deletions in s needed to
+                 make s balanced
+        :rtype: int
+        """
+        a_count = s.count(\'a\')
+        b_count = 0
+        delete_counts = [a_count + b_count]
+        for char in s:
+            if char == \'a\':
+                a_count -= 1
+            else:
+                b_count += 1
+            delete_counts.append(a_count + b_count)
+        return min(delete_counts)

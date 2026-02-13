@@ -1,0 +1,25 @@
+class Solution:
+    def minimumDeviation(self, nums: List[int]) -> int:
+        maxPossible = max(2 * i if i % 2 else i for i in nums)
+        heap = []
+        for i in nums:
+            # if it\'s even, divide by 2 until we reach its odd factor (>= 1); if it\'s odd, leave as odd original
+            if i % 2:
+                oddMin, evenMax = i, 2 * i
+            else:
+                oddMin = i
+                while not oddMin % 2:
+                    oddMin //= 2
+                evenMax = i
+            heap += [(oddMin, evenMax)]
+        heapify(heap)
+        maxNum = max(heap, key=lambda r:r[0])[0]
+        minDeviation = maxPossible
+        while True:
+            minNum, evenMax = heap[0]
+            minDeviation = min(minDeviation, maxNum - minNum)
+            if minNum == evenMax:
+                # min value can\'t be increased, so we\'re done
+                return minDeviation
+            heapq.heapreplace(heap, (2 * minNum, evenMax))
+            maxNum = max(maxNum, 2 * minNum)

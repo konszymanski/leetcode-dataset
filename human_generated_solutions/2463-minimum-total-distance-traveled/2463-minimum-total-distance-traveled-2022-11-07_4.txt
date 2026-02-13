@@ -1,0 +1,60 @@
+from heapq import heappush, heappop
+
+
+class edge:
+    def __init__(self, to, cap, cost, rev):
+        self.to, self.cap, self.cost, self.rev = to, cap, cost, rev
+
+
+class MinCostFlow:
+
+    def __init__(self, n):
+        self.n = n
+        self.graph = [[] for _ in range(n)]
+
+    def add_edge(self, src, to, cap, cost):
+        self.graph[src].append(edge(to, cap, cost, len(self.graph[to])))
+        self.graph[to].append(edge(src, 0, -cost, len(self.graph[src]) - 1))
+    
+    def solve(self, s, t, f):
+        h = [0] * self.n
+        prevv, preve = [0] * self.n, [0] * self.n
+        ret = 0
+        while f:
+            dis = [float(\'inf\')] * self.n
+            dis[s] = 0
+            hq = [(0, s)]
+            while hq:
+                d, v = heappop(hq)
+                if dis[v] < d: continue
+                for i, e in enumerate(self.graph[v]):
+                    if e.cap > 0 and dis[e.to] > dis[v] + e.cost + h[v] - h[e.to]:
+                        dis[e.to] = dis[v] + e.cost + h[v] - h[e.to]
+                        prevv[e.to], preve[e.to] = v, i
+                        heappush(hq, (dis[e.to], e.to))
+            if dis[t] == float(\'inf\'): return -1
+            for v in range(self.n): h[v] += dis[v]
+            d, v = f, t
+            while v != s:
+                d = min(d, self.graph[prevv[v]][preve[v]].cap)
+                v = prevv[v]
+            f -= d
+            ret += d * h[t]
+            v = t
+            while v != s:
+                self.graph[prevv[v]][preve[v]].cap -= d
+                self.graph[v][self.graph[prevv[v]][preve[v]].rev].cap += d
+                v = prevv[v]
+        return ret
+
+
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        m, n = len(robot), len(factory)
+        s, t = m + n, m + n + 1
+        mcf = MinCostFlow(t + 1)
+        for i in range(m): mcf.add_edge(s, i, 1, 0)
+        for j in range(n): mcf.add_edge(j + m, t, factory[j][1], 0)
+        for i in range(m):
+            for j in range(n): mcf.add_edge(i, j + m, 1, abs(robot[i] - factory[j][0]))
+        return mcf.solve(s, t, len(robot))

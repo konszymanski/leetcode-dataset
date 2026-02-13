@@ -1,0 +1,22 @@
+def intersectionSizeTwo(self, intervals: List[List[int]]) -> int:
+    
+    #sort intervals by ending
+    intervals.sort(key=lambda x: x[1])
+
+    #p, pp represent the last two points in our set
+    pp, p = -1, -1
+    ans = 0
+    for s,e in intervals:
+        if s <= pp: #curr interval fully covers both pp, p
+            continue
+        elif s <= p: #curr interval only covers p
+            #pp = min(p, e-1) instead of pp = p doesnt affect the correctness of the solution,
+            #but if you were trying to gather all the points in a set then it matters.
+            pp = min(p, e-1)  
+            p = e
+            ans += 1
+        else: #curr interval doesnt cover anything
+            pp = e-1
+            p = e
+            ans += 2
+    return ans

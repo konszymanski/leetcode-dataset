@@ -1,0 +1,13 @@
+class Solution(object):
+    def maxUniqueSplit(self, s):
+        self.maxVal = 0
+        def check(string, currString="", vals=set()):
+            if len(string) == 0:
+                self.maxVal = max(len(vals), self.maxVal)
+            else:
+                check(string[1:], currString+string[0], vals)
+                if currString+string[0] not in vals:
+                    check(string[1:], \'\', vals.union({currString+string[0]}))
+            return self.maxVal
+        
+        return check(list(s))

@@ -1,0 +1,24 @@
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        
+        # split version numbers into list of separate numbers
+        ver1 = version1.split(".")
+        ver2 = version2.split(".")
+        
+        # remove trailing zeros
+        while len(ver1) > 0 and int(ver1[-1]) == 0:
+            ver1.pop(-1)
+        while len(ver2) > 0 and int(ver2[-1]) == 0:
+            ver2.pop(-1)
+            
+        # compare each number
+        for i in range(min(len(ver1), len(ver2))):
+            if int(ver1[i]) > int(ver2[i]):
+                return 1
+            if int(ver1[i]) < int(ver2[i]):
+                return -1
+            
+        if len(ver1) == len(ver2):
+            return 0
+        else:
+            return 1 if max(len(ver1), len(ver2)) == len(ver1) else -1

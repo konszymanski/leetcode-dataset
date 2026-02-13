@@ -1,0 +1,45 @@
+class Solution:
+    def minSwapsCouples(self, row: List[int]) -> int:
+        parent = defaultdict()
+        rank = {}
+
+        def union(a, b):
+            if rank[a] > rank[b]:
+                parent[b] = a
+            elif rank[a] < rank[b]:
+                parent[a] = b
+            else:
+                parent[a] = b
+                rank[b] += 1
+
+        def find(val):
+            if parent[val] != val:
+                return find(parent[val])
+            return val
+
+        for i in range(0, len(row), 2):
+            #  Assign group label to couples.
+            #  0 1: 0
+            #  2 3: 2
+            #  4 5: 4
+            #  ...
+            parent[i] = parent[i+1] = i
+            rank[i] = rank[i+1] = 0
+
+        #  For each pair, if they are in two groups, we union the two groups together.
+        #  Every time we do a union, we have one less connected components.
+        #  The maximum number of connected components we can have is the number of couples, which is row.size() / 2.
+        maxNumOfConnectedComps = len(row) // 2
+        initConnectedComps = maxNumOfConnectedComps
+        for i in range(0, len(row), 2):
+            x = find(row[i])
+            y = find(row[i + 1])
+            if(x != y):
+                union(x, y)
+                initConnectedComps -= 1
+
+        #  Now, initConnectedComps represents the number of connected components we have.
+        #  # of swaps needed = max # of connected components - # of connected components we have.
+        #  This is because in a given connected component, for each swap, we can at most generate one additional connected component.
+        #  So, # of swaps needed + # of connected components we currently have = max # of connected components.
+        return maxNumOfConnectedComps - initConnectedComps

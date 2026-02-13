@@ -1,0 +1,25 @@
+def originalDigits(self, s: str) -> str:
+        words = (
+            (0, "zero"),  # unique z
+            (2, "two"),   # unique w
+            (4, "four"),  # unique u
+            (6, "six"),   # unique x
+            (1, "one"),   # unique o after 0,2,4
+            (3, "three"), # unique r after 0,4
+            (5, "five"),  # unique f after 4
+            (7, "seven"), # unique s after 6
+            (8, "eight"), # unique g
+            (9, "nine")   # last
+        )
+        word_cnts = []
+        cnt = Counter(s)
+        ans = []
+        for i, word in words:
+            wc = Counter(word)
+            times = min(cnt[letter] // wc[letter] for letter in wc)
+            ans.append(str(i) * times)
+            for l in wc:
+                wc[l] *= times
+            cnt -= wc
+		# print("reminder:", cnt)
+        return "".join(sorted(ans))

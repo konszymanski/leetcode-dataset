@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minimumOperations(self, root: Optional[TreeNode]) -> int:
+
+        def min_swap(arr):
+            move = 0
+            index = {}
+            s = sorted(arr)
+            for i in range(len(s)):
+                index[s[i]] = i
+            visit = set()
+            for i in range(len(arr)):
+                    if index[arr[i]] == i:
+                        continue
+                    cycle_size = 0
+                    while i not in visit:
+                        visit.add(i)
+                        cycle_size +=1
+                        i = index[arr[i]]
+                    move += max(0, cycle_size-1)
+            return move
+
+        queue = [root]
+        ans = 0
+        while queue:
+            size = len(queue)
+            arr = []
+            for _ in range(size):
+                node = queue.pop(0)
+                arr.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            ans += min_swap(arr)
+        return ans

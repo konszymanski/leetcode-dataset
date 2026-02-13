@@ -1,0 +1,26 @@
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        if "0000" in deadends: return -1
+        #All combinations of the neighboring numbers stored in a dictionary
+        next_num = {str(i):[str((i+1)%10), str((i-1)%10)] for i in range(10)}
+        #Queue to track the node combination and minimum levels to reach the combination.
+        queue = collections.deque([(\'0000\', 0)])
+        #Assume that we already visited deadends.
+        seen = {\'0000\'} | set(deadends)
+        while queue:
+            cur_node, depth = queue.popleft()
+            #When the combination matches the target, return the depth
+            if cur_node == target:
+                return depth
+            #For each digit combination
+            for i in range(len(cur_node)):
+                #next digit
+                for n in next_num[cur_node[i]]:
+                    #insert n in different position to create new combinations
+                    new_node = cur_node[:i] + n + cur_node[i+1:]
+                    #Add the combination only when it is not visited yet or if it is not deadend.
+                    if new_node not in seen:
+                        seen.add(new_node)
+                        #Faster way to append
+                        queue += (new_node, depth + 1),
+        return -1

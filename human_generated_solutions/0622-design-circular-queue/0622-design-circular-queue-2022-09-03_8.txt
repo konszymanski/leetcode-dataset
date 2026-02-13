@@ -1,0 +1,36 @@
+class MyCircularQueue:
+	def __init__(self, k: int):
+		self.head = curr = Node(0)
+		for i in range(k-1):
+			curr.next = Node(0)
+			curr = curr.next
+		curr.next = self.head
+		self.tail = self.head
+		self.l, self.k = 0, k
+
+	def enQueue(self, value: int) -> bool:
+		if(self.l == self.k): return 0
+		self.tail.val = value
+		self.prev, self.tail = self.tail, self.tail.next
+		self.l += 1
+		return 1
+
+	def deQueue(self) -> bool:
+		if(self.l == 0): return 0
+		self.head = self.head.next
+		self.l -= 1
+		return 1
+
+	def Front(self) -> int:
+		if(self.l == 0): return -1
+		return self.head.val
+
+	def Rear(self) -> int:
+		if(self.l == 0): return -1
+		return self.prev.val
+
+	def isEmpty(self) -> bool:
+		return self.l == 0
+
+	def isFull(self) -> bool:
+		return self.l == self.k

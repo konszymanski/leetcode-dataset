@@ -1,0 +1,11 @@
+class Solution:
+    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        ages, scores = zip(*sorted(zip(ages, scores)))
+        
+        @lru_cache(None)
+        def fn(i): 
+            """Return max score up to ith player included."""
+            if i < 0: return 0 # boundary condition 
+            return scores[i] + max((fn(ii) for ii in range(i) if ages[ii] == ages[i] or scores[ii] <= scores[i]), default=0)
+        
+        return max(fn(i) for i in range(len(scores)))

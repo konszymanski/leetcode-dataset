@@ -1,0 +1,12 @@
+def partitionDisjoint(A: list):
+    left_max = A[0]
+    next_max = 0
+    res = 0
+    for i in range(1, len(A)):
+        if A[i] > next_max:
+            next_max = A[i]
+        if A[i] < left_max:
+            res = i
+            if next_max > left_max:
+                left_max = next_max
+    return res + 1

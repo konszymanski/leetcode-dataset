@@ -1,0 +1,33 @@
+class Solution:
+    def reachableNodes(self, n: int, edges: List[List[int]], restricted: List[int]) -> int:
+        from collections import defaultdict
+        d = defaultdict(set)
+        
+        rest = set(restricted)
+        
+        for i, j in edges:
+            d[i].add(j)
+            d[j].add(i)
+            
+        count = 0
+        
+        added = set()
+        
+        self.count = 0
+        
+        self.recus(0, d, rest, added)
+        
+        return self.count
+        
+        
+    def recus(self, val, d, rest, s):
+        if val in rest:
+            return 0
+        if val in s:
+            return 0
+        s.add(val)
+        for i in d[val]:
+            
+            self.recus(i, d, rest, s)
+            
+        self.count += 1

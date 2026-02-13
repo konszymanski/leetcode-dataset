@@ -1,0 +1,51 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        """
+        DFS bottom up
+        """
+        V = len(colors)
+        adj = [list() for _ in range(V)]
+        degree = [0] * V
+        
+        for u, v in edges:
+            adj[u].append(v)
+            degree[v] += 1
+        
+        def update(this: dict, other: dict) -> dict:
+            """Update each key to retain their repsective max values"""
+            res = {**this, **other}
+            common = set(this).intersection(other)
+            for key in common:
+                res[key] = max(this[key], other[key])
+            return res
+
+		# Use of lru_cache, helps in remembering already traced nodes. Thus DP ;)
+        @lru_cache(maxsize=None)
+        def dfs(cur: int) -> dict:
+            visited[cur] = 0
+            temp = dict()
+            for neigh in adj[cur]:
+                if visited[neigh] == 0:
+                    return -1 # Informs the presence of cycle
+                neigh_path = dfs(neigh)
+                if neigh_path == -1:
+                    return -1
+                temp = update(temp, neigh_path)
+            temp[colors[cur]] = temp.get(colors[cur], 0) + 1
+            visited[cur] = 1
+            return temp
+
+        starts = [v for v in range(V) if degree[v] == 0]
+        if not starts:
+            return -1
+        res = dict()
+        visited = [-1] * V # Visited flag: -1 -> unvisited, 0 -> visited and in dfs stack, 1 -> visited and popped from stack
+        for start in starts:
+            inter = dfs(start)
+            if inter == -1:
+                return -1
+            res = update(res, inter)
+        # print(visited, res)
+        if -1 in visited:
+            return -1
+        return max(res.values())

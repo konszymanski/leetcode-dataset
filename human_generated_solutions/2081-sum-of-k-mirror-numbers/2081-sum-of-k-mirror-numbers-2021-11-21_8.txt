@@ -1,0 +1,34 @@
+def get_mirrors(k):
+    length = 1
+    cur = 0
+    max_cur = k ** ((length + 1) // 2)
+    while True:
+        cur += 1
+        if cur == max_cur:
+            length += 1
+            max_cur = k ** ((length + 1) // 2)
+            cur = max_cur // k
+        num = cur
+        to_reverse = cur if length % 2 == 0 else cur // k
+        while to_reverse > 0:
+            num = num * k + to_reverse % k
+            to_reverse //= k
+        yield num
+
+
+class Solution:
+    def kMirror(self, k: int, n: int) -> int:
+        mirrors_k = get_mirrors(k)
+        mirrors_10 = get_mirrors(10)
+        mirror_k, mirror_10 = next(mirrors_k), next(mirrors_10)
+        total = 0
+        while n > 0:
+            if mirror_k == mirror_10:
+                total += mirror_k
+                n -= 1
+                mirror_k, mirror_10 = next(mirrors_k), next(mirrors_10)
+            elif mirror_k > mirror_10:
+                mirror_10 = next(mirrors_10)
+            else:
+                mirror_k = next(mirrors_k)
+        return total

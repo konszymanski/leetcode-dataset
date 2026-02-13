@@ -1,0 +1,13 @@
+class Solution:
+    def minIncrementForUnique(self, nums: List[int]) -> int:
+        
+        nums.sort() #sort 
+        ans  = 0
+        for i in range(1,len(nums)):
+            # we make each new number distinct from prev one
+            if nums[i]<=nums[i-1]:  #only if current number is less or equal to previous in sorted list
+                diff = abs(nums[i-1]-nums[i])+1  #count the diff between current and prev
+                ans+=diff  #add diff cause that\'ll be the steps we will need to increase to make distinct
+                nums[i]+=diff #update nums
+        
+        return ans #return steps taken

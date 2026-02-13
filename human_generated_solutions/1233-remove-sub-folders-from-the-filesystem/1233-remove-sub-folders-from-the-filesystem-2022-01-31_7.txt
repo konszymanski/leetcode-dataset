@@ -1,0 +1,46 @@
+class TrieNode:
+    
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Solution:
+    
+    def __init__(self):
+        self.trie_root = TrieNode()
+        self.folder = []
+        
+        self.result_list = []
+    
+    def build_trie(self):
+        
+        for folder_path in self.folder:
+            
+            cf_list = folder_path.split(\'/\')
+            cf_list.pop(0)
+            
+            c_node = self.trie_root
+            for f in cf_list:
+                if(f not in c_node.children):
+                    c_node.children[f] = TrieNode()
+                c_node = c_node.children[f]
+            
+            c_node.is_end = True
+            
+    def dfs_find_sub(self, c_node, c_path, if_sub):
+        
+        
+        for c, next_node in c_node.children.items():
+            self.dfs_find_sub(next_node, c_path+\'/\'+c, c_node.is_end or if_sub)
+        
+        if(c_node.is_end and not if_sub):
+            self.result_list.append(c_path)
+        return
+         
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        
+        self.folder = folder
+        self.build_trie()
+        self.dfs_find_sub(self.trie_root, \'\', False)
+        
+        return self.result_list

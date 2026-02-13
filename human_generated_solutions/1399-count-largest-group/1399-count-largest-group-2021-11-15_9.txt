@@ -1,0 +1,25 @@
+from collections import Counter
+class Solution:
+    def countLargestGroup(self, n: int) -> int:
+        
+        def find_sum(n):
+            curr_sum = 0
+            while(n>0):
+                curr_sum+=(n%10)
+                n=n//10
+            return curr_sum
+        
+        di = Counter()
+		
+        for i in range(1,n+1):
+            sum_dig = find_sum(i)            
+            di[sum_dig]+=1
+			#counts how many such numbers with same digit sum exists
+			
+        val = list(di.values())
+        #count was not working without using list so had to put that
+		
+        max_length = max(val)
+        res = val.count(max_length)
+        
+        return res

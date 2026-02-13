@@ -1,0 +1,32 @@
+class Solution:
+    def findTheLongestSubstring(self, s: str) -> int:
+        # one (int) variable to store vowel-related information
+        # e.g., 00000 (0)
+        # if a occurs, 00000 ^ 00001 = 00001 (1)
+        # if i occurs, 00001 ^ 00100 = 00101 (5)
+        # if a occurs, 00101 ^ 00001 = 00100 (4)
+        # ---------------------------------------------------------
+        # if at index 1, we have state 00101 (5)
+        # and at index 11, we have state 00101 (5) again, 
+        # then we can claim this sub-array (from index 1 to 11) has even vowels 
+        # with the evidence that 00101 ^ 00101 = 00000 
+        # ---------------------------------------------------------
+        # Rationale
+        # 1. We one-pass the array & record the state at each element 
+        # 2. If the current state has been recorded before, we compare to the leftmost index
+        #    with the same state 
+        
+        vowels = {\'a\': 1, \'e\': 2, \'i\': 4, \'o\': 8, \'u\': 16}
+        d = {0: -1} # d: dictoray to record the leftmost indices of states 
+        state, ans = 0, 0 
+        for i, c in enumerate(s): # c: char 
+            if c in vowels:
+                state ^= vowels[c]
+            
+            # record the leftmost index with state v 
+            if not (state in d): 
+                d[state] = i 
+                
+            ans = max(ans, i-d[state])
+        
+        return ans

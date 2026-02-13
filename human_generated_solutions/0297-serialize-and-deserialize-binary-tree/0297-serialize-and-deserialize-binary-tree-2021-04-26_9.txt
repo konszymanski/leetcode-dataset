@@ -1,0 +1,24 @@
+class Codec:
+    def serialize(self, root):
+        ans = []
+        def dfs(node):
+            if node is None:
+                ans.append(\'#\')
+                return
+            ans.append(node.val)
+            dfs(node.left)
+            dfs(node.right)
+        dfs(root)
+        return ans
+    def deserialize(self, data):
+        data = collections.deque(data)
+        def dfs():
+            if data:
+                i = data.popleft()
+            else: return None
+            if i is \'#\': return None
+            node = TreeNode(str(i))
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        return dfs()

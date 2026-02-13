@@ -1,0 +1,36 @@
+class Solution:
+    """
+    approach:
+    The problem can be tackled using binary search
+    
+    min_product = 1
+    max_product = max(quantities)
+    we can apply binary search to get the optimal value of products
+    
+    if for current product value, after distribuiton, we are still left with products,
+    then, we\'ll have to increase the product that each store is getting
+    
+    if for current product value, after distribution, we are not left with any product
+    for some store to receive, we will have to decrease the product that each store is
+    getting
+    """
+    def check_fulfilment(self, quantities, n, product_per_store):
+        stores = 0
+        for quantity in quantities:
+            stores+=math.ceil(quantity/product_per_store)
+        if stores>n:
+            return True
+        return False
+        
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        min_product = 1
+        max_product = max(quantities)
+        while min_product <= max_product:
+            mid = (min_product + max_product) // 2
+            status = self.check_fulfilment(quantities, n, mid)
+            if status:
+                # we can distribute mid products to each store, try reducing the min_product
+                min_product = mid + 1
+            else:
+                max_product = mid - 1
+        return min_product

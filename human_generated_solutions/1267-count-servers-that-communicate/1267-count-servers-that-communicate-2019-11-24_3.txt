@@ -1,0 +1,17 @@
+import numpy as np
+class Solution:
+    
+    def countServers(self, grid: List[List[int]]) -> int:
+        
+        npgrid = np.array([np.array(xi) for xi in grid])
+        
+        connected = set()
+        
+        for i in range(npgrid.shape[0]):
+            
+            for j in range(npgrid.shape[1]):
+                
+                if npgrid[i,j]==1 and (sum(npgrid[:,j]) > 1 or sum(npgrid[i,:]) > 1):
+                    connected.add((i, j))
+        #print(connected)
+        return len(connected)

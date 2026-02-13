@@ -1,0 +1,69 @@
+import collections
+from typing import List
+from sortedcontainers import SortedDict
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.children = SortedDict()
+
+
+class Solution:
+    def __init__(self):
+        self.key2Id = {}
+        self.key2Count = collections.defaultdict(int)
+        self.node2Key = {}
+        self.res = []
+
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        root = TreeNode(\'/\')
+        for path in paths:
+            node = root
+            for c in path:
+                if c not in node.children:
+                    node.children[c] = TreeNode(c)
+                node = node.children[c]
+
+        self.get_id(root)
+        self.dfs(root, [])
+
+        return self.res
+
+    def get_id(self, node):
+        if not node:
+            return 0
+        key = \'\'
+        for child in node.children.values():
+            key += str(self.get_id(child)) + \'#\' + child.val + \'#\'
+
+        self.node2Key[node] = key
+        self.key2Count[key] += 1
+        if self.key2Count[key] == 1:
+            self.key2Id[key] = len(self.key2Id) + 1
+
+        return self.key2Id[key]
+
+    def dfs(self, node, path):
+        key = self.node2Key[node]
+        if self.key2Count[key] >= 2 and key != \'\':
+            return
+        if node.val != \'/\':
+            path.append(node.val)
+            self.res.append(path.copy())
+
+        for child in node.children.values():
+            self.dfs(child, path.copy())
+
+        if node.val != \'/\':
+            path.pop()
+
+
+if __name__ == \'__main__\':
+    s = Solution()
+    # print(s.deleteDuplicateFolder([["a"], ["c"], ["d"], ["a", "b"], ["c", "b"], ["d", "a"]]))
+    print(s.deleteDuplicateFolder(
+        [["b"], ["f"], ["f", "r"], ["f", "r", "g"], ["f", "r", "g", "c"], ["f", "r", "g", "c", "r"], ["f", "o"],
+         ["f", "o", "x"], ["f", "o", "x", "t"], ["f", "o", "x", "d"], ["f", "o", "l"], ["l"], ["l", "q"], ["c"], ["h"],
+         ["h", "t"], ["h", "o"], ["h", "o", "d"], ["h", "o", "t"]]
+        ))

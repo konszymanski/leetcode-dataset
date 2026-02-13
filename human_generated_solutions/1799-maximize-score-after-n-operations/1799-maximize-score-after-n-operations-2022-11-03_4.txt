@@ -1,0 +1,25 @@
+class Solution:
+    def maxScore(self, nums: List[int]) -> int:
+        sz, visited = len(nums), [False] * len(nums)
+        hashMap = defaultdict(int)
+        
+        def backtrack(numOperations: int) -> int:
+            nonlocal nums, sz, visited, hashMap
+            if numOperations > sz:
+                return 0
+            if tuple(visited) in hashMap:
+                return hashMap[tuple(visited)]
+            ans = 0
+            for i in range(sz):
+                if not visited[i]:
+                    visited[i] = True
+                    for j in range(i + 1, sz):
+                        if not visited[j]:
+                            visited[j] = True
+                            ans = max(numOperations * gcd(nums[i], nums[j]) + backtrack(numOperations + 1), ans)
+                            visited[j] = False
+                    visited[i] = False
+            hashMap[tuple(visited)] = ans
+            return ans
+        
+        return backtrack(1)

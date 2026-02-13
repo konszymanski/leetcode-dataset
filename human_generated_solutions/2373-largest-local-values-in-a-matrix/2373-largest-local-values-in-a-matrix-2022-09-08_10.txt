@@ -1,0 +1,19 @@
+def largestLocal(self, grid: List[List[int]]) -> List[List[int]]:  
+        n = len(grid)
+        
+        # Matrix to return
+        maxLocal = [[0] * (n-2) for i in range(n-2)]  
+
+        # i = row of the result matrix
+        for i in range(0, n-2):
+            # j = column of the result matrix
+            for j in range(0, n-2):
+                maxVal = 0
+                # row = row of the input matrix
+                for row in range (i, i + 3):
+                    # col = column of the input matrix
+                    for col in range (j, j + 3):
+                        maxVal = max(maxVal, grid[row][col])
+                maxLocal[i][j] = maxVal
+        
+        return maxLocal

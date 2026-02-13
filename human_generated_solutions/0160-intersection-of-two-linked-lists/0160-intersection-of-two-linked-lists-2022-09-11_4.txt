@@ -1,0 +1,23 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        l1, l2 = headA, headB# First we are taking two pointers
+        while l1!=l2:  # if heads are equal this implies that we found our intersection node and then we`ll return it.
+            if l1: # if list1 is there then go ahead.
+                l1=l1.next # we traverse to the list to check if we found the intersection node.
+            else:
+                l1 = headB # if we reach to the end of the list1 then we will move our pointer to the other list head, WHY: - explained separately below.
+			# above if condition in comprehension approach. 
+            # l1=l1.next if l1 else headB 
+            if l2:  # if list2 is there then go ahead.
+                l2=l2.next # we traverse to the list to check if we found the intersection node.
+            else:
+                l2 = headA # if we reach to the end of the list2 then we will move our pointer to the other list head, WHY: - explained separately below.
+			# above if condition in comprehension approach. 
+            # l2=l2.next if l2 else headA
+        return l1 # returning the pointer, we could return l2 also as we found our intersection else null.

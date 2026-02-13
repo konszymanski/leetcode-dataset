@@ -1,0 +1,22 @@
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        # Binary Search
+        left, right = 0, len(letters) - 1
+        while left < right - 1:
+            middle = (left + right) // 2
+            # The list contains duplicate characters, so set left index to an element which is equal to the target
+            if letters[middle] <= target:
+                left = middle
+            elif letters[middle] > target:
+                right = middle
+        # Post-Processing checking left index
+        if letters[left] > target:
+            return letters[left]
+        # Checking right index
+        else:
+            # Normal case
+            if letters[right] > target:
+                return letters[right]
+            # All elements are smaller or equal to the target, wrap up the list
+            else:
+                return letters[0]

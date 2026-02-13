@@ -1,0 +1,40 @@
+# The hardest part of the question is to find a simple rule to define if a true is complete or not.
+# The rule is this: if we flat the tree, there should not be a value after a None. 
+#           1
+#         /   \\
+#      2       3
+#    /     
+#   4   
+# q = [1, 2, 3, 4, None, None, None, None, None] this is a complete tree.
+
+#           1
+#         /   \\
+#      2       3
+#            /     
+#           4   
+# q = [1, 2, 3, None, None, 4, None, None, None] since there is value, 4, after None, this is not a complete tree.
+
+
+class Solution:
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        q = deque()  #we create a queue and add nodes to it one by one, first root, then left child and then right child and so on.
+        q.append(root)
+        condition = False #after we see a None as a child, we should not see any values otherwise the tree is not complete. In other words, in our queue, there should not be any nodes after a None. 
+        while q: #we go through the queue to pop the first node and add its child to the end of the queue
+            root = q.popleft()
+            print(root.val)
+            if root.left:
+                q.append(root.left)
+                if condition == True: if #we have seen a None before, condition is True. And if we see a value, our tree is not complete. 
+                    return False                
+            else:
+                condition = True  #we change condition to True to mark the first time we see a None 
+            if root.right:
+                q.append(root.right)    
+                if condition == True:
+                    return False       #we have seen a None before, condition is True. And if we see a value, our tree is not complete.           
+            else:
+                condition = True #we change condition to True to mark the first time we see a None                          
+        return True

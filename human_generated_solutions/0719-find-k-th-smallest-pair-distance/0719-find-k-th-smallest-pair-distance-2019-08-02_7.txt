@@ -1,0 +1,19 @@
+def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        lo, hi = 0, nums[-1] - nums[0]
+        def helper(mid):
+            count = left = 0
+            for i in range(len(nums)):
+                while nums[i] - nums[left] > mid:
+                    left += 1
+                count += i - left
+                # if count > k:
+                #     break
+            return count >= k
+        while lo < hi:
+            mid = (lo + hi)//2
+            if helper(mid):
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo

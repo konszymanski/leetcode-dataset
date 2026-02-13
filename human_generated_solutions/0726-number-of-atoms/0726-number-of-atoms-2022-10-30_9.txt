@@ -1,0 +1,59 @@
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        # K4(ON(SO3)2)2
+        # stack 
+        # {K: 4} | "(" | {O: 1, N: 1} | "(" | {S: 1, O: 3}
+        # {K: 4} | "(" | {O: 1, N: 1} | {S: 2, O: 6}
+        # {K: 4} | {O: 1, N: 1} | {S: 2, O: 6}
+        # => {K: 4} | {O: 7, N: 1, S: 2} 
+        # {K: 4} | {O: 14, N: 2, S: 4}
+        # => {K: 4, O: 14, N: 2, S: 4}
+        
+        # 1. Find uppercase character: expand until element and count is identified 
+        # 2. Find ")": pop until "(" and update counter
+        
+        L = len(formula)
+        
+        def get_element(i):
+            # formula[i] is the start of an element with uppercase
+            # expand until another uppercase appears or numerical value appears
+            j = i; element = formula[i]
+            while j+1 < L and not formula[j+1].isdigit() and formula[j+1].islower(): 
+                j+=1; element+=formula[j]
+            return (j, element)
+            
+        def get_count(i):
+            # formula[i] is the end of an element
+            # expand until character is no longer a numerical value
+            if i+1 == L or not formula[i+1].isdigit(): return (i, 1)
+            j = i; count = ""
+            while j+1 < L and formula[j+1].isdigit(): j+=1; count+=formula[j]
+            return (j, int(count))
+        
+        def merge_counters(counters, mult):
+            output = defaultdict(int)
+            for counter in counters:
+                for key in counter: output[key]+=counter[key]
+            if 1 < mult: 
+                for key in output: output[key]*=mult
+            return output
+        
+        def to_string(value): return str(value) if value > 1 else ""
+        
+        stack = []; i = 0
+        while i < len(formula):
+            if formula[i].isupper():
+                j, element = get_element(i); j, count = get_count(j)
+                if not stack or type(stack[-1]) != collections.defaultdict: stack.append(defaultdict(int))
+                stack[-1][element] += count
+                i = j+1
+            elif formula[i] == ")":
+                counters = []
+                while stack and stack[-1] != "(": counters.append(stack.pop())
+                stack.pop() # remove "("
+                j, count = get_count(i)
+                stack.append(merge_counters(counters, count))
+                i = j+1
+            else: stack.append(formula[i]); i+=1
+        counter = merge_counters(stack, 1)
+        return "".join(sorted(key+to_string(value) for key, value in counter.items()))

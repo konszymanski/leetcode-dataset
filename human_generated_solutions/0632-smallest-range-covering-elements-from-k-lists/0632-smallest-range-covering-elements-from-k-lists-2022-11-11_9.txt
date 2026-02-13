@@ -1,0 +1,27 @@
+from sortedcontainers import SortedList
+class Solution:
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        def compareRanges(range1, range2) -> bool:
+            return (range1[1] - range1[0] < range2[1] - range2[0]) or ((range1[1] - range1[0]) == (range2[1] - range2[0]) and range1[0] < range2[0])
+        
+        PQ = SortedList([(lis[0], ind, 0) for ind, lis in enumerate(nums)])
+
+        bestRange = [PQ[0][0], PQ[-1][0]]
+
+        while len(PQ) > 0:
+            
+            newRange = [PQ[0][0], PQ[-1][0]]
+            print("bestRange:", bestRange)
+            print("newRange: ", newRange)
+            print()
+            if compareRanges(newRange, bestRange):
+                bestRange = newRange
+            
+            _, numsIndex, listIndex = PQ.pop(0)
+            
+            if listIndex + 1 < len(nums[numsIndex]):
+                PQ.add((nums[numsIndex][listIndex + 1], numsIndex, listIndex + 1))
+            else:
+                return bestRange
+        
+        return bestRange

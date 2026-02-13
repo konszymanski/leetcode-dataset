@@ -1,0 +1,13 @@
+import heapq
+class Solution:
+    def isPossible(self, A):
+        q = [-x for x in A]
+        heapq.heapify(q)
+        sm = sum(A)
+        while True:
+            high, rest = -q[0], sm + q[0]
+            if high == 1 or rest == 1: return True
+            original = high % rest
+            if rest >= high or not original: return False
+            sm -= high - original
+            heapq.heapreplace(q, -original)

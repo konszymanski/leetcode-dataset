@@ -1,0 +1,21 @@
+def maxSumAfterPartitioning(self, arr: List[int], k: int) -> int:
+        n = len(arr)
+
+        @lru_cache(None)
+        def dp(i) -> int:
+            if i >= n:
+                return 0
+
+            max_elem = 0
+            max_sum = 0
+
+            for j in range(i, min(n, i + k)):
+                max_elem = max(max_elem, arr[j])
+                max_fill = (j - i + 1) * max_elem
+
+                rtr = max_fill + dp(j + 1)
+                max_sum = max(max_sum, rtr)
+
+            return max_sum
+
+        return dp(0)

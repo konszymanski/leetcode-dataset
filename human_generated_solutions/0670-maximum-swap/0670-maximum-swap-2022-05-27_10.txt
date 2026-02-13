@@ -1,0 +1,13 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        stringNum=str(num)
+        stack=[len(stringNum)-1]
+        maxVal=num
+        for i in reversed(range(len(stringNum)-1)):
+            if int(stringNum[i])>int(stringNum[stack[-1]]):
+                stack.append(i)
+            else:
+                tempString=list(stringNum)
+                tempString[i],tempString[stack[-1]]=tempString[stack[-1]],tempString[i]
+                maxVal=max(maxVal,int("".join(tempString)))
+        return maxVal

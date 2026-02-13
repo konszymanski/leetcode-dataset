@@ -1,0 +1,10 @@
+class Solution(object):
+    def numRabbits(self, answers):
+        """
+        :type answers: List[int]
+        :rtype: int
+        """
+        res = 0
+        for answer, count in Counter(answers).iteritems():
+            res += (answer + 1) * math.ceil(float(count) / (answer + 1))
+        return int(res)

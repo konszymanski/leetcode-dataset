@@ -1,0 +1,14 @@
+def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        
+	@functools.lru_cache(None)
+	def helper(left, right):
+		if left > right:
+			return [None]
+		res = []
+		for val in range(left, right + 1):
+			for left_subtree in helper(left, val - 1):
+				for right_subtree in helper(val + 1, right):
+					res.append(TreeNode(val, left_subtree, right_subtree))
+		return res
+
+	return helper(1, n)

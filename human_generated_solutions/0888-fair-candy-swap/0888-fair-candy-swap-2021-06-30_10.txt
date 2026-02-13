@@ -1,0 +1,15 @@
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        hmap={}
+        ans=[]
+        for i in range(len(bobSizes)):
+            hmap[bobSizes[i]]=i
+        s1=sum(aliceSizes)
+        s2=sum(bobSizes)
+        avg=(s1+s2)/2
+        for i in range(len(aliceSizes)):
+            key=avg-(s1-aliceSizes[i])
+            if key in hmap:
+                ans=[aliceSizes[i],bobSizes[hmap[key]]]
+                break
+        return ans

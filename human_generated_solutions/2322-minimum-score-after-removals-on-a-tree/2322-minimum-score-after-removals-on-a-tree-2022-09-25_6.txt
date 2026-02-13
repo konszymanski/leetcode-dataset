@@ -1,0 +1,150 @@
+def minimumScore(self, nums: List[int], edges: List[List[int]]) -> int:
+        #there are n-1 edges, and u have to choose a pair, so there are (n-1)(n-2)/2 edge combinations
+        #n <= 1000, so O(n^2) is feasible, but we have to make sure full solution is in O(n^2)
+        #cool thing about xor is that, (a^x^c^d)^x == (a^c^d)^(x^x) == (a^c^d), which will be useful
+        
+        #Approach:
+        #choose two nodes (cant be the root of the tree)
+        #imagine the node and all of its children to be a group, so now we have two groups (group1, & group2)
+        #Notice: one group may or may not be inside the other group (if node1 is ancestor of node2, group2 will be inside group1)
+        #the third group = rootGroup - group1 - group2
+        #realise that making three groups is same as breaking two edges
+        #using brute force, compare every pair of node groups
+        
+        n = len(nums)
+        g = [[] for _ in range(n)]
+        for x, y in edges:
+            g[x].append(y)
+            g[y].append(x)
+        
+        #using the in/out time, u can check if one node is ancestor of the other one
+        xor, in_, out= [0] * n, [0] * n, [0] * n
+        clock = 0
+        #treat 0 as the root of the tree
+        def dfs(x: int, fa: int) -> None:
+            nonlocal clock
+            clock += 1
+            in_[x] = clock
+            xor[x] = nums[x]
+            for y in g[x]:
+                if y != fa:
+                    dfs(y, x)
+                    xor[x] ^= xor[y]
+            clock += 1
+            out[x] = clock
+        dfs(0, -1)
+        
+        res = inf
+        #checking every node group combination
+        for i in range(2, n):
+            for j in range(1, i):
+                #if i is ancestor of j: group_j is inside group_i
+                if in_[i] < in_[j] < out[i]:
+                    x, y, z = xor[j], xor[i] ^ xor[j], xor[0] ^ xor[i]
+                #if j is ancestor of i: group_i is inside group_j
+                elif in_[j] < in_[i] < out[j]:
+                    x, y, z = xor[i], xor[i] ^ xor[j], xor[0] ^ xor[j]
+                #if the groups are separate
+                else:
+                    x, y, z = xor[i], xor[j], xor[0] ^ xor[i] ^ xor[j]
+                res = min(res, max(x, y, z) - min(x, y, z))
+
+                if res == 0: #breaking out early
+                    return 0
+        return res
+        
+    #2 approach is also Time->O(n^2) but Space->O(n^2).
+	#in this sol u store every children a node has
+    def minimumScore(self, nums: List[int], edges: List[List[int]]) -> int:
+        n = len(nums)
+        graph = defaultdict(set)
+        for a,b in edges:
+            graph[a].add(b)
+            graph[b].add(a)
+        
+        root = 0
+        xorVals = [0]*n
+        #while u r making the tree also save the total xor values
+        def makeTree(c_node=root):
+            c_val = nums[c_node]
+            for child in graph[c_node]:
+                graph[child].remove(c_node)
+                c_val ^= makeTree(child)
+            xorVals[c_node] = c_val
+            return c_val
+        makeTree()
+        
+        ans = math.inf
+        children = defaultdict(set)
+        def groupChildren(c_node):
+            babies = set()
+            
+            for neigh in graph[c_node]:
+                babies |= groupChildren(neigh) | set([neigh])
+            
+            children[c_node] = babies
+            return babies
+        groupChildren(root)
+        
+            
+        for i in range(1, n):
+            for j in range(i+1, n):
+                if i in children[j]:
+                    group1 = xorVals[i]; group2 = xorVals[j] ^ group1
+                elif j in children[i]:
+                    group1 = xorVals[j]; group2 = xorVals[i] ^ group1
+                else:
+                    group1 = xorVals[i]; group2 = xorVals[j]
+                group3 = xorVals[0] ^ group1 ^ group2
+                ans = min(ans, max(group1, group2, group3) - min(group1, group2, group3))
+                    
+        return ans
+		
+	#3 Approach is also Time->O(n^2), Space->O(n) but calling dfs n times is slower and sometime TLE
+    def minimumScore(self, nums: List[int], edges: List[List[int]]) -> int:
+        n = len(nums)
+        graph = defaultdict(set)
+        for a,b in edges:
+            graph[a].add(b)
+            graph[b].add(a)
+        
+        root = 0
+        visited = set()
+        xorVals = [0]*n
+        def makeTree(c_node=root):
+            c_val = nums[c_node]
+            for child in graph[c_node]:
+                graph[child].remove(c_node)
+                c_val ^= makeTree(child)
+            xorVals[c_node] = c_val
+            return c_val
+        makeTree()
+        
+        ans = math.inf
+        def dfs(c_node):
+            nonlocal ans
+                        
+            childInC_node = 0
+            
+            if c_node != child:
+                for c in graph[c_node]:
+                    childInC_node |= dfs(c)
+            
+            if c_node not in [child, root]:
+                group1 = xorVals[c_node]
+                group2 = xorVals[child]
+                
+                if childInC_node: group1 ^= group2
+                    
+                group3 = xorVals[root] ^ group1 ^ group2
+
+                ans = min(ans, max(group1, group2, group3) - min(group1, group2, group3))
+            
+            return childInC_node or c_node==child
+        
+        #Time->O(n^2)
+        for i in range(1, n):
+            child = i
+            dfs(root)
+        
+        return ans

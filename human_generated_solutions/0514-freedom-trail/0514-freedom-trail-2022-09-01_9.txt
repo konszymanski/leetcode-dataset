@@ -1,0 +1,22 @@
+class Solution:
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        ring_dict = collections.defaultdict(list)  # char:list of index in ring
+        for i, char in enumerate(ring):
+            ring_dict[char].append(i)
+        
+        l_r, l_k = len(ring), len(key)
+        # dp[i][j]: \u5F53\u6307\u9488\u6307\u5411ring[i]\u65F6\uFF0C\u5B8C\u6210key[j:]\u7684min\u64CD\u4F5C
+        dp = [[math.inf] * (l_k + 1) for _ in range(l_r)]
+        
+        # base case: dp[i][len(key)] = 0
+        for i in range(l_r):
+            dp[i][l_k] = 0
+        
+        for j in range(l_k - 1, -1, -1):
+            for i in range(l_r):
+                for k in ring_dict[key[j]]:
+                    # \u987A\u65F6\u9488\u9006\u65F6\u9488\u53D6min_step
+                    step = min(abs(k - i), abs(l_r - abs(k - i)))
+                    dp_i_j = dp[k][j+1] + step + 1
+                    dp[i][j] = min(dp_i_j, dp[i][j])
+        return dp[0][0]

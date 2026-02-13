@@ -1,0 +1,14 @@
+from collections import Counter 
+
+class Solution:
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        sf = lambda w: sum(map(lambda c: score[ord(c)-97], list(w)))
+        
+        def maxscore(words, count):
+            if len(words) == 0: return 0 #base case 
+            if all(words[0].count(i) <= count.get(i, 0) for i in set(words[0])): 
+                return max(sf(words[0]) + maxscore(words[1:], count - Counter(words[0])), maxscore(words[1:], count))
+            else: 
+                return maxscore(words[1:], count)
+        
+        return maxscore(words, Counter(letters))

@@ -1,0 +1,8 @@
+class Solution:
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        c = [complex(*p) for p in sorted([p1, p2, p3, p4])]
+        d1 = c[3] - c[0]
+        d2 = c[2] - c[1]
+        return (abs(d1) == abs(d2) > 0 and
+                d1.real * d2.real + d1.imag * d2.imag == 0 and 
+                (c[0] + c[3])/2 == (c[1] + c[2])/2)

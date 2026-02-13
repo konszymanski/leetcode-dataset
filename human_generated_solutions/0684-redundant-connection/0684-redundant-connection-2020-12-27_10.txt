@@ -1,0 +1,40 @@
+class DisjointSet:
+    def __init__(self, n):
+        self.disjoint_set = [-1 for _ in range(n + 1)]
+        self.disjoint_set[0] = float(\'-inf\')
+        self.cycle = None
+    
+    def find(self, vertex):
+        while self.disjoint_set[vertex] > 0:
+            vertex = self.disjoint_set[vertex]
+        return vertex, self.disjoint_set[vertex]
+    
+    def union(self, edge):
+        u, v = edge
+        s1, r1 = self.find(u)
+        s2, r2 = self.find(v)
+        if s1 != s2:
+            if r1 <= r2:
+                self.disjoint_set[s1] -= 1
+                self.disjoint_set[s2] = s1
+            else:
+                self.disjoint_set[s2] -= 1
+                self.disjoint_set[s1] = s2 
+        else:
+            self.cycle = edge 
+            
+class Solution:
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        vertices = set()
+        for u, v in edges:
+            vertices.add(u)
+            vertices.add(v)
+        
+        # number of dsitinct vertices 
+        n = len(vertices)
+        disjoint_set = DisjointSet(n)
+    
+        for edge in edges:
+            disjoint_set.union(edge)
+            
+        return disjoint_set.cycle

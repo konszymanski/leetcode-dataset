@@ -1,0 +1,17 @@
+from typing import Iterator
+class Solution:
+    def sumFourDivisors(self, nums: List[int]) -> int:
+        def divisors(n: int) -> Iterator[int]:
+            i = 2
+            while i * i <= n:
+                if n % i == 0:
+                    yield i
+                i += 1
+        ans = []            
+        for n in nums:
+            g = divisors(n)
+            d1, d2 = next(g, 0), next(g, 0)
+            if not d1 or d1 * d1 == n or d2:
+                continue
+            ans.extend([1, n, d1, n//d1])
+        return sum(ans)

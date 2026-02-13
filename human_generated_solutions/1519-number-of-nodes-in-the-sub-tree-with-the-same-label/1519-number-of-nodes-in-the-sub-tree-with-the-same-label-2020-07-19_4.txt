@@ -1,0 +1,32 @@
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        
+        graph = defaultdict(list)
+        val = dict()
+        
+        res = [0] * n
+        
+        for i in range(n):
+            graph[i] = []
+        
+        for i, (s, d) in enumerate(edges):
+            graph[s].append(d)
+            graph[d].append(s)
+            val[s] = labels[s]
+            val[d] = labels[d]
+
+        
+        def dfs(node, counter, parent):
+            for neigh in graph[node]:
+                if neigh != parent:
+                    dfs_res = dfs(neigh, defaultdict(int), node)
+                    for v in dfs_res:
+                        counter[v] += dfs_res[v]
+                
+            counter[val[node]] += 1
+            res[node] = counter[val[node]]
+            return counter
+            
+        dfs(0, defaultdict(int), -1)
+        
+        return res

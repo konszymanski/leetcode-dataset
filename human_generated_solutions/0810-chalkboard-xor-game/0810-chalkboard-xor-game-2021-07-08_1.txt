@@ -1,0 +1,7 @@
+class Solution:
+    def xorGame(self, nums: List[int]) -> bool:
+        test, i = 0, 0
+        for n in nums:
+            test = test ^ n
+            i += 1
+        return True if test == 0 else i % 2 == 0

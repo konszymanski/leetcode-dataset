@@ -1,0 +1,52 @@
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        # (((((((((((
+        # O(2^n), O(n)
+        # backtracking approach
+
+        self.longest_string = -1
+        self.res = set()
+
+        self.dfs(s, 0, [], 0, 0)
+
+        return self.res
+
+    def dfs(self, string, cur_idx, cur_res, l_count, r_count):
+        if cur_idx >= len(string):
+            if l_count == r_count:
+                if len(cur_res) > self.longest_string:
+                    self.longest_string = len(cur_res)
+
+                    self.res = set()
+                    self.res.add("".join(cur_res))
+                elif len(cur_res) == self.longest_string:
+                    self.res.add("".join(cur_res))
+        
+        else:
+            cur_char = string[cur_idx]
+
+            if cur_char == "(":
+                cur_res.append(cur_char)
+                # taking cur_char
+                self.dfs(string, cur_idx + 1, cur_res, l_count + 1, r_count)
+
+                # not taking cur_char
+                cur_res.pop()
+                self.dfs(string, cur_idx + 1, cur_res, l_count, r_count)
+
+            elif cur_char == ")":
+                self.dfs(string, cur_idx + 1, cur_res, l_count, r_count)
+
+                # checking of l_count should be greater than r_count
+                if l_count > r_count:
+                    cur_res.append(cur_char)
+                    # taking )
+                    self.dfs(string, cur_idx + 1, cur_res, l_count, r_count + 1)
+
+                    # not taking )
+                    cur_res.pop()
+            
+            else: # this is for any character except "(" and ")"
+                cur_res.append(cur_char)
+                self.dfs(string, cur_idx + 1, cur_res, l_count, r_count)
+                cur_res.pop()

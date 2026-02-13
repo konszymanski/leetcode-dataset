@@ -1,0 +1,28 @@
+def smallestDistancePair(self, nums: List[int], k: int) -> int:
+    n = len(nums)
+    nums.sort()
+
+    # def getCount(diff):
+    #     count = 0
+    #     for i in range(n):
+    #         j = bisect_right(nums, nums[i] + diff) - 1
+    #         count += j - i
+    #     return count
+
+    def getCount(diff):
+        count = i = 0
+        for j in range(1, n):
+            while nums[j] - nums[i] > diff:
+                i += 1
+            count += j - i
+        return count
+
+    L = 0; R = nums[-1] - nums[0]
+    while L < R:
+        diff = (L+R)//2
+        if getCount(diff) < k:
+            L = diff + 1
+        else:
+            R = diff
+
+    return L

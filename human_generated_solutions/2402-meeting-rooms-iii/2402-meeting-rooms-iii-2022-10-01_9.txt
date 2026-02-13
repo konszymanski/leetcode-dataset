@@ -1,0 +1,31 @@
+from sortedcontainers import SortedList
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        #each meeting takes place in the unused room with lowest number
+        #if this contraint wasnt present, 0 would always be the answer
+        
+        #all start values are unique
+        meetings.sort() #sort by start time
+        
+        occupied = []
+        available = SortedList(range(n)) #tbh you could have used another min heap for this
+        counter = [0]*n #keep track of how many times a room is used
+        
+        for s,e in meetings:
+            #if prev meetings have ended, make those rooms available again
+            while occupied and occupied[0][0] <= s:
+                _, room = heappop(occupied)
+                available.add(room)
+            
+            if available:
+                room = available.pop(0) #choose the unused room with lowest number
+                heappush(occupied, (e, room))
+                counter[room] += 1
+            else:
+                #find the meeting that ends the earliest
+                earliestEnding, room = heappop(occupied)
+                #meeting starts & ends, after a delay of earliestEnding - s
+                heappush(occupied, (e+earliestEnding-s, room))
+                counter[room] += 1
+
+        return max([(x, i) for i,x in enumerate(counter)], key=lambda x: (x[0], -x[1]))[1]

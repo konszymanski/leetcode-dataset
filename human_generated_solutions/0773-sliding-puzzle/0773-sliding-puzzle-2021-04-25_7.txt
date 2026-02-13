@@ -1,0 +1,90 @@
+class Solution(object):
+    def slidingPuzzle(self, board):
+        """
+        :type board: List[List[int]]
+        :rtype: int
+        """
+        # BFS
+
+        # Function to get neighbors for a given state
+        def getNeighbors(state):
+            # state is a tuple of tuples, extract each value
+            ((a,b,c),(d,e,f)) = state
+            neighbors = []
+            
+            # Find the gaps and slide adjacent pieces
+            if a == 0:
+                # b can move to a
+                neighbors.append(((b,a,c), (d,e,f)))
+                #d can move to a
+                neighbors.append(((d,b,c), (a,e,f)))
+            # Now, repeat this check for each cell
+            
+            elif b == 0:
+                # a can slide to b
+                neighbors.append(((b,a,c), (d,e,f)))
+                # c can slide to b
+                neighbors.append(((a,c,b), (d,e,f)))
+                # e can slide to b
+                neighbors.append(((a,e,c), (d,b,f)))
+            
+            elif c == 0:
+                # b can slide to c
+                neighbors.append(((a,c,b), (d,e,f)))
+                # f can slide to c
+                neighbors.append(((a,b,f), (d,e,c)))
+            
+            elif d == 0:
+                # a can slide to d
+                neighbors.append(((d,b,c), (a,e,f)))
+                # e can slide to d
+                neighbors.append(((a,b,c), (e,d,f)))
+            
+            elif e == 0:
+                # b can slide to e
+                neighbors.append(((a,e,c), (d,b,f)))
+                # d can slide to e
+                neighbors.append(((a,b,c), (e,d,f)))
+                # f can slide to e
+                neighbors.append(((a,b,c), (d,f,e)))
+                
+            elif f == 0:
+                # c can slide to f
+                neighbors.append(((a,b,f),(d,e,c)))
+                # e can slide to f
+                neighbors.append(((a,b,c), (d,f,e)))
+            
+            return neighbors
+        
+        # Initialize a queue for BFS
+        q = deque()
+        
+        # Initialize a visited map to hold distances from start state
+        visited = {}
+        
+        # Convert the start state to an immutable structure (tuple)
+        start_state = ((board[0][0], board[0][1], board[0][2]), (board[1][0], board[1][1], board[1][2]))
+        end_state = ((1,2,3),(4,5,0))
+        
+        # Edge Case
+        if start_state == end_state:
+            return 0
+        
+        # Add start_state to visited map with distance 0
+        q.append(start_state)
+        visited[start_state] = 0
+        
+        while q:
+            # Get the state from queue
+            curr_state = q.popleft()
+            
+            # Explore neighbors
+            for neighbor in getNeighbors(curr_state):
+                if neighbor not in visited:
+                    visited[neighbor] = visited[curr_state] + 1
+                    q.append(neighbor)
+                    # Reached end state, return number of moves
+                    if neighbor == end_state:
+                        return visited[neighbor]
+        # Unreachable
+        return -1

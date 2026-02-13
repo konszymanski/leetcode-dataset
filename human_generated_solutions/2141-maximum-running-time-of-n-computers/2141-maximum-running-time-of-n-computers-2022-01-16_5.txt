@@ -1,0 +1,18 @@
+class Solution:
+    def maxRunTime(self, n: int, batteries: List[int]) -> int:
+        batteries = sorted(batteries)
+        m = len(batteries)
+        final_batteries = batteries[-n:]
+        dist_batteries = batteries[:-n]
+        rem_power = sum(dist_batteries)
+        curr_ind = 0
+        while curr_ind < n - 1 and rem_power > 0:
+            max_consumption = (final_batteries[curr_ind + 1] - final_batteries[curr_ind]) * (curr_ind + 1)
+            if max_consumption <= rem_power:
+                rem_power -= max_consumption
+                curr_ind += 1
+            else:
+                return final_batteries[curr_ind] + (rem_power // (curr_ind + 1))
+        if curr_ind == n-1:
+            return final_batteries[curr_ind] + (rem_power // n)
+        return final_batteries[curr_ind]

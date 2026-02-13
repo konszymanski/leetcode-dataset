@@ -1,0 +1,22 @@
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        def dis(pi, pj):
+            return abs(pi[0] - pj[0]) + abs(pi[1] - pj[1])
+        
+        cost = 0
+        n = len(points)
+        visited = set()
+        pq = [[0, 0]] # (distance, current point)
+        
+        while len(visited) < n:
+            shortest, cur = heapq.heappop(pq)
+            if cur in visited: continue
+                
+            visited.add(cur)
+            cost += shortest
+            
+            for point in range(n):
+                if point not in visited: # from current, to every unvisited point
+                    heapq.heappush(pq, (dis(points[cur], points[point]), point))
+            
+        return cost

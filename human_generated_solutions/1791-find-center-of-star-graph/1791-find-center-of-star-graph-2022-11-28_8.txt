@@ -1,0 +1,13 @@
+class Solution:
+    def findCenter(self, edges: List[List[int]]) -> int:  
+        edge_map = {}
+        for v1, v2 in edges:
+            if v1 in edge_map:
+                return v1
+            if v2 in edge_map:
+                return v2
+            edge_map[v1] = True
+            edge_map[v2] = True
+
+
+        return -1

@@ -1,0 +1,11 @@
+def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        j, res = -1,0
+        for c in timeSeries:
+            if c <= j :
+                tmp = duration - ( abs(j-c) + 1)
+                res+= tmp
+                j+= tmp
+            else:
+                res+= duration
+                j =  c + duration - 1
+        return res

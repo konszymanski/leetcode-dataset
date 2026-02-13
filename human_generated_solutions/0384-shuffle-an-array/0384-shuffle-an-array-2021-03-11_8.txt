@@ -1,0 +1,16 @@
+class Solution:
+    def __init__(self, nums: List[int]):
+        self.original = nums[:]
+        self.nums = nums
+
+    def reset(self) -> List[int]:
+        return self.original
+
+    def shuffle(self) -> List[int]:
+        tmp = list(self.nums) # make a copy
+		self.nums = []
+        while tmp:
+            index = random.randint(0, len(tmp) - 1)        # get random index
+            tmp[-1], tmp[index] = tmp[index], tmp[-1]      # switch places
+            self.nums.append(tmp.pop())                   # pop the last index
+        return self.nums

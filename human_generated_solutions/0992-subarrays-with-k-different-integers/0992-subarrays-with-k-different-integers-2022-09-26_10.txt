@@ -1,0 +1,18 @@
+class Solution(object):
+    def subarraysWithKDistinct(self, nums, k):
+        return self.atmostK(nums, k) - self.atmostK(nums, k - 1)
+    def atmostK(self, nums, k):
+        hashmap = defaultdict(int)
+        left = 0
+        right = 0
+        ans = 0
+        while right < len(nums):
+            hashmap[nums[right]] += 1
+            while len(hashmap) > k:
+                hashmap[nums[left]] -= 1
+                if hashmap[nums[left]] == 0:
+                    del hashmap[nums[left]]
+                left += 1
+            ans += right - left + 1
+            right += 1
+        return ans

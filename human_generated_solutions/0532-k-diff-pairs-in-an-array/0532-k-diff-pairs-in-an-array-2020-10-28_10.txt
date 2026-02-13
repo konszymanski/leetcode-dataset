@@ -1,0 +1,5 @@
+class Solution:
+    def findPairs(self, a: List[int], K: int) -> int:
+        s = set(a)
+        if K == 0: return sum(1 for x in s if a.count(x) > 1)
+        return sum(1 for x in s if x + K in s)

@@ -1,0 +1,9 @@
+def iterative(self, root):
+        if not root: return []
+        stack = [root]
+        out = []
+        while len(stack):
+            temp = stack.pop()
+            out.append(temp.val)
+            stack.extend(reversed(temp.children))
+        return out

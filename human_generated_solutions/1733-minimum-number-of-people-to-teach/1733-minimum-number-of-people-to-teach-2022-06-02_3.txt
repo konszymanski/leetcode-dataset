@@ -1,0 +1,34 @@
+class Solution:
+    def cantCommunicate(self, user1: int, user2: int, languages: List[Set[int]]) -> bool:
+        \'\'\'
+        returns True iff user1 and user2 do not know any languages in common
+        \'\'\'
+        return len(languages[user1].intersection(languages[user2])) == 0
+    
+    def needToTeach(self, language: int, languages: List[Set[int]], missingConnections: Set[int]) -> int:
+        \'\'\'
+        returns number of users that have missing connections and do not know `language`
+        \'\'\'
+        return len([user for user in missingConnections if language not in languages[user]])
+    
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+		# users are 1-indexed
+		# we use sets instead of lists to improve linear lookup time to O(1)
+        languages = [None] + [set(List) for List in languages]
+        missingConnections = set()
+        
+		# identify all users that have at least one friend they can\'t communicate to
+        for user1, user2 in friendships:
+            if self.cantCommunicate(user1, user2, languages):
+                missingConnections.add(user1)
+                missingConnections.add(user2)
+        
+		# for each language count how many users with missing connections do not know that language
+		# answer is the minimum of these counts
+        minUsers = len(languages)
+        for language in range(1, n + 1):
+            minUsers = min(minUsers, self.needToTeach(language, languages, missingConnections))
+            if minUsers == 0:
+                return 0
+            
+        return minUsers

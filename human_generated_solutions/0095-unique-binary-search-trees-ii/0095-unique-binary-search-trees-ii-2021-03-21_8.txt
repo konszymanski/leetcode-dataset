@@ -1,0 +1,12 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        def bstGen(arr:List[int])->List[TreeNode]:
+            if len(arr)<=0: return [None]                       # terminal condition
+            result = []                                         
+            for i in range(len(arr)):                           # for each number in the input list
+                left, right = bstGen(arr[:i]), bstGen(arr[i+1:])# recursive calls to the lesser and greater numbers
+                for l in left:                                  # genereate all combinations of left and right subtrees
+                    for r in right:
+                        result.append(TreeNode(arr[i], l, r))   # append each combination to the list of trees
+            return result
+        return bstGen(list(range(1,n+1)))

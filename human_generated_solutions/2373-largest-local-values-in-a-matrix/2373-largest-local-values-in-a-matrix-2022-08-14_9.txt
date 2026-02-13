@@ -1,0 +1,30 @@
+class Solution:
+    def largestLocal(self, grid: List[List[int]]) -> List[List[int]]:
+        
+        
+        def largest(nums, k):
+            res = []
+            queue = []
+            for i in range(k-1):
+                heapq.heappush(queue, (-nums[i], i))
+                
+            for i in range(k-1, len(nums)):
+                heapq.heappush(queue, (-nums[i], i))
+                while queue[0][1] < i-k+1:
+                    heapq.heappop(queue)
+                res.append(-queue[0][0])
+                
+            return res
+        
+        n = len(grid)
+        res = []
+        for j in range(n):
+            col = [grid[i][j] for i in range(n)]
+            res.append(largest(col, 3))
+            
+        ans = []
+        for j in range(len(res[0])):
+            row = [res[i][j] for i in range(n)]
+            ans.append(largest(row, 3))
+         
+        return ans

@@ -1,0 +1,7 @@
+class Solution(object):
+    def getNoZeroIntegers(self, num):
+        for k in range(num -1, 0, -1):
+            if \'0\' in str(k) or \'0\' in str(num - k):
+                continue
+                
+            return [k, num - k]

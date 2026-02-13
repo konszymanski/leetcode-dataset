@@ -1,0 +1,38 @@
+class CBTInserter:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.root = root
+        q = deque()
+        q.append(root)
+        self.d = deque()
+        while q:
+            node = q.popleft()
+            
+            if node.left is None or node.right is None: # collect all the nodes which incomplete (i.e. have child < 2)
+                self.d.append(node)
+            
+            if node.left:
+                q.append(node.left)
+            
+            if node.right:
+                q.append(node.right)
+            
+
+    def insert(self, val: int) -> int:
+        node = self.d[0] # we will add newnode to the first incomplete node we found.
+        
+        newNode = TreeNode(val)
+        
+        if node.left is None: # first try to add to left side.
+            node.left = newNode
+            self.d.append(newNode)
+            return node.val
+        
+        if node.right is None: # if left is full, try add right side
+            node.right = newNode
+            self.d.append(newNode)
+            self.d.popleft() # don\'t forget to pop out node because now node got 2 children.
+            return node.val
+
+    def get_root(self) -> Optional[TreeNode]:
+        return self.root # doesn\'t change

@@ -1,0 +1,34 @@
+def missingNumber(self,arr,n):
+		/* variable to check if n is present in our array or not */
+        hasN = False
+        for i in range(0,n):
+			# if n is present we update our boolean variable to True
+            if arr[i] == n:
+                hasN = True
+				
+			# marking the useless elements as zero
+            if arr[i]<=0 or arr[i]>=n:
+                arr[i] = 0
+				
+				
+        #using the above technique, we are updating the current array 
+			# so that arr[i] contains its original value as well as the desired value        
+        for i in range(0,n):
+            val = arr[i]%n
+			
+			# leaving the useless elements as well as
+			# already updated elements
+            if val==0 or arr[val]//n == val:
+                continue
+            arr[val] += val * n
+        
+        #simple check that updated arr[i] contains i or not
+        for i in range(1,n):
+            if arr[i]//n != i:
+                return i
+                
+		#in case 1 to n-1 are all present , we will check for n and n+1 using prev calculated hasN
+        if hasN == True:
+            return n+1
+        else :
+            return n

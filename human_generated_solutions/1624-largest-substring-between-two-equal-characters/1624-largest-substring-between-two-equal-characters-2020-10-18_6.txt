@@ -1,0 +1,11 @@
+class Solution(object):
+    def maxLengthBetweenEqualCharacters(self, s):
+        lastSeen = dict()
+        maxDist = -1
+        for index, char in enumerate(s):
+            if char not in lastSeen:
+                lastSeen[char] = index
+            else:
+                maxDist = max(index - lastSeen[char], maxDist)
+                
+        return maxDist - 1 if maxDist > -1 else -1

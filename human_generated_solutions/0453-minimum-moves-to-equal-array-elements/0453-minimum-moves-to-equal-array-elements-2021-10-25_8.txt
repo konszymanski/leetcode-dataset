@@ -1,0 +1,9 @@
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        total = 0
+        min_num = None
+        for x in nums:
+            if min_num == None or x < min_num:
+                min_num = x
+            total += x
+        return total - min_num * len(nums)

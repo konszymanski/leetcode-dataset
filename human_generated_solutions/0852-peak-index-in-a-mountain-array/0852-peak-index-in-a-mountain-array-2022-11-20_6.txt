@@ -1,0 +1,16 @@
+class Solution:
+    def peakIndexInMountainArray(self, arr: List[int]) -> int:
+        low=0 #first index 
+        high=len(arr)-1 #last index
+        while low<high:  #if true then calculate mid
+            mid=(low+high)//2 #mid is the index of the middle element
+            if arr[mid-1]<=arr[mid] and arr[mid]>=arr[mid+1]: #if condition satisfies then simply return the index value of middle element i.e mid
+                return mid
+            elif arr[mid]<arr[mid+1]: #if middle ele is smaller than next element 
+                low=mid #then increse the index value of low and again loop the arr using updated low pointer
+            else: # and vice versa...!! 
+                high=mid
+
+
+#keep doing..!!
+#stay motivated..!!

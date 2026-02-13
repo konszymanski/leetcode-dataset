@@ -1,0 +1,13 @@
+class Solution:
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        prefix = [0]
+        for x in nums: prefix.append(prefix[-1] + x)
+        
+        @cache
+        def fn(i, n): 
+            """Return max sum of 3 non-overlapping subarrays."""
+            if n == 0: return []
+            if i+k >= len(prefix): return []
+            return max([i] + fn(i+k, n-1), fn(i+1, n), key=lambda x: sum(prefix[xx+k] - prefix[xx] for xx in x))
+        
+        return fn(0, 3)

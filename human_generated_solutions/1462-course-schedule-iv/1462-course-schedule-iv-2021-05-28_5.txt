@@ -1,0 +1,16 @@
+def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        memo = [[False for i in range(n)] for j in range(n)]
+  
+        for pre, crs in prerequisites:
+            memo[pre][crs] = True
+            
+        for pre in range(n):
+            for crs in range(n):
+                if pre != crs and memo[pre][crs]:
+                    for mid in range(n):
+                        if mid != crs and mid != pre and memo[mid][pre]: # 1
+                            memo[mid][crs] = True                        # 2
+        res = []
+        for u, v in queries:
+            res.append(memo[u][v])
+        return res

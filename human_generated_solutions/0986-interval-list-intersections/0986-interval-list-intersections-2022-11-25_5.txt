@@ -1,0 +1,38 @@
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        l = 0
+        r = 0
+        intersec = []
+        while l < len(firstList) and r < len(secondList):
+            f = firstList[l]
+            s = secondList[r]
+            inter_s = -1
+            inter_e = -1
+            
+            if (f[0] >= s[0] and f[0] <= s[1]):
+                inter_s = f[0]
+            elif (s[0] >= f[0] and s[0] <= f[1]):
+                inter_s = s[0]
+            else:
+                if s[1] < f[1]:
+                    r += 1
+                else:
+                    l += 1
+            
+            if inter_s != -1:
+                if (f[1] > s[1]):
+                    inter_e = s[1]
+                    r += 1
+                else:
+                    inter_e = f[1]
+                    l += 1
+                    
+            if inter_s != -1 and inter_e != -1:
+                intersec.append([inter_s, inter_e])
+                
+        return intersec

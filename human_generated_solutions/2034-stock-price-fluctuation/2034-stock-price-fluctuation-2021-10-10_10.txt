@@ -1,0 +1,25 @@
+from sortedcontainers import SortedList
+class StockPrice:
+
+    def __init__(self):
+        self.hash = {}
+        self.price = SortedList()
+        self.time = [0,0]
+
+    def update(self, timestamp: int, price: int) -> None:
+        if timestamp in self.hash:
+            k = [timestamp , self.hash[timestamp] ]
+            self.price.remove( k[::-1] )
+        if self.time[0] <= timestamp :
+            self.time = [timestamp , price]
+        self.hash[ timestamp ] = price
+        self.price.add( [price,timestamp] )
+        
+    def current(self) -> int:
+        return self.time[1]
+
+    def maximum(self) -> int:
+        return self.price[-1][0]
+
+    def minimum(self) -> int:
+        return self.price[0][0]

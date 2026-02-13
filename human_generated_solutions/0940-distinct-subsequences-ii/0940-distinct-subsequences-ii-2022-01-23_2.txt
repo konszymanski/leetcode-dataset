@@ -1,0 +1,8 @@
+class Solution(object):
+    def distinctSubseqII(self, s):
+        double_cnt_hash, ret = dict(), 0
+        for c in s:
+            prev_cnt = ret
+            ret += (ret + 1) - double_cnt_hash.get(c, 0) # new cases deduct double cnt cases
+            double_cnt_hash[c] = double_cnt_hash.get(c, 0) + (ret - prev_cnt) # save num of new unique substr 
+        return ret % (10**9 + 7)

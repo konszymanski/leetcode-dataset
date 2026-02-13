@@ -1,0 +1,28 @@
+class Solution(object):
+    def isLongPressedName(self, name, typed):
+        """
+        :type name: str
+        :type typed: str
+        :rtype: bool
+        """
+        elementOfTypedName = 0
+        charactersOfNamePresents = 0
+        numberOfCharactersInName = len(name)
+        numerOfCharacthersInTyped = len(typed)
+        ###if the first letter of the name and typed don\'t match ::: case :::
+        if name[0] != typed[0]:
+            return False
+            
+        ### if  elementOfTypedName is equal to  numberOfElementsInTyped then len(typed) == 0
+		##since name starts to count from  0 then we don\'t need the last element 
+        while elementOfTypedName < numerOfCharacthersInTyped:
+            
+            
+            if charactersOfNamePresents < numberOfCharactersInName and name[charactersOfNamePresents] == typed[elementOfTypedName]:
+                charactersOfNamePresents +=1
+                ### with the next line I\'m wondering if is a repeated character
+				## if not then is an additional letter and then is a false case
+            elif typed[elementOfTypedName] != typed[elementOfTypedName-1]:
+                return False
+            elementOfTypedName +=1
+        return charactersOfNamePresents == numberOfCharactersInName

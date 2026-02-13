@@ -1,0 +1,25 @@
+OPEN, = \'(\'
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+		# STEP 1
+        validSections = [False] * len(s)
+		# STEP 2
+        stack = []
+        for index, c in enumerate(s):
+            if c == OPEN:
+                stack.append(index)
+            else:
+                if len(stack) > 0:
+                    validSections[index], validSections[stack.pop()] = True, True
+         
+		# STEP 3
+        currentLength = 0
+        best = 0
+        for valid in validSections:
+            if valid:
+                currentLength += 1
+            else:
+                currentLength = 0
+            if best < currentLength:
+                best = currentLength
+        return best

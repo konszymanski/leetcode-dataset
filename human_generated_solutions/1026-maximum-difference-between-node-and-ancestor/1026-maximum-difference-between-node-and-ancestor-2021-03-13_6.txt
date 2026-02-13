@@ -1,0 +1,16 @@
+def maxAncestorDiff(self, root: TreeNode) -> int:
+	max_diff = 0
+	stack = [(root, float(inf), -float(inf))]
+
+	while stack:
+		r, min_val, max_val = stack.pop()
+		min_val = min(r.val, min_val)
+		max_val = max(r.val, max_val)
+		if not r.left and not r.right:
+			max_diff = max(max_diff, max_val-min_val)
+		else:
+			if r.left:
+				stack.append((r.left, min_val, max_val))
+			if r.right:
+				stack.append((r.right, min_val, max_val))
+	return max_diff

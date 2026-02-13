@@ -1,0 +1,15 @@
+class Solution:
+    def getWinner(self, arr: list[int], k: int) -> int:
+        
+        champion, tally = arr.pop(0), 0
+
+        for player in arr:
+            
+            if player > champion: 
+                champion, tally = player, 0
+                
+            tally+= 1
+            
+            if tally == k: return champion
+
+        return champion

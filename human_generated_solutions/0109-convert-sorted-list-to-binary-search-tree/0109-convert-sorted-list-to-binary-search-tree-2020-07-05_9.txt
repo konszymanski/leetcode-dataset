@@ -1,0 +1,19 @@
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        def traverseList(head):
+            while head:
+                linkedListVal.append(head.val)
+                head = head.next
+        def constructBST(arr):
+            if not arr:
+                return None
+            mid = len(arr) // 2
+            tree = TreeNode(arr[mid])
+            tree.left = constructBST(arr[ : mid])
+            tree.right = constructBST(arr[mid + 1 : ])     
+            return tree
+        linkedListVal = []
+        traverseList(head)
+        print(linkedListVal)
+        root = constructBST(linkedListVal)
+        return root

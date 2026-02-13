@@ -1,0 +1,13 @@
+class Solution:
+    def halvesAreAlike(self, s: str) -> bool:
+        vowels=[\'a\',\'e\',\'i\',\'o\',\'u\',\'A\',\'E\',\'I\',\'O\',\'U\']
+        l = s[:len(s)//2]
+        r = s[len(s)//2:]
+        lsum = 0
+        rsum = 0
+        for i in range(len(l)):
+            if l[i] in vowels:
+                lsum += 1
+            if r[i] in vowels:
+                rsum += 1
+        return True if lsum==rsum else False

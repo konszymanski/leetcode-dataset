@@ -1,0 +1,34 @@
+class Solution:
+    def LIS(self, A):
+        n = len(A)
+        
+        lis = [1] * n
+        
+        for j in range(1, n):
+            for i in range(j):
+                if A[i] < A[j]:
+                    lis[j] = max(lis[j], lis[i] + 1)
+        
+        return lis
+        
+    
+    def minimumMountainRemovals(self, A: List[int]) -> int:
+        n = len(A)
+        
+        lisLR = self.LIS(A)
+        
+        lisRL = self.LIS(A[::-1])[::-1]
+        
+        maxBitonicLen = 0
+        
+        for i in range(n):
+            l = lisLR[i]
+            r = lisRL[i]
+            
+            if l > 1 and r > 1 and (l + r - 1) > maxBitonicLen:
+                maxBitonicLen = l + r - 1
+        
+        # min Removals = Length of Array - maxBitonicLen
+        ans = n - maxBitonicLen
+        
+        return ans

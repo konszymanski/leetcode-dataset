@@ -1,0 +1,41 @@
+def amountOfTime(self, root, start):
+        """
+        :type root: Optional[TreeNode]
+        :type start: int
+        :rtype: int
+        """
+        self.startNode = None
+        parent = {}
+        def helper(root):
+            if not root:
+                return
+            if root.val == start:
+                self.startNode = root
+            if root.left:
+                parent[root.left] = root
+                helper(root.left)
+            if root.right:
+                parent[root.right] = root
+                helper(root.right)
+        helper(root)
+
+        q = collections.deque()
+        q.append(self.startNode)
+        dis = -1
+        seen = set()
+        seen.add(self.startNode.val)
+        while q:
+            size = len(q)
+            for i in range(size):
+                cur = q.popleft()
+                if cur.left and (cur.left.val not in seen):
+                    seen.add(cur.left.val)
+                    q.append(cur.left)
+                if cur.right and (cur.right.val not in seen):
+                    seen.add(cur.right.val)
+                    q.append(cur.right)
+                if cur in parent and (parent[cur].val not in seen):
+                    seen.add(parent[cur].val)
+                    q.append(parent[cur])
+            dis += 1
+        return dis

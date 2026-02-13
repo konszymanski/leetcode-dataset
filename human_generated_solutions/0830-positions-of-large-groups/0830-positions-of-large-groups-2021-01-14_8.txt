@@ -1,0 +1,17 @@
+class Solution:
+    def largeGroupPositions(self, s: str) -> List[List[int]]:
+        i,j,n=0,1,len(s)
+        tab,aux=[],[]
+        while j<n:
+            if s[i]==s[j]:
+                aux,j=[i,j],j+1
+            elif aux:
+                if aux[1]-aux[0]>=2:
+                    tab.append(aux)
+                i,j,aux=j,j+1,[]
+            else:
+                i,j=j,j+1
+        if aux:
+            if aux[1]-aux[0]>=2:
+                tab.append(aux)
+        return tab

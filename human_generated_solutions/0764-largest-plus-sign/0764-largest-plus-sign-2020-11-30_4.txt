@@ -1,0 +1,38 @@
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:
+        mines_dict = {(mine[0], mine[1]): True for mine in mines}
+        dp = {}
+        ans = 0
+		
+		# left and right wingspan calculation
+        for row in range(n):
+            cnt = 0
+            for col in range(n):
+                cnt = self.update_dp(dp, mines_dict, row, col, cnt)
+            cnt = 0
+            for col in range(n-1, -1, -1):
+                cnt = self.update_dp(dp, mines_dict, row, col, cnt)
+                
+        
+		# top and down wingspan calculation
+        for col in range(n):
+            cnt = 0
+            for row in range(n):
+                cnt = self.update_dp(dp, mines_dict, row, col, cnt)
+            cnt = 0
+            for row in range(n-1, -1, -1):
+                cnt = self.update_dp(dp, mines_dict, row, col, cnt)
+				
+				# final answer would be the maximum wingspan at any point.
+                ans = max(ans, dp[row, col])
+        return ans
+            
+    
+    def update_dp(self, dp, mines_dict, row, col, cnt):
+        if (row, col) not in mines_dict:
+            cnt += 1
+            dp[row, col] = min(cnt, dp[row, col]) if (row, col) in dp else cnt
+        else:
+            cnt = 0
+            dp[row, col] = 0
+        return cnt

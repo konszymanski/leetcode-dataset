@@ -1,0 +1,13 @@
+class Solution:
+    def distributeCandies(self, candies: List[int]) -> int:
+            d = dict()
+            dict_size = 0
+            for num in candies:
+                if num not in d:
+                    d[num] = 1
+                    dict_size += 1
+                    
+            list_size = len(candies) // 2
+            
+            result = list_size if list_size < dict_size else dict_size
+            return result

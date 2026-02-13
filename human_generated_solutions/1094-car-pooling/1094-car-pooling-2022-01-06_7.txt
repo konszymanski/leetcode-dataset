@@ -1,0 +1,18 @@
+class Solution:
+	def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+		events = [0]*1001 
+		tail_idx = 0  # passenger won\'t not get in the car after this location
+		for trip in trips:
+			[val, pick_idx, drop_idx] = trip
+			events[pick_idx] = events[pick_idx] + val
+			events[drop_idx] = events[drop_idx] - val
+			tail_idx = max(tail_idx, pick_idx)
+
+		cur_passenger = 0
+		i = 0
+		while i < tail_idx+1:
+			cur_passenger += events[i]
+			if cur_passenger > capacity:
+				return False
+			i += 1
+		return True

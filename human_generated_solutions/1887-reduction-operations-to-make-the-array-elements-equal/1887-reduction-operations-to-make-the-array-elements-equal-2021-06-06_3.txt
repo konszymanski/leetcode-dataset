@@ -1,0 +1,6 @@
+def reductionOperations(self, nums: List[int]) -> int:
+	res = to_change = 0
+	for _, new_elements in sorted(Counter(nums).items(), reverse=True):
+		res += to_change
+		to_change += new_elements
+	return res

@@ -1,0 +1,19 @@
+class Solution:
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        dq, visited = collections.deque([s]), set([s])
+        ans, n = s, len(s)
+        while dq:
+            cur = dq.popleft()
+            ans = min(ans, cur)
+            cur_a = \'\'.join([
+                str((int(cur[i]) + a) % 10) if i % 2 else cur[i] 
+                for i in range(n)
+            ])
+            cur_b = cur[b:] + cur[:b]
+            if cur_a not in visited: 
+                dq.append(cur_a)
+                visited.add(cur_a)
+            if cur_b not in visited: 
+                dq.append(cur_b)
+                visited.add(cur_b)
+        return ans

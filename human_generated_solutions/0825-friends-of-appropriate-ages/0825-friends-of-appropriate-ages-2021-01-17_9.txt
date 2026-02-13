@@ -1,0 +1,19 @@
+class Solution:
+    def numFriendRequests(self, ages: List[int]) -> int:
+        ages = sorted(Counter(ages).items(), key=lambda x: x[0])
+
+        def calc(arr):
+            total = 0
+            window = 0
+            left = 0
+            for right, (age, count) in enumerate(arr):
+                while left < right and arr[left][0] <= 0.5 * age + 7:
+                    window -= arr[left][1]
+                    left += 1
+                total += window * count
+                if count > 1 and age > 0.5 * age + 7:
+                    total += (count - 1) * count
+                window += count
+            return total
+
+        return calc(ages)

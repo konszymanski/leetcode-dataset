@@ -1,0 +1,118 @@
+class ListNode:
+    
+    def __init__(self, val = None, prev = None, nextt = None):
+        self.val = val
+        self.prev = prev
+        self.next = nextt
+        self.keys = set()
+    
+    def unlink(self):
+        self.prev.next = self.next
+        self.next.prev = self.prev
+        
+    def create_before(self, val = None):
+        val = self.val - 1 if val == None else val
+        new_node = ListNode(val, self.prev, self)
+        self.prev = new_node
+        new_node.prev.next = new_node
+        return new_node
+    
+    def create_after(self, val = None):
+        val = self.val + 1 if val == None else val
+        new_node = ListNode(val, self, self.next)
+        self.next = new_node
+        new_node.next.prev = new_node
+        return new_node
+    
+    def add_key(self, key):
+        self.keys.add(key)
+        
+    def remove_key(self, key):
+        self.keys.remove(key)
+        
+    def peek_key(self):
+        if self.val == -1:
+            return ""
+        else:
+            key = self.keys.pop()
+            self.keys.add(key)
+            return key
+
+    
+
+class AllOne:
+
+    def __init__(self):
+        self.min_ptr = ListNode(-1)
+        self.max_ptr = ListNode(-1)
+        self.min_ptr.next = self.max_ptr
+        self.max_ptr.prev = self.min_ptr
+        self.key_to_node = {}
+
+    def inc(self, key: str) -> None:
+        if key in self.key_to_node:
+            node = self.key_to_node[key]
+            if len(node.keys) == 1:
+                if node.val + 1 == node.next.val:
+                    new_node = node.next
+                    self.key_to_node[key] = new_node
+                    new_node.add_key(key)
+                    node.unlink()
+                else:
+                    node.val += 1
+            else:
+                if node.val + 1 == node.next.val:
+                    new_node = node.next
+                    self.key_to_node[key] = new_node
+                    node.remove_key(key)
+                    new_node.add_key(key)
+                else:
+                    new_node = node.create_after()
+                    node.remove_key(key)
+                    new_node.add_key(key)
+                    self.key_to_node[key] = new_node
+        else:
+            first_node = self.min_ptr.next
+            if first_node.val == 1:
+                first_node.add_key(key)
+                self.key_to_node[key] = first_node
+            else:
+                new_node = self.min_ptr.create_after(1)
+                new_node.add_key(key)
+                self.key_to_node[key] = new_node
+
+
+    def dec(self, key: str) -> None:
+        node = self.key_to_node[key]
+        if node.val == 1:
+            if len(node.keys) == 1:
+                node.unlink()
+            else:
+                node.remove_key(key)
+            del self.key_to_node[key]
+        else:
+            if len(node.keys) == 1:
+                if node.prev.val + 1 == node.val:
+                    new_node = node.prev
+                    self.key_to_node[key] = new_node
+                    new_node.add_key(key)
+                    node.unlink()
+                else:
+                    node.val -= 1
+            else:
+                if node.prev.val + 1 == node.val:
+                    new_node = node.prev
+                    self.key_to_node[key] = new_node
+                    node.remove_key(key)
+                    new_node.add_key(key)
+                else:
+                    new_node = node.create_before()
+                    node.remove_key(key)
+                    new_node.add_key(key)
+                    self.key_to_node[key] = new_node
+
+    def getMaxKey(self) -> str:
+        return self.max_ptr.prev.peek_key()
+
+    def getMinKey(self) -> str:
+        return self.min_ptr.next.peek_key()

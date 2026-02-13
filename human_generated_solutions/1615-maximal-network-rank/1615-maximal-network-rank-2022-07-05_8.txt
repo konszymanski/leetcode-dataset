@@ -1,0 +1,18 @@
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        
+        graph = collections.defaultdict(set)
+        
+        for road in roads:
+            graph[road[0]].add(road[1])
+            graph[road[1]].add(road[0])
+            
+        maxLen = 0
+        for i in range(n):
+            for j in range(i+1,n):
+                if j not in graph[i]:
+                    maxLen = max(maxLen,len(graph[i])+len(graph[j]))
+                else:
+                    maxLen = max(maxLen,len(graph[i])+len(graph[j])-1)
+        
+        return maxLen

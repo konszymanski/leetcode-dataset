@@ -1,0 +1,23 @@
+from collections import deque
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        map, inDegrees = [set() for i in range(numCourses)], [0]*numCourses
+        for pre in prerequisites:
+            map[pre[1]].add(pre[0])
+            inDegrees[pre[0]] += 1
+        result, queue = [], deque()
+        for i in range(numCourses):
+            if inDegrees[i] == 0:
+                queue.append(i)
+        while queue:
+            current = queue.popleft()
+            result.append(current)
+            for i in map[current]:
+                inDegrees[i] -= 1
+                if inDegrees[i] == 0:
+                    queue.append(i)
+        
+        for i in range(numCourses):
+            if inDegrees[i] != 0:
+                return []
+        return result;

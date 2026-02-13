@@ -1,0 +1,17 @@
+class Solution:
+    def minDiffInBST(self, root: TreeNode) -> int:
+        def dfs(node, prev):
+            if not node:
+                return prev
+            
+            prev = dfs(node.left, prev)
+            
+            if prev is not None:
+                self.min_dist = min(self.min_dist, abs(prev - node.val))            
+            
+            return dfs(node.right, node.val)
+        
+        self.min_dist = math.inf
+        dfs(root, None)
+        
+        return self.min_dist

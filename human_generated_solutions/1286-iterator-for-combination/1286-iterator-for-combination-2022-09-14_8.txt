@@ -1,0 +1,25 @@
+class CombinationIterator:
+    def __init__(self, characters: str, combinationLength: int):
+        self._combinationLength=combinationLength
+        self._s=characters
+        self._gen=self._backTrack(0,[])
+        self._next=next(self._gen)
+        
+    def _backTrack(self,idx,stcks):
+        if len(stcks)==self._combinationLength:yield \'\'.join(stcks)
+        for jdx in range(idx,len(self._s)):
+            stcks.append(self._s[jdx])
+            yield from self._backTrack(jdx+1,stcks)
+            stcks.pop()
+        
+    def next(self) -> str:
+        ret=self._next
+        try:
+            self._next=next(self._gen)
+        except StopIteration:
+            self._next=None
+            pass
+        return ret
+    
+    def hasNext(self) -> bool:    
+        return self._next!=None

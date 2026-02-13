@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def trimBST(self, root: TreeNode, L: int, R: int) -> TreeNode:
+        
+        if not root:
+            # empty node or empty tree
+            return None
+        
+        else:
+            
+            if root.val < L : 
+                # root and left sub-tree is out of lower bound L
+                # trim and keep right-subtree
+                return self.trimBST(root.right, L, R)
+            
+            elif root.val > R :
+                # root and right sub-tree is out of upper bound R
+                # trim and keep left-subtree
+                return self.trimBST(root.left, L, R)
+                
+            else:
+                # root is in range
+                # trim both left and right sub-tree
+                root.left = self.trimBST( root.left, L, R)
+                root.right = self.trimBST( root.right, L, R)
+
+                return root

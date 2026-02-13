@@ -1,0 +1,11 @@
+class Solution:
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        s = [0]
+        def inorder(root):
+            if root: 
+                inorder(root.right)
+                root.val += s[0]
+                s[0] = root.val
+                inorder(root.left)
+        inorder(root)
+        return root

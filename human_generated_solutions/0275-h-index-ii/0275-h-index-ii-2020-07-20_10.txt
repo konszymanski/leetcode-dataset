@@ -1,0 +1,15 @@
+class Solution:
+    def hIndex(self, A):
+        L     = len(A)
+        valid = lambda i: A[i]>=(L-i)
+        i,j   = 0, L-1 
+        best  = L
+        #
+        while i<=j:
+            mid = (i+j)//2
+            if valid(mid):
+                best = mid # After a match, " (j = mid - 1) < mid ", so the latest match is always the minimum
+                j = mid - 1 # try even lower
+            else:
+                i = mid + 1 # index must be higher
+        return L-best

@@ -1,0 +1,23 @@
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        L = 0
+        R = nums[-1] - nums[0]
+        while L < R:
+            M = (L + R)//2
+            if self.numOfPair(nums,M) >= k:
+                R = M
+            else:
+                L = M + 1
+        return R
+        
+    def numOfPair(self,nums,dist):
+        count = 0
+        L = 0
+        R = 0
+        while L < len(nums) or R < len(nums):
+            while R < len(nums) and nums[R] - nums[L] <= dist:
+                R += 1
+            count += (R - L - 1)
+            L += 1
+        return count

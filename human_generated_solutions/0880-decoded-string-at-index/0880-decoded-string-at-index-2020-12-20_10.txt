@@ -1,0 +1,85 @@
+class Solution:
+    def decodeAtIndex(self, S: str, K: int) -> str:
+		# e.g. S == \'ab2c3d\'
+		# ls_len: list of lengths of new patterns [2, 5] (ab, ababc)
+		# ls_total_len: list of lengths of times * new pattern [4, 15] (abab, ababcababcababc)
+		# ls_pattern: list of new additional pattern [\'ab\', \'c\']
+        ls_len = []
+        ls_total_len = []
+        ls_pattern = []
+        tmp = \'\'
+        length = 0
+        # flag for string without integer
+		prev_num = -1
+		
+        for i in range(len(S)): 
+            value = S[i]
+            if i == 0: 
+				# first char is letter only
+                tmp = value
+                length = 1
+                continue
+            if 50 <= ord(value) <= 57: 
+                if tmp: 
+					# if not more than one integer appearing together
+                    ls_pattern.append(tmp)
+                    ls_len.append(length)
+                    ls_total_len.append(length * int(value))
+                else: 
+					# e.g. S = \'a23\', here ls_total_len will change from [2] (aa) to [6] (aaaaaa). 
+					# The other two lists unchanged.
+                    ls_total_len[-1] = length * int(value)
+                length = length * int(value)
+                tmp = \'\'
+                prev_num = i
+            else: 
+                tmp += value
+                length += 1       
+        
+		# residual is the last part left with no multiplier, e.g. S = \'ab2c3d\', then the last \'d\' is the residual
+        residual = tmp
+		if prev_num < 0: 
+			# if no integer is in S, return the (K - 1)th element. 
+            return S[K - 1]
+       
+        if K > ls_total_len[-1]: 
+			# if K is within the first pattern
+            return residual[K - ls_total_len[-1] - 1]
+        if K <= ls_total_len[0]: 
+			# if K is in the residual
+            ptn = ls_pattern[0]
+            len_ptn = ls_len[0]
+            return ptn[(K - 1) % len_ptn]
+        
+        def bs(k, lb, ub, ls): 
+			# binary search of K\'s location in the two lists: ls_len & ls_total_len
+            if k <= ls[lb]: 
+                return lb - 1
+            if k > ls[ub]: 
+                return ub
+            if ub == lb + 1: 
+                return lb
+            mid = (lb + ub) // 2
+            if k == ls[mid]: 
+                return mid - 1
+            elif k < ls[mid]:
+                return bs(k, lb, mid, ls)
+            else: 
+                return bs(k, mid + 1, ub, ls)
+         
+		# due to the nature of the two lists, idx1 >= idx2
+        idx1 = bs(K, 0, len(ls_pattern) - 1, ls_len)
+        idx2 = bs(K, 0, len(ls_pattern) - 1, ls_total_len)
+
+        while idx1 != idx2 and idx2 != -1: 
+			# if idx1 ==  idx2, (K - 1)th element is in the new additional pattern
+			# if idx2 == -1, (K - 1)th element is in the first pattern
+            K %= ls_len[idx1]
+            if not K: 
+                K = ls_len[idx1]
+            idx1 = bs(K, 0, idx1, ls_len)
+            idx2 = bs(K, 0, idx2, ls_total_len)
+        if idx2 == -1: 
+            return ls_pattern[0][K % ls_len[0] - 1]
+        if idx1 == idx2: 
+            return ls_pattern[idx1 + 1][K - ls_total_len[idx1] - 1]

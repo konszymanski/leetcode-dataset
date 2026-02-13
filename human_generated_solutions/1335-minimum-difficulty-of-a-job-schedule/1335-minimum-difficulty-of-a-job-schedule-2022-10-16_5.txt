@@ -1,0 +1,37 @@
+class Solution:
+    def minDifficulty(self, job_diff: list[int], d: int) -> int:
+        
+        # this helper function performs a DP-based exploration
+        # of possible combinations (with activated cache);
+        # it returns schedule difficulty for the sublist \'job_diff[i:]\'
+        # with the allowed number of subdivisions that equals \'d\'
+        @functools.cache
+        def dp(i: int, d: int) -> int:
+
+            # [1] branches with more than \'d\' divisions are not
+            #     allowed, thus, penalized with infinite score
+            if d < 0 : return inf
+                        
+            this_day_diff = 0
+            schedule_diff = inf
+            last_idx = min(n-d+1,n)
+            
+            # [2] this problem allows splitting the calculations
+            #     into two parts:
+            #     - difficulty for this day
+            #     - cumulative difficulty for all next days
+            #     we search for min across all \'this+next\' combinations
+            for ii in range(i, last_idx):
+                this_day_diff  = max(this_day_diff, job_diff[ii])
+                next_days_diff = dp(ii+1, d-1) if ii + 1 < len(job_diff) else 0
+                schedule_diff  = min(schedule_diff, this_day_diff + next_days_diff)
+            
+            return schedule_diff
+        
+        n = len(job_diff)
+        
+        # [a] trivial case
+        if d > len(job_diff): return -1
+        
+        # [b] typical case
+        return  dp(0, d)

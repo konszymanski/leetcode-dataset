@@ -1,0 +1,5 @@
+class Solution:
+    def advantageCount(self, A: List[int], B: List[int]) -> List[int]:
+        A = sorted(A)
+        
+        return [A.pop(bisect_right(A, b) % len(A)) for b in B]

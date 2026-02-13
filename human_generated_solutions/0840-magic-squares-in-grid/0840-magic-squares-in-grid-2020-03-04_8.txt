@@ -1,0 +1,26 @@
+def numMagicSquaresInside(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        if m < 3 or n < 3:
+            return 0
+        
+        
+        res = []
+        def helper(r, c, m, n):
+            if r <= m - 3 and c <= n - 3:
+                g = [grid[i][c: c + 3] for i in range(r, r + 3)]
+                if set([g[j][k] for j in range(3) for k in range(3)]) == {1, 2, 3, 4, 5, 6, 7, 8, 9}:
+                    rows = list(map(sum, g))
+                    cols = list(map(sum,list(zip(*g))))
+                    diag = [sum([g[i][3 - i - 1] for i in range(3)]), sum([g[i][i] for i in range(3)])]
+            
+                    if set(rows + cols + diag) == {15}:
+                        return True
+    
+            return False
+    
+        for r in range(m - 2):
+            for c in range(n - 2):
+                res += [helper(r, c, m, n)]
+                
+        return sum(res)

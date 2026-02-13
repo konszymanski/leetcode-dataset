@@ -1,0 +1,17 @@
+class Solution:
+    def getHappyString(self, n: int, k: int) -> str:
+		res = []
+        for c in product(\'abc\', repeat=n):
+            flag = True
+            for i in range(1, len(c)):
+			    # Check if c[i] is not equal c[i-1] as mentioned in the problem
+                if c[i] == c[i-1]:
+                    flag = False
+            if flag:
+                res.append(\'\'.join(f for f in c))
+				
+		# Check for boundary conditions
+        if k > len(res):
+            return ""
+        else:
+            return res[k-1]

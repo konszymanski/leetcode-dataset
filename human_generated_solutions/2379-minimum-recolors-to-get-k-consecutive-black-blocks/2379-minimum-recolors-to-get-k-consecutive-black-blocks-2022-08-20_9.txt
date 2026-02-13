@@ -1,0 +1,25 @@
+class Solution:
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        
+        i = w = front = 0
+        minimum = 10**6
+        
+        while i < len(blocks):
+            
+            if blocks[i] =="W":
+                
+                w += 1 # Count of w since we need to repaint them. We can also use B count as well
+                
+            if i-front + 1 == k: # size of window
+                
+                minimum = min(minimum,w) 
+                
+                if blocks[front]=="W":
+                    w-=1
+    
+                front += 1
+                # Front is the index at where our current window starts.
+            
+            i+=1
+        
+        return minimum

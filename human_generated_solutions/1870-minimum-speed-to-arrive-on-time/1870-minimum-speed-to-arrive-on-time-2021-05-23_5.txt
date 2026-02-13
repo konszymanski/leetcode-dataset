@@ -1,0 +1,21 @@
+class Solution:
+    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+        sum_ = sum(dist)
+        self.ans = float("inf")
+        
+        def can_reach_office(speed):
+            time = sum([math.ceil(dist[i]/speed) for i in range(len(dist)-1)])
+            return (time+(dist[-1]/speed)) <= hour
+            
+            
+        def binary_search(left,right):
+            while left<=right:
+                speed = left + (right-left)//2
+                if can_reach_office(speed):
+                    self.ans = min(self.ans,speed)
+                    right = speed - 1
+                else:
+                    left = speed + 1
+            
+        binary_search(1,10**7)
+        return -1 if self.ans == float("inf") else self.ans

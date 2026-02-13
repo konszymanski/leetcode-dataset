@@ -1,0 +1,11 @@
+def construct(self, grid):
+        def dfs(x,y,size):
+            if size == 1: return Node(grid[x][y],True,None,None,None,None)
+            topLeft = dfs(x,y,size//2)
+            topRight = dfs(x,y+size//2,size//2)
+            bottomLeft = dfs(x+size//2,y,size//2)
+            bottomRight = dfs(x+size//2,y+size//2,size//2)
+            if topLeft.val == topRight.val == bottomLeft.val == bottomRight.val and topLeft.isLeaf and topRight.isLeaf and topLeft.isLeaf and bottomRight.isLeaf:
+                return Node(grid[x][y],True,None,None,None,None)
+            return Node(grid[x][y],False,topLeft,topRight,bottomLeft,bottomRight)
+        return dfs(0,0,len(grid))

@@ -1,0 +1,16 @@
+def f(i,j,arr,dp):
+    if i>j:
+        return 0
+    if dp[i][j]!=-1:
+        return dp[i][j]
+    maxi=float("-inf")
+    for ind in range(i,j+1):
+        cost=arr[i-1]*arr[ind]*arr[j+1]+f(i,ind-1,arr,dp)+f(ind+1,j,arr,dp)
+        maxi=max(maxi,cost)
+        dp[i][j]=maxi
+    return dp[i][j]
+def maxCoins(nums: List[int]) -> int:
+        n=len(nums)
+        nums =[1]+nums+[1]
+        dp=[[-1 for i in range(n+1)]for j in range(n+1)]
+        return f(1,n,nums,dp)

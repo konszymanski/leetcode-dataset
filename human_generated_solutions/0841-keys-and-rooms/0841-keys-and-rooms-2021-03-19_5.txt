@@ -1,0 +1,31 @@
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+		
+		# a set to record visited rooms
+        visited = set()
+        
+        # --------------------------------
+        def dfs( cur_room ):
+            
+            if cur_room in visited:
+			
+				# base case aslo known as stop condition
+                return
+            
+			# mark current room as visited
+            visited.add( cur_room )
+            
+			# general case:
+            for next_room in rooms[cur_room]:
+				
+				# Visit next room in DFS
+                dfs( next_room )
+            
+            return
+        # --------------------------------
+        
+		# Launch DFS at room_#0
+        dfs(cur_room = 0)
+        
+		# Return true if all rooms are visited
+        return len(visited) == len(rooms)

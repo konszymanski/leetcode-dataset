@@ -1,0 +1,12 @@
+def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+	if not root:                               # If the node does not exist or is null
+		return 0                               # add a 0 value for that node
+	
+	elif root.val >= low and root.val <= high: # If it exists and is in the inclusive range of low and high, return it\'s val
+										       # and recurse into left and right branches											   
+		
+		return root.val + self.rangeSumBST(root.left, low, high) + self.rangeSumBST(root.right, low, high)
+	
+	else:                                      # If it exists but is outside of the range, we still
+										       # recurse into left and right branches because a child node may be in range
+		return self.rangeSumBST(root.left, low, high) + self.rangeSumBST(root.right, low, high)

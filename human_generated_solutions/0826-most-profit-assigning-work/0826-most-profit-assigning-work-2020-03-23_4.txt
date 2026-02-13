@@ -1,0 +1,18 @@
+class Solution:
+    
+    def maxProfitAssignment(self, difficulties, profits, workers):
+        
+        # Sort difficulties and profits, with difficulties as the key:
+        difficulties, profits = zip(*sorted(zip(difficulties, profits)))
+        
+        # Find the corresponding maximum profit for each difficulty level:
+        max_profits = list(itertools.accumulate(profits, max))
+        
+        min_difficulty = min(difficulties)
+        
+        def max_profit(worker):
+            if worker < min_difficulty:
+                return 0
+            return max_profits[bisect.bisect(difficulties, worker) - 1]
+        
+        return sum(map(max_profit, workers))

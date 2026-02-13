@@ -1,0 +1,4 @@
+class Solution:
+    def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
+        prefix = list(accumulate(arr, xor, initial=0))
+        return [prefix[lo] ^ prefix[hi+1] for lo, hi in queries]

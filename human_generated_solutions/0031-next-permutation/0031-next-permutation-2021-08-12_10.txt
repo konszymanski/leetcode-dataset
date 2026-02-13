@@ -1,0 +1,37 @@
+from heapq import heappush, heappop, heapify
+class Solution:
+    
+    def find_ceil(self, a,i,j, key):
+        ans = None
+        while i<=j:
+            mid = (i+j)//2
+            if a[mid] > key: #strictly greater than key
+                ans = mid
+                i = mid+1
+            else:
+                j = mid-1
+        return ans
+    
+    def sort(self,a, i, j):
+        heap = []
+        heapify(heap)
+        for k in range(i, j+1):
+            heappush(heap, a[k])
+        for k in range(i, j+1):
+            a[k] = heappop(heap)
+            
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        idx,n = None, len(nums)
+        for i in range(n-2,-1,-1):
+            if nums[i] < nums[i+1]:
+                idx = i 
+                break
+        if idx!=None:
+            idx2 = self.find_ceil(nums, idx+1, n-1, nums[idx])
+            nums[idx], nums[idx2] = nums[idx2], nums[idx]
+            self.sort(nums, idx+1, n-1)
+        else:
+            nums.sort()

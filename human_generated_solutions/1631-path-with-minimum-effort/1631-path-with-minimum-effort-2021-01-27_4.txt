@@ -1,0 +1,37 @@
+def dfs(matrix):
+    #1. check for an empty graph
+    if not matrix:
+        return []
+
+    # initialize
+    rows, cols = len(matrix), len(matrix[0])
+    visited = set()
+    directions = ((0,1), (0,-1), (1,0), (-1,0))
+
+    def traverse(i,j,visited):
+        # a. check if visited
+        if (i, j) in visited:
+            return
+        
+        # b. Else add to visited, 
+        \'\'\'
+        this can be put in later check
+        \'\'\'
+        visited.add((i, j))
+
+        # c. Travrese neighhours
+        for dx, dy in directions:
+            x = i + dx
+            y = j + dy
+            
+            if 0<=x< rows and 0<=y<cols:
+            \'\'\'
+            if  0<=x< rows and 0<=y<cols and (x,y) not in visited
+            \'\'\'
+                # d. add your question specific check
+                traverse(x, y, visited)
+
+    # 3. for each point, traverse it
+    for i in range(rows):
+        for j in range(cols):
+            traverse(i, j, visited)

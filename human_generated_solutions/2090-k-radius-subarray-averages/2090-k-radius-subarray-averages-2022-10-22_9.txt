@@ -1,0 +1,10 @@
+class Solution:
+    def getAverages(self, a: List[int], k: int) -> List[int]:
+        res = [-1]*len(a)
+        sum_v, diameter = 0, 2*k+1
+        for i in range(len(a)):
+            sum_v += a[i]
+            if i >= diameter-1:
+                res[i-k] = sum_v//diameter
+                sum_v -= a[i-diameter+1]
+        return res

@@ -1,0 +1,36 @@
+class Solution:
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        #Build Trie
+        tree = {}
+        for i,p in enumerate(paths):
+            curr = tree
+            for node in p:
+                if node not in curr: curr[node] = {}
+                curr = curr[node]
+            curr[\'#\'] = i
+        #Build Suffix string to path index map
+        S = defaultdict(set)
+        def suffMap(node):
+            ans = ""
+            for x in node:
+                if x != \'#\':
+                    ans += x+suffMap(node[x])
+            if ans: S[ans].add(node[\'#\'])
+            return ans
+        
+        for node in tree: suffMap(tree[node])
+        # Find nodes to be deleted
+        toDelete = set()
+        for x in S: 
+            if len(S[x])>1: toDelete |= S[x]
+        # Delete Nodes
+        ans = []
+        def dfs(node):
+            if node[\'#\'] in toDelete:
+                del node
+                return
+            for x in node:
+                if x!=\'#\': dfs(node[x])
+            ans.append(paths[node[\'#\']])
+        for x in tree: dfs(tree[x])
+        return ans

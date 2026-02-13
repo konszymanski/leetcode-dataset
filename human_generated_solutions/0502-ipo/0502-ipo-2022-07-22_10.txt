@@ -1,0 +1,16 @@
+def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        n = len(profits)
+        doable = []
+        not_doable = []
+        for i in range(n):
+            if capital[i] <= w:
+                heapq.heappush(doable, -profits[i])
+            else:
+                heapq.heappush(not_doable, (capital[i],profits[i]))
+        for _ in range(k):
+            if not doable:
+                break
+            w += -heapq.heappop(doable)
+            while not_doable and not_doable[0][0] <= w:
+                heapq.heappush(doable, -heapq.heappop(not_doable)[1])
+        return w

@@ -1,0 +1,41 @@
+class Solution:
+    def countPairs(self, n: int, edges: List[List[int]]) -> int:
+        
+        visited = [False for i in range(n)]
+        count = 0
+        
+        graph = [[] for i in range(n)]
+        
+        for src, dest in edges:
+            graph[src].append(dest)
+            graph[dest].append(src)
+        
+        def dfs(v, visited):
+            nonlocal count
+            visited[v] = True
+            count += 1
+            for i in graph[v]:
+                if (not visited[i]):
+                    dfs(i, visited)
+        
+        disconnected = []
+        
+        for node in range(n):
+            if (visited[node] == False):
+                dfs(node, visited)
+                disconnected.append(count)
+                count = 0
+                # count += 1
+        n = len(disconnected)
+        prefix = [0]*n
+        prefix[-1] = disconnected[-1]
+        for i in range(n-2, -1, -1):
+            prefix[i] = prefix[i+1] + disconnected[i]
+        
+        ans = 0
+        # print(prefix, disconnected)
+        for i in range(n-1):
+            ans += disconnected[i]*prefix[i+1]
+            
+        # print(disconnected)
+        return ans

@@ -1,0 +1,29 @@
+class Solution:
+    def atMostNGivenDigitSet(self, digits: List[str], n: int) -> int:
+        sn = str(n)
+        ln = len(sn)
+        res = 0
+        digits = tuple(digits)
+        for l in range(1,ln+1):
+            part = self.dfs(sn,l,digits)
+            res += part
+        return res
+    def dfs(self,sn,l,digits):
+        # return the number of numbers 1) whose length is l 2) constructed only using numbers from digits 3) smaller than sn 
+        if l < len(sn):
+            return len(digits) ** l
+        elif l > len(sn):
+            return 0
+        else:
+            res = 0
+            for d in digits:
+                d = int(d)
+                if d == int(sn[0]):
+                    res += self.dfs(sn[1:],l-1,digits) if l-1 > 0 else 1
+                    break
+                elif d > int(sn[0]):
+                    res += 0
+                    break
+                else:  # d < int(sn[0])
+                    res += len(digits) ** (len(sn) - 1)
+            return res

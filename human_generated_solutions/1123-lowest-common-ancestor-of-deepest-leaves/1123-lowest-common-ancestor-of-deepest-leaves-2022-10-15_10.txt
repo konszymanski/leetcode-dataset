@@ -1,0 +1,36 @@
+class Solution:
+    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        # STEP 1: Find the height of all nodes in a tree.
+        heights = {None: -1}
+        def find_heights(node):
+            if node == None:
+                return -1
+            
+            l_height = find_heights(node.left)
+            r_height = find_heights(node.right)
+            
+            height = max(l_height, r_height) + 1
+            heights[node] = height
+            return height
+        
+        find_heights(root)
+        
+        # STEP 2: Traverse down the tree as low as possible without losing scope of the deepest leaves.
+        def first_height_match(node):
+            l_height = heights[node.left]
+            r_height = heights[node.right]
+            
+            # Only the left half contains the deepest leaves. Thus, we only need to investigate lower into the left half.
+            if l_height > r_height:
+                return first_height_match(node.left)
+            
+            # Only the right half contains the deepest leaves. Thus, we only need to investigate lower into the right half.
+            if l_height < r_height:
+                return first_height_match(node.right)
+        
+            # If we reach here, the deepest leaves are split between both the left and the right sides.  
+            # If we try to investigate lower on one side, we will lose scope of the deepest nodes in the other side. 
+            # Thus, this node is the lowest we can possibly go.
+            return node
+        
+        return first_height_match(root)

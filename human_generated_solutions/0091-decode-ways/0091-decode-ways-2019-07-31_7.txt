@@ -1,0 +1,8 @@
+def numDecodings(self, s):
+        prev_prev = prev = result = int(s[0] != \'0\')
+        for i in range(1, len(s)):
+            last_two = int(s[i-1:i+1])
+            if not last_two or (last_two >= 30 and not last_two % 10): return 0
+            result = (last_two not in [10, 20])*prev + (10 <= last_two <= 26)*prev_prev
+            prev_prev, prev = prev, result
+        return result

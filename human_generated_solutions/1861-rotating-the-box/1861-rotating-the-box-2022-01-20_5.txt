@@ -1,0 +1,63 @@
+STONE = "#"
+OBSTABLE = "*"
+SPACE = "."
+
+class Solution:
+    
+    def matrix_rotate(self, box):
+        """
+		how to rotate to the right 90deg:
+
+			step1: transpose the matrix
+			step2: reverse the rows
+		"""
+        
+        numrows = len(box)
+        numcols = len(box[0])
+
+        newbox = []
+        
+        for newi in range(numcols):
+            newrow = []
+            for newj in range(numrows):
+                newrow.append(box[newj][newi])
+            
+            reverse_newrow = newrow[::-1]
+            newbox.append(reverse_newrow)
+        
+        
+        [print(row) for row in newbox]
+        
+        return newbox
+        
+
+        
+    
+    def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:
+        [print(row) for row in box]
+
+        newbox = self.matrix_rotate(box)
+        
+		"""
+		for each column, we will start at the bottom 
+		keeping track of lowest i we can fall to \'fall_to_i\'
+		if element is a stone, replace fall_to_i with stone, and move up fall_to_i -=1
+		if element is obstacle, bump up fall_to_i to above obstacle "fall_to_i = i - 1"
+		"""
+       
+        
+        for j in range(len(newbox[0])):
+            i = len(newbox)-1
+            fall_to_i = i
+            while i >= 0:
+                curr = newbox[i][j]
+                if curr==STONE:
+                    newbox[i][j] = SPACE
+                    newbox[fall_to_i][j] = STONE
+                    fall_to_i -= 1
+                elif curr==OBSTABLE:
+                    fall_to_i = i-1
+                    
+                i -= 1
+        
+        return newbox

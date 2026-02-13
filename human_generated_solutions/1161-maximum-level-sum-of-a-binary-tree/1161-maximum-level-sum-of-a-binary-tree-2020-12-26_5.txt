@@ -1,0 +1,17 @@
+class Solution:
+    def maxLevelSum(self, root: TreeNode) -> int:
+        levels, queue = 0, [root]
+        summ = -(10**9)
+        
+        while queue:
+            curr, nextt = [],[]
+            for node in queue:
+                curr.append(node.val)
+                if node.left: nextt.append(node.left)
+                if node.right: nextt.append(node.right)
+            levels+=1
+            temp = sum(curr)
+            if temp > summ: summ, pos = temp, levels
+            queue = nextt
+            
+        return pos

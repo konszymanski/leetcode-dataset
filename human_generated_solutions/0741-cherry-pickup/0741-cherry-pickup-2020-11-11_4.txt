@@ -1,0 +1,42 @@
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        N = len(grid)
+        if N == 1:
+            return grid[0][0]
+        memo = {}
+        self.pickCherry2(grid,N,0,0,0,0,memo)
+        print(memo)
+        if len(memo) == 0 or memo[(0,0,0,0)] < 0:
+            return 0
+        return  memo[(0,0,0,0)]
+    
+    def pickCherry2(self, grid, N, x0, y0, x1, y1, memo):
+        
+        if x0 >= N or y0 >= N or x1 >= N or y1 >= N :
+            return float(\'-inf\') 
+        
+        if (x0, y0, x1, y1) in memo:
+            return memo[(x0, y0, x1, y1)]
+        
+        if grid[x0][y0] == -1 or grid[x1][y1] == -1:
+            return float(\'-inf\')
+        
+        elif x0 == x1 and y0 == y1:
+            cherryPicked = grid[x1][y1]
+        else :
+            cherryPicked = grid[x0][y0] + grid[x1][y1]
+        
+        #print(x0, y0, x1, y1 , cherryPicked)
+        if x0 == N-1 and y0 == N-1 :
+            return grid[x0][y0]
+        if x1 == N-1 and y1 == N-1 :
+            return grid[x1][y1]
+            
+        cherryPicked += max([self.pickCherry2(grid,N,x0+1,y0,x1+1,y1,memo),
+                             self.pickCherry2(grid,N,x0+1,y0,x1,y1+1,memo),
+                             self.pickCherry2(grid,N,x0,y0+1,x1+1,y1,memo),
+                             self.pickCherry2(grid,N,x0,y0+1,x1,y1+1,memo)])
+        
+        memo[(x0, y0, x1, y1)] = cherryPicked
+        
+        return cherryPicked

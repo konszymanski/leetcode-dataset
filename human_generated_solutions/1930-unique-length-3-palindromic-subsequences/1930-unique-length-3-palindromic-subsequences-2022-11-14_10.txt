@@ -1,0 +1,15 @@
+class Solution:
+    def countPalindromicSubsequence(self, s: str) -> int:
+        res = 0
+        for letter in set(s): 
+            a, b = 0, len(s) - 1
+            #find first occurrence
+            while s[a] != letter: 
+                a += 1
+            #find last occurrence 
+            while s[b] != letter: 
+                b -=1
+
+            if b>a: 
+                res += len(set(s[a+1:b]))
+        return res

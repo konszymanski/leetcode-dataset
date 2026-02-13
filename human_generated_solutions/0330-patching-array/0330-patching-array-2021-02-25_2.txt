@@ -1,0 +1,33 @@
+class Solution:
+    def minPatches(self, nums: List[int], n: int) -> int:
+        
+        res = 0
+        
+        # initial coverage
+        right = 0 
+        
+        for c in nums:
+            
+            # current coverage [1,right], but (right+1) not in nums
+            # then must add a num(<=right+1) and extend coverage to [1, right+num]
+            # greedy: add (right+1) and extend coverage to [1, 2*right+1]
+            while c > right+1: 
+                res += 1
+                right += right+1
+                if right >= n:
+                    return res
+            
+            # c(<=right+1) in nums, extend coverage to [1, right+c]
+            right += c 
+            
+            if right >= n:
+                return res
+        
+        # (right+1) never in nums any more
+        # greedy: add (right+1) and extend coverage to [1, 2*right+1]
+        # loop times < logn
+        while right < n:
+            res += 1
+            right += right+1
+            
+        return res

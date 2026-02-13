@@ -1,0 +1,13 @@
+def totalMoney(self, n: int) -> int:
+	start = 0
+	totalSavings = 0
+	prevDay = start
+	for i in range(1,n+1, 1):
+		if i%7 == 1:
+			start+=1
+			totalSavings+=start
+			prevDay = start
+		else:
+			prevDay+=1
+			totalSavings+=prevDay
+	return totalSavings

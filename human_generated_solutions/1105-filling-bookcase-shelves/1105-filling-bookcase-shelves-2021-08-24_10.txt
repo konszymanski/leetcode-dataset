@@ -1,0 +1,14 @@
+class Solution:
+    def minHeightShelves(self, books: List[List[int]], shelfWidth: int) -> int:
+        @lru_cache(None)
+        def dp(i,curr_h,rem_w):
+            if i==n:
+                return curr_h
+            #place on next level
+            ans=dp(i+1,books[i][1],shelfWidth-books[i][0])+curr_h
+            #place on same level
+            if books[i][0]<=rem_w:
+                ans=min(ans,dp(i+1,max(curr_h,books[i][1]),rem_w-books[i][0]))
+            return ans
+        n=len(books)
+        return dp(0,0,shelfWidth)

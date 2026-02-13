@@ -1,0 +1,13 @@
+from sortedcontainers import SortedList
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        ans=0
+        mod=10**9+7
+        sorted_arr=SortedList()
+        for num in instructions:
+            left=sorted_arr.bisect_left(num)
+            right=len(sorted_arr)-sorted_arr.bisect_right(num)
+            ans+=min(left,right)
+            ans%=mod
+            sorted_arr.add(num)
+        return ans

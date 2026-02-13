@@ -1,0 +1,74 @@
+class UnionFind(object):
+    def __init__(self, size):
+        self.res = [i for i in range(size)]
+        self.group = size
+        self.size = [1] * size
+
+    def find(self, child):
+        if self.res[child] != child:
+            idx = self.find(self.res[child])
+            self.res[child] = idx
+        return self.res[child]
+
+    def union(self, a, b):
+        pa = self.find(a)
+        pb = self.find(b)
+        if pa == pb:
+            return
+        if self.size[pa] > self.size[pb]:
+            pa, pb = pb, pa
+        self.group -= 1
+        self.res[pa] = pb
+        self.size[pb] += self.size[pa]
+        
+class Solution(object):
+    def maxNumEdgesToRemove(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: int
+        """
+		# used edges count
+        res = 0
+        ua = UnionFind(n + 1)
+        ub = UnionFind(n + 1)
+        es = [[] for _ in range(4)]
+        
+		# group edges
+        for edge in edges:
+            es[edge[0]].append(edge)
+            
+		# use type 3 first
+        for edge in es[3]:
+            x = ua.find(edge[1])
+            y = ua.find(edge[2])
+			
+			# if not from same union, add the edge and connect them
+            if x != y:
+                res += 1
+                ua.union(x, y)
+                ub.union(x, y)
+
+        for edge in es[2]:
+            x = ua.find(edge[1])
+            y = ua.find(edge[2])
+            if x != y:
+                res += 1
+                ua.union(x, y)
+                
+        for edge in es[1]:
+            x = ub.find(edge[1])
+            y = ub.find(edge[2])
+            if x != y:
+                res += 1
+                ub.union(x, y)
+		# if still not connected, return -1
+        x = ua.find(1)
+        if any(x != ua.find(i) for i in range(1, n + 1)):
+            return -1
+            
+		x = ub.find(1)
+        if any(x != ub.find(i) for i in range(1, n + 1)):
+            return -1
+
+        return len(edges) - res

@@ -1,0 +1,14 @@
+def brokenCalc(self, X: int, Y: int) -> int:
+        
+        ops = 0
+        
+        while Y>X:      #reducing Y till it becomes less than X, calculating in reverse way
+            if Y%2==1:  #if Y is odd, eg: 9 i.e 10-1
+                Y+=1    
+            else:
+                Y=Y//2  #if Y is even 
+            ops+=1
+        
+        ops+=(X-Y)      #if X is greater than Y, we can only subtract
+        
+        return ops

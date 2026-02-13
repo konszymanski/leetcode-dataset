@@ -1,0 +1,30 @@
+class Solution:
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        distSet = set()
+        distArr = []
+        
+        def findDist(ptOne, ptTwo):
+            dx, dy = ptOne[0] - ptTwo[0], ptOne[1] - ptTwo[1]
+            dist = dx ** 2 + dy ** 2
+            distSet.add(dist)
+            distArr.append(dist)
+        
+		# find the 6 distances on the image
+        findDist(p1, p2)
+        findDist(p1, p3)
+        findDist(p1, p4)
+        findDist(p2, p3)
+        findDist(p2, p4)
+        findDist(p3, p4)
+		# if the number of distances we found is not 2, can\'t be square
+        if len(distSet) != 2:
+            return False
+			
+		# sort non-decreasingly to have 4 edge distances, and 2 diagonal distances
+        distArr.sort()
+        
+		# as mentioned on the image, condition is checked
+        if distArr[0] == distArr[1] == distArr[2] == distArr[3]:
+            if distArr[4] == distArr[5]:
+                return True
+        return False

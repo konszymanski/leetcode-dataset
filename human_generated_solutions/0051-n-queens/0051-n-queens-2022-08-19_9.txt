@@ -1,0 +1,55 @@
+class Solution:
+    def solveNQueens(self, n: int) -> list[list[str]]:
+
+        # Initialize a board of all "."
+        board = [["." for _ in range(n)] for _ in range(n)]
+
+        # Initialize the result
+        res = []
+
+        # Initialize the three invalid sets
+        cols, posDiag, negDiag = set(), set(), set()
+
+        # Perform backtracking
+        def backtrack(row):
+
+            # Once we reached nth row, we have found a solution
+            if row == n:
+
+                # Add such board to the result
+                res.append(["".join(r) for r in board])
+                return
+
+            # Iterate through all columns at the current row
+            for col in range(n):
+
+                # If the current column isn\'t in any of the three invalid set
+                if (
+                    col not in cols
+                    and (row - col) not in posDiag
+                    and (row + col) not in negDiag
+                ):
+
+                    # Add the current column to the three sets
+                    cols.add(col)
+                    posDiag.add(row - col)
+                    negDiag.add(row + col)
+
+                    # Place a queen
+                    board[row][col] = "Q"
+
+                    # Go to the next row
+                    backtrack(row + 1)
+
+                    # Once we come back
+                    # Remove the current column from the three sets before we are going to the next column
+                    cols.remove(col)
+                    posDiag.remove(row - col)
+                    negDiag.remove(row + col)
+
+                    # Remove the queen
+                    board[row][col] = "."
+
+        backtrack(0)
+
+        return res

@@ -1,0 +1,24 @@
+class Solution:
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+        #need to be 3 consecutive odd nums in the arr
+        
+        #variable: counter = 0
+        counter = 0
+        
+        #loop thru arr
+        for num in arr:
+            #if num is divisible by 2 the continue
+            if num % 2 == 0:
+                #reset counter and continue
+                counter = 0
+            #else:
+            else:
+                #increment counter
+                counter += 1
+                #if counter equals 3
+                if counter == 3:
+                    #return true
+                    return True
+                
+        #return false
+        return False

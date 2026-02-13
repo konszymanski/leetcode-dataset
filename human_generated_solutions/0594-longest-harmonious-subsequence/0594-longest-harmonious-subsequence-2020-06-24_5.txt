@@ -1,0 +1,20 @@
+from collections import Counter
+
+
+class Solution:
+    def findLHS(self, nums) -> int:
+        """
+        This program uses the Python Counter to determine the longest
+        harmonious subsequence.
+
+        :param nums: array of integers
+        :type nums: list[int]
+        :return: length of longest harmonious subsequence
+        :rtype: int
+        """
+        counts = Counter(nums)
+        longest = 0
+        for count in counts:
+            if count + 1 in counts:
+                longest = max(longest, counts[count] + counts[count + 1])
+        return longest

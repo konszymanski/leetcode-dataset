@@ -1,0 +1,27 @@
+class Solution(object):
+    def reachableNodes(self, n, edges, restricted):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :type restricted: List[int]
+        :rtype: int
+        """
+        adj = defaultdict(set)
+        for u, v in edges:
+            adj[u].add(v)
+            adj[v].add(u)
+        total = 0
+        q = deque()
+        q.append(0)
+        visited = set()
+        restricted = set(restricted)
+        
+        while len(q):
+            node = q.popleft()
+            for val in adj[node]:
+                if val not in restricted and val not in visited:
+                    q.append(val)
+                    total += 1 
+                    visited.add(val)                    
+
+        return 1 if not total else total

@@ -1,0 +1,11 @@
+class Solution:
+    def removeAnagrams(self, words: List[str]) -> List[str]:
+        #automatically get first word
+        hashMap ={0: words[0]} 
+        for i in range(1,len(words)):
+            notAnagram = words[i]
+            #sort words in alphabetical order
+            #if not the same add to hashMap
+            if sorted(words[i]) != sorted(words[i-1]):
+                hashMap[i] = notAnagram
+        return list(hashMap.values())

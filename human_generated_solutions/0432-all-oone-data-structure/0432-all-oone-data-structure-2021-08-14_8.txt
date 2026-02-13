@@ -1,0 +1,124 @@
+class DoubleLinkedNode:
+    def __init__(self, key_set = {}, count = 0, prev = None, next = None):
+        self.key_set = key_set
+        self.count = count
+        self.prev = prev
+        self.next = next
+    
+    def connect(self, other):
+        self.next = other
+        other.prev = self
+    
+    def insertNewNode(self, new_node):
+        next_node = self.next
+        self.connect(new_node)
+        new_node.connect(next_node)
+    
+    def removeNode(self):
+        prev_node, next_node = self.prev, self.next
+        prev_node.connect(next_node)
+
+class AllOne:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.key2node = dict()
+        self.head, self.tail = DoubleLinkedNode(), DoubleLinkedNode()
+        self.head.connect(self.tail)
+
+    def inc(self, key: str) -> None:
+        """
+        Inserts a new key <Key> with value 1. Or increments an existing key by 1.
+        """
+        # not exist
+        if key not in self.key2node:
+            cur_node = self.head # with 0 count
+        # exist
+        else:
+            cur_node = self.key2node[key]
+        
+        # block 1: add/update the key in new node
+        # does not have the next node with the count+1
+        if cur_node.count + 1 != cur_node.next.count:
+            # create a new node
+            next_node = DoubleLinkedNode({key}, cur_node.count + 1)
+            cur_node.insertNewNode(next_node)
+        # has the next node with the count+1
+        else:
+            next_node = cur_node.next
+            next_node.key_set.add(key)
+        
+        # block 2: remove the current key_set/node if necessary
+        # if exist: remove key in the key_set of the current node
+        if cur_node != self.head:
+            cur_node.key_set.remove(key)
+            # if key_set of the current node is empty, delete the current node
+            if not cur_node.key_set:
+                cur_node.removeNode()
+        
+        # block 3: update the hashmap
+        self.key2node[key] = next_node
+
+    def dec(self, key: str) -> None:
+        """
+        Decrements an existing key by 1. If Key\'s value is 1, remove it from the data structure.
+        """
+        # it is guaranteed that key exists
+        cur_node = self.key2node[key]
+        
+        # key\'s count is 1: directly remove it
+        if cur_node.count == 1:
+            cur_node.key_set.remove(key)
+            if not cur_node.key_set:
+                cur_node.removeNode()
+            del self.key2node[key]
+        else:
+            # block 1: add/update the key in new node
+            # does not have the previous node with the count-1
+            if cur_node.count - 1 != cur_node.prev.count:
+                # create a new node
+                prev_node = DoubleLinkedNode({key}, cur_node.count - 1)
+                cur_node.prev.insertNewNode(prev_node)
+            # has the previous node with the count-1
+            else:
+                prev_node = cur_node.prev
+                prev_node.key_set.add(key)
+
+            # block 2: remove the current key_set/node if necessary
+            cur_node.key_set.remove(key)
+            if not cur_node.key_set:
+                cur_node.removeNode()
+            
+            # block 3: update the hashmap
+            self.key2node[key] = prev_node
+
+    def getMaxKey(self) -> str:
+        """
+        Returns one of the keys with maximal value.
+        """
+        # no elementes
+        if not self.key2node:
+            return ""
+        
+        # has at least one element
+        node_with_max = self.tail.prev
+        # randomly get one key from the key_set
+        random_key = node_with_max.key_set.pop()
+        node_with_max.key_set.add(random_key)
+        
+        return random_key
+
+    def getMinKey(self) -> str:
+        """
+        Returns one of the keys with Minimal value.
+        """
+        if not self.key2node:
+            return ""
+        
+        node_with_min = self.head.next
+        random_key = node_with_min.key_set.pop()
+        node_with_min.key_set.add(random_key)
+        
+        return random_key

@@ -1,0 +1,13 @@
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        num_set = set(nums)
+        sorted_key = sorted(num_set) + [float(\'inf\')]
+        max_occupied = -1
+        for i in range(len(num_set)):
+            range_end = sorted_key[i] + len(nums) - 1
+            ind = bisect.bisect_left(sorted_key, range_end)
+            if sorted_key[ind] == range_end:
+                ind += 1
+            max_occupied = max(max_occupied, ind - i)
+            if ind == len(nums): break
+        return len(nums) - max_occupied

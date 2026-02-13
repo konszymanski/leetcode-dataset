@@ -1,0 +1,22 @@
+class Solution:
+    def smallestDivisor(self, nums: List[int], threshold: int) -> int:
+        summ = sum(nums)
+        N = len(nums)
+        
+        left = 1
+        right = summ
+        
+        candidate = None
+        while left <= right:
+            
+            mid = (left + right + 1) // 2
+            result = sum([math.ceil(x / mid) for x in nums])
+            # result = ceil((summ + N * mid / 2) / mid)
+            
+            if result <= threshold:
+                candidate = mid
+                right = mid - 1
+            elif result > threshold:
+                left = mid + 1
+
+        return candidate

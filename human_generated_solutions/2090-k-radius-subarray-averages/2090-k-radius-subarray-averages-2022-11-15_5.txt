@@ -1,0 +1,4 @@
+from functools import reduce
+class Solution:
+    def getAverages(self, nums: List[int], k: int) -> List[int]:
+        return [-1] * k + [r // (2*k+1) for r in accumulate(zip(nums, nums[2*k+1:]), lambda acc,x: acc-x[0]+x[1], initial=sum(nums[:2*k+1]))] + [-1] * k if len(nums) >= 2*k+1 else [-1 for x in nums]

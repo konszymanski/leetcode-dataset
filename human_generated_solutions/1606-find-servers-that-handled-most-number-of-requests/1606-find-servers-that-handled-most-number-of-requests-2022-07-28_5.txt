@@ -1,0 +1,49 @@
+import heapq
+from sortedcontainers import SortedList
+
+class Solution:
+    def busiestServers(self, k: int, arrival: List[int], load: List[int]) -> List[int]:
+        # map server to its handle count
+        server_busy_count = [0] * k
+        
+        # init heap
+        busy_servers_heap = []
+        
+        # init available servers sortedlist -> klogk
+        available_servers = SortedList([idx for idx in range(k)])
+        
+        # iterate arrivals
+        for req_idx, (curr_arrival, curr_load) in enumerate(zip(arrival, load)):
+            # pop all available servers from heap
+            while busy_servers_heap and curr_arrival >= busy_servers_heap[0][0]:
+                _, server_idx = heapq.heappop(busy_servers_heap)
+    
+                # add servers to available sorted list
+                available_servers.add(server_idx)
+            
+            # all servers are busy -> drop request
+            if not available_servers: continue
+            
+            # binary search on available list to find the correct available server
+            desired_server_idx = req_idx % k
+            next_idx = available_servers.bisect_left(desired_server_idx)
+            
+            # no bigger idx found, use the first available server
+            if next_idx == len(available_servers):
+                next_idx = 0
+            
+            # select server by the next_idx calculated
+            selected_server = available_servers[next_idx]
+            
+            # increase selected server handle count
+            server_busy_count[selected_server] += 1
+            
+            # add selected server with end time to the heap
+            heapq.heappush(busy_servers_heap, (curr_arrival + curr_load, selected_server))
+            
+            # pop selected servers from the available list
+            available_servers.remove(selected_server)
+            
+        # return all servers the handled the max request count
+        max_busy = max(server_busy_count)
+        return [idx for idx in range(k) if server_busy_count[idx] == max_busy]

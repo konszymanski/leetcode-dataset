@@ -1,0 +1,13 @@
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+
+        events.sort(key=lambda x: x[1])
+        res, prevs = 0, [(0, 0)]
+        
+        for s, e, v in events:
+            i = bisect_right(prevs, s-1, key=lambda x: x[0])
+            res = max(res, prevs[i-1][1] + v)
+            nv = max(prevs[-1][1], v)
+            prevs.append((e, nv))
+            
+        return res

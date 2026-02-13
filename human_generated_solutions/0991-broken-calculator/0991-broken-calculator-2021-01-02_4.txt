@@ -1,0 +1,6 @@
+def brokenCalc(self, X: int, Y: int) -> int:
+		operations = 0
+        while Y > X:
+            Y = Y + 1 if Y % 2 == 1 else Y//2
+            operations += 1
+        return operations + X - Y

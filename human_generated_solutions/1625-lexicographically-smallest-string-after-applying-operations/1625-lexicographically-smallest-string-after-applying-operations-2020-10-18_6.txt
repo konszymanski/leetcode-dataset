@@ -1,0 +1,40 @@
+class Solution:
+    def __init__(self):
+        self.smallest = float("inf")
+        self.seen = {}
+    
+    def rotate(self, s, b):
+        s = [char for char in s]
+        def reverse_segment(start, end):
+            end -= 1
+            while start < end:
+                s[start], s[end] = s[end], s[start]
+                start += 1
+                end -= 1
+        rotations = b % len(s)
+        reverse_segment(0, len(s))
+        reverse_segment(0, rotations)
+        reverse_segment(rotations, len(s))
+        return "".join(s) 
+    
+    def add_one(self, char, a):
+        return str((int(char)+a) % 10)
+    
+    def add(self, s, a):
+        s = [char for char in s]
+        for idx in range(len(s)):
+            if idx % 2 != 0:
+                s[idx] = self.add_one(s[idx], a)
+        return "".join(s)
+    
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        if self.smallest == float("inf"):
+            self.smallest = s        
+        if int(s) < int(self.smallest):
+            self.smallest = s
+        if s in self.seen:
+            return
+        self.seen[s] = True
+        self.findLexSmallestString(self.rotate(s,b), a, b)
+        self.findLexSmallestString(self.add(s,a), a, b)
+        return self.smallest

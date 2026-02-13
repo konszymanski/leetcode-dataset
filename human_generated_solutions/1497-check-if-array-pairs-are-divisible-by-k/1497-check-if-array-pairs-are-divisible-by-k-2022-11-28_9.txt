@@ -1,0 +1,14 @@
+class Solution:
+    def canArrange(self, arr: List[int], k: int) -> bool:
+        modMap = defaultdict(int)
+        for num in arr:
+            modMap[((num % k) + k) % k] += 1
+        for modResult in modMap:
+            if modResult == 0:
+                if modMap[modResult] % 2:
+                    return False
+            elif modMap[modResult] != modMap[k - modResult]:
+                return False
+            elif k - modResult not in modMap:
+                return False
+        return True

@@ -1,0 +1,41 @@
+from collections import defaultdict, deque
+
+
+class Solution:
+    
+    @staticmethod
+    def bfs(graph, graph2, start):
+        queue, used = deque([start]), set()
+        while queue:
+            n = queue.popleft()
+            for k in graph[n]:
+                if k not in used and k != start:
+                    queue.append(k)
+                    used.add(k)
+            for k in graph2[n]:
+                if k in used:
+                    return True
+        for k in graph2[start]:
+            if k in used:
+                return True
+        return False
+    
+    
+    def equationsPossible(self, equations: List[str]) -> bool:
+        eq_set = defaultdict(set)
+        not_eq = defaultdict(set)
+        for eq in equations:
+            if "==" in eq:
+                a, b = eq.split("==")
+                eq_set[a].add(b)
+                eq_set[b].add(a)
+            elif "!=" in eq:
+                a, b = eq.split("!=")
+                not_eq[a].add(b)
+                not_eq[b].add(a)
+            if a == b and "!=" in eq:
+                return False
+            if self.bfs(eq_set, not_eq, a) or self.bfs(eq_set, not_eq, b):
+                return False
+            
+        return True

@@ -1,0 +1,11 @@
+class Solution:
+    def numRescueBoats(self, people: List[int], limit: int) -> int:
+        from sortedcontainers import SortedList
+        sl ,count =SortedList(people) , 0
+        while sl:
+            ind = bisect_right(sl,limit-sl[0]) -1
+            if  ind and sl[0]+sl[ind]<=limit:
+                del sl[ind] , sl[0]
+            else:del sl[0]
+            count+=1
+        return count

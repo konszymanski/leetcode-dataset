@@ -1,0 +1,4 @@
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+        ones = [i for i, a in enumerate(nums) if a == 1]
+        return all(ones[i+1] - ones[i] - 1 >= k for i, a in enumerate(ones[:-1]))

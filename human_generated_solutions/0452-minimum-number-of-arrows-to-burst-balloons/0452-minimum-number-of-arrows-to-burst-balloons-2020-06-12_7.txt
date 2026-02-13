@@ -1,0 +1,36 @@
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        ## RC ##
+        ## APPROACH : GREEDY ##
+        ## Similar to Leetcode: 435. Non Over lapping Intervals ##
+        """
+        1. Decompose this problem to intervals, solution: all overlapping intervals need to considered as single interval.
+        2. Intially I consider there are no overlaps, so I take answer as length of given array.
+        3. After sorting, start with overlap time as intervals[0].
+        4. As you move along the intervals, if you see any overlap (i.e start of next interval falls in our overlap_time), 
+           indicates we can hit them both with single arrow, so decrease our answer by 1 and re-calculate the overlap_time for these both and repeat for subsequent intervals.
+        5. When you donot find any overlap, we will no longer find any overlaps with our current overlap_time in next intervals. so, change overlap time to the current interval.
+        
+            Example : [[1, 10], [3, 9], [4, 11], [6, 7], [6, 9], [8, 12], [9, 12]]
+            Stack Trace : Overlap_time (initially [1,10])
+                            [3, 9]
+                            [4, 9]
+                            [6, 7]
+                            [6, 7]
+                            [8, 12]
+                            [9, 12]
+        """
+        if not points: return 0
+        
+        intervals = sorted( points, key = lambda x : (x[0], x[1]) )
+        overlap_time = intervals[0]
+        ans = len(intervals)
+        # print(intervals)
+        for i, interval in enumerate(intervals[1:]):
+            if interval[0] <= overlap_time[1]:
+                ans -= 1
+                overlap_time = [ max(interval[0], overlap_time[0]) , min(interval[1], overlap_time[1]) ]
+            else:
+                overlap_time = interval
+            # print(overlap_time)
+        return ans

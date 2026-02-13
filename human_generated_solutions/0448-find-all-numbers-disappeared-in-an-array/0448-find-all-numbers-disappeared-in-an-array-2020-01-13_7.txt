@@ -1,0 +1,14 @@
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+
+        for number in nums:
+
+            present_indx = abs(number)-1
+            if nums[present_indx] > 0 :
+                # use negative number to mark number is presented in array
+                nums[present_indx] = -nums[present_indx]
+
+
+
+        # the disappeared numbers are those grids which are still with positive value
+        return [ i+1 for i, num in enumerate(nums) if num > 0 ]

@@ -1,0 +1,16 @@
+class Solution:
+    def countServers(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        servers = []
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]:
+                    servers += [(i,j)]
+        count = 0
+        for server in servers:
+            r, c = server
+            rowIntersection = [grid[r][j] for j in range(n) if (r,j) != server]
+            colIntersection = [grid[i][c] for i in range(m) if (i,c) != server]
+            count += 1 if any(rowIntersection+colIntersection) else 0
+        return count

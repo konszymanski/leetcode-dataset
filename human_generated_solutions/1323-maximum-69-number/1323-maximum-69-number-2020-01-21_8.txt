@@ -1,0 +1,12 @@
+class Solution:
+    def maximum69Number(self, num):
+        i = j = 0
+        original_num = num
+
+        while num:
+            i += 1
+            d = num % 10
+            if d == 6: j = i
+            num //= 10
+
+        return original_num + 3*10**(j-1) if j > 0 else original_num

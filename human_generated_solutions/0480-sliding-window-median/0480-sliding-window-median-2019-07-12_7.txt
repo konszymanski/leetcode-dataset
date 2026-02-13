@@ -1,0 +1,25 @@
+def medianSlidingWindow(self, nums, k):
+        low, high = [], [] # heap
+        for i in range(k):
+            heapq.heappush(high, (nums[i], i)) # high is a min-heap
+        for _ in range(k>>1):
+            self.convert(high, low)
+        ans = [high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2.]
+        for i in range(len(nums[k:])):
+            if nums[i+k] >= high[0][0]:
+                heapq.heappush(high, (nums[i+k], i+k))
+                if nums[i] <= high[0][0]: # keep the number of elements between two heap always in balance
+                    self.convert(high, low)
+            else:
+                heapq.heappush(low, (-nums[i+k], i+k))
+                if nums[i] >= high[0][0]:
+                    self.convert(low, high)
+            while low and low[0][1] <= i: heapq.heappop(low)
+            while high and high[0][1] <= i: heapq.heappop(high)
+            ans.append(high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2.)
+        return ans
+        
+                    
+    def convert(self, heap1, heap2): # convert min-heap1 to max-heap2
+        element, index = heapq.heappop(heap1)
+        heapq.heappush(heap2, (-element, index))

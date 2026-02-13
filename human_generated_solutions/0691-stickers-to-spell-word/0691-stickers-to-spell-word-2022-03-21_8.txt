@@ -1,0 +1,47 @@
+class Solution:
+    def minStickers(self, stickers, target):
+        return self.memo(stickers, target)
+
+    def memo(self, stickers, target):
+        target = \'\'.join(sorted(target))  # sort target, easier to hit cache
+
+        # optimize stickers
+        target_charset = set(target)
+
+        # delete useless char in sticker and sorted in alphabet order
+        stickers = [\'\'.join(sorted(c for c in sticker if c in target_charset)) for sticker in stickers]
+        # arrange by len inorder to make next delete in concise stickers
+        stickers.sort(key=len, reverse=True)
+
+        concise_stickers = []
+
+        for candidate in stickers:
+            if candidate == \'\': continue  # ignore empty
+            if any(candidate in sticker for sticker in concise_stickers): continue  # ignore sticker that are already covered by previous
+            concise_stickers.append(candidate)
+
+        # transform stickers as counter
+        sticker_counters = [Counter(s) for s in concise_stickers]
+
+        @lru_cache(None)
+        def min_2_form(target: str):
+            if target == \'\': return 0  # dfs end, not need to user sticker
+
+            m = float(\'inf\')
+
+            for sticker in sticker_counters:
+                remain_target = target
+
+                # apply with sticker
+                for char, freq in sticker.items():
+                    remain_target = remain_target.replace(char, \'\', freq)
+
+                if remain_target == target: continue  # ignore useless sticker
+
+                m = min(m, 1 + min_2_form(remain_target)) # downgrade problem to remain target
+            return m
+
+        # ans
+        m = min_2_form(target)
+
+        return -1 if m == float(\'inf\') else m

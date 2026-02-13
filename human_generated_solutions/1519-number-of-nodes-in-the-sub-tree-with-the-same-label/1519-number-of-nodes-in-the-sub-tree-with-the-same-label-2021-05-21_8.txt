@@ -1,0 +1,21 @@
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        def dfs(node, adjList, dic, res, visited):
+            already = dic[labels[node]]
+            dic[labels[node]] += 1
+            visited.add(node)
+            for nei in adjList[node]:
+                if nei in visited: continue
+                dfs(nei, adjList, dic, res, visited)
+            
+            res[node] = dic[labels[node]] - already
+
+            
+        res = [0]*n
+        adjList = collections.defaultdict(list)
+        for src, dst in edges:
+            adjList[src].append(dst)
+            adjList[dst].append(src)
+
+        dfs(0, adjList, collections.defaultdict(int), res, set())
+        return res

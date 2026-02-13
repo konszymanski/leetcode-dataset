@@ -1,0 +1,58 @@
+from heapq import *
+class Solution(object):
+    def furthestBuilding(self, heights, bricks, ladders):
+        """
+        :type heights: List[int]
+        :type bricks: int
+        :type ladders: int
+        :rtype: int
+        """
+        # Following a simplistic approach from the official leetcode solution
+        
+        # Observations:
+        # Let\'s call a positive difference in consequetive heights a "climb"
+        # Ladders can be used to replace infinite bricks
+        # So let\'s try and start allocating ladders to every climb that we see first
+        # For any consequent climbs, we have two options (note that we have used all ladders at this point)- 
+        # if the climb\'s height is greater than a previous climb that we used a ladder for, reclaim the ladder for this climb and try to use bricks for the previous climb
+        # if the climb\'s height is less than the previous climb that we used a ladder for or we do not have any ladders to start with - we have to use bricks \uD83E\uDDF1!
+        # At any point we might have a negative number of bricks, which implies we cannot make the next climb.
+        
+        # Code
+        # Keep track of climbs we use ladders for
+        ladder_climbs = []
+        
+        # Iterate over heights
+        for i in range(len(heights)-1):
+            
+            # Extract the current and next heights
+            current = heights[i]
+            next = heights[i+1]
+            climb_height = next - current
+            
+            if climb_height <= 0: # No need for ladders or bricks, continue
+                continue
+            
+            # Try to use a ladder if available
+            if ladders > 0:
+                # Add the climb height to a minheap
+                heappush(ladder_climbs, climb_height)
+                # Reduce ladders by 1
+                ladders -= 1
+            else: 
+                # no ladders available
+                # we have 2 options now:
+                # see if the climb_height is greater than the minimum height we used a ladder for
+                # if that\'s the case, reclaim the previous ladder and try to use bricks for the previous climb
+                if ladder_climbs and ladder_climbs[0] < climb_height:
+                    # Use bricks for the previous climb
+                    bricks -= heappop(ladder_climbs)
+                    # Use the reclaimed ladder for current climb
+                    heappush(ladder_climbs, climb_height)
+                else: # No option but to use bricks
+                    bricks -= climb_height
+                # If the number of bricks is negative, return
+                if bricks < 0:
+                    return i
+        # We were able to successfully jump over all buildings!
+        return len(heights) - 1

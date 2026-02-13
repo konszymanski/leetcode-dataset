@@ -1,0 +1,19 @@
+class Solution:
+    def addSpaces(self, s: str, S: List[int]) -> str:
+        
+        curr_j = 0
+        ans = ""
+        
+        for i in range(len(s)):
+            if curr_j == len(S):
+                ans += s[i:]
+                break
+            elif i == S[curr_j]:
+                ans += " " + s[i]
+                curr_j += 1
+            else:
+                ans += s[i]
+            
+            
+
+        return ans

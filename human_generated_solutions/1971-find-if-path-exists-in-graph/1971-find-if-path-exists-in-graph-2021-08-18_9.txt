@@ -1,0 +1,35 @@
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], start: int, end: int) -> bool:
+        if not edges:
+            return True
+        adj = [[] for _ in range(n)]
+        for v, e in edges:
+            adj[v].append(e)
+            adj[e].append(v)
+        #return self.dfs(adj, start, end, set(), [False])
+        return self.bfs(adj, start, end)
+    
+    def dfs(self, adj, curr, end, seen, switch):
+        if curr in seen:
+            return
+        seen.add(curr)
+        for child in adj[curr]:
+            if child == end:
+                switch[0] = True
+            self.dfs(adj, child, end, seen, switch)
+        return switch[0]
+    
+    def bfs(self, adj, start, end):
+        q = [start]
+        seen = set()
+        while q:
+            curr = q.pop(0)
+            for child in adj[curr]:
+                if child in seen:
+                    continue
+                seen.add(child)
+                if child == end:
+                    return True
+                for i in adj[child]:
+                    q.append(i)
+        return False

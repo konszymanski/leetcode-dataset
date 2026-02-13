@@ -1,0 +1,46 @@
+def dijkstras(src,adjL):
+    queue = deque()
+
+    distance = {src:0} #dist of source to itself = 0
+    queue.append((0,src)) #<dist,dest>
+
+    while queue:
+        w,src= queue.popleft()
+
+        #all the neighbours of node popped
+        for wt,nei in adjL[src]:
+            #path already exists,check if there is a better path
+            if nei in distance:
+                #if new path has smaller distance to the nei, update its distance
+                if (w+wt) < distance[nei]:
+                    distance[nei] = w+wt
+                    queue.append((w+wt,nei))
+            #no path till now between the pair of nodes
+            else:
+                #if no path found till now,this is the first best path
+                distance[nei] = w+wt
+                queue.append((w+wt,nei))
+
+    return distance
+
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        adj = [[] for _ in range(len(edges))]
+        for i in range(len(edges)):
+            if edges[i]!=-1:
+                adj[i].append((1,edges[i]))
+
+        dist1 = dijkstras(node1,adj)
+        dist2 = dijkstras(node2,adj)
+
+        ans = {\'dist\':inf,\'node\':-1}
+        for node in range(len(edges)):
+            if node in dist1 and node in dist2:
+                d1,d2 = dist1[node],dist2[node]
+                max_dist = max(d1,d2)
+
+                if max_dist<ans[\'dist\']:
+                    ans[\'dist\'] = max_dist
+                    ans[\'node\'] = node
+
+        return ans[\'node\']

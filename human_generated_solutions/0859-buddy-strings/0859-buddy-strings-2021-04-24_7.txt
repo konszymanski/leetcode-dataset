@@ -1,0 +1,32 @@
+def buddyStrings(a, b):
+	#compare length, if lenght is different, there is no way strings could be similar
+	if len(a) != len(b):
+		return False
+		
+	#lists for elements different in string a and string b
+	notSimilarA = []
+	notSimilarB = []
+	
+	#pull out different character in both strings
+	for swi in range(len(a)):
+		if a[swi] != b[swi]:
+			notSimilarA.append(a[swi])
+			notSimilarB.append(b[swi])
+			
+	#print(f"notSimilarA: {notSimilarA}")
+	#print(f"notSimilarB: {notSimilarB}")
+	
+	#if more than 2 characters are different then swapping one pair wont be suffice
+	if len(notSimilarA) > 2:
+		return False
+	
+	#if both strings are similar, then check if there is any pair of similar characters that can be swapped without changing string literally
+	if not notSimilarA:
+		if len(set(a)) == len(a):
+			return False
+	else:
+		for swi in range(len(notSimilarA)):
+			if notSimilarA[swi] not in notSimilarB:
+				return False
+				
+	return True

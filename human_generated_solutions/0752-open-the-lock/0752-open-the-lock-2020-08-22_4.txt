@@ -1,0 +1,32 @@
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:  
+        # set is hashtable which makes accessing faster. 
+        deadends = set(deadends)
+        # Dealing with sepcial conditions
+        
+        if "0000" in deadends: return -1      
+        if target == "0000": return 0
+        
+        # Initialize bfs queue and visited dictionary to avoid going back
+        queue = collections.deque()
+        visited = {}
+        queue.append(["0000", 0])
+        
+        while len(queue) > 0:   
+            current, level = queue.popleft()            
+            new_nums = []       
+            
+            # Collect all connected numbers (8 of them)
+            for i in range(4):
+                new_nums.append(current[:i] + str((int(current[i]) + 1) % 10) + current[i+1:])                
+                new_nums.append(current[:i] + str((int(current[i]) - 1) % 10) + current[i+1:])
+            
+            # Either append new number to queue with one level deeper or just pass it if visited or deadend
+            for num in new_nums:
+                if num in visited or num in deadends:
+                    continue
+                visited[num] = True                
+                if num == target:
+                    return level + 1
+                queue.append([num, level + 1])                
+        return -1

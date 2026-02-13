@@ -1,0 +1,14 @@
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        minimum_req = float(\'inf\')
+        
+        cur_sum = 0
+        
+        for num in nums:
+            cur_sum = cur_sum + num
+            minimum_req = min(minimum_req, cur_sum)
+        
+        if minimum_req < 0:
+            return abs(minimum_req) + 1
+        
+        return 1

@@ -1,0 +1,6 @@
+class Solution:
+    def countBits(self, num: int) -> List[int]:
+        ans = [0]  # the initial condition
+        for i in range(1, num + 1):
+            ans.append((i & 1) + ans[i >> 1])  # lastBitof(i) + numberOfOnes(i >> 1)
+        return ans

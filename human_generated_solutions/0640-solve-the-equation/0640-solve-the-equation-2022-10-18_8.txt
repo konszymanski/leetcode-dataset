@@ -1,0 +1,33 @@
+class Solution:
+    def solveEquation(self, equation: str) -> str:
+        def solve(eqn):
+            x, n, i, num = 0, 0, 0, 0
+            sign = 1
+            while i < len(eqn):
+                if eqn[i].isnumeric():
+                    num = num * 10 + int(eqn[i])
+                    i += 1
+                    continue
+                elif eqn[i] == \'x\':
+                    if i - 1 >= 0 and eqn[i - 1].isnumeric(): 
+                        x += sign*num
+                    else:
+                        x += sign*1
+                elif eqn[i] == \'+\':
+                    n += sign * num
+                    sign = 1
+                elif eqn[i] == \'-\':
+                    n += sign * num
+                    sign = -1
+                num = 0
+                i += 1
+            return x, n + sign*num
+            
+        lhs, rhs = equation.split(\'=\')
+        lx, ln = solve(lhs)
+        rx, rn = solve(rhs)
+        if lx == rx and ln == rn: 
+            return "Infinite solutions"
+        elif lx  != rx:
+            return "x=" + str((rn - ln) // (lx - rx) )
+        return "No solution"

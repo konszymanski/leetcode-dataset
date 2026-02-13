@@ -1,0 +1,20 @@
+def canReach(self, arr: List[int], start: int) -> bool:        
+        if start < 0 or start >= len(arr):
+            return False
+			
+		# dont process the visited
+        if arr[start] == -1:
+            return False
+			
+        if arr[start] == 0:
+            return True
+        temp = arr[start]
+		
+		# Mark as visited
+        arr[start] = -1 
+		
+        if self.canReach(arr, start + temp):
+            return True
+        if self.canReach(arr, start -temp):
+            return True
+        return False

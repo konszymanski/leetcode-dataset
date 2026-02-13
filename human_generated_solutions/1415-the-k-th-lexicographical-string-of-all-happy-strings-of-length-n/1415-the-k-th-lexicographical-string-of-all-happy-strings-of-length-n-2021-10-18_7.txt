@@ -1,0 +1,19 @@
+class Solution:
+    def helper(self,s , l , letters , n ):
+        if(len(s) == n):
+            l.append(s)
+            return 0
+        for i in letters :
+            if(s[-1] != i ):
+                self.helper(s + i , l , letters , n)
+            
+        
+            
+    def getHappyString(self, n: int, k: int) -> str:
+        letters = ["a" , "b" , "c"]
+        l = []
+        for i in letters :
+            self.helper(i,l,letters , n)
+            if(len(l) >= k):
+                return l[k-1]
+        return ""

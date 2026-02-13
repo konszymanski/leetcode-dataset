@@ -1,0 +1,13 @@
+#just keep in mind that when you exhange empty bottles for filled ones they will also get empty after drinking 
+#don\'t miss counting them
+
+def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        if numBottles<numExchange:
+            return numBottles
+        else:
+            tot=numBottles
+            empty=numBottles
+            while(empty>=numExchange):
+                tot+=(empty//numExchange)
+                empty=empty%numExchange+(empty//numExchange)
+            return tot

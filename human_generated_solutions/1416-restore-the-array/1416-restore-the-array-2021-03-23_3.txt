@@ -1,0 +1,14 @@
+class Solution:
+    def numberOfArrays(self, s: str, k: int) -> int:
+        dp = [0]*(len(s)+1)
+        dp[-1] = sm = 1 
+        
+        ii = len(s)
+        for i in reversed(range(len(s))): 
+            if s[i] != "0": 
+                while ii - i - 1 > log10(k) or int(s[i:ii]) > k: 
+                    sm = (sm - dp[ii]) % 1_000_000_007
+                    ii -= 1
+                dp[i] = sm
+                sm = (sm + dp[i]) % 1_000_000_007
+        return dp[0]

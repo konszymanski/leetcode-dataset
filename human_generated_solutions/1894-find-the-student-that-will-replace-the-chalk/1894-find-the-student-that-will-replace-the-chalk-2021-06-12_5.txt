@@ -1,0 +1,7 @@
+def chalkReplacer(self, chalk: List[int], k: int) -> int:
+        n = len(chalk)
+        while True:
+            for i in range(n):
+                k -= chalk[i]
+                if k < 0:
+                    return i

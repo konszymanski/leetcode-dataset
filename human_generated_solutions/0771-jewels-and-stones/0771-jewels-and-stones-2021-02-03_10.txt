@@ -1,0 +1,3 @@
+class Solution:
+    def numJewelsInStones(self, j: str, s: str) -> int:
+        return sum(i in j for i in s)

@@ -1,0 +1,86 @@
+class Solution:
+    def isEvenOddTree(self, root: TreeNode) -> bool:
+        """
+        Given the root to a binary tree, this program uses level
+        order traversal to determine whether the tree is even-odd.
+
+        :param root: root node of binary tree
+        :type root: TreeNode
+        :return: True if binary tree is even-odd, else False
+        :rtype: bool
+        """
+
+        def is_odd(level_list) -> bool:
+            """
+            Given an odd-numbered level list from a binary tree,
+            this method determines whether the list meets the
+            conditions for an odd level, namely that all values
+            are even and in strictly decreasing order left to
+            right.
+
+            :param level_list: array of integer values from an
+                               odd-numbered level of a binary
+                               tree
+            :type level_list: list[int]
+            :return: True if odd level conditions met, else
+                     False
+            :rtype: bool
+            """
+            length = len(level_list)
+            if level_list[0] % 2:
+                return False
+            for k in range(1, length):
+                if level_list[k] % 2 \\
+                    or level_list[k] >= level_list[k - 1]:
+                    return False
+            return True
+
+        def is_even(level_list) -> bool:
+            """
+            Given an even-numbered level list from a binary tree,
+            this method determines whether the list meets the
+            conditions for an even level, namely that all values
+            are odd and in strictly increasing order left to
+            right.
+
+            :param level_list: array of integer values from an
+                               even-numbered level of a binary
+                               tree
+            :type level_list: list[int]
+            :return: True if even level conditions met, else
+                     False
+            :rtype: bool
+            """
+            length = len(level_list)
+            if level_list[0] % 2 == 0:
+                return False
+            for k in range( 1, length ):
+                if level_list[k] % 2 == 0 \\
+                    or level_list[k] <= level_list[k - 1]:
+                    return False
+            return True
+
+        """
+        Use level order traversal to determine whether each
+        level meets the conditions of an even-odd tree.
+        - Use queue to collect the nodes for the next level.
+        - Use level_list to collect values for the current level.
+        """
+        queue = deque([root])
+        level = 0
+        while queue:
+            length = len( queue )
+            level_list = []
+            for k in range( length ):
+                node = queue.popleft()
+                level_list.append( node.val )
+                if node.left:
+                    queue.append( node.left )
+                if node.right:
+                    queue.append( node.right )
+            if level % 2 == 0 and not is_even( level_list ):
+                return False
+            if level % 2 and not is_odd( level_list ):
+                return False
+            level += 1
+        return True

@@ -1,0 +1,14 @@
+from collections import Counter
+class Solution:
+    def maxScoreWords(self, words, letters, score):
+        def letterScore(c):
+            return score[ord(c)-ord("a")]
+        def helper(i,remaining,scoreSofar):
+            if not remaining or i == len(words):
+                return scoreSofar
+            res = helper(i+1 , remaining,scoreSofar)
+            cw = Counter(words[i])
+            if not (cw - remaining):
+                res = max(res,helper(i+1,remaining - cw,scoreSofar + sum(map(letterScore,words[i]))))
+            return res
+        return helper(0,Counter(letters),0)

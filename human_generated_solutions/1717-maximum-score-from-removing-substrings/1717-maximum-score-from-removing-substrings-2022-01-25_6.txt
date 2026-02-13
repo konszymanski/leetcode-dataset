@@ -1,0 +1,43 @@
+class Solution:
+    def maximumGain(self, s: str, x: int, y: int) -> int:
+        st1, res = [], 0
+        flag = x > y
+        
+        # This loop takes care of the subs with most points
+        for ch in s:
+            if st1:
+                if flag:
+                    if st1[-1] + ch == "ab":
+                        res += x
+                        st1.pop()
+                    else:
+                        st1.append(ch)
+                else:
+                    if st1[-1] + ch == "ba":
+                        res += y
+                        st1.pop()
+                    else:
+                        st1.append(ch)
+            else:
+                st1.append(ch)
+        
+        # This loop takes care of remaining subs
+        st2 = []
+        for ch in st1:
+            if st2:
+                if flag:
+                    if st2[-1] + ch == "ba":
+                        res += y
+                        st2.pop()
+                    else:
+                        st2.append(ch)
+                else:
+                    if st2[-1] + ch == "ab":
+                        res += x
+                        st2.pop()
+                    else:
+                        st2.append(ch)
+            else:
+                st2.append(ch)
+                
+        return res

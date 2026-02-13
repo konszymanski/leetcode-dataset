@@ -1,0 +1,21 @@
+class Solution:
+    def pseudoPalindromicPaths (self, root: TreeNode) -> int:
+        import collections
+        def isAnagramOfPalindrome(nums):
+            c = collections.Counter(nums)
+            p = 0
+            for k in c.keys():
+                if( c[k] % 2 == 1 ):
+                    p += 1
+            return p <= 1
+        
+        def dfs(node, path):
+            if not node:
+                return
+            if(not node.left and not node.right and isAnagramOfPalindrome(path+ [node.val])):
+                self.ans += 1
+            dfs(node.left, path + [node.val])
+            dfs(node.right, path + [node.val])
+        self.ans = 0
+        dfs(root, [])
+        return self.ans

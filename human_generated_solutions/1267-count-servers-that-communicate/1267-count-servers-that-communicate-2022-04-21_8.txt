@@ -1,0 +1,27 @@
+class Solution:
+    def countServers(self, grid: List[List[int]]) -> int:
+        rows = [set() for i in range(len(grid))]
+        cols = [set() for j in range(len(grid[0]))]
+        
+        i = 0 # assign each server a unique id
+        
+        for x in range(len(grid)):
+            for y in range(len(grid[0])):
+                if grid[x][y] == 1:
+                    rows[x].add(i)
+                    cols[y].add(i)
+                    i += 1
+                    
+        seen = set() # set so we can count each server only once
+        
+        for row in rows:
+            if len(row) >= 2: # if this row has connected servers
+                for pc in row:
+                    seen.add(pc)
+        
+        for col in cols:
+            if len(col) >= 2: # if this col has connected servers
+                for pc in col:
+                    seen.add(pc)
+        
+        return len(seen) # return set of connected servers

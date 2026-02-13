@@ -1,0 +1,8 @@
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        num_count = len(nums)
+        min_num = min(nums)
+        sum_nums = sum(nums)
+        move_count = sum_nums - min_num*num_count
+        
+        return move_count

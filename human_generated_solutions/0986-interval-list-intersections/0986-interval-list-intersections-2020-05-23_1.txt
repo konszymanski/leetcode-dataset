@@ -1,0 +1,18 @@
+python
+1. class Solution:
+2.     def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+3.         i = 0
+4.         j = 0
+5.         
+6.         result = []
+7.         while i < len(A) and j < len(B):
+8.             a_start, a_end = A[i]
+9.             b_start, b_end = B[j]
+10.             if a_start <= b_end and b_start <= a_end:                       # Criss-cross lock
+11.                 result.append([max(a_start, b_start), min(a_end, b_end)])   # Squeezing
+12.                 
+13.             if a_end <= b_end:         # Exhausted this range in A
+14.                 i += 1               # Point to next range in A
+15.             else:                      # Exhausted this range in B
+16.                 j += 1               # Point to next range in B
+17.         return result

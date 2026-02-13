@@ -1,0 +1,26 @@
+class Solution:
+    def diStringMatch(self, s: str) -> List[int]:
+        graph = [[] for _ in range(len(s)+1)]
+        for i, ch in enumerate(s):
+            if ch == \'I\':
+                graph[i].append(i+1)
+            else:
+                graph[i+1].append(i)
+        top_sort = []
+        used = [False]*len(graph)
+        def dfs(v):
+            used[v] = True
+            for ch in graph[v]:
+                if not used[ch]:
+                    dfs(ch)
+            top_sort.append(v)
+        for v in range(len(graph)):
+            if not used[v]:
+                dfs(v)
+        top_sort.reverse()
+        result = [-1] * len(graph)
+        val = 0
+        for v in top_sort:
+            result[v] = val
+            val += 1
+        return result

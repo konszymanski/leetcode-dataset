@@ -1,0 +1,31 @@
+from collections import deque
+
+class Solution:
+    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+        # O(n) monotonic deque sliding window solution
+        # max_dq is a monotonic deque containing the top
+        # sums in the current window of size k.
+        # each element is a tuple of sum and index of last element in that sum
+        max_dq = deque()
+        max_dq.append([nums[0], 0])
+
+        max_sum = nums[0]
+
+        for i in range(1, len(nums)):
+            # remove the max if it exceeds the current window bounds
+            if i - max_dq[0][1] > k:
+                max_dq.popleft()
+            
+            # the max sum containing element i is either nums[i] alone
+            # or the maximum from the window of size k
+            # we easily get that from the front of the deque
+            curr_max = max(nums[i], nums[i] + max_dq[0][0])
+
+            # push the current sum to appropriate spot in monotonic deque
+            while max_dq and curr_max > max_dq[-1][0]:
+                max_dq.pop()
+            max_dq.append([curr_max, i])
+
+            max_sum = max(max_sum, curr_max)
+
+        return max_sum

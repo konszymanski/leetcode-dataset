@@ -1,0 +1,24 @@
+def getHappyString(self, n: int, k: int) -> str:
+    m = 1 << (n-1)
+    l = []
+    if k <= m:
+        l.append(\'a\')
+    elif k <= 2 * m:
+        l.append(\'b\')
+        k -= m
+    elif k <= 3 * m:
+        l.append(\'c\')
+        k -= 2 * m
+    else:
+        return \'\'
+    m >>= 1
+
+    while m:
+        if k <= m:
+            l.append(\'b\' if l[-1] == \'a\' else \'a\')
+        else:
+            l.append(\'b\' if l[-1] == \'c\' else \'c\')
+            k -= m
+        m >>= 1
+
+    return \'\'.join(l)

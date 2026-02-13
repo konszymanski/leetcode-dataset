@@ -1,0 +1,25 @@
+def minimumMountainRemovals(self, nums: List[int]) -> int:
+    n = len(nums)
+
+    def getLIS(iterator):
+        LIS = []
+        res = [1]*n
+        for i in iterator:
+            if not LIS or LIS[-1] < nums[i]:
+                LIS.append(nums[i])
+                res[i] = len(LIS)
+            else:
+                idx = bisect_left(LIS, nums[i])
+                LIS[idx] = nums[i]
+                res[i] = idx + 1
+        return res
+
+    LIS_left = getLIS(range(n))
+    LIS_right = getLIS(reversed(range(n)))
+
+    ans = inf
+    for i in range(n):
+        if min(LIS_left[i], LIS_right[i]) >= 2:
+            ans = min(ans, i + 1 - LIS_left[i] + n - i - LIS_right[i])
+    
+    return ans

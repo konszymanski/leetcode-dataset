@@ -1,0 +1,13 @@
+class Solution:
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        w = [*range(len(edges)+1)]
+        def recur(x):
+            if w[x] == x:
+                return x
+            return recur(w[x])
+        for u, v in edges:
+            x, y = recur(u), recur(v)
+            if x == y: return [u, v]
+            elif w[u] == u: w[u] = v
+            elif w[v] == v: w[v] = u
+            else: w[x] = y

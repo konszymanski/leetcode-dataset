@@ -1,0 +1,11 @@
+class Solution:
+    def getHappyString(self, n: int, k: int) -> str:
+        k -= 1
+        if 3*2**(n-1) <= k: return "" # impossible
+        
+        mp = {"": "abc", "a": "bc", "b": "ac", "c": "ab"}
+        ans = [""]
+        for i in range(n): 
+            q, k = divmod(k, 2**(n-i-1))
+            ans.append(mp[ans[-1]][q])
+        return "".join(ans)

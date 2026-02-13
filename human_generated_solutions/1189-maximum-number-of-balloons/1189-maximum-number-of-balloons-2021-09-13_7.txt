@@ -1,0 +1,8 @@
+class Solution:
+    def maxNumberOfBalloons(self, text: str) -> int:
+        word = {\'a\':0, \'b\':0,\'l\':0, \'n\':0, \'o\':0}
+        double_char = [\'l\',\'o\']
+        for c in text:
+            if c in word:
+                word[c] += 0.5 if c in double_char else 1
+        return int(min(word.values()))

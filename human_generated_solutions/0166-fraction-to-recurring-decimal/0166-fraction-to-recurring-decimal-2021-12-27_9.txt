@@ -1,0 +1,26 @@
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        if numerator == 0:
+            return "0"
+        negative_sign = (numerator < 0) ^ (denominator < 0)
+        numerator, denominator = abs(numerator), abs(denominator)
+        result = ["-"] if negative_sign else []
+        result.append(str(numerator // denominator))
+        remainder = numerator % denominator
+        
+        seen_numerator = {}
+        if remainder == 0:
+            return "".join(result)
+        
+        result.append(".")
+        while remainder != 0:
+            if remainder in seen_numerator:
+                result.append(")")
+                small_pos = seen_numerator[remainder]
+                return "".join(result[:small_pos]) + "("+"".join(result[small_pos:])
+            seen_numerator[remainder] = len(result)
+            remainder *= 10
+            val = remainder // denominator
+            remainder %= denominator
+            result.append(str(val))
+        return "".join(result)

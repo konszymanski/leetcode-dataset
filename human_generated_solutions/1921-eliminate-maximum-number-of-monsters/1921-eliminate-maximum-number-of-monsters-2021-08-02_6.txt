@@ -1,0 +1,13 @@
+class Solution:
+    def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
+        time = [] 
+        for i in range(len(dist)):
+            time.append(dist[i]/speed[i])  #note that this can be a float
+        time.sort() #create time of arrival table, and sort it. we just greedily kill the monster that will arrive first
+
+        for t in range(len(time)): #t is also the current time
+            monster_has_arrived = (time[t] - t <= 0)
+            if monster_has_arrived : 
+                return t #we can just return the current time, which is also the number of monster we have killed, because we can only eliminate one monster per timestep
+            
+        return len(time) #we killed all monsters

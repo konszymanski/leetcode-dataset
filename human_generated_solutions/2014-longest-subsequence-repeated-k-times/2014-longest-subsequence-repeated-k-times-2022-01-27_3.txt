@@ -1,0 +1,39 @@
+class Solution:
+    def longestSubsequenceRepeatedK(self, s: str, k: int) -> str:
+        n=len(s)
+        count=collections.Counter(s)
+        candidates=[i for i in count if count[i]>=k]
+        candidates.sort(reverse=True)
+        def isSubseq(a,b):
+            m,n=len(a),len(b)
+            i,j=0,0
+            count=0
+            while i<m and j<n:
+                if a[i]==b[j]:
+                    i+=1
+                    j+=1
+                    count+=1
+                else:
+                    j+=1
+            return True if count==m else False
+        optimal_count=collections.Counter()
+        for c in candidates:
+            optimal_count[c]=count[c]//k
+        length=1
+        ans=""
+        q=deque()
+        q.append(("",optimal_count.copy()))
+        while q:
+            l=len(q)
+            for _ in range(l):
+                s1,new_count=q.popleft()
+                for c in candidates:
+                    if new_count[c]>0:
+                        s1+=c
+                        new_count[c]-=1
+                        if isSubseq(s1*k,s):
+                            q.append((s1,new_count.copy()))
+                        s1=s1[:len(s1)-1:1]
+                        new_count[c]+=1
+            if q: ans=q[0][0]
+        return ans

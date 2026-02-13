@@ -1,0 +1,18 @@
+class Solution:
+    def largestSubmatrix(self, matrix: List[List[int]]) -> int:
+        numRows, numCols = len(matrix), len(matrix[0])
+        ans, height = 0, [0] * numCols
+        # view each row and its above as pillars 
+        for row in range(numRows):
+            for col in range(numCols):
+                # calculate heights of the pillars, height = number of consecutive 1s
+                if matrix[row][col] == 0:
+                    height[col] = 0
+                else:
+                    height[col] += 1
+            # sort the pillars by height in increasing order
+            sortedHeights = list(sorted(height[:]))
+            # iterate to get the maxium rectangle
+            for col in range(numCols):
+                ans = max(ans, sortedHeights[col] * (numCols - col))
+        return ans

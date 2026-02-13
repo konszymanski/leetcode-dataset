@@ -1,0 +1,14 @@
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+                
+        first1=1
+        
+        for idx,n in enumerate(nums):
+            if n==1 and first1:
+                first1=0
+                lastIndex=idx
+            elif n==1:
+                if idx-lastIndex<=k:
+                    return False
+                lastIndex=idx
+        return True

@@ -1,0 +1,23 @@
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        degree=defaultdict(int)
+        supplies=set(supplies)
+        g=defaultdict(list)
+        for j,i in enumerate(ingredients):
+            for ing in i:
+                if ing not in supplies:
+                    g[ing].append(recipes[j])
+                    degree[recipes[j]]+=1
+        q=deque()
+        for rec in recipes:
+            if degree[rec]==0:
+                q.append(rec)
+        ans=[]
+        while q:
+            cur=q.popleft()
+            ans.append(cur)
+            for i in g[cur]:
+                degree[i]-=1
+                if degree[i]==0:
+                    q.append(i)
+        return ans

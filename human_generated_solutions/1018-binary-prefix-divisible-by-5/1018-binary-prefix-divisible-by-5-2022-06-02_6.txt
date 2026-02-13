@@ -1,0 +1,22 @@
+class Solution:
+    def prefixesDivBy5(self, nums: List[int]) -> List[bool]:       
+	
+        #To store transition Function. Key is Current State. Index of Value represents input symbol. 
+		#ELement at index represents Next State
+        D = {\'Z\':[\'Z\',\'O\'], \'O\':[\'T\',\'Th\'], \'T\':[\'F\',\'Z\'], \'Th\':[\'O\',\'T\'], \'F\':[\'Th\',\'F\']}
+        
+        #Will Store Current State
+        q = \'Z\'
+    
+        answer = []
+        
+        for i in nums:
+		
+            answer.append(D[q][i]==\'Z\')
+            #Now D[q] is a List. i will be either 0 or 1, so is index of list. 
+			#We have to check if next state is Z or not.
+            
+            q = D[q][i]
+            #Go to Next State
+        
+        return answer

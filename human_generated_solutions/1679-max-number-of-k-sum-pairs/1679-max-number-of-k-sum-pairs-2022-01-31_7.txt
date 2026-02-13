@@ -1,0 +1,12 @@
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+		# calculate frequency of each number
+        count = Counter(nums)
+        operations = 0
+        for num in count.keys():
+		    # we take minimum of each count to form pairs
+            operations += min(count[num], count[k-num])
+        # we need to divide these operations by 2
+		# since we have considered each pair twice
+		# as (n, k-n) and (k-n, n)
+		return operations // 2

@@ -1,0 +1,19 @@
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        a = 0
+        res =[]
+        if nums == [] or len(nums)==1: #if input list is empty or contains single elem
+            return list(map(str,nums)) #typecast the int to str
+        
+        for i in range(len(nums)):
+            if i == len(nums)-1 or nums[i+1] != nums[i]+1:#if it is last elem or the next elem is just one greater
+                                                            #than current elem do this
+                
+                if nums[a] == nums[i]:      # if the start and end of range is same elem append it.         
+                    res.append(str(nums[i]))        
+                                        
+                else:                 #else append the str form of the range
+                    res.append(str(nums[a])+"->"+str(nums[i]))
+                    
+                a = i+1 #move the start of range to next of current elem
+        return res

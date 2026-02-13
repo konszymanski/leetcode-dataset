@@ -1,0 +1,17 @@
+class Solution:
+    def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+        obstacles = {x + 1j*y for (x, y) in obstacles}
+        orientation = {-1: -1j, -2: 1j}
+        pos, dxy = 0, 1j
+
+        ans = 0
+        for c in commands:
+            if c in orientation:
+                dxy *= orientation[c]
+                continue
+            while c and pos+dxy not in obstacles:
+                pos += dxy
+                c -= 1
+            dist = int(pos.real**2 + pos.imag**2)
+            ans = max(ans, dist)
+        return ans

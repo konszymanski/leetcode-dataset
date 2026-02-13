@@ -1,0 +1,28 @@
+from random import randint
+from bisect import bisect_right
+
+class Solution:
+
+    def __init__(self, w: List[int]):
+        
+        # built a weight accumulation table
+        # acc[0] = w[0], for i = 0
+        # acc[i] = acc[i-1] + w[i] for i = 1 ~ (n-1)
+        self.accumulation = w
+        
+        for i in range(1, len(w)):
+            self.accumulation[i] = self.accumulation[i-1] + w[i]
+
+            
+            
+    def pickIndex(self) -> int:
+        
+        sum_of_all_weight = self.accumulation[-1]
+        
+        # generate a random value from 0 to ( sum of all weight - 1 )
+        random_value = randint(0, sum_of_all_weight-1)
+        
+        # mapping the random value to its corresponding index (i.e., point ) with w[i]
+        point = bisect_right(self.accumulation, random_value)
+        
+        return point

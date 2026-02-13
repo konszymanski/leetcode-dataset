@@ -1,0 +1,17 @@
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        if not root: return
+        
+        if root.val >= low:
+            root.left = self.trimBST(root.left, low, high)
+        else:
+            root = self.trimBST(root.right, low, high)
+            
+        if not root: return
+        
+        if root.val <= high:
+            root.right = self.trimBST(root.right, low, high)
+        else:
+            root = self.trimBST(root.left, low, high)
+            
+        return root

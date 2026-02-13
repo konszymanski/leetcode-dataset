@@ -1,0 +1,58 @@
+class SummaryRanges:
+
+    def __init__(self):
+        self.arr = []
+
+    def addNum(self, val: int) -> None:
+        if self.arr == []:
+            self.arr = [[val,val]]
+            return
+            
+        intervals = self.arr
+        for i in range(len(self.arr)):
+            start = intervals[i][0]
+            end = intervals[i][1]
+            
+            # if within any exisiting interval, we can ignore the new one
+            if start <= val <= end:
+                return
+            
+            # if we can merge two intervals because of this new number
+            elif val - 1 == end and i < len(self.arr) - 1 and intervals[i+1][0] == val + 1:
+                self.arr[i] = [start, intervals[i+1][1]]
+                del self.arr[i+1]
+                return
+            
+            # if we can append to the end of any interval
+            elif val - 1 == end:
+                self.arr[i] = [start, val]
+                return
+            
+            # if we can append to the start of any interval
+            elif val + 1 == start:
+                self.arr[i] = [val, end]
+                return
+            
+            # Now that we handled all merging cases, we need to handle if the new number is a new interval
+            
+            # create a new interval between any 2 exisiting intervals
+            elif val - 1 > end and i < len(self.arr) - 1 and val + 1 < intervals[i+1][0]:
+                self.arr.insert(i+1, [val,val])
+                return
+            
+            # create new interval at the end
+            elif val - 1 > end and i == len(self.arr) - 1:
+                self.arr.append([val,val])
+                return
+            
+            # create new interval at the start
+            elif i == 0 and val + 1 < start:
+                self.arr.insert(0, [val,val])
+                return
+        return
+            
+            
+        
+
+    def getIntervals(self) -> List[List[int]]:
+        return self.arr

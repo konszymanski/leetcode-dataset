@@ -1,0 +1,29 @@
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        
+        #convert languages list of lists into list of sets for O(1) lookup
+        languages = [set(L) for L in languages] #O(m*n)
+
+        #get a set of people who have friends they can\'t communicate with
+        cantCommunicate = set()
+        for personA,personB in friendships: #O(friendships*m)
+            #get the proper index (0-indexing)
+            personA -= 1
+            personB -= 1
+            #if they can\'t communicate, then add both people to set
+            if languages[personA].isdisjoint(languages[personB]):
+                #isdisjoint returns true if there are not intersections between sets
+                cantCommunicate.add(personA)
+                cantCommunicate.add(personB)
+        if not cantCommunicate:
+            #there\'s no friend pair that can\'t communicate, so don\'t need to teach anyone a language
+            return 0
+        
+        #find the most common language in the cantCommunicate set
+        languageCount = collections.Counter()
+        for person in cantCommunicate: #O(friendships*n)
+            languageCount.update(languages[person])
+        
+        #return the total number of items in cantCommunicate minus the amount for the language with highest frequency
+        highestFreqLanguageCount = max(languageCount.values())
+        return len(cantCommunicate) - highestFreqLanguageCount

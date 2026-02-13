@@ -1,0 +1,15 @@
+class Solution:
+    def maxConsecutiveAnswers(self, answerKey: str, k: int) -> int:
+        
+        l, d = 0, {\'T\':0,\'F\':0}                     #   Ex: answerKey = TTFTTFTT
+                                                    #                   01234567
+        for r in range(len(answerKey)):             #   l    r      d        r-l+1
+            d[answerKey[r]] += 1                    #  \u2013\u2013\u2013  \u2013\u2013\u2013  \u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013\u2013   \u2013\u2013\u2013\u2013\u2013\u2013
+                                                    #   0    0   {T:1,F:0}     1
+            if max(d.values()) < r - l - k + 1:     #   0    1   {T:2,F:0}     2   
+                d[answerKey[l]] -= 1                #   0    2   {T:2,F:1}     3
+                l += 1                              #   2    3   {T:3,F:1}     4
+                                                    #   2    4   {T:4,F:1}     5
+        return r - l + 1                            #   1    5   {T:3,F:2}     5
+                                                    #   2    6   {T:3,F:2}     5
+                                                    #   3    7   {T:4,F:1}     5  <-- answer

@@ -1,0 +1,42 @@
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        depth = {}
+        height = {}
+        nodes_at_depth = {}
+
+        max_height = 0
+
+        def rec(n, d):
+            nonlocal max_height
+            if n is None:
+                return 0
+            height_below = max(rec(n.left, d+1), rec(n.right, d+1))
+            v = n.val
+            depth[v] = d
+            h = d + 1 + height_below
+            height[v] = h
+            max_height = max(max_height, h)
+
+            if d not in nodes_at_depth:
+                nodes_at_depth[d] = [v]
+            else:
+                nodes_at_depth[d].append(v)
+
+            return 1 + height_below
+
+
+        rec(root, -1)  # subtract one because the problem reports heights weird
+        ret = []
+
+
+        for q in queries:
+            if height[q] >= max_height:
+                d = depth[q]
+                for cousin in nodes_at_depth[depth[q]]:
+                    if cousin != q:  # don\'t count self, obviously
+                        d = max(d, height[cousin])
+                ret.append(d)  
+            else:
+                ret.append(max_height)
+        
+        return ret

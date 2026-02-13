@@ -1,0 +1,30 @@
+from random import randint, choices
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.rects = rects
+        
+        # get the areas of each rectangle
+        # add one to rectangles which don\'t have any area
+        # because they are a "point" or "line" which we
+        # should still consider
+        areas = [(x - a + 1)*(y-b + 1) for a, b, x, y in self.rects]
+        
+        # get the sum of areas
+        summed = sum(areas)
+        
+        # make the probabilities
+        self.prob = [area/summed for area in areas]
+
+    def pick(self) -> List[int]:
+        
+        # choose a rectangle according to the probabilites
+        rect = choices(self.rects, weights=self.prob)[0]
+        
+        # choose a random x
+        x = randint(rect[0], rect[2])
+        
+        # choose a random y
+        y = randint(rect[1], rect[3])
+        
+        return (x, y)

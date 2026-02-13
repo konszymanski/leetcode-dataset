@@ -1,0 +1,21 @@
+class Solution:
+    def longestZigZag(self, root: TreeNode) -> int:	
+        self.ans = 0  # global variable to store answer
+		
+        def recurse(root):
+			# if null return -1 because length is defined 
+			# as the number of nodes visited - 1. 
+            if not root: return (-1,-1) 
+			
+			# l1 is max path len if we go left from current node and r1 if we go right						
+            l1,r1 = recurse(root.left)
+            l2,r2 = recurse(root.right)
+			# Notice that if we go left from current node then we have no other choice but
+			# to go right from node.left to make the path zigzag. 
+			# That is why  r1 + 1 is the max path len  if we go left from current node. 
+			# Same logic for l2 + 1
+            self.ans = max(self.ans, max(r1 + 1, l2 + 1))
+            return (r1 + 1, l2 + 1)
+			
+        recurse(root)
+        return self.ans

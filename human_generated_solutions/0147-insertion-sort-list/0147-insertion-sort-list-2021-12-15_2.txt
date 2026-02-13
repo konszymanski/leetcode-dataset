@@ -1,0 +1,9 @@
+class Solution(object):
+    def insertionSortList(self, head):
+        p, sl = head, ListNode()  # sl is the sortedList with dummy head node.
+        while p:  # traverse the input linked list until None
+            q = sl  # q is the pre of current node of sortedList
+            while q.next and q.next.val < p.val:  # find the insertion position sequentially
+                q = q.next
+            p.next, q.next, p, q = q.next, p, p.next, q.next  # insert p to q.next
+        return sl.next  # Note sl is the dummy head node

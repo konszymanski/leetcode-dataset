@@ -1,0 +1,30 @@
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, A: List[List[int]], B: List[List[int]]) -> List[bool]:
+        par = {}
+        A.sort(key = lambda x: x[2])
+        
+        for i, query in enumerate(B):
+            query.append(i)
+        B.sort(key = lambda x: x[2])
+        
+        def find(a):
+            par.setdefault(a, a)
+            if par[a] != a:
+                par[a] = find(par[a])
+            return par[a]
+        
+        def union(a, b):
+            par.setdefault(a, a)
+            par.setdefault(b, b)
+            par[find(a)] = par[find(b)]
+        
+        ans = [False]*len(B)
+        i = 0
+        for a, b, lim, idx in B:
+            while i < len(A) and A[i][2] < lim:
+                union(A[i][0], A[i][1])
+                i += 1
+            
+            if find(a) == find(b):
+                ans[idx] = True
+        return ans

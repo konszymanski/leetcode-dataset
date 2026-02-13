@@ -1,0 +1,6 @@
+class Solution:
+    def removePalindromeSub(self, S: str) -> int:
+        L = len(S)
+        if L == 0: return 0
+        if S == S[::-1]: return 1
+        else return 2

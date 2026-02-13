@@ -1,0 +1,28 @@
+\'\'\'
+w: greed
+h: we put the box that contains the largest unit into the Truck
+    until:
+    1) such type of box has been all put into the truck
+    2) we cannot put any box into truck anymore
+\'\'\'
+
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        res = 0
+        boxTypes = sorted(boxTypes, reverse=True, key=lambda x:x[1])
+        #print(boxTypes)
+        
+        for b, u in boxTypes:
+            #1. the truck is full
+            if truckSize - b <= 0:
+                res += (truckSize) * u
+                break
+            
+            #2. put all the boxes into the truck
+            else:
+                res += b * u
+                truckSize -= b
+            
+        
+        
+        return res

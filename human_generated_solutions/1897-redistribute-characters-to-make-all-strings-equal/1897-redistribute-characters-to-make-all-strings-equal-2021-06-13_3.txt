@@ -1,0 +1,16 @@
+class Solution:
+    def makeEqual(self, words: List[str]) -> bool:
+        def indx(x):
+            return ord(x) - ord(\'a\')
+        
+        hashmap = [0]*26
+        for word in words:
+            for c in word:
+                hashmap[indx(c)]+=1
+        
+        n = len(words)
+        
+        for i in range(26):
+            if hashmap[i]%n != 0:
+                return False
+        return True

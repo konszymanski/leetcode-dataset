@@ -1,0 +1,6 @@
+def stoneGameIII(stoneValue):
+    n = len(stoneValue)
+    dp = [0] * (n + 3)
+    for i in range(n-1, -1, -1):
+        dp[i] = max(sum(stoneValue[i:i+k]) - dp[i+k] for k in range(1, 4))
+    return "Alice" if dp[0] > 0 else "Bob" if dp[0] < 0 else "Tie"

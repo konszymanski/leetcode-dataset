@@ -1,0 +1,35 @@
+class ExamRoom:
+
+    def __init__(self, n: int):
+        self.n1 = n - 1
+        self.taken = []
+
+    def seat(self) -> int:
+        if not self.taken:
+            self.taken.append(0)
+            return 0
+        else:
+            max_idx = max_taken_idx = max_distance = -1
+            if self.taken[0] != 0:
+                distance = self.taken[0]
+                if distance > max_distance:
+                    max_distance = distance
+                    max_idx = 0
+                    max_taken_idx = 0
+            for t, (i, j) in enumerate(zip(self.taken, self.taken[1:])):
+                distance = (j - i) // 2
+                if distance > max_distance:
+                    max_distance = distance
+                    max_idx = i + distance
+                    max_taken_idx = t + 1
+            if self.taken[-1] != self.n1:
+                distance = self.n1 - self.taken[-1]
+                if distance > max_distance:
+                    max_distance = distance
+                    max_idx = self.n1
+                    max_taken_idx = len(self.taken)
+            self.taken.insert(max_taken_idx, max_idx)
+            return max_idx
+
+    def leave(self, p: int) -> None:
+        self.taken.remove(p)

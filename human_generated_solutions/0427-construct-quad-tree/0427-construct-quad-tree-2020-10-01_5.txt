@@ -1,0 +1,15 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> \'Node\':
+        
+        def fn(x0, x1, y0, y1): 
+            """Return QuadTree subtree."""
+            val = {grid[i][j] for i, j in product(range(x0, x1), range(y0, y1))}
+            if len(val) == 1: return Node(val.pop(), True, None, None, None, None)
+            tl = fn(x0, (x0+x1)//2, y0, (y0+y1)//2)
+            tr = fn(x0, (x0+x1)//2, (y0+y1)//2, y1)
+            bl = fn((x0+x1)//2, x1, y0, (y0+y1)//2)
+            br = fn((x0+x1)//2, x1, (y0+y1)//2, y1)
+            return Node(None, False, tl, tr, bl, br)
+        
+        n = len(grid)
+        return fn(0, n, 0, n)

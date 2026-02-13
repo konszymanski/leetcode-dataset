@@ -1,0 +1,55 @@
+def scheduleCourse(self, courses: List[List[int]]) -> int:
+        
+        # Edge cases:
+        if not courses or courses == [[]]:
+            return 0
+        
+        # order list based on deadline
+        # Basically to give prority to courses whose deadlines take place earlier (finish the course with closer deadline)
+        courses.sort(key=lambda x: x[1])
+        
+        # max heap to always have access to course with max duration so far
+        h = []
+        from heapq import heappush, heappop
+        
+        time = 0
+        for c in courses:
+            if time + c[0] <= c[1]: # -- [1]
+                time += c[0]
+                heappush(h, -c[0]) # -- note (A)
+            else: # -- [2]
+                if h:
+                    if c[0] < -h[0]:
+                        time -= -heappop(h)
+                        time += c[0]
+                        heappush(h, -c[0])
+        return len(h)
+                
+                
+                
+        # Scenario [1]:
+        \'\'\'
+        - Can take course because If I start the course now at t=time I will be able to finish it before its deadline
+            - append the course to the heap
+            - increment timer
+        \'\'\'
+        
+        # Scenario [2]:
+        \'\'\'
+        - Cannot take course because If I start the course now at t=time I will NOT be able to finish it before its deadline
+            - check the course with the longest duration that we have decided we\'re gonna take so far
+                - Compare the curr course against that course and swap if the duration of cur course is greater than the course with longest duration so far
+                - Why we are doing this you ask? Because this means that there is a course that we decided previously we could take but in reality its affecting
+                  our ability to take more shorter courses. And since the priority is to take more courses -> we decide to sacrifice the long course when we 
+                  encounter a course that is shorter in duration in hopes we can maximize the number of courses we can take.
+                
+                - The test upon which we base our decision is simple : Is the curr course shorter than the longest course we are planning to take so far?
+                    - if yes: -> we swap for the reasons explained above
+                    - if no: -> we do nothing and skip the iteration becuz the cur course is either as long as the (longest course so far) or even longer
+                        which means doing any modification is not gonna help us take more courses
+        \'\'\'
+        
+        # Note (A):
+        \'\'\'
+        - The duration of course is the only piece of info needed about the course
+        \'\'\'

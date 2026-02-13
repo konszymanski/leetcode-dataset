@@ -1,0 +1,35 @@
+# backtracking
+def kSimilarity(self, A, B):
+	n, b = len(A), list(B)
+	min_step = float(\'inf\')
+
+	def backtracking(step, i):
+		nonlocal min_step
+		if step >= min_step:  # exceed min_step, early stop
+			return
+
+		while i < n and A[i] == b[i]:
+			i += 1
+
+		if i == n:
+			min_step = min(step, min_step)
+			return
+
+		pos = []
+		for j in range(i + 1, n):
+			if b[j] == A[i]:
+				# should be the optimal swap, match two pairs in one swap,
+				# even if have multiple A[j]==b[i], we can just pick any one
+				if A[j] == b[i]:
+					pos = [j]
+					break
+				elif A[j] != b[j]:  # if A[j] == b[j], this swap also remain one mis-match, exclude this situation
+					pos.append(j)
+
+		for k in pos:
+			b[i], b[k] = b[k], b[i]
+			backtracking(step + 1, i)
+			b[i], b[k] = b[k], b[i]
+
+	backtracking(0, 0)
+	return min_step

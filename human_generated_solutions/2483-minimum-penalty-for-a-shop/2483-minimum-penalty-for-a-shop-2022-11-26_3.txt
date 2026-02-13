@@ -1,0 +1,14 @@
+def bestClosingTime(customers: str) -> int:
+    penalty = 0
+    for i in customers:
+        penalty += 1 if i == \'Y\' else 0
+
+    minPenalty = penalty
+    minPenIndex = 0
+    for i in range(len(customers)):
+        penalty += -1 if customers[i] == \'Y\' else 1
+        if penalty < minPenalty:
+            minPenalty = penalty
+            minPenIndex = i + 1
+
+    return minPenIndex

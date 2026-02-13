@@ -1,0 +1,18 @@
+class Solution(object):
+    def racecar(self, target):
+        """
+        :type target: int
+        :rtype: int
+        """
+        q = deque([(0,1,0)])
+        while q:
+            pos,speed,ts = q.popleft()
+            if pos == target:
+                return ts
+            q.append((pos+speed,speed*2,ts+1))
+            if speed>0 and pos+speed>target:
+                q.append((pos,-1,ts+1))
+            elif speed<0 and pos+speed<target:
+                q.append((pos,1,ts+1))
+
+        return None

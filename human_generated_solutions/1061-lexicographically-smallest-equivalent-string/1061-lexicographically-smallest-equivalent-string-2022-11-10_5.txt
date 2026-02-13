@@ -1,0 +1,19 @@
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+
+        dictNode = {chr(ord(\'a\') + i) : chr(ord(\'a\') + i) for i in range(26)}
+
+        n = len(s1)
+
+        for k in range(26):
+            for i in range(n):
+                if(dictNode[s2[i]] < dictNode[s1[i]]):
+                    dictNode[s1[i]] = dictNode[s2[i]]
+                if(dictNode[s1[i]] < dictNode[s2[i]]):
+                    dictNode[s2[i]] = dictNode[s1[i]]
+
+        output = []
+        for s in baseStr:
+            output.append(dictNode[s])
+
+        return \'\'.join(output)

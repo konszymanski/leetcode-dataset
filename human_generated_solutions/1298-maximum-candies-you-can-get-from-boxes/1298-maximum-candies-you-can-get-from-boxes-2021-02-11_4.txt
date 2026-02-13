@@ -1,0 +1,34 @@
+\'\'\'
+w: BFS
+h: traverse all the box with regular BFS behavior and get the key, then get the candies in the box 
+    if the box is already open or you have the key
+\'\'\'
+
+import collections
+
+class Solution:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+        if not initialBoxes:
+            return 0
+        
+        seen = set()
+        seenKey = set()
+        queue = collections.deque(initialBoxes)
+        
+        while queue:
+            size = len(queue)
+            for _ in range(size):
+                curr = queue.popleft()
+                for nxt in containedBoxes[curr]:
+                    if nxt not in seen:
+                        queue.append(nxt)
+                seenKey |= set(keys[curr])
+                seen.add(curr)
+                
+        
+        res = 0
+        for box in seen:
+            if status[box] == 1 or box in seenKey:
+                res += candies[box]
+
+        return res

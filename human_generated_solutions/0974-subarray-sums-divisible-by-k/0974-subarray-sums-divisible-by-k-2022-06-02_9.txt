@@ -1,0 +1,16 @@
+class Solution:
+    def subarraysDivByK(self, arr: List[int], k: int) -> int:
+        dic = {0:1}
+        curr_sum = 0
+        subArrays = 0
+        for i in range(len(arr)):
+            curr_sum+=arr[i]
+            rem = curr_sum % k
+            if rem<0:
+                rem+=k
+            if rem in dic:
+                subArrays+=dic[rem]
+                dic[rem]+=1
+            else:
+                dic[rem]=1
+        return subArrays

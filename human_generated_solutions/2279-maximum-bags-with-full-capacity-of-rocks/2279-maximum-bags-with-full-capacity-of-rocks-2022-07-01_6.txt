@@ -1,0 +1,18 @@
+class Solution:
+    def maximumBags(self, capacity: List[int], rocks: List[int], additionalRocks: int) -> int:
+        
+        res = []
+        for i in range(len(capacity)):
+            res.append(capacity[i] - rocks[i])
+            
+        res.sort()
+        count = 0
+        
+        for i in range(len(res)):
+            if res[i] == 0:
+                count += 1
+            elif additionalRocks >= res[i]:
+                additionalRocks -= res[i]
+                count += 1
+        
+        return count

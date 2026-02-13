@@ -1,0 +1,45 @@
+class MagicDictionary:
+    def __init__(self):
+        self.trie = {}
+        self.end = \'end\'
+
+    def buildDict(self, dictionary: List[str]) -> None:
+        for word in dictionary:
+            node = self.trie
+            for c in word:
+                if c not in node:
+                    node[c] = {}
+                
+                node = node[c]
+            
+            node[self.end] = True
+    
+    def _search_after_change(self, suffix, node):
+        for c in suffix:
+            if c not in node:
+                return False
+            
+            node = node[c]
+        
+        if self.end not in node:
+            return False
+        
+        return True
+    
+    def search(self, searchWord: str) -> bool:
+        node = self.trie
+        
+        for idx in range(len(searchWord)):
+            for key in node:
+                if key != self.end and key != searchWord[idx]:
+                    suffix = searchWord[idx + 1:]
+                    if self._search_after_change(suffix, node[key]):
+                        return True
+            
+            # changing one character didn\'t give us anything
+            if searchWord[idx] not in node:
+                return False
+            
+            node = node[searchWord[idx]]
+        
+        return False

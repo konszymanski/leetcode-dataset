@@ -1,0 +1,36 @@
+class Solution(object):
+    def removeSubfolders(self, folder):
+        """
+        :type folder: List[str]
+        :rtype: List[str]
+        """
+        
+        class node:
+            def __init__(self):
+                self.children = defaultdict(node)
+                self.isend = False
+        class trie:
+            def __init__(self):
+                self.root = node()
+                self.ans=set()
+                
+            def insert(self,key):
+                
+                cur = self.root
+                
+                for i in key:
+                    cur = cur.children[i]
+                    if cur.isend:
+                        break
+                if not cur.isend:
+                    self.ans.add(\'/\'.join(key))
+                cur.isend= True
+        
+        t= trie()
+        folder.sort()
+        
+        for i in folder:
+            print(i.split(\'/\'))
+            t.insert(i.split(\'/\'))
+            
+        return list(t.ans)

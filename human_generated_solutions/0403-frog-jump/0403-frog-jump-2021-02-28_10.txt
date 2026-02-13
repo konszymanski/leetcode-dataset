@@ -1,0 +1,23 @@
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+		# Naive approach
+		# def bt(pos, stones, k):
+        #     if pos == stones[-1]:
+        #         return True
+        #     else:
+        #         return any(bt(pos+hop, stones, hop) for hop in range(k-1, k+2) if pos+hop in stones and hop != 0)
+        # return bt(1, stones, 1)
+		
+		# Same backtracking algorithm but making use of memoization
+        memo = {}
+        if 1 not in stones:
+            return False
+        def bt(pos, stones, k, memo):
+            if pos == stones[-1]:
+                return True
+            if (pos, k) in memo:
+                return memo[(pos, k)]
+            else:
+                memo[(pos, k)] = any(bt(pos+hop, stones, hop, memo) for hop in range(k-1, k+2) if pos+hop in stones and hop != 0)
+                return memo[(pos, k)]
+        return bt(1, stones, 1, memo)

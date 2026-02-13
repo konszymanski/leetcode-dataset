@@ -1,0 +1,25 @@
+class Solution:
+    def minCost(self, nums: List[int], cost: List[int]) -> int:
+        
+        def cost_el(l):
+            c=0
+            for i, x in enumerate(nums):
+                c+=abs(l-x)*cost[i]
+            return c
+        
+        best_c=float(inf)
+        left=min(nums)
+        right=max(nums)+1
+        mid=(left+right)//2
+        
+        while left<right:
+            if cost_el(mid)<cost_el(mid+1):
+                right=mid
+            else:
+                left=mid+1
+            mid=(left+right)//2
+        
+        for i in range(left, right+1):
+            best_c=min(best_c, cost_el(i))
+            
+        return best_c

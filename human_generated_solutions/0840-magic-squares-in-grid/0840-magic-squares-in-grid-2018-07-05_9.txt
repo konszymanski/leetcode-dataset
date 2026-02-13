@@ -1,0 +1,20 @@
+def numMagicSquaresInside(self, grid: List[List[int]]) -> int:
+  def is_magic(r: int, c : int) -> bool:
+    corner_sum = {2 : 7 + 9, 4 : 3 + 9, 6 : 1 + 7, 8 : 1 + 3}
+    sides = {1, 3, 7, 9}
+    return (5 == grid[r][c]
+        and grid[r - 1][c] in sides and 10 == grid[r - 1][c] + grid[r + 1][c]
+        # Check the left side is odd and the right side match up */
+        and grid[r][c - 1] in sides and 10 == grid[r][c - 1] + grid[r][c + 1]
+        # top left corner is even and matches the bottom right corner
+        and grid[r - 1][c - 1] in corner_sum and 10 == grid[r - 1][c - 1] + grid[r + 1][c + 1]
+        # top right corner is even and matches the bottom left corner
+        and grid[r - 1][c + 1] in corner_sum and 10 == grid[r - 1][c + 1] + grid[r + 1][c - 1]
+        # Check the neighbours of the top left corner are valid
+        and corner_sum[grid[r - 1][c - 1]] == grid[r - 1][c] + grid[r][c - 1]
+        # Check the neighbours of the top right corner are valid
+        and corner_sum[grid[r - 1][c + 1]] == grid[r - 1][c] + grid[r][c + 1])
+  
+  rows = len(grid)
+  cols = len(grid[0])
+  return sum([is_magic(r, c) for r in range(1, rows - 1) for c in range(1, cols - 1)])

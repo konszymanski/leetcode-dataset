@@ -1,0 +1,4 @@
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        vowels = iter(c for c in s[::-1] if c.lower() in \'aeiou\')
+        return "".join(next(vowels) if c.lower() in \'aeiou\' else c for c in s)

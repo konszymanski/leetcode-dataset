@@ -1,0 +1,37 @@
+# Python 2/3
+from bisect import bisect_right,bisect_left
+class Solution:
+    def findAllConcatenatedWordsInADict(self, words):
+        words = set([word for word in words if word]) # Filter Empty Words
+        #
+        # Find Compatible substring lengths using binary search
+        nlens = sorted( set(map(len,words)) )
+        def getsizes(L,i):
+            # BISECT USAGE:
+            #     bisect_left   ->  a[lo:i] <  x <= a[i:hi]
+            #     bisect_right  ->  a[lo:i] <= x <  a[i:hi]
+            if i:
+                Lj = bisect_right(nlens,L) # include L
+            else:
+                Lj = bisect_left(nlens,L) # exclude L
+            # Yield Reversed without delay
+            for j in range(Lj-1,-1,-1):
+                yield nlens[j]
+        #
+        # DFS matching function:
+        def dfs(i,word,L):
+            if i == L:
+                return True
+            #
+            for a in getsizes(L-i,i):
+                if word[i:i+a] in words and dfs(i+a,word,L):
+                    return True
+            return False
+        #
+        # Final Loop:
+        res = []
+        for word in words:
+            if dfs(0,word,len(word)):
+                res.append(word)
+        #
+        return res

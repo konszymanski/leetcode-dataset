@@ -1,0 +1,9 @@
+class Solution:
+    def minNumberOperations(self, target: List[int]) -> int:
+        n = len(target)
+        result = 0
+        prev = 0
+        for i in range(n):
+            result += max(0, target[i] - prev)
+            prev = target[i]
+        return result

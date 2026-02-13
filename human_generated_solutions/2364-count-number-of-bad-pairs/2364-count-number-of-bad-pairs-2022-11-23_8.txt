@@ -1,0 +1,13 @@
+def countBadPairs(self, nums: List[int]) -> int:
+	    # keep track of diffs
+        seen = defaultdict(int)
+		# count diffs which are the same
+        for i, m in enumerate(nums):
+            seen[i-m]+=1
+		# count pairs for all the diffs
+        good_count = 0
+        for k,v in seen.items():
+                good_count += v*(v-1) // 2
+		l = len(nums)
+		# return total count - good_count
+		return l*(l-1)//2-good_count

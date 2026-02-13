@@ -1,0 +1,9 @@
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        nums.sort()
+        unique, sz = list(sorted(set(nums))), len(nums)
+        res, numUnique = 0, len(unique)
+        for i in range(numUnique):
+            idx = bisect.bisect_right(unique, unique[i] + sz - 1)
+            res = max(res, idx - i)
+        return sz - res

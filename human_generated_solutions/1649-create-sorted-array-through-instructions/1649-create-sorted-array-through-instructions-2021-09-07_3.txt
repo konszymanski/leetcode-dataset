@@ -1,0 +1,14 @@
+from sortedcontainers import SortedList
+
+
+MOD = int(1e9+7)
+
+
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        res = SortedList()
+        ans = 0
+        for i in instructions:
+            ans += min(res.bisect_left(i), len(res) - res.bisect_right(i))
+            res.add(i)
+        return ans % MOD

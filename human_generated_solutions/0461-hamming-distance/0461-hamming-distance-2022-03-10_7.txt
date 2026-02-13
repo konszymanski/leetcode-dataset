@@ -1,0 +1,14 @@
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        x_b = bin(x)[2:]
+        y_b = bin(y)[2:]
+        
+        size = max(len(x_b),len(y_b)) # ensure both binary strings are of same length
+        x_b = x_b.zfill(size)
+        y_b = y_b.zfill(size)
+        
+        count = 0
+        for i in range(size):
+            if x_b[i] != y_b[i]: #count every instance where bits are different
+                count +=1
+        return count

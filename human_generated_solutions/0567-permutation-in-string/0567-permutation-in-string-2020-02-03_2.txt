@@ -1,0 +1,34 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if s2 and not s1:
+            return True
+        \'\'\'
+        --1--
+        [Accepted]
+        [Runtime: 9408 ms, faster than 5.07%]
+        
+        One string is a permutation of another if 
+        they are the same string when sorted. 
+        
+        Hence, sort s1 and then sort the substrings of s2 that are of the same size
+        and compare
+        Time: O(n)*O(k^2)*O(klogk) = O(n*k^3*logk)
+        \'\'\'
+        
+        # sort s1
+         s1 = "".join(sorted(list(s1)))
+         k = len(s1)
+        
+         # sort the substrings of s2 that are of the same size
+         for i in range(len(s2)): # -- O(n)
+             sub = s2[i:i+k] # -- O(k)
+             sub_str = "".join(sorted(list(sub)))  # ---- [1] 
+            
+             if s1 == sub_str:
+                 return True
+         return False
+    
+        # COMMENT [1]:
+        # ------------
+        # Runtime of that line = O(klogk) * O(k) * O(K)
+        # Sorting and converting from string to list and back into a string

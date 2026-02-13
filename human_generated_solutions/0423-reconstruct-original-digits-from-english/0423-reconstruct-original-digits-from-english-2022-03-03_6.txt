@@ -1,0 +1,25 @@
+import numpy as np
+
+class Solution:
+    def originalDigits(self, s: str) -> str:
+        chars = sorted(list(set(\'zeroonetwothreefourfivesixseveneightnine\')))
+        m = {0:\'zero\', 1:\'one\', 2:\'two\', 3:\'three\', 4:\'four\', 5:\'five\',
+             6:\'six\', 7:\'seven\', 8:\'eight\', 9:\'nine\'}
+        
+        cmap = {chars[i]:i for i in range(len(chars))}  # Mapping from character to row index
+        
+        A = np.zeros((len(chars), 10))
+        for d in range(10):
+            srep = m[d]
+            for c in srep:
+                A[cmap[c], d] += 1
+        
+        b = np.zeros(len(chars))
+        for c in s:
+            b[cmap[c]] += 1
+            
+        v = np.round(np.linalg.pinv(A) @ b)
+        res = \'\'
+        for d in range(10):
+            res += str(d) * int(v[d])
+        return res

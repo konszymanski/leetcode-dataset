@@ -1,0 +1,44 @@
+class Solution:
+	def get_neighbors(self, start: int, graph) -> Dict[int, int]:
+		distances = defaultdict(lambda: math.inf)
+
+		queue = deque([start])
+		level = 0
+
+		while queue:
+			for _ in range(len(queue)):
+				curr = queue.popleft()
+
+				if distances[curr] <= level:    
+					continue
+
+				distances[curr] = level
+
+				for neighbor in graph[curr]:
+					queue.append(neighbor)
+
+			level += 1        
+
+		return distances
+
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        n = len(edges)
+        graph = [[] for _ in range(n)]
+        
+        for _from, to in enumerate(edges):
+            if to != -1:
+                graph[_from].append(to)
+        
+        a = self.get_neighbors(node1, graph)
+        b = self.get_neighbors(node2, graph)
+                
+        options = []    
+        
+        for idx in range(n):
+            if a[idx] != math.inf and b[idx] != math.inf:
+                options.append((max(a[idx], b[idx]), idx))
+                
+        if not options:
+            return -1        
+        
+        return min(options)[1]

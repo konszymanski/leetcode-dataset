@@ -1,0 +1,10 @@
+class Solution:
+    def getMaximumXor(self, nums: List[int], maximumBit: int) -> List[int]:
+        pre=[0]*len(nums)               #pre list of size nums 
+        pre[0]=nums[0]
+        for i in range(1,len(nums)):
+            pre[i]=pre[i-1]^nums[i]     #Pre-Calculating the Xor Values of the nums list using Prefix Sum Technique 
+        k=(2**maximumBit)-1             #As the the maximum possible XOR result is always 2^(maximumBit) - 1
+        for i in range(0,len(pre)):
+            pre[i]=pre[i]^k             #Doing Xor of k with pre calculated Xor values of list nums
+        return pre[::-1]                #Reverse the list to match the output

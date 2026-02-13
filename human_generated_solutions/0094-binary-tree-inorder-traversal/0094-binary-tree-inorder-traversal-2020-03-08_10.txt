@@ -1,0 +1,27 @@
+class Solution:
+    def inorderTraversal(self, root: TreeNode):
+        # initialize the stack
+        stack = []
+        # initialize the traveral list
+        traversal = []
+        
+        # while we\'re at a valid node or there are
+        # still nodes to traverse... 
+        while stack or root:
+            
+            if root:
+                # if we\'re at a valid node,
+                # remember where we\'ve been and keep moving left
+                stack.append(root)
+                root = root.left
+            
+            else:
+                # otherwise we\'ve hit a dead end so
+                # -- pop the most recent value
+                # -- report out
+                # -- move right
+                root = stack.pop()
+                traversal.append(root.val)
+                root = root.right
+        
+        return traversal

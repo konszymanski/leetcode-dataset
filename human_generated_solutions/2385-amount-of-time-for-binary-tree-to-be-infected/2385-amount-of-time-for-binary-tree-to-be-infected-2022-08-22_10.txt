@@ -1,0 +1,27 @@
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+		self.startNode = None
+		
+        def addParent(root, parent) -> None: 
+            if not node:
+                return
+            root.parent = parent
+			if node.val == start: # if we run into start node we mark it
+                self.startNode = node
+            addParent(root.left, node)
+            addParent(root.right, node)
+
+        def getDist(root, visited) -> int:
+			# if reaching the end of the tree, or running into node previously visited, we return 0
+            if not root or root.val in visited: 
+				return 0
+			
+			 # add the value into set
+			visited.add(root.val)
+			# recursively visit left, right, and parent nodes, and return the max
+            return 1 + max(getDist(root.left, visited), getDist(root.right, visited), getDist(root.parent, visited)) 
+       
+        addParent(root, None) #assign parent node for each node in the tree
+        dis = getDist(self.startNode, set()) #count the distance to the furthest node
+
+        return dis - 1

@@ -1,0 +1,13 @@
+from functools import cache
+class Solution:
+    def minSwap(self, nums1: List[int], nums2: List[int]) -> int:
+        @cache
+        def dfs(i, a, b):
+            if i == len(nums1): return 0
+            min_swaps = float(\'inf\')
+            if a < nums1[i] and b < nums2[i]:
+                min_swaps = min(min_swaps, dfs(i+1, nums1[i], nums2[i]))
+            if a < nums2[i] and b < nums1[i]:
+                min_swaps = min(min_swaps, 1+dfs(i+1, nums2[i], nums1[i]))
+            return min_swaps
+        return dfs(0, float(\'-inf\'), float(\'-inf\'))

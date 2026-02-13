@@ -1,0 +1,3 @@
+class Solution:
+  def letterCasePermutation(self, S: str) -> List[str]:
+    return map(\'\'.join, product(*(set([ch.lower(), ch.upper()]) for ch in S)))

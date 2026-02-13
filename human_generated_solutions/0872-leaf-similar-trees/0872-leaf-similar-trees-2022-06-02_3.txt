@@ -1,0 +1,15 @@
+def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def helper(root,arr):
+            if root is None:
+                return None
+            if root.left is None and root.right is None:
+                arr.append(root.val)
+            helper(root.left,arr)
+            helper(root.right,arr)
+
+        arr1= []
+        arr2 = []
+        helper(root1,arr1)
+        helper(root2,arr2)
+
+        return arr1 == arr2

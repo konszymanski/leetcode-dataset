@@ -1,0 +1,29 @@
+class Solution:
+    def customSortString(self, order: str, str: str) -> str:
+		# define var for our answer and character count hashmap
+        ans = \'\'
+        cc = {}
+		# iterate through str and count characters - this is O(n) as we run through once
+        for char in str:
+            if char in cc:
+                cc[char] += 1
+            else:
+                cc[char] = 1
+        
+        # now iterate through our custom sort string - also O(n)
+        for c in order:
+			# if we encounter it in the hashmap, then add it to our answer
+			# lookup in hashmap should be O(1)
+            if c in cc:
+				# we add it times the count it appeared in our string str
+                ans += cc[c]*c
+				# we then delete this key so at the end we have the remaining characters
+				# where their order was not specified in the order string
+				# hashmap deletion should also be O(1)
+                del cc[c]
+        
+		# finally we iterate through the remaining chars left in the hashmap
+		# and add them to ans and return
+        for char, count in cc.items():
+            ans += char*count
+        return ans

@@ -1,0 +1,12 @@
+Python code:
+class Solution:
+    
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        count={0:1} 
+        for num in nums:
+            tempcount={}
+            for key in count:
+                tempcount[key-num]=tempcount.get(key-num,0)+count[key]
+                tempcount[key+num]=tempcount.get(key+num,0)+count[key]
+            count=tempcount
+        return count.get(target,0)

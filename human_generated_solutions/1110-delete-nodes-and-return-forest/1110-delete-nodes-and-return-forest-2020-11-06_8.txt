@@ -1,0 +1,26 @@
+class Solution:
+    def delNodes(self, root_node: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        blacklist = set(to_delete)
+        forest = []
+        def helper(root, parent):
+            """
+            Delete all blacklisted nodes from the tree rooted at `root`, append all resulting
+            non-empty trees to the forest, then return root (or None if the root is blacklisted).
+            `parent` is the parent node of `root` (or None if it has no parent).
+            """
+            if root is None:
+                return None
+            
+            if root.val in blacklist:
+                helper(root.left, None)
+                helper(root.right, None)
+                return None
+            
+            root.left = helper(root.left, root)
+            root.right = helper(root.right, root)
+            if parent is None:
+                forest.append(root)
+            return root
+                  
+        helper(root_node, None)
+        return forest

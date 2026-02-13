@@ -1,0 +1,80 @@
+from collections import defaultdict, deque
+from typing import List
+
+class Solution:
+
+    def mostProfitablePath(
+        self, 
+        edges: List[List[int]], 
+        bob: int, 
+        amount: List[int]
+    ) -> int:
+
+        graph = defaultdict(list)
+		# build a graph
+        for node1, node2 in edges:
+            graph[node1].append(node2)
+            graph[node2].append(node1)
+
+        # nodes in Bob\'s path to node 0 where value is a step
+		# during which Bob visited the node
+        bob_path = {}
+        seen = {bob}
+                
+        def bob_dfs(node: int, step: int = 0): 
+            # Bob reached the root
+            if node == 0:
+				# start recording the path
+                bob_path[node] = step
+                return
+            # explore adjacent nodes
+            for next_node in graph[node]:
+                
+                if next_node not in seen:
+                    
+                    seen.add(next_node)
+                    bob_dfs(next_node, step + 1)
+                    # next_node was added to path, 
+					# so the current node should also be in the path
+                    if next_node in bob_path:
+                        bob_path[node] = step
+                        return
+        
+        bob_dfs(bob)
+                
+        max_income = -float("inf")
+        seen = {0} 
+        
+        def alice_dfs(node: int = 0, step: int = 0, current_income: int = 0):
+            
+            nonlocal max_income
+            # if the current node was in the Bob\'s path
+            if node in bob_path:
+                
+                bob_step = bob_path[node]
+                # if Alice visits the node on the same step as Bob
+				# split reward/price
+                if step == bob_step:
+                    current_income += amount[node] // 2                  
+				# if Alice visits the node earlier than Bob add price/reward
+                elif step < bob_step: 
+                    current_income += amount[node]
+				# otherwise Bob visited this node earlier, so don\'t add anything
+			# the node isn\'t in Bob\'s path so add price/reward
+            else:
+                current_income += amount[node]
+            
+			# current node is a leaf
+            if len(graph[node]) == 1 and graph[node][0] in seen:
+				# compute max income
+                max_income = max(max_income, current_income)
+			# otherwise explore next nodes
+            else:
+                for next_node in graph[node]:
+                    if next_node not in seen:
+                        seen.add(next_node)
+                        alice_dfs(next_node, step + 1, current_income)
+
+        alice_dfs()                        
+        
+        return max_income

@@ -1,0 +1,15 @@
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        #j - nums[j] != i - nums[i]
+        ans = 0
+		#keep track of number of times i-nums[i] has appeared with a dictionary:
+        counts = {}
+        for i in range(len(nums)):
+            if i-nums[i] in counts:
+                counts[i-nums[i]] += 1
+            else:
+                counts[i-nums[i]] = 1
+                
+            ans += i-counts[i-nums[i]]+1
+            
+        return ans

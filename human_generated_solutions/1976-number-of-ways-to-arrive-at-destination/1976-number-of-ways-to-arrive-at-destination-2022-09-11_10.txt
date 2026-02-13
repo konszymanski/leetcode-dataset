@@ -1,0 +1,51 @@
+class Solution:
+    def countPaths(self, n: int, roads: List[List[int]]) -> int:
+        
+        # Apply Dijkstra\u2019s algorithm
+        
+        MOD = 10 ** 9 + 7
+        source = 0
+        destination = n - 1
+        
+        # build undirected graph
+        self.graph = collections.defaultdict(list)
+        
+        for u, v, t in roads:
+            self.graph[u].append((v, t))
+            self.graph[v].append((u, t))
+        
+        # shortest paths
+        dist = [[float(\'inf\'), 0] for i in range(n)]
+        dist[source] = [0, 1]
+        
+        # unvisited nodes
+        unvisited = set(self.graph.keys())
+        
+        # modified Dijkstra\u2019s algorithm
+        while unvisited:
+            # find min node
+            current_min_node = None
+            
+            for node in unvisited:
+                if current_min_node is None:
+                    current_min_node = node
+                elif dist[node][0] < dist[current_min_node][0]:
+                    current_min_node = node
+                    
+            # traverse        
+            for neighbor, t in self.graph[current_min_node]:
+                current_distance = dist[current_min_node][0] + t
+                
+                if current_distance < dist[neighbor][0]:
+                    dist[neighbor][0] = current_distance
+                    # take into account previous combinations
+                    dist[neighbor][1] = dist[current_min_node][1]
+                    
+                elif current_distance == dist[neighbor][0]:
+                    # take into account previous combinations
+                    dist[neighbor][1] += dist[current_min_node][1]
+                    
+            # remove visited node
+            unvisited.remove(current_min_node)
+        
+        return dist[destination][1] % MOD

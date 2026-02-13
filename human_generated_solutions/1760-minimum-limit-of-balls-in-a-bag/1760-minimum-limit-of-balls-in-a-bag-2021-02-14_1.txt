@@ -1,0 +1,28 @@
+from math import ceil
+def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+	def required(n, t):
+	    """ Required N of operations to split a bag with n balls into bags 
+			each with fewer than or equals to t balls
+		"""
+		return int(ceil(n / t)) - 1
+	def possible(t):
+	    """ Is it possible to have less than t balls per bag with maxOperations? """
+		if t <= 0:
+			return False
+		sum_req = 0
+		for x in nums:
+			sum_req += required(x, t)
+			if sum_req > maxOperations:
+				return False
+		return True
+
+	nums = sorted(nums, reverse=True)
+	r = nums[0]  # known minimum possible threshold
+	l = 0        # known maximum impossible threshold
+	while r - l > 1:
+		mid = (r + l) // 2
+		if possible(mid):
+			r = mid
+		else:
+			l = mid
+	return r

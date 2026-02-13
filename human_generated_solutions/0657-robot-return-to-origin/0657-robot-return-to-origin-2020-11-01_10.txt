@@ -1,0 +1,6 @@
+class Solution:
+    def judgeCircle(self, moves: str) -> bool:
+        vertical = moves.count(\'U\') - moves.count(\'D\')
+        horisontal = moves.count(\'L\') - moves.count(\'R\')
+        
+        return vertical == 0 and horisontal == 0

@@ -1,0 +1,13 @@
+class Solution:
+    def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
+        diff = [abs(ord(s[i]) - ord(t[i])) for i in range(len(s))]
+        summ = 0
+        low = length = 0
+        for i in range(len(s)):
+            summ += diff[i]
+            while low < i and summ > maxCost:
+                summ -= diff[low]
+                low += 1
+            if summ <= maxCost:
+                length = max(length, i-low+1)
+        return length

@@ -1,0 +1,13 @@
+class Solution:
+    def winnerOfGame(self, colors: str) -> bool:
+        i, j = 0, 0
+        count = {\'A\': 0, \'B\': 0}
+        while i < len(colors):
+            curr = colors[i]
+            j = i + 1
+            while j < len(colors) and colors[j] == curr:
+                j += 1
+            count[curr] += max(0, j - i - 2)
+            i = j
+
+        return count[\'A\'] > count[\'B\']

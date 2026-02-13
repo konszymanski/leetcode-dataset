@@ -1,0 +1,3 @@
+class Solution:
+    def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
+        return filter(lambda w: len(set(w)) == len(set(pattern)) and w.translate(str.maketrans(w, pattern)) == pattern, words)

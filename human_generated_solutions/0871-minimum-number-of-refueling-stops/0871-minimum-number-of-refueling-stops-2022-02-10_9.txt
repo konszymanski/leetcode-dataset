@@ -1,0 +1,28 @@
+class Solution:
+    def minRefuelStops(self, target, startFuel, stations):
+        stations = [[0, startFuel]] + stations + [[target, 0]]
+        
+        # dp(i, j) = maximum amount of fuel we can get when we are at station i and we have used j fuel stops (i not included)
+        
+        # j should be between [1, i]
+        @cache
+        def dp(i, j):
+            if i == 0 and j == 0:
+                return 0
+            if not (1 <= j <= i):
+                return float("-inf")
+            
+            ans1 = dp(i-1, j) - (stations[i][0]-stations[i-1][0])
+            ans2 = dp(i-1, j-1) - (stations[i][0]-stations[i-1][0]) + stations[i-1][1]
+            
+            ans = max(ans1, ans2)
+            if ans < 0:
+                return float("-inf")
+            else:
+                return ans
+        
+        for j in range(len(stations)):
+            if dp(len(stations)-1, j) >= 0:
+                return j-1  # we return j-1 since first stop (we added the starting point) is mandatory and hence should be removed from final solution 
+            
+        return -1

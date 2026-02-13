@@ -1,0 +1,30 @@
+class Solution:
+    def productQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        positions = []
+        position = 0
+        while n>0:
+            if n &1 == 1:
+                positions.append(position)
+            
+            position += 1
+            n = n >> 1
+        
+        powers = []
+        for i in range(len(positions)):
+            powers.append(2**positions[i])
+        
+        partial_product = [powers[0] for i in range(len(powers))]
+        for i in range(1,len(powers)):
+            partial_product[i] = partial_product[i-1] * powers[i]
+        
+        
+        ans = []
+        for left,right in queries:
+            if left==0:
+                x = partial_product[right] % (10**9 + 7)
+                ans.append(x)
+            else:
+                x = (partial_product[right]//partial_product[left-1])%(10**9 + 7)
+                ans.append(x)
+        
+        return ans

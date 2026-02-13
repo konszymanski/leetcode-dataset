@@ -1,0 +1,34 @@
+class Bank:
+
+    def __init__(self, balance: List[int]):
+        self.accMap = defaultdict(int)
+        
+        for i,b in enumerate(balance):
+            self.accMap[i+1] = b
+
+    def transfer(self, account1: int, account2: int, money: int) -> bool:
+        if account1 in self.accMap and account2 in self.accMap:
+            if self.accMap[account1] >= money:
+                
+                self.accMap[account1] -= money
+                self.accMap[account2] += money
+                
+                return True
+            
+          return False
+
+    def deposit(self, account: int, money: int) -> bool:
+        
+        if account in self.accMap:
+            self.accMap[account] += money
+            return True
+        
+        return False
+
+    def withdraw(self, account: int, money: int) -> bool:
+        
+        if account in self.accMap and self.accMap[account] >= money:
+            self.accMap[account] -= money
+            return True
+        
+        return False

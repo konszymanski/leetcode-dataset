@@ -1,0 +1,34 @@
+class Solution:
+    def findDiagonalOrder(self, nums: List[List[int]]) -> List[int]:
+        # find the pattern of the order by using 1D array, i,j index of the 2D matrix
+        # prepare intermediate array to store values of index sums are same
+        # ex, array[(i+j)] = [1] or [2, 6] or ...
+        # intermediate array can be prepared (length will be (row + column - 1))
+        # or append new index having empty array (list in python term)
+        
+        # prepare intermediate array
+        arr = []
+        # row is fixed, column varies according to row
+        m = len(nums)
+        for i in range(m):
+            # that\'s why using len(nums[i]) instead of assigning fixed number
+            for j in range(len(nums[i])):
+                
+                # what if len(arr) is less than i+j+1, it means
+                # arr doesn\'t have index to store value of nums[i][j]
+                # so it needs to create new index at the end of the array
+                # value is empty array
+                if len(arr) < i+j+1:
+                    arr.append([])
+                # whether index has empty array or existing array, 
+                # not it is possible to store nums[i][j] value
+                arr[i+j].append(nums[i][j])
+        
+        result = []
+        for e in arr:
+            # the reason of using reversed is because
+            # array append is storing value in reversed order
+            # so it need another reverse
+            result.extend(reversed(e))
+        
+        return result

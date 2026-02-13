@@ -1,0 +1,51 @@
+class Solution:
+    def countPairs(self, n: int, edges: List[List[int]]) -> int: 
+        #Initialize DSU
+        dsu = DSU(n)
+        res = 0
+        
+        #Union edges
+        for u, v in edges:
+            dsu.union(u, v)
+            
+        groups = defaultdict(int)
+        
+        #Getting number of nodes per group
+        for i in range(n):
+            groups[dsu.find(i)] += 1
+            
+        #Calculating pairs
+        nodes_seen = 0
+        for group_cnt in groups.values():
+            res += group_cnt * (n - group_cnt - nodes_seen)
+            nodes_seen += group_cnt
+            
+        return res
+        
+class DSU:
+    def __init__(self, size):
+        self.p = [idx for idx in range(size)]
+        self.rank = [0 for _ in range(size)]
+        
+    def find(self, i):
+        j = self.p[i]
+        while j != self.p[j]:
+            self.p[j] = self.p[self.p[j]]
+            j = self.p[j]
+            
+        return self.p[j]
+    
+    def union(self, i, j):
+        i, j = self.find(i), self.find(j)
+        
+        if i == j:
+            return False
+        
+        if self.rank[i] > self.rank[j]:
+            self.p[j] = i
+            self.rank[i] += self.rank[j]
+        else:
+            self.p[i] = j
+            self.rank[j] += self.rank[i]
+            
+        return True

@@ -1,0 +1,38 @@
+class Solution:
+    def minimumDifference(self, nums: List[int]) -> int:
+        m=len(nums)
+        n=m//3
+        #mmin[i]=min sum subsequence from 0 to i
+        #mmax[i]=max sum subsequence from i+1 till end
+        mmin,mmax=[None]*m,[None]*m 
+        #heap according to name max and min
+        max_heap,min_heap=[],[]
+        ans=sys.maxsize
+        for i in range(2*n):
+            if len(max_heap)<n:
+                heapq.heappush(max_heap,-nums[i])
+                if len(max_heap)==n:
+                    ssum=-sum(max_heap)
+                    mmin[i]=ssum
+                continue
+            if nums[i]<(-max_heap[0]):
+                ssum-=(-heapq.heappop(max_heap))
+                heapq.heappush(max_heap,-nums[i])
+                ssum+=nums[i]
+            mmin[i]=ssum
+        for i in range(3*n-1,n-1,-1):
+            if len(min_heap)<n:
+                heapq.heappush(min_heap,nums[i])
+                if len(min_heap)==n:
+                    ssum=sum(min_heap)
+                    mmax[i-1]=ssum
+                continue
+            if nums[i]>min_heap[0]:
+                ssum-=heapq.heappop(min_heap)
+                heapq.heappush(min_heap,nums[i])
+                ssum+=nums[i]
+            mmax[i-1]=ssum
+        #check every element from n-1 to 2n-1 of mmin[i]-mmax[i] and take min
+        for i in range(n-1,2*n):
+            ans=min(ans,mmin[i]-mmax[i])
+        return ans

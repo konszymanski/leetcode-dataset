@@ -1,0 +1,9 @@
+import random
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.d = {}
+        for i,j in enumerate(nums):
+            self.d[j] = self.d.get(j,[]) + [i]
+    def pick(self, target: int) -> int:
+        return random.choice(self.d[target])

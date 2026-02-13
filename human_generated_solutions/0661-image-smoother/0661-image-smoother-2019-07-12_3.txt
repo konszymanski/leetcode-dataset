@@ -1,0 +1,20 @@
+class Solution:
+    def imageSmoother(self, M: List[List[int]]) -> List[List[int]]:
+        res=M.copy()
+        d={}
+        for i in range(len(M)):
+            for j in range(len(M[i])):
+                d[(i,j)]=M[i][j]
+        for i in d:
+            sm=[]
+            if d.get((i[0]-1,i[1]-1),-1)!=-1:sm+=[d[(i[0]-1,i[1]-1)]]
+            if d.get((i[0]-1,i[1]),-1)!=-1:sm+=[d[(i[0]-1,i[1])]]
+            if d.get((i[0]-1,i[1]+1),-1)!=-1:sm+=[d[(i[0]-1,i[1]+1)]]
+            if d.get((i[0],i[1]+1),-1)!=-1:sm+=[d[(i[0],i[1]+1)]]
+            if d.get((i[0]+1,i[1]+1),-1)!=-1:sm+=[d[(i[0]+1,i[1]+1)]]
+            if d.get((i[0]+1,i[1]),-1)!=-1:sm+=[d[(i[0]+1,i[1])]]
+            if d.get((i[0]+1,i[1]-1),-1)!=-1:sm+=[d[(i[0]+1,i[1]-1)]]
+            if d.get((i[0],i[1]-1),-1)!=-1:sm+=[d[(i[0],i[1]-1)]]
+            sm.append(d[i])
+            res[i[0]][i[1]]=sum(sm)//len(sm)
+        return res

@@ -1,0 +1,13 @@
+class Solution:
+    def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+        # count the amount of connections each city has
+        counter = collections.defaultdict(int)
+        for start, end in roads:
+            counter[start] += 1
+            counter[end] += 1
+        
+        # sort the citites by their length and convert to dict
+        cities = {city: n-idx for idx, city in enumerate(sorted(counter.keys(), key=lambda x: counter[x], reverse=True))}
+        
+        # go through the roads and count the importance
+        return sum(cities[end] + cities[start] for end, start in roads)

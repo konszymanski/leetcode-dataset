@@ -1,0 +1,10 @@
+class Solution:
+    def numRabbits(self, answers: List[int]) -> int:
+        counter = collections.Counter(answers)
+        num = 0
+        
+        for key, val in counter.items():
+            
+            num += math.ceil(val / (key + 1) )* (key + 1)
+            
+        return num

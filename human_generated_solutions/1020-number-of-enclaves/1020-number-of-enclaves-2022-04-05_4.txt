@@ -1,0 +1,24 @@
+def numEnclaves(self, grid):
+        m = len(grid)
+        n = len(grid[0])
+        def dfs(i,j):
+            if 0 <= i < m and 0 <= j < n and grid[i][j] == 1:
+                grid[i][j] = 0
+                dfs(i + 1,j)
+                dfs(i,j - 1)
+                dfs(i,j + 1)
+                dfs(i - 1,j)
+
+
+        for i in range(m):
+            for j in range(n):
+			
+				#The below lines will check if there is a 1 at the boundary,
+				#if there is, then it will call dfs and convert all the 1\'s to 0.
+                if i == 0 or j == 0 or i == m-1 or j == n-1 and grid[i][j] == 1:
+                    dfs(i,j)
+
+        #After that, we simply return the sum of 1\'s inside the grid 
+		#(because, now only the 1\'s which are not in the boundary will remain inside the grid). 
+		#This will calculate the number of enclaves
+        return sum(sum(row) for row in grid)

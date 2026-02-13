@@ -1,0 +1,5 @@
+class Solution:
+    def xorQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        for i in range(len(nums) - 1):
+            nums[i + 1] ^= nums[i] 
+        return [nums[j] ^ nums[i - 1] if i else nums[j] for i, j in queries]

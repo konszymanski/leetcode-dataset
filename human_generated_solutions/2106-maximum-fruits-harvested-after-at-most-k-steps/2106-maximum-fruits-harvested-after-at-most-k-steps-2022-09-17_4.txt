@@ -1,0 +1,62 @@
+def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
+        #sliding window two pointer approach
+        #right and left pointer both start at start position
+        #move the left pointer as far left as you can (within k steps obviously)
+        #then increment right pointer by one, 
+        #if window size exceeds k, move left pointer forward until the dis_travelled is within k again
+        #Note:
+        #in order to cover all fruits b/w left and right, you must have changed direction once, so dis_travelled > (right - left)
+        #logic to calculate distance b/w right&left pointer -> dis = min(rightPos - startPos, startPos - left) + (righPos - leftPos)
+        #if u think about it doesnt make sense for left pointer to ever go beyond startPos
+
+        n = len(fruits)
+        if startPos < fruits[0][0]:
+            startIndex = 0
+        elif startPos > fruits[-1][0]:
+            fruits.append([startPos, 0])
+            startIndex = n-1
+        else:
+            for i in range(n):
+                if fruits[i][0] == startPos:
+                    startIndex = i
+                    break
+                if fruits[i][0] < startPos < fruits[i+1][0]:
+                    startIndex = i
+                    break
+                    
+        #to fully understand the logic consider edge cases like
+        #1. startPos = 5, k = 4, fruits = [[0, 10]]
+        #2. startPos = 0, k = 4, fruits = [[5, 10]]
+        #3. startPos = 5, k = 4, fruits = [[0, 10], [9, 10]]
+        
+        left = right = startIndex
+        c_dis = startPos - fruits[left][0]
+        harvested = fruits[left][1]
+        maxHarvest = 0
+        #move the left index as far left as you can
+        while left-1 >= 0 and startPos - fruits[left-1][0] <= k:
+            left -= 1
+            c_dis = startPos - fruits[left][0]
+            harvested += fruits[left][1]
+        #move right pointer one index at a time, increment left if dis_travelled>k
+        while right < n:
+            c_dis = min(abs(fruits[right][0] - startPos), abs(startPos - fruits[left][0])) + fruits[right][0] - fruits[left][0]
+            while c_dis > k and left<startIndex: 
+                harvested -= fruits[left][1]
+                left += 1
+                c_dis = min(fruits[right][0] - startPos, startPos - fruits[left][0]) + fruits[right][0] - fruits[left][0]
+            
+            if left == startIndex and fruits[left][1]!=startPos and c_dis > k:
+                harvested -= fruits[left][1]
+                fruits[left][0] = startPos
+                c_dis = fruits[right][0] - fruits[left][0]
+            
+            #if distance cant be reduced further, just break
+            if c_dis > k: break
+            
+            maxHarvest = max(harvested, maxHarvest)
+            
+            right += 1
+            if right < n: harvested += fruits[right][1]
+        
+        return maxHarvest

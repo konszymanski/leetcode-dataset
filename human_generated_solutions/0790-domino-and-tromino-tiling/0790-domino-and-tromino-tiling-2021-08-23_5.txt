@@ -1,0 +1,22 @@
+\'\'\'Purely based on observation and by intuition you can arrive at the follwing formula->
+f(n)=f(n-1)+f(n-2)+2*(f(n-3)+f(n-4)+......+f(n-n))
+if we remove 1 width  and 2 length tile vertically theres 1 way
+if we remove 1 horizontal 2 width and 1 length tile below will also be same width tile so only 1 way
+if we remove 3,by obervation we get 2 ways                             __     and         __
+                                                                       |  __|          |__ |   
+similarly 2 for rest \'\'\'
+class Solution:
+    def numTilings(self, n: int) -> int:
+        if n==1 or n==2:
+            return n
+        mod=10**9+7
+        dp=[0]*(n+1)
+        dp[0]=1
+        dp[1]=1
+        dp[2]=2
+        Sum=dp[0]
+        for i in range(3,n+1):
+            dp[i]=dp[i-1]+dp[i-2]+2*Sum
+            Sum+=dp[i-2]
+            dp[i]%=mod
+        return dp[n]

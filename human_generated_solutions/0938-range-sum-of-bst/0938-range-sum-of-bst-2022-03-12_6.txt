@@ -1,0 +1,37 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def rangeSumBST(self, root, low, high):
+        if not(root): return root
+        # return nextNode(root, low, high, 0)
+        return getsum(root, low, high, 0)
+    
+    
+# Ordinary: Binary Tree Recursion;
+def nextNode(root, lo, hi, sumi):
+    # base case;
+    if not(root): return sumi
+    # main case
+    sumi = nextNode(root.left, lo, hi, sumi)
+    if(root.val >= lo and root.val <= hi):
+        sumi = sumi + root.val
+    sumi = nextNode(root.right, lo, hi, sumi)
+    return sumi
+
+
+# Little More Optimized
+def getsum(root, lo, hi, res):
+    if not root: 
+        return res
+    if(root.val >= lo and root.val <= hi):
+        res += root.val
+    if(root.val > lo):                      # going left only when root\'s value greater than low;
+        res = getsum(root.left,lo,hi,res)
+    if(root.val <= hi):                     # going right onyl when root\'s value smaller than high;
+        res = getsum(root.right,lo,hi,res)
+    return res

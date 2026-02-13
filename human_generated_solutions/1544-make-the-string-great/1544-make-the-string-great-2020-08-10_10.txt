@@ -1,0 +1,17 @@
+class Solution:
+    def makeGood(self, s: str) -> str:
+        
+        # initialized to \'@\' for dummy
+        prev = \'@\'
+        
+        for idx, char in enumerate(s):
+            
+            if abs( ord(char)-ord(prev) ) == 32:
+                
+                # remove bad part and keep making remaining string good
+                return self.makeGood(s[:idx-1] + s[idx+1:])
+            
+            prev = char
+        
+        # all good
+        return s

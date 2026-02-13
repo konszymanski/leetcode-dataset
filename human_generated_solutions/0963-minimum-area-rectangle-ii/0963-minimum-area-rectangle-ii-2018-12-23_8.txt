@@ -1,0 +1,10 @@
+class Solution:
+    def minAreaFreeRect(self, points):
+        st_pt, mn = collections.defaultdict(list), math.inf
+        for l1, l2 in itertools.combinations((complex(*z) for z in points), 2):
+            v1 = l1 - l2
+            key = (l1 + l2, v1*v1.conjugate())
+            for v2 in st_pt[key]:
+                mn = min(abs(v1.imag*v2.real - v2.imag*v1.real)/2, mn)
+            st_pt[key].append(v1)
+        return mn if mn != math.inf else 0

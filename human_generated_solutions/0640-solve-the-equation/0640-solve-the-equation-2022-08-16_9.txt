@@ -1,0 +1,46 @@
+class Solution:
+    def solveEquation(self, equation: str) -> str:            
+        i = equation.index(\'=\')
+        if equation[i+1] == \'-\':
+            equation = equation[:i] + \'+\' + equation[i+2:]
+        else:
+            equation = equation[:i] + \'-\' + equation[i+1:]
+
+        equation = equation[:i+1] + equation[i+1:].replace(\'-\', \'*\').replace(\'+\', \'-\').replace(\'*\', \'+\')
+            
+        equation = equation.split(\'+\')
+        eq_pos = []
+        eq_neg = []
+        cons_pos = []
+        cons_neg = []
+        for eq in equation:
+            eq = eq.split(\'-\')
+            if eq[0]:
+                if \'x\' in eq[0]:
+                    eq_pos.append(eq[0])
+                else:
+                    cons_pos.append(int(eq[0]))
+            
+            for e in eq[1:]:
+                if \'x\' in e:
+                    eq_neg.append(e)
+                else:
+                    cons_neg.append(int(e))
+                
+        res = sum(cons_neg)-sum(cons_pos)
+        
+        for i in range(len(eq_pos)):
+            val = eq_pos[i].replace(\'x\', \'\')
+            eq_pos[i] = 1 if not val else int(val)
+            
+        for i in range(len(eq_neg)):
+            val = eq_neg[i].replace(\'x\', \'\')
+            eq_neg[i] = 1 if not val else int(val)
+            
+        coeffs = sum(eq_pos) - sum(eq_neg)
+        
+        if coeffs == 0 and res == 0:
+            return \'Infinite solutions\'
+        if coeffs == 0:
+            return \'No solution\'
+        return f\'x={res//coeffs}\'

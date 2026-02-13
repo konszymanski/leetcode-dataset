@@ -1,0 +1,18 @@
+class Solution:
+    def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
+        dp = [[[-1 for k in range(maxMove+1)] for j in range(n)] for i in range(m)]
+        def backtrackMe(i,j,movesLeft):
+            if i<0 or j<0 or j>=n or i>=m: 
+                return 1
+            if movesLeft==0:
+                return 0
+            if dp[i][j][movesLeft]!=-1:
+                return dp[i][j][movesLeft]
+    
+            a=backtrackMe(i+1,j,movesLeft-1)
+            b=backtrackMe(i,j+1,movesLeft-1)
+            c=backtrackMe(i-1,j,movesLeft-1)
+            d=backtrackMe(i,j-1,movesLeft-1)
+            dp[i][j][movesLeft]=a+b+c+d
+            return dp[i][j][movesLeft]
+        return (backtrackMe(startRow,startColumn,maxMove)%1000000007)

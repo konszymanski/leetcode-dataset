@@ -1,0 +1,10 @@
+class Solution:
+    def check(self, nums: List[int]) -> bool:
+        """
+            If nums is sorted and rotated then there will be at most one consecutive pair i,j such that nums[i] > nums[j] when i>j.
+            So just count how many such pairs exists. If the count is more than 1 then nums is not sorted/rotated.
+        """
+        cnt = 0
+        for i in range(len(nums)): 
+            if nums[i-1] > nums[i]: cnt += 1
+        return cnt <= 1

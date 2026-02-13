@@ -1,0 +1,30 @@
+class Solution:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        
+        # add one dummy zero as empty sequence
+        nums1 = [0] + nums1
+        nums2 = [0] + nums2
+        
+        
+        h, w = len(nums1), len(nums2)
+        
+        # initialization as -\u221E
+        dp_table = [ [ float(\'-inf\') for _ in range(w)] for _ in range(h) ]
+        
+        
+        # Solve dy 2D dynamic programming with optimal substructure
+        for y in range(1,h):
+            for x in range(1, w):
+                
+                # compute current dot product of nums1[y] and nums2[x]
+                current_product = nums1[y] * nums2[x]
+                
+                # update with optimal substructure
+                # Case 1. accumulate from last sum of product:              dp_table[y-1][x-1] + current_product
+                # Case 2. reset and start accumulation from current grid:   current_product
+                # Case 3. accumulate from top:                              dp_table[y-1][x]
+                # Case 4. accumulate from left hand side:                   dp_table[y][x-1]
+                dp_table[y][x] = max(dp_table[y-1][x-1] + current_product, current_product, dp_table[y-1][x], dp_table[y][x-1])
+                    
+
+        return dp_table[-1][-1]

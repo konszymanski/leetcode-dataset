@@ -1,0 +1,43 @@
+class Node:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+class Solution:
+    def numOfWays(self, nums: List[int]) -> int:
+        #can you answer this question?
+        #number of ways to join two arrays whilst preserving the initial order of two arrays?
+        #its equal to (n + m)Choose(n) or (m + n)Choose(m) where m,n are lengths or arrays
+        
+        #for each node, left side can be made in L ways, right side can be made in R ways
+        #how many ways can you make the whole thing? its L*R*(X)
+        #where X is the number of ways to join two arrays whilst preserving orders of arrays
+        #X = (nodes on left + nodes on right)Choose(nodes on left)
+
+        #make tree
+        root = Node(nums[0])
+        def addNode(c_node, val):
+            if val < c_node.val:
+                if c_node.left:
+                    addNode(c_node.left, val)
+                else:
+                    c_node.left = Node(val)
+            if val > c_node.val:
+                if c_node.right:
+                    addNode(c_node.right, val)
+                else:
+                    c_node.right = Node(val)
+            
+        for num in nums[1:]:
+            addNode(root, num)
+        
+        #now solve for left and right for each node and combine it using left*right*(numberOfLeftNodes)*(numberOfRightNodes)
+        def ways(c_node):
+            if not c_node:
+                return [1, 0] #(ways, number of nodes)
+
+            left_ways, left_nodes = ways(c_node.left)
+            right_ways, right_nodes = ways(c_node.right)
+
+            return [left_ways*right_ways*math.comb(left_nodes+right_nodes, left_nodes), left_nodes+right_nodes+1]
+
+        return (ways(root)[0] - 1)%1000000007 #-1 because provided way (nums) is one the ways

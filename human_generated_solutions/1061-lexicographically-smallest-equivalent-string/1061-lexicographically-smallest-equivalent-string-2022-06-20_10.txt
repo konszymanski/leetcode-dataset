@@ -1,0 +1,38 @@
+class UnionFind:
+    def __init__(self,n):
+        self.parent = list(range(n))
+        
+    def find(self,node):
+        if self.parent[node] == node:
+            return node
+        self.parent[node] = self.find(self.parent[node])
+        return self.parent[node]
+    
+    def union(self,node1,node2):
+        node1_p = self.find(node1)
+        node2_p = self.find(node2)
+        if node1_p == node2_p:
+            return True
+        else:
+            if node1_p < node2_p:
+                self.parent[node2_p] = node1_p
+            else:
+                self.parent[node1_p] = node2_p
+                
+            return False
+
+
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        uf = UnionFind(26)
+        res = ""
+        for i in range(len(s1)):
+            a = ord(s1[i])-ord("a")
+            b = ord(s2[i])-ord("a")
+            uf.union(a,b)
+        
+        for i in range(len(baseStr)):
+            alpha = ord(baseStr[i])-ord("a")
+            num_alpha = uf.find(alpha) + 97
+            res += chr(num_alpha)
+        return res

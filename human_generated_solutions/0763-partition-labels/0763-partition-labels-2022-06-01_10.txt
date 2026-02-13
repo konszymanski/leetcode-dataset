@@ -1,0 +1,50 @@
+#using intervals. Compute interval (start, end) for each letter [a-z] , where start is first occurrence of letter, 
+#and end is last occurrence of letter. 
+#Then we merge any overlapping intervals, and the resulting intervals can form the answer.
+class Solution:
+    #merge intervals technique
+    #T=O(n), S=O(n)
+    def partitionLabels(self, s: str) -> List[int]:
+        visited = {}
+        #find the first and last index of each character
+        for i, c in enumerate(s):
+            if c not in visited:
+                visited[c] = [i,i]
+            else:
+                visited[c][-1] = i
+        
+        intervals = []
+        #by default sorted in string
+        #dict preserve ordering in Python
+        for interval in visited.values():
+            intervals.append(interval)
+        
+        
+        #merge the intervals that overlaps
+        merge_interval = [intervals[0]]
+        for interval in intervals[1:]:
+            last = merge_interval[-1]
+            if self.doOverlap(last, interval):
+                #merge
+                start = min(last[0], interval[0])
+                end = max(last[1], interval[1])
+                merge_interval[-1] = [start, end]
+                
+            else:
+                merge_interval.append(interval)
+        
+        
+        #calculate the size of merged intervals
+        res = []
+        for start, end in merge_interval:
+            res.append(end-start+1)
+        return res
+    
+    #helper method to find overlapping intervals
+    def doOverlap(self, last, interval):
+        start = max(last[0], interval[0])
+        end = min(last[1], interval[1])
+        if end - start >= 0:
+            return True
+        else:
+            return False

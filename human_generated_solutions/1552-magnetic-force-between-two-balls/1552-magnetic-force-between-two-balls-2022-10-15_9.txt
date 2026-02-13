@@ -1,0 +1,24 @@
+def maxDistance(self, pos: List[int], m: int) -> int:
+    # m (number of positions) <= n (number of positions)
+    # m choose n ways to do this, choose the arrangement with max minimum separation
+    #n can go upto 10^5
+    #min separation = 1, max separation = (pos[-1] - pos[0])/m
+    def willFit(dis):
+        prev_pos = pos[0]
+        chosen = 1
+        for i in range(1, len(pos)):
+            if pos[i] - prev_pos >= dis:
+                prev_pos = pos[i]
+                chosen += 1
+                if chosen == m: return True
+        return False
+    pos.sort()
+    L = 1; R = (pos[-1] - pos[0])//(m - 1) 
+    while L < R:
+        M = (L+R+1)//2
+        if not willFit(M):
+            R = M-1
+        else:
+            L = M
+    
+    return L

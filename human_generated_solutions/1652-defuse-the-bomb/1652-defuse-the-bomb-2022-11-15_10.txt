@@ -1,0 +1,17 @@
+class Solution:
+    def decrypt(self, code: [int], k: int) -> [int]:
+        n = len(code)
+        if k == 0:
+            return [0] * n
+        elif k > 0:
+            y = [
+                [index if (index := i + j) < n else index % n for j in range(1, k + 1)]
+                for i in range(n)
+            ]
+        elif k < 0:
+            y = [
+                [i + j for j in range(-1, k - 1, -1)]
+                for i in range(n)
+            ]
+		# print(y)
+        return [sum(code[i] for i in elements) for elements in y]

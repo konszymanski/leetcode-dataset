@@ -1,0 +1,9 @@
+\'\'\'
+561. Array Partition I
+https://leetcode.com/problems/array-partition-i/
+Runtime: 300 ms, faster than 41.47% of Python3 online submissions for Array Partition I.
+Memory Usage: 15.4 MB, less than 6.06% of Python3 online submissions for Array Partition I.
+\'\'\'
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        return sum([value for index,value in enumerate(sorted(nums)) if 0 == index%2])

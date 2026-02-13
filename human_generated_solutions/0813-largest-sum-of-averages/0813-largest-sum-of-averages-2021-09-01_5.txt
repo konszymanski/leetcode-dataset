@@ -1,0 +1,13 @@
+class Solution:
+    def largestSumOfAverages(self, nums: List[int], k: int) -> float:
+        n=len(nums)
+        @lru_cache(None)
+        def dp(idx,val,k,no):
+            if idx==n: return val/no if no!=0 else 0
+            #take into previous loop
+            ans=dp(idx+1,val+nums[idx],k,no+1)
+            #make new loop
+            if no!=0 and k-1!=0:
+                ans=max(ans,dp(idx+1,nums[idx],k-1,1)+val/no)
+            return ans
+        return dp(0,0,k,0)

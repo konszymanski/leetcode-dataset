@@ -1,0 +1,20 @@
+class Solution:
+    def getImportance(self, employees: List[\'Employee\'], id: int) -> int:
+        s = 0
+        q = [id]
+        map = {}
+        m = 0
+		# Traversing the employees: List"
+        for i in employees:
+            map[i.id] = m
+            m +=1
+		
+		# Finding total importance  
+        while len(q)>0:
+            x = q[0]
+            del q[0]
+            s = employees[map[x]].importance + s
+            k = employees[map[x]].subordinates
+            for j in k:
+                q.append(j)
+        return s

@@ -1,0 +1,13 @@
+def recursive(self, employees, id):
+        self.mem = {}
+        for emp in employees:
+            self.mem[emp.id] = {
+                "value": emp.importance,
+                "sub": emp.subordinates
+            }
+        def rec(id):
+            curr = self.mem[id][\'value\']
+            for sub in self.mem[id][\'sub\']:
+                curr += rec(sub)
+            return curr
+        return rec(id)

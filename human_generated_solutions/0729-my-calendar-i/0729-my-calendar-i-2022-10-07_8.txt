@@ -1,0 +1,20 @@
+class MyCalendar:
+
+    def __init__(self):
+        self.calender = []
+
+    def book(self, start: int, end: int) -> bool:
+        i ,j=0,len(self.calender)
+        while i<j:
+            mid = (i+j)//2
+            if self.calender[mid][0] <= start: i = mid+1
+            else: j = mid
+        if self.isintersect(i,start,end): return False
+        else: self.calender.insert(i,(start,end))
+        return True
+    
+    def isintersect(self,i,s,e):
+        return (
+            (self.calender[i-1][1]>s if i>=1 else False) or 
+            (self.calender[i][0]<e if i<len(self.calender) else False)
+        )

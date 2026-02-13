@@ -1,0 +1,16 @@
+class Solution:
+    def xorAllNums(self, nums1: List[int], nums2: List[int]) -> int:
+        
+        l1 = len(nums1)
+        l2 = len(nums2)
+        a1 = 0
+        a2 = 0
+        if l1%2 != 0:
+            for i in nums2:
+                a1 ^= i
+        if l2%2 != 0:
+            for i in nums1:
+                a2 ^= i
+        # for i in nums3:
+            
+        return a2^a1

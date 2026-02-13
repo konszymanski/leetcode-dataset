@@ -1,0 +1,10 @@
+def minSteps(self, s: str, t: str) -> int:
+	s = Counter(s)
+	t = Counter(t)
+	ans = 0
+	for i in t:
+		if(i not in s):
+			ans += t[i]
+		elif(t[i] > s[i]):
+			ans += t[i]-s[i]
+	return ans

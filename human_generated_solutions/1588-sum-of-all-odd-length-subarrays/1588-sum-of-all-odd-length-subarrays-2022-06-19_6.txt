@@ -1,0 +1,11 @@
+class Solution:
+    def sumOddLengthSubarrays(self, arr: List[int]) -> int:
+        sum = 0
+        n = len(arr)
+        
+        for i in range(n):
+            total = (n - i)*(i + 1)
+            odd = math.ceil(total/2)
+            sum += (odd * arr[i])
+        
+        return sum

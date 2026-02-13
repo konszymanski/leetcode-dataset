@@ -1,0 +1,15 @@
+def sumSubarrayMins(self, A: List[int]) -> int:
+        stack = []
+        left = [-1]*len(A)
+        right = [len(A)]*len(A)
+        for i in range(len(A)):
+            while stack and A[i] <= A[stack[-1]]:
+                tmp = stack.pop()
+                right[tmp] = i
+            left[i] = stack[-1] if stack else -1
+            stack.append(i)
+
+        res = 0
+        for cur, (a,b) in enumerate(zip(left,right)):
+            res += A[cur]*(b-cur)*(cur-a)
+        return res%(10**9+7)

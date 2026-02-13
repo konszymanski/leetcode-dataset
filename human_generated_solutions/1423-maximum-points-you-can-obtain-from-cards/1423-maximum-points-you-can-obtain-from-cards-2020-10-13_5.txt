@@ -1,0 +1,6 @@
+def dfs(cardPoints, k):
+	if not cardPoints or not k:
+		return 0
+	left = cardPoints[0] + dfs(cardPoints[1:], k - 1)
+	right = cardPoints[-1] + dfs(cardPoints[:-1], k - 1)
+	return max(left, right)

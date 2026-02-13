@@ -1,0 +1,7 @@
+def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            s2 = s+s
+            n = len(s)
+            return min(s2[i:i+n] for i in range(n))            
+        else:
+            return "".join(sorted(s))

@@ -1,0 +1,37 @@
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        
+        queue = deque()
+
+        # Initialize output array (zero distance to cells with value 0)
+        # Add zero-cells to the queue, expand around them
+        out = [[None for j in range(len(mat[i]))] for i in range(len(mat))]
+        for i in range(len(mat)):
+            for j in range(len(mat[i])):
+                if mat[i][j] == 0:
+                    out[i][j] = 0
+                    queue.append((i,j))
+        
+        directions = [(-1,0),(1,0),(0,-1),(0,1)]
+        dist = 0
+		
+        # BFS, level order traversal
+        while len(queue) > 0:
+            qsize = len(queue)
+            for _ in range(qsize):
+                i,j = queue.popleft()
+                
+				# Level order traversal guarantees that the first populated value is the min. distance
+                out[i][j] = dist
+                
+                # Expand in all 4 directions. Process neighbors that are
+                # 1) within array boundaries
+                # 2) not yet populated (None) 
+                for di, dj in directions:
+                    ii, jj = i + di, j + dj
+                    if 0 <= ii < len(mat) and 0 <= jj < len(mat[ii]):
+                        if out[ii][jj] is None:
+                            out[ii][jj] = -1        # mark as visited to avoid repeated processing
+                            queue.append((ii,jj))   # add valid next level neighbors
+            dist += 1
+        return out

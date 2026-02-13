@@ -1,0 +1,35 @@
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+        self.res = 0
+        d = collections.defaultdict(list)
+        
+        for e in edges: # construct the graph
+            d[e[0]].append(e[1])
+            d[e[1]].append(e[0])
+            
+        seen = set() # initialise seen set for visited nodes
+        seen.add(0) # add root to visited
+        
+        def dfs(key):
+            # we initialize the go_thru state as 0, meaning we do not go through this node from root
+            # there are two cases where we would set go_thru == 1: 
+            #(1) when this is the apple node, so we must visit it and go back up
+            #(2) when this node has apple nodes as descendants below, we must go down and come back
+            go_thru = 0 
+            if hasApple[key]: # case 1
+                go_thru = 1
+    
+            for i in d[key]:
+                if i not in seen:
+                    seen.add(i)
+                    a = dfs(i)    
+                    if a: # case 2, note that having just one path with an apple node below would require us to go through our current node, 
+						  # i.e we don\'t need both the paths to have apples
+                        go_thru = 1
+            
+            if key != 0: # since 0 is already the root, there is no way we can go through 0 to a node above
+                self.res += 2 * go_thru # passing one node means forward and backward, so 1 * 2 for going through, 0 * 2 for not
+            return go_thru
+        
+        dfs(0)
+        return self.res

@@ -1,0 +1,24 @@
+class Solution:
+    def preimageSizeFZF(self, k: int) -> int:
+        if k == 0: # base case
+            return 5
+        estimate = math.ceil(k * 4) # underestimate for x
+        while not (estimate / 5).is_integer(): # bringing it down to a multiple of 5
+            estimate -= 1
+        l = math.floor(math.log(estimate, 5)) # calculating its number of zeroes
+        total = 0
+        while l > 0:
+            total += estimate // (5 ** l)
+            l -= 1
+		# right here, total holds the number of zeros (estimate of x)! has
+        while total < k: # iterating up (we increase the estimate by 5 and increment its count of zeroes)
+            estimate += 5
+            j = estimate
+            power = 0
+            while (j / 5).is_integer():
+                power += 1
+                j /= 5
+            total += power
+        if total == k: # if k is the same as total, return 5
+            return 5
+        return 0 # if k is not the same as total, that means k zeroes can\'t exist

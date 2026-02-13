@@ -1,0 +1,85 @@
+"""
+1406. Stone Game III
+
+
+Similar-ih to stone game II.
+
+each step of the recursion, alice and bob alternate, try to minmax
+the rest of the search tree. 
+
+the actions are 1, 2, 3 from the first remaining stones. 
+
+
+top down:
+O(n) spacetime
+
+bottom up:
+O(1) space O(n) time
+
+just maintain three variables, shifting them using swaps
+
+"""
+class SolutionTopDown:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+
+        @cache
+        def dfs(i):
+        
+            if i >= n:
+                # game over, current player gets nothing
+                return 0
+            elif i == n - 1:
+                # player will take this
+                return stoneValue[i]
+            
+            # what we return: maximum diff such that current player - score of opponent
+            diff = -inf
+            
+            cumsum = 0
+            # pick the optimal of 1, 2, 3
+            for k in range(0, 3):
+                
+                if i + k >= n:
+                    # skip invlid index
+                    continue
+                
+                cumsum += stoneValue[i+k]
+                
+                #  next move after this
+                opponent_take = dfs(i+k+1)
+                
+                # the optimal choice for current player is the maximal diff.
+                diff = max(diff, cumsum - opponent_take)
+                 
+            return diff
+
+        diff = dfs(0)
+        if diff > 0:
+            return "Alice"
+        elif diff < 0:
+            return "Bob"
+        else:
+            return "Tie"
+        
+class SolutionBottomUp:
+    def stoneGameIII(self, stoneValue):
+        a = 0
+        b = 0
+        c = 0
+        cumsum = 0
+        
+        for x in reversed(stoneValue):
+            cumsum += x
+            a, b, c = b, c, cumsum - min(a,b,c)
+            
+        diff = 2 * c - cumsum
+        if diff > 0:
+            return "Alice"
+        elif diff < 0:
+            return "Bob"
+        else:
+            return "Tie"
+        
+#Solution = SolutionTopDown
+Solution = SolutionBottomUp

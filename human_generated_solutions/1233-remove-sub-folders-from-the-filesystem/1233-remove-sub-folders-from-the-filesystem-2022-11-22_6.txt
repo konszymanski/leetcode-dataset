@@ -1,0 +1,22 @@
+class Solution:
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        folder.sort()        
+        store = set()
+        
+        for path in folder:
+            dirs = path.split("/")
+            
+            add = True
+            d = ""
+            for char in dirs:
+                if not char:
+                    continue
+                d += "/" + char
+                if d in store:
+                    add = False
+                    break
+            
+            if add:
+                store.add(path)           
+                    
+        return list(store)

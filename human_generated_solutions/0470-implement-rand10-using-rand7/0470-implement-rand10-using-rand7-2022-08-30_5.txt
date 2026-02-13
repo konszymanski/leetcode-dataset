@@ -1,0 +1,22 @@
+class Solution:
+    def rand10(self):
+
+        def rand2():
+			# uniformly generate [True, False]
+            n = rand7()
+            while n == 4:
+                n = rand7()
+            return n > 4
+
+        def rand5():
+			# uniformly generate 1-5
+            n = rand7()
+            while n in (6, 7):
+                n = rand7()
+            return n
+		
+		# each number between 1-10 has probablity of 1/2 * 1/5 = 1/10 to be chosen
+        n = rand5()
+        if rand2():
+            n += 5
+        return n

@@ -1,0 +1,26 @@
+def sanitize(tuples):
+    strings = map(lambda t: \'\'.join(t), tuples)
+    numbers = map(int, strings)
+    return sorted(set(numbers))
+        
+class Solution:
+    balancedNums = sanitize(
+        [(\'2\', \'2\')]
+        + list(permutations(\'122\', 3))
+        + [tuple(\'333\')]
+        + list(permutations(\'1333\', 4))
+        + [tuple(\'4444\')]
+        + list(permutations(\'14444\', 5)) + list(permutations(\'22333\', 5))
+        + [tuple(\'55555\')]
+        + list(permutations(\'155555\', 6)) 
+        + list(permutations(\'224444\', 6)) 
+        + list(permutations(\'122333\', 6))
+        + [tuple(\'666666\')]
+    )
+    
+    def nextBeautifulNumber(self, n: int) -> int:
+        if n == 0:
+            return 1
+        
+        idx = bisect.bisect_right(self.balancedNums, n)
+        return self.balancedNums[idx]

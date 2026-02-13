@@ -1,0 +1,14 @@
+class Solution:
+    def longestNiceSubarray(self, nums: List[int]) -> int:
+        res,n, left = 1, len(nums), 0
+        for right in range(1,n):
+            temp = right - 1
+            while nums[right] & nums[temp] == 0 and temp >= left:
+                temp -= 1
+                
+            if (temp  == left - 1):
+                res = max(res, right - left + 1)       
+                
+            left = temp + 1
+        
+        return res

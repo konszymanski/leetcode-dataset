@@ -1,0 +1,10 @@
+def numIdenticalPairs(self, nums: List[int]) -> int:
+        d={}
+        c=0
+        for i in range(len(nums)):
+            if nums[i] in d:
+                d[nums[i]]+=1
+                c+=d[nums[i]]
+            else:
+                d[nums[i]]=0
+        return c

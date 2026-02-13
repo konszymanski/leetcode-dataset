@@ -1,0 +1,8 @@
+class Solution:
+    def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+        exactly = {*wordlist}
+        cap = {w.lower():w for w in reversed(wordlist)}
+        tr = str.maketrans(\'aeiou\', \'*****\')
+        vowel = {w.lower().translate(tr):w for w in reversed(wordlist)}
+        
+        return [q if q in exactly else cap[p] if (p := q.lower()) in cap else vowel[p] if (p := p.translate(tr)) in vowel else \'\' for q in queries]

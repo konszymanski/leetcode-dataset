@@ -1,0 +1,26 @@
+import heapq
+
+class Solution:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+        currentKeys = set()
+        
+        boxHeap = []
+        for box in initialBoxes:
+            heapq.heappush(boxHeap, [status[box] ^ 1, box])
+        
+        result = 0
+
+        while boxHeap:
+            closed, box = heapq.heappop(boxHeap)
+
+            if closed == 1 and not box in currentKeys:
+                break
+            
+            result += candies[box]
+            currentKeys |= set(keys[box])
+            
+            for b in containedBoxes[box]:
+                closed = 0 if status[b] == 1 or b in currentKeys else 1
+                heapq.heappush(boxHeap, [closed, b])
+
+        return result

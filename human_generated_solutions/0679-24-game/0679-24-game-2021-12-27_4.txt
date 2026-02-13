@@ -1,0 +1,39 @@
+class Solution:
+    def judgePoint24(self, cards: List[int]) -> bool:
+        
+        self.allcombos = []
+        
+        # need all combinations of cards
+        def permute(arr,remcards):
+            if len(arr)==4:
+                self.allcombos.append(arr[:])
+                return
+                
+            for i,card in enumerate(remcards):
+                arr.append(card)
+                combos(arr,remcards[:i]+remcards[i+1:])
+                arr.pop()        
+        
+        # then all combinations of operations for all parens placements
+        def calculate(cards):
+            if len(cards)<=1:
+                return cards
+            else:
+                values = set()
+				left = calculate(cards[:splitidx])
+				right = calculate(cards[splitidx:])
+                for splitidx in range(1,len(cards)):
+                    for lval in left:
+                        for rval in right:
+                            values.add(lval+rval)
+                            values.add(lval-rval)
+                            values.add(lval*rval)
+                            if rval!=0:
+                                values.add(lval/rval)
+                return values
+        
+        permute([],cards)
+        for combo in self.allcombos:
+            for c in calculate(combo):
+                if c>23.99 and c<24.01: return True
+        return False

@@ -1,0 +1,39 @@
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        ## APPROACH : BACKTRACKING - BRUTEFORCE ##
+        
+        if( not ( (sum(nums) % k) == 0) ):
+            return False
+        
+        def dfs( curr, k, nums ):
+            
+            if( curr > target ):
+                return False
+            
+            if( curr == target ):   
+                k -= 1
+                # resetting curr value, first set found, search for next.
+                curr = 0
+            
+            if(not nums):   
+                return True if(not k) else False
+            
+            
+            for i in range(len(nums)):
+                if( dfs( curr + nums[i], k, nums[:i] + nums[i+1:]) ):
+                    return True
+        
+        nums.sort() 
+        target = sum(nums) // k
+        
+        # all numbers must be equal or less than target
+        if( nums[-1] > target ): 
+            return False
+        
+        # if you find number directly, decrement k val
+        while nums and nums[-1] == target:
+            nums.pop()
+            k -= 1
+        
+        # reversing the numbers worked
+        return dfs(0, k, nums[::-1])

@@ -1,0 +1,12 @@
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        sm, odd, even, ans, mod = 0, 0, 1, 0, 1000000007
+        for num in arr:
+            sm += num
+            if sm & 1:
+                odd += 1
+                ans = (ans + even) % mod
+            else:
+                even += 1
+                ans = (ans + odd) % mod
+        return ans

@@ -1,0 +1,32 @@
+from sortedcontainers import SortedSet
+class Solution:
+    def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
+        graph = [[] for _ in range(n)]
+        for edge in edges:
+            graph[edge[0]].append((edge[1], edge[2]))
+            graph[edge[1]].append((edge[0], edge[2]))
+            
+        globalcnt = float(\'inf\')
+        
+        for i in range(n):
+            source = i
+            q = SortedSet()
+            dist = [float(\'inf\') for _ in range(n)]
+            q.add((0,i))
+            dist[i] = 0
+            while(q):
+                dt, vertex = q[0]
+                q.remove(q[0])
+                for neigh in graph[vertex]:
+                    if dist[neigh[0]] > dt + neigh[1] and dt + neigh[1] <= distanceThreshold:
+                        q.discard((dist[neigh[0]], neigh[0]))
+                        q.add((dt + neigh[1], neigh[0]))
+                        dist[neigh[0]] = dt + neigh[1]
+            cnt = 0
+            for val in dist:
+                if val <= distanceThreshold:
+                    cnt += 1
+            if cnt <= globalcnt:
+                ans = i
+                globalcnt = cnt
+        return ans

@@ -1,0 +1,22 @@
+from collections import Counter
+
+class FindSumPairs:
+
+    def __init__(self, nums1: List[int], nums2: List[int]):
+        self.nums1Count = Counter(nums1)
+        self.nums2Count = Counter(nums2)
+        self.nums2 = nums2
+        
+
+    def add(self, index: int, val: int) -> None:
+        self.nums2Count[self.nums2[index]] -=1
+        if self.nums2Count[self.nums2[index]] == 0:
+            del self.nums2Count[self.nums2[index]]
+        self.nums2[index] += val
+        self.nums2Count[self.nums2[index]] += 1
+        
+
+    def count(self, tot: int) -> int:
+        if len(self.nums1Count) < len(self.nums2Count):
+            return sum(count * self.nums2Count[tar] for num, count in self.nums1Count.items() if (tar := tot-num) in self.nums2Count)
+        return sum(count * self.nums1Count[tar] for num, count in self.nums2Count.items() if (tar := tot-num) in self.nums1Count)

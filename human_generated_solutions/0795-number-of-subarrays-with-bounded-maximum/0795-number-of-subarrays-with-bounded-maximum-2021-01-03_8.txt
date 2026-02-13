@@ -1,0 +1,25 @@
+class Solution:
+    def numSubarrayBoundedMax(self, A: List[int], L: int, R: int) -> int:
+        
+		# Get the index of the nearest (moving leftward) "Too High" Value: value > R
+        @cache
+        def closestTooHigh(i):
+            if i < 0: return -1
+            
+            if A[i] > R: return i
+            else: return closestTooHigh(i - 1)
+        
+		# Get the index of the nearest (moving leftward) Value "In Range": L <= value <= R
+        @cache
+        def closestInRange(i):
+            if i < 0: return -1
+            
+            if L <= A[i] <=  R: return i
+            else: return closestInRange(i - 1)
+
+		# `max(closestInRange(i) - closestTooHigh(i), 0)` is a bit dense -
+		# it produces the number of valid subarrays *ending* at `i`. Then we
+		# can sum up the number of subarrays ending at every possible ending index in A.
+        return sum(
+            max(closestInRange(i) - closestTooHigh(i), 0) for i in range(len(A))
+        )

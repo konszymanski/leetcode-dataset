@@ -1,0 +1,23 @@
+class Solution:
+    def DFS(self, nums, beg, ans, res):
+        if len(ans) > 1:
+            res.append(ans.copy())
+        isVisited = {}
+
+        for i in range(beg, len(nums)):
+
+            if len(ans) > 0 and ans[-1] > nums[i]:continue
+#this line of code added so that our code do not backtrack again & again for same element 
+		#e,g [1, 1, 1, 22] for this array, element \'1\' will produce all the required combination. No need to backtrack for seccond \'1\'
+		#also [1, 2, 4, 1, 0, 2] for this kind of array we do not need to backtrack for \'1\' or \'2\' again
+            if nums[i] in isVisited: continue
+            isVisited[nums[i]] = True
+            ans.append(nums[i])
+            self.DFS(nums, i+1, ans, res)
+            ans.pop(-1)
+    
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        res = []
+        self.DFS(nums, 0, ans, res)
+        return res

@@ -1,0 +1,14 @@
+class Solution:
+    def longestSubarray(self, nums: List[int]) -> int:
+        val = max(nums)
+        i = j = res = 0
+        
+        while j < len(nums):
+            if nums[j] == val:
+                while j < len(nums) and nums[j] == val: j += 1 # increment j pointer until the current value == max val
+                
+                res = max(res, j - i)
+            
+            i = j = j + 1
+        
+        return res

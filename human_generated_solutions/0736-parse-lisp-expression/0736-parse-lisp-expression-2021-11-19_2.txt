@@ -1,0 +1,98 @@
+class Solution:
+    def evaluate(self, s: str) -> int:
+        # print(s)
+        expr = Expr()
+        res = expr.expr(list(s)[::-1])
+        # print(\'res\', res)
+        return res
+
+
+class Expr:
+    def expr(self, s, d={}):
+        if s[-1].isdigit() or s[-1] == \'-\' or s[-1].isalpha():
+            const = self.const(s)
+            if const[0].isdigit() or const[0] == \'-\':
+                return int(const)
+            return d[const]
+        
+        # expr
+        s.pop() # (
+        if s[-1] == \'l\':
+            res = self.let(s, d)
+        if s[-1] == \'a\':
+            res = self.add(s, d)
+        elif s[-1] == \'m\':
+            res = self.mult(s, d)
+        s.pop() # )
+        return res
+
+    def const(self, s):
+        # print(\'\'.join(s)[::-1])
+        v = \'\'
+        while s and s[-1] != \' \' and s[-1] != \')\':
+            v += s.pop()
+        return v
+
+    # expr - let
+    def let(self, s, d0={}):
+        s.pop() # l
+        s.pop() # e
+        s.pop() # t
+        d = {}
+        while s[-1] != \')\':
+            s.pop() # \' \'
+            x = self.term(s, {**d0, **d})
+            if s[-1] == \')\':
+                # x is final e
+                e = x
+                return e
+            # x is v
+            s.pop() # \' \'
+            v = x
+            e = self.expr(s, {**d0, **d})
+            d[v] = e
+        # can\'t reach
+        return -1
+
+    # term in expr let, term can be: var or expr
+    def term(self, s, d):
+        if s[-1] == \'(\':
+            # e
+            return self.expr(s, d)
+
+        # var or e
+        v = \'\'
+        while s[-1] != \' \' and s[-1] != \')\':
+            v += s.pop()
+        if s[-1] == \')\':
+            if v.isdigit() or v[0] == \'-\':
+                # digit
+                return int(v)
+            # const var
+            return d[v]
+        return v
+
+    # expr - add 
+    def add(self, s, d):
+        s.pop() # a
+        s.pop() # d
+        s.pop() # d
+
+        s.pop() # \' \'
+        e1 = self.expr(s, d)
+        s.pop() # \' \'
+        e2 = self.expr(s, d)
+        return e1 + e2
+
+    # expr - mult
+    def mult(self, s, d):
+        s.pop() # m
+        s.pop() # u
+        s.pop() # l
+        s.pop() # t
+
+        s.pop() # \' \'
+        e1 = self.expr(s, d)
+        s.pop() # \' \'
+        e2 = self.expr(s, d)
+        return e1 * e2

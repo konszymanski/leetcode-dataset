@@ -1,0 +1,16 @@
+class Solution:
+    def minHeightShelves(self, books: List[List[int]], shelf_width: int) -> int:
+        dp = [0]
+        for i in range(len(books)):
+            currWidth = books[i][0]
+            j = i - 1
+            maxHeight = books[i][1]
+            height = dp[i] + books[i][1]
+			# if the new book is added to a previous level
+            while j >= 0 and currWidth + books[j][0] <= shelf_width:    # keep iterating until the shelf capacity is exhausted or you reach the very first book
+                currWidth += books[j][0]
+                maxHeight = max(maxHeight, books[j][1])    # max height of the current last level
+                height = min(height, dp[j] + maxHeight)    # minimum total height so far 
+                j -= 1
+            dp.append(min(height, dp[i] + books[i][1]))    
+        return dp[-1]

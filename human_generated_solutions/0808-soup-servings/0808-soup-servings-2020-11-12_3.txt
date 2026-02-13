@@ -1,0 +1,12 @@
+class Solution:
+    def soupServings(self, N: int) -> float:
+        if N > 5000: return 1
+        
+        @lru_cache(None)
+        def fn(x, y): 
+            """Return """
+            if x <= 0 and y <= 0: return 0.5
+            if x <= 0 or y <= 0: return x <= 0
+            return 0.25*(fn(x-100, y) + fn(x-75, y-25) + fn(x-50, y-50) + fn(x-25, y-75))
+        
+        return fn(N, N)

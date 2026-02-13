@@ -1,0 +1,8 @@
+def shortestSubarray(self, A: List[int], K: int) -> int:
+        pq, Sum, asn = [(0,-1)], 0, 50001
+        for i, n in enumerate(A):
+            Sum += n
+            while pq and Sum-K >= pq[0][0]:
+                    ans = min(ans, i-heapq.heappop(pq)[1])
+            heapq.heappush(pq, (Sum, i))
+        return ans if ans<50001 else -1

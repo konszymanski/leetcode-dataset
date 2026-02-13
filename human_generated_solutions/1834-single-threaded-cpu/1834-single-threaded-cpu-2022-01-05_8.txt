@@ -1,0 +1,29 @@
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        sorted_tasks = []
+        for idx, task in enumerate(tasks):
+            sorted_tasks.append((task[0], task[1], idx))
+        sorted_tasks.sort()
+        import heapq
+        # heap to store all the waiting tasks (processing_time, idx)
+        res, waiting_tasks = [], []
+        cur_time = 0
+        n = len(tasks)
+        for i in range(n):
+            if not waiting_tasks:
+                res.append(sorted_tasks[i][2])
+                cur_time = sorted_tasks[i][0] + sorted_tasks[i][1]
+                next_i = i + 1
+            else:
+                processing_time, idx = heapq.heappop(waiting_tasks)
+                res.append(idx)
+                cur_time += processing_time
+                next_i = len(res) + len(waiting_tasks)
+            self.addQualifiedTasks(next_i, sorted_tasks, cur_time, waiting_tasks)
+            
+        return res
+    
+    def addQualifiedTasks(self, i, tasks, time, heap):
+        while i < len(tasks) and tasks[i][0] <= time:
+            heapq.heappush(heap, (tasks[i][1], tasks[i][2]))
+            i += 1

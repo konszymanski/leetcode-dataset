@@ -1,0 +1,15 @@
+def numSpecialEquivGroups(self, words: List[str]) -> int:
+        d = {}
+        for word in words:
+            even = [0] * 26
+            odd = [0] * 26
+            for i, c in enumerate(word):
+                if i % 2 == 0:
+                    even[ord(c) - ord(\'a\')] += 1
+                else:
+                    odd[ord(c) - ord(\'a\')] += 1
+            hsh = tuple(even) + tuple(odd)
+            if hsh not in d:
+                d[hsh] = set()
+            d[hsh].add(word)
+        return len(d)

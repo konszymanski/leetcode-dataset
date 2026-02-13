@@ -1,0 +1,21 @@
+class Solution:
+    def strWithout3a3b(self, a: int, b: int) -> str:
+        s = [""]*(4*(max(a,b)))
+        minn_char = [\'a\',\'b\'][min(a,b)==b]
+        other_char = [\'a\',\'b\'][minn_char == \'a\']
+        
+        j = 0
+        for i in range(min(a,b)):
+            s[j] = other_char
+            s[j + 2] = minn_char
+            j = j + 4
+        
+        
+        remaining_chars = (a+b) - 2*min(a,b)
+        j = 1
+        while remaining_chars:
+            s[j] = other_char
+            j += 4
+            remaining_chars -= 1
+        
+        return "".join(s)

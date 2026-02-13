@@ -1,0 +1,23 @@
+class Solution:
+    def isNStraightHand(self, hand, w: int) -> bool:
+        if len(hand) % w != 0:
+            return False
+        hand.sort(reverse = False)
+        lib = dict()
+        for x in hand:
+            if x not in lib:
+                lib[x] = 1
+            else:
+                lib[x] += 1
+        #print(lib)
+        for item in lib.keys():
+            while lib[item] > 0:
+                print(item)
+                for i in range(w):
+                    if item+i not in lib:
+                        return False
+                    if lib[item+i] > 0:
+                        lib[item+i] -= 1
+                    else:
+                        return False
+        return True

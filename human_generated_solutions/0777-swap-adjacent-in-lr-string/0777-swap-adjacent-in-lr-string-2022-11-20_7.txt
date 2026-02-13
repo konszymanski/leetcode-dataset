@@ -1,0 +1,31 @@
+class Solution(object):
+    
+    def canTransform(self, start, end):
+        """
+        :type start: str
+        :type end: str
+        :rtype: bool
+        Idea: L\'s can only move left, R\'s can only move right.
+        For checking L\'s: have a counter for L\'s in start and in end, and run through the arrays. If at any moment, L_ctr_end > L_ctr_start then an L moved to rhe right, which is illegal.
+        Also, an additional thing: if we remove the X\'s , the strings must be equal
+
+        """
+        start_noX = \'\'.join(char for char in start if char!=\'X\')
+        end_noX = \'\'.join(char for char in end if char!=\'X\')
+        if start_noX != end_noX:
+            return False
+
+        # Check no. of X,L,R in start,end
+        dict_ctr = {\'X\': [0,0], \'L\': [0,0], \'R\':[0,0]}
+        for i in range(len(start)):
+            dict_ctr[start[i]][0] += 1
+            dict_ctr[end[i]][1] += 1
+
+            if dict_ctr[\'L\'][1] < dict_ctr[\'L\'][0]:
+                # an L moved ot the right
+                return False
+            if dict_ctr[\'R\'][1] > dict_ctr[\'R\'][0]:
+                # an R moved to the left
+                return False
+
+        return dict_ctr[\'X\'][0] == dict_ctr[\'X\'][1] and dict_ctr[\'R\'][0] == dict_ctr[\'R\'][1] and dict_ctr[\'L\'][0] == dict_ctr[\'L\'][1]

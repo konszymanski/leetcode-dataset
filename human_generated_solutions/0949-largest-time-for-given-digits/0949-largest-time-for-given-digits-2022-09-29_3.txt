@@ -1,0 +1,14 @@
+class Solution:
+    def largestTimeFromDigits(self, arr: List[int]) -> str:
+
+        ans = []
+
+        for d0, d1, d2, d3 in list(permutations(arr,4)):
+            hrs, mins = 10*d0+d1, 10*d2+d3
+
+            if hrs < 24 and mins < 60:
+                ans.append((hrs,mins))
+
+        if not ans: return \'\'        
+        hrs, mins = max(ans)
+        return  str(hrs).rjust(2,\'0\')+\':\'+ str(mins).rjust(2,\'0\')

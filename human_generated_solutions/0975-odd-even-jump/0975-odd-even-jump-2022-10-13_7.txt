@@ -1,0 +1,37 @@
+from sortedcontainers import SortedList
+class Solution:
+    def oddEvenJumps(self, arr: List[int]) -> int:
+        
+        min_max = SortedList()
+        min_max.add(arr[-1])
+        
+        odd_step, even_step = [False] * len(arr), [False] * len(arr)
+        odd_step[-1], even_step[-1] = True, True
+        
+        val_to_index = {arr[-1]: len(arr) - 1}
+        
+        res = 1
+        for i in range(len(arr) - 2, -1, -1):
+            
+            if arr[i] not in min_max:
+                min_max.add(arr[i])
+                j1 = min_max.index(arr[i])
+                j2, j1 = j1 - 1, j1 + 1
+            else:
+                j1 = min_max.index(arr[i])
+                j2 = j1
+            
+            if j1 < len(min_max):
+                min_index = val_to_index[min_max[j1]]
+                if arr[i] <= arr[min_index] and even_step[min_index]:
+                    odd_step[i] = True 
+                    res += 1
+                    
+            if j2 >= 0:
+                max_index = val_to_index[min_max[j2]]    
+                if arr[i] >= arr[max_index] and odd_step[max_index]:
+                    even_step[i] = True 
+            
+            val_to_index[arr[i]] = i    
+            
+        return res

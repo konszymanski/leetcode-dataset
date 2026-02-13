@@ -1,0 +1,20 @@
+class Solution:
+    def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+        last=["","",""]
+        for v,i in enumerate(garbage):
+            if \'M\' in i:
+                last[0]=v
+            if \'P\' in i:
+                last[1]=v
+            if \'G\' in i:
+                last[2]=v
+        while \'\' in last:
+            last.remove(\'\')        
+        t=len(last)
+        sol=len(garbage[0])
+        t-=last.count(0)
+        for i in range(1,len(garbage)):
+            sol+=len(garbage[i])
+            sol+=(t*travel[i-1])
+            t-=last.count(i)
+        return sol

@@ -1,0 +1,50 @@
+class Solution:
+    def maximumInvitations(self, favorite: List[int]) -> int:
+        numPeople, res, joinable = len(favorite), 0, 0
+        cycleSize, union_ = [1] * numPeople, [node for node in range(numPeople)]
+        ans, inDegree = [1] * numPeople, [0] * numPeople
+        
+        def find(node: int) -> int:
+            if union_[node] == node:
+                return node
+            union_[node] = find(union_[node])
+            return union_[node]
+        
+        def union(node1: int, node2: int) -> None:
+            node1, node2 = find(node1), find(node2)
+            if node1 == node2:
+                return
+            if cycleSize[node1] < cycleSize[node2]:
+                node1, node2 = node2, node1
+            cycleSize[node1] += cycleSize[node2]
+            union_[node2] = union_[node1]
+            
+        for node in range(numPeople):
+            inDegree[favorite[node]] += 1
+        
+        queue = deque()
+        for node in range(numPeople):
+            if inDegree[node] == 0:
+                queue.append(node)
+        while queue:
+            node = queue.popleft()
+            favNode = favorite[node]
+            ans[favNode] = max(ans[favNode], ans[node] + 1)
+            inDegree[favNode] -= 1
+            if inDegree[favNode] == 0:
+                queue.append(favNode)
+        for node in range(numPeople):
+            if inDegree[node]:
+                union(node, favorite[node])
+        for node in range(numPeople):
+            if not inDegree[node]:
+                continue
+            currentCycleLen = cycleSize[find(node)]
+            if currentCycleLen == 2:
+                neighbor = favorite[node]
+                inDegree[neighbor] -= 1
+                currentCycleLen = ans[node] + ans[neighbor]
+                joinable += currentCycleLen
+            else:
+                res = max(res, currentCycleLen)
+        return max(res, joinable)

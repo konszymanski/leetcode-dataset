@@ -1,0 +1,48 @@
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        # endnode 
+        endnode=\'123450\'
+        # neighbours for each position of zero
+        d={0:[1,3],1:[0,2,4],2:[1,5],3:[0,4],4:[1,3,5],5:[2,4]}
+        
+        visited={}
+        rl=len(board)
+        cl=len(board[0])
+        startnode=\'\'
+       
+        for r in range(rl):
+            for c in range(cl):
+                startnode+=str(board[r][c])
+                
+        q=collections.deque()
+        
+        q.append([startnode,0])
+        res=-1
+        
+        while q:
+            
+            currnode,l=q.popleft()
+            
+            if currnode == endnode:
+                res=l
+                break
+                
+            visited[currnode]=1
+            currindex=currnode.index(\'0\')
+            
+            for nei in d[currindex]:
+                #computing neighbour node string
+                neinode=\'\'
+                for i in range(6):
+                    if i==currindex:
+                        neinode+=currnode[nei]
+                    elif i==nei:
+                        neinode+=\'0\'
+                    else:
+                        neinode+=currnode[i]
+                        
+                if visited.get(neinode,0)==0:
+                    q.append([neinode,l+1])
+                
+            
+        return res

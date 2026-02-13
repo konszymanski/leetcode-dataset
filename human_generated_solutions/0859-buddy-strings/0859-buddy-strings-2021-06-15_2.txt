@@ -1,0 +1,7 @@
+def buddyStrings(self, A: str, B: str) -> bool:                
+        if A == B and len(A) != len(set(A)):
+            return True
+        
+        diffs = [i for i in range(len(A)) if A[i] != B[i]]
+        
+        return len(A) == len(B) and len(diffs) == 2 and A[diffs[0]] == B[diffs[1]] and A[diffs[1]] == B[diffs[0]]

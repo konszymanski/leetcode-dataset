@@ -1,0 +1,23 @@
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        
+        @functools.cache
+        def p(k: int, r: int, c: int) -> float:
+            if r >= n or c >= n or r < 0 or c < 0:
+                return 0.
+            if k == 0:
+                return 1.
+            
+            total = 0
+            
+            for sign1 in [-1, 1]:
+                for sign2 in [-1, 1]:
+                    for x in [1, 2]:
+                        y = 2 if x == 1 else 1
+                        x *= sign1
+                        y *= sign2
+                        total += p(k - 1, r + x, c + y)
+            
+            return float(total / 8.)
+        
+        return p(k, row, column)

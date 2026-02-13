@@ -1,0 +1,6 @@
+def plusOne(self, digits: List[int]) -> List[int]: # digits = [4,3,2,1]
+        st_digits_list = [str(dig) for dig in digits] # [\'4\', \'3\', \'2\', \'1\']
+        st_digits = "".join(st_digits_list) # "4321"
+        num = int(st_digits) + 1 # 4322
+        output= [int(n) for n in str(num)] # [4, 3, 2, 2]
+        return output

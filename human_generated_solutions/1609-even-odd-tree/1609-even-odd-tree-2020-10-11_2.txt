@@ -1,0 +1,45 @@
+class Solution:
+    def isEvenOddTree(self, root: TreeNode) -> bool:
+        
+        q = collections.deque()
+        q += root,
+        
+        isEven = True
+        prev_value = -math.inf
+        
+        # normal BFS or level-traversal
+        while q:
+            
+            level = []
+            
+            for _ in range(len(q)):
+                
+                node = q.popleft()
+                level += node,
+                
+                if node.left:
+                    q += node.left,
+                
+                if node.right:
+                    q += node.right,
+            
+            # inspect level per constraints
+            for node in level:
+                
+                curr_value = node.val
+
+                if isEven:
+                    if curr_value%2 == 0 or curr_value <= prev_value: 
+                        return False
+                else:
+                    if curr_value%2 != 0 or curr_value >= prev_value: 
+                        return False
+                
+                prev_value = curr_value
+            
+            # set up for next iteration using the opposite conditions
+            isEven = not isEven
+            prev_value = -math.inf if isEven else math.inf
+        
+        # no constraints violated, return True
+        return True

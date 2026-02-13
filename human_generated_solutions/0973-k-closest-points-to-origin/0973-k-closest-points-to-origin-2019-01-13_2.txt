@@ -1,0 +1,2 @@
+def kClosest(self, points, k):
+        return nsmallest(K, points, lambda (x, y): x * x + y * y)

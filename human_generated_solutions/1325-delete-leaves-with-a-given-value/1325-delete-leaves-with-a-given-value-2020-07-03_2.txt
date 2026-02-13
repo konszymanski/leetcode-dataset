@@ -1,0 +1,23 @@
+def dfs_second(self, root, target):
+        def rec(node):
+            if node:
+                left = rec(node.left)
+                right = rec(node.right)
+                if not left and not right and node.val == target:
+                    return None
+                node.left = left
+                node.right = right
+                return node
+            return None
+        return rec(root)
+                    
+    
+    def dfs_first(self, root, target):
+        def rec(node, target):
+            if node:
+                left_leaf, match_left = rec(node.left, target)
+                right_leaf, match_right = rec(node.right, target)
+                if left_leaf and match_left: node.left = None
+                if right_leaf and match_right: node.right = None
+                return left_leaf and right_leaf and match_left and match_right, node.val == target
+            return True, True

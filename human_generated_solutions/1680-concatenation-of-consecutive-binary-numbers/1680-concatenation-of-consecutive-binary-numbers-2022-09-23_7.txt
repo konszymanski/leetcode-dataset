@@ -1,0 +1,14 @@
+class Solution:    
+    def concatenatedBinary(self, n: int) -> int:
+	    mod = 10**9 + 7
+        digitsToLeftShift = 1                                #  number of digits to leftshift
+        curr = 1                                                   #  current value to return
+        for i in range(2,n+1):
+            if not i&(i-1):                                       #  if i is power of 2 then increment digits to leftshift
+                digitsToLeftShift += 1
+            curr = ((curr<<digitsToLeftShift) + i) % mod     # append the binary and assign to curr
+        return curr
+      
+	 
+	 Time Complexity : O(N)
+	 Space Complexity: O(1)

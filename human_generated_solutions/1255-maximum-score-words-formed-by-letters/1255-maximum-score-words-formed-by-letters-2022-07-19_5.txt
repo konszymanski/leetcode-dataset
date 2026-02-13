@@ -1,0 +1,18 @@
+def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+	def solve(i, d):
+		if(i == len(words)): return 0
+		t = solve(i+1, d)
+		curr_count = Counter(words[i])
+		for c in curr_count:
+			if(c not in d or curr_count[c] > d[c]):
+				return t
+		new_d = d.copy()
+		y = 0
+		for c in curr_count:
+			new_d[c] -= curr_count[c]
+			y += curr_count[c] * score[ord(c)-97]
+		t = max(t, solve(i+1, new_d) + y)
+		return t
+
+	dic = Counter(letters)   
+	return solve(0, dic)

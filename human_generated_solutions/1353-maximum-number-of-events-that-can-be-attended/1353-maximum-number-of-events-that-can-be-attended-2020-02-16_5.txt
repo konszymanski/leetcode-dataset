@@ -1,0 +1,23 @@
+class Solution:
+    def maxEvents(self, events: List[List[int]]) -> int:
+        cnt = 0
+        events.sort()
+        ongoing = []    # ongoing stores events that are going on now
+        n, today, cursor = len(events), 0, 0
+        while ongoing or cursor < n:
+            # jump to today via time machine if you have nothing to do
+            if not ongoing:
+                today = events[cursor][0]
+            # pop out expired events (i.e. events that end before today)
+            while ongoing and ongoing[0] < today:
+                heapq.heappop(ongoing)
+            # push in events that start today
+            while cursor < n and events[cursor][0] == today:
+                heapq.heappush(ongoing, events[cursor][1])
+                cursor += 1
+            # attend one event if any
+            if ongoing:
+                heapq.heappop(ongoing)
+                today += 1
+                cnt += 1
+        return cnt

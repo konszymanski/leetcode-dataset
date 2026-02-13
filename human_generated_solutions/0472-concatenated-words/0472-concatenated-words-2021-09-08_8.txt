@@ -1,0 +1,29 @@
+class Solution:
+    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+        wordSet = set(words)
+        rv = []
+        for wd in words:
+            memo = {}
+            wordSet.remove(wd)
+            if len(wd) > 0 and self.dfs(wd, wordSet, memo):
+                rv.append(wd)
+            wordSet.add(wd)    
+        return rv
+    
+    def dfs(self, s, wordSet, memo):
+        if len(s) == 0:
+            return True
+        
+        if s in memo:
+            return memo[s]
+        
+        result = False
+        nw = \'\'
+        for c in s:
+            nw += c
+            if nw in wordSet and self.dfs(s[len(nw):], wordSet, memo):
+                result = True
+                break
+        
+        memo[s] = result
+        return result

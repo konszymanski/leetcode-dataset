@@ -1,0 +1,48 @@
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        
+        # Keep robot position in ascending order
+        robot.sort()
+        
+        # Keep factory position in ascending order
+        factory.sort()
+        
+        Infinity = sys.maxsize
+		
+		# Constant literal for factory parameter
+        LOCATION, QUOTA = 0, 1
+        
+        
+        # Check if factory[factoryIndex] can repair robot[robotIndex] with loading or not
+        @cache
+        def repair(robotIndex, factoryIndex, loading):
+            
+            ## Base case aka stop condition
+            # We have repaired all robots already
+            if robotIndex == len(robot):
+                return 0
+            
+            ## Base case aka stop condition
+            # Run out of all quota of all factories, cannot repair anymore
+            if factoryIndex == len(factory):
+                return Infinity
+            
+            
+            ## Option_1: Current factory still has repair quota, use current factory to repair current robot
+            if factory[factoryIndex][QUOTA] > loading :
+
+                option_1 = repair( robotIndex+1, factoryIndex, loading+1) + abs( factory[factoryIndex][LOCATION] - robot[robotIndex] )
+                
+            else:
+                # Current factory cannot repair anymore.
+                option_1 = Infinity
+            
+            
+            ## Option_2: Not to use current factory to repair current robot
+            option_2 = repair( robotIndex, factoryIndex+1, 0)
+            
+            # Optimization goal: minimize moving distance
+            return min(option_1, option_2)
+        
+        # ------------------------------------------------------------
+        return repair(robotIndex=0, factoryIndex=0, loading=0)

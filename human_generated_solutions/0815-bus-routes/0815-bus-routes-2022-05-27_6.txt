@@ -1,0 +1,31 @@
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        \'\'\'
+        create a graph from routes then use BFS to check whether target
+        is reachable. If yes return the steps needed to change to target\'\'\'
+        if source == target:
+            return 0
+        
+        hmp = defaultdict(set)
+        for bus, route in enumerate(routes): # {stop1: [bus1, bus2], ...} where routes = {bus1:[stop1, stop2,..], ...}
+            for stop in route:
+                hmp[stop].add(bus)
+        
+        q = deque()
+        q.append((source, 0))
+        visited = set()
+        visited.add(source)
+        bus_seen = set()
+
+        while q:
+            stop, count = q.popleft()
+            if stop == target:
+                return count
+            for bus in hmp[stop]: 
+                if bus not in bus_seen: # once hopped on a bus then all added vertices are fully connected hence reduce redundancy 
+                    bus_seen.add(bus)
+                    for neighbor in routes[bus]:
+                        if neighbor not in visited:
+                            q.append((neighbor, count + 1))
+                            visited.add(neighbor)
+        return -1

@@ -1,0 +1,16 @@
+def slidingPuzzle(self, board: List[List[int]]) -> int:
+	s = \'\'.join(str(c) for row in board for c in row)               # 2d matrix to 1d string
+	q = collections.deque([(s, s.index(\'0\'), 0)])    
+	m, n, seen = len(board), len(board[0]), {s}        
+	while q:
+		t, i, cnt = q.popleft()
+		if t == \'123450\': return cnt
+		for d in (-1, 1, -n, n):
+			j = i+d
+			if j<0 or j>= m*n or i*j == 6: continue                # boundary conditions
+			s=t[:i]+t[j]+t[i+1:]                                   # switch t[i] and t[j]
+			s=s[:j]+\'0\'+s[j+1:]                                    # FYI: another way is change to list, swtich,  \'\'.join back
+			if s not in seen:
+				seen.add(s)
+				q.append((s, j, cnt+1))
+	return -1

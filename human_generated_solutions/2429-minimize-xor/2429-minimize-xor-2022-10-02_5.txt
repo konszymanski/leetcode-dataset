@@ -1,0 +1,19 @@
+class Solution:
+    def minimizeXor(self, num1: int, num2: int) -> int:
+        a = 0
+        b = num2.bit_count()
+        
+        for i in range(32, -1, -1):
+            if num1&(1<<i):
+                b -= 1
+                a ^= 1<<i
+                if b == 0:
+                    break
+        #print(a, b)
+        x = 0
+        while b:
+            while a&(1<<x):
+                x += 1
+            a ^= 1<<x
+            b -= 1
+        return a

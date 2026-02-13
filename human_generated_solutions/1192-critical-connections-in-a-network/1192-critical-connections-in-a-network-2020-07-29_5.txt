@@ -1,0 +1,53 @@
+class Solution:
+    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
+        
+        # TRACK EACH NODE\'S RANK AND ITS LOWEST RANK
+        rank = [None] * n
+        lowest_rank = [None] * n
+        
+        # CREATE THE GRAPH
+        g = self.create_graph(connections)
+        
+        # DFS FROM NODE 0
+        critical = []
+        self.dfs(g, 0, None, set(), rank, lowest_rank, critical)
+        return critical
+        
+        
+    def dfs(self, g, curr, parent, vis, rank, lowest_rank, critical):
+        
+        # BASE CASE - NODE HAS BEEN VISITED
+        if curr in vis:
+            return
+        
+        # ADD TO VISITED
+        vis.add(curr)
+        
+        # SET THE NODE\'S RANK AND LOWEST RANK BY DEFAULT
+        rank[curr] = len(vis)
+        lowest_rank[curr] = len(vis)
+        
+        # EXPLORE ITS NEIGHBOURS
+        for nb in g.get(curr, []):
+            
+            # DO NOT EXPLORE THE NODE YOU CAME FROM
+            if nb == parent:
+                continue
+              
+            # EXPLORE MY NEIGHBOURS
+            self.dfs(g, nb, curr, vis, rank, lowest_rank, critical)
+            
+            # UPDATE MY LOWEST RANK
+            lowest_rank[curr] = min(lowest_rank[curr], lowest_rank[nb])
+            
+            # CHECK IF CRITICAL
+            if lowest_rank[nb] > rank[curr]:
+                critical.append([curr, nb])
+
+                    
+    def create_graph(self, connections):
+        g = defaultdict(list)
+        for c in connections:
+            g[c[0]].append(c[1])
+            g[c[1]].append(c[0])       
+        return g

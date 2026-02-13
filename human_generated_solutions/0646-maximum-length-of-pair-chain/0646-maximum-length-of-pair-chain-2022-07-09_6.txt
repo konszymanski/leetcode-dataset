@@ -1,0 +1,18 @@
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        # sort with start values
+        pairs.sort(key = lambda x: x[0])
+        
+        # dp defined as longest length start with p_i (sorted)
+        dp = [1] * len(pairs) 
+        
+        for i in range(len(pairs) -1, -1, -1):
+            for j in range(i+1, len(pairs)):
+                # connection direction: i -> j
+                if pairs[i][1] < pairs[j][0]:
+                    # note, we have pi0 < pi1, and we have pi0 < pj1
+                    # if pi1 < pj0, then the max chain in pj can be extended
+                    if dp[i] < dp[j] + 1:
+                        dp[i] = dp[j] + 1
+        # print(dp)
+        return max(dp)

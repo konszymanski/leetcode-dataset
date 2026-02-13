@@ -1,0 +1,46 @@
+from functools import lru_cache as cache
+class Solution:
+    def getMoneyAmount(self, n: int) -> int:
+        
+        # This is a minimax problem. Find the minimum worst case for guessing in between 1 and n.
+        
+        # Time:
+        # O(n^3) because there are O(n^2) possible inputs for pay_to_guess, and for each one we make O(n) guesses.
+        
+        # Space:
+        # O(n^2) because we cache O(n^2) possible inputs for pay_to_guess. 
+        
+        # Cache answers to save time.
+        @cache(None)
+        def pay_to_guess(lo, hi):
+            
+            # In this case, optimal strategy is to guess the lower number.
+            # You are either correct and pay nothing, or wrong and pay the minimum of the two (then you guess correctly).
+            # The latter is our worst case, so return that.
+            if hi - lo == 1:
+                return lo
+            
+            # If your guessing range is of length 1, you are at the correct number, so pay nothing.
+            if lo == hi:
+                return 0
+            
+            # Let\'s look at every possible guess, and see what our minimum worst case is.
+            min_ = float(\'inf\')
+            for i in range(lo+1, hi):
+                
+                # i is our current guess.
+                
+                # The number is lower than i, so pay i and guess in the lower range.
+                lower = i + pay_to_guess(lo, i-1)
+                
+                # The number is higher than i, so pay i and guess in the higher range.
+                higher = i + pay_to_guess(i+1, hi)
+                
+                # We ignore the correct case (where we pay 0) since that cannot be our worst case.
+                
+                # Our worst case cost is the max of higher and lower. Update minimum worst case.
+                min_ = min(min_, max(lower, higher))
+            
+            return min_
+        
+        return pay_to_guess(1, n)

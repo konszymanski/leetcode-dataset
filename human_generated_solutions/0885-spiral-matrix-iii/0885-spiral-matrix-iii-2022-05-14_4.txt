@@ -1,0 +1,37 @@
+class Solution:
+    def spiralMatrixIII(self, rows: int, cols: int, row: int, col: int) -> List[List[int]]:
+        step = 1
+        res = [[row, col]] # we always start with the given position
+        while len(res) < rows * cols: # stop when we have enough elements
+            if step % 2 == 1: # odd step
+                stop = col + step
+                while col < stop: # move left
+                    col += 1
+                    if self.is_valid(row, col, rows, cols):
+                        res.append([row, col])
+                
+                stop = row + step
+                while row < stop: # move down
+                    row += 1
+                    if self.is_valid(row, col, rows, cols):
+                        res.append([row, col])
+                
+            else: # even step
+                stop = col - step
+                while col > stop: # move right
+                    col -= 1
+                    if self.is_valid(row, col, rows, cols):
+                        res.append([row, col])
+                
+                stop = row - step
+                while row > stop: # move up
+                    row -= 1
+                    if self.is_valid(row, col, rows, cols):
+                        res.append([row, col])
+                
+            step += 1
+            
+        return res
+    
+    def is_valid(self, row, col, rows, cols):
+        return row >= 0 and row < rows and col >= 0 and col < cols

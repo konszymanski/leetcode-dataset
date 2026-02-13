@@ -1,0 +1,31 @@
+def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:        
+    
+    edgeList.sort(key = lambda x: x[2])
+    parents = list(range(n))
+    def find(i):
+        if parents[i] != i:
+            parents[i] = find(parents[i])
+        return parents[i]
+    
+    idx = defaultdict(list)
+    for i in range(len(queries)):
+        u,v,limit = queries[i]
+        idx[limit].append([u,v,i])
+    limits = sorted(idx.keys())
+    e_i = 0
+    for limit in limits:
+        while e_i < len(edgeList) and edgeList[e_i][-1] < limit:
+            u,v,dis = edgeList[e_i]
+            parent_u = find(u); parent_v = find(v)
+            if parent_u != parent_v:
+                parents[parent_v] = parent_u
+            e_i += 1
+        
+        for u,v,q_i in idx[limit]:
+            parent_u = find(u); parent_v = find(v)
+            if parent_u != parent_v:
+                queries[q_i] = False
+            else:
+                queries[q_i] = True
+        
+    return queries

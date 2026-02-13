@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+#  O(n) || O(h) where h is the height of the tree and where n is the number of nodes in the tree
+#     Runtime: 42ms 79.01% memory: 13.8mb 73.94%
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        result = 0
+        
+        def distubeCoins(root):
+            if not root:
+                return 0
+            nonlocal result
+            
+            left = distubeCoins(root.left)
+            right = distubeCoins(root.right)
+            
+            result += abs(left) + abs(right)
+            
+            return root.val + left + right - 1
+
+        
+        distubeCoins(root)
+        
+        return result

@@ -1,0 +1,15 @@
+def balanceBST(self, root: TreeNode) -> TreeNode:
+	lru_cache(None)
+	def dfs(node):
+		if not(node):
+			return []
+		return dfs(node.left) + [node.val] + dfs(node.right)
+	arr = dfs(root)
+	def balance(i, j):
+		if(i > j):
+			return None
+		if(i == j):
+			return TreeNode(arr[i])
+		mid = (i+j)//2
+		return TreeNode(arr[mid], balance(i, mid-1), balance(mid+1, j))
+	return balance(0, len(arr)-1)

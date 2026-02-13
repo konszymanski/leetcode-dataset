@@ -1,0 +1,10 @@
+class Solution(object):
+    def mostPoints(self, Q):
+        dp = [0] * len(Q)  # dp[i] denoted the most points can be got if we started from i, so dp[0] is the final answer
+        dp[-1] = Q[-1][0]  # obviously, if we started from the last position, we got Q[-1][0]
+        for i in range(len(Q) - 2, -1, -1):  # traverse Q backward
+            if i + Q[i][1] + 1 >= len(Q):  # if we choose the current points and need to freeze till end
+                dp[i] = max(Q[i][0], dp[i + 1])
+            else:
+                dp[i] = max(Q[i][0] + dp[i + Q[i][1] + 1], dp[i + 1])
+        return dp[0]

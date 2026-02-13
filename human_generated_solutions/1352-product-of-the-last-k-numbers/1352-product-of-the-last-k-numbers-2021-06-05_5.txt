@@ -1,0 +1,35 @@
+class ProductOfNumbers:
+
+    def __init__(self):
+        
+        self.arr=[]  
+
+    def add(self, num: int) -> None:
+        self.arr.append(num)
+        
+    def getProduct(self, k: int) -> int:
+        
+        n=len(self.arr)
+ 
+        count_zero=0
+        product=1
+        k=n-k
+        i=n-1
+        while i>=k:
+            if self.arr[i]==0:
+                count_zero+=1
+                break
+            else:
+                product*=self.arr[i]
+            i-=1  
+        if count_zero!=0:
+            return 0
+        else:
+            return product
+        
+
+
+# Your ProductOfNumbers object will be instantiated and called as such:
+# obj = ProductOfNumbers()
+# obj.add(num)
+# param_2 = obj.getProduct(k)

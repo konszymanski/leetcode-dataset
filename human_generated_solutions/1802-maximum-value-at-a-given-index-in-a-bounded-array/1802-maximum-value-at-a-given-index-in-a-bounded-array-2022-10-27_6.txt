@@ -1,0 +1,15 @@
+class Solution:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        maxSum -= n
+        def check(h):
+            a = max(h - index, 0)
+            b = max(h - (n - 1 - index), 0)
+            return (h - 1 + a)*(h - 1 - a + 1)/2 + (h + b)*(h - b + 1)/2
+        
+        left, right = 1, maxSum + 1
+        while left < right:
+            mid = (left + right) // 2
+            if check(mid) > maxSum: right = mid
+            else: left = mid + 1
+
+        return right

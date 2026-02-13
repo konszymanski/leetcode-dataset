@@ -1,0 +1,34 @@
+_bool = {
+    \'t\':True,
+    \'f\':False
+}
+
+class Solution:
+    def parseBoolExpr(self, expression: str) -> bool:
+        stk = []
+        symbols = set([\'!\',\'&\',\'|\',\'t\',\'f\',\'(\',\')\'])
+        operators = set([\'!\',\'&\',\'|\'])
+
+        for e in expression:
+            if e in symbols:
+                if e in (\'t\',\'f\'):
+                    e = _bool[e]
+                stk.append(e)
+            if e==\')\':
+                #then there should be t,f and operator on the left
+                stk.pop()
+
+                to_eval = []
+                while stk[-1] not in operators:
+                    if stk[-1]==\'(\': stk.pop()
+                    else: to_eval.append(stk.pop())
+
+                operator = stk[-1]
+                if operator==\'&\':
+                    stk.append(all(to_eval))
+                elif operator==\'|\':
+                    stk.append(any(to_eval))
+                else:
+                    stk.append(not to_eval[0])
+
+        return stk[0]

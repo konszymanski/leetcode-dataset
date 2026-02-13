@@ -1,0 +1,14 @@
+class Solution:
+    def flipEquiv(self, root1, root2):
+        fsort = lambda n: sorted( [n.left,n.right], key = lambda x: (x.val if x else -1) )
+        def dfs(n1,n2):
+            if n1 and n2:
+                if n1.val!=n2.val:
+                    return False
+                return all([ dfs(a,b) for a,b in zip(fsort(n1),fsort(n2)) ])
+            # Note:
+            #     - Either n1 or n2 are Null at this point, so...
+            #         - If one is a TreeNode, there\'s a mismatch.
+            #         - If both are Null, everything is ok
+            return False if (n1 or n2) else True
+        return dfs(root1,root2)

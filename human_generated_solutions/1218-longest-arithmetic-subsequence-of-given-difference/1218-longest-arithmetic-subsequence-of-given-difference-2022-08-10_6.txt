@@ -1,0 +1,7 @@
+from collections import defaultdict
+class Solution:
+    def longestSubsequence(self, arr: List[int], difference: int) -> int:
+        d = defaultdict(lambda:0)
+        for i in arr:
+            d[i]=d[i-difference] + 1 
+        return max(d.values())

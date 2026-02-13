@@ -1,0 +1,53 @@
+class Solution:
+    PRIMES = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,
+              83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,
+              167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,
+              251,257,263,269,271,277,281,283,293,307,311,313,317] #first 66 primes < 1e5
+
+    def copypaste_factor_primes(self, nums):
+        """    CREDIT TO STACKOVERFLOW    """
+        prime_facs_rev = defaultdict(set)
+        for num in nums:
+            x = num
+            for p in Solution.PRIMES:
+                if p*p > x:
+                    break
+                if not x % p:                  #faster than (x % p == 0)
+                    prime_facs_rev[p].add(num)
+                    while not x % p:           #faster than (x % p == 0)
+                        x //= p  #factor like when 10 years old.
+            if x > 1:
+                prime_facs_rev[x].add(num)
+        return prime_facs_rev
+
+    def largestComponentSize(self, nums):
+        prime_facs_rev = self.copypaste_factor_primes(nums)
+        stuff = sorted([v for v in prime_facs_rev.values() if (len(v) != 1)],
+                       key=len, reverse=True) #bigger is better (iterate on those first)
+        if not stuff: return 1
+        Q = deque(stuff)
+        orphans, q, merged = [], [], []
+        while Q:
+            one = Q.popleft()
+            merged.append(one) #mutable
+            while Q:
+                two = Q.popleft()
+                if one.isdisjoint(two):     ### ISDISJOINT-SET! FOREST?
+                    q.append(two)
+                else:
+                    one.update(two)
+            else:
+                Q.extend(q)
+                q.clear()
+
+        ## (HIT ME BABY) ONE MORE TIME
+        for i,x in enumerate(merged):
+            not_orphaned = True  #like superman
+            for y in merged[i+1:]:
+                not_orphaned = True
+                if not x.isdisjoint(y):      ### FORREST GUMP?
+                    x.update(y)
+                    not_orphaned = False #like batman
+            if not_orphaned:
+                orphans.append(x)
+        return max([len(x) for x in orphans + merged])

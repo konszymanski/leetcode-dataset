@@ -1,0 +1,21 @@
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        robot.sort(); factory.sort()
+        
+        @cache
+        def dp(numRobots: int, numFactories: int, numRobotsRepaired: int) -> int:
+            # If all robots are repaired, it\'s possible
+            if numRobots == len(robot): 
+                return 0
+            # If all factories are used up without repairing all robots, it\'s immpossible
+            if numFactories == len(factory): 
+                return inf
+            # Leave: Don\'t repair current robot at current factory
+            ans1 = dp(numRobots, numFactories + 1, 0)
+            # Take: Check the conditions and if the conditions are satisfied, 
+            # repair the current robot at current factory
+            ans2 = dp(numRobots + 1, numFactories, numRobotsRepaired + 1) + abs(robot[numRobots] - factory[numFactories][0]) if factory[numFactories][1] > numRobotsRepaired else inf
+            # return minimum of leave and take
+            return min(ans1, ans2)
+        
+        return dp(0, 0, 0)

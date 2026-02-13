@@ -1,0 +1,10 @@
+class Solution:
+    def maxFrequency(self, nums: List[int], k: int) -> int:
+        j = 0
+        nums.sort() #sort the numbers
+        for i in range(len(nums)): #traverse the numbers
+            k += nums[i] #add the num[i] to k
+            if k < nums[i] * (i-j+1): #if k < the computed value (nums[i] * (i-j+1))
+                k -= nums[j] #decrease the value of nums[j] to k
+                j += 1#and increment the j +1
+        return i - j + 1

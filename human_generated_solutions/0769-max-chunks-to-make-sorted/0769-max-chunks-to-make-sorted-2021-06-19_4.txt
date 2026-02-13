@@ -1,0 +1,10 @@
+def sortArray(nums):
+	"""
+	Note: I found this function from another LC post.
+	"""
+	if len(nums) <= 1: return nums
+	pivot = random.choice(nums)
+	lt = [i for i in nums if i < pivot]
+	eq = [i for i in nums if i == pivot]
+	gt = [i for i in nums if i > pivot]
+	return sortArray(lt) + eq + sortArray(gt)

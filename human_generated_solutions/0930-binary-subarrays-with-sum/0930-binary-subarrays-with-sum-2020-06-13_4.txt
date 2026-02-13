@@ -1,0 +1,25 @@
+class Solution:
+    def numSubarraysWithSum(self, A: List[int], S: int) -> int:
+        """
+        - Whe I first saw this question, I notice the keyword "subarrays". The idea of prefix sum immediately pops out of my head.
+        - Brief definition of prefix sum: for i = 0...n-1, p[i] = sum(A[:i+1]) => e.g for arr=[1, 0, 1], p[2] = 1+0+1=2
+        - So how do we utilize this to speed up our algorithm?
+        
+        ** Short ans: we count the occurence of prefix sum. Why?
+        
+        Consider the case where prefixSum[j] - prefixSum[i] = S. That means that A[i+1:j+1] == k. Agree?
+        Now lets take a look an example with arr=[1,0,1,0,1] and S = 2 
+            - We also have i = 1, j = 4. 
+            - With prefSum[1] = 1, prefSum[4] = 3, we have p[j]-p[i] = 2, which equals to  our specified S.
+        - That means -- when our algorithm is at index 4, we should add the occurence of acc-S (3-2 = 1) into our result, which accounts for the case [1,(0,1,0,1)] and [(1,0,1,0,1)].
+        
+        - We do this for every iteration, and return the result.
+        """
+        p, cnt, acc = defaultdict(int), 0, 0
+        p[0] = 1
+        for x in A:
+            acc += x
+            if acc-S in p:
+                cnt += p[acc-S]
+            p[acc] += 1
+        return cnt

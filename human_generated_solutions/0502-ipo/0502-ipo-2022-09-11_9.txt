@@ -1,0 +1,25 @@
+from heapq import heappop, heappush
+
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capitals: List[int]) -> int:
+        max_profit, min_capital = [], []
+        
+        #initiate the two heaps with the right values
+        for capital, profit in zip(capitals, profits):
+            if capital <= w:
+                heappush(max_profit, -profit)
+            else:
+                heappush(min_capital, (capital, profit))
+                
+        #process of choosing products
+        for i in range(k):
+            if max_profit:
+                #pop the highest profit from max_profit
+                w += heappop(max_profit) * -1
+                #pop from min_capital all the capitals that are <= w
+                while min_capital and min_capital[0][0] <= w:
+                    _, p = heappop(min_capital)
+                    heappush(max_profit, -p)
+            else: break
+            
+        return w

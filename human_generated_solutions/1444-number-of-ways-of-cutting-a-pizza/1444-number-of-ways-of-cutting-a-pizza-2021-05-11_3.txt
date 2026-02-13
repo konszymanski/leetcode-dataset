@@ -1,0 +1,28 @@
+class Solution:
+    def ways(self, pizza: List[str], k: int) -> int:
+        m, n = len(pizza), len(pizza[0])
+        
+        prefix = [[0]*(n+1) for _ in range(m+1)] # prefix array 
+        for i in range(m):
+            for j in range(n): 
+                prefix[i+1][j+1] = prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]
+                if pizza[i][j] == "A": prefix[i+1][j+1] += 1
+                
+        @cache
+        def fn(i, j, k):
+            """Return number of ways of cutting pizza[i:][j:] for k people."""
+            if i == m or j == n: return 0 # out of pizza 
+            apples = prefix[-1][-1] - prefix[-1][j] - prefix[i][-1] + prefix[i][j]
+            if apples < k+1: return 0 # not enough apple 
+            if k == 0: return 1
+            
+            ans = 0 
+            for ii in range(i, m): 
+                if prefix[ii+1][-1] - prefix[ii+1][j] - prefix[i][-1] + prefix[i][j]: 
+                    ans += fn(ii+1, j, k-1)
+            for jj in range(j, n): 
+                if prefix[-1][jj+1] - prefix[-1][j] - prefix[i][jj+1] + prefix[i][j]: 
+                    ans += fn(i, jj+1, k-1)
+            return ans % 1_000_000_007
+        
+        return fn(0, 0, k-1)

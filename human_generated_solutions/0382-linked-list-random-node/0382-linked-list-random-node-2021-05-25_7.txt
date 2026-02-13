@@ -1,0 +1,16 @@
+class Solution(object):
+    def __init__(self, head):
+        self.head = head
+
+    def getRandom(self):
+        # put first item into sample
+        choice = self.head.val
+        node = self.head.next
+        stream_size = 2
+        # replace item in sample using reservoir sampling
+        while node is not None:
+            if random.randint(1, stream_size) == 1:
+                choice = node.val
+            node = node.next
+            stream_size += 1
+        return choice

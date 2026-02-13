@@ -1,0 +1,5 @@
+class Solution:
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        left  = set(x for x in leftChild  if x != -1)
+        right = set(x for x in rightChild if x != -1)
+        return len(left | right) == n-1 and (not left & right)

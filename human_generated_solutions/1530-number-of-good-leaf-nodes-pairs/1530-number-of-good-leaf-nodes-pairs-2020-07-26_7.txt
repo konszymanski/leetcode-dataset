@@ -1,0 +1,27 @@
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        self.distance = distance
+        self.ans = 0
+        self.dfs(root)
+        return self.ans
+        
+    def dfs(self, node):
+        if not node:
+            return {0:0}
+        if not node.left and not node.right:
+            return {1:1}
+        dicL, dicR = self.dfs(node.left), self.dfs(node.right)
+        for kL, vL in dicL.items():
+            for kR, vR in dicR.items():
+                if kL + kR <= self.distance:
+                    self.ans += vL * vR
+        return self.add_dic(dicL, dicR)
+        
+    def add_dic(self, dic1, dic2):
+        dic = collections.defaultdict(int)
+        for k, v in dic1.items():
+			# add 1 to depth as we are going up 1 level
+            dic[k+1] += v
+        for k, v in dic2.items():
+            dic[k+1] += v
+        return dic

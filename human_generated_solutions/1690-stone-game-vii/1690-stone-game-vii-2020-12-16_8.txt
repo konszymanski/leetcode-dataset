@@ -1,0 +1,12 @@
+class Solution:
+    def stoneGameVII(self, stones: List[int]) -> int:
+        prefix = [0]
+        for x in stones: prefix.append(prefix[-1] + x)
+        
+        @lru_cache(1000)
+        def fn(lo, hi): 
+            """Return difference of scores."""
+            if lo == hi: return 0
+            return max(prefix[hi] - prefix[lo+1] - fn(lo+1, hi), prefix[hi-1] - prefix[lo] - fn(lo, hi-1))
+            
+        return fn(0, len(stones))

@@ -1,0 +1,22 @@
+class FindElements:
+    
+    def dfs(self, node, val):
+        if node:
+            self.store[val] = 1  # adding the value of node to hashmap
+            if node.left:
+                vl = (2 * val) + 1  # correcting the value of left node
+                self.dfs(node.left,vl)  # left sub tree traversal
+            if node.right:
+                vr = (2* val) + 2  # correcting the value of right node
+                self.dfs(node.right, vr)  # right sub tree traversal
+
+    def __init__(self, root: TreeNode):
+        self.store = {}  # hashmap for storing the corrected node values. And searching the values.
+        self.dfs(root, 0)  # Traversing the incorrect tree and saving correct values on the way
+
+    def find(self, target: int) -> bool:
+		# checking if the target value exists in O(1) time
+        if self.store.get(target, None) is not None:
+            return True
+        else:
+            return False

@@ -1,0 +1,24 @@
+"""https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/"""
+class Solution:
+    def minSwaps(self, s: str) -> int:
+        close,maxClose=0,0
+        for i in s:
+            if i=="[":
+                close-=1
+            else:
+                close+=1
+            maxClose=max(close,maxClose)
+        return (maxClose+1)//2 # we will do this because swapping 1 close brackets neutralizes one more. Example:- ]][[, if we swap ONE ] bracket, it will become [][], so it neutralizes TWO , so we will divide our maxCLose by TWO by ADDING one because we need ONE operation of swapping
+    
+# SUBMISSION REPORT:-
+    # Runtime: 875 ms, faster than 55.02% of Python3 online submissions for Minimum Number of Swaps to Make the String Balanced.
+    # Memory Usage: 25.5 MB, less than 54.09% of Python3 online submissions for Minimum Number of Swaps to Make the String Balanced.
+    
+# EXPLANATION
+    # We will take two varibales close and maxclose
+    # We will iterate through the array and if the element is opening backet, we will decrement close, else increment close
+    # Lastly, we will store the maximum number of closes in maxClose variable
+    # We will return the answer with some modifications explained above
+    
+# VIDEO EXPLANATION:-
+    # https://www.youtube.com/watch?v=3YDBT9ZrfaU&t=699s

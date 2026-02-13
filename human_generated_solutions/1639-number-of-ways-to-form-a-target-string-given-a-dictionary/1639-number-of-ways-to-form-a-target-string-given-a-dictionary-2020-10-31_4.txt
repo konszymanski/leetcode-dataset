@@ -1,0 +1,24 @@
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        mod = 10 ** 9 + 7
+        m = len(words[0])
+        n = len(target)
+        positions = defaultdict(Counter)
+        
+        for i in range(len(words)):
+            for j in range(m):
+                positions[j][words[i][j]] += 1
+                
+        @lru_cache(None)
+        def back(i, start):
+            if i == n:
+                return 1
+            if start == m:
+                return 0
+            ans = 0
+            ans += back(i, start + 1) % mod
+            if positions[start][target[i]]:
+                ans += positions[start][target[i]] * back(i + 1, start + 1) % mod
+            return ans
+            
+        return back(0, 0) % mod

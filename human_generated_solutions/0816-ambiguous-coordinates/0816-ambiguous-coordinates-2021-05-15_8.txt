@@ -1,0 +1,113 @@
+from itertools import product
+
+
+class Solution:
+    def ambiguousCoordinates(self, s: str):
+        """
+        Given a string of digits, this program determines all
+        possibilities of what two coordinates could be with the
+        addition of decimal points, a comma, and a space.
+
+        :param s: 2-dimensional coordinates with all commas,
+                  decimal points, and spaces removed
+        :type s: str
+        :return: array of all possibilities for what our original
+                 coordinates could have been
+        :rtype: list[str]
+        """
+
+        def is_valid(coord: str) -> bool:
+            """
+            This method determines whether a given coordinate
+            (coord) is valid or can be made valid with the addition
+            of a decimal point.
+
+            :param coord: coordinate string containing only digits
+            :type coord: str
+            :return: True if coord is a valid coordinate or can
+                     be converted to a valid coordinate with the
+                     addition of a decimal point, else False
+            :rtype: bool
+            """
+
+            """
+            A coordinate is valid if one of the following is true:
+            - It contains a single digit.
+            - The first digit or last digit is not \'0\'.
+            """
+            if len(coord) == 1:
+                return True
+            if coord[0] == \'0\' and coord[-1] == \'0\':
+                return False
+            return True
+
+        def possibilities(coord: str):
+            """
+            Given a string of digits (coord) that has passed
+            a validity test that determined that at least one
+            valid coordinate is possible, this program determines
+            the list of all possible coordinates that can be
+            derived from coord.
+
+            :param coord: validated string of digits
+            :type coord: str
+            :return: array of all possible coordinates that
+                     can be derived from coord
+            :rtype: list[str]
+            """
+
+            """
+            The following valid coordinates have exactly one
+            possibility:
+            - The coordinate has one digit.
+            - The coordinate begins with \'0\'.
+            - The coordinate ends with \'0\'.
+            Otherwise, the possibilities consist of the unmodified
+            coordinate plus the possibilities that can be generated
+            by placing a decimal point between any two digits.
+            """
+            len_coord = len(coord)
+            if len_coord == 1:
+                return [coord]
+            if coord[0] == \'0\':
+                return [\'\'.join([\'0.\', coord[1:]])]
+            if coord[-1] == \'0\':
+                return [coord]
+            result = [coord]
+            for decimal in range(1, len_coord):
+                result.append(\'\'.join([coord[:decimal], \'.\', coord[decimal:]]))
+            return result
+
+        """
+        - Extract the contents of s by removing the outer parentheses
+          and store them in content.
+        - Store the length of content in len_content.
+        - result will contain the output from this program.
+        """
+        len_s = len(s)
+        content = s[1:len_s - 1]
+        len_content = len(content)
+        result = []
+        
+        """
+        Main Loop:
+        - Partition content into two coordinates (coord_1, coord_2).
+        - If both coordinates pass a validity test using the
+          is_valid method:
+          - Use the possibilities method to generate a list of
+            possibilities for each coordinate. Store the results
+            for coord_1 and coord_2 in list_1 and list_2, respectively.
+          - Generate coordinate pairs (pairs) from the list product
+            of list_1 and list_2.
+          - Add each pair to result in the correct format.
+        """
+        for k in range(1, len_content):
+            coord_1 = content[:k]
+            coord_2 = content[k:]
+            if is_valid(coord_1) and is_valid(coord_2):
+                list_1 = possibilities(coord_1)
+                list_2 = possibilities(coord_2)
+                pairs = list(product(list_1, list_2))
+                for p1, p2 in pairs:
+                    result.append(\'\'.join([\'(\', p1, \', \', p2, \')\']))
+        return result

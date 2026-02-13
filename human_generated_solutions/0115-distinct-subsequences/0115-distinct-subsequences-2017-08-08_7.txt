@@ -1,0 +1,8 @@
+def numDistinct(self, s, t):
+    state = [1]+[0]*len(t)
+    for c in s:
+        new = state[:]
+        for i,k in enumerate(t):
+            if k==c: new[i+1] += state[i]
+        state = new
+    return state[-1]

@@ -1,0 +1,20 @@
+def numberOfArrays(self, s: str, k: int) -> int:
+    n = len(s)
+    @lru_cache(None)
+    def dp(i):
+        if i == n:
+            return 1
+        
+        ways = 0
+        c_group = 0
+        for j in range(i, n):
+            c_group = c_group*10 + int(s[j])
+            if c_group <= k:
+                if (j==n-1 or s[j+1]!="0"):
+                    ways += dp(j+1)
+            else:
+                break
+        
+        return ways%1000000007
+    
+    return dp(0)

@@ -1,0 +1,19 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        x, y = 0, 0 # Setup initial points
+		points = [(0, 0)] # Add initial points to visited array
+        for c in path: # Iterate through characters in string
+			# Depending on direction, change x and y value
+            if c == "N":
+                y += 1
+            if c == "E":
+                x += 1
+            if c == "S":
+                y -= 1
+            if c == "W":
+                x -= 1
+            if (x, y) in points: # Check if tuple of x and y is in points, if so, return true
+                return True
+            points.append((x, y)) # Add tuple of points to visited array
+		# Return false beacuse we couldn\'t find  any duplicate
+        return False

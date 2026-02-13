@@ -1,0 +1,20 @@
+\'\'\'
+simply follow the algorithm in the description
+\'\'\'
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        
+        def dfs(nums):
+            if not nums:
+                return None
+            
+            max_ = max(nums)
+            idx = nums.index(max_)
+            root = TreeNode(max_)
+            
+            root.left = dfs(nums[:idx])
+            root.right =  dfs(nums[idx+1:])
+            return root
+            
+        
+        return dfs(nums)

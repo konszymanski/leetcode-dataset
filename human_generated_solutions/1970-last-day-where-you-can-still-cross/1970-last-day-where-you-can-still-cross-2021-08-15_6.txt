@@ -1,0 +1,45 @@
+class Solution:
+    def latestDayToCross(self, row: int, col: int, cells: List[List[int]]) -> int:
+        start = [[0,i] for i in range(col)]
+        matrixMap = defaultdict()
+        def getMatrix():
+            matrix = [[1 for i in range((col))] for i in range((row))]
+            matrixMap[0] = deepcopy(matrix)
+            for i in range(len(cells)):
+                r, c = cells[i]
+                matrix[r-1][c-1] = 0
+                matrixMap[i] = deepcopy(matrix)
+        def canGoFromTopToBottom(index):
+            return dfs(matrixMap[index-1]) if index!=0 else dfs(matrixMap[index])
+        
+        def dfs(matrix):
+            for startRow, startCol in start:
+                visited = set()
+                if matrix[startRow][startCol]==1 and helper(startRow, startCol, visited, matrix):
+                    return True
+            return False
+            
+        def helper(r, c, visited, matrix):
+            if r==row-1:
+                return True
+            else:
+                visited.add((r,c))
+                directions = [[r+1,c],[r,c+1], [r-1,c], [r,c-1]]
+                for nextRow, nextCol in directions:
+                    if 0<=nextRow<row and 0<=nextCol<col and (nextRow, nextCol) not in visited and matrix[nextRow][nextCol]==1:
+                        if helper(nextRow, nextCol, visited, matrix):
+                            return True
+                    
+                return False
+                    
+                    
+        left, right = 0 , len(cells)-1
+        getMatrix()
+        while left<=right:
+            mid = left + (right-left)//2
+            if canGoFromTopToBottom(mid):
+                left = mid + 1
+            else:
+                right = mid - 1
+            
+        return left-1

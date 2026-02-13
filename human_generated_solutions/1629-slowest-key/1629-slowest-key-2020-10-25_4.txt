@@ -1,0 +1,12 @@
+class Solution:
+    def slowestKey(self, releaseTimes: List[int], keysPressed: str) -> str:
+        res, prev = (0, []), 0
+        
+        for time, letter in zip(releaseTimes, keysPressed):
+            if time - prev > res[0]:
+                res = (time - prev, [letter])
+            elif time - prev == res[0]:
+                res[1].append(letter)
+            prev = time
+        
+        return sorted(res[1])[-1]

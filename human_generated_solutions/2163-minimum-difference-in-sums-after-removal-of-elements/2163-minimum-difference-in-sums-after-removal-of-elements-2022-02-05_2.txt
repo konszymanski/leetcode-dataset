@@ -1,0 +1,31 @@
+def minimumDifference(self, nums: List[int]) -> int:
+    n = len(nums) // 3
+    # two heap queues, we keep n smallest elements in first, and n greatest elements in second
+    first, second = list(), list()
+    sum_1, sum_2 = 0, 0
+
+    for i in range(n):
+        heapq.heappush(first, -nums[i])
+        sum_1 += nums[i]
+    for i in range(2 * n, 3 * n):
+        heapq.heappush(second, nums[i])
+        sum_2 += nums[i]
+
+    # divide nums into two parts: nums[:i] & nums[i + 1:]
+    # i can only be in range(n + 1, 2 * n)
+    sum_first = [sum_1] # sum_first stores sum of n smallest elements for i in range(n + 1, 2 * n)
+    sum_second = [sum_2] # sum_second stores sum of n greatest elements for i in range(2 * n - 1, n, -1)
+
+    middle = nums[n : 2 * n]
+    for i in middle:
+        rep = heapq.heappushpop(first, -i)
+        sum_1 += i + rep
+        sum_first.append(sum_1)
+
+    for i in middle[::-1]:
+        rep = heapq.heappushpop(second, i)
+        sum_2 += i - rep
+        sum_second.append(sum_2)
+
+    # then sum_first[k] & sum_second[n - 1 - k] will be a pair for the same i
+    return min(i - j for i, j in zip(sum_first, sum_second[::-1]))

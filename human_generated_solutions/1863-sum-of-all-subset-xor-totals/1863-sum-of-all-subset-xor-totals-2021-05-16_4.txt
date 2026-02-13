@@ -1,0 +1,25 @@
+class Solution:
+    def XoRSum(self,lis):
+        if lis == []:
+            return 0
+        if len(lis) == 1:
+            return lis[0]
+        xor = 0
+        for i in lis:
+            xor ^= i
+        return xor
+    def subset(self,seq):
+        if len(seq) <= 0:
+            yield []
+        else:
+            for item in self.subset(seq[1:]):
+                yield [seq[0]]+item
+                yield item
+    def subsetXORSum(self, nums: List[int]) -> int:
+        lis = [x for x in self.subset(nums)]
+        sumXor = 0
+        lis.sort()
+        #print(lis)
+        for i in lis:
+            sumXor += self.XoRSum(i)
+        return sumXor

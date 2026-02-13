@@ -1,0 +1,90 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from collections import defaultdict, deque
+
+class CBTInserter:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.__root = root
+        self.__parents = defaultdict(lambda: deque())
+        return
+   
+    # Level Order Traversal / BFS
+    # This function will determine the parent under which
+    # any incoming node should be insereted.
+    # Logic is to find prospective parents with there levels,
+    # then queue them as per the prefrence at each level.
+    def search_parents(self, root: TreeNode, level: int = 0) -> None:
+        
+        # If root is not None
+        if root:
+            
+            # If no left child, return root and its level
+            if not root.left:
+                self.__parents[level].append(root)
+            
+            # If no right child, return root and its level
+            if not root.right:
+                self.__parents[level].append(root)
+            
+            # Get prospective parent from left subtree and the level at which
+            # the parent resides
+            self.search_parents(root.left, level+1)
+            
+            # Get prospective parent from right subtree and the level at which
+            # the parent resides
+            self.search_parents(root.right, level+1)
+            
+        return
+
+    def insert(self, val: int) -> int:
+        
+        # Make a new node
+        node = TreeNode(val)
+        
+        # Check if root node exist
+        if self.__root:
+            
+            # If there is no parents available, search parents
+            # this function will be only called when all perspective
+            # parents are assigned childrens.
+            if not self.__parents:
+                self.search_parents(self.__root)
+            
+            # Get the minimum level at which prospective parents are preset
+            min_level = min(self.__parents.keys())
+            
+            # Pop a prospepective parent
+            parent = self.__parents[min_level].popleft()
+            
+            # If at the minimum level there is no parents level
+            # pop key from the parents dictionary so that next
+            # time a valid level for prospective parents is selected
+            if len(self.__parents[min_level]) == 0:
+                self.__parents.pop(min_level, None)
+            
+            # if parent doesn\'t have left child, add node
+            # as the left child
+            if not parent.left:
+                parent.left = node
+            else: # else add node as right child
+                parent.right = node
+                
+            val = parent.val # for return
+        else:
+            self.__root = node
+            
+        return val
+
+    def get_root(self) -> Optional[TreeNode]:
+        return self.__root
+        
+# Your CBTInserter object will be instantiated and called as such:
+# obj = CBTInserter(root)
+# param_1 = obj.insert(val)
+# param_2 = obj.get_root()

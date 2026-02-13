@@ -1,0 +1,18 @@
+class Solution(object):
+    def getWinner(self, arr, k):
+        """
+        :type arr: List[int]
+        :type k: int
+        :rtype: int
+        """
+        wins, king, rival = 0, 0, 1
+        while rival < len(arr):
+            if arr[king] > arr[rival]:
+                wins += 1
+            else:
+                wins = 1
+                king = rival
+            rival += 1
+            if wins == k:
+                break
+        return arr[king]

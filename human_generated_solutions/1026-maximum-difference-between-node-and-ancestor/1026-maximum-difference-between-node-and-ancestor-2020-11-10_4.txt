@@ -1,0 +1,15 @@
+class Solution:
+    def maxAncestorDiff(self, root: TreeNode) -> int:
+        
+        if not root: return 0
+        stack=[(root,root.val,root.val)] #node,parent,child
+        res=0
+        
+        while stack:
+            node,parent,child=stack.pop()
+            res=max(res,abs(parent-child)) 
+            if node.left:
+                stack.append((node.left,max(parent,node.left.val),min(child,node.left.val)))
+            if node.right:
+                 stack.append((node.right,max(parent,node.right.val),min(child,node.right.val)))
+        return res

@@ -1,0 +1,10 @@
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        ans = []
+        def compare(num):
+            temp = ""
+            for digit in str(num):
+                temp += str(mapping[int(digit)])
+            return int(temp)
+        
+        return sorted(nums, key=compare)

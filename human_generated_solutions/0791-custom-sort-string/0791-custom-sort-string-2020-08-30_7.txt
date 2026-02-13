@@ -1,0 +1,17 @@
+from collections import Counter
+
+class Solution:
+    def customSortString(self, s: str, t: str) -> str:
+        s = list(s)
+        h = Counter(t)
+        res = \'\'
+        for i in range(len(s)):
+            c = s[i]
+            if c in h:
+                for j in range(h[c]):
+                    res += c
+                del h[c]
+        for key, value in h.items():
+            for i in range(value):
+                res += key
+        return res

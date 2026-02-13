@@ -1,0 +1,21 @@
+class Solution:
+  def findErrorNums(self, nums: List[int]) -> List[int]:
+    expectedSum = sum(range(1, len(nums) + 1))
+    realSum = sum(nums)
+    sumDiff = realSum - expectedSum
+    
+    expectedProd = reduce(mul, range(1, len(nums) + 1))
+    realProd = reduce(mul, nums)
+    prodDivision = realProd / expectedProd
+    
+	# Math:
+    # sumDiff == duplicate - missing
+    # prodDivision == duplicate / missing
+    # duplicate == prodQuot * missing
+    # sumDiff == prodQuot * missing - missing
+    # sumDiff == missing * (prodQuot - 1)
+    # sumDiff / (prodQuot - 1) == missing
+    missing = round(sumDiff / (prodDivision - 1))
+    duplicate = sumDiff + missing
+    
+    return (duplicate, missing)

@@ -1,0 +1,33 @@
+class Solution(object):
+    def latestDayToCross(self, row, col, cells):
+        l,h=0,len(cells)-1
+        ans=-1
+        while l<=h:
+            m=(l+h)>>1
+            if self.isPath(cells,m,row,col):
+                l=m+1
+                ans=m+1
+            else:
+                h=m-1
+        return ans
+    def isPath(self,cells,ind,row,col):
+        grid=[[0 for i in range(col)] for j in range(row)]
+        for i in range(ind+1):
+            x,y=cells[i]
+            grid[x-1][y-1]=1
+        vis=set()
+        for i in range(col):
+            if grid[0][i]!=1:
+                dq=deque()
+                dq.append((0,i))
+                dr=[(-1,0),(0,-1),(1,0),(0,1)]
+                while dq:
+                    x,y=dq.popleft()
+                    if x==row-1:
+                        return True
+                    for d in dr:
+                        dx,dy=d
+                        if 0<=x+dx<row and 0<=y+dy<col and grid[x+dx][y+dy]!=1 and (x+dx,y+dy) not in vis:
+                            vis.add((x+dx,y+dy))
+                            dq.append((x+dx,y+dy))
+        return False

@@ -1,0 +1,4 @@
+class Solution:
+    def numSpecial(self, mat: List[List[int]]) -> int:
+        row_set = {i for i, r in enumerate(mat) if sum(r) == 1}
+        return len(["" for c in zip(*mat) if sum(c) == 1 and c.index(1) in row_set])

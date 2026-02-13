@@ -1,0 +1,17 @@
+class Solution:
+    def surfaceArea(self, grid: List[List[int]]) -> int:
+        m, n, area = len(grid), len(grid[0]), 0
+
+        for i in range(m):
+            for j in range(n):
+                if (x := grid[i][j]) == 0:
+                    continue
+
+                top = max(0, x - grid[i - 1][j]) if i > 0 else x
+                bot = max(0, x - grid[i + 1][j]) if i + 1 < m else x
+                left = max(0, x - grid[i][j - 1]) if j > 0 else x
+                right = max(0, x - grid[i][j + 1]) if j + 1 < n else x
+
+                area += top + bot + left + right + 2
+
+        return area

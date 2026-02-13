@@ -1,0 +1,19 @@
+class Solution:
+    def longestZigZag(self, root: TreeNode) -> int:
+        
+        @cache
+        def longestZigZag(node, direction):
+            if node is None: return 0
+
+            if direction == \'left\': return longestZigZag(node.right, \'right\') + 1
+            if direction == \'right\': return longestZigZag(node.left, \'left\') + 1
+        
+        def dfs(node):
+            if node is None: return 0
+            
+            # Longest ZigZag path starting at `node`
+            bestHere = max(longestZigZag(node, \'left\'), longestZigZag(node, \'right\'))
+            
+            return max(bestHere, dfs(node.left), dfs(node.right))
+        
+        return max(dfs(root) - 1, 0)

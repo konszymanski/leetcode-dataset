@@ -1,0 +1,48 @@
+class MedianFinder:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.low=[]
+        self.high=[]
+        
+        
+    def addNum(self, num: int) -> None:
+        
+        if len(self.low)>len(self.high):    #Max heap \'low\' has more
+            if(num<self.findMedian()): #Item smaller than median-> make space-> push to low
+                shifted=heapq.heappop(self.low)
+                heapq.heappush(self.high,-shifted)
+                heapq.heappush(self.low,-num)
+            else: #Item bigger than median-> push to high
+                heapq.heappush(self.high,num)
+        elif len(self.low)==len(self.high): #Both heaps have equal size
+            if num>self.findMedian():  #Item bigger than median->push to high
+                heapq.heappush(self.high,num)
+            else: #Item smaller than median->push to low
+                heapq.heappush(self.low,-num)
+        else:                               #Min heap \'high\' has more 
+            if(num>self.findMedian()): #Item bigger than median->make space->push to high
+                shifted=heapq.heappop(self.high)
+                heapq.heappush(self.low,-shifted)
+                heapq.heappush(self.high,num)
+            else: #Item smaller than median->push to low
+                heapq.heappush(self.low,-num)
+     
+    def findMedian(self):
+        low = self.low
+        high = self.high
+        if low and high:
+            if len(low)==len(high):
+                return (float(low[0])*-1+float(high[0]))/2.0
+            if len(low)>len(high):
+                return float(low[0]) *-1
+            else:
+                return float(high[0])
+        elif not low and high:
+            return float(high[0])
+        elif not high and low:
+            return float(low[0])*-1
+        else:
+            return 0.0

@@ -1,0 +1,19 @@
+def licenseKeyFormatting(self, S: str, K: int) -> str:
+        #S=input()
+        #k=int(input())
+        i=0
+        j=len(S)-1
+        N=[]
+        S=S.replace("-","")
+        S=S[::-1]
+        parts = [S[i:i+K] for i in range(0, len(S), K)]
+        #print(parts)
+        for x in parts:
+            N.append(x[::-1])
+        #print(N)
+        N=N[::-1]
+        for i in range(0,len(N)-1):
+            N[i]=N[i]+"-"
+        #print(N)
+        str1="".join(str(e) for e in N)
+        return (str1.upper())

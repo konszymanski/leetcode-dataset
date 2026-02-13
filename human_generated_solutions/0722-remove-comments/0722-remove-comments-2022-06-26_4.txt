@@ -1,0 +1,40 @@
+class Solution:
+    def removeComments(self, source: List[str]) -> List[str]: 
+        row = 0 
+        while row < len(source):
+            col = 1
+            while row < len(source) and col < len(source[row]):
+                if source[row][col-1:col+1] == \'//\':
+                    if col == 1:
+                        source.pop(row)
+                        row -= 1
+                    else:
+                        source[row] = source[row][:col-1]
+                elif source[row][col-1:col+1] == \'/*\':
+                    # print(source[row][col+1:])
+                    end = source[row][col+1:].find(\'*/\')
+                    end = col+1+end if end != -1 else -1
+                    br = False
+                    while end < 0:
+                        br = True
+                        if col == 1:
+                            source.pop(row)
+                        else:
+                            source[row] = source[row][:col-1]
+                            row += 1
+                        end = source[row].find(\'*/\')
+                        col = 1
+                    if br:
+                        source[row] = source[row][end+2:]
+                        if row > 0:
+                            source[row-1] += source[row]
+                            source.pop(row)
+                            row -=1
+                    else:
+                        source[row] = source[row][:col-1] + source[row][end+2:]
+                        if not len(source[row]):
+                            source.pop(row)
+                    continue
+                col += 1
+            row += 1
+        return source

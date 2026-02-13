@@ -1,0 +1,9 @@
+def find_sol(K):
+	n = count = 1
+	while True:
+	    remainder = n % K
+		if remainder == 0:
+		    break
+		n = 10 * n + 1
+		count += 1	
+	return count

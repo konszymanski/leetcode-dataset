@@ -1,0 +1,34 @@
+from sortedcontainers import SortedDict
+
+class AllOne:
+
+    def __init__(self):
+        self.freq = Counter()
+        self.tree = SortedDict()
+
+    def inc(self, key: str) -> None:
+        v = self.freq[key]
+        if v: 
+            self.tree[v].remove(key)
+            if not self.tree[v]: self.tree.pop(v)
+        v = self.freq[key] = v + 1
+        self.tree.setdefault(v, set()).add(key)
+
+    def dec(self, key: str) -> None:
+        v = self.freq[key]
+        self.tree[v].remove(key)
+        if not self.tree[v]: self.tree.pop(v)
+        v = self.freq[key] = v - 1
+        if v: self.tree.setdefault(v, set()).add(key)        
+
+    def getMaxKey(self) -> str:
+        keys = self.tree.keys()
+        ans = ""
+        if keys: self.tree[keys[-1]].add(ans := self.tree[keys[-1]].pop())
+        return ans
+
+    def getMinKey(self) -> str:
+        keys = self.tree.keys()
+        ans = ""
+        if keys: self.tree[keys[0]].add(ans := self.tree[keys[0]].pop())
+        return ans

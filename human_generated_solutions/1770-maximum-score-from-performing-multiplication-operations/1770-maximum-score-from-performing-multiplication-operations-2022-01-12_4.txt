@@ -1,0 +1,66 @@
+class Solution:
+
+    # TLE
+    def maximumScore(self, nums: List[int], mult: List[int]) -> int:
+
+        def dp(i, left, right):
+            if i == len(mult):
+                return 0
+
+            return max(
+                 mult[i] * nums[left] + dp(i + 1, left + 1, right),
+                 mult[i] * nums[right] + dp(i + 1, left, right - 1)
+            )
+        
+        return dp(0, 0, len(nums) - 1)
+
+
+    # MLE
+    def maximumScore(self, nums: List[int], mult: List[int]) -> int:
+
+        def dp(i, left):
+            if i == len(mult):
+                return 0
+
+            if (i, left) not in memo:
+                right = len(nums) - 1 - i + left
+                memo[(i, left)] = max(
+                    mult[i] * nums[left] + dp(i + 1, left + 1),
+                    mult[i] * nums[right] + dp(i + 1, left)
+                )
+
+            return memo[(i, left)]
+        
+        memo = {}
+        return dp(0, 0)
+
+    # O(m^2) time | O(m^2) space
+    def maximumScore(self, nums: List[int], mult: List[int]) -> int:
+
+        @lru_cache(None)
+        def dp(i, left):
+            if i == len(mult):
+                return 0
+
+            right = len(nums) - 1 - i + left
+            return max(
+                mult[i] * nums[left] + dp(i + 1, left + 1),
+                mult[i] * nums[right] + dp(i + 1, left)
+            )
+        
+        score = dp(0, 0)
+        dp.cache_clear()
+        return score
+
+    # O(m^2) time | O(m^2) space
+    def maximumScore(self, nums: List[int], mult: List[int]) -> int:
+        n, m = len(nums), len(mult)
+        dp = [[0 for _ in range(m + 1)] for _ in range(m + 1)]
+
+        for i in range(m - 1, -1, -1):
+            for left in range(i, -1, -1):
+                right = n - 1 - i + left
+                dp[i][left] = max(mult[i] * nums[left] + dp[i + 1][left + 1], 
+                                  mult[i] * nums[right] + dp[i + 1][left])
+
+        return dp[0][0]

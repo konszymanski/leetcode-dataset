@@ -1,0 +1,17 @@
+class Solution:
+        
+    def sumRootToLeaf(self, root: TreeNode) -> int:
+        return self._helper(root, 0)
+    
+    def _helper(self, node: TreeNode, val: int):
+        if node is None:
+            return 0
+
+        # Keep building the \'binary number\' along the way
+        # Identical to building \'decimal number\' : number_till_now * 10 + current_number
+        val = val * 2 + node.val
+        
+        if not node.left and not node.right:
+            return val
+        
+        return self._helper(node.left, val) + self._helper(node.right, val)

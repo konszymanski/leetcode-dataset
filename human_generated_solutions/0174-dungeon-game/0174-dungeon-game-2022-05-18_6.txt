@@ -1,0 +1,30 @@
+class Solution:
+    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
+        
+        rows, cols = len(dungeon), len(dungeon[0])
+        dp = [[float(\'inf\')] * cols for _ in range(rows)]
+        
+        dp[rows - 1][cols - 1] = 1 if dungeon[rows - 1][cols - 1] >= 0 else (1 - dungeon[rows - 1][cols - 1])
+        
+        for row in reversed(range(rows)):
+            for col in reversed(range(cols)):
+                if row == rows - 1 and col == cols - 1:
+                    continue
+                
+                curr_cell = dungeon[row][col]
+
+                right_health = self.getHealth(curr_cell, row, col + 1, rows, cols, dp)
+                down_health = self.getHealth(curr_cell, row + 1, col, rows, cols, dp)
+                next_health = min(right_health, down_health)
+
+                dp[row][col] = next_health
+
+        return dp[0][0]
+    
+    def getHealth(self, curr_cell, next_row, next_col, rows, cols, dp):
+        
+        if next_row >= rows or next_col >= cols:
+            return float(\'inf\')
+        next_cell = dp[next_row][next_col]
+        # note that the knight needs at least 1 point at any cell
+        return max(1, next_cell - curr_cell)

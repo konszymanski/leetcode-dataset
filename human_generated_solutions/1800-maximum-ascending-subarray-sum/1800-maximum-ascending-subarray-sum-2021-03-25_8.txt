@@ -1,0 +1,22 @@
+class Solution:
+    def maxAscendingSum(self, nums: List[int]) -> int:
+        """
+            thought:
+                Use for loop to check if the subarray is ascending.
+                Use the cumsum to add up and keep checking the max.
+            time:
+                O(n)
+            space:
+                O(1)
+        """
+        max_ = nums[0]
+        cumsum = nums[0]
+        
+        for i in range(len(nums)-1):
+            if nums[i+1] - nums[i] > 0:
+                cumsum += nums[i+1]
+            else:
+                cumsum = nums[i+1]
+            max_ = max(max_, cumsum, nums[i+1])
+        
+        return max(max_, cumsum)

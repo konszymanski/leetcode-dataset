@@ -1,0 +1,32 @@
+class Solution:
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], k: int) -> int:
+        current_customers_satisfied = 0
+        
+		# Calculating how many customers the owner satisfies when he is not grumpy
+        for i in range(len(customers)):
+            if not grumpy[i]:
+                current_customers_satisfied += customers[i]
+                
+        temp = 0
+        
+		#Referencing \'k\' value as our power window
+		#calculating how many ** additional** customers the owner satisfies with the power
+        for i in range(k):
+            if grumpy[i]:  
+                temp += customers[i]
+                
+        current_customers_satisfied += temp
+        max_customers_satisfied = current_customers_satisfied
+        
+		
+        for r in range(k, len(customers)):         
+
+            if grumpy[r]:
+                current_customers_satisfied += customers[r]
+                
+            if grumpy[r-k]:
+                current_customers_satisfied -= customers[r-k]
+            
+            max_customers_satisfied = max(current_customers_satisfied, max_customers_satisfied)
+            
+        return max_customers_satisfied

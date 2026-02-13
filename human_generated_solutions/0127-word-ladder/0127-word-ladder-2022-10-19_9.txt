@@ -1,0 +1,22 @@
+class Solution:
+    def ladderLength(self, bw: str, ew: str, wordList: List[str]) -> int:
+        dc=defaultdict(int)
+        for a in wordList:
+            dc[a]=1
+        stk=[bw]
+        dp=0
+        alp="abcdefghijklmnopqrstuvwxyz"
+        while(len(stk)>0):
+            dp+=1
+            nstk=[]
+            for a in stk:
+                if(a==ew):
+                    return dp
+                for i in range(len(a)):
+                    for j in range(26):
+                        x=a[:i]+alp[j]+a[i+1:]
+                        if(dc[x]==1):
+                            nstk.append(x)
+                            dc[x]=0
+            stk=nstk
+        return 0

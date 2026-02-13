@@ -1,0 +1,18 @@
+class Solution:
+    def numberOfArrays(self, s: str, k: int) -> int:
+        
+        n , mod , ke = len(s) , 10**9 +7 , len(str(k))
+        dp = {}
+        dp[-1] = 1
+        
+        for i in range(n):
+            if i < n-1 and s[i+1] == \'0\':
+                dp[i] = 0
+                continue
+            ans = 0
+            for j in range(1 , min(i + 1 , ke) + 1):
+                if int(s[i-j+1 : i+1]) <= k:
+                    ans = (ans + dp[i - j]) % mod
+            dp[i] = ans
+                
+        return dp[n-1]

@@ -1,0 +1,24 @@
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        # Add boundaries to columns to avoid checking out of bound.
+        # DP table records the max value for current row,
+        # for robot 1 at column i and robot 2 at column j.
+        dp = [[0 for _ in range(cols + 2)] for _ in range(cols + 2)]
+        dp[0][cols-1] = grid[0][0] + grid[0][cols-1]
+
+        for row in range(1, rows):
+            temp_dp = [[0 for _ in range(cols + 2)] for _ in range(cols + 2)]
+            # For each row, we can move at most one step to left or right,
+            # so the most for robot 1 is row+1 and for robot 2 is cols-1-row (think diagonal).
+            for col1 in range(0, min(row + 1, cols)):
+                for col2 in range(max(cols - row - 1, 0), cols):
+                    if col1 != col2:
+                        temp_dp[col1][col2] = max(
+                            dp[col1-1][col2-1], dp[col1][col2-1], dp[col1+1][col2-1],
+                            dp[col1-1][col2],   dp[col1][col2],   dp[col1+1][col2],
+                            dp[col1-1][col2+1], dp[col1][col2+1], dp[col1+1][col2+1]
+                        )
+                        temp_dp[col1][col2] += grid[row][col1] + grid[row][col2]
+            dp = temp_dp
+        return max(max(arr) for arr in dp)

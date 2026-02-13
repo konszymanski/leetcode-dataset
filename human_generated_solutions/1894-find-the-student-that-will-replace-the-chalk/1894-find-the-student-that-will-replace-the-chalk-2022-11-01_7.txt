@@ -1,0 +1,12 @@
+def chalkReplacer(self, chalk: List[int], k: int) -> int:  
+        k = k % sum(chalk)
+        
+        i = 0
+        n = len(chalk)
+        
+        # Now, we can find the required index in just O(n) time
+        while chalk[i] <= k:
+            k -= chalk[i]
+            i += 1
+                
+        return i

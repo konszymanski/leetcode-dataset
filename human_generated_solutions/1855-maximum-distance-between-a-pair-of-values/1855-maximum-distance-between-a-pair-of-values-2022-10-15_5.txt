@@ -1,0 +1,13 @@
+def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:
+        # In Brute force approach, for each element in nums2
+        # we go through each less or equal element in nums2
+        # And we keep track of the maximum distance
+        
+        maxDistanceSoFar = 0
+        
+        for i,num1 in enumerate(nums1):
+            for j in range(i, len(nums2)):
+                if num1 <= nums2[j]: maxDistanceSoFar = max(maxDistanceSoFar, j - i) 
+                else: break
+        
+        return maxDistanceSoFar

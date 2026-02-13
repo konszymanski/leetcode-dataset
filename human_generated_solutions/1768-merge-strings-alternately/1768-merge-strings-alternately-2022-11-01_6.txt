@@ -1,0 +1,33 @@
+Queue
+
+class Solution:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        res = \'\'
+        word1 = deque(word1)
+        word2 = deque(word2)
+        while word1 or word2:
+            if word1:
+                res += word1.popleft()
+            if word2:
+                res += word2.popleft()
+        return res
+
+Time complexity: O(n)
+Space complexity: O(n+m)
+		
+		
+Pointers
+
+class Solution:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        p1, p2 = 0, 0
+        res = \'\'
+        while p1 < len(word1) and p2 < len(word2):
+            res += word1[p1] + word2[p2]
+            p1+=1
+            p2+=1
+            
+        return res + word1[p1:] + word2[p2:]
+
+Time complexity: O(n)
+Space complexity: O(n)

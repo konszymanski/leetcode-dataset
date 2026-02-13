@@ -1,0 +1,15 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> \'Node\':
+        bits = {1:0,0:0}
+        for row in grid:
+            for i in row:
+                bits[i] += 1
+        total_bits = len(grid) ** 2
+        if bits[1] == total_bits: return Node(1, True, None, None, None, None)
+        if bits[0] == total_bits: return Node(0, True, None, None, None, None)
+        mid = len(grid)//2
+        return Node(1, False, 
+        self.construct(list(map(lambda bits: bits[:mid], grid[:mid]))),  
+        self.construct(list(map(lambda bits: bits[mid:], grid[:mid]))),
+        self.construct(list(map(lambda bits: bits[:mid], grid[mid:]))),
+        self.construct(list(map(lambda bits: bits[mid:], grid[mid:]))))

@@ -1,0 +1,49 @@
+class Solution(object):
+    def compress(self, chars):
+        """
+        :type chars: List[str]
+        :rtype: int
+        """
+        if not chars:
+            return 0
+        
+        if len(chars) ==1:
+            return 1
+        
+        i=0
+        count =1
+        while i < len(chars)-1:
+            
+            # Iterate through the string till you the chars matches.
+            while i < len(chars)-1 and chars[i] == chars[i+1]:
+                
+                # Increment the count
+                count= count+1
+                
+                # pop the element
+                chars.pop(i+1)
+                
+            # When the count is greater than 1 insert the count into the i+1 position in the char 
+            # array with the count
+            if count > 1:
+                
+#                 if the count is single digit 
+#                 if len(str(count)) <=1:
+#                     chars.insert(i+1, str(count))
+#                     i +=1
+#                 else:
+                    
+                # This is when the count is more than 1 digit or you can generally check only this conditon
+                # avoiding extra lines of code        
+                for j in str(count):
+                    chars.insert(i+1,j)
+                    i+=1
+                    
+                # intialize the count to 1
+                count = 1
+                
+            # increment the counter
+            i += 1
+        
+        # return length of character
+        return len(chars)

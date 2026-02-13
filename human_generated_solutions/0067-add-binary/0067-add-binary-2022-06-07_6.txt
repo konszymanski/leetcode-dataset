@@ -1,0 +1,22 @@
+def addBinary(self, a: str, b: str) -> str:
+        
+        la, lb = len(a), len(b)
+        
+        if la < lb:
+            a = \'0\' * (lb - la) + a
+        else:
+            b = \'0\' * (la - lb) + b
+        
+        a = [int(c) for c in a]
+        b = [int(c) for c in b]
+        
+        carry = 0
+        
+        for i in range(len(a)-1,-1,-1):
+            
+            carry, a[i] = divmod(a[i]+b[i]+carry,2)
+        
+        if carry:
+             a = [carry] + a
+        
+        return \'\'.join([str(d) for d in a])

@@ -1,0 +1,14 @@
+class Solution:
+    def guessNumber(self, n: int) -> int:
+
+        l, r= 1, n                          #     Ex: n = 20  pick = 8
+                                            #
+        while r >= l:                       #       l     r     m   guess(m)  
+                                            #      \u2013\u2013\u2013   \u2013\u2013\u2013   \u2013\u2013\u2013    \u2013\u2013\u2013\u2013
+            m = (l + r)//2                  #       1     20    10     -1
+            query =  guess(m)		        #       1     10     5     -1
+                                            #       6     10     8      0
+            if query ==  1: l = m+1         #                    |       
+            elif query == -1: r = m         #                  answer
+										    
+            else: return m

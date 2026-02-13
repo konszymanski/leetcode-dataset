@@ -1,0 +1,21 @@
+class Solution:
+    def matrixScore(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        m = len(grid[0])
+        
+        count = [0]*m
+        for i in range(n):
+            flag = False
+            if grid[i][0]==0:
+                flag = True
+            for j in range(m):
+                if flag:
+                    grid[i][j]=grid[i][j]^1
+                if grid[i][j]:
+                    count[j]+=1
+        
+        ans = 0
+        for i in range(m):
+            tot = count[i]
+            ans += (1<<(m-i-1)) * max(tot, n-tot)
+        return ans

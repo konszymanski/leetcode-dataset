@@ -1,0 +1,7 @@
+def shiftingLetters(self, s: str, shifts: List[int]) -> str:
+	curr = 0
+	ans = [i for i in shifts]
+	for i in range(len(s)-1, -1, -1):
+		curr = (curr + shifts[i]) % 26
+		ans[i] = chr(97 + (ord(s[i])-97 + curr)%26)
+	return "".join(ans)

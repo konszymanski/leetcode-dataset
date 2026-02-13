@@ -1,0 +1,11 @@
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        #
+        res = [0]*num_people
+        n = int(-1/2+sqrt(4*2*candies+1)/2)  # find n by Vieta\'s formulas
+        turns = n//num_people
+        flattern = list(range(1,n+1))+[candies-n*(n+1)//2]
+        flattern += (-len(flattern)+(turns+1)*num_people)*[0]
+        for i in range(turns+1):
+            res = [m+n for m,n in zip(res,flattern[i*num_people:(i+1)*num_people])]
+        return res

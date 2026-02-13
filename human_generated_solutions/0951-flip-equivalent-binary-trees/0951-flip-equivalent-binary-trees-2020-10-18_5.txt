@@ -1,0 +1,20 @@
+class Solution(object):
+    def flipEquiv(self, root1, root2):
+        def store_parents(root, dict_var, parent):
+            if not root:
+                return
+            dict_var[root.val] = parent
+            store_parents(root.left, dict_var, root.val)
+            store_parents(root.right, dict_var, root.val)
+
+        dict_1 = {}
+        store_parents(root1, dict_1, -1)
+        dict_2 = {}
+        store_parents(root2, dict_2, -1)
+        
+        if len(dict_1) != len(dict_2):
+            return False
+        for k, v in dict_1.items():
+            if dict_2.get(k) != v:
+                return False
+        return True

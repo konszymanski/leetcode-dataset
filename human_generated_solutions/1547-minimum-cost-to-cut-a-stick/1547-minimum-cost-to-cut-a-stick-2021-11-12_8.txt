@@ -1,0 +1,16 @@
+class Solution:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        cache = {}
+		
+        def helper(start, end):
+            if (start, end) in cache:
+                return cache[(start,end)]
+            res = float("Inf")
+            for cut in cuts:
+                if start < cut < end:
+                    res = min(res, helper(start, cut) + helper(cut, end) + end-start)
+            
+            cache[(start, end)] = res if res != float("Inf") else 0
+            return cache[(start, end)]
+        
+        return helper(0, n)

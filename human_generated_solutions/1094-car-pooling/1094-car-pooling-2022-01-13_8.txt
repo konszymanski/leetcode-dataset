@@ -1,0 +1,25 @@
+class Solution(object):
+    def carPooling(self, trips, k):
+        
+        trips.sort(key = lambda x:x[1])
+        # end time for each trip in the car and number of passengers to get off at that time 
+        car = []
+		
+		# number of passengers in car
+        cur = 0
+        for trip in trips:
+
+            # get off
+            while car and car[0][0] < =trip[1]:
+                cur -= heapq.heappop(car)[1]
+            
+            # get on
+            cur += trip[0]
+            # check if number of passengers exceeds the capaxity       
+            if cur > k:
+                return False
+            
+			# record the new passenger and their get-off time
+            heapq.heappush(car, [trip[2], trip[0]])
+            
+        return True

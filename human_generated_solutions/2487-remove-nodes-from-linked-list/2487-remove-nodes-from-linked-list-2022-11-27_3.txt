@@ -1,0 +1,22 @@
+class Solution:
+    def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+
+        stack = []                                          # We have to keep a Monotonic Decreasing Stack
+        
+		cur = head        
+		while cur:                                         
+            while stack and cur.val > stack[-1].val:        #  Loop over List and check if current elem is greater than stack[-1]
+                stack.pop()                                 # If it is greater, then we remove that elem from stack.
+														  
+            stack.append(cur)                               # At the end, we will add the current elem to the stack
+            cur = cur.next                                  # Go to next elem in the List
+			
+            
+        dummy = ListNode()                                  # Always a good idea to keep dummy head for LinkedList delete.
+        cur = dummy
+        
+        for node in stack:                                  # Go through each element in stack
+            cur.next = node                                 # We add it to our new LinkedList
+            cur = cur.next                                  # Update the current pointer of our LinkList
+            
+        return dummy.next                                   # Finally, we can return new head (dummy.next)

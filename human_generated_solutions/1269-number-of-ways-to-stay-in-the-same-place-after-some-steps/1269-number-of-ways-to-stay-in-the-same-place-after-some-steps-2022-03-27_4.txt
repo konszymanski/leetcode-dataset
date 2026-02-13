@@ -1,0 +1,23 @@
+class Solution:
+    def calc(self, steps, arrLen, i, dp):
+        # if the index goes out of bounds, return 0
+        if i==arrLen or i<0:
+            return 0
+        if steps == 0:
+            # if after all the steps taken, you are at index 0, then return 1 as you are expected to be at 0 after all the steps
+            if i == 0:
+                return 1
+            return 0
+	    # Memoization part: if we reached the similar problem before where we had *steps* steps remaining
+        # and we are at ith location, we use the stored value rather than recomputing.
+        if (steps,i) in dp:
+            return dp[(steps,i)]
+        dp[(steps,i)] = 0
+        # we can move in three ways, 1. Stay(0) 2. Left(-1) 3. Right(1)
+        for j in [0,-1,1]:
+            dp[(steps,i)] += self.calc(steps-1,arrLen,i+j,dp)
+        return dp[(steps,i)]%1000000007
+    def numWays(self, steps: int, arrLen: int) -> int:
+	    # dp is used to store the state (steps,currentpostiion)
+        dp = {}
+        return self.calc(steps,arrLen,0,dp)

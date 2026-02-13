@@ -1,0 +1,12 @@
+def sum_even_gp(root, parent, grandparent):
+	if root is None:
+		return 0
+
+	to_add = 0
+
+	if grandparent and (grandparent.val % 2 == 0):
+		to_add = root.val 
+
+	return to_add + 
+		sum_even_gp(root.left, root, parent) + 
+		sum_even_gp(root.right, root, parent)

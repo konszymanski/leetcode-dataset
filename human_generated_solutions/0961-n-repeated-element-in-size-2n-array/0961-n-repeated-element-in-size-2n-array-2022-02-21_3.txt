@@ -1,0 +1,19 @@
+class Solution:
+    def repeatedNTimes(self, nums: List[int]) -> int:
+		
+		# keep track of the two previous numbers
+        last2, last1 = nums[0], nums[1]
+        
+		# edge case: first and last are the same
+        if nums[0] == nums[-1]:
+            return nums[0]
+        
+        for i in range(2, len(nums)):
+		    # the number must be one of the 2 previous numbers, at some point
+            if last1 == nums[i] or last2 == nums[i]:
+                return nums[i]
+            else: # reset the previous 2 numbers
+                temp = last1
+                last1 = nums[i]
+                last2 = temp
+        return -1

@@ -1,0 +1,13 @@
+class Solution:
+    def concatenatedBinary(self, n: int, p: int = 10 ** 9 + 7) -> int:
+        ans = 0
+        next_bit = 1
+        cur_ibit = 0
+        for i in range(1, n+1):
+            if i >= next_bit:
+                next_bit <<= 1
+                cur_ibit += 1
+            ans <<= cur_ibit
+            ans |= i
+            ans %= p
+        return ans

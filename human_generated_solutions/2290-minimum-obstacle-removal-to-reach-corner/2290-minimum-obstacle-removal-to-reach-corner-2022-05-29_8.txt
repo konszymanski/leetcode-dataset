@@ -1,0 +1,25 @@
+class Solution:
+    def minimumObstacles(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        m = len(grid[0])
+        
+        visited = [[False]*m for _ in range(n)]
+        
+        paths = [ (0,-1),(-1,0),(0,1),(1,0)]
+        
+        queue = [(0,0,0)]  #val, x,y will be pushed
+
+        while queue:
+            val,i,j = heappop(queue)
+            if i == n-1 and j==m-1:
+                return val + grid[i][j]
+
+            for x,y in paths:
+                x1 = i+x
+                y1 = j+y
+                
+                if (x1>=0 and x1<n and y1>=0 and y1<m and not visited[x1][y1]):
+                    visited[x1][y1] = True
+                    heappush(queue, (val + grid[x1][y1], x1, y1))
+                    
+        return -1

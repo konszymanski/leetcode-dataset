@@ -1,0 +1,19 @@
+class Solution:
+    def finalPrices(self, prices: List[int]) -> List[int]:
+	*# Stack Definition*
+        stack=[]
+        ans = [0]*len(prices)
+		*# We need to find out smallest element on Right.. so interation must start from right....*
+		*#Similarily , if asked nearest smallest/largest element on left.. interation will be performed from left side of given list*
+        for i in range(len(prices)-1,-1,-1):
+		#Untill stack is not empty as well as element inside stack is greater , we need to pop elements.. as we are supposed to find \'Smallest\' element , so greater element must be removed from the stack
+            while(len(stack)>0 and stack[-1]>prices[i]):
+                stack.pop()
+			# Check if length of stack become zero i.e. Stack is Empty.. then No discount is given.. Sold at original price
+            if len(stack)==0:
+                ans[i]=prices[i]
+			# else.. Discount is given
+            else:
+                ans[i]=prices[i]-stack[-1]
+            stack.append(prices[i])           
+        return ans

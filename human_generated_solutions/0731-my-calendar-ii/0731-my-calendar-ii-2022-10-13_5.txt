@@ -1,0 +1,54 @@
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.events = []
+        self.doubleBookedEvents = []
+
+    def book(self, start: int, end: int) -> bool:
+        
+        # Check if this event will cause triple booking
+        # It will cause triple booking, if it intersects with any double booked event
+        
+        for event in self.doubleBookedEvents:
+            prevStart = event[0]
+            prevEnd = event[1]
+            
+            # An event will not intersect any other event
+            # If it starts after any event ends
+            # And it ends before any event starts
+            
+            # If these two conditions are not met, then this event is intersecting other event
+            
+            if not (start > prevEnd or (end - 1) < prevStart): return False
+            
+        # If we are at this line, that means, the event to book won\'t cause a triple booking
+        # If it causes a double booking, we need to add the bigger start value among the two events
+        # And smaller end value among two values
+        # Why so? Because in the doubleBookedEvents, we are storing the times when two events intersect.
+        
+        # So if one event intersects the other, we need to store the duration during which they intersect.
+        # It will be the bigger start value among the two and the smaller end value between the two
+        # You will get this if you draw the events on a page in the form of a line where start and end are the left and right points of the line
+        # If some event intersects, we will see that either it ends in between some other event or it starts in between some other event
+        # So we only want to store the range where two events occur at the same time
+        
+        for event in self.events:
+            prevStart = event[0]
+            prevEnd = event[1]
+            
+            # An event will intersect any other event
+            # If it starts before any event ends
+            # Or it ends after any event starts
+            
+            if not (start > prevEnd or (end - 1) < prevStart):
+                self.doubleBookedEvents.append((max(start, prevStart) , min(end - 1, prevEnd)))
+        
+        # And also add it to events list
+        self.events.append((start, end - 1))
+        return True
+        
+
+
+# Your MyCalendarTwo object will be instantiated and called as such:
+# obj = MyCalendarTwo()
+# param_1 = obj.book(start,end)

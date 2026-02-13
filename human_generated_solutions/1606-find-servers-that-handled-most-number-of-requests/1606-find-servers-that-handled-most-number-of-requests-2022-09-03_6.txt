@@ -1,0 +1,109 @@
+from sortedcontainers import SortedSet
+
+class Solution(object):
+    def busiestServers(self, k, arrival, load):
+        """
+        :type k: int
+        :type arrival: List[int]
+        :type load: List[int]
+        :rtype: List[int]
+        """
+        servers = list()
+        emptyServers = SortedSet()
+        handledRequestsCounter = list()
+        for i in range(k):
+            # initialise servers, each server (i.e. inner lists), if not empty,
+            # should contain 2 values; request ID & enteredTime (time upon the request entered the server)
+            servers.append([])
+            
+            # initialise emptyServers; all servers should be in emptyServers at the start
+            emptyServers.add(i)
+            
+            # initialise handledRequestsCounter;
+            # counts the number of requests each server has handled
+            handledRequestsCounter.append(0)
+        
+        # initialise lastProcessedRequest
+        # contains last known successful request
+        lastProcessedRequest = None
+
+        processingRequests = dict()
+
+        # create timeSet to collate timings
+        timeSet = set()
+        for i, arrivalTime in enumerate(arrival):
+            # add time upon requests will arrive at server
+            timeSet.add(arrivalTime)
+
+            # add time upon requests should leave server
+            timeSet.add(arrivalTime + load[i])
+
+        # create timeList for time to loop over
+        timeList = sorted(timeSet)
+        
+        for time in timeList:
+            # clear server and update handledRequestsCounter if load time is completed
+            if time in processingRequests:
+                for server in processingRequests[time]:
+                    handledRequestsCounter[server] += 1
+                    del servers[server][:]
+                    emptyServers.add(server)
+                else:
+                    processingRequests.pop(time)
+                    
+            # move on to the next request after the last known successful request
+            if lastProcessedRequest is None:
+                i = 0
+            else:
+                i = lastProcessedRequest + 1
+            
+            # when all requests have arrived but some requests have not completed load time, move on to next iteration to complete their load time
+            if i >= len(arrival):
+                continue
+
+            arrivalTime = arrival[i]
+            
+            if arrivalTime == time:
+                # when arrivalTime == time, request tries to enter a server
+
+                if len(servers[i%k]) == 0:
+                    # if (i%k)th server is empty, request will enter this server
+                    servers[i%k].extend((i, time))
+                    emptyServers.remove(i%k)
+                    try:
+                        processingRequests[arrivalTime + load[i]].append(i%k)
+                    except KeyError:
+                        processingRequests[arrivalTime + load[i]] = [i%k]
+                    # let server = servers[i%k]
+                    # server[0] is requestID while server[1] is enteredTime
+
+                elif len(emptyServers) > 0:
+                    # if (i%k)th server is occupied,
+                    # request tries to enter servers after (i%k)th server
+                    if emptyServers[-1] < i%k:
+                        server = emptyServers[0]
+                        servers[server].extend((i, time))
+                        emptyServers.pop(0)
+                        try:
+                            processingRequests[arrivalTime + load[i]].append(server)
+                        except KeyError:
+                            processingRequests[arrivalTime + load[i]] = [server]
+                    else:
+                        v = emptyServers.bisect_left(i%k)
+                        server = emptyServers[v]
+                        servers[server].extend((i, time))
+                        emptyServers.pop(v)
+                        try:
+                            processingRequests[arrivalTime + load[i]].append(server)
+                        except KeyError:
+                            processingRequests[arrivalTime + load[i]] = [server]
+
+                lastProcessedRequest = i
+
+            # if all servers are occupied, request is dropped; nothing will be done with this request
+            
+        maximumHandledRequests = max(handledRequestsCounter)
+        # find all servers with maximumHandledRequests and collate them in busiestServers list
+        busiestServers = [server for server, n in enumerate(handledRequestsCounter) if n == maximumHandledRequests]
+
+        return busiestServers

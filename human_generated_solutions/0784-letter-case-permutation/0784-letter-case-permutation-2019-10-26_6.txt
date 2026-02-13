@@ -1,0 +1,10 @@
+def letterCasePermutation(self, S: str) -> List[str]:
+        res = []
+        def DFS(S, i):
+            if i == len(S):
+                res.append(S)
+                return
+            for case in {S[i].upper(), S[i].lower()}:
+                DFS(S[:i]+case+S[i+1:], i+1)
+        DFS(S,0)
+        return res

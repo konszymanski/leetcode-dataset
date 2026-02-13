@@ -1,0 +1,22 @@
+from heapq import heappush, heappop
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        enqueued = []
+        tasks = sorted((enqueue_t, processing_t, i)
+                       for i, (enqueue_t, processing_t) in enumerate(tasks))
+        cpu_time = tasks[0][0]
+        order_tasks = []
+        for enqueue_t, processing_t, i in tasks:
+            if enqueue_t <= cpu_time:
+                heappush(enqueued, (processing_t, i))
+            else:
+                while enqueued and cpu_time < enqueue_t:
+                    processing_time, idx = heappop(enqueued)
+                    order_tasks.append(idx)
+                    cpu_time += processing_time
+                heappush(enqueued, (processing_t, i))
+                cpu_time = max(cpu_time, enqueue_t)
+        while enqueued:
+            _, idx = heappop(enqueued)
+            order_tasks.append(idx)
+        return order_tasks

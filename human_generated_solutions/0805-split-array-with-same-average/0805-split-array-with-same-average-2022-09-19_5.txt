@@ -1,0 +1,38 @@
+class Solution:
+    def splitArraySameAverage(self, nums: List[int]) -> bool:
+        len_nums = len(nums)
+        
+        if len_nums == 1:
+            return False
+        
+        mean = sum(nums)/len_nums
+        
+        if mean in nums:
+            return True
+        
+        if len_nums == 2:
+            return False
+        
+        nums.sort()
+        
+        @lru_cache(None)
+        def sums(i,j,target):
+            while i < j:
+                if nums[i] + nums[j] == target:
+                    return True
+                elif nums[i] + nums[j] > target:
+                    j -= 1
+                else:
+                    i += 1
+            return False
+        
+        @lru_cache(None)
+        def nsums(ct,i,j,target):
+            if ct == 2:
+                return sums(i,j,target)
+            return any(nsums(ct-1, k+1, j, target-nums[k]) for k in range(i,len_nums - 2))
+            
+        for ct in range(2,len_nums // 2 + 1):
+            if abs((ct * mean)%1) < 0.0001 and nsums(ct,0,len_nums - 1, int(ct * mean)):
+                return True
+        return False

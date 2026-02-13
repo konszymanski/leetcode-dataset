@@ -1,0 +1,60 @@
+class Solution:
+    def numberWays(self, hats: List[List[int]]) -> int:
+        
+        mod = 10 ** 9 + 7
+        n = len(hats)
+        
+        # bitmask to store which people have been assigned a hat
+        taken = 0
+        
+        # hashmap to store which people can wear a particular hat
+        # key -> hat, value -> List of people
+        hatToPerson = {}
+        
+        # hat numbers of hats present in the hats list
+        hatsavailable = set()
+        
+        for i in range(len(hats)):
+            for hat in hats[i]:
+                if hat not in hatToPerson:
+                    hatToPerson[hat] = set()
+                    hatsavailable.add(hat)
+                hatToPerson[hat].add(i)
+                
+        # list to store all the available hats from available hats set
+        finalhats = []
+        for hat in hatsavailable:
+            finalhats.append(hat)
+            
+        # hashmap to memoize
+        memo = {}
+        def dp(idx, taken, memo):
+            # if all person are assigned a hat
+            if taken == (1 << n) - 1:
+                return 1
+            
+            # if we reached end of list and no answer found
+            if idx == len(finalhats):
+                return 0
+            
+            # if we already processed this state
+            if (idx, taken) in memo:
+                return memo[(idx, taken)]
+            
+            # if we are not picking the current hat
+            notPick = dp(idx + 1, taken, memo) % mod
+            
+            pick = 0
+            # trying to assign every person who can wear that hat
+            for person in hatToPerson[finalhats[idx]]:
+                
+                # if that person is not assigned a hat already
+                if (1 << person) & taken == 0:
+                    taken += (1 << person)
+                    pick = (pick + dp(idx + 1, taken, memo)) % mod
+                    taken -= (1 << person)
+            # caching        
+            memo[(idx, taken)] = (notPick + pick) % mod
+            return (notPick + pick) % mod
+        
+        return dp(0, taken, memo)

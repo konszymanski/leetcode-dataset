@@ -1,0 +1,11 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        for i in tokens:
+            if i in [\'+\',\'-\',\'*\',\'/\']: 
+                a = stack.pop()
+                b = stack.pop()
+                stack.append(str(int(eval(b+i+a)))) # int() is used to truncate
+            else:
+                stack.append(i) # storing in string form for evaluation through eval()
+        return stack.pop()

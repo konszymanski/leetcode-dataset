@@ -1,0 +1,26 @@
+class Solution:           
+    
+	def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
+        # memory efficient implementation
+        # We basically mark the array at that time stamp as the one starting or ending        
+        stk = []
+        current = -1
+        res_count = [0 for _ in range(n)]
+        for i in range(len(logs)):
+            curr = logs[i]
+            fid_str, op, time = curr.split(":")
+            t_int = int(time)
+            fid = int(fid_str)
+            if op == "start":
+                if not stk:
+                    res_count[fid] += t_int - current  # base case, start a new function
+                else:
+                    res_count[stk[-1]] += (t_int - current - 1)  # increment the runtime for last function till the t-1
+                    res_count[fid] += 1  # claim  the runtime of 1 for new function started  
+                stk.append(fid)
+            elif op == "end":
+                fid_old = stk.pop()  # pop the last function as it is the one ended
+                res_count[fid_old] += (t_int - current - 1)  # increment the runtime for last function till the t-1
+                res_count[fid] += 1  # claim  the runtime of 1 for the function ended
+            current = t_int
+        return res_count

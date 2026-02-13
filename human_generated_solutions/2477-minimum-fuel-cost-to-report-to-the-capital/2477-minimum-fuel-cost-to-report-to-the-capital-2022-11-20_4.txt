@@ -1,0 +1,30 @@
+class Solution:
+    def minimumFuelCost(self, roads: List[List[int]], seats: int) -> int:
+        graph = defaultdict(list)
+        incoming = Counter()
+        size = Counter()
+
+        for u, v in roads:
+            graph[u].append(v)
+            graph[v].append(u)
+            incoming[u] += 1
+            incoming[v] += 1
+            size[u] = size[v] = 1
+
+        q = deque([i for i in incoming if incoming[i] == 1])
+        res = 0
+        while q:
+            curr = q.popleft()
+            if curr == 0:
+                continue
+
+            for nxt in graph[curr]:
+                d, r = divmod(size[curr], seats)
+                res += d + 1 if r else d
+                size[nxt] += size[curr]
+                size[curr] = 0
+                incoming[nxt] -= 1
+                if incoming[nxt] == 1:
+                    q.append(nxt)
+                
+        return res

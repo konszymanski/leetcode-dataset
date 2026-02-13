@@ -1,0 +1,13 @@
+class Solution:
+    def longestSubsequence(self, s: str, k: int) -> int:
+
+        start = ""
+        res = 0
+        for letter in reversed(s):
+            start = letter + start
+            if int(start,2) <= k:
+                res+=1
+            elif letter == \'0\':
+                res+=1
+        
+        return res

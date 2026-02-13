@@ -1,0 +1,19 @@
+"""
+This code gives TLE but is easier to explaine, see the second code below for a no-TLE version
+"""
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+		# each index in dp stores the probability that, starting from this index, the final points <= n
+        dp=[0]*(k+1)
+		# if we start from k, we do not have the next draw, and the result is always <= n
+        dp[k]=1
+        for idx in range(k-1,-1,-1):
+			# two cases, 1) jumps to a next point that is <= k, then we can use the probability at the next point
+            for right in range(idx+1,min(k+1,idx+maxPts+1)):
+                dp[idx]+=dp[right]/maxPts
+            
+			# 2) jumps to range (k, n]
+            if idx+maxPts>k:
+                dp[idx]+=(min(idx+maxPts,n)-k)/maxPts
+                
+        return dp[0]

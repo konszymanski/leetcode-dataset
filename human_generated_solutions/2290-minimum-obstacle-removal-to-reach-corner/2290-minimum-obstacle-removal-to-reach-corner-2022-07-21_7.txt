@@ -1,0 +1,13 @@
+class Solution:
+    def minimumObstacles(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dist = [[inf]*n for _ in range(m)]
+        dist[0][0] = 0
+        pq = [(0, 0, 0)]
+        while pq: 
+            x, i, j = heappop(pq)
+            if i == m-1 and j == n-1: return x
+            for ii, jj in (i-1, j), (i, j-1), (i, j+1), (i+1, j): 
+                if 0 <= ii < m and 0 <= jj < n and x + grid[ii][jj] < dist[ii][jj]: 
+                    dist[ii][jj] = x + grid[ii][jj]
+                    heappush(pq, (dist[ii][jj], ii, jj))

@@ -1,0 +1,55 @@
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        ans = 0 
+        even = 1 #considering 0 as even number 
+        odd = 0 
+        s = 0 
+        mod = 10**9 +7
+        for i in arr :
+            s += i 
+            #print(s,ans,even,odd)
+            if s%2 == 1 :
+                """
+                let the sum = 3 
+                we can think like 0 + 3
+                here 0 is odd even number 
+                so whenever we come across a odd sum that means that some odd value is added to some +ve value
+                """
+                odd += 1
+                ans = (ans+even)%mod
+            else:
+                """
+                if the sum is even there is two possibilities 
+                1. this can be sum of two even values 
+                2. this can be sum of two odd values 
+                so if the odd count is >0 we add that to our answer 
+                """
+                even += 1
+                ans = (ans+odd)%mod
+        return ans%mod
+        
+        """
+        [1,2,3,4]
+        i = 1 -> 
+            sum = 1
+            sum is odd 
+            so we add count of even numbers ==1 (even number = 0 )
+            we increase the odd count by 1 
+        i= 2->
+            sum = 3 
+            sum is odd
+            so we add the count of even numbers == 1(even number = 0 )
+            we increase the odd count by 1
+        i = 3 ->
+            sum = 6
+            sum is even 
+            so this sum can be formed by either adding two even numbers or two odd 
+            in this case we have encountered two odd values 
+            so there ar two subarray with which adding odd sum can give even value 
+            we increase the even count by 1 
+        i = 4 -> 
+            sum = 10 
+            sum id even 
+            again odd count is two that means there are two arrays that with wich adding odd val
+            can give even value 
+        """

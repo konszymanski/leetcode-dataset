@@ -1,0 +1,31 @@
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], start: int, end: int) -> bool:
+        
+        # represent graph by adjacency matrix
+        graph = defaultdict(list)
+        
+        # update graph by input edges
+        for v, u in edges:
+            graph[v].append(u)
+            graph[u].append(v)
+            
+        
+        path = []
+        visited = set()
+        queue = deque([start])
+        
+        # Launch BFS from start node
+        while queue:
+            
+            cur = queue.popleft()
+            visited.add(cur)
+            path.append(cur)
+            
+            if cur == end:
+                #print(path)                # uncomment this line if you want to see the path from start to end on debug console
+                return True
+
+            for neighbor in graph[cur]:
+                if neighbor not in visited: queue.append(neighbor) 
+                    
+        return False

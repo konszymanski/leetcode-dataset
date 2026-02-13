@@ -1,0 +1,86 @@
+import copy
+
+def current_digit_greater(num: int, digits: list[int]):
+    return not digits or num > digits[0]
+
+def num_digits_greater(num: int, digits: list[int]):
+    return len(digits) == 0 # check adding this number results in more digits
+
+class Solution:
+    def solve(
+        self, 
+        digits: int, 
+        nums_freq: dict[int, int], 
+        num_to_balance: int,
+        greater: bool,
+        new_greater_func: Callable
+    ) -> list[int]:
+        """
+        Calculate the smallest possible balanced number, given that certain numbers
+        (stored in nums_freq) have already been used a certain number of times
+        digits: the target number that this number may need to be greater than
+        greater: whether or not that number is already greater than the target
+        nums_to_balance: how many more digits are required to balance the number
+        new_greater_func, a function to check if adding a new digit would result in a greater number
+        """
+        # Base cases are when the digits or 0, or the number needs to be balanced
+        # If the number to balancer is more than the number of remaining digits
+        # and we\'re already greater, than we can fill out the rest of the number
+            # if it\'s not yet greater, we need to do the main loop to solve
+        if num_to_balance >= len(digits) and greater:
+            result = []
+            sorted_digits = sorted(list(nums_freq.items()), key=lambda x: x[0])
+            for digit, existing_freq in sorted_digits:
+                freq_to_add = digit - existing_freq
+                while freq_to_add > 0:
+                    result.append(digit)
+                    freq_to_add -= 1
+            return result
+        if len(digits) == 0 and greater:
+            return []
+            
+        # Then loop through and try using the smallest possible number
+        # Need to check all possiblities though, as e.g. 22 is better than 122
+        # when solving for n = 1
+        best_result = None
+        for num in range(1, 10):
+            # Recurse if this number can be used
+            digit_count = nums_freq.get(num, 0)
+            new_greater = greater or new_greater_func(num, digits)
+            # new greater needs to be a callable, that updates when a smaller digit
+            # is chosen, to len(digits) == 0 (enforcing an extra digit is added)
+            if digit_count < num: # and (new_greater or num == digits[0]):
+                new_to_balance = num_to_balance + (-1 if num in nums_freq else num-1)
+                new_nums_freq = copy.copy(nums_freq)
+                new_nums_freq[num] = digit_count + 1
+                new_new_greater_func = new_greater_func if not digits or num >= digits[0] else num_digits_greater
+                new_result = [num] + self.solve(digits[1:], new_nums_freq, new_to_balance, new_greater, new_new_greater_func)
+                
+                # If the result has fewer digits, replace an earlier result
+                if best_result is None or len(new_result) < len(best_result):
+                    best_result = new_result
+                    
+                    # If we get a number with num digits == len(digits) we can finish
+                    if len(new_result) == len(digits):
+                        return new_result
+                    # Otherwise run until all combinations have been checked
+        return best_result
+    
+    def nextBeautifulNumber(self, n: int) -> int:
+        # Convert n to an array of digits
+        digits = []
+        while n != 0:
+            digits.append(n % 10)
+            n //= 10
+        digits = list(reversed(digits))
+        
+        # Call the solve function
+        result = self.solve(digits, {}, 0, False, current_digit_greater)
+        #return self.solve(digits, {3: 1, 2: 1, 1:1}, 4, True)
+    
+        # Convert to number
+        result_int = 0
+        for digit in result:
+            result_int *= 10
+            result_int += digit
+        return result_int

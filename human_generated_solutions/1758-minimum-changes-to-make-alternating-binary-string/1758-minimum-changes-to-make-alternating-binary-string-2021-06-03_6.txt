@@ -1,0 +1,6 @@
+class Solution:
+    def minOperations(self, s: str) -> int:
+        d = [0,0]
+        for i,c in enumerate(s):
+            d[i&1^(c!=\'0\')] += 1
+        return min(d)

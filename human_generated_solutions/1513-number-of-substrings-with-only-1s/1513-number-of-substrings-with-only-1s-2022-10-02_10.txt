@@ -1,0 +1,21 @@
+class Solution:
+    def numSub(self, s: str) -> int:
+        
+		#answer
+        count = 0
+		#start pointer
+        start = 0
+        
+		#right pointer of the window
+        for end in range(len(s)):
+            
+			#right element
+            right = s[end]            
+            
+			#if right element is 0 means we move left pointer 
+            if int(right) != 1:
+                start = end + 1
+                            
+            count += end - start + 1
+        
+        return count % (pow(10,9) + 7)

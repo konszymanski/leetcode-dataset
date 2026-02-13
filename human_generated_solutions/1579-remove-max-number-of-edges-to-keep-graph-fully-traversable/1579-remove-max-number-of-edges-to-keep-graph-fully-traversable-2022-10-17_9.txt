@@ -1,0 +1,50 @@
+class DSU:
+    def __init__(self, N):
+        self.parent = [i for i in range(N)]
+        self.rank = [1] * N
+        self.components = N
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, a, b):
+        ua = self.find(a)
+        ub = self.find(b)
+        if ua == ub:
+            return False
+
+        if self.rank[ua] < self.rank[ub]:
+            ua, ub = ub, ua
+
+        self.parent[ub] = ua
+        self.rank[ua] += self.rank[ub]
+        self.rank[ub] = self.rank[ua]
+        self.components -= 1
+        return True
+
+    def rank(self, x):
+        return self.rank[self.find(x)]
+    
+class Solution:
+    def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+        count = 0
+        ufAlice = DSU(n)
+        ufBob = DSU(n)
+        
+        for t, u, v in sorted(edges, key=lambda x: -x[0]):
+            if t == 1:
+                if ufAlice.union(u - 1, v - 1):
+                    count += 1
+            elif t == 2:
+                if ufBob.union(u - 1, v - 1):
+                    count += 1
+            else:
+                if ufAlice.union(u - 1, v - 1) and ufBob.union(u - 1, v - 1):
+                    count += 1
+        if ufAlice.components != 1 or ufBob.components != 1:
+            return -1
+        return len(edges) - count
+    # Time: O(n * log(n))
+    # Space: O(n)

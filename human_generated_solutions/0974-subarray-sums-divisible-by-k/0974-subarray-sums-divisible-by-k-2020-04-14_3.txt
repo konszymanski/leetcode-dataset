@@ -1,0 +1,9 @@
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        result,total,hmap = 0,0,{}
+        for num in nums:
+            hmap[total] = hmap.get(total,0) + 1
+            total += num
+            if hmap.get(total-k):
+                result += hmap[total-k]
+        return result

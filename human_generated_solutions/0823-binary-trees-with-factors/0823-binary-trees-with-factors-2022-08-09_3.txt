@@ -1,0 +1,20 @@
+class Solution:
+    def numFactoredBinaryTrees(self, arr: List[int]) -> int:
+        arr.sort()
+		# use a hashmap to quickly look up checked numbers
+		# {key: value} = {n: number of trees with n as its topmost parent}
+        d = {}
+		# observation 1
+        for i in arr: # outer loop
+			# an isolated i itself is always a valid tree
+            d[i] = 1
+            for j in arr: # inner loop
+				# observation 2 & 3
+                if j == i or j > i//2+1 or j > i//j: break
+				# observation 3
+                if i%j == 0 and i//j in d:
+                    if j == i//j:
+                        d[i] = d[i] + d[j]*d[i//j]
+                    else:
+                        d[i] = d[i] + d[j]*d[i//j]*2
+        return sum(d.values())%(10**9+7)

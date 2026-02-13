@@ -1,0 +1,15 @@
+class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        g.sort() # soring list g
+        s.sort() # sorting list s
+        # because it`ll make easy for us to figure out how many children are getting the cookies as per greedy.
+        
+        childi = 0 # taking variable
+        cookiei = 0 # taking variable
+        
+        while cookiei < len(s) and childi < len(g): # traversing elements in the list. 
+            if s[cookiei] >= g[childi]: # checking if cookies are more or equal to a child greedy.
+                childi += 1 # if child greedy is getting fulfilled it will be content, and will increase out counter.
+            cookiei += 1 # if child is getting the cookie, then we are increasing both else we`ll just check in cookies could we have any to fulfill at least one child greedy for that will increase only cookie
+        
+        return childi # returning the number of content children.

@@ -1,0 +1,25 @@
+class Solution(object):
+    def maxMatrixSum(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        n = len(matrix)
+        s = 0 
+        s_abs = 0 
+        neg = 0 
+        maxneg = float(\'-inf\')
+        minabs = float(\'inf\')
+        for i in range(n):
+            for j in range(n):
+                s += matrix[i][j]
+                s_abs += abs(matrix[i][j])
+                if matrix[i][j] <= 0:
+                    neg += 1
+                if abs(matrix[i][j]) < abs(minabs):
+                    minabs = matrix[i][j]
+       
+        if neg % 2 == 0:
+            return s_abs
+        else:
+            return s_abs - 2*abs(minabs)

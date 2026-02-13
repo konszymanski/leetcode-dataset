@@ -1,0 +1,79 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class SegmentTree:
+    def __init__(self, n, fn): # fn is transformation function
+        self.n = n
+        self.fn = fn
+        self.tree = [0] * (2 * self.n)
+    
+    def update(self, idx, val):
+        idx += self.n
+        
+        self.tree[idx] = val
+        while idx > 1:
+            idx >>= 1
+            self.tree[idx] = self.fn(self.tree[2 * idx], self.tree[2 * idx + 1])
+        
+    def query(self, lo, hi):
+        lo += self.n
+        hi += self.n + 1
+        res = 0
+        
+        while lo < hi:
+            if lo & 1 == 1:
+                res = self.fn(res, self.tree[lo])
+                lo += 1
+            if hi & 1 == 1:
+                hi -= 1
+                res = self.fn(res, self.tree[hi])
+            lo >>= 1
+            hi >>= 1
+        
+        return res 
+    
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        pre = defaultdict(int)
+        post = defaultdict(int)
+        height = defaultdict(int)
+        depth = []
+        
+        def dfs(node, curr):
+            if not node: return
+            
+            height[node.val] = curr
+            pre[node.val] = len(depth)
+            dfs(node.left, curr + 1)
+            dfs(node.right, curr + 1)
+            
+            if len(depth) == pre[node.val]: # node is leaf
+                post[node.val] = pre[node.val]
+                depth.append(curr)
+            else:
+                post[node.val] = len(depth) - 1
+            
+        dfs(root, 0)
+        seg = SegmentTree(len(depth), max)
+        for i in range(len(depth)):
+            seg.update(i, depth[i])
+        
+        res = []
+        for q in queries:
+            lo, hi = pre[q], post[q]
+            
+            d = 0
+            if lo == 0 and hi == len(depth) - 1:
+                res.append(height[q] - 1)
+            elif lo == 0:
+                res.append(max(seg.query(hi + 1, len(depth) - 1), height[q] - 1))
+            elif hi == len(depth) - 1:
+                res.append(max(seg.query(0, lo - 1), height[q] - 1))
+            else:
+                res.append(max(seg.query(0, lo - 1), seg.query(hi + 1, len(depth) - 1), height[q] - 1))
+            
+        return res

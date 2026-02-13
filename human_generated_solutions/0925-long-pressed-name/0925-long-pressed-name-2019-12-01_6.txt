@@ -1,0 +1,16 @@
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -> bool:
+		# First confirm the typed string at least starts with the first character of the name
+        if typed[0] != name[0]:
+            return False
+		# Start your traversal expecting to see the next name character.
+        last_name_char, next_name_char = 0, 1
+        for typed_char in range(1, len(typed)):
+			# if next name character was seen, update the next and last name character
+            if next_name_char < len(name) and typed[typed_char] == name[next_name_char]:
+                last_name_char = next_name_char
+                next_name_char += 1
+			# if next character was not seen, then the current character must be part of a long-press sequence of the last seen name character
+            elif typed[typed_char] != name[last_name_char]:
+                return False
+        return next_name_char == len(name)

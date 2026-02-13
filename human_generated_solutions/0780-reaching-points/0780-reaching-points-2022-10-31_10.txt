@@ -1,0 +1,20 @@
+class Solution:
+    def reachingPoints(self, sx: int, sy: int, tx: int, ty: int) -> bool:
+        
+        def reach(x,y):
+            
+            if x<sx or y<sy:
+                return False
+            
+            if x==sx:
+                return (y-sy)%x == 0
+            
+            if y == sy:
+                return (x-sx)%y == 0
+            
+            if x>y:
+                return reach(x%y,y)
+            else:
+                return reach(x,y%x)
+                
+        return reach(tx,ty)

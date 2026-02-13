@@ -1,0 +1,17 @@
+class Solution:
+    def cost(self, s: str, t: str, i: int) -> int:
+        return abs(ord(s[i]) - ord(t[i]))
+
+    def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
+        left = spent = max_len = 0
+
+        for right in range(len(s)):
+            spent += self.cost(s, t, right)
+
+            while spent > maxCost:
+                spent -= self.cost(s, t, left)
+                left += 1
+
+            max_len = max(max_len, right - left + 1)
+
+        return max_len

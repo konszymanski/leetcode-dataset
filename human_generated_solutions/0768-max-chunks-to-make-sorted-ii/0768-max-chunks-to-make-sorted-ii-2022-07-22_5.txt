@@ -1,0 +1,24 @@
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        # run minimum from the right
+        len_arr = len(arr)
+        minimum = [0] * len_arr
+        minimum[-1] = arr[-1]
+        for i in range(len_arr - 2, -1, -1):
+            minimum[i] = min(minimum[i+1], arr[i])
+            
+        num_chunks = 1
+        # run maximum from the left
+        # if maximum <= minimum[i+1], that is all the element on the left side
+        # of arr[i+1] is smaller than arr[i+1], then we can increment the number
+        # of chunks
+        maximum = arr[0]
+        for i in range(len_arr-1):
+            maximum = max(maximum, arr[i])
+            if maximum <= minimum[i+1]:
+                num_chunks += 1
+                
+        return num_chunks
+    
+    # Time: O(N)
+    # Space: O(N)

@@ -1,0 +1,8 @@
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+        stack = []
+        for i in s:
+            if len(stack) > 1 and stack[-2] == stack[-1] == i:
+                stack.pop()
+            stack.append(i)
+        return \'\'.join(stack)

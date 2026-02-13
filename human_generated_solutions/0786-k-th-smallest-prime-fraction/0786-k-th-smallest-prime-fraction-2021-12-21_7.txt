@@ -1,0 +1,2 @@
+def kthSmallestPrimeFraction(self, arr: List[int], k: int) -> List[int]:
+        return sorted(list(combinations(arr, 2)), key=lambda x: x[0] / x[1])[k - 1]

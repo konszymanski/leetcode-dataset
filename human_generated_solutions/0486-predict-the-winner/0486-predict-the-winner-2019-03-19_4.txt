@@ -1,0 +1,20 @@
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        left, right = 0, 1
+        p1 = p2 = 0  # Player scores.
+        turn = 0  # 0 for player 1\'s turn, 1 for player 2\'s.
+        
+        def choose(side, arr, turn, p1, p2):
+            if not arr:
+                return p1 >= p2 if turn == 0 else p1 < p2
+            
+            score = arr[0] if side == left else arr[-1]
+            arr = arr[1:] if side == left else arr[:-1]
+            if turn == 0:
+                p1 += score
+            else:
+                p2 += score
+            turn = (turn + 1) % 2
+            return not choose(left, arr, turn, p1, p2) and not choose(right, arr, turn, p1, p2)
+        
+        return choose(left, nums, turn, p1, p2) or choose(right, nums, turn, p1, p2)

@@ -1,0 +1,37 @@
+class Solution:
+    def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        # DFS, iterative using parent node
+        
+        if not root:
+            return []
+        
+        if not to_delete:
+            return [root]
+        
+        toDel = set(to_delete)
+        
+        stk = [(None, root)]
+        res = []
+        
+        while stk:
+            parent, node = stk.pop()
+            
+            if node.val in toDel:
+                if node.left:
+                    stk.append((None, node.left))
+                if node.right:
+                    stk.append((None, node.right))
+                    
+            else:
+                if node.left:
+                    stk.append((node, node.left))
+                    if node.left.val in toDel:
+                        node.left = None
+                if node.right:
+                    stk.append((node, node.right))
+                    if node.right.val in toDel:
+                        node.right = None
+                if not parent or parent.val in toDel:
+                    res.append(node)
+        
+        return res

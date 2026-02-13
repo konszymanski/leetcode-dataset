@@ -1,0 +1,43 @@
+# 2022.10.04
+# The logic for this problem is the same as spiral matrix II, the only difference is we need to consider the linked list. So everytime when we update the value in the matrix, we want to make sure the head of the linked list is not pointed to null. If the linked list has been thoroughly iterated, we assign the next value to -1. 
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        matrix = [[0 for i in range(n)] for j in range(m)]
+        left, right = 0, n
+        top, bottom = 0, m 
+        while left < right and top < bottom :
+            for i in range(left, right):
+                if not head:
+                    matrix[top][i] = -1
+                else:
+                    matrix[top][i] = head.val
+                    head = head.next
+            top += 1
+            
+            for i in range(top, bottom):
+                if not head:
+                    matrix[i][right-1] = -1
+                else:
+                    matrix[i][right-1] = head.val
+                    head = head.next
+            right -= 1
+            
+            if not (left < right and top < bottom):
+                break
+            
+            for i in range(right-1, left-1, -1):
+                if not head:
+                    matrix[bottom-1][i] = -1
+                else:
+                    matrix[bottom-1][i] = head.val
+                    head = head.next 
+            bottom -= 1
+            
+            for i in range(bottom-1, top-1, -1):
+                if not head:
+                    matrix[i][left] = - 1
+                else:
+                    matrix[i][left] = head.val
+                    head = head.next
+            left += 1
+        return matrix

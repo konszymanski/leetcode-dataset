@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    # O(n) || O(h) where n is the number of nodes present in the tree and h is the height of the tree
+#     Runtime: 66ms 47.69% || memory: 16.2mb 62.20%
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return None
+        
+        # return self.findBottomLeftValueByBFS(root)
+    
+        return self.findBottomLeftValueByDFS(root, 0, root.val, 0)
+        
+    def findBottomLeftValueByBFS(self, root):
+        
+        queue = [root]
+        bottomLeftValue = 0
+        
+        while queue:
+            for _ in range(len(queue)):
+                node = queue.pop(0)
+                bottomLeftValue = node.val
+                
+                if node.right:
+                    queue.append(node.right)
+                if node.left:
+                    queue.append(node.left)
+                    
+        return bottomLeftValue

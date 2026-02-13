@@ -1,0 +1,67 @@
+class Solution:
+    def smallestNumber(self, pattern: str) -> str:
+        
+        """
+            Here is the idea:
+                - Start with the lowest number i.e. 123456.. If the pattern length is 2, then the 
+                lowest number becomes 123. If it is 3, the lowest number becomes 1234
+                - Check if the lowest number satisfies the contstraints
+                - If it does, return
+                - It it does not, return the next big permutation of this number. Next big 
+                permutation for 123 --> 132 --> 213 and so on
+                - Keep trying until the permutation satisfies all the conditions
+        """
+        
+        def swap(inp, left,right):
+            tmp = inp[left]
+            inp[left] = inp[right]
+            inp[right] = tmp
+            
+            
+        def next_greater_permutation(inp):
+            idx_one = -1
+            for i in range(len(inp)-2,-1,-1):
+                if inp[i] < inp[i+1]:
+                    idx_one = i
+                    break
+                    
+            idx_two = -1
+            for i in range(len(inp)-1, idx_one, -1):
+                if inp[i] > inp[idx_one]:
+                    idx_two = i
+                    break
+                    
+            
+            swap(inp, idx_one, idx_two)
+            left = idx_one +1
+            right = len(inp)-1
+            while left < right:
+                swap(inp, left, right)
+                left += 1
+                right -= 1
+        
+                
+        def is_valid(p):
+            for i in range(len(pattern)):
+                if pattern[i] == "D" and p[i+1] > p[i]:
+                    return False
+                if pattern[i] == "I" and p[i+1] < p[i]:
+                    return False
+            return True
+        
+        permutation = [i for i in range(1, len(pattern)+2)]
+        if is_valid(permutation):
+            return "".join([str(n) for n in permutation])
+        
+        found = False
+        while not found:
+            # loops until the element is found
+            next_greater_permutation(permutation)
+            # find the next greater permutation
+            # this changes the permutation array in-place
+            if is_valid(permutation):
+                # returns when the valid permutation is found
+                # this is guranteed to be the minimum since we started
+                # with the min and always check for the next possible 
+                # permutation 
+                return "".join([str(n) for n in permutation])

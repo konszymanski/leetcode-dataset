@@ -1,0 +1,12 @@
+from fractions import Fraction
+def isRationalEqual(self, s: str, t: str) -> bool:
+	def toFrac(n):
+		try:
+			return Fraction(n) # raises error if n contains repeating parts
+		except ValueError:
+			decimal_pos = n.find(\'.\')
+			repeat_pos = n.find(\'(\')
+			repeat = int(n[(repeat_pos+1):(len(n) - 1)])
+			repeat_den = int(\'9\'*(len(n) - repeat_pos - 2)) * 10**(repeat_pos - decimal_pos - 1)
+			return toFrac(n[:repeat_pos]) + Fraction(repeat, repeat_den)
+	return toFrac(s) == toFrac(t)

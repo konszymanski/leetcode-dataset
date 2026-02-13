@@ -1,0 +1,18 @@
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        # We enumerate the nums array and decrement rightSum -= v because my current v
+        # doesn\'t count as part of the sum since that\'s the index value from which 
+        # we need to check for the sum of leftSide and rightSide, then after decrementig
+        # check if leftSum == rightSum, then we return i. 
+		# Else loop goes on and we increment leftSum += v and eventually
+		# after loop ends we return -1.
+		
+        leftSum, rightSum = 0, sum(nums)
+        
+        for i, v in enumerate(nums):
+            rightSum -= v
+            if leftSum == rightSum:
+                return i
+            leftSum += v
+            
+        return -1

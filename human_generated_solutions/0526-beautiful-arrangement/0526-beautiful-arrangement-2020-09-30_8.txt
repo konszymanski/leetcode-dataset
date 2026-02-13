@@ -1,0 +1,16 @@
+class Solution:
+    def countArrangement(self, N: int) -> int:
+        
+        def fn(k):
+            """Return number of beautiful arrangements."""
+            if k == N: return 1 # boundary condition
+            ans = 0
+            for kk in range(k, N):
+                if nums[kk] % (k+1) == 0 or (k+1) % nums[kk] == 0: 
+                    nums[k], nums[kk] = nums[kk], nums[k]
+                    ans += fn(k+1)
+                    nums[k], nums[kk] = nums[kk], nums[k]
+            return ans 
+            
+        nums = list(range(1, N+1))
+        return fn(0)

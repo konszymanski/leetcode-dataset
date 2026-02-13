@@ -1,0 +1,16 @@
+class Solution:
+    def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:
+        m, n = len(mat), len(mat[0])  # m is number of rows and n is number of columns
+        di = defaultdict(list) # Creating default dictionary with default value as list so that it become easy to add value while iterating
+        
+        for x in range(m): # Iterate over every row
+            for y in range(n): # Iterate over each column value for particular row
+                di[x - y].append(mat[x][y]) # Add value to its diagonal key
+                
+        for key, val in di.items():
+            val.sort(reverse = True) # Sort diagonal values in reverse order so that removing them becomes easy
+            
+        for x in range(m): 
+            for y in range(n):
+                mat[x][y] = di[x - y].pop() # Put value from dictionary into matrix
+        return mat

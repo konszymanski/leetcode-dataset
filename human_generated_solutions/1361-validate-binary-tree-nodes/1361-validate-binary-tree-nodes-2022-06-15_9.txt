@@ -1,0 +1,48 @@
+class Solution:
+    """
+    every node should have atmost two children and always one parent
+    if any of the above condition is voilated, then we claim it\'s not a valid tree
+    """
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        parent_map = {i: None for i in range(n)}
+        graph_map = {i: set() for i in range(n)}
+        node_with_no_parent = n
+        for i, left, right in zip(range(n), leftChild, rightChild):
+            if left != -1:
+                if parent_map[left] is not None:
+                    # trying to assign second parent
+                    return False
+                else:
+                    parent_map[left] = i
+                    node_with_no_parent -= 1
+                    graph_map[i].add(left)
+            if right != -1:
+                if parent_map[right] is not None:
+                    # trying to assing second parent
+                    return False
+                else:
+                    parent_map[right] = i
+                    node_with_no_parent -= 1
+                    graph_map[i].add(right)
+                    
+        if node_with_no_parent != 1:
+            return False
+        # all nodes should be reachable from node whose parent is None
+        for key, value in parent_map.items():
+            if value is None:
+                root_node = key
+        
+        visited = set()
+        def dfs(node):
+            if node in visited:
+                return False
+            visited.add(node)
+            for n in graph_map[node]:
+                if not dfs(n):
+                    return False
+            return True
+        
+        if not dfs(root_node) or len(visited) != n:
+            return False
+        
+        return True

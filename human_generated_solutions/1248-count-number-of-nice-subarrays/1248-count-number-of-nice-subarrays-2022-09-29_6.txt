@@ -1,0 +1,21 @@
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+    
+## Runtime: 810 ms, faster than 97.95% of Python3 online submissions for Count Number of Nice Subarrays.
+## Memory Usage: 20.9 MB, less than 39.29% of Python3 online submissions for Count Number of Nice Subarrays.
+        positions = [i for i,num in enumerate(nums) if num%2==1]
+        posLength, numsLength, count = len(positions), len(nums), 0
+        left, right = [], []
+        
+        if posLength<k:
+            return count # 0
+        elif posLength>k:
+            for i in range(posLength-k):
+                left.append(positions[i+1] - positions[i])
+                right.append(positions[i+k] - positions[i+k-1])
+        
+        left = [positions[0]+1] + left
+        right = right + [numsLength-positions[-1]] 
+        count = sum([i*j for i,j in zip(left, right)])
+        
+        return count

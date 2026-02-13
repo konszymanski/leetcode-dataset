@@ -1,0 +1,5 @@
+def countGoodNumbers(self, n: int) -> int:
+        good, x = 5 ** (n % 2), 4 * 5
+        for _ in range(n // 2):
+            good = good * x % (10 ** 9 + 7)
+        return good

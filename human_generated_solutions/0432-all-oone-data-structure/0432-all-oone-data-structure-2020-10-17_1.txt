@@ -1,0 +1,92 @@
+class Node(object):
+    def __init__(self, val=0):
+        self.num = val
+        self.key_set = set()
+        self.prev = None
+        self.next = None
+        
+class AllOne(object):
+    def __init__(self):
+        self.head = Node() 
+        self.tail = Node()  
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.cache = collections.defaultdict(Node)  
+
+    def inc(self, key):
+        """
+        Inserts a new key <Key> with value 1. Or increments an existing key by 1.
+        """
+        if not key in self.cache:  
+            cur = self.head
+        else:
+            cur = self.cache[key]
+            cur.key_set.remove(key)
+
+        if cur.num + 1 != cur.next.num:  
+            new_node = Node(cur.num + 1)
+            self._insert_after(cur, new_node)
+        else:
+            new_node = cur.next
+
+        new_node.key_set.add(key)  
+        self.cache[key] = new_node  
+
+        if not cur.key_set and cur.num != 0:  
+            self._remove(cur)
+
+    def dec(self, key):
+        """
+        Decrements an existing key by 1. If Key\'s value is 1, remove it from the data structure.
+        """
+        if not key in self.cache:
+            return
+
+        cur = self.cache[key]
+        self.cache.pop(key)  
+        cur.key_set.remove(key)
+
+        if cur.num != 1:
+            if cur.num - 1 != cur.prev.num:  
+                new_node = Node(cur.num - 1)
+                self._insert_after(cur.prev, new_node)
+            else:
+                new_node = cur.prev
+            new_node.key_set.add(key)
+            self.cache[key] = new_node
+
+        if not cur.key_set and cur.num != 0:  
+            self._remove(cur)
+
+    def getMaxKey(self):
+        """
+        Returns one of the keys with maximal value.
+        """
+        if self.tail.prev.num == 0:
+            return ""
+        key = self.tail.prev.key_set.pop()  # pop and add back to get arbitrary (but not random) element
+        self.tail.prev.key_set.add(key)
+        return key
+
+    def getMinKey(self):
+        """
+        Returns one of the keys with Minimal value.
+        """
+        if self.head.next.num == 0:
+            return ""
+        key = self.head.next.key_set.pop()
+        self.head.next.key_set.add(key)
+        return key
+
+    def _remove(self, node):
+        p = node.prev
+        n = node.next
+        p.next = n
+        n.prev = p
+
+    def _insert_after(self, node, new_block):
+        old_after = node.next
+        node.next = new_block
+        new_block.prev = node
+        new_block.next = old_after
+        old_after.prev = new_block

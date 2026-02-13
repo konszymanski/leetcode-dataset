@@ -1,0 +1,61 @@
+class MyHashMap:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        
+        ## linear hashing, we have a table with 9901 slots, each slot has 101 grid, total 9901 * 101 = 10^6 + 1 grids
+        self.table_size = 9901
+        self.slot_size = 101
+        self.table = [ [] for _ in range(self.table_size) ]
+        
+
+    def put(self, key: int, value: int) -> None:
+        """
+        value will always be non-negative.
+        """
+        
+        slot_key, hash_key = divmod(key, self.slot_size)
+
+        if 0 == len(self.table[slot_key]):
+            
+            # create slot on demand in run-time
+            self.table[slot_key] = [ -1 for _ in range(self.slot_size)]
+        
+        # update key-value pair
+        self.table[slot_key][hash_key] = value
+        
+        return
+        
+
+    def get(self, key: int) -> int:
+        """
+        Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key
+        """
+        
+        slot_key, hash_key = divmod(key, self.slot_size)
+
+        if len(self.table[slot_key]):
+            
+            # get corresponding value if given key exists in our table
+            return self.table[slot_key][hash_key]
+        
+        else:
+            return -1
+        
+
+    def remove(self, key: int) -> None:
+        """
+        Removes the mapping of the specified value key if this map contains a mapping for the key
+        """
+        
+        slot_key, hash_key = divmod(key, self.slot_size)
+        
+        if len(self.table[slot_key]):
+            
+            # reset to -1 if given key exists in our table
+            # otherwise, do nothing
+            self.table[slot_key][hash_key] = -1
+            
+        return

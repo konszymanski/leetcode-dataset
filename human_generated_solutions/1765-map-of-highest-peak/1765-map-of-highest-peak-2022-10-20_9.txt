@@ -1,0 +1,19 @@
+class Solution:
+    def highestPeak(self, grid: List[List[int]]) -> List[List[int]]:
+        queue, numRows, numCols = deque(), len(grid), len(grid[0])
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        for row in range(numRows):
+            for col in range(numCols):
+                if grid[row][col] == 1:
+                    grid[row][col] = 0
+                    queue.append((row, col))
+                else:
+                    grid[row][col] = -1
+        while queue:
+            row, col = queue.popleft()
+            for direction in directions:
+                newRow, newCol = row + direction[0], col + direction[1]
+                if numRows > newRow >= 0 <= newCol < numCols and grid[newRow][newCol] < 0:
+                    grid[newRow][newCol] = grid[row][col] + 1
+                    queue.append((newRow, newCol))
+        return grid

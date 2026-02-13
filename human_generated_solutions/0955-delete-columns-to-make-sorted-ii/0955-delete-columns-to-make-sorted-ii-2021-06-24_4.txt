@@ -1,0 +1,14 @@
+class Solution:
+    def minDeletionSize(self, strs: List[str]) -> int:
+        m, n = len(strs), len(strs[0]) # dimensions 
+        ans, grp = 0, [0]*m
+        for j in range(n): 
+            for i in range(1, m): 
+                if grp[i-1] == grp[i] and strs[i-1][j] > strs[i][j]: 
+                    ans += 1
+                    break
+            else: 
+                for i in range(1, m): 
+                    grp[i] = max(grp[i-1], grp[i])
+                    if grp[i-1] == grp[i] and strs[i-1][j] < strs[i][j]: grp[i] = i
+        return ans

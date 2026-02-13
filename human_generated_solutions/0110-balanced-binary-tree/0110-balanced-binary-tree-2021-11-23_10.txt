@@ -1,0 +1,36 @@
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+	#if the root is none, tree is balanced. So return True.
+        if root is None:
+            return True
+		#For a tree to be balanced, at any given node , the height difference between left and right subtrees
+		#should not be more than 1
+		#So the easiest solution for this can be to find the height of left and right subtrees
+		#Remember height has to balanced at each subtree 
+		
+		#we create a height function to calculate height of left and right subtree
+		#store the heights of left subtree and right subtree 	
+        lefth=self.height(root.left)
+        righth=self.height(root.right)
+		
+		#check if the difference between left subtree and right subtree is greater than 1, return False
+        if lefth-righth>1 or righth-lefth>1:
+            return False
+			
+		#A tree is balanced if the left and the right subtrees are balanced 
+		#So recursively check at each node if its left and right child are balanced
+        leftbal=self.isBalanced(root.left)
+        rightbal=self.isBalanced(root.right)
+		
+		if left and right are balanced, return True else return false
+        if leftbal and rightbal:
+            return True
+        else:
+            return False
+        
+		#function to find height of a tree
+    def height(self,root):
+        if root is None:
+            return 0
+        else:
+            return 1+max(self.height(root.left),self.height(root.right))

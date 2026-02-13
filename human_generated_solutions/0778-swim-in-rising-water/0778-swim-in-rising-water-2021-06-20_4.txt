@@ -1,0 +1,23 @@
+import heapq
+
+class Node:
+    def __init__(self, x, y, val):
+		# (x,y) position of node in grid
+        self.x = x
+        self.y = y
+		
+		# value of node. Will represent its weight
+        self.val = val
+		
+	# We need this so that we can push Node object into out heap
+    def __lt__(self, other):
+        return self.val < other.val
+
+# Just a wrapper to use heapq in Object Oriented Programming way
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+    def push(self, node):
+        heapq.heappush(self.heap, node)
+    def pop(self) -> Node:
+        return heapq.heappop(self.heap)

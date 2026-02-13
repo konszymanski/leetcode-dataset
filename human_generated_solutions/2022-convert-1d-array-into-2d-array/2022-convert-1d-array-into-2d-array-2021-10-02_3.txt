@@ -1,0 +1,8 @@
+def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
+        ans = []
+        if len(original) == m * n:
+            for r in range(m):
+                ans.append([])
+                for c in range(n):
+                    ans[-1].append(original[r * n + c])
+        return ans

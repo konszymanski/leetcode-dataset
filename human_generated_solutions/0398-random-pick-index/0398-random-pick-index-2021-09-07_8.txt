@@ -1,0 +1,31 @@
+from collections import defaultdict
+import random
+
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        
+        # Make a dictionary consisting of nums
+        # as keys and the index as values
+        self.data = defaultdict(lambda: [])
+        for i,num in enumerate(nums):
+            self.data[num].append(i)
+            
+        return
+
+    def pick(self, target: int) -> int:
+        
+        # use random.choice method to choose random index
+        # with "replacement"
+        
+        # NOTE: Using random.sample will choose random index
+        # without "replacement", so random.choice is the
+        # correct method in this case
+        
+        return random.choice(self.data[target])
+        
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(nums)
+# param_1 = obj.pick(target)

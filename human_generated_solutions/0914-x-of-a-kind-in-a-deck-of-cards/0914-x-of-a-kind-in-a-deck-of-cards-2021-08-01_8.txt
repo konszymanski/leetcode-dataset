@@ -1,0 +1,12 @@
+from math import gcd
+from collections import Counter
+class Solution:
+    def hasGroupsSizeX(self, deck: List[int]) -> bool:
+    
+        
+        #logic, the minimum val(>1) should have all the others as 
+        #multipls of minimum val
+        #or rather all values must have a gcd>1
+        
+
+        return reduce(gcd,Counter(deck).values())-1

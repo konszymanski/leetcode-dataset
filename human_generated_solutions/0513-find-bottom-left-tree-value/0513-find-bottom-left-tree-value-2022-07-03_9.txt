@@ -1,0 +1,26 @@
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        
+        if not root:
+            return 
+        
+        queue = collections.deque([root])
+        
+        while queue:
+            len_queue = len(queue)
+            first_value = None
+            for _ in range(len_queue):
+                
+                node = queue.popleft()
+                
+                if first_value == None:
+                    first_value = node.val
+                    
+                if node.left:
+                    queue.append(node.left)
+                
+                if node.right:
+                    queue.append(node.right)
+                
+        
+        return first_value

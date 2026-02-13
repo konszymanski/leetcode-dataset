@@ -1,0 +1,25 @@
+from heapq import heappush, heappop, heapify
+
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        ## Dijkstra algorithm using Priority Queue
+        arr = [[sys.maxsize for _ in range(len(heights[0]))] for _ in range(len(heights))]     # initialize all distance with infinity 
+        n_rows = len(heights)
+        n_cols = len(heights[0])
+        minHeap = []         
+        arr[0][0] = 0       # distance at source is 0
+        minHeap.append((0,0,0))
+        direction = [(0,1), (0,-1), (1,0), (-1,0)]   # up, down, forward, backward
+        while minHeap!=[]:
+            distance_till_this_point, x, y = heappop(minHeap)
+            for i in range(4):           # iterate over 4 directions
+                nx = x + direction[i][0]
+                ny = y + direction[i][1]
+                
+                if nx >= 0 and nx < n_rows and ny >=0 and ny < n_cols:                
+                    diff = max(distance_till_this_point, abs(heights[nx][ny] - heights[x][y]))       # max absolute difference
+                    if diff < arr[nx][ny]:
+                        arr[nx][ny] = diff                    # set new min difference 
+                        heappush(minHeap, (diff, nx, ny))     # add new point to heap
+                        
+        return arr[n_rows-1][n_cols - 1]                      # target point in the matrix with the required result

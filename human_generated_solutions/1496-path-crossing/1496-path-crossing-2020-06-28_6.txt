@@ -1,0 +1,19 @@
+class Solution: # my solution
+    def isPathCrossing(self, path: str) -> bool:
+        vertical = horizontal = 0
+        points_visited = {(0, 0): True}
+        for direction in path:
+            if direction == \'N\':
+                vertical += 1
+            elif direction == \'S\':
+                vertical -= 1
+            elif direction == \'E\':
+                horizontal += 1
+            else:
+                horizontal -= 1
+
+            if points_visited.get((horizontal, vertical)):
+                return True
+                
+            points_visited[(horizontal, vertical)] = True
+        return False

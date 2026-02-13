@@ -1,0 +1,16 @@
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        result = [0] # Global result variable
+        self.findDiameter(root, result)
+        return result[0]
+    
+    def findDiameter(self, root, result):
+        if not root:
+            return 0
+        
+        left = self.findDiameter(root.left, result)
+        right = self.findDiameter(root.right, result)
+        
+        result[0] = max(result[0], left + right)
+        
+        return max(left, right) + 1

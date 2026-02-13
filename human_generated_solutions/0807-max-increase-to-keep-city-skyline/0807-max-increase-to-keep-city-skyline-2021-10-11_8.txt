@@ -1,0 +1,22 @@
+def maxIncreaseKeepingSkyline(self, grid: List[List[int]]) -> int:
+	row_max, col_max = {}, {}
+	r, c = len(grid), len(grid[0])
+
+	for i in range(0, r):
+		for j in range(0, c):
+			if i not in row_max:
+				row_max[i] = grid[i][j]
+			else:
+				row_max[i] = max(row_max[i], grid[i][j])
+
+			if j not in col_max:
+				col_max[j] = grid[i][j]
+			else:
+				col_max[j] = max(col_max[j], grid[i][j])
+	res = 0
+
+	for i in range(0, r):
+		for j in range(0, c):
+			res+=min(row_max[i], col_max[j])-grid[i][j]
+
+	return res

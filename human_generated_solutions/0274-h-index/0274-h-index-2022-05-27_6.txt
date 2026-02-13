@@ -1,0 +1,3 @@
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+        return sum(p < q for p, q in enumerate(sorted(citations, reverse=True)))

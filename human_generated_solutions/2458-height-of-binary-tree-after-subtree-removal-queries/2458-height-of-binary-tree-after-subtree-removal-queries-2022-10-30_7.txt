@@ -1,0 +1,20 @@
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        height = defaultdict(int) # number of nodes on the longest path 
+        def dfs_height(cur: Optional[TreeNode]) -> int:
+            if cur is None: return 0
+            height[cur] = 1 + max(dfs_height(cur.left), dfs_height(cur.right))
+            return height[cur]
+        dfs_height(root)
+        sub = [0] * (len(height) + 1)
+		# depth of root is 0
+        def dfs(cur: Optional[TreeNode], depth: int, rest_h:int) -> None:
+            if cur is None: return
+            depth += 1
+            sub[cur.val] = rest_h #  longest path after deletion
+            dfs(cur.left, depth, max(rest_h, depth + height[cur.right]))
+            dfs(cur.right, depth, max(rest_h, depth + height[cur.left]))
+        dfs(root, -1, 0)
+        for i, x in enumerate(queries):
+            queries[i] = sub[x]
+        return queries

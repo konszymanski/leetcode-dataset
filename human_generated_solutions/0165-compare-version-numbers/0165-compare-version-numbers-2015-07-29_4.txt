@@ -1,0 +1,26 @@
+class Solution(object):
+    def compareVersion1(self, version1, version2):
+        v1 = [int(v) for v in version1.split(\'.\')]
+        v2 = [int(v) for v in version2.split(\'.\')]
+        i = 0
+        while i < len(v1) and i < len(v2):
+            if v1[i] < v2[i]:
+                return -1
+            elif v1[i] > v2[i]:
+                return 1
+            i += 1
+        if i == len(v1):
+            return -1 if any(v2[i:]) else 0
+        else:
+            return 1 if any(v1[i:]) else 0
+        
+    def compareVersion(self, version1, version2):
+        v1, v2 = self.helper(version1), self.helper(version2)
+        return 1 if v1 > v2 else (-1 if v1 < v2 else 0)
+        
+    def helper(self, v):
+        v = map(int, v.split("."))
+        i = len(v)-1
+        while i >= 0 and v[i] == 0:
+            i -= 1
+        return v[:i+1]

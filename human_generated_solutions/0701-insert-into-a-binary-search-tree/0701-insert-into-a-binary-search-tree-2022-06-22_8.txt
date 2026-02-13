@@ -1,0 +1,21 @@
+class Solution:
+    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if root == None:
+            return TreeNode(val)
+        
+        def insert(root):
+            if root == None:
+                return TreeNode(val)
+            if val < root.val:
+                if root.left:
+                    insert(root.left)
+                else:
+                    root.left = insert(root.left)
+            else:
+                if root.right:
+                    insert(root.right)
+                else:
+                    root.right = insert(root.right)
+        
+        insert(root)
+        return root

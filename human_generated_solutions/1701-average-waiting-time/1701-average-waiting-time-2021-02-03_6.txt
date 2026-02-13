@@ -1,0 +1,11 @@
+class Solution:
+    def averageWaitingTime(self, A):
+        
+        x    =  0
+        res  =  0
+        
+        for a,t in A:
+            x     =  max(x,a) + t
+            res  +=  x - a
+        
+        return res/float(len(A))

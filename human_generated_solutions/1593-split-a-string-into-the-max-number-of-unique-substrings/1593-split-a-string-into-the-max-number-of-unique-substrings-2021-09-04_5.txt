@@ -1,0 +1,13 @@
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        self.maxy=0
+        def dfs(a,arr):
+            if not a:
+                self.maxy=max(self.maxy,len(arr))
+            tmp=\'\'
+            for i in range(len(a)):
+                tmp+=a[i]
+                if tmp not in arr:
+                    dfs(a[i+1:],arr+[tmp])
+        dfs(s,[])
+        return self.maxy

@@ -1,0 +1,26 @@
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        open_=0
+        close=0
+        ans1=0
+        for i in s:
+            if i==\'(\':
+                open_+=1
+            else:
+                close+=1
+            if open_==close:
+                ans1=max(close*2,ans1)
+            elif close>open_:
+                open_=close=0
+        ans2=0
+        open_=close=0
+        for i in range(len(s)-1,-1,-1):
+            if s[i]==\'(\':
+                open_+=1
+            else:
+                close+=1
+            if open_==close:
+                ans2=max(ans2,2*open_)
+            elif open_>close:
+                open_=close=0
+        return max(ans1,ans2)

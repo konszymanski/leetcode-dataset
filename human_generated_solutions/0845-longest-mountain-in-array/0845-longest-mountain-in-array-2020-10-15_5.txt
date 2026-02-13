@@ -1,0 +1,26 @@
+class Solution:
+    def longestMountain(self, A: List[int]) -> int:
+        if len(A) < 3:
+            return 0
+        
+        start = 0 # Ground from where the uphill starts.
+        _maxPeak = 0
+        reachedPeak = False
+        for i in range(1, len(A)-1):
+            # The uphill starts only if the current ground height is lower to the next ground height.
+            # This condition is met at both the left side of the peak and the right side of the peak hence the variable reachedPeak to check if the peek has been reached.
+            if A[i-1] >= A[i] <= A[i+1]:
+                # if peak had been reached then we are now on the right side of the ground. We need to calucalte the lenght of the mountain.
+                if reachedPeak:
+                    reachedPeak = False
+                    _maxPeak = max(_maxPeak, i - start + 1)
+                start = i
+            
+            # Peak condition.
+            elif A[i-1] < A[i] > A[i+1]:
+                reachedPeak = True
+        
+        # This is to check if there is only downhill after the peak has been reached.
+        if reachedPeak:
+            _maxPeak = max(_maxPeak, len(A) - start)
+        return _maxPeak

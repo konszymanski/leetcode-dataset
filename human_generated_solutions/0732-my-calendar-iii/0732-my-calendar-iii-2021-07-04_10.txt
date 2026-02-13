@@ -1,0 +1,21 @@
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.arr = []
+        
+    def book(self, start: int, end: int) -> bool:
+        i = bisect.bisect_right(self.arr, [start, 1])
+        j = bisect.bisect_left(self.arr, [end, -1])
+        self.arr.insert(i, [start, 1])
+        self.arr.insert(j+1, [end, -1])
+        ret = True
+        cur = 0
+        for a in self.arr:
+            cur += a[1]
+            if cur > 2:
+                ret = False
+        
+        if ret == False:
+            self.arr.pop(i)
+            self.arr.pop(j)
+        return ret

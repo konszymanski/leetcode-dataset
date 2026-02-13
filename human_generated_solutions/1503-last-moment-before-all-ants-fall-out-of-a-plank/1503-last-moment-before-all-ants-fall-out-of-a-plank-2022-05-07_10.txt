@@ -1,0 +1,2 @@
+def getLastMoment(self, n, l, r):
+	return max(n-min(r or [n]), max(l or [0]));

@@ -1,0 +1,22 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        # greedy approach, we try courses with earlier deadline
+        courses.sort(key=lambda x:(x[1], x[0]))
+        # use priority queue (min heap) to keep course list
+        # priority will be our course length (smaller is better)
+        currentTime, pq = 0, []
+        for duration, deadline in courses:
+            # count curr one in, if
+            # not valid we will swap
+            currentTime+=duration
+            # Add to our res heap
+            # use - since its min heap in python
+            heapq.heappush(pq, -duration)
+            # check if curr is valid
+            if currentTime > deadline:
+                # take out longest course from heap
+                # can be a swap or just undo our insert
+                # we put -currentTime in, so we
+                # should + to do minus
+                currentTime += heapq.heappop(pq)
+        return len(pq)

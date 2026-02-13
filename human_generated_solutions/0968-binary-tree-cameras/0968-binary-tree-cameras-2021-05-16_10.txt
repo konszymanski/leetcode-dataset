@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minCameraCover(self, root: TreeNode) -> int:
+
+        def min_cover(node: TreeNode) -> tuple:
+            """
+            returns (not_covered, covered_without_cam, covered_with_cam) where
+            """
+            
+            if not node:
+                return 0,0,1
+            
+            # get mins for children
+            left = min_cover(node.left)
+            right = min_cover(node.right)
+            
+            not_covered = left[1] + right[1]
+            covered_without_cam = min(left[2]+min(right[1:]), min(left[1:])+right[2])
+            covered_with_cam = 1 + min(left) + min(right)
+            
+            return not_covered, covered_without_cam, covered_with_cam
+            
+        return min(min_cover(root)[1:])

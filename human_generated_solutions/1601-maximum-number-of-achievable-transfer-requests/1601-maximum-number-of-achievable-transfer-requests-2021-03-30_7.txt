@@ -1,0 +1,56 @@
+def maximumRequests(self, n: int, requests: List[List[int]]) -> int:
+	loop_count = 0
+	to_remove = []
+	# Remove any loops, and any edges a->b where a has no incoming or b has no outgoing edges
+	has_outgoing_edges = set()
+	has_incoming_edges = set()
+	for i in range(len(requests)):
+		if requests[i][0] == requests[i][1]:
+			loop_count += 1
+			to_remove.append(i)
+		else:
+			has_outgoing_edges.add(requests[i][0])
+			has_incoming_edges.add(requests[i][1])
+	for j in reversed(to_remove):
+		del requests[j]
+
+	# Find which vertices have outgoing or incoming edges but not both
+	has_incoming_edges.symmetric_difference_update(has_outgoing_edges)
+	if has_incoming_edges:
+		to_remove = []
+		for i in range(len(requests)):
+			if requests[i][0] in has_incoming_edges or requests[i][1] in has_incoming_edges:
+				to_remove.append(i)
+		for j in reversed(to_remove):
+			del requests[j]
+
+	if not requests:
+		return loop_count
+
+	# Bound the maximum number of feasible requests
+	counts_of = [0] * n
+	for a, b in requests:
+		counts_of[a] -= 1
+		counts_of[b] += 1
+	excess = max(abs(j) for j in counts_of)
+	if excess:
+		sum_pos, sum_neg = 0, 0
+		for x in counts_of:
+			if x > 0:
+				sum_pos += x
+			else:
+				sum_neg += x
+		excess = max(excess, sum_pos, -sum_neg)
+
+	# Iterate over all combinations of requests of feasible size
+	num_req = len(requests)
+	for num_allowed in range(num_req-excess,1,-1):
+		for comb in itertools.combinations(requests, num_allowed):
+			counts_of = [0] * n
+			for a, b in comb:
+				counts_of[a] -= 1
+				counts_of[b] += 1
+			# Check if this combination is perfectly balanced
+			if not any(counts_of):
+				return loop_count + num_allowed
+	return loop_count

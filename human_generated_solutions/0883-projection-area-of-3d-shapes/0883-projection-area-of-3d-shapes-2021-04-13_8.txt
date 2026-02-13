@@ -1,0 +1,23 @@
+def projectionArea(self, grid: List[List[int]]) -> int:
+        n = len(grid) #length of the grid
+        
+        top,side,frontValues = 0, 0, [0]*n #empty promises to add values to(not in the programming sense)
+
+        for i in range(n): #looking at the x coordinates(i)
+            
+            side += max(grid[i]) #taking the maximum z value for a single x and n*y, 
+			#and adding it to Total Side Area
+            
+            for j in range(n): #looking at y coordinates too (j)
+            
+                if grid[i][j] != 0: top += 1
+				#if value of z at (x,y) i.e. (i,j) is zero then don\'t add it to the Total Top Area
+                
+				#Now I try to find the maximum z value for a single y and n*x,
+                if frontValues[j] > grid[i][j]: continue
+                else: frontValues[j] = grid[i][j]
+				
+        
+		front = sum(frontValues) #After finding all max z values of every y, we add them all and that is the Total Front Area
+		
+        return (top+side+front) #return the sum of all three area

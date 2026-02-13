@@ -1,0 +1,1 @@
+return root && (!!(root->left = pruneTree(root->left)) | !!(root->right = pruneTree(root->right)) | root->val) ? root : nullptr;

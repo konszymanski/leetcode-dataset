@@ -1,0 +1,68 @@
+class Solution:
+    # So binary search can be abstracted a little bit beyond just looking through a sorted array to find a value. In order for binary
+    # seach to work, we simply need 2 things. First, we need a search space that is monotonic. That means some f(x) where for increasing 
+    # x, f(x) is also non-decreasing. Usually, this comes in the form a sorted array. In a sorted array, the input x is the array index, and
+    # f(x) is the value at that index. We can see how for increasing x, f(x) will also be increasing. That\'s a monotonically increasing function.
+    # The way binary search works in theory is that when you have a monotonically increasing function, you can throw away half the search space by
+    # checking if the input you\'re currently examining meets some criteria. 
+    # Formally, define a function p(x) such that it returns True for some condition, else False. The goal should be that if p(x_i) is True, then 
+    # all x_i+1 onwards will also evaluate to True (or False). This is how we trim our search space. The goal is thus to find the smallest x_i that
+    # still makes p(x_i) True. In the context of searching through a sorted array for some target number, we can define p(x) to be True if x <= target 
+    # else False. Thus, in our binary search, if some p(x_i) is True, then we know ALL x_i, x_i-1, x_i-2 etc etc are True. And we can throw away the search
+    # space from x_i-1 down to x_0, and just focus on x_i, x_i+1... in hopes of finding the closest x_i to target. 
+    # This is how we can tackle optimization questions with binary search. In this question, we simply have to find the smallest ship capacity with which we
+    # can still make all shipments within the allotted number of days. So, our search space is not the weights array, but rather all possible values
+    # for ship capacity. Now, technically there could be an infinite number of ship capacities (all positive integers). But, we can define a lower and upper
+    # limit to search within. Our lower limit is going to be the max weight in the array. This is because, in the worst case we may have to ship only 1 item
+    # a day. And if our capacity is less than the heaviest item, then we won\'t be able to ship it! So, our lower bound is max(weights). Now, what\'s the upper
+    # bound? well, worst case we have to ship everything in 1 day. So, we need a capacity that can cover ALL items in the array. Thus, it\'s going to be
+    # sum(weights). Somewhere between these extreme bounds is our answer. How do we do binary search? Well, we have to define our function p(x) that
+    # basically takes in a candidate capacity, and tells us whether it can accomplish shipping everything in the alloted days. That\'s the function
+    # self.doable below. It returns True if we CAN finish the task in alloted days or less. And False otherwise. 
+    # So, now, we do binary search as usual. If doable is TRUE (ie, our candidate capacity is valid) we search the solution space <= candidate_soln
+    # And if it\'s FALSE, we search > candidate_soln
+    # Overall, constant space, N*log(M) runtime complexity, where M is the size of the search space: sum(weights) - max(weights)
+    
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        # At minimum, our capacity has to be the max value of the array. If it\'s less than that, we wont be able to ship the max weight item.
+        # At max, we ship everything in 1 day. So, the sum of all weights
+        left = max(weights)
+        right = sum(weights)
+        
+        # Now, do a binary search between the bounds of these capacities to find
+        # the smallest capacity for which we can still accomplish our task in allotted number of days
+        while(left < right):
+            candidate_capacity = (left + right) // 2
+            doable = self.doable(weights, days, candidate_capacity)
+            
+            # If at capacity that does work, only search below it. We don\'t wanna do right = mid - 1 as we do usually, 
+            # because we know that candidate_capacity works. There\'s no guarantee that candidate_capacity - 1 works. For all we know,
+            # candidate_capacity could be the smallest value we get. We don\'t want it to leave our search space.
+            if doable:
+                right = candidate_capacity
+            else:
+                # Here, we do the usual left = mid + 1. That\'s because if candidate_capacity doesn\'t work, then there\'s no point still keeping
+                # it within the bounds of our search space. That\'s why we don\'t do left = candidate_capacity like we did above for right = candidate_capacity
+                left = candidate_capacity + 1
+        
+        # Returing right since when we have a doable solution, we assign right to that candidate_capacity. By the end, right should hold the answer
+        return right
+    
+    # This function returns True if we can accomplish task for a given capacity
+    def doable(self, weights, days, capacity):
+        num_days_taken = 0
+        accumulator = 0
+        for i in range(len(weights)):
+            # If we can assign this item\'s weight without going over capacity for that day
+            if accumulator + weights[i] <= capacity:
+                accumulator += weights[i]
+            else:
+                # If we can\'t, we have to start shipment on a new day, with the accumulator now only having
+                # the current item\'s weight (without the accumulated weight from previous days\' shipment)
+                accumulator = weights[i] 
+                num_days_taken += 1
+        
+        # For end of array
+        num_days_taken += 1
+        
+        return num_days_taken <= days

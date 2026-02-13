@@ -1,0 +1,29 @@
+from array import array
+from itertools import repeat
+
+class Solution:
+    def numberOfArrays(self, digits: str, limit: int) -> int:
+        tail = len(digits)
+        solutions = array(\'l\', repeat(0, 16))
+        solutions[(tail + 1) & 15] = -1 # increments all valid complete suffixes 
+        prefix = 0
+        degree = 1
+        for at in range(tail - 1, -1, -1):
+            solutions[at & 15] = solutions[(at + 1) & 15]
+            if digits[at] != \'0\':
+                prefix += (ord(digits[at]) - ord(\'0\')) * degree                
+                while prefix > limit:
+                    prefix //= 10
+                    degree //= 10
+                    tail -= 1
+                    
+                solutions[at & 15] = (
+                    (solutions[at & 15] << 1) - solutions[(tail + 1) & 15]
+                ) % 1000000007
+            elif degree > 10000000000000000000:
+                return 0 # if witnessing more than the upper bound of allowed 
+                         # concecutive zeros bail out since no solutions could exist
+                
+            degree *= 10
+            
+        return (solutions[0] - solutions[1]) % 1000000007

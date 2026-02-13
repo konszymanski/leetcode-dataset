@@ -1,0 +1,32 @@
+class Solution(object):
+    def traversal(self,board,r,c):
+        if r<0 or r>=self.m or c<0 or c>=self.n or board[r][c]!=1:
+            return
+        board[r][c]=2
+        self.traversal(board, r+1, c)
+        self.traversal(board, r-1, c)
+        self.traversal(board, r, c+1)
+        self.traversal(board, r, c-1)
+
+    def numEnclaves(self, board):
+        self.m = len(board)
+        self.n = len(board[0])
+        _ans = 0
+
+        for r in range(self.m):
+            if board[r][0]==1:
+                self.traversal(board,r,0)
+            if board[r][self.n-1]==1:
+                self.traversal(board,r,self.n-1)
+
+        for c in range(self.n):
+            if board[0][c]==1:
+                self.traversal(board,0,c)
+            if board[self.m-1][c]==1:
+                self.traversal(board,self.m-1,c)
+
+        for r in range(self.m):
+            for c in range(self.n):
+                if board[r][c]==1:
+                    _ans+=1
+        return _ans

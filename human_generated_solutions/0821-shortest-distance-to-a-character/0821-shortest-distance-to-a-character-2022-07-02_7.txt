@@ -1,0 +1,15 @@
+class Solution:
+    def shortestToChar(self, s: str, c: str) -> List[int]:
+        # occurence of charachter in the array.
+        occ = []
+        for i in range(len(s)):
+            if s[i] == c:
+                occ.append(i)
+        ans = []
+        for i in range(len(s)):
+            #checking distance of each point from occurences ans the selecting the least distance. 
+            tmplst = []
+            for j in occ:
+                tmplst.append(abs(i-j))
+            ans.append(min(tmplst))
+        return ans

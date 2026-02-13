@@ -1,0 +1,29 @@
+"""
+Algorithm:
+step1: keep a counter of s
+        -> everytime we pop from s, we should decrease the element by 1
+        -> if the element cnt is 0, remove from the counter
+step2: start an iteration, in each iteration, we need to decide wheter we should pop from t and print it
+       as a result, here is the rules:
+        -> if there is still one element smaller than t[-1], then we cannot pop
+        -> if there is not elements smaller than t[-1], then we pop until the condition does not meet
+step3: check the conor case, if the s is completely reversed, t will never pop,
+       at that time, just return the t[::-1]
+"""
+class Solution:
+    def robotWithString(self, s: str) -> str:
+        s_counter = Counter(s)
+        t = []
+        res = []
+        for char in s:
+            t.append(char)
+            s_counter[char] -= 1
+            # delete it, because this character does not exist anymore
+            if s_counter[char] == 0:
+                del s_counter[char]
+            # start the printing process
+            while t and s_counter and t[-1] <= min(s_counter):
+                res.append(t.pop())
+        # base case when s is empty and t is full, ex.[cba], t will be [a,b,c], never have a chance to pop
+        res += t[::-1]
+        return "".join(res)

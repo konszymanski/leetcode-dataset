@@ -1,0 +1,16 @@
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines) -> int:
+        max_order = 0
+        set_mines = set(tuple(pair) for pair in mines)
+        for r in range(n):
+            for c in range(n):
+                if (r >= max_order and n - r > max_order and
+                        c >= max_order and n - c > max_order):
+                    s = 0
+                    while (r - s >= 0 and (r - s, c) not in set_mines and
+                           c - s >= 0 and (r, c - s) not in set_mines and
+                           r + s < n and (r + s, c) not in set_mines and
+                           c + s < n and (r, c + s) not in set_mines):
+                        s += 1
+                    max_order = max(max_order, s)
+        return max_order

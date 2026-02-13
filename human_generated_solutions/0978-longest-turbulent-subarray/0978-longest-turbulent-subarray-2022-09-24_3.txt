@@ -1,0 +1,37 @@
+# Helper method to check if current index can be included in window or not
+    def isTurbulent(self, arr, j):
+        # If current element is greater than previous, then it should be greater than next as well
+        condition1 = arr[j] > arr[j-1] and arr[j] > arr[j + 1]
+            
+        # If current element is smaller than previous, then it should be smaller than next as well
+        condition2 = arr[j] < arr[j-1] and arr[j] < arr[j + 1]
+        
+        # If either of two statements are true, that means we can include index j in the window
+        return condition1 or condition2
+    
+    def maxTurbulenceSize(self, arr: List[int]) -> int:
+        n = len(arr)
+        if n == 1: return 1
+
+        maxSize = 1
+        
+		# Since first element in itself is already turbulent, lets start with second element. That\'s why j = 1
+        i,j = 0,1
+        
+        # General Sliding Window Template
+        while j < n:
+            
+            # If the first value of the window is same as second value, that means we cannot include both numbers
+            # So skip the first number by pointing the start of window to second number
+            if arr[i] == arr[i+1]: i += 1
+            
+            # While this condition is true, we can expand the window
+            while j + 1 < n and self.isTurbulent(arr,j): j += 1
+                
+            # As soon as above loop ends, we can update the maxSize if current window size is bigger than previous maxSize
+            maxSize = max(maxSize, j - i + 1)
+            
+            i = j
+            j += 1
+        
+        return maxSize

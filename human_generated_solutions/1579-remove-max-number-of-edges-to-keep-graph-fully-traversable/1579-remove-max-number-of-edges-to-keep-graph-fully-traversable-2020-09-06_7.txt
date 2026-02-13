@@ -1,0 +1,35 @@
+class Solution:
+    def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:        
+        parent_a = list(range(n + 1))
+        size_a = [1] * (n + 1)
+        edges_added = 0
+        
+        def find(parent, i): 
+            if parent[i] != i: 
+                parent[i] = find(parent, parent[i])
+            return parent[i]
+
+        def union(parent, size, x, y): 
+            i, j = find(parent, x), find(parent, y)
+            if i == j: return False
+            if size[i] < size[j]: 
+                parent[i] = j
+                size[j] += size[i]
+            else: 
+                parent[j] = i 
+                size[i] += size[j]
+            return True
+        
+        for t, u, v in edges:
+            if t == 3 and union(parent_a, size_a, u, v):
+                edges_added += 1
+                
+        parent_b, size_b = parent_a[:], size_a[:]        
+        
+        for t, u, v in edges:
+            if t == 1 and union(parent_a, size_a, u, v):
+                edges_added += 1
+            elif t == 2 and union(parent_b, size_b, u, v):
+                edges_added += 1
+        
+        return len(edges) - edges_added if max(size_a) == max(size_b) == n else -1

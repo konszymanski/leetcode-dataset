@@ -1,0 +1,17 @@
+def findDifferentBinaryString(self, nums: List[str]) -> str:
+        self.ans, n  = \'\', len(nums[0])
+        
+        def dfs(cur_str: str):
+            if self.ans:
+                return
+            
+            if len(cur_str) == n:
+                if cur_str not in nums:
+                    self.ans = cur_str
+                return
+            
+            for idx in range(2):
+                dfs(cur_str + str(idx))
+                
+        dfs(\'\')
+        return self.ans

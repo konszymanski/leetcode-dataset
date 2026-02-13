@@ -1,0 +1,28 @@
+import math
+class Solution:
+    def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+        res = [0] * len(spells)
+        N = len(potions)
+		# sorting potions so we can use binary search on it
+        potions.sort()
+        
+        for i,x in enumerate(spells): # i = index, x = value of spells
+		# req is the minimun value of potion strength, for spell to be successful.
+		# math.ceil(7.1) is 8.    As potion contains only integer, we need celling
+            req = math.ceil(success/x)
+            index = N  # assuming last index contains value just bigger than
+            start, end = 0, N-1 
+			
+			# B.Search left most index, where val of potions is >= to celling in sorted potions.
+            while start <= end:
+                mid = start + (end-start)//2
+                if req <= potions[mid]:
+				# found an index, but tries to find the index in left of the index
+                    index = mid
+                    end = mid-1
+                else:
+                    start = mid+1
+			# len(potions = N & index = ( "N" is nothing found in BS or "index" that is found)
+			#  All the values in potions from (index -> N) satisfy "Success Condition". append them
+            res[i] = N - index 
+        return res

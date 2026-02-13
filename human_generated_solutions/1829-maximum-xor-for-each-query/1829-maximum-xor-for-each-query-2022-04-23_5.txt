@@ -1,0 +1,24 @@
+class Solution:
+    """
+    approach: create a prefix array of XORs
+    we know no cannot exceed 2^maximum_bit threfore the XOR cannot exceed 2^maximum_bit
+    also, 
+    given maximum_bit as 3, 
+    number = 1 -> 001 XORING with 110 = 6 will give max of 7
+    number = 2 -> 010 XORING with 101 = 5 will give max of 7 
+    number = 3 -> 011 XORING with 100 = 4 will give max of 7
+    number = 4 -> 100 XORING with 011 = 3 will give max of 7
+    number = 5 -> 101 XORING with 010 = 2 will give max of 7
+    number = 6 -> 110 XORING with 001 = 1 will give max of 7
+    number = 7 -> 111 XORING with 000 = 0 will give max of 7
+    
+    hence, if XOR of numbers is x, we can XOR it with (2^maximum_bit - x) to get maximum result
+    """
+    def getMaximumXor(self, nums: List[int], maximumBit: int) -> List[int]:
+        result = []
+        xor_so_far = 0
+        for i in range(len(nums)):
+            xor_so_far ^= nums[i]
+            # k = (2**maximum_bit - 1) - xor_so_far
+            result.append((2 ** maximumBit - 1) - xor_so_far)
+        return result[::-1]

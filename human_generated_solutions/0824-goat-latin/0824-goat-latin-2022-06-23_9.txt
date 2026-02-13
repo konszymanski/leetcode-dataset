@@ -1,0 +1,16 @@
+vowels = {\'a\', \'e\',\'i\',\'o\',\'u\', \'A\',\'E\',\'I\',\'O\',\'U\'}
+
+class Solution:
+#     O(m+n)?
+# Runtime: 33ms 89.10% Memory: 13.9mb 63.09%
+    def toGoatLatin(self, string: str) -> str:
+        sub = "maa"
+        newString = string.split()
+
+        for idx, val in enumerate(newString):
+            if val[0] in vowels:
+                newString[idx] = newString[idx] + sub + (\'a\' * idx)
+            else:
+                newString[idx] = newString[idx][1:] + newString[idx][0] + sub + (\'a\' * idx)
+        
+		return \' \'.join(newString)

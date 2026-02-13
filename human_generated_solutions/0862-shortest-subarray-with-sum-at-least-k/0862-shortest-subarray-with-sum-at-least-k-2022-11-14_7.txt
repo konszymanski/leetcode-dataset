@@ -1,0 +1,15 @@
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        cumsum = list([0])
+        for index,num in enumerate(nums):
+            cumsum.append(cumsum[-1]+num)
+        short_arr = len(cumsum)
+        for index,num in enumerate(cumsum):
+            for index2,num2 in enumerate(cumsum): 
+                if num2-num == k:
+                    if (index2-index)<short_arr:
+                        short_arr = index2-index
+        if short_arr < len(cumsum):
+            return short_arr
+        else:
+            return -1

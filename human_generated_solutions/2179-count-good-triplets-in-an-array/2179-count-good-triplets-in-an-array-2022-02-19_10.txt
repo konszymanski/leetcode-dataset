@@ -1,0 +1,23 @@
+from sortedcontainers import SortedList
+class Solution:
+    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
+        a = [0]*len(nums2)
+        n=len(nums2)
+        for i in range(n):
+            a[nums2[i]]=i
+        s = SortedList()
+        b = [0]*(len(nums1))
+        for i in range(len(nums1)):
+            number = nums1[i]
+            indInNums2 = a[number]
+            b[i] = s.bisect_left(indInNums2+1)
+            s.add(indInNums2)
+        ans = 0
+        s = SortedList()
+        for i in range(n-1,-1,-1):
+            number = nums1[i]
+            indInNums2 = a[number]
+            x = len(s)-s.bisect_left(indInNums2+1)
+            ans += b[i]*x
+            s.add(indInNums2)
+        return ans

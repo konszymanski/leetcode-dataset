@@ -1,0 +1,12 @@
+class Solution:
+    def onesMinusZeros(self, grid: List[List[int]]) -> List[List[int]]:
+        R,C=len(grid),len(grid[0])
+        onesR,onesC=[0]*R,[0]*C
+        for r in range(R):
+            for c in range(C):
+                onesR[r]+=grid[r][c]
+                onesC[c]+=grid[r][c]
+        for r in range(R):
+            for c in range(C):
+                grid[r][c]=2*onesR[r] + 2*onesC[c] - R - C
+        return grid

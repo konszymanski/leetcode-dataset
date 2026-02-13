@@ -1,0 +1,24 @@
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        count_R = count_L = 0
+		
+        for i in range(len(start)):
+            if start[i] == \'R\':
+                if count_L > 0:
+                    return False
+                count_R += 1
+            if end[i] == \'R\':
+                count_R -= 1
+                if count_R < 0:
+                    return False
+            if end[i] == \'L\':
+                if count_R > 0:
+                    return False
+                count_L += 1
+            if start[i] == \'L\':
+                count_L -= 1
+                if count_L < 0: 
+                    return False
+        if count_R or count_L:
+            return False
+        return True

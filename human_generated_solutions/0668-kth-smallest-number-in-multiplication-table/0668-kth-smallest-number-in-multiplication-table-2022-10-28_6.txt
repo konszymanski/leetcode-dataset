@@ -1,0 +1,15 @@
+def findKthNumber(self, m: int, n: int, k: int) -> int:
+    N = min(m, n); M = max(m, n)
+
+    def getCount(k):
+        return sum([min(k/i, M) for i in range(1, min(N, k) + 1)])
+
+    L = 1; R = m*n
+    while L < R:
+        K = (L+R)//2
+        if getCount(K) < k:
+            L = K+1
+        else:
+            R = K
+    
+    return L

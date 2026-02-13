@@ -1,0 +1,15 @@
+class Solution:
+    def largestCombination(self, candidates: List[int]) -> int:
+        ans = 0
+        
+        for n in range(32):
+            count = 0
+            check = 1 << n
+            
+            for c in candidates:
+                if c & check:
+                    count += 1
+            
+            ans = max(ans, count)
+        
+        return ans

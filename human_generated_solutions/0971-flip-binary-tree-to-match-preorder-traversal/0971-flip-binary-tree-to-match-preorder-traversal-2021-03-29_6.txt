@@ -1,0 +1,24 @@
+def flipMatchVoyage(self, root: TreeNode, voyage: List[int]) -> List[int]:
+        flips = []       # list of values for flipped nodes
+        i = 0            # index for value in voyage to match next
+        
+        # Perform a pre-order traversal, swapping nodes if needed
+        nodes = [root]
+        while nodes:
+            node = nodes.pop()
+            if node.val != voyage[i]: # Tree can\'t be made to match voyage
+                return [-1]
+            i += 1  # node matched so we advance to the next in voyage
+            
+            # Flip if the left node doesn\'t match the next value in voyage
+            if node.left and node.left.val != voyage[i]:
+                node.left, node.right = node.right, node.left
+                flips.append(node.val)
+
+            # Continue the pre-order traversal
+            if node.right:
+                nodes.append(node.right)
+            if node.left:
+                nodes.append(node.left)
+
+        return flips

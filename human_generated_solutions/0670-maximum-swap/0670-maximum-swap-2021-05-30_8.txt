@@ -1,0 +1,17 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        lst = list(str(num))
+        sorted_lst = sorted(lst, reverse=True)
+        len_lst = len(lst)
+        i = 0
+        while i < len_lst:
+            if lst[i] == sorted_lst[i]:
+                i += 1
+            else:
+                max_idx, max_digit = i, lst[i]
+                for j in range(i + 1, len_lst):
+                    if lst[j] >= max_digit:
+                        max_idx, max_digit = j, lst[j]
+                lst[i], lst[max_idx] = lst[max_idx], lst[i]
+                break
+        return int("".join(lst))

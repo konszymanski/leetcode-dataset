@@ -1,0 +1,15 @@
+class Solution:
+    def winnerOfGame(self, colors: str) -> bool:      
+        
+        countA = countB = 0
+
+        for i in range(len(colors)-2):
+            if colors[i:i+3]== "AAA":
+                countA+=1
+            elif colors[i:i+3]== "BBB":
+                countB+=1
+
+        if countA>countB:
+            return True
+        else:
+            return False

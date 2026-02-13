@@ -1,0 +1,6 @@
+class Solution:
+    def reverseStr(self, s: str, k: int) -> str:
+        result = ""
+        for i in range(0, len(s), k*2):
+            result += s[i:i+k][::-1] + s[i+k:i+k*2]
+        return result

@@ -1,0 +1,41 @@
+from collections import defaultdict
+from dataclasses import dataclass, field
+from typing import Dict
+
+
+@dataclass
+class Node:
+    c: str
+    cnt: int = 0
+    child: Dict[str, \'Node\'] = field(init=False, default_factory=dict)
+
+
+class MapSum:
+    def __init__(self):
+        self.root = Node(\'ROOT\')
+        self.present_words = defaultdict(int)
+
+    def insert(self, key: str, val: int) -> None:
+        val, self.present_words[key] = val - self.present_words[key], val
+
+        rt = self.root
+
+        for e in key:
+            if e not in rt.child:
+                rt.child[e] = Node(e)
+
+            node = rt.child[e]
+            node.cnt += val
+
+            rt = node
+
+    def sum(self, prefix: str) -> int:
+        rt = self.root
+
+        for e in prefix:
+            if e not in rt.child:
+                return 0
+
+            rt = rt.child[e]
+
+        return rt.cnt

@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def inOrderTraversal(self, root):
+        if not root:
+            return 
+        
+		# traverse left subtree
+		self.inOrderTraversal(root.left)
+		
+		# append to list
+        self.inOrderList.append(root)
+        
+		# traverse right subtree
+		self.inOrderTraversal(root.right)
+        
+        return 
+    
+    def createBBST(self,low, high):
+		# base case
+        if low > high:
+            return None
+
+		# pick middle node
+        mid = low + high >> 1
+        
+        node = self.inOrderList[mid]
+        node.left = self.createBBST(low, mid - 1)
+        node.right = self.createBBST(mid + 1, high)
+        
+        return node
+        
+    
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        self.inOrderList = []
+        self.inOrderTraversal(root)
+        return self.createBBST(0, len(self.inOrderList)-1)

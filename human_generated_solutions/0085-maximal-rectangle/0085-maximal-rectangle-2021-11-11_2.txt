@@ -1,0 +1,19 @@
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        maxVal = 0
+        out = 0
+        minWidth = defaultdict(int)
+        for i in range(len(matrix)-1,-1,-1):
+            for j in range(len(matrix[0])-1, -1, -1):
+                minW = len(matrix[0])-j
+                maxArea = 0
+                for di in range(i, len(matrix)):
+                    currW = len(matrix[0])-j
+                    for dj in range(j,len(matrix[0])):
+                        if matrix[di][dj] != "1":
+                            currW=dj-j
+                            break
+                    minW = min(minW, currW)
+                    maxArea = max(maxArea, (di-i+1)*minW)
+                out = max(out, maxArea)
+        return out

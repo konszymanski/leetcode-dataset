@@ -1,0 +1,29 @@
+class Solution:
+    def __init__(self):
+        self.mn = \'z\' * 100
+        self.vis = set()
+    
+    def solve(self, st):
+        if \'\'.join(st) in self.vis:
+            return
+        self.vis.add(\'\'.join(st))
+        new = st
+        for i in range(1, len(st), 2):
+            st[i] = str((int(st[i]) + self.a) % 10)
+        self.mn = min(\'\'.join(st), self.mn)
+        
+        lp = new[-self.b:]
+        fp = new[:self.l - self.b]
+        new = lp + fp
+        self.mn = min(self.mn, \'\'.join(new))
+        
+        self.solve(st)
+        self.solve(new)
+    
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        self.a = a ; self.b = b
+        self.l = len(s)
+        self.b = self.b % self.l
+        s = list(s)
+        self.solve(s)
+        return self.mn

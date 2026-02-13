@@ -1,0 +1,22 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        G = [[] for _ in range(len(colors))]
+        D = [[0] * 26 for _ in range(len(colors))]
+        V = [0] * len(colors)
+        for u, v in edges: G[u].append(v)
+            
+        def dfs(u):
+            if V[u] == 2: return True
+            if V[u] == 1: return False 
+            V[u] = 1
+            for v in G[u]:
+                if not dfs(v): return False
+                for c in range(26):
+                    D[u][c] = max(D[u][c], D[v][c])
+            D[u][ord(colors[u]) - ord(\'a\')] += 1
+            V[u] = 2
+            return True
+        
+        for u in range(len(colors)):
+            if not dfs(u): return -1
+        return max(max(color) for color in D)

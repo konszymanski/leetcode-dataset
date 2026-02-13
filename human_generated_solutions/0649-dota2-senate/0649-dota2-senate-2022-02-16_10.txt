@@ -1,0 +1,17 @@
+class Solution:
+    def predictPartyVictory(self, senate: str) -> str:
+        def dfs(i, s):
+            if i >= len(s):
+                return dfs(0, s)
+            if len(set(s)) == 1:
+                return s[0]
+            # find an opponent after i
+            for j in range(i+1, len(s)):
+                if s[i] != s[j]:
+                    return dfs(i+1, s[:j]+s[j+1:])
+            # find an opponent before i if no opponent after
+            for j in range(i):
+                if s[i] != s[j]:
+                    return dfs(i, s[:j]+s[j+1:])
+            return s[i]
+        return {\'R\': \'Radiant\', \'D\': \'Dire\'}[dfs(0, senate)]

@@ -1,0 +1,14 @@
+class Solution:
+    def findTilt(self, root: Optional[TreeNode]) -> int:
+        def helper(root): 
+            # calculate tree sum by sum up root and left sub tree and righ sub tree; 
+            # at the same time push tilt of root in to result
+            if not root:
+                return 0
+            sl = helper(root.left)
+            sr = helper(root.right)
+            tilt.append(abs(sl-sr))
+            return root.val+sl+sr
+        tilt = [] # list keep tilts of all node include leaves
+        helper(root)
+        return sum(tilt)

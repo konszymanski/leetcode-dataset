@@ -1,0 +1,65 @@
+class Solution:
+    def threeEqualParts(self, A):
+        """
+        Given an array of ones and zeros, this program determines whether
+        the array can be partitioned three ways where each partition contains
+        the same pattern of ones and zeros beginning with a one.  If there
+        are no ones, the presence of at least three zeros makes a partition
+        possible.
+
+        :param A: array of 1\'s and 0\'s
+        :type A: list[int]
+        :return: pair of integers
+                 [last location partion 1, first location after partition 2]
+                 or [-1, -1] if partition is not possible
+        :rtype: list[int]
+        """
+        """
+        Initialize:
+        - length of A
+        - get number of ones in A
+        """
+        len_A = len(A)
+        ones = A.count(1)
+
+        """
+        If A is all zeros, a valid partition is possible if the length
+        of A is 3 or greater.
+        """
+        if ones == 0:
+            if len_A >= 3:
+                return [0, len_A - 1]
+            else:
+                return[-1, -1]
+
+        """
+        The number of ones must be divisible by 3 in order for it to be
+        possible to partition A.
+        """
+        if ones % 3:
+            return [-1, -1]
+
+        """
+        If we have gotton this far, the number of ones in A is divisible
+        by 3. It is now possible to scan A to find the start of each pattern.
+        It is also possible to determine the length of the pattern from the
+        third pattern.
+        """
+        ones_in_pattern = ones // 3
+        pattern_starts = []
+        ones_count = 0
+        for k, a in enumerate(A):
+            if a:
+                ones_count += 1
+                if ones_in_pattern == 1 \\
+                    or ones_count % ones_in_pattern == 1:
+                    pattern_starts.append(k)
+        s1, s2, s3 = pattern_starts
+        len_pattern = len(A[s3:])
+
+        """
+        Compare the patterns and return the result.
+        """
+        if A[s1:s1 + len_pattern] == A[s2:s2 + len_pattern] == A[s3:]:
+            return [s1 + len_pattern - 1, s2 + len_pattern]
+        return [-1, -1]

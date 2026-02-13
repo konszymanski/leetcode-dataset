@@ -1,0 +1,17 @@
+class Solution:
+    def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+        counter = 0 
+        garbageDict = {}
+        for i in range(len(garbage)) : 
+            counter += len(garbage[i])
+            if \'G\' in garbage[i] : 
+                garbageDict[\'G\'] = i
+            if \'P\' in garbage[i] : 
+                garbageDict[\'P\'] = i
+            if \'M\' in garbage[i] : 
+                garbageDict[\'M\'] = i
+        
+        for key in garbageDict.keys() : 
+            counter += sum(travel[:garbageDict[key]])
+            
+        return counter

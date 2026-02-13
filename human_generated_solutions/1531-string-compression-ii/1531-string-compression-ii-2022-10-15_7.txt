@@ -1,0 +1,80 @@
+class Solution:
+    def getLengthOfOptimalCompression(self, s: str, k: int) -> int:
+        
+        
+        """
+            . after deleting k characters, we need run-length encoded of "s" to be of lowers size
+            
+            q. is their a greedy way to know which element to start deleting from?
+            a. greedy1. does deleting elements with smallest counts help..
+                    e1.aaaaaaaaaabaaa, k = 2
+                    counts : a11 b1 a3
+                    deleting 2 elemts from smalles
+                    couunts: a11 b0 a2 -> a11a2 = a13
+                    
+                    e2: aaaaaaaaaaabbbb
+                    counts a11 b4
+                    delete 2 smallest count: a11 b2 = length(a11b2) = 5
+                    optimal way would be deleting "a" : a9 b4 = length = 4
+                    
+                    doest seem possible to prematurely know if which element to delete in beginning
+                    
+            greedy2. deleting all combinations of s and find lowest len. 
+                too much re work. will be done which probably can be prevented using DP
+            
+            
+            a. DP seems viable solution. we either take current word or not
+            
+            dp-type: BOUNDED(use each value once) / Sequence matter(use ci+1 in parameter) 
+            DP(ci, k_remains, curr_running_elem, curr_letter_count)
+            states:
+                ci = current index
+                k_remains = remaining elements to be deleted
+                curr_running_elem = the last running character
+                curr_letter_count = count of the last running character
+            state transition:
+                either onsider taking current element
+                    : if both current and prev are same count++ and ci+1
+                    : else ???
+                or skip it if we have k_remains>0
+                    : ci+1
+                
+                min(take, notake)
+                
+                
+            exit condition:
+                ci == len(s) return final length
+        """
+        
+        @cache
+        def dp(ci, curr_running_char, curr_running_char_count, remains):
+            
+            if ci == len(s):
+                return 0
+            
+            
+            delete_char_distance = inf
+            if remains > 0:
+                delete_char_distance = dp(ci+1, curr_running_char, curr_running_char_count, remains - 1)
+            
+            curr_letter = s[ci]
+            
+            keep_ch_cost = inf
+            if curr_letter == curr_running_char:
+                # same letter as previous
+                add = 0
+                
+                # if curr_running_char_count == 1 , since we donot add a1 but only a2, 
+                if curr_running_char_count == 1 or len(str(curr_running_char_count + 1)) > len(str(curr_running_char_count)):
+                    add = 1
+                
+                keep_ch_cost = add + dp(ci+1, curr_letter, curr_running_char_count + 1, remains)
+            else:
+                # different letter
+                keep_ch_cost = 1 + dp(ci+1, curr_letter, 1, remains)
+            
+            return min(keep_ch_cost, delete_char_distance)
+                
+            
+        res = dp(0, "", 0, k)
+        return res

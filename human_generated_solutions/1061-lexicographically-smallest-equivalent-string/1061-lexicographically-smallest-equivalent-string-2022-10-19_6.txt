@@ -1,0 +1,40 @@
+class DSU:
+    def __init__(self, N):
+        self.parent = [i for i in range(N)]
+        self.components = N
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, a, b):
+        ua = self.find(a)
+        ub = self.find(b)
+        if ua == ub:
+            return False
+
+        # We make sure that the parent of a group is the lexicographic smaller character of the group
+        if ua > ub:
+            ua, ub = ub, ua
+
+        self.parent[ub] = ua
+        self.components -= 1
+        return True
+
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        uf = DSU(26)
+        for a, b in zip(s1, s2):
+            uf.union(ord(a) - ord(\'a\'), ord(b) - ord(\'a\'))
+        
+        ans = []
+        for c in baseStr:
+            # Thanks to the change made in the union method of DSU,
+            # the parent is always the lexicographic smallest character
+            parent = uf.find(ord(c) - ord(\'a\'))
+            ans.append(chr(parent + ord(\'a\')))
+        return \'\'.join(ans)
+    # Time: O(m + n) where m is the length of s1 (and s2) and n is the length of baseStr
+    #       All operations related to union find are O(1) since union find has at most 26 elements in this case
+    # Space: O(n) for the ans

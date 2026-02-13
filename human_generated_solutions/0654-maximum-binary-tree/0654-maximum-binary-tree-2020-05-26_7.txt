@@ -1,0 +1,20 @@
+def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+	if not len(nums):
+		return None
+	root = TreeNode()
+	nums_index = {nums[i]:i for i in range(0, len(nums))}
+	nodes = [[root, 0, len(nums)-1]]
+
+	while nodes:
+		curr_node, l, h = nodes.pop()
+		curr_node.val = max(nums[l:h+1])
+		mid = nums_index[curr_node.val]
+
+		if mid<h:
+			curr_node.right = TreeNode()
+			nodes.append([curr_node.right, mid+1, h])
+		if l<mid:
+			curr_node.left = TreeNode()
+			nodes.append([curr_node.left, l, mid-1])
+
+	return root

@@ -1,0 +1,38 @@
+class Solution:
+    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+        adj=[[] for i in range(n+1)]
+        node=[0]*(n+1)
+        for i,j in edges:
+            adj[i].append(j)
+            adj[j].append(i)
+        h=[]
+        heappush(h, (0,1))
+        flag=1
+        Minimum_Time=0
+        last=(-1,-1)
+        while True:
+            current=heappop(h)
+            current_time=current[0]
+            current_node=current[1]
+            
+            if last==current:
+                continue
+            else:
+                node[current_node]+=1
+                last=current
+            if current_node==n:
+                if flag:
+                    flag=0
+                    Minimum_Time=current_time
+                else:
+                    if current_time>Minimum_Time:
+                        return current_time
+            out_time=current_time
+            if out_time%(2*change)>=change:
+                out_time=out_time+2*change-(out_time%(2*change))+time
+            else:
+                out_time+=time
+
+            for out_node in adj[current_node]:
+                if node[out_node]<2:
+                    heappush(h, (out_time,out_node))

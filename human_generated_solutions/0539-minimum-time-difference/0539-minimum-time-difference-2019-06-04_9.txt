@@ -1,0 +1,26 @@
+class Solution:
+	# Convert a given time point to integer representation in minutes
+    def convert_to_minutes(self, point):
+        hour, minute = point.split(\':\')
+        return int(hour) * 60 + int(minute)
+
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        # Convert each point to minutes, in place
+        for i in range(len(timePoints)):
+            timePoints[i] = self.convert_to_minutes(timePoints[i])
+        
+        # Sort minutes, in place
+        timePoints.sort()
+        
+        # Find the minimum difference between two points
+        min_diff = float(\'inf\')
+        for i in range(len(timePoints) - 1):
+            diff = timePoints[i + 1] - timePoints[i]
+            min_diff = min(min_diff, diff)
+        
+        # Check difference between first and last 
+        minutes_per_day = 24 * 60
+        first, last = timePoints[0], timePoints[-1]
+        min_diff = min(min_diff, minutes_per_day - last + first)
+        
+        return min_diff

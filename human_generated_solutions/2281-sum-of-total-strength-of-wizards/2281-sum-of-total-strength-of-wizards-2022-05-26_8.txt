@@ -1,0 +1,38 @@
+class Solution:
+    def totalStrength(self, strength: List[int]) -> int:
+        MOD = 10 ** 9 + 7    
+        res = 0
+        
+        stackLeft, stackRight = [], []
+        onTheLeft = [i for i in range(len(strength))]
+        onTheRight = [j for j in range(-len(strength), 0)]
+        prefix, prefixPrefix = [strength[0]], [strength[0]]
+        for i in range(len(strength)):
+            while stackLeft and strength[i] < strength[stackLeft[-1]]:
+                onTheLeft[i] = onTheLeft[stackLeft[-1]]
+                stackLeft.pop()
+            stackLeft.append(i)
+            
+            while stackRight and strength[-i-1] <= strength[stackRight[-1]]:
+                onTheRight[-i-1] = onTheRight[stackRight[-1]]
+                stackRight.pop()
+            stackRight.append(-i-1)
+            
+            if i == 0:
+                continue
+            prefix.append(prefix[-1] + strength[i])
+            prefixPrefix.append(prefix[-1] + prefixPrefix[-1])
+        
+        prefix += [0]
+        prefixPrefix += [0]
+        
+        for k in range(len(strength)):
+            start, end = onTheLeft[k], onTheRight[k] + len(strength)
+            sums = self.contiguousSums(prefix, prefixPrefix, start, k, end)
+            res += (sums * strength[k]) % MOD
+        return res % MOD
+
+    def contiguousSums(self, prefix, prefixPrefix, start, anchor, end):
+        anchorEnd = (prefixPrefix[end] - prefixPrefix[anchor-1] - prefix[anchor - 1] * (end - anchor + 1)) * (anchor - start + 1)
+        startAnchor = ((prefix[anchor - 1] - prefix[start - 1]) * (anchor - start + 1) - (prefixPrefix[anchor - 1] - prefixPrefix[start - 1] - prefix[start - 1] * (anchor - start))) * (end - anchor + 1)
+        return (anchorEnd + startAnchor)

@@ -1,0 +1,17 @@
+def bstFromPreorder(self, preorder: List[int]) -> TreeNode:
+        curr = dummy = TreeNode( float("Inf") )
+        latter = {}
+        
+        for value in preorder:
+            if value < curr.val:
+                curr.left = TreeNode(value)
+                latter[curr.left] = curr
+                curr = curr.left
+            else:              
+                while value > latter[curr].val:
+                    curr = latter[curr]
+                curr.right = TreeNode(value)
+                latter[curr.right] = latter[curr]
+                curr = curr.right
+                
+        return dummy.left

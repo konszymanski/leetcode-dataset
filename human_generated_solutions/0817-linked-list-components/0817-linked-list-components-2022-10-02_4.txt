@@ -1,0 +1,25 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def numComponents(self, head: Optional[ListNode], nums: List[int]) -> int:
+	
+        pointer = head
+		#prev is the pointer that stores boolean value: if the previous node\'s value exists in the nums list
+        prev = None
+        counter = 0
+        while pointer != None:
+			#check if pointer\'s value exist in the nums list
+            if pointer.val in nums:
+                if not prev:
+					#increase counter if only previous node\'s value doesn\'t exist in list,ie, prev=False
+                    counter += 1
+				#set prev as True for next node	
+                prev = True
+            else:
+				#set prev as False for next node
+                prev = False
+            pointer = pointer.next
+        return counter

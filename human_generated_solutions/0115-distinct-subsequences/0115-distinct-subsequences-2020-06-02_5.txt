@@ -1,0 +1,23 @@
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        @functools.lru_cache(None)
+        def foo(i,j):
+            if j<0:
+                # if all chars of t has been traversed return 1
+                return 1
+
+            if i<0:
+                # if all chars of t has not been traversed and already
+                # done with s, return 0
+                return 0
+
+            if s[i]==t[j]:
+                # if both characters are equal, take character of t or don\'t take it
+                # at index j and also go for next char of s
+                return foo(i-1, j) + foo(i-1, j-1)
+            
+            # if characters are not equal can\'t take char of t
+            # at index j search for next char of s
+            return foo(i-1, j)
+
+        return foo(len(s)-1, len(t)-1)

@@ -1,0 +1,25 @@
+def maxDistance(self, position: List[int], m: int) -> int:
+	position.sort()
+	n = len(position)
+	def isValid(force):
+		start = position[0]
+		count = 1
+		while(count < m):
+			start += force
+			i = bisect_left(position, start)
+			if(i == n):
+				return False
+			start = position[i]
+			count += 1
+		return True
+	i = 1
+	j = position[n-1] - position[0]
+	while(i <= j):
+		mid = i + (j-i)//2
+		x = isValid(mid)
+		if(x):
+			i = mid+1
+			ans = mid
+		else:
+			j = mid-1
+	return ans

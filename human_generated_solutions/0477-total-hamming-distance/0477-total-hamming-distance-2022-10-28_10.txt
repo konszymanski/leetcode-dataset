@@ -1,0 +1,17 @@
+class Solution(object):
+    def totalHammingDistance(self, nums):
+        mask = 1<<31
+        ans = 0
+        for i in range(31,-1,-1):
+            cnt = 0
+            for j in range(len(nums)):
+                if (mask&nums[j]):
+                    cnt+=1
+
+            ans+=(cnt*(len(nums)-cnt))
+            mask>>=1
+        return ans
+        """
+        :type nums: List[int]
+        :rtype: int
+        """

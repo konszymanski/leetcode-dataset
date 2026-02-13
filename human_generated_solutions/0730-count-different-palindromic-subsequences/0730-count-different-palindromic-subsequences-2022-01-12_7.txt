@@ -1,0 +1,46 @@
+class Solution:
+    def countPalindromicSubsequences(self, s: str) -> int:
+        def find_first(string, character,start, end):
+            for index in range(start, end+1):
+                char = s[index]
+                if char == character:
+                    return index
+            return -1
+        
+        def find_last(string, character, start, end):
+            last_seen = -1
+            for index in range(start, end+1):
+                char = s[index]
+                if char == character:
+                    last_seen = index
+            return last_seen
+        
+        
+        def _count_all_palindroms(left,right):
+            if left > right:
+                return 0
+            pos = (left,right)
+            if pos in cache:
+                return cache[pos]
+            
+            unique_characters = \'abcd\'
+            all_palindroms = 0 # getting all unique elements within this interval
+            for char in unique_characters:
+                first = find_first(s, char, left, right)
+                if first == -1: # doesnt exist
+                    continue
+                last = find_last(s,char, left, right)
+                if last == first: # exists just once
+                    all_palindroms += 1 
+                    continue
+                all_palindroms =  (all_palindroms + 2 + _count_all_palindroms(first+1,last-1)) % (10 ** 9 + 7)
+            cache[pos] = all_palindroms
+            
+            return all_palindroms
+                
+        if len(s) == 1:
+            return 1
+        cache = {}
+        results =  _count_all_palindroms(0,len(s)-1)
+
+        return results

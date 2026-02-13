@@ -1,0 +1,26 @@
+class Solution:
+    def minTaps(self, n: int, ranges: List[int]) -> int:
+        
+        # modify ranges so that the rightmost index you can reach by taking one jump       
+        for i,r in enumerate(ranges):
+            l = max(0,i-r)
+            ranges[l] = max( min(n,i+r), ranges[l] )
+        
+        rightmost = 0
+        curRight = 0
+        count = 0
+
+        for i, right in enumerate(ranges):            
+            if i > rightmost:
+                return -1
+            
+            rightmost = max(rightmost, right)
+            
+            if i == curRight:
+                count += 1
+                curRight = rightmost
+                
+                if rightmost == n:
+                    return count
+                   
+        return count

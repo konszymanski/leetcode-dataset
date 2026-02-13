@@ -1,0 +1,34 @@
+class Solution:
+    def minFlipsMonoIncr(self, s: str) -> int:
+        
+        # occurrence of 1 in strings s
+        occ_of_1 = 0
+        
+        # counter of flips of 1->0 and 0->1
+        flip = 0
+        
+        
+        # scan each digit on substring s[:i], i = 1 ~ len(s)
+        for char in s:
+            
+            if char == \'1\':
+                
+				# update occurrence of \'1\'
+                occ_of_1 += 1
+                
+				# current digit is \'1\'
+                # no need to flip when 1 is on the tail of current substring
+            
+            else:
+                
+				# current digit is \'0\'
+                # need to flip when 0 is on the tail of current substring
+                
+                # option_1: flip current 0 to 1, keep leading digits, then substring is monotone increasing
+                
+                # option_2: flip leading 1s to 0s, keep current 0, then substring is monotone increasing
+                
+                # select optimal solution
+                flip = min(flip+1, occ_of_1)
+                
+        return flip

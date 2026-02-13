@@ -1,0 +1,15 @@
+class Solution:
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        
+        res = 0
+        
+        queue = [(root, 0, 0)]
+        while queue:
+            node, left, right = queue.pop()
+            res = max(left, right, res)
+            if node.left:
+                queue.append((node.left, right+1, 0))
+            if node.right:
+                queue.append((node.right, 0, left+1))
+            
+        return res

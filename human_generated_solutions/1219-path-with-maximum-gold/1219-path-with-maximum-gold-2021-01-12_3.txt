@@ -1,0 +1,44 @@
+\'\'\'
+w: backtrack with recursion
+\'\'\'
+
+\'\'\'
+idea of  backtrack
+the main reason we ar using backtracking is that at current position (state)
+we have multiple options, we do not know which one is optimal so we want to
+try them one by one:
+    1) if we found some options contradict the restraints, we return to previous position (state)
+    2) if we continue to the end and the option is correct,  we add it to the final result
+    so we need pay attention to three aspect (or three key words):
+        1) options (O), 2)restraints (R), 3) termination (T, which is the search is complete and add to final results
+    
+we introduce some variables need to used in backtrack:
+1) global variable: use to store the result (such as self.res)
+2) parameters: 
+    1) state parameters or variable: the correct result need to be saved 
+        to the global variable
+    2) condition parameters: the initialized parameters for each search,
+        come from last state, these parameters determine whether we continue to
+        search at current position (state) or return (because of restraints)
+3) conditions of completion or return: whether the current parameters validate
+        the restraints or we can conitnue 
+4) process of recursion
+\'\'\'
+
+# naive template for backtrack
+# advanced method would include memorization to avoid replicate search
+
+res = []    # define the global variable to store the final result
+state = []  # define the state parameters
+p,q,r       # define the condition parameters
+def back(state\uFF0Ccondition1\uFF0Ccondition2\uFF0C\u2026\u2026):
+    if #1. violate the restraints(R)
+        return
+    elif #2. meet the termiantion (T)
+        res.append(state)   # add to final result
+        return 
+    
+    for #3. process of recursion, usually is a loop to try all possibility 
+        if  # meet some required condition, usually given by the problem
+            back(state\uFF0Ccondition1\uFF0Ccondition2\uFF0C\u2026\u2026)
+return res

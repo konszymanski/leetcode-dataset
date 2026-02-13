@@ -1,0 +1,17 @@
+class Solution:
+    def stoneGameVII(self, stones: List[int]) -> int:
+        n = len(stones)
+        
+        prefix = [0]
+        for i in stones:
+            prefix.append(prefix[-1]+i)
+        
+        def solve(left, right):
+            if left == right:
+                return 0
+            
+            leftScore = prefix[right+1] - prefix[left+1] - solve(left+1,right)
+            rightScore = prefix[right] - prefix[left] - solve(left,right-1)
+            return max(leftScore,rightScore)
+        
+        return solve(0,n-1)

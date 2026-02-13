@@ -1,0 +1,15 @@
+class Solution:
+    def pancakeSort(self, A: List[int]) -> List[int]:
+        """
+        The pancake sort: find the largest item and flip the list putting it at the last index
+        the tricky point is that: 
+        - A contains N items, which are 0 ... N-1;
+        - for each item in the list A, at most two steps for flipping, it can be put in the last index
+        """
+        size = len(A)
+        flips = []
+        for n in range(size, 0, -1):    # we want to put the largest item at the most right, so we start at the last
+            idx = A.index(n)            # 1. find current item\' index
+            flips.extend([idx + 1, n])  # 2. each item should be flipped 2 times for achieving the right position
+            A = A[:idx:-1] + A[:idx]    # 3. reverse the left part and right part of the current index
+        return flips

@@ -1,0 +1,15 @@
+#TIME COMPLEXITY - O(N)
+#SPACE COMPLEXITY -O(N)
+import collections
+class Solution:
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        hmap=collections.defaultdict(int)
+        prefix,cnt=0,0
+        for i in range(len(nums)):
+            prefix+=nums[i]
+            if prefix%k==0:
+                cnt+=1
+            if prefix%k in hmap:
+                cnt+=hmap[prefix%k]
+            hmap[prefix%k]+=1
+        return cnt

@@ -1,0 +1,79 @@
+class Solution:
+    def countOfAtoms(self, formula: str):
+        # get the element count from the helper function
+        formula_dict =  self.helper(formula)
+
+        # build up the answer string by sorting the keys
+        ans = ""
+        for key in sorted(formula_dict):
+            ans += key.strip()
+            if formula_dict[key] > 1:
+                ans += str(formula_dict[key])
+                
+        return ans
+
+    def helper(self, formula: str):
+
+        # initialize
+        stack = []
+        num = 0
+        element = " "
+        n = len(formula)
+
+        i = 0
+        while i < n:
+            c = formula[i]
+
+            # case 1: isalpha
+            if c.isalpha():
+                
+                # is lower case:  append the char to the current element
+                if c.islower():
+                    element += c
+                else:
+                    # is upper case:  a new element
+                    if len(element) > 1:
+                        stack.append({element: 1})
+                    
+                    element = " " + c
+
+            # case 2: is digit or ( )
+            else:
+                if len(element) > 1:
+                    stack.append({element: 1})
+                element = " "
+
+                # is digit: increase the num of the last part in the stack
+                if c.isdigit():
+                    num = int(c)
+                    while i < len(formula) - 1 and formula[i + 1].isdigit():
+                        i += 1
+                        c = formula[i]
+                        num = 10 * num + int(c)
+        
+                    for key, value in stack[-1].items():
+                        stack[-1][key] = value * num
+                
+                # enter recursion               
+                elif c == "(":
+                    part, j = self.helper(formula[i + 1:])
+                    stack.append(part)
+                    i = i + j
+                elif c == ")":
+                    # print("stack inner", stack)
+                    return self.resolve_stack(stack), i + 1
+            
+            i += 1
+        
+        if len(element) > 1:
+            stack.append({element: 1})
+        
+        # print("stack", stack)
+        return self.resolve_stack(stack)
+
+    def resolve_stack(self, stack):
+        ret = {}
+        for item in stack:
+            for key,value in item.items():
+                ret[key] = ret.get(key, 0) + value
+        return ret

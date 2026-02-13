@@ -1,0 +1,18 @@
+class Solution:
+    def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+        n, qw = len(quality), [(0, 0) for _ in range(len(quality))]
+        for i in range(n):
+            qw[i] = (wage[i] / quality[i], quality[i])
+        qw.sort()
+        sm, res, heap = 0, float(\'inf\'), []
+        for workByQuality, quality in qw:
+            maxElem = -(nsmallest(1, heap)[0]) if len(heap) > 0 else float(\'inf\')
+            if len(heap) < k or quality < maxElem:
+                heappush(heap, -quality)
+                sm += quality
+            if len(heap) > k:
+                sm -= maxElem
+                heappop(heap)
+            if len(heap) == k:
+                res = min(res, sm * workByQuality)
+        return res

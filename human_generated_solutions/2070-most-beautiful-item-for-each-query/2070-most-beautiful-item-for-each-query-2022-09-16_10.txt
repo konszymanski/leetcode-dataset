@@ -1,0 +1,12 @@
+class Solution:
+    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
+        res, queries = [0] * len(queries), [[price, index] for index, price in enumerate(queries)]
+        items.sort(); queries.sort()
+        prev, i = 0, 0
+        for price, index in queries:
+            best = max(0, prev)
+            while i < len(items) and items[i][0] <= price:
+                best = max(best, prev, items[i][1])
+                i += 1
+            res[index], prev = best, best
+        return res

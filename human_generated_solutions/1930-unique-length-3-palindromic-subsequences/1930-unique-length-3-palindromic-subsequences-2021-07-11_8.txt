@@ -1,0 +1,10 @@
+def countPalindromicSubsequence(s: str) -> int:
+    count = 0
+    sub_str = list(set(s))
+    for x in sub_str:
+        i, j = s.find(x), s.rfind(x)
+
+        if i < j:
+            count += len(set(s[i + 1:j]))
+
+    return count

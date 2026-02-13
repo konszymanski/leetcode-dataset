@@ -1,0 +1,55 @@
+class DSU:
+    def __init__(self, N):
+        self.parent = [i for i in range(N)]
+        self.rank = [1] * N
+        self.components = N
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, a, b):
+        ua = self.find(a)
+        ub = self.find(b)
+        if ua == ub:
+            return False
+
+        if self.rank[ua] < self.rank[ub]:
+            ua, ub = ub, ua
+
+        self.parent[ub] = ua
+        self.rank[ua] += self.rank[ub]
+        self.rank[ub] = self.rank[ua]
+        self.components -= 1
+        return True
+
+    def rank(self, x):
+        return self.rank[self.find(x)]
+
+class Solution:
+    def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
+        parent = {}
+        # Find nodes that have two parents. If there are some, it means that those edges are candidates for removal
+        twoParents = []
+        for u, v in edges:
+            if v in parent:
+                twoParents.append((parent[v], v))
+                twoParents.append((u, v))
+            parent[v] = u
+        
+        N = len(edges)
+        uf = DSU(N)
+        for u, v in edges:
+            if twoParents and (u, v) == twoParents[1]:
+                continue
+            if uf.union(u - 1, v - 1):
+                continue
+            else:
+                if len(twoParents) == 0:
+                    return [u, v]
+                else:
+                    return twoParents[0]
+        return twoParents[1]
+    # Time: O(N * \u03B1(N))
+    # Space: O(N)

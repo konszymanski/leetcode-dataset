@@ -1,0 +1,34 @@
+class SmallestInfiniteSet:
+
+    def __init__(self):
+		#l is the list which will contain poped elements
+        self.l=[]
+		#minn will contain current minimum element in the infinite list
+        self.minn=1
+
+    def popSmallest(self) -> int:
+		#if minn is not already present in l then append it.
+        if(self.minn not in self.l):
+            self.l.append(self.minn)
+			
+        #we have to return min so store it in temp variable so that we can update min value    
+        t=self.minn
+		
+		#update min
+        self.minn+=1    
+        while(self.minn in self.l):
+            self.minn+=1
+            
+        return t
+
+    def addBack(self, num: int) -> None:
+        if(num not in self.l):
+            return None
+			
+		#adding back num means it should not be present in l anymore. So remove it
+        self.l.remove(num)
+		
+		#if num is smaller than current min then update min
+        if(num<self.minn):
+            self.minn=num
+        return num

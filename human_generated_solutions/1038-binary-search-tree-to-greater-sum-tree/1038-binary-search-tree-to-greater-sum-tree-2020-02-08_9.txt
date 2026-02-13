@@ -1,0 +1,12 @@
+class Solution:
+    sum = 0
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        def reverseOrderTraversal(node: TreeNode):
+            if node.right:
+                reverseOrderTraversal(node.right)
+            self.sum += node.val
+            node.val = self.sum
+            if node.left:
+                reverseOrderTraversal(node.left)
+        reverseOrderTraversal(root)
+        return root

@@ -1,0 +1,28 @@
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        if start.replace(\'X\', \'\') != end.replace(\'X\', \'\'):
+            return False
+        ptr1, ptr2, szStart, szEnd = 0, 0, len(start), len(end)
+        while ptr1 < szStart and ptr2 < szEnd:
+            # get the non-X positions of 2 strings
+            while ptr1 < szStart and start[ptr1] == \'X\':
+                ptr1 += 1
+            while ptr2 < szEnd and end[ptr2] == \'X\':
+                ptr2 += 1
+            # if both of the pointers reach the end the strings are transformable
+            if ptr1 == szStart and ptr2 == szEnd:
+                return True
+            # f only one of the pointer reach the end they are not transformable
+            if ptr1 == szStart or ptr2 == szEnd:
+                return False
+            if start[ptr1] != end[ptr2]:
+                return False
+            # if the character is \'L\', it can only be moved to the left. p1 should be greater or equal to p2.
+            if start[ptr1] == \'L\' and ptr2 > ptr1:
+                return False
+            # if the character is \'R\', it can only be moved to the right. p2 should be greater or equal to p1.
+            if start[ptr1] == \'R\' and ptr1 > ptr2:
+                return False
+            ptr1 += 1
+            ptr2 += 1
+        return True

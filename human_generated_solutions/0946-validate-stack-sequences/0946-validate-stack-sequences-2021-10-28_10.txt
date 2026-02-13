@@ -1,0 +1,11 @@
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        idx = 0
+        while idx < len(pushed) and pushed:
+            if pushed[idx] == popped[0]:
+                popped.pop(0)
+                pushed.pop(idx)
+                idx = max(idx-1,0)
+            else:
+                idx += 1
+        return True if not pushed else False

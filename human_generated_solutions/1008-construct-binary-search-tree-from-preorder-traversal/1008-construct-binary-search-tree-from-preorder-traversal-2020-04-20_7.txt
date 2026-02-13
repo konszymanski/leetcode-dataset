@@ -1,0 +1,16 @@
+class Solution:
+    def bstFromPreorder(self, preorder: List[int]) -> TreeNode:
+        if not preorder: return None
+        
+        node = TreeNode(preorder.pop(0))
+        
+        index = len(preorder)
+        for i, val in enumerate(preorder):
+            if val > node.val:
+                index = i
+                break
+                
+        node.left = self.bstFromPreorder(preorder[:index])
+        node.right = self.bstFromPreorder(preorder[index:])
+        
+        return node

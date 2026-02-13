@@ -1,0 +1,29 @@
+class TrieNode:
+    def __init__(self):
+        self.links={}
+        self.flag=False
+class Trie:
+    def __init__(self):
+        self.root=TrieNode()
+
+    def insert(self,word):
+        d=self.root
+        for i in range(len(word)):
+            if word[i] not in d.links:
+                d.links[word[i]]=TrieNode()
+            d=d.links[word[i]]
+            if d.flag:
+                return False
+        d.flag=True
+        return True
+        
+class Solution:
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        ans=[]
+        b=Trie()
+        folder.sort(key=len)
+        for i in folder:
+            j=i.split(\'/\')
+            if b.insert(j):
+                ans.append(i)
+        return ans

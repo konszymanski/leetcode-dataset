@@ -1,0 +1,6 @@
+def projectionArea(self, grid: List[List[int]]) -> int:
+	xy = sum(1 for row in grid for v in row if v)    # for xy projection count non-zero values
+    xz = sum(max(row) for row in grid)               # for xz - it is the sum of the max values in each row
+    yz = sum(max(col) for col in zip(*grid))         # for yz - it is the sum of the max values in each column
+	
+	return xy + xz + yz

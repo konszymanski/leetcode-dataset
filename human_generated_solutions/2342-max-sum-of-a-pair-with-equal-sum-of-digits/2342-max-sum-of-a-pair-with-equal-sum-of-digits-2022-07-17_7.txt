@@ -1,0 +1,25 @@
+from bisect import insort
+class Solution:
+    def maximumSum(self, nums: List[int]) -> int:
+        k = {}
+        
+        def getSum(n):
+            return sum(list(map(int, str(n).strip())))
+            
+        for i in nums:
+            x = getSum(i)
+            if x in k:
+                insort(k[x],i)
+                if len(k[x]) > 2:
+                    k[x].pop(0)
+            else:
+                k[x] = [i]
+        
+        result = float("-inf")
+        
+        for digitSum, arr in k.items():
+            i, n = 0, len(arr)
+            if n == 2:
+                result = max(result, sum(arr))
+        
+        return result if result != float("-inf") else -1

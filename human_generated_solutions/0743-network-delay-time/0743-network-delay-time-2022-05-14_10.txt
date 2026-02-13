@@ -1,0 +1,36 @@
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+	    #Build graph as adjacency list
+        adj = defaultdict(list)
+        for src, dst, time in times:
+            adj[src].append((dst, time))
+        
+		# keep track of the nodes we\'ve visited so far to make sure we visit n nodes. Otherwise return -1
+        nodeCount = 0
+		# distance array to keep track of best distance for ith node we\'ve seen so far... not absolute shortest path tho.
+        distance = [float(\'inf\')]*(n+1)
+        heap = [[0, k]]
+        seen = [False]*(n+1)
+		# keep track of the largest shortest path we\'ve seen for any node so far
+        shortestTime = float(\'-inf\')
+        
+        while heap:
+            currTime, node = heappop(heap)
+            if seen[node]:
+                continue
+            seen[node] = True
+            nodeCount += 1
+            shortestTime = max(shortestTime, currTime)
+            
+            for ngh, time in adj[node]:
+			    # First Optimization: if not seen[ngh]. Additional visited check (check out explanation for details)
+				# Second Optimization: currTime+time < distance[ngh]. Keeping best distance for every node (check out explanation)
+				
+                if not seen[ngh] and currTime+time < distance[ngh]:
+                    distance[ngh] = currTime+time
+                    heappush(heap, (currTime+time, ngh))
+	
+	    # if nodeCount < n, there are nodes we didn\'t run into. 
+        if nodeCount < n:
+            return -1
+        return shortestTime

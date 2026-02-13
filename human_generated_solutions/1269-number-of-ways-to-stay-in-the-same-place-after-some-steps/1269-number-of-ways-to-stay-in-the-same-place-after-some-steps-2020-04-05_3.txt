@@ -1,0 +1,10 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        N, MOD = min(steps, arrLen), 10**9+7
+        moves = [1] + [0]*N
+        for s in range(steps):
+            pre = 0
+            for i in range(N):
+                pre, moves[i] = (moves[i], (pre + moves[i] + moves[i+1]) % MOD)
+            # moves[i] = k if there\'s k ways to move from i to 0 in s+1 steps
+        return moves[0]

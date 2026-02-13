@@ -1,0 +1,4 @@
+def dfs(self,A,i,j,memo):
+        if i >= len(A):
+            return 0
+        return A[i][j] + min(self.dfs(A,i+1,j,memo),self.dfs(A,i+1,max(0,j-1),memo), self.dfs(A,i+1,min(len(A)-1,j+1),memo))

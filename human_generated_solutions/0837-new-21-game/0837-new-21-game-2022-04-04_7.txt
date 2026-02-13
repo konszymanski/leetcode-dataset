@@ -1,0 +1,14 @@
+class Solution(object):
+    def new21Game(self, n, k, maxPts):
+        if n >= k + maxPts:
+            return 1        
+        prob = 1.0
+        summ = float(n - k + 1)
+        q = deque([1] * (n - k + 1))
+        for i in reversed(xrange(k)): 
+            prob = summ / maxPts
+            q.append(prob)
+            summ += prob
+            if len(q) > maxPts:
+                summ -= q.popleft()
+        return prob

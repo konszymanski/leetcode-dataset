@@ -1,0 +1,13 @@
+class Solution:
+    def maximumInvitations(self, favorite: List[int]) -> int:
+        G, C, self.maxCycle = [set() for _ in range(len(favorite))], [0] * len(favorite), 0
+        for u,favorite_u in enumerate(favorite): G[favorite_u].add(u)
+        def dfs(u,c = 1):
+            if C[u]: return C[u]
+            C[u] = c
+            for v in G[u]: self.maxCycle = max(c + 1 - dfs(v, c+1), self.maxCycle)
+            C[u] = float(\'inf\')
+            return C[u]
+        for u in range(len(favorite)): dfs(u)
+        def dfs(u,p): return 1 + max([dfs(v,u) for v in G[u] if v != p], default=0)
+        return max( self.maxCycle, sum(dfs(u,v) + dfs(v,u) for u in range(len(favorite)) for v in G[u] if u in G[v])//2)

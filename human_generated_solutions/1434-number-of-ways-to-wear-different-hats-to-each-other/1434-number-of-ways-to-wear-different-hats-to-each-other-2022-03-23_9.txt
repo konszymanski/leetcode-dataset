@@ -1,0 +1,44 @@
+class Solution:
+    def numberWays(self, hats: List[List[int]]) -> int:
+        
+        d1 = {} #hat to people
+        for i in range(len(hats)):
+            for e in hats[i]:
+                if e not in d1: d1[e] = set()
+                d1[e].add(i)
+        
+        
+        # d = {}
+        
+        
+        
+        @functools.lru_cache(None)        
+        def dfs(on, worn): #ways to get to the end
+            if on > 40:
+                for e in worn:
+                    if e == False:
+                        return 0
+                
+                return 1
+            
+            
+            r = dfs(on+1, worn) #if we don\'t choose
+            
+            if on in d1:
+                for person in d1[on]:
+                    if worn[person] == True: #already has a hat
+                        continue
+
+
+                    t = list(worn)
+                    t[person] = True
+                    r += dfs(on+1, tuple(t)) #more ways to the end
+
+            
+            return r
+        
+        w = []
+        for i in range(len(hats)):
+            w.append(False)
+        
+        return dfs(1, tuple(w)) % (10**9+7)

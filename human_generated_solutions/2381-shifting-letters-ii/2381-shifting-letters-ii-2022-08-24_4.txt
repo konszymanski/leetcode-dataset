@@ -1,0 +1,30 @@
+from collections import defaultdict
+
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[List[int]]) -> str:
+        # As in Python string is immutable, so need to convert it into character list.
+        arr = list(s)
+        n = len(arr)
+        
+        # Since there are only lowercase letter, we can use a list to serve the need for referring shifting character.
+        maplist = [chr(i) for i in range(97, 123)]
+        shiftmap = defaultdict(int)
+        
+        # shiftmap[i] = d means all characters from ith index to the end of the string
+        # need to be shifted forward d times (if d < 0, shift backward.)
+        # For each interval, we only need to use start and (end + 1) index.
+        for start, end, direct in shifts:
+            d = 1 if direct == 1 else -1
+            shiftmap[start] += d
+            if end + 1 < n: # we only care about index < length of s
+                shiftmap[end + 1] -= d
+        
+        # Iterate each index and check its shift offset from the map
+        # update the offset continuously then find the character after shifting the accumulated offset.
+        offset = 0
+        for i in range(n):
+            if shiftmap[i] != 0:
+                offset += shiftmap[i]
+            arr[i] = maplist[(ord(arr[i]) - 97 + offset) % 26]
+        
+        return "".join(arr)

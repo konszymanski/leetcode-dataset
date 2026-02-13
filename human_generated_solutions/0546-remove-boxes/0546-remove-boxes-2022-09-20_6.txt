@@ -1,0 +1,20 @@
+class Solution:
+    def removeBoxes(self, boxes: List[int]) -> int:
+        @functools.lru_cache(None)
+        def dp(l, r, k):
+            
+            if l > r: return 0  # base case
+            
+            if l + 1 < n and boxes[l+1] == boxes[l]:  # special case
+                return dp(l+1, r, k+1)
+            
+            ans = dp(l+1, r, 0) + (k + 1) ** 2  # first choice
+            
+            for j in range(l+1, r+1):
+                if boxes[j] == boxes[l]:
+                    ans = max(ans, dp(j, r, k+1) + dp(l+1, j-1, 0)) # second choice
+            
+            return ans
+        
+        n = len(boxes)
+        return dp(0, n-1, 0)

@@ -1,0 +1,8 @@
+def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        res = []
+        for i,n in enumerate(nums):
+            if len(res) == k:
+                heappushpop(res, (n, i))
+            else:
+                heappush(res, (n, i))
+        return [x[0] for x in sorted(res, key=lambda x: x[1])]

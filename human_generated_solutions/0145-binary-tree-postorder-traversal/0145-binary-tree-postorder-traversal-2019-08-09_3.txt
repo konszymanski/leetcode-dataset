@@ -1,0 +1,13 @@
+def inorderTraversal(self, root: TreeNode) -> List[int]:
+        stack = [root]
+        res = []
+        while stack:
+            temp = stack.pop()
+            if temp:
+                if isinstance(temp, TreeNode):
+                    stack.append(temp.right)
+                    stack.append(temp.val)
+                    stack.append(temp.left)
+                else:
+                    res.append(temp)
+        return res

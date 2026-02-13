@@ -1,0 +1,33 @@
+class Solution:
+    def ambiguousCoordinates(self, s: str) -> List[str]:
+        # Extract number 
+        orig = re.findall("([0-9]+)", s)[0]
+        output = []
+        # Iterrate trying to split the number to two by `index` (put comma) 
+        for index in range(len(orig)-1):            
+            result = [None]*2                                                
+            d1, d2 = orig[:index+1], orig[index+1:]            
+            # Try to put dot in 1st digit
+            for x in range(len(d1)):
+                if x > 0 and d1[0] == \'0\':
+                    continue
+                if x == len(d1)-1:
+                    result[0] = d1
+                else:
+                    if d1[x+1:][-1] == "0":
+                        continue
+                    result[0] = f"{d1[:x+1]}.{d1[x+1:]}"
+                # Try to put dot in 2nd digit
+                for y in range(len(d2)):
+                    if y > 0 and d2[0] == \'0\':
+                        continue
+                    if y == len(d2)-1:
+                        result[1] = d2
+                    else:
+                        if d2[y+1:][-1] == "0":
+                            continue
+                        result[1] = f"{d2[:y+1]}.{d2[y+1:]}"
+
+                    output.append(f"({result[0]}, {result[1]})")
+            
+        return output

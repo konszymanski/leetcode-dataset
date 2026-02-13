@@ -1,0 +1,25 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        
+        # backtracking
+        ways = 0
+        
+        @cache
+        def get_steps(step: int, loc: int):
+            nonlocal ways
+            
+            if steps - step < loc:
+                # there is no way to go back to the zero.
+                return 0
+            
+            if step == steps and loc == 0:
+                return 1
+            
+            # stay
+            rslt = get_steps(step+1, loc)
+            if loc != 0: rslt += get_steps(step+1, loc-1)
+            if loc != arrLen - 1: rslt += get_steps(step+1, loc+1)
+            
+            return rslt
+        
+        return get_steps(0, 0) % (10**9 + 7)

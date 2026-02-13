@@ -1,0 +1,23 @@
+class Solution(object):
+    def mostCommonWord(self, paragraph, banned):
+        """
+        :type paragraph: str
+        :type banned: List[str]
+        :rtype: str
+        """
+        paragraph = paragraph.lower()
+        count = 0
+        y=""
+        s="!?\',;."
+        for i in s:
+            paragraph = paragraph.replace(i,\' \')
+            
+            
+        allwords = paragraph.split()
+        words = list(set(allwords))
+        for j in words:
+            if j not in banned:
+                if allwords.count(j) > count:
+                    count = allwords.count(j)
+                    y = j
+        return y

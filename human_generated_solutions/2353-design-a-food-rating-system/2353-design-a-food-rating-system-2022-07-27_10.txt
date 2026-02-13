@@ -1,0 +1,22 @@
+from collections import defaultdict
+from sortedcontainers import SortedSet
+
+
+class FoodRatings:
+
+    def __init__(self, foods: List[str], cuisines: List[str],
+                 ratings: List[int]):
+        self.f_dict = dict()
+        self.c_dict = defaultdict(SortedSet)
+        for f, c, r in zip(foods, cuisines, ratings):
+            self.f_dict[f] = [-r, c]
+            self.c_dict[c].add((-r, f))
+
+    def changeRating(self, food: str, newRating: int) -> None:
+        current_rating, current_cuisine = self.f_dict[food]
+        self.f_dict[food][0] = -newRating
+        self.c_dict[current_cuisine].remove((current_rating, food))
+        self.c_dict[current_cuisine].add((-newRating, food))
+
+    def highestRated(self, cuisine: str) -> str:
+        return self.c_dict[cuisine][0][1]

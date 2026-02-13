@@ -1,0 +1,11 @@
+class Solution:
+    def totalHammingDistance(self, nums: List[int]) -> int:
+        ans=0
+        for i in range(32):
+            c1,c2=0,0
+            for j in range(len(nums)):
+                c1+=int(nums[j]%2==1)    # increment c1 if there is odd bit.
+                c2+=int(nums[j]%2==0)    # increment c2 if there is even bit.
+                nums[j]//=2
+            ans+=c1*c2
+        return ans

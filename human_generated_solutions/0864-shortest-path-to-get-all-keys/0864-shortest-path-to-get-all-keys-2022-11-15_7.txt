@@ -1,0 +1,51 @@
+class Solution:
+    def shortestPathAllKeys(self, grid: List[str]) -> int:
+        m, n = len(grid), len(grid[0])
+        directions = [-1, 0, 1, 0, -1]
+
+        symbols = {".", "#", "@"}
+        start = None
+        num_keys = 0
+        for i in range(m):
+            for j in range(n):
+                temp = grid[i][j]
+                if temp == "@":
+                    start = (i, j)
+        
+                num_keys += (temp not in symbols)
+            
+        num_keys //= 2
+
+        FULL_KEYS = (1 << num_keys) - 1 
+
+        q = [start + (0, 0)]
+        visited = {(start[0], start[1], 0)}
+        while q:
+            i, j, original_keys, d = q.pop(0)
+
+            for k in range(4):
+                keys = original_keys
+                x, y = i + directions[k], j + directions[k + 1]
+
+                if 0 <= x < m and 0 <= y < n and grid[x][y] != "#":
+                    if grid[x][y] == "." or grid[x][y] == "@":
+                        if (x, y, keys) not in visited:
+                            visited.add((x, y, keys))
+                            q.append((x, y, keys, d + 1))
+                    elif 0 <= ord(grid[x][y]) - ord("A") < 26:
+                        lock = ord(grid[x][y]) - ord("A")
+                        
+                        if keys & (1 << lock) != 0 and (x, y, keys) not in visited:
+                            visited.add((x, y, keys))
+                            q.append((x, y, keys, d + 1))
+                    else:
+                        temp = ord(grid[x][y]) - ord("a")
+                        if keys & (1 << temp) == 0:
+                            keys |= (1 << temp)
+                            if keys == FULL_KEYS:
+                                return d + 1
+                        if (x, y, keys) not in visited:
+                            visited.add((x, y, keys))
+                            q.append((x, y, keys, d + 1))
+        
+        return -1

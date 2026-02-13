@@ -1,0 +1,29 @@
+def teamup(req_skills, people)
+    skMap = {skill: i for i, skill in enumerate(req_skills)}
+    devs = []
+    for devSkills in people :
+        val = 0
+        for skill in devSkills :
+            mask = 1 << skMap[skill]
+            val = val | mask
+        devs.append(val)
+
+
+    req_mask = (1 << len(req_skills)) -1
+    ans = [0] * 100
+    # each dev has to choices: inclusion and exclusion
+    def btrack(i, path, mask) :
+	    nonlocal ans
+        if mask == req_mask :
+            ans = min(ans, path, key = lambda d : len(d))
+            return
+        if i >= len(people) :
+            return 
+
+        #incl
+        btrack(i+1, path+[i], mask | devs[i])    
+        #excl
+        btrack(i+1, path, mask)
+    
+    btrack(0, [], 0)
+    return ans

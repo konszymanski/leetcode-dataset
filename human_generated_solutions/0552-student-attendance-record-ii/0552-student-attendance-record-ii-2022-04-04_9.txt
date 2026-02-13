@@ -1,0 +1,6 @@
+class Solution:
+    def checkRecord(self, n):
+        return sum(map(self.check,product(["A","L","P"],repeat=n)))
+        
+    def check(self, s):
+        return not (\'LLL\' in s or s.count(\'A\') > 1)

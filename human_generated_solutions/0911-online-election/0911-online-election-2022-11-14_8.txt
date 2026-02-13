@@ -1,0 +1,23 @@
+class TopVotedCandidate:
+
+    def __init__(self, persons: List[int], times: List[int]): #O(n) #O(n)
+        currMax = 0
+        currMaxCandidate = 0
+        counts = Counter()
+        self.mapp = {}
+        self.times = times
+        for p, t in zip(persons, times):
+            counts[p] += 1
+            if currMax <= counts[p]:
+                currMax = counts[p]
+                currMaxCandidate = p
+                
+            self.mapp[t] = currMaxCandidate
+
+    def q(self, t: int) -> int: #O(log n) #O(1)
+        index = bisect_left(self.times, t)
+
+        if index == len(self.times) or self.times[index] != t:
+            index -= 1
+            
+        return self.mapp[self.times[index]]

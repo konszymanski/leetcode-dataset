@@ -1,0 +1,17 @@
+def maxLength(self, arr: List[str]) -> int:
+        length = 0
+        
+        def recurse(index, word):
+            if len(set(word)) != len(word):
+                return
+            
+            if index == len(arr):
+                nonlocal length
+                length = max(length, len(word))
+                return
+            
+            recurse(index + 1, word + arr[index])
+            recurse(index + 1, word)
+        
+        recurse(0, \'\')
+        return length

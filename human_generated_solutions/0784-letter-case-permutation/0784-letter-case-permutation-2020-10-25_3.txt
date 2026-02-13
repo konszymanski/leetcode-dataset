@@ -1,0 +1,23 @@
+def letterCasePermutation(self, S: str) -> List[str]:
+	result = []
+	partial = []
+
+	def permHelper(index, partial):
+		if index==len(S):
+			result.append(\'\'.join(partial))
+			return
+
+		if S[index].isalpha():
+			partial.append(S[index].lower())
+			permHelper(index+1, partial)
+			partial.pop()
+			partial.append(S[index].upper())
+			permHelper(index+1, partial)
+			partial.pop()
+		else:
+			partial.append(S[index])
+			permHelper(index+1, partial)
+			partial.pop()
+
+	permHelper(0, partial)
+	return result

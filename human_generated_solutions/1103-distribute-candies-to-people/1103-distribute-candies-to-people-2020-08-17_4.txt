@@ -1,0 +1,25 @@
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        
+        results=[0]*num_people 
+        give=0
+        totalCandiesGiven=0
+        left=candies-totalCandiesGiven
+        
+        while totalCandiesGiven<candies: 
+
+            for i in range(len(results)): 
+                
+                left=candies-totalCandiesGiven    
+                give+=1
+                
+                results[i]= results[i]+give if left>=give else results[i]+left
+                
+
+                totalCandiesGiven+=give
+                
+                if totalCandiesGiven>=candies:
+                    break
+                
+                
+        return results

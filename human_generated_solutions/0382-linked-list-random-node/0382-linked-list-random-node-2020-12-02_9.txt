@@ -1,0 +1,20 @@
+class Solution:
+
+    def __init__(self, head: ListNode):
+        self.head = head
+        self.count = self.count(head)
+
+    def count(self, node: ListNode) -> int:
+        count = 1
+        while node.next:
+            node = node.next
+            count += 1
+        return count
+        
+    def getRandom(self) -> int: return self.get(random.randrange(self.count))
+    
+    def get(self, index: int) -> int:
+        node = self.head
+        for i in range(0,index):
+            node = node.next
+        return node.val

@@ -1,0 +1,16 @@
+def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        counter  = 1
+        result = [0] * num_people
+        
+        while candies :
+            index = (counter - 1) % num_people
+            if candies - counter >= 0:
+                result[index] += counter
+                candies -= counter
+            else :
+                result[index] += candies
+                candies = 0
+                
+            counter += 1
+        
+        return result

@@ -1,0 +1,88 @@
+class Solution:
+    def treeQueries_v1(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        # 1. get height and depth of each node
+        # depth: the path length from root to this node
+        # height: the path length from this node to deepest descedant(s)
+        depth = collections.defaultdict(int)
+        height = collections.defaultdict(int)
+        
+        def worker(node, d):
+            if not node:
+                return -1
+            depth[node.val] = d
+            l = worker(node.left, d + 1)
+            r = worker(node.right, d + 1)
+            h = max(l, r) + 1
+            height[node.val] = h
+            return h
+        
+        
+        
+        worker(root, 0)
+        
+        # 2. find cousins at each level
+        cousins = collections.defaultdict(list)
+        for val, d in depth.items():
+            cousins[d].append((-height[val], val))
+            cousins[d].sort()
+            while len(cousins[d]) > 2:
+                cousins[d].pop()
+        
+        # 3. get the return
+        res = []
+        for val in queries:
+            d = depth[val]
+            csn = cousins[d]
+            if len(csn) == 1:
+                res.append(d-1)
+            elif val == csn[0][1]: # the removed node has max height in csn
+                res.append(d - csn[1][0])
+            else:
+                res.append(d - csn[0][0])
+        return res
+    
+    
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        # 1. get height and depth of each node
+        # depth: the path length from root to this node
+        # height: the path length from this node to deepest descedant(s)
+        depth = collections.defaultdict(int)
+        height = collections.defaultdict(int)
+        
+        def worker(node, d):
+            if not node:
+                return -1
+            depth[node.val] = d
+            l = worker(node.left, d + 1)
+            r = worker(node.right, d + 1)
+            h = max(l, r) + 1
+            height[node.val] = h
+            return h
+        
+        
+        
+        worker(root, 0)
+        
+        # 2. find cousins at each level
+        cousins = collections.defaultdict(list)
+        for val, d in depth.items():
+            heapq.heappush(cousins[d], (height[val], val))
+            if len(cousins[d]) > 2:
+                heapq.heappop(cousins[d])
+        
+        # 3. get the return
+        res = []
+        for val in queries:
+            d = depth[val]
+            csn = cousins[d]
+            if len(csn) == 1:
+                res.append(d-1)
+            # the removal val is in csn
+            elif csn[0][1] == val:
+                res.append(d + csn[1][0])
+            elif csn[1][1] == val:
+                res.append(d + csn[0][0])
+            # the removal val not in csn
+            else:
+                res.append(d + csn[1][0])
+        return res

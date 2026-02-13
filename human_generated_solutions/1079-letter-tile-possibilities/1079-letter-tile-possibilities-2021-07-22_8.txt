@@ -1,0 +1,6 @@
+class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        quantities = collections.Counter(tiles).values()
+        return sum(factorial(sum(comb)) // reduce(mul, map(factorial, comb))
+                   for comb in itertools.product(*map(lambda v: range(0, v + 1), quantities))
+                  ) - 1

@@ -1,0 +1,15 @@
+def fun(arr,i,k,memo):
+    if(i in memo):
+        return memo[i]
+    if(i>=len(arr)):
+        return 0
+    mx=arr[i]
+    mxt=0
+    for j in range(i,min(len(arr),i+k)):
+        mx=max(mx,arr[j])
+        mxt=max(fun(arr,j+1,k,memo)+mx*(j-i+1),mxt)
+    memo[i]=mxt
+    return mxt
+class Solution:
+    def maxSumAfterPartitioning(self, arr: List[int], k: int) -> int:
+        return(fun(arr,0,k,{}))

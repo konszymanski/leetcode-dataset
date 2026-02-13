@@ -1,0 +1,27 @@
+\'\'\'
+we can calculate the money accumulated by week, then by day
+\'\'\'
+
+class Solution:
+    def totalMoney(self, n: int) -> int:
+        w = n // 7
+        d = n % 7
+        
+        
+        base1 = 28 * w  # the total money for 1st week
+        base2 = w + 1 if d else 0 #the money for the Monday, d > 0 means we would start a new week
+                                    # else we should stop in previous week (on Sunday)
+        
+        
+        # 1. calculate the money for previous week
+        for i in range(1, w):
+            base1 += i * 7
+            
+        
+        # 2. calcuate the money until the current day
+        for i in range(1,d):
+            print(base2)
+            base2 += (w+1+i)
+            
+        
+        return base1 + base2

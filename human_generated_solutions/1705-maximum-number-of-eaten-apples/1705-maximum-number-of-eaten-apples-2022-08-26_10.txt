@@ -1,0 +1,19 @@
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        
+        h = []
+        n = len(apples)
+        ans, i = 0, 0
+        
+        while True:
+            if i < n:
+                heapq.heappush(h, (i + days[i], apples[i]))
+            while h and (h[0][0] <= i or h[0][1] <= 0):
+                heapq.heappop(h)
+            if not h and i >= n:
+                break
+            if h:
+                ans += 1
+                heapq.heapreplace(h, (h[0][0], h[0][1] - 1))
+            i += 1    
+        return ans

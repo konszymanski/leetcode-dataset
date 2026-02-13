@@ -1,0 +1,15 @@
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        leftMax = nums[0]
+        curMax = nums[0]
+        ans = 1
+        for i, num in enumerate(nums):
+			# If current number is smaller than left maximum, the answer is no longer valid.
+			# Now the current index is the last index of left and the maximum is now left maximum.
+            if num < leftMax:
+                ans = i+1  
+                leftMax = curMax
+			# Update the current maximum
+            curMax = max(curMax, num)
+
+        return ans

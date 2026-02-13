@@ -1,0 +1,17 @@
+class Solution:
+    def shoppingOffers(
+        self, price: List[int], special: List[List[int]], needs: List[int]
+    ) -> int:
+        N = len(price)
+
+        @cache
+        def dp(needed: Tuple[int]) -> int:
+            cur = sum(price[i] * needed[i] for i in range(N))
+            for s in special:
+                if all(s[i] <= needed[i] for i in range(N)):
+                    cur = min(
+                        cur, s[-1] + dp(tuple(needed[i] - s[i] for i in range(N)))
+                    )
+            return cur
+
+        return dp(tuple(needs))

@@ -1,0 +1,160 @@
+# DFS solution: TLE
+class Solution:
+    # dfs function: return a hash table of all the paths from the parent to this node
+    def dfs(self, node, parent):
+        paths = {}
+        children_paths = {}
+        for nxt in self.graph[node]:
+            if nxt != parent:
+                nxt_paths = self.dfs(nxt, node)
+                for k, v in nxt_paths.items():
+                    if k >= self.vals[node]:
+                        children_paths[k] = children_paths.get(k, []) + [v]
+        for k, v_list in children_paths.items():
+            if k == self.vals[node]:
+                self.results += sum(v_list)
+            if len(v_list) > 1:
+                for i in range(len(v_list)-1):
+                    for j in range(i+1, len(v_list)):
+                        self.results += v_list[i]*v_list[j]
+                paths[k] = paths.get(k,0) + sum(v_list)
+            else:
+                paths[k] = paths.get(k,0) + v_list[0]
+        paths[self.vals[node]] = paths.get(self.vals[node],0) + 1
+        return paths
+        
+        
+    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        n = len(vals)
+        self.vals = vals
+        self.results = 0
+        self.graph = [set() for i in range(n)]
+        for x, y in edges:
+            self.graph[x].add(y)
+            self.graph[y].add(x)
+        
+        all_paths = self.dfs(0,-1)
+        return self.results + n
+# Union-find solution
+class Solution:
+    # Instead we can adopt a switch of thinking: if we try to build the graph with some preprocessing, we can avoid counting the non-good paths altogether
+    # For example, if we sort the nodes according to vals, and then build the graph from edge pairs made up of smaller vals to larger vals, good paths starting and ending with vals[i] will never pass through nodes with larger vals because those connections have not yet been added in
+    # This calls for the union-find algorithm to identify current clusters
+    # We still considers edge formed between two nodes is represented by parent-child relationship between two nodes.
+    # In another array we maintain count of maximal value node currently connected with each of the nodes in a node pair
+    # We should note that at least one node in the node pair must be that of current maximal value considered
+    # Because we already sorted the edges, the new edges which contain the same vals will appear next to each other. When we add the second node with vals[i], the key question is whether the other node connected with the previous node with vals[i] and how many nodes there are?
+    # We multiply the max_value count for the 2 parents
+    # Then we conduct the union action
+    # Now the parent node has increased maximum node count 
+    
+    def find(self, x):
+        while self.parent[x] != x:
+            x = self.parent[x]
+        return x
+    
+    def max_value_count(self, node, value):
+        if value == self.max_values[node][0]:
+            return self.max_values[node][1]
+        return 0
+    
+    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        n = len(vals)
+        self.edges = []
+        for edge in edges:
+            self.edges.append([max(vals[edge[0]], vals[edge[1]])] + sorted(edge))
+        self.edges = sorted(self.edges)
+        self.parent = [i for i in range(n)]
+        # max value node and number of paths that it is attached to
+        self.max_values = [[vals[i], 1] for i in range(n)]
+        result = n
+        
+        for val, node1, node2 in self.edges:
+            node1_p, node2_p = self.find(node1), self.find(node2)
+            max_value_count_1, max_value_count_2 = self.max_value_count(node1_p, val), self.max_value_count(node2_p, val)
+            result += max_value_count_1*max_value_count_2
+            self.parent[node2_p] = node1_p
+            self.max_values[node1_p] = [val, max_value_count_1 + max_value_count_2]
+        return result
+
+public class UnionFindSet
+{
+    public int[] parents{get; set;}
+    public int count{get; set;} 
+    public UnionFindSet(int n = 0)
+    {
+        parents = Enumerable.Range(0, n).ToArray();
+        count = n;
+    }
+
+    public int find(int u)
+    {
+        if (u != parents[u])
+        {
+            parents[u] = find(parents[u]);
+        }
+        return parents[u];
+    }
+
+    public void union(int u, int v)
+    {
+        int pu = find(u);
+        int pv = find(v);
+        if (pu != pv)
+        {
+            int pMax = Math.Max(pu, pv);
+            int pMin = Math.Min(pu, pv);
+            parents[pMax] = pMin;
+            count--;
+        }
+    }
+}
+
+public class Solution 
+{
+    int[][] maxValues;
+    public int maxValueCount(int node, int value)
+    {
+        if (value == maxValues[node][0])
+        {
+            return maxValues[node][1];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    public int NumberOfGoodPaths(int[] vals, int[][] edges) 
+    {
+        int n = vals.Length;
+        int result = n;
+        UnionFindSet UF = new UnionFindSet(n);
+        maxValues = new int[n][];
+        for (int i = 0; i < n; i++)
+        {
+            maxValues[i] = new int[2]{vals[i], 1};
+        }
+        List<int[]> data = new List<int[]>();
+        foreach (int[] edge in edges)
+        {
+            int maxVal = Math.Max(vals[edge[0]], vals[edge[1]]);
+            int nodeMax = Math.Max(edge[0], edge[1]);
+            int nodeMin = Math.Min(edge[0], edge[1]);
+            data.Add(new int[3]{maxVal, nodeMin, nodeMax});
+        }
+        data = data.OrderBy(x => x[0]).ThenBy(x => x[1]).ThenBy(x => x[2]).ToList();
+
+        foreach (int[] datum in data)
+        {
+            int node1p = UF.find(datum[1]);
+            int node2p = UF.find(datum[2]);
+            int maxValueCount1 = maxValueCount(node1p, datum[0]);
+            int maxValueCount2 = maxValueCount(node2p, datum[0]);
+            result += maxValueCount1 * maxValueCount2;
+            UF.union(node1p, node2p);
+            maxValues[node1p] = new int[2]{datum[0], maxValueCount1 + maxValueCount2};
+        }
+
+        return result;
+    }
+}

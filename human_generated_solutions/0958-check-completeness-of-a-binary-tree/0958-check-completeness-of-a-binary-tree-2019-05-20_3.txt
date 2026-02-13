@@ -1,0 +1,15 @@
+class Solution(object):
+    node_count = 0
+    max_position = 0
+
+    def isCompleteTree(self, root):
+        self.isCompleteTreeHelper(root, 1)
+        return self.max_position == self.node_count
+
+    def isCompleteTreeHelper(self, root, position):
+        if root is None:
+            return
+        self.node_count += 1
+        self.max_position = max(self.max_position, position)
+        self.isCompleteTreeHelper(root.left, 2 * position)
+        self.isCompleteTreeHelper(root.right, 2 * position + 1)

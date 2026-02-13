@@ -1,0 +1,24 @@
+def flipMatchVoyage(self, root: TreeNode, voyage: List[int]) -> List[int]:
+        ptr, count, result = 0, 0, []
+
+        def dfs(node: TreeNode) -> bool:
+            nonlocal ptr
+            if not node: return True
+            if node.val != voyage[ptr]:
+                return False
+            ptr += 1
+
+            if dfs(node.left):
+                if dfs(node.right):
+                    return True
+                return False
+
+            if dfs(node.right):
+                result.append(node.val)
+                if dfs(node.left):
+                    return True
+                return False
+
+            return False
+
+        return result if dfs(root) else [-1]

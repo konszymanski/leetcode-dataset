@@ -1,0 +1,10 @@
+class Solution:
+    def numberOfMatches(self, n: int) -> int:
+        """
+        There are n teams. Each match results in the elimination of
+        one team. After n - 1 matches, there is one team left standing;
+        it becomes the winner.
+		
+		Note: I did not look at any discussions before coming up with this answer.
+        """
+        return n - 1

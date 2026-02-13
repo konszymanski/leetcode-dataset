@@ -1,0 +1,24 @@
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        if k == 0:
+            return 1
+        dp = [0 for _ in range(n+maxPts+1)]  
+        # we initialize dp[i] to 0 if i > n since it is impossible to reach n >= i >= k starting from i > n
+        cur = 0
+        
+        # iterate in reverse order since we know the probability when n >= i >= k 
+        for i in reversed(range(0, n+1)):
+            print(i, i+maxPts, k, dp)
+            # case when n >= i >= k 
+            if i >= k:
+                # the probability is 1 since we know it is already in n >= i >= k range and stop drawing
+                dp[i] = 1  
+            #  case when i < k
+            else:
+                # (sum of dp[i+1] to dp[i+maxPts]) * (1 / maxPts), where 1 / maxPts is the probability of drawing 1, ..., maxPts
+                dp[i] = cur
+            # minus the last one and add the previous one to get sum of dp[i+1] to dp[i+maxPts]
+            # we can recalculate sum of dp[i+1] to dp[i+maxPts] as well but it is time-consuming
+            cur += (dp[i] - dp[i+maxPts]) / maxPts  
+            
+        return dp[0]

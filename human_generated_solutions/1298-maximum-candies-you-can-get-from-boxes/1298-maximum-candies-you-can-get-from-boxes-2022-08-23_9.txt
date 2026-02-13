@@ -1,0 +1,29 @@
+class Solution:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+        opened = deque([b for b in initialBoxes if status[b]])
+        closed = [b for b in initialBoxes if not status[b]]
+        result = 0
+        while opened:
+            idx = opened.popleft()
+            if status[idx]:
+                # open the box
+                result += candies[idx]
+                
+                # update the status given new keys
+                for k in keys[idx]:
+                    status[k] = 1
+                    
+                # move closed to opened 
+                opened.extend([i for i in closed if status[i]])
+
+                # update closed
+                closed = [i for i in closed if i not in opened]  
+                
+                # contained boxes
+                for i in containedBoxes[idx]:
+                    if status[i]:
+                        opened.append(i)
+                    else:
+                        closed.append(i)
+                    
+        return result

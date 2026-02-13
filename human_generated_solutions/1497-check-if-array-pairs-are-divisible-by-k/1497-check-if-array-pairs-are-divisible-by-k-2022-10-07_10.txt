@@ -1,0 +1,14 @@
+class Solution:
+    def canArrange(self, arr: List[int], k: int) -> bool:
+        prefix = defaultdict(int)
+        res = 0
+        # *** x and y can be thought as complementary
+        for num in arr:
+            # x = -num % k, x indicates how may value num need to be divisible by k
+            if prefix[-num % k]:
+                res += 1
+                prefix[-num % k] -= 1
+            else:
+            # y = num % k, y indicates how many left after divided by k (mod)
+                prefix[num % k] += 1
+        return res == len(arr) // 2

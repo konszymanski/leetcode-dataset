@@ -1,0 +1,43 @@
+from collections import Counter, defaultdict
+from typing import List
+
+
+class Solution:
+    def minStickers(self, stickers: List[str], target: str) -> int:
+
+        sticker_map = defaultdict(list)
+        for s in stickers:
+            for ch in s:
+                # similar to a prefix dictionary
+                sticker_map[ch].append(
+                    Counter(s)
+                )  # character -> stickers
+
+        cache = {}
+
+        def dfs(targ_cnts, used):
+
+            if targ_cnts.total() == 0:
+                return used
+
+            cnt_hash = tuple(targ_cnts.items()) + (
+                used,
+            )  # used required to prevent local max
+            if cnt_hash in cache:
+                return cache[cnt_hash]
+
+            res = float("inf")
+            ch = next(iter(targ_cnts))  # get next character
+
+            sticker_options = sticker_map[ch]
+
+            for op in sticker_options:
+                new_cnt = targ_cnts - op  # counter subtraction
+                res = min(res, dfs(new_cnt, used + 1))
+
+            cnt_hash = tuple(targ_cnts.items()) + (used,)
+            cache[cnt_hash] = res
+            return res
+
+        res = dfs(Counter(target), 0)
+        return res if res < float("inf") else -1

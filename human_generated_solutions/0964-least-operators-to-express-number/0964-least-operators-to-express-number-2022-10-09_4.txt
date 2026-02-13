@@ -1,0 +1,31 @@
+class Solution:
+    def leastOpsExpressTarget(self, x: int, target: int) -> int:
+        @cache
+        def solve(x: int, target: int) -> int:
+            # At this time, you can get target either by add target times x/x or subtract (x - target) times x/x to x
+		    # For example, x = 3, target = 2. Then, 3/3 + 3/3 or 3 - 3/3 is possible result
+            if x > target: 
+                return min(target * 2 - 1, (x - target) * 2)
+            if x == target: 
+                return 0
+            sums, times = x, 0
+            # this is greedy, multiply by x as much as possible to reach target
+            # so that least amount of operations are used
+            # one more \'x\' you put, one more operator
+            while sums < target:
+                times += 1
+                sums *= x
+            if sums == target:
+                return times
+            # when you have remainder, you have two choices, one is add, the other is subtract
+		    # for example, x = 3, target = 5. Then, 5 = 3 + 2 or 5 = 9 - 4
+            add, subtract = inf, inf
+            if sums - target < target:
+                # using subtract
+                subtract = solve(x, sums - target) + times
+            # using add
+            add = solve(x, target - (sums // x)) + times - 1
+            # No matter +/- used, one more operator is added
+            return min(subtract, add) + 1
+        
+        return solve(x, target)

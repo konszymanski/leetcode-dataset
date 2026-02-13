@@ -1,0 +1,21 @@
+class Solution:
+    def stoneGameVII(self, stones: List[int]) -> int:
+        n = len(stones)
+        pre = [0]*(n+1) 
+        for i in range(n):
+            pre[i] = pre[i-1]+stones[i]
+			
+        dp = [0]*n
+        for i in range(n-2,-1,-1):
+            temp = dp.copy()
+            for j in range(i+1, n):
+                s1 = pre[j-1]-pre[i-1]
+                s2 = pre[j]-pre[i]
+                turn = n-(j-i+1)
+                if turn%2 == 0: turn = 1
+                else: turn = -1
+                if turn == 1:
+                    dp[j] = max(s2+temp[j], s1+dp[j-1])
+                else:
+                    dp[j] = min(temp[j]-s2, dp[j-1]-s1)
+        return dp[n-1]

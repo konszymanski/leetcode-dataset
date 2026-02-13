@@ -1,0 +1,29 @@
+from collections import defaultdict
+
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        def rec(node):
+            nonlocal res
+            if not node:
+                return {}
+            elif not node.left and not node.right:
+                return {0: 1}
+            left_children_dict = rec(node.left)
+            right_children_dict = rec(node.right)
+            
+            for left_height, left_children in left_children_dict.items():
+                for right_height, right_children in right_children_dict.items():
+                    if left_height + right_height + 2 <= distance:
+                        res += left_children * right_children
+            
+            combined = defaultdict(int)
+            for left_height, left_children in left_children_dict.items():
+                combined[left_height + 1] += left_children
+            for right_height, right_children in right_children_dict.items():
+                combined[right_height + 1] += right_children
+            
+            return combined
+            
+        res = 0
+        rec(root)
+        return res

@@ -1,0 +1,10 @@
+class Solution:
+    def diagonalSum(self, mat: List[List[int]]) -> int:
+        j = len(mat) - 1 # in j variable store (len of mat) - 1
+        count = 0 # Initialize count as Zero
+        for i in range(len(mat)):
+            count += mat[i][i] + mat[i][j - i] #add the value of diagnoals to the count
+        return count if len(mat) % 2 == 0 else count - mat[int(j/2)][int(j/2)] 
+# there are two possible ways in my solution 
+# 1. if the matrix is a Square matrix then return the count because their is no mid diagonal point that is common in both the diagonals.
+# 2. second case if the matrix is not square matrix then the mid diagonal point is present there so both the diagonals have a common point which is added to the count variable twice so minus the common point once from the count and return it.

@@ -1,0 +1,10 @@
+class Solution:
+  def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+    currSum = sum([val for val in nums if not val & 1])
+    a = []
+    for val, i in queries:
+      if not nums[i] & 1: currSum -= nums[i]
+      nums[i] += val
+      if not nums[i] & 1: currSum += nums[i]
+      a.append(currSum)
+    return a

@@ -1,0 +1,17 @@
+class Solution(object):
+    def minimumLengthEncoding(self, words):
+		#Step 1
+        words = list(set(words)) 
+		
+        #Step 2
+        Trie = lambda: collections.defaultdict(Trie)
+        trie = Trie()
+		
+		#Step 3
+        nodes = [reduce(dict.__getitem__, word[::-1], trie)
+                 for word in words]
+
+        #Step 4
+        return sum(len(word) + 1
+                   for i, word in enumerate(words)
+                   if len(nodes[i]) == 0)

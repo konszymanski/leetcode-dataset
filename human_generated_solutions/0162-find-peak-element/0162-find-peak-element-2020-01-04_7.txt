@@ -1,0 +1,22 @@
+class Solution:
+    
+    
+    def helper(self, nums, left, right):
+    
+        if left == right:
+            # base case:
+            return left
+        
+        mid = ( left + right ) // 2
+        
+		# general case
+        if nums[mid] > nums[mid+1]:
+			# peak is either nums[mid] or on the left hand side
+            return self.helper(nums, left, mid)
+        else:
+			# peak is either nums[mid+1] or on the right hand side
+            return self.helper(nums, mid+1, right)
+        
+    def findPeakElement(self, nums: List[int]) -> int:
+        
+        return self.helper( nums, 0 , len(nums)-1)

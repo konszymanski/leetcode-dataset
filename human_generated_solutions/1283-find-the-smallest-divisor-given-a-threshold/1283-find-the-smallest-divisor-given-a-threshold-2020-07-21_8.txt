@@ -1,0 +1,17 @@
+# Python 2/3
+class Solution(object):
+    def smallestDivisor(self, A, limit):
+        lo, hi = 1, max(A)
+        best   = hi
+        #
+        while lo<=hi:
+            mid = float( (lo+hi)//2 ) # Float for Python 2 compatibility
+            #
+            Smid = sum([ ceil(x/mid) for x in A ])
+            #
+            if Smid<=limit:
+                best = mid
+                hi   = mid - 1 # Sum passed, Perhaps lower divisors also work
+            else: # Smid>limit
+                lo   = mid + 1 # Smid was too high, we need bigger divisors
+        return int(best)

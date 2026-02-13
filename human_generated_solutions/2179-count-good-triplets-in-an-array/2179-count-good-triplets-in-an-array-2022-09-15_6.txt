@@ -1,0 +1,47 @@
+from sortedcontainers import SortedList
+from collections import defaultdict
+
+
+class Solution:
+    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
+        pre=[]
+        indb=SortedList()
+        n=len(nums1)
+        pos=[]
+        indbma=SortedList()
+        
+        dict2=defaultdict()
+        dict1=defaultdict()
+        for i in range(n):
+            dict2[nums2[i]]=i
+            dict1[nums1[i]]=i
+        
+        
+        for i in range(len(nums1)):
+            
+            
+            pp=dict2[nums1[i]]
+            
+            pre.append(indb.bisect_left(pp))
+            
+            indb.add(pp)
+            
+            # print(indb,pre)
+            qq=dict2[nums1[n-1-i]]
+            # qq=nums2.index()
+            
+            pos.append(len(indbma)-indbma.bisect_left(qq))
+            indbma.add(qq)
+            # pos.append(indbma.bisect_left(qq))
+            
+            
+            
+        # print(indb)
+        # print(pre)
+        # print(indbma)
+        # print(pos)
+        ans=0
+        for i in range(n):
+            ans+=pre[i]*pos[n-1-i]
+            
+        return ans

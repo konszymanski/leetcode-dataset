@@ -1,0 +1,12 @@
+def minSwaps(self, nums: List[int]) -> int:
+		totalOnes = nums.count(1)   #totalOnes is our window size
+        n = len(nums)
+        maxOnesInWindow = 0
+        onesInCurrWindow = 0
+        for i in range(n2):
+            if nums[i%n]:
+                onesInCurrWindow += 1
+            if i >= totalOnes and nums[i%n-totalOnes]:
+                onesInCurrWindow -= 1
+            maxOnesInWindow = max(maxOnesInWindow,onesInCurrWindow)
+        return totalOnes-maxOnesInWindow

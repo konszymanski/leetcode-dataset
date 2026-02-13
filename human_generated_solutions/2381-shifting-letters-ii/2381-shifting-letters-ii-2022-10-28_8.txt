@@ -1,0 +1,16 @@
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[List[int]]) -> str:
+        sz, sm, prefix, s = len(s), 0, [0] * (len(s) + 1), list(s)
+        for shift in shifts:
+            left, right = shift[0], shift[1]
+            if shift[2] == 0:
+                prefix[left] -= 1
+                prefix[right + 1] += 1
+            else:
+                prefix[left] += 1
+                prefix[right + 1] -= 1
+        for i in range(sz):
+            sm += prefix[i]
+            amountOfShift = (ord(s[i]) - ord(\'a\') + (sm % 26) + 26) % 26
+            s[i] = chr(ord(\'a\') + amountOfShift)
+        return \'\'.join(s)

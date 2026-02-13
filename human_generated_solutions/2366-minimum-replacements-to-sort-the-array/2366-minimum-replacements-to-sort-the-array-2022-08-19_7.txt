@@ -1,0 +1,12 @@
+class Solution:
+    def minimumReplacement(self, nums: List[int]) -> int:
+        n=len(nums)
+        mmin=sys.maxsize
+        ans=0
+        for i in range(n-1,-1,-1):
+            mmin=min(mmin,nums[i])
+            if nums[i]>mmin:
+                parts=ceil(nums[i]/mmin)
+                ans+=parts-1
+                mmin=min(mmin,nums[i]//parts)
+        return ans

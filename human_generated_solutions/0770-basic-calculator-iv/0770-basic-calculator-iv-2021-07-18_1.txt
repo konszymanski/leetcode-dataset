@@ -1,0 +1,145 @@
+from collections import deque, defaultdict
+
+# Representint an expression as a set of distinct terms with coefficients.
+# Defining binary addition/subtraction/multiplication operations.
+class Polynomial:
+    def __init__(self, variables):
+        self.variables = variables
+        
+    # Addition of polynomials A and B means
+    # we need to sum up the coefficients of all the common terms,
+    # and keep the terms occuring in either A or B, but not both, as is
+    def __add__(self, other):
+        new_variables = defaultdict(int) # initialize a new variable set
+        for name in self.variables: # add all the coeffs from A
+            new_variables[name] += self.variables[name]
+        for name in other.variables: # add all the coeffs from B
+            new_variables[name] += other.variables[name]
+        return Polynomial(new_variables)
+    
+    # Same as addition, but common term coefficients are subtracted instead of being added
+    def __sub__(self, other):
+        new_variables = defaultdict(int) # initialize a new variable set
+        for name in self.variables: # add all the coeffs from A
+            new_variables[name] += self.variables[name]
+        for name in other.variables: # subtract all the coeffs from B
+            new_variables[name] -= other.variables[name]
+        return Polynomial(new_variables)
+    
+    # For multiplication we have to combine the terms, e.g. "(2a + 3b)*c" -> "2ac + 3bc"
+    def __mul__(self, other):
+        new_variables = defaultdict(int)
+        # for each term in set A
+        for name in sorted(self.variables):
+            # iterate over each term in set B
+            for _name in sorted(other.variables):
+                # combine the terms into a new name, e.g. \'b\' and \'a\' are combined into \'a*b\'.
+                # we need to make sure the new term names are in sorted order, so we split each name into parts and sorting before combining
+                new_name = \'*\'.join(part for part in sorted(name.split(\'*\') + _name.split(\'*\')) if part)
+                # the coefficients of terms are multiplied together
+                new_variables[new_name] += self.variables[name] * other.variables[_name]
+        return Polynomial(new_variables)
+    
+    # To format the output properly, we have to sort the terms by degree and then lexicographically.
+    # The constant term (without variables) comes last.
+    def to_list(self):
+        result = []
+        for name in sorted(self.variables, key=lambda x: (-len(x.split(\'*\')), x)):
+            if self.variables[name] != 0 and name != \'\':
+                result.append(str(self.variables[name]) + \'*\' + name)
+        if \'\' in self.variables and self.variables[\'\'] != 0:
+            result.append(str(self.variables[\'\']))
+        return result
+
+    
+class Parser:
+    # Initialize the parser with the context (variables) provided.
+    # During parsing the known variables will be substituted with constant values.
+    def __init__(self, variables):
+        self.variables = dict(variables)
+        self.tokens = deque()
+    
+    # Root function - initializes the token queue, ignoring white spaces, and calls the \'_add\' operation,
+    # since it has the lowest precedence.
+    def evaluate(self, expression: str):
+        self.tokens = deque([c for c in expression if c != \' \'])
+        return self._add()
+        
+    # Utility function to check if the next token (character) in the stream matches the predicate provided.
+    # The predicate is an anonymous function with 1 parameter.
+    def _match(self, predicate):
+        return self.tokens and predicate(self.tokens[0])
+    
+    # Utility function to consume the next token, if it matches the provided predicate.
+    # Returns the token in case of success.
+    def _consume(self, predicate):
+        if self._match(predicate):
+            return self.tokens.popleft()
+        else:
+            raise ValueError(\'Unexpected token\')
+            
+    # Parsing the addition/subtraction operations.
+    # The addition operation has the lowest precedence out of all supported ones,
+    # so it recursively calls the \'_mult\' function, which is 1 level higher in precedence.
+    # This way, the addition/subtraction is executed against the result of the multiplication operation(s).
+    def _add(self):
+        value = self._mult() # get the initial term - there must be at least 1 in a valid expression
+        while self._match(lambda x: x in {\'+\', \'-\'}):
+            # as long as the chain of additions/subtractions continues, get the next term
+            # and add it to the current result
+            op = (lambda x, y: x+y) if self._consume(lambda x: True) == \'+\' else (lambda x, y: x-y)
+            _value = self._mult()
+            value = op(value, _value)
+        return value
+    
+    # Multiplication operation.
+    # Recursively calls the \'_value\' function, which has the highest precedence.
+    def _mult(self):
+        value = self._value() # get the initial term - there must be at least 1 in a valid expression
+        while self._match(lambda x: x in {\'*\'}):
+            # While the chain of multiplications continues,
+            # multiply the current result by the next term
+            self._consume(lambda x: True)
+            value = value * self._value()
+        return value
+    
+    # Terminal function - parsing variables, constants and subexpressions in parentheses.
+    def _value(self):
+        # If the next token is alphabetic, this must be a variable.
+        # Parse the variable name, and if it\'s present in the parser context (\'variables\'), substitute it for a constant.
+        # Otherwise don\'t substitute anything and just return the variable as Polynomial.
+        if self._match(lambda x: x.isalpha()): 
+            buffer = []
+            while self._match(lambda x: x.isalpha()):
+                buffer.append(self._consume(lambda x: True))
+            name = \'\'.join(buffer)
+            if name in self.variables:
+                return Polynomial({\'\': self.variables[name]})
+            else:
+                return Polynomial({name: 1})
+        # If the next token is a digit, we must be looking at a constant.
+        # Parse it and convert to Polynomial.
+        elif self._match(lambda x: x.isdigit()):
+            buffer = [self._consume(lambda x: x.isdigit())]
+            while self._match(lambda x: x.isdigit()):
+                buffer.append(self._consume(lambda x: True))
+            return Polynomial({\'\': int(\'\'.join(buffer))}) # a constant is represented as a fake "variable" with an empty name
+        # If none of the above triggered, and assuming the expression we are parsing is valid,
+        # this must be a parenthesized subexpression.
+        # Consume the opening parenthesis, recursively call \'_add\' to evaluate the subexpression,
+        # then consume the closing parenthesis.
+        else:
+            self._consume(lambda x: x == \'(\')
+            value = self._add()
+            self._consume(lambda x: x == \')\')
+            return value
+    
+class Solution:
+    def basicCalculatorIV(self, expression: str, evalvars: List[str], evalints: List[int]) -> List[str]:
+        # Initialize a parser instance with the known variables
+        parser = Parser({ evalvars[i]: evalints[i] for i in range(len(evalvars)) })
+        # Get the Polynomial instance from the parsed expression
+        result = parser.evaluate(expression)
+        
+        # Convert the Polynomial to proper output format
+        return result.to_list()

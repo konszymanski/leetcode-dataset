@@ -1,0 +1,16 @@
+class Solution:
+    def licenseKeyFormatting(self, s: str, k: int) -> str:
+        n = len(s)
+        if n==1:
+            return s.upper() if s != \'-\' else \'\'    # Handling Edge Cases
+        dashes, groups = s.count(\'-\'), s.split(\'-\') # Number of Dashes, Group of Alphanumeric Sequnces
+        totalChars = n - dashes                     # Length of string minus the dashes, will give the number of chars which are of importance to us
+        firstGroupLength = totalChars % k           # We handle the first group explicitly.
+        s = \'\'.join(groups).upper()                 # We create a string out of all groups.
+        
+        if firstGroupLength == 0:
+            new = [s[i:i+k] for i in range(0, totalChars, k)] 
+            return \'-\'.join(new)
+        else:
+            new = [s[i:i+k] for i in range(firstGroupLength, totalChars, k)]
+            return s[:firstGroupLength] + \'-\' + \'-\'.join(new)

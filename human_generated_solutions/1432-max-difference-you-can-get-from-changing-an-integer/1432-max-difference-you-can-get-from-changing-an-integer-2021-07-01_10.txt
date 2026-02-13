@@ -1,0 +1,16 @@
+from math import inf
+class Solution:
+    def maxDiff(self, num: int) -> int:
+        str_num = str(num)
+        min_num = inf
+        max_num = -inf
+        for digit in set(str_num):
+            for new_digit in [\'0\', \'1\', \'2\', \'3\', \'4\', \'5\', \'6\', \'7\', \'8\', \'9\']:
+                new_str = str_num.replace(digit, new_digit)
+                if new_str[0] != "0":
+                    new_num = int(new_str)
+                    if new_num > max_num:
+                        max_num = new_num
+                    if new_num < min_num:
+                        min_num = new_num
+        return max_num - min_num

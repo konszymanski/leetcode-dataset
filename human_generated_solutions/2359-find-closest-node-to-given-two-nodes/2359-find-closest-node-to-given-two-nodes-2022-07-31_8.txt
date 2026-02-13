@@ -1,0 +1,26 @@
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        def visitedRank(edges, node):
+            curDist = 0
+            output = [float(\'inf\')] * len(edges)
+            while output[node] == float(\'inf\'):
+                if node == -1:
+                    break
+                output[node] = curDist
+                curDist += 1
+                node = edges[node]
+            return output
+			
+        visitedFromNode1 = visitedRank(edges, node1) # [0, inf, 1, 2]
+        visitedFromNode2 = visitedRank(edges, node2) # [0, inf, 1, 2] [inf, 0, 1, 2]
+        # print(visitedFromNode1, visitedFromNode2)  # output from example1: [0, inf, 1, 2] [inf, 0, 1, 2]
+        
+        dists = [max(from1, from2) for from1, from2 in zip(visitedFromNode1, visitedFromNode2)]
+		# just find max, [0, inf, 1, 2] 
+		            #    [inf, 0, 1, 2]
+			 #max is    [inf, inf, 1, 2] ( max in column! )
+								  
+        min_dist = min(dists)
+		# if min_dist == float(\'inf\') return -1
+		# otherwise return the first index value with min_dist
+        return dists.index(min_dist) if min_dist != float(\'inf\') else -1

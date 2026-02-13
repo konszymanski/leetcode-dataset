@@ -1,0 +1,35 @@
+from itertools import product
+
+class Solution:
+    def minDays(self, grid: List[List[int]]) -> int:
+        lands = dict()
+        for x, y in product(range(len(grid)), range(len(grid[0]))):
+            if grid[x][y]: lands[(x, y)] = len(lands)
+        if len(lands) <= 1: return len(lands)
+        n = len(lands)
+        graph = [set() for _ in range(n)]
+        for (x, y), i in lands.items():
+            for nx, ny in [(x + 1, y), (x, y + 1), (x - 1, y), (x, y - 1)]:
+                if (nx, ny) in lands:
+                    graph[i].add(lands[(nx, ny)])
+                    graph[lands[(nx, ny)]].add(i)
+        timer = 0
+        visited, tin, low = set(), [-1] * n, [-1] * n
+        def check_cutpoint(v, p = -1):
+            nonlocal timer
+            visited.add(v)
+            tin[v] = low[v] = timer
+            timer += 1
+            ret, children = False, 0
+            for to in graph[v]:
+                if to == p: continue
+                if to in visited: low[v] = min(low[v], tin[to])
+                else:
+                    if check_cutpoint(to, v): ret = True
+                    low[v] = min(low[v], low[to])
+                    if low[to] >= tin[v] and p != -1: ret = True
+                    children += 1
+            return ret or p == -1 and children > 1
+        cp = check_cutpoint(0)
+        if len(visited) != n: return 0
+        return 1 if cp else 2

@@ -1,0 +1,11 @@
+import re
+from collections import defaultdict
+class Solution:
+    def findDuplicate(self, paths: List[str]) -> List[List[str]]:
+        hashmap=defaultdict(list)
+        for path in paths:
+            dirs = path.split()
+            m=re.findall(r\'([0-9a-z]+.txt)\\((\\w+)\\)\',path)
+            for name,content in m:
+                hashmap[content].append(dirs[0]+\'/\'+name)
+        return [v for k,v in hashmap.items() if len(v)>=2]

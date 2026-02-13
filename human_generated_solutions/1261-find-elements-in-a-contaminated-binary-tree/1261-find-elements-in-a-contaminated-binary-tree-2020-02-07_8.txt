@@ -1,0 +1,49 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class FindElements:
+
+    def helper( self, node, correct_value ):
+        
+        # Base case:
+        # Empty tree or empty node
+        if not node:
+            return
+
+        # Correct current node
+        # Update node value set
+        node.val = correct_value
+        self.node_value.add( correct_value )
+
+        # Update next level with DFS
+        self.helper( node.left, 2 * correct_value + 1)
+        self.helper( node.right, 2 * correct_value + 2 )
+
+    # -----------------------------------------
+    
+    
+    def __init__(self, root: TreeNode):
+        
+        
+        self.root = root
+
+        # a set of node value in binary tree with given root
+        self.node_value = set()
+        
+        # correct whole tree, from root node with correction value 0
+        self.helper( self.root, 0 )
+        
+
+    def find(self, target: int) -> bool:
+        
+        # lookup target in node value set
+        return (target in self.node_value)
+
+
+# Your FindElements object will be instantiated and called as such:
+# obj = FindElements(root)
+# param_1 = obj.find(target)

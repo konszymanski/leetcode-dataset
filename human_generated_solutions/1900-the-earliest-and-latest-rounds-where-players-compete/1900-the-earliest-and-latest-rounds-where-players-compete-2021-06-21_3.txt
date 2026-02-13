@@ -1,0 +1,62 @@
+class Solution:
+    def earliestAndLatest(self, n: int, firstPlayer: int, secondPlayer: int) -> List[int]:
+        setup = (firstPlayer, secondPlayer)
+        if firstPlayer > secondPlayer:
+            setup = self.flip(setup, n)
+        lastlayer = [setup]
+        roundn = 1
+        earliest = 1 if self.bigmatchplayed(setup, n) else None
+        nold = n
+        if(earliest == 1):
+            return [1, 1]
+        while lastlayer != []:
+            roundn = roundn+1
+            nextlayer = []
+            np = nold//2+(nold % 2)
+            for i in range(1, np):
+                for j in range(i+1, np+1):
+                    newloc = (i, j)
+                    for prev in lastlayer:
+                        if(self.canReach(prev, newloc, nold)):
+                            if self.bigmatchplayed(newloc, np):
+                                if earliest == None:
+                                    earliest = roundn
+                            else:
+                                nextlayer.append(newloc)
+                                break
+            lastlayer = nextlayer
+            nold = np
+
+        return [earliest, roundn]
+
+    def canReach(self, oldLoc, newLoc, n):
+        mid = (n+1)/2
+        (a, b, c) = self.abc(oldLoc, n)
+        (ap, bp, cp) = self.abc(newLoc, n//2+(n % 2))
+        if not (0 <= ap <= a and 0 <= bp <= b):
+            return False
+        if(oldLoc[0] < mid and oldLoc[1] > mid and (oldLoc[0] < n+1-oldLoc[1])): #case 1
+            l1 = c-a-1
+            l2 = (b-l1-1-(n % 2))//2
+            alpha = a-ap
+            beta = bp-b+l2+l1+1
+            return (0 <= alpha+beta <= c and 0 <= alpha <= a and 0 <= beta <= l1)
+        if(oldLoc[0] < mid and oldLoc[1] < mid): #case 2
+            l3 = a
+            l2 = b
+            l1 = (c-l2-l3-2-(n % 2))//2
+            alpha = a-ap
+            beta = b-bp
+            return (0 <= c-l1-beta-alpha-2 <= c)
+        if(oldLoc[0] < mid and oldLoc[1] == mid): # case 3
+            return True
+        return self.canReach(self.flip(oldLoc, n), self.flip(newLoc, n//2+(n % 2)), n)
+
+    def flip(self, loc, n):
+        return (n+1-loc[1], n+1-loc[0])
+
+    def abc(self, loc, n):
+        return (loc[0]-1, loc[1]-loc[0]-1, n-loc[1])
+
+    def bigmatchplayed(self, location, size):
+        return location[0] == size+1-location[1]

@@ -1,0 +1,14 @@
+class Solution:
+    def numOfWays(self, nums: List[int]) -> int:
+        
+        def fn(nums): 
+            """Post-order traversal."""
+            if len(nums) <= 1: return len(nums) # boundary condition 
+            ll = [x for x in nums if x < nums[0]]
+            rr = [x for x in nums if x > nums[0]]
+            left, right = fn(ll), fn(rr)
+            if not left or not right: return left or right
+            ans = comb(len(rr)+len(ll), len(rr))
+            return ans*left*right
+            
+        return (fn(nums)-1) % 1_000_000_007

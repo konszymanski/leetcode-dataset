@@ -1,0 +1,34 @@
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        counter = {x: 0 for x in \'abc\'}
+        out, l = 0, 0
+        
+        for r in range(len(s)):
+            # increment count for the
+            # current char
+            counter[s[r]] += 1
+            
+            # now check if at this point, 
+            # you have at least one occurrence
+            # of all the required characters
+            while all(counter.values()) > 0:
+                # if you do, then it means you
+                # have a valid sliding window
+                # now since we need to satisfy
+                # at least one occurence of every
+                # char, the REMAINING string i.e.
+                # from r...len(s) will also be valid
+                # substrings to add those too
+                #
+                # for e.g. for s = "abcabc" and at r = 2
+                # the possible strings would be abc, abca, abcab, abcabc
+                # i.e 6 - 2 => 4 substrings so add them all.
+                out += len(s) - r
+                
+                # move l forward and update the
+                # count for the char moving out
+                # of the window
+                counter[s[l]] -= 1
+                l += 1
+            
+        return out

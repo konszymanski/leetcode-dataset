@@ -1,0 +1,29 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        
+        rX,cX,upX,downX=Counter(),Counter(),0,0
+        rO,cO,upO,downO=Counter(),Counter(),0,0
+        player=\'A\'
+        turns=0
+        n=3
+        
+        for r,c in moves:
+                turns+=1
+                if player==\'A\':
+                    rX[r]+=1
+                    cX[c]+=1
+                    upX=upX+1 if r==c else upX
+                    downX=downX+1 if r+c==n-1 else downX
+                    if n in (rX[r],cX[c],upX,downX): return \'A\'
+                    player=\'B\'
+                    
+                elif player==\'B\':
+                    rO[r]+=1
+                    cO[c]+=1
+                    upO=upO+1 if r==c else upO
+                    downO=downO+1 if r+c==n-1 else downO
+                    if n in (rO[r],cO[c],upO,downO): return \'B\'
+					player=\'A\'
+
+        
+        return \'Pending\' if turns<9 else \'Draw\'

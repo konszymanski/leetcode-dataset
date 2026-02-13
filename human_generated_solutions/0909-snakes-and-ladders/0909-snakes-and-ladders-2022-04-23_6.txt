@@ -1,0 +1,45 @@
+from collections import deque
+
+
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        self.n = len(board)
+        
+        def get_row_col_dir(pos):
+            row, col = (pos - 1) // self.n, (pos-1) % self.n
+            # for even row, direction left to right
+            # for odd row, direction right to left
+            if row % 2 == 0:
+                return (self.n - 1 - row, col)
+            else:
+                return (self.n - 1 - row, self.n - 1 - col)
+            
+        
+        start = 1
+        
+        
+        def bfs(start):
+            queue = deque()
+            queue.append((start, 0))
+            visited = set()
+            visited.add(start)
+            
+            while queue:
+                pos, length = queue.popleft()
+                row, col = get_row_col_dir(pos)
+                
+                if board[row][col] != -1:
+                    pos = board[row][col]
+                
+                if pos == self.n * self.n:
+                    return length
+                
+                for x in range(1, min(7, self.n ** 2 + 1) ):
+                    next_pos = pos + x
+                    if next_pos not in visited:
+                        # marking visited node earlier save some repeated check
+                        visited.add(next_pos)
+                        queue.append((next_pos, length + 1))
+            return -1
+        
+        return bfs(start)

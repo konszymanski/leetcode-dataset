@@ -1,0 +1,4 @@
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        v = list(collections.Counter(tasks).values())
+        return max((max(v)-1) * (n+1) + v.count(max(v)), len(tasks))

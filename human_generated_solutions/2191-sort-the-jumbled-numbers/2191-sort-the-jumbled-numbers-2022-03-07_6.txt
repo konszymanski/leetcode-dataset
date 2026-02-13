@@ -1,0 +1,8 @@
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        m = { str(i): str(v) for i, v in enumerate(mapping) }
+
+        def mapFunc(n):
+            return int(\'\'.join(m[i] for i in str(n)))
+                
+        return sorted(nums, key=mapFunc)

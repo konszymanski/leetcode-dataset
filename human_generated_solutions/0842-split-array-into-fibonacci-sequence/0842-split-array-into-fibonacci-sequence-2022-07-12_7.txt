@@ -1,0 +1,38 @@
+class Solution(object):
+    def splitIntoFibonacci(self, num):
+
+      final = []
+      gate = False
+
+      for a in range(1, len(num)):
+        for b in range(1, len(num)-a):
+
+          if gate or (b > 1 and num[a] == "0"):
+            break
+
+          try:
+
+            vals = [int(num[:a]), int(num[a:a+b])]
+            key = num[a+b:]
+
+            while len(key) > 0:
+
+              sum = vals[-1] + vals[-2]
+              length = len(str(sum))
+
+              if sum >= 2**31 or sum != int(key[:length]):
+                raise StopIteration
+
+              vals.append(sum)
+              key = key[length:]
+
+            final = vals
+            gate = True
+
+          except StopIteration:
+            continue
+
+        if int(num[0]) == 0 or gate:
+          break
+
+      return final

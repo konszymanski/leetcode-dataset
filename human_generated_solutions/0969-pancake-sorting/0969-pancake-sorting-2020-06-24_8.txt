@@ -1,0 +1,29 @@
+class Solution:
+    def pancakeSort(self, A: List[int]) -> List[int]:
+        ## RC ##
+        ## APPROACH : GREEDY ##
+        ## LOGIC ##
+        ## 1. Main goal is to put the largest pancake at the bottom, we can only do that if we have that largest pancake at the first position and we can flip all the pancakes so that largest will be at the bottom
+        ## Ex: 3 2 4 1 --> (bring 4 to top) 4 2 3 1 ---> (flip all to place 4 at bottom) --> 1 3 2 4
+        ## 2. Now proceed with the next largest element and repeat.
+        ## 3. you can return any possible combination as answer for example : [3,2,4,1] you can return [3,4,2,3,2] or [3,4,2,3,1,2] or [4,2,4,3]
+        
+		## TIME COMPLEXITY : O(N^2) ##
+		## SPACE COMPLEXITY : O(N) ##
+
+        def flip(idx):
+            A[:idx+1] = A[:idx+1][::-1]
+            
+        res, largest = [], len(A)
+        while(largest > 0):
+            if A[largest - 1] == largest:    # already placed correctly
+                largest -= 1
+                continue
+            for i in range(largest):
+                if A[i] == largest:
+                    flip(i)
+                    res.append(i + 1)
+                    flip(largest - 1)
+                    res.append(largest)
+                    largest -= 1
+        return res

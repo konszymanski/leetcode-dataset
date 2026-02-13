@@ -1,0 +1,14 @@
+class Solution:
+    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+
+        def f(root):
+            if not root:
+                return "L"
+            left_end = "$" if not root.left else ""
+            right_end = "#" if not root.right else ""
+            return left_end + "|" + f(root.left) + "-" + str(root.val) + "-" + f(root.right) + "|" + right_end
+
+        x = f(subRoot)
+        y = f(root)
+
+        return y.find(x) != -1

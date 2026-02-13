@@ -1,0 +1,21 @@
+class Solution:
+    def pancakeSort(self, A):
+
+        result = []
+        n = len(A)
+
+        for x in range(n, 1, -1):
+            # Carry out pancake-sort from largest number n to smallest number 1
+
+            # find the index of x
+            i = A.index(x)
+
+            # flip first i+1 elements to put x on A[0]
+            # flip first x elements to put x on A[x-1]
+			# now, x is on its corresponding position A[x-1] on ascending order
+            result.extend([i + 1, x])
+
+            # update A
+            A = A[:i:-1] + A[:i]
+
+        return result

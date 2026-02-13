@@ -1,0 +1,24 @@
+class Solution:
+    def isSubPath(self, head: ListNode, root: TreeNode) -> bool:
+
+        def compare_values(l_node: ListNode, t_node: TreeNode):
+            if not l_node:
+                return True
+            if t_node and l_node.val == t_node.val:
+                return (compare_values(l_node.next, t_node.left) or
+                        compare_values(l_node.next, t_node.right))
+            return False
+
+        row = {root}
+        while row:
+            next_row = set()
+            for node in row:
+                if node.val == head.val and compare_values(head, node):
+                    return True
+                if node.left:
+                    next_row.add(node.left)
+                if node.right:
+                    next_row.add(node.right)
+            row = next_row
+
+        return False

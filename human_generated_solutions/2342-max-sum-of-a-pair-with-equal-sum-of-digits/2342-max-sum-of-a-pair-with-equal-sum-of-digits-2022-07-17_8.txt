@@ -1,0 +1,27 @@
+import heapq
+from collections import defaultdict
+def maximumSum(self, nums: List[int]) -> int:
+	ht = defaultdict(list)
+
+	for n in nums:
+		val = n
+		rem = 0
+
+		while n:
+			rem += n % 10
+			n = n // 10
+
+		ht[rem].append(val)
+		
+		# I used heapq for convinience, its not necessary though
+		if len(ht[rem]) > 2:
+			heapq.heapify(ht[rem])
+			heapq.heappop(ht[rem])
+
+	ans = -1
+
+	for n in ht:
+		if len(ht[n]) > 1:
+			ans = max(sum(ht[n]), ans)
+
+	return ans

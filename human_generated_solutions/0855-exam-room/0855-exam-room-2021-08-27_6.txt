@@ -1,0 +1,60 @@
+import sortedcontainers
+
+class ExamRoom:
+
+    def __init__(self, n: int):
+        self.N = n
+        self.startMap = {}
+        self.endMap = {}
+
+        def distance(seg) -> int:
+            # segment is a tuple
+            d = (seg[1] - seg[0]) // 2
+            return d
+
+        def sorter(s):
+            # sort by mid~start distance, then break tie by picking the lefter one
+            return distance(s), -s[0]
+
+        # init sortedset with dummy segment (-1,n), so as to start engine!
+        self.pq = sortedcontainers.SortedSet(key=sorter)
+
+        dummy_seg = (-1, n)
+        self._add_segment(dummy_seg)
+
+    def seat(self) -> int:
+        longest = self.pq[-1]
+        l, r = longest[0], longest[1]
+        sit = None
+        if l == -1:
+            sit = 0
+        elif r == self.N:
+            sit = self.N-1
+        else:
+            sit = (l+r)//2
+        # break longest seg into two
+        left, right = (l, sit), (sit, r)
+        self._remove_segment(longest)
+        self._add_segment(left)
+        self._add_segment(right)
+        return sit
+
+    def leave(self, p: int) -> None:
+        # get p\'s left, right seg so as to merge, and then remove
+        left = self.endMap[p]
+        right = self.startMap[p]
+
+        merged = (left[0], right[1])
+        self._remove_segment(left)
+        self._remove_segment(right)
+        self._add_segment(merged)
+
+    def _add_segment(self, seg):
+        self.pq.add(seg)
+        self.startMap[seg[0]] = seg
+        self.endMap[seg[1]] = seg
+
+    def _remove_segment(self, seg):
+        self.pq.remove(seg)
+        del self.startMap[seg[0]]
+        del self.endMap[seg[1]]

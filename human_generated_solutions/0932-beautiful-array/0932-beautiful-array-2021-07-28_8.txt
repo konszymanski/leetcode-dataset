@@ -1,0 +1,9 @@
+class Solution:
+    def beautifulArray(self, n: int) -> List[int]:
+        @lru_cache(None)
+        def dfs(n):
+            if n == 1:
+                return [1]
+            else:
+                return [2 * i - 1 for i in dfs((n + 1) // 2)] + [2 * i for i in dfs(n // 2)]
+        return dfs(n)

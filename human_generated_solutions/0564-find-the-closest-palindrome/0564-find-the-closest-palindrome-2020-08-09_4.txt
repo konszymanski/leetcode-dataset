@@ -1,0 +1,46 @@
+def nearpalindrome(num):
+    d, number, cand = len(num), int(num), [0] * 3
+
+    if d < 2 : return str(number-1)
+
+    if num == \'9\'*d : return \'1\'+\'0\'*(d-1)+\'1\'
+
+    if( (num[0] == \'1\' and num[1:] == \'0\'*(d-1))
+        or (num[0] == \'1\' and num[-1] == \'1\' and
+        num[1:d-1] == \'0\'*(d-2))):
+         return \'9\'*(d-1)
+
+    left = num[: d // 2 ]
+    if d % 2 == 0:
+        right = num[d // 2 : ]
+        cand[0] =  str(int(left)-1) + str(int(left)-1)[::-1]
+        cand[1] =  str(int(left)+1) + str(int(left)+1)[::-1]
+        cand[2] =  left + left[::-1]
+    else :
+        right = num[(d+2) // 2 : ]
+        mid = num[d//2]
+        cand[0] =  left + str(int(mid)-1) + left[::-1]
+        cand[1] =  left + str(int(mid)+1) + left[::-1]
+        cand[2] =  left + mid + left[::-1]
+
+    def dif(n,m) :
+        return abs(int(n)-int(m))
+
+    print(cand)
+
+    if num == num[::-1] :
+        if dif(cand[0],number) <= dif(cand[1],number) :
+            return cand[0]
+        else :
+            return cand[1]
+    else :
+        if (dif(cand[0],number) <= dif(cand[1],number) and
+            dif(cand[0],number) <= dif(cand[2],number)) :
+            return cand[0]
+        elif (dif(cand[1],number) <= dif(cand[0],number) and
+              dif(cand[1],number) <= dif(cand[2],number) ) :
+            return cand[1]
+        else :
+            return cand[2]
+
+print(nearpalindrome(input(\'Enter a number: \').strip()))

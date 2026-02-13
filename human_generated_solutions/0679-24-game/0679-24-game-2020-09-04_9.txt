@@ -1,0 +1,58 @@
+from itertools import permutations 
+
+class Solution:
+    def judgePoint24(self, original_nums: List[int]) -> bool:
+        def dfs(curr_nums):
+            # Case (1,2)(3,4)
+            res_1 = self.perform_ops(curr_nums[:1], curr_nums[1:2])
+            res_2 = self.perform_ops(curr_nums[2:3], curr_nums[3:])
+            res_1 = self.perform_ops(res_1, res_2)
+            if self.find_24(res_1): return True
+
+            # Case (1 ((2,3) 4))
+            res = self.perform_ops(curr_nums[1:2], curr_nums[2:3])
+            res = self.perform_ops(res, curr_nums[3:4])
+            res = self.perform_ops(curr_nums[:1], res)
+            if self.find_24(res): return True
+
+            # Case (1 (2 (3, 4)))
+            res = self.perform_ops(curr_nums[2:3], curr_nums[3:4])
+            res = self.perform_ops(curr_nums[1:2], res)
+            res = self.perform_ops(curr_nums[:1], res)
+            if self.find_24(res): return True
+
+            # Case ((1 (2,3)) 4)
+            res = self.perform_ops(curr_nums[1:2], curr_nums[2:3])
+            res = self.perform_ops(curr_nums[:1], res)
+            res = self.perform_ops(res, curr_nums[3:4])
+            if self.find_24(res): return True
+
+            # Case (((1 2) 3) 4)
+            res = self.perform_ops(curr_nums[:1], curr_nums[1:2])
+            res = self.perform_ops(res, curr_nums[2:3])
+            res = self.perform_ops(res, curr_nums[3:4])
+            if self.find_24(res): return True
+
+            return False
+
+        for num in list(permutations(original_nums)):
+            if dfs(list(num)):
+                return True
+
+        return False
+
+    def find_24(self, nums):
+        for num in nums:
+            if 23.99 < num < 24.01:
+                return True
+
+    def perform_ops(self, nums1, nums2):
+        result = []
+        for num_1 in nums1:
+            for num_2 in nums2:
+                result.append(num_1 + num_2)
+                result.append(num_1 - num_2)
+                result.append(num_1 * num_2)
+                if num_2 != 0:
+                    result.append(num_1 / num_2)
+        return result

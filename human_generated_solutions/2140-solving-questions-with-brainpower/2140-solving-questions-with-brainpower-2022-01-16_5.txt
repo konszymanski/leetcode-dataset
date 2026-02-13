@@ -1,0 +1,13 @@
+class Solution:
+    def mostPoints(self, questions: List[List[int]]) -> int:
+		N = len(questions)
+        
+        memo = [-1 for x in range(N+2)]
+        def solve(n):
+            if n>=N:
+                return 0
+            if memo[n]!=-1:
+                return memo[n]
+            memo[n] = max(solve(n+1),solve(n+questions[n][1]+1)+questions[n][0])
+            return memo[n]
+        return solve(0)

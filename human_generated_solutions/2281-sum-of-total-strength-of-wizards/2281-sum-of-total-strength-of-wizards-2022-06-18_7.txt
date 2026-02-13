@@ -1,0 +1,14 @@
+class Solution:
+    def totalStrength(self, strength: List[int]) -> int:
+        def make_sub_list(lst):
+            lists = list()
+            for i in range(len(lst) + 1):
+                for j in range(i):
+                    lists.append(lst[j: i])
+            return lists
+        sub_lists = make_sub_list(strength)
+        res = 0
+        for i in range(len(sub_lists)):
+            temp = (min(sub_lists[i]) * sum(sub_lists[i]))
+            res += temp
+        return res

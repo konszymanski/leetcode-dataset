@@ -1,0 +1,16 @@
+from collections import deque
+class Solution:
+    def canReach(self, arr, start):
+        _len_=len(arr)
+        seen=set()
+        queue=deque()
+        queue.append(start)
+        while(queue):
+            idx=queue.popleft()
+            if arr[idx]==0:
+                return True
+            seen.add(idx)
+            for var in (idx-arr[idx],idx+arr[idx]):
+                if (var not in seen) and (-1<var<_len_):
+                    queue.append(var)
+        return False

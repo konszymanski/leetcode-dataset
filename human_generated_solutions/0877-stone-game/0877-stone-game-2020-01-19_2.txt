@@ -1,0 +1,24 @@
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        return self.helper(piles, 0, len(piles) - 1, {}) > 0
+    
+	# returns the maximum number of stones current player can get more than the other player out of piles[i] ... piles[j]
+    def helper(self, piles, l, r, cache):
+        if (l, r) in cache:
+            return cache[(l, r)]
+        if l > r:
+            return 0
+        if l == r:
+            return piles[l]
+        
+		""" 
+		assume current player is player 1, then if player 1 chooses piles[l], 
+		self.helper(piles, l + 1, r, cache) will return the maximum stones player 2 
+		can get more than player 1 from the rest (piles[l + 1] ... piles[r]), then
+		by subtracting it from piles[l], we get how many stones player 1 can get
+		more than player 2. Since we want to maximize final result, we choose the
+		max of both options player 1 can make (pick piles[l] or piles[r])
+		"""
+        res = max(piles[l] - self.helper(piles, l + 1, r, cache), piles[r] - self.helper(piles, l, r - 1, cache))
+        cache[(l, r)] = res
+        return res

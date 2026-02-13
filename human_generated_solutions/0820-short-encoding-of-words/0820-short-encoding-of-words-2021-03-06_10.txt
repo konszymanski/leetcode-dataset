@@ -1,0 +1,13 @@
+class Solution:
+  def minimumLengthEncoding(self, words: List[str]) -> int:
+    trie = lambda: type(\'trie\', (), { \'end\': False, \'next\': defaultdict(trie) })
+    root = trie() 
+    
+    def countNestedLen(node, depth = 0):
+      nestedLen = (depth + 1) if node.end and len(node.next) else 0
+      return sum(countNestedLen(n, depth + 1) for n in node.next.values()) + nestedLen
+    
+    for s in words:
+      reduce(lambda acc, c: acc.next[c], s[::-1], root).end = True
+ 
+    return sum(len(w) + 1 for w in set(words)) - countNestedLen(root)

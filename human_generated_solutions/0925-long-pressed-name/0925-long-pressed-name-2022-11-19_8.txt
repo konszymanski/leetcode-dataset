@@ -1,0 +1,59 @@
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -> bool: 
+        
+        n=len(name) #length of name
+        m=len(typed) #length of typed 
+		
+        #if name is shorter than typed means keys arent enough pressed in typed to become equal to name
+        if m<n: 
+            return False
+        
+        #if first elements are differnt means that first element in name is never be 
+        #pressed at first position of typed
+        if name[0]!=typed[0]:  
+            return False 
+        
+        #remaining code 
+        
+        i=0 #index for name
+        j=0 #index for typed
+        
+        #need to check if all chracters of name are present in typed
+        #that\'s why only running loop till the name\'s length
+        while i<n:  
+            if name[i]==typed[j]: #if characters found same
+                i+=1 #move forward in name
+                j+=1 #and move forward in typed
+                
+            else: #if characters not found same at those positions
+                
+                #check if name\'s previous element is long pressing in typed (i.e, 
+                #current element of typed equal to previous name\'s element)
+                if typed[j]==name[i-1]: 
+                    j+=1 #if above condition goes true, now move further in typed
+                
+                #otherwise it means the current charcter of typed is different 
+                #or not available in whole name string
+                else: 
+                    return False
+                
+            #if on moving the indeces of j , somehow reached to typed\'s end but names indeces are
+            # still not fully traversed means name string is not present in typed in any condition
+            if j==m and i!=n:  
+                return False
+            
+        #AFTER WHILE LOOP CHECK-
+            
+        #if name string completely traversed but typed isnt means we need to check remaining characters of typed
+        if j!=m: 
+            while j<m: #traversing remainings
+                
+                #if last character of name is long pressed then all the remainings of typed 
+                #would be equal to names last character, but in case they arent equal (differnt 
+                # charcters found in typed) then return false
+                if typed[j]!=name[n-1]:   
+                    return False
+                
+                j+=1 #moving indeces of typed
+                
+        return True #if nothing goes wrong , return true

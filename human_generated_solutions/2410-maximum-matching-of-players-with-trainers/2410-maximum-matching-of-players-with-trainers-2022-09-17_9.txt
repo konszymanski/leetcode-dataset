@@ -1,0 +1,18 @@
+class Solution:
+    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:
+        n = len(players)
+        m = len(trainers)
+        players.sort()
+        trainers.sort()
+        dp = {}
+        def helper(i,j):
+            if i==n or j==m:
+                return 0
+            if (i,j) in dp:
+                return dp[(i,j)]
+            if players[i]<=trainers[j]:
+                dp[(i,j)] = 1+helper(i+1,j+1)
+            else:
+                dp[(i,j)] = helper(i,j+1)
+            return dp[(i,j)]
+        return helper(0,0)

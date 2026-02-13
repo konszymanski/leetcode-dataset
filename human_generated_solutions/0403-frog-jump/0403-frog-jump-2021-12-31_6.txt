@@ -1,0 +1,22 @@
+# Approach 1: 
+# Time:  O(n^2)
+# Space: O(n)
+
+def canCross(stones):
+    """
+    :type stones: List[int]
+    :rtype: bool
+    """
+    # standing on every stones, knowing the possible incoming velocities (vi) to it
+    # we see to what stones we can reach with (vi,vi-1,vi+1) then we record new incoming velocities in the destination stones
+    # if the last stone has at least one incoming velocity, it means there has been a valid path going from first stone to the last stone
+    dp = {i:set() for i in stones}
+    dp[0].add(0)
+    neigh = [-1,0,1]
+    for stone in stones:
+        for vel in dp[stone]:
+            for n in neigh:
+                if stone + vel + n in dp and stone + vel + n > stone:
+                    dp[stone + vel + n].add(vel+n)
+    # print(dp)       
+    return len(dp[stones[-1]]) > 0

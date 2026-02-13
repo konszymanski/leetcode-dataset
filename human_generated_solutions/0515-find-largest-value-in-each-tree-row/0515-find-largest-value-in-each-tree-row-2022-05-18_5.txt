@@ -1,0 +1,23 @@
+def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        queue = []
+        result = []
+        if not root:
+            return result
+        result.append(root.val)
+        queue.append(root)
+        while queue:
+            lvl = []
+            for i in range(len(queue)):
+                item = queue.pop(0)
+                
+                if item.left:
+                    queue.append(item.left)
+                    lvl.append(item.left.val)
+                
+                if item.right:
+                    queue.append(item.right)
+                    lvl.append(item.right.val)
+            if len(lvl) >= 1:
+                result.append(max(lvl))
+        
+        return result

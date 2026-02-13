@@ -1,0 +1,87 @@
+from collections import deque
+
+
+class Solution:
+    def closestMeetingNode(self, edges: list[int], node1: int, node2: int) -> int:
+        distances1, distances2 = self.shortest_distance_bfs(edges, node1, node2)
+        # distances1, distances2 = self.shortest_distance_dfs(edges, node1, node2)
+
+        return min((
+            (max(d1, d2), u) for u, (d1, d2) in enumerate(zip(distances1, distances2)) if min(d1, d2) != -1)
+            ,
+            default=(None, -1)
+        )[1]
+
+    @staticmethod
+    def shortest_distance_bfs(edges: list[int], node1: int, node2: int):
+        n = len(edges)
+        g = Solution.create_digraph(edges)
+
+        def bfs(start: int) -> list[int]:
+            """
+            :param start:
+            :return: list of int in which ith value represents distance
+                     from node "start" to node "i"
+            """
+            distances = [-1] * n
+            q = deque()
+
+            def add_to_q(node: int, d: int):
+                """
+                adding "node" in "q" and setting distance between "start"
+                & "node" equals to "d"
+                :param node:
+                :param d:
+                """
+                distances[node] = d
+                q.append(node)
+
+            add_to_q(start, 0)
+
+            while q:
+                du = distances[u := q.popleft()]
+
+                for v in g[u]:
+                    if distances[v] == -1:
+                        add_to_q(v, du + 1)
+
+            return distances
+
+        return bfs(node1), bfs(node2)
+
+    @staticmethod
+    def shortest_distance_dfs(edges: list[int], node1: int, node2: int):
+        """
+        @see https://leetcode.com/problems/find-closest-node-to-given-two-nodes/discuss/2357694/Two-DFS
+        :param edges:
+        :param node1:
+        :param node2:
+        :return:
+        """
+        n = len(edges)
+
+        def dfs(u: int) -> list[int]:
+            """
+            :param u:
+            :return: list of int in which ith value represents distance
+                     from given node "u" to node "i"
+            """
+            distances, steps = [-1] * n, 0  # distances[x] = minimum distance from u -> x
+
+            while u != -1 and distances[u] == -1:
+                distances[u], u = steps, edges[u]
+                steps += 1
+
+            return distances
+
+        return dfs(node1), dfs(node2)
+
+    @staticmethod
+    def create_digraph(edges: list[int]) -> list[list[int]]:
+        g = [[] for _ in range(len(edges))]  # given that len(edges) is number of nodes
+
+        for u, v in enumerate(edges):
+            if v != -1:  # so there is an edge from u -> v
+                g[u].append(v)
+
+        return g

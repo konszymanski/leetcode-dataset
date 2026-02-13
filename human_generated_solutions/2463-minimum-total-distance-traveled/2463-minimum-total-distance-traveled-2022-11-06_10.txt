@@ -1,0 +1,16 @@
+from scipy.optimize import linear_sum_assignment
+import numpy as np
+
+class Solution:
+    def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+        cost = []
+        for i in range(len(robot)):
+            costi = []
+            for j in range(len(factory)):
+                for k in range(factory[j][1]):
+                    costi.append(abs(robot[i] - factory[j][0]))
+            cost.append(costi)
+        cost = np.array(cost)
+        row_idx, col_idx = linear_sum_assignment(cost)
+        ans = sum([cost[row_idx[i]][col_idx[i]] for i in range(len(row_idx))])
+        return ans

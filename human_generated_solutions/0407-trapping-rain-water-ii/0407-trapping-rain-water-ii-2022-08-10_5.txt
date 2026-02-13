@@ -1,0 +1,29 @@
+import heapq
+
+
+class Solution:
+    def trapRainWater(self, heightMap: List[List[int]]) -> int:
+        m = len(heightMap)
+        n = len(heightMap[0])
+        
+        # initialize heap containing boundary points
+        heights = {}
+        heap = []
+        for r in range(m):
+            for c in range(n):
+                if r == 0 or r == m - 1 or c == 0 or c == n - 1:
+                    h = heightMap[r][c]
+                    heights[(r, c)] = h
+                    heapq.heappush(heap, (h, (r, c)))
+        
+        # set height of neighbors for the lowest boundary point at each step
+        total = 0
+        while len(heap) > 0:
+            _, (r, c) = heapq.heappop(heap)
+            for r_o, c_o in [(r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)]:
+                if 0 <= r_o < m and 0 <= c_o < n and (r_o, c_o) not in heights:
+                    h = max(heights[(r, c)], heightMap[r_o][c_o])
+                    heights[(r_o, c_o)] = h
+                    total += h - heightMap[r_o][c_o]
+                    heapq.heappush(heap, (h, (r_o, c_o)))
+        return total

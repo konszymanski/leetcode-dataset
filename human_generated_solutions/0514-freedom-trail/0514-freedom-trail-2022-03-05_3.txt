@@ -1,0 +1,35 @@
+class Solution:
+	# Finds distance of char in the ring from 0th index,
+	# in either clockwise (-1) or anti-clockwise (1) direction
+    def find_char_dist(self, char, ring, direction):
+        dist = 1    # initialize with 1 just to account for pressing the center button
+        n = len(ring)
+        for i in range(n):
+            if ring[(n+i*direction)%n] == char:
+                return dist
+            dist += 1
+    
+	# rotates the ring by dist amount (can be negative).
+	# [slow, better to use indices than creating new string everytime]
+    def rotate(self, ring, dist):
+        return ring[dist:] + ring[:dist]
+            
+	# The recursive function
+    @cache
+    def rec(self, i, ring, key):
+        if i == len(key): return 0
+        acw = self.find_char_dist(key[i], ring, 1)
+        cw = self.find_char_dist(key[i], ring, -1)
+		
+		# next line prunes redundant recursion branch when we find the char
+		# in 0th index, since we don\'t rotate the string in either direction
+        if acw == cw == 1:
+            return 1 + self.rec(i+1, ring, key)
+        
+        return min(
+            acw + self.rec(i+1, self.rotate(ring, acw-1), key),
+            cw + self.rec(i+1, self.rotate(ring, -cw+1), key)
+        )
+        
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        return self.rec(0, ring, key)

@@ -1,0 +1,37 @@
+"""
+1. find lcm
+2. find migic numbers before lcm
+3. For example, the resulting interval - arr = [4, 6, 8, 12] (A = 6, B = 3, lcm = 12)
+        next 4 number - arr1 = [arr[0] + lcm * 1, arr[1] + lcm * 1, ...]
+        next 4 number - arr2 = [arr[0] + lcm * 2, arr[1] + lcm * 2, ...]
+        next 4 number - arr3 = [arr[0] + lcm * 3, arr[1] + lcm * 3, ...]
+"""
+
+class Solution:
+    def get_gcd(self, x, y):
+        while y > 0:
+            x, y = y, x % y
+        
+        return x
+    
+    def get_lcm(self, x, y):
+        # a x b = LCM(a, b) * GCD (a, b)
+        return x*y//self.get_gcd(x,y)
+    
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        lcm = self.get_lcm(a, b)
+        
+        magic_num_before_lcm = {}
+        for i in range(1,lcm//a+1):
+            magic_num_before_lcm[i*a] = 1
+            
+        for i in range(1, lcm//b+1):
+            magic_num_before_lcm[i*b] = 1
+        
+        print(magic_num_before_lcm)
+        
+        sorted_magic_num_before_lcm = sorted([key for key in magic_num_before_lcm.keys()])
+        
+        res = sorted_magic_num_before_lcm[n % len(sorted_magic_num_before_lcm) - 1] + sorted_magic_num_before_lcm[-1] * ((n - 1) // len(sorted_magic_num_before_lcm))
+        
+        return res % (10 ** 9 + 7)

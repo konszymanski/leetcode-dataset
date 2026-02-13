@@ -1,0 +1,10 @@
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        possible_M = set()
+        possible_N = set()
+        for a in arr:
+            if a in possible_M: return True
+            if a in possible_N: return True
+            if a % 2 == 0: possible_M.add(a//2)
+            possible_N.add(a*2)
+        return False

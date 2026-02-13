@@ -1,0 +1,32 @@
+class Solution:
+    def distanceK(self, root: TreeNode, target: TreeNode, K: int) -> List[int]:
+        self.parent = {}
+        self.getParents(root, None)
+        return self.bfs(target, K)
+    
+    def getParents(self, node: TreeNode, parent: TreeNode) -> None: 
+        if node == None: return
+        
+        self.parent[node] = parent
+        
+        self.getParents(node.left, node)
+        self.getParents(node.right, node)
+        
+    def bfs(self, start: TreeNode, K: int) -> List[int]:
+        res, q, visited = [], deque([(start, 0)]), set()
+        
+        while q:
+            n, d = q.popleft()
+            
+            if n not in visited:
+                if d == K: 
+                    res.append(n.val)
+                    continue
+                    
+                visited.add(n)
+                
+                if n.left: q.append((n.left, d+1))
+                if n.right: q.append((n.right, d+1))
+                if self.parent[n]: q.append((self.parent[n], d+1))
+                                   
+        return res

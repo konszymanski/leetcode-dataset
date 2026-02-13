@@ -1,0 +1,10 @@
+var minStoneSum = function(piles, k) {
+  const maxHeap = new Heap((a, b) => b - a);
+  maxHeap.heapify(piles);
+  while (k) {
+    const cur = maxHeap.pop();
+    maxHeap.add(cur - Math.floor(cur / 2));
+    k--;
+  }
+  return maxHeap.arr.reduce((a, b) => a + b);
+};

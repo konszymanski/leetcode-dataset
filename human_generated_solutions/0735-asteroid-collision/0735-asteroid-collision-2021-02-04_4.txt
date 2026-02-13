@@ -1,0 +1,33 @@
+def asteroid_collision(asteroids: List[int]) -> List[int]:
+    """
+    Asteroid Collision
+
+    time: O(n)
+    space: O(n)
+
+    :param List[int] asteroids:
+    :return List[int]:
+    """
+
+    # Two asteroids can collide if:
+    # 1. the asteroid on the left is traveling right (positive), and
+    # 2. the asteroid on the right is traveling left (negative).
+    def can_collide(a: int, b: int) -> bool:
+        return a > 0 and b < 0
+
+    stack = []
+
+    for asteroid in asteroids:
+        stack.append(asteroid)
+
+        while len(stack) >= 2 and can_collide(stack[-2], stack[-1]):
+            b = stack.pop()
+            a = stack.pop()
+			
+			# Append the larger of the two asteroids or neither if they are the same size.
+            if a > abs(b):
+                stack.append(a)
+            elif abs(b) > a:
+                stack.append(b)
+
+    return stack

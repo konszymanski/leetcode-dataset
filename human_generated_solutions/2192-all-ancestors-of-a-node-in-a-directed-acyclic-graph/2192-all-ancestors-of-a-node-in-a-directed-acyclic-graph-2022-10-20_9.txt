@@ -1,0 +1,22 @@
+class Solution:
+	def getAncestors(self, n: int, edges):
+		res = [[] for i in range(n)]
+		graph = [[] for i in range(n)]
+		for v in edges:
+			graph[v[0]].append(v[1])
+		
+		def bfs(start):
+			visited = set()
+			visited.add(start)
+			queue = []
+			queue.append(start)
+			while len(queue) != 0:
+				u = queue.pop()
+				for v in graph[u]:
+					if v not in visited:
+						visited.add(v)
+						queue.append(v)
+						res[v].append(start)
+		for i in range(n):
+			bfs(i)
+		return res

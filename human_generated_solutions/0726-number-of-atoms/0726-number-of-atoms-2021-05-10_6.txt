@@ -1,0 +1,119 @@
+import collections
+import heapq
+from typing import Dict, List
+
+
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+		"""
+		this augmentation of the formular with extra parenthesis helps
+		in the generic recursion solution below
+		"""
+        formula = \'(\' + formula + \')\'
+        n = len(formula)
+
+        def get_next_element(i: int):
+			"""
+			Assumption in play here,
+				elements are either lenght=1 N, O, H, K etc
+				or length=2 Fe, Cl etc
+			"""
+            nonlocal formula, n
+            element = formula[i]
+            if i + 1 < n and formula[i + 1].islower():
+                return element + formula[i + 1], i + 2
+            return element, i + 1
+
+        def get_element_count(i: int):
+			"""
+			Find element count it could be any number of digits
+			"""
+            nonlocal formula, n
+            num = formula[i]
+            for idx in range(i + 1, n):
+                if formula[idx].isdigit():
+                    num += formula[idx]
+                else:
+                    return int(num), idx
+            return int(num), i + len(num)
+
+        def get_next_closing_parentheses(i: int):
+			"""
+			Example:
+			0 1 2 3 4 5
+			( ( ) ( ) )
+			As per this example, given an index 0 it will return 5
+			"""
+			nonlocal formula, n
+            stack: List[str] = []
+            while i < n:
+                if formula[i] == \'(\':
+                    stack.append(formula[i])
+                elif formula[i] == \')\':
+                    stack.pop()
+                    if not stack:
+                        return i
+                i += 1
+
+        def solve(i: int, j: int) -> Dict[str, int]:
+            nonlocal n
+            _counts = collections.defaultdict(int)
+            element = \'\'
+            while i <= j:
+                if formula[i].isalpha():
+					"""
+					Encounter an Element alphabet
+					"""
+                    element, i = get_next_element(i)
+                    if i == n or (i < n and not formula[i].isdigit()):
+                        _counts[element] += 1
+                        element = \'\'
+                elif formula[i].isdigit():
+					"""
+					Encounter an Element count
+					"""
+                    element_count, i = get_element_count(i)
+                    _counts[element] += element_count
+                else:
+					"""
+					Encounter a starting parentheses
+					"""
+                    next_i = i + 1
+					last_right_parentheses = get_next_closing_parentheses(i)
+                    next_j = last_right_parentheses - 1
+
+                    if last_right_parentheses + 1 < n and formula[last_right_parentheses + 1].isdigit():
+                        next_multiplier, i = get_element_count(last_right_parentheses + 1)
+                    else:
+                        next_multiplier = 1
+                        i = last_right_parentheses + 1
+
+					"""
+					The element counts as obtained from a level deep parenthesis
+					needs to be multiplied by the multiplier outside and then
+					added to the element count dictionary in this level of recursion
+					"""
+                    _prev__counts = solve(next_i, next_j)
+                    for elm, cnt in _prev__counts.items():
+                        _counts[elm] += cnt * next_multiplier
+            return _counts
+
+        counts = solve(0, n - 1)
+
+        heap: List[str] = []
+        res: List[str] = []
+        for k in counts.keys():
+            heapq.heappush(heap, k)
+
+		"""
+		Heap is used to simply evict the elements in sorted order
+		and construct the output string
+		"""
+        while heap:
+            popped = heapq.heappop(heap)
+            popped_count = counts[popped]
+            res.append(popped)
+            if popped_count > 1:
+                res.append(str(popped_count))
+
+        return \'\'.join(res)

@@ -1,0 +1,52 @@
+class SegmentTree:
+	def __init__(self, array):
+		N = len(array)
+		k = 1
+		
+		while k < N:
+			k = k << 1
+		
+		tree = [0 for _ in range(2*k)]
+		for i in range(N):
+			tree[k+i] = array[i]
+		self.tree = tree
+		self.tree_size = 2*k
+		while k > 1:
+			j = k
+
+			while j < 2*k:
+				tree[j//2] = tree[j] * tree[j+1]
+				j += 2
+			k = k//2
+
+	def mul(self, a, b):
+		s = 1
+		a += self.tree_size//2
+		b += self.tree_size//2
+		while a <= b:
+			if a%2 == 1:
+				s *= self.tree[a]
+				a += 1
+			if b%2 == 0:
+				s *= self.tree[b]
+				b -= 1
+
+			a = a//2
+			b = b//2
+		return s
+class Solution:
+    def productQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        MOD = 10**9 + 7
+        k = n
+        powers = []
+        while k >0:
+            val = k & (-k)
+            powers.append(val)
+            k -= val
+        segtree = SegmentTree(powers)
+        ans = []
+        for start, end in queries:
+            res = segtree.mul(start, end)
+            ans.append(res%MOD)
+        
+        return ans

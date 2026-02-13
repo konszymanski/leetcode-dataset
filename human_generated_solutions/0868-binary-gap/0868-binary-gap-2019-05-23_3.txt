@@ -1,0 +1,23 @@
+class Solution:
+    def binaryGap(self, N: int) -> int:
+        BinaryN =bin(N)
+        BinaryN = BinaryN[2::]
+        FoundOne = False
+        Max=0
+        count=0
+
+        for i in BinaryN:
+            
+            if(i == \'1\'):
+                if(FoundOne == True):
+                    Max = max(count,Max)
+                    count =0   
+
+                else:
+                    FoundOne = True
+                    
+            if(FoundOne):
+                count = count+1
+            
+                
+        return Max

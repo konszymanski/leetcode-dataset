@@ -1,0 +1,14 @@
+class Solution:
+    def bestRotation(self, nums: List[int]) -> int:
+        diff = [0]*(len(nums) + 1)
+        for i, x in enumerate(nums): 
+            diff[i+1] += 1
+            if x <= i: diff[0] += 1
+            diff[(i-x)%len(nums) + 1] -= 1
+        
+        ans = prefix = 0 
+        mx = -inf 
+        for i, x in enumerate(diff): 
+            prefix += x
+            if prefix > mx: mx, ans = prefix, i
+        return ans

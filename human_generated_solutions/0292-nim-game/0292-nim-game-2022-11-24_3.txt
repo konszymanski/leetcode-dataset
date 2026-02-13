@@ -1,0 +1,4 @@
+class Solution:
+    def canWinNim(self, n: int) -> bool:
+        # if n is not a multiple of 4, it is possible to win
+        return n % 4

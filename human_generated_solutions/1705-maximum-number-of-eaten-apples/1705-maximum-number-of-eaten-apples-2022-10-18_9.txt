@@ -1,0 +1,18 @@
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        heap, idx, numDays, res = [], 0, len(apples), 0
+        while heap or idx < numDays:
+            # add the valid apples where the day of growth and the day of eating are valid
+            if idx < numDays and apples[idx] > 0:
+                heappush(heap, [idx + days[idx], apples[idx]])
+            # Remove the rotten apples. The ones with number of days taken to rot <= present day
+            # or the apples which were plucked on some ith day and have all been eaten since
+            while heap and (heap[0][0] <= idx or heap[0][1] == 0):
+                heappop(heap)
+            # If there are non-rotten valid apples left in the heap, eat one
+            if heap:
+                heap[0][1] -= 1
+                res += 1
+            # Go to the next day
+            idx += 1
+        return res

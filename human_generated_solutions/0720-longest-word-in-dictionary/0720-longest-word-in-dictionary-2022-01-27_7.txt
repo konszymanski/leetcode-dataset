@@ -1,0 +1,29 @@
+class Solution:
+    """
+    First sort the list by lexicographic orer.
+    
+    Then, iterate through the sorted list. 
+    
+    If the length of word is 1, just add to hashset.
+    
+    If length larger than one, we need to check whether its [:-1] part in set or not. If so, then
+    it is a candidate for the longest word seen so far. We add the word itself to the hash set to it can be used
+    to form other words.
+    
+    hashset contents example: 
+    {\'worl\', \'world\', \'w\', \'wo\', \'wor\'}
+
+    """
+    
+    def longestWord(self, words: List[str]) -> str:
+        words.sort()
+        
+        result = \'\'
+        seen = set()
+        for w in words:
+            if len(w) == 1 or w[0:-1] in seen:
+                if len(w) > len(result):
+                    result = w
+                seen.add(w)
+  
+        return result

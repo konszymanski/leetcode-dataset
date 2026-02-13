@@ -1,0 +1,17 @@
+class Solution:
+    def detectCapitalUse(self, word: str) -> bool:
+        res = False
+        uppers = 0
+        if ord(word[0]) < 97:
+            for l in word:
+                if ord(l) < 97:
+                    uppers += 1
+            
+        else:
+            for l in word:
+                if ord(l) < 97:
+                    return False
+        
+        if uppers == len(word) or uppers == 1 or uppers == 0:
+            return True
+        return False

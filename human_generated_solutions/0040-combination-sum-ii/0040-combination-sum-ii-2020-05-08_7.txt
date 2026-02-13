@@ -1,0 +1,10 @@
+def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        dp = collections.defaultdict(set)
+        candidates.sort()
+        dp[0].add(())
+        for n in candidates:
+            for i in reversed(range(n, target + 1)):
+                if i >= n:
+                    for seq in dp[i-n]:
+                        dp[i].add(seq+(n,))
+        return dp[target]

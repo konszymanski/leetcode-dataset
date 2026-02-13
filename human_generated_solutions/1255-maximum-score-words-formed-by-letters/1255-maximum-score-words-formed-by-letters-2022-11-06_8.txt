@@ -1,0 +1,27 @@
+class Solution:
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        frequency  = collections.Counter(letters)
+        def backtrack(i):
+            if i == len(words):
+                return 0
+            # don\'t take 
+            score1 = backtrack(i+1)
+            
+            # take first check if possible to take or not 
+            word = words[i]
+            possible = True
+            for ch in word:
+                if frequency[ch] == 0:
+                    possible = False
+                frequency[ch]-=1
+            score2 = 0
+            if possible:
+                score_temp = 0
+                for ch in word:
+                    score_temp+= score[ord(ch)-ord(\'a\')]
+                score2 = score_temp+ backtrack(i+1)
+            # backtracking step
+            for ch in word:
+                frequency[ch]+=1
+            return max(score1,score2)
+        return backtrack(0)

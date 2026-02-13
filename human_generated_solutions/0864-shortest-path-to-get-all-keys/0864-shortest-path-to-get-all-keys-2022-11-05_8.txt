@@ -1,0 +1,32 @@
+class Solution:
+    def shortestPathAllKeys(self, grid: List[str]) -> int:
+        dir = [[1,0], [-1,0], [0,1], [0,-1]]
+        m = len(grid)
+        n = len(grid[0])
+        
+        q = []
+        k = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == \'@\': q.append([i, j, \'\'])
+                elif grid[i][j].islower(): k += 1
+
+        visited = set()
+        moves = 0
+        while q:
+            new_q = []
+            for row, col, keys in q:
+                if len(keys) == k: return moves
+                if ((row, col, keys) in visited): continue
+                visited.add((row, col, keys))
+                for r, c in dir:
+                    nr, nc = row + r, col + c
+                    if nr < 0 or nr == m or nc < 0 or nc == n: continue 
+                    val = grid[nr][nc]
+                    if val == \'#\': continue
+                    if val == \'.\' or val == \'@\' or val in keys: new_q.append([nr, nc, keys])
+                    elif val.islower(): new_q.append([nr, nc, keys + val])
+                    elif val.lower() in keys: new_q.append([nr, nc, keys])
+            moves += 1
+            q = new_q
+        return -1

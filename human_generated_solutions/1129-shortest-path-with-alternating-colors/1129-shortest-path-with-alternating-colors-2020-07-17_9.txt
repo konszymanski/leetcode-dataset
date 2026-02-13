@@ -1,0 +1,33 @@
+from collections import deque, defaultdict
+class Solution:
+    def shortestAlternatingPaths(self, n: int, red_edges: List[List[int]], blue_edges: List[List[int]]) -> List[int]:
+        # use bfs
+        # first create adjancency matrices using dicts from both red_edge and blue_edges
+        red_d = defaultdict(list)
+        blue_d = defaultdict(list)
+        [red_d[edge[0]].append(edge[1]) for edge in red_edges]
+        [blue_d[edge[0]].append(edge[1]) for edge in blue_edges]
+        q = deque([(0, \'red\'), (0, \'blue\')])
+        shortest_paths = [float(\'inf\')]*n
+        level = -1
+        visited = set()
+        while q:
+            level += 1
+            size = len(q)
+            for _ in range(size):
+                cur_num, cur_color = q.popleft()
+                opposite_color = \'red\' if cur_color == \'blue\' else \'blue\'
+                # update shortest path for cur_num if level is less than
+                # shortest_paths[cur_num]
+                shortest_paths[cur_num] = min(level, shortest_paths[cur_num])
+                if opposite_color == \'blue\' and cur_num in blue_d and (opposite_color, cur_num) not in visited:
+                    visited.add((opposite_color, cur_num))
+                    neighbors = blue_d[cur_num]
+                    for child in neighbors:
+                        q.append((child, opposite_color))
+                if opposite_color == \'red\' and cur_num in red_d and (opposite_color, cur_num) not in visited:
+                    visited.add((opposite_color, cur_num))
+                    neighbors = red_d[cur_num]
+                    for child in neighbors:
+                        q.append((child, opposite_color))
+        return [x if x != float(\'inf\') else -1 for x in shortest_paths ]

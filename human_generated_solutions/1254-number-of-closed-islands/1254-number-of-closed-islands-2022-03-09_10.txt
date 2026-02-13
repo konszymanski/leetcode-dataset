@@ -1,0 +1,23 @@
+# Runtime: 150 ms, faster than 76.87% of Python3 online submissions for Number of Closed Islands.
+# Memory Usage: 14.4 MB, less than 75.23% of Python3 online submissions for Number of Closed Islands.
+class Solution:
+    def closedIsland(self, grid):
+        closed, visitedAreas = 0, [[0]*len(grid[0]) for _ in range(len(grid))]
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0 and visitedAreas[i][j] == 0:
+                    closed += 1 if self.checkArea(grid, visitedAreas, i, j) else 0
+        return closed
+    
+    def checkArea(self, grid, visitedAreas, i, j):
+        closed = 1;
+        if i>=0 and i<len(grid) and j>=0 and j<len(grid[0]):
+            if grid[i][j] == 0 and visitedAreas[i][j] == 0:
+                visitedAreas[i][j] = 1
+                if i==0 or i==len(grid)-1 or j==0 or j==len(grid[0])-1:
+                    closed *= 0
+                closed *= self.checkArea(grid, visitedAreas, i-1, j) 
+                closed *= self.checkArea(grid, visitedAreas, i, j+1)
+                closed *= self.checkArea(grid, visitedAreas, i+1, j)
+                closed *= self.checkArea(grid, visitedAreas, i, j-1)
+        return closed

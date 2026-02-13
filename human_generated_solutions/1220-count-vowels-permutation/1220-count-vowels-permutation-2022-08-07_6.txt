@@ -1,0 +1,20 @@
+class Solution:
+    def countVowelPermutation(self, n: int) -> int:
+        MOD = 10**9+7
+        vowels = [\'a\', \'e\', \'i\', \'o\', \'u\']
+        vowel_transition = {
+            \'a\': [\'e\'],
+            \'e\': [\'a\', \'i\'],
+            \'i\': [\'a\', \'e\', \'o\', \'u\'],
+            \'o\': [\'i\', \'u\'],
+            \'u\': [\'a\']
+        }
+        
+        @lru_cache(None)
+        def dp_memo(i, c):
+            if i == 1: return 1
+            return sum([dp_memo(i-1, vowel) for vowel in vowel_transition[c]])
+        
+        ans = 0
+        for vowel in vowels: ans = (ans + dp_memo(n, vowel)) % MOD
+        return ans

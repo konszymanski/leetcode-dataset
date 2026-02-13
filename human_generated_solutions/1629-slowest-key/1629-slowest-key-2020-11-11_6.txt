@@ -1,0 +1,13 @@
+def slowestKey(self, releaseTimes: List[int], keysPressed: str) -> str:
+        key = keysPressed[0]
+        maxTime = releaseTimes[0]
+
+        for i in range(1, len(releaseTimes)):
+            diff = releaseTimes[i] - releaseTimes[i-1]
+            if diff > maxTime:
+                maxTime = diff
+                key = keysPressed[i]
+            elif diff == maxTime:
+                maxtime = diff
+                key = max(key, keysPressed[i])
+        return key

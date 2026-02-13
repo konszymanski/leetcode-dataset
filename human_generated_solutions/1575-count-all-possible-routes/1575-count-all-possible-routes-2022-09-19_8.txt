@@ -1,0 +1,18 @@
+class Solution:
+    def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+        @cache
+        def countRoutes(currentLocation: int, fuel: int) -> int:
+            routes = 0
+            if currentLocation == finish:
+                routes += 1
+            if fuel == 0:
+                return routes
+            for location in range(len(locations)):
+                if location == currentLocation:
+                    continue
+                fuelUsed = abs(locations[currentLocation] - locations[location])
+                if fuelUsed <= fuel:
+                    routes += countRoutes(location, fuel - fuelUsed)
+            return routes % 1000000007
+        
+        return countRoutes(start, fuel)

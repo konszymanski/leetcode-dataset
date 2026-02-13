@@ -1,0 +1,16 @@
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        coun=0
+        mx=0
+        ma=seats.index(1)
+        for i in seats:
+            if i==0:
+                coun+=1
+            else:
+                mx=max(coun,mx)
+                coun=0
+        if mx%2==0:
+            m=mx//2
+        else:
+            m=mx//2+1
+        return max(ma,m,coun)

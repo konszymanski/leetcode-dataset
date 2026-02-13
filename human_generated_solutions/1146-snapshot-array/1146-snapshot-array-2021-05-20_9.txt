@@ -1,0 +1,23 @@
+import bisect
+import collections
+
+
+class SnapshotArray:
+
+    def __init__(self, length: int):
+        self.map = collections.defaultdict(list)
+        self.cur_snap = 0
+
+    def set(self, index: int, val: int) -> None:
+        self.map[index].append(((self.cur_snap, val)))
+
+    def snap(self) -> int:
+        self.cur_snap += 1
+        return self.cur_snap - 1
+        
+    def get(self, index: int, snap_id: int) -> int:
+        snap_list = self.map.get(index, None)
+        if snap_list is None:
+            return 0
+        index = bisect.bisect_right(snap_list, (snap_id, float(\'inf\'))) - 1
+        return snap_list[index][1] if index >= 0 else 0

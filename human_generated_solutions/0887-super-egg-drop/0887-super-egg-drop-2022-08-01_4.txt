@@ -1,0 +1,25 @@
+def superEggDrop(self, e: int, f: int) -> int:
+
+        def solve(floors,eggs):
+            # if we have only one egg, then it takes floors moves at worst case, from 1 to N
+            if eggs==1: return floors
+            
+            if floors==0: return 0
+            ans = math.inf
+            # choose a floor where to drop the egg
+            # let the floor where we drop be curr
+            for curr in range(1,floors+1):
+                # If the egg breaks, we have to check the lower floors
+                lower = solve(curr-1,eggs-1)
+                
+                # If the egg doesn\'t break, it means we have to check in upper floors
+                upper = solve(floors-curr,eggs)
+                
+                # Take the maximum of upper and lower
+                # Add 1 as we have made one move
+                
+                m = max(upper + 1, lower + 1)
+                ans = min(ans,m)
+                
+            return ans
+        return solve(f,e)

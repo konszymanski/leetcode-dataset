@@ -1,0 +1,17 @@
+class Solution:
+    def __init__(self):
+        self.summary = 0
+
+    def sumEvenGrandparent(self, root: TreeNode) -> int:
+        self.walk(root, False, False)
+        return self.summary
+
+    def walk(self, node: TreeNode, parent_even: bool, grand_parent_even: bool):
+        if node is None:
+            return
+        if grand_parent_even:
+            self.summary += node.val
+        next_parent_even = True if node.val % 2 == 0 else False
+        self.walk(node.left, next_parent_even, parent_even)
+        self.walk(node.right, next_parent_even, parent_even)
+        return

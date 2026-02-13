@@ -1,0 +1,43 @@
+class Solution:
+    def subArrayRanges(self, nums: List[int]) -> int:
+        ## RC ##
+        ## APPROACH : MONOTONIC STACK ##
+        ## TIME COMPLEXICITY : O(n) ##
+        ## Similar to Leetcode: 907. Sum of Subarray Minimums ##
+        
+        ## LOGIC ##
+        ## 1. Lets put the problem statement differently, sum of all subarray ranges = sum of subrray maximums - sum of subarray minimums ##
+        ## 2. Use monotonic (Next Larger Element , Previous Larger Element) stacks to find subarraymaximums ( i.e for nums[i], what is the largest subarray for which nums[i] is maximum) ##
+        ## 3. Use monotonic (Next Smaller Element, Previous Smaller Element) stacks to find subarrayminimums ( i.e for nums[i], what is the largest subarray for which nums[i] is minimum) ##
+        ## 4. result = maximums - minimums ##
+        
+        n = len(nums)
+        ple_idx = [-1] * n        # Index of previous larger element
+        nle_idx = [n] * n         # Index of next larget element
+        stack = []
+        for i, num in enumerate(nums):
+            while(stack and num > stack[-1][0]):
+                temp = stack.pop()[1]
+                nle_idx[temp] = i
+            ple_idx[i] = stack[-1][1] if(stack) else -1
+            stack.append((num,i))
+        # print(ple_idx, nle_idx)
+        
+        pse_idx = [-1] * n        # Index of previous smaller element
+        nse_idx = [n] * n         # Index of next smaller element
+        stack = []
+        for i, num in enumerate(nums):
+            while(stack and num < stack[-1][0]):
+                temp = stack.pop()[1]
+                nse_idx[temp] = i
+            pse_idx[i] = stack[-1][1] if(stack) else -1
+            stack.append((num,i))
+        # print(pse_idx, nse_idx)
+        
+        minimums = 0
+        maximums = 0
+        for i in range(n):
+            minimums += (nums[i] * (i - pse_idx[i]) * (nse_idx[i] - i))  # multiply to get the count of all subarrays
+            maximums += (nums[i] * (i - ple_idx[i]) * (nle_idx[i] - i))
+        # print(maximums ,minimums)
+        return maximums - minimums

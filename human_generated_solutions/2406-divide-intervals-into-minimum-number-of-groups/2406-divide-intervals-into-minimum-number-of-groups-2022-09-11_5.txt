@@ -1,0 +1,23 @@
+# similar as "253. Meeting Rooms II", the only difference is the definition of "intersect"
+    def minGroups(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        arr = []
+        for s, e in intervals:
+            arr.append((s, \'s\'))
+            arr.append((e, \'e\'))
+            
+        # sort it and let "start" appear earlier than "end"
+        arr.sort(key = lambda x: (x[0], -ord(x[1]))) 
+        
+        cnt = 0
+        maxV = 0
+        for v, t in arr:
+            if t == \'s\':
+                cnt += 1
+            else:
+                cnt -= 1
+            maxV = max(maxV, cnt)
+        return maxV

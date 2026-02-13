@@ -1,0 +1,19 @@
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        tree = {}
+        for employee_id, m in enumerate(manager):
+            if m == -1:
+                continue
+            if m not in tree:
+                tree[m] = [employee_id]
+            else:
+                tree[m] += [employee_id]
+        ans = 0
+        queue = [(headID, 0)]
+        while queue:
+            employee_id, time = queue.pop(0)
+            ans = max(ans, time)
+            if employee_id in tree:
+                for subordinate in tree[employee_id]:
+                    queue += [(subordinate, time+informTime[employee_id])]
+        return ans

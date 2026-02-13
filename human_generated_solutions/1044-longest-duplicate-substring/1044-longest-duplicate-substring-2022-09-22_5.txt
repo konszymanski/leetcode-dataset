@@ -1,0 +1,23 @@
+class Solution:
+    def longestDupSubstring(self, s: str) -> str:
+        left, right = 0, len(s)
+        ans = ""
+        while right - left > 1:
+            mid = (left + right) // 2
+            i = 0
+            stat = defaultdict(int)
+            carry = ""
+            while i + mid <= len(s):
+                sub_str = s[i: i + mid]
+                stat[sub_str] += 1
+                if stat[sub_str] > 1:
+                    carry = sub_str
+                    break
+                i += 1
+            if len(carry) > len(ans):
+                ans = carry
+            if carry:
+                left = mid
+            else:
+                right = mid
+        return ans

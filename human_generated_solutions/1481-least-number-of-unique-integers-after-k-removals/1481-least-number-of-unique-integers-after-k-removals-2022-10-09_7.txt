@@ -1,0 +1,20 @@
+\r
+class Solution:\r
+    def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:\r
+        d = {}\r
+        for i in arr:\r
+            d[i] = d.get(i, 0)+1\r
+\r
+        unique_elements = len(d)\r
+        curr_deleted = 0\r
+        count = 0\r
+        for frequency in sorted(d.values()):\r
+            curr_deleted += frequency\r
+            count += 1\r
+            if curr_deleted < k:\r
+                continue\r
+            elif curr_deleted == k:\r
+                return unique_elements-count\r
+            else:\r
+                return unique_elements-(count-1)\r
+        \r

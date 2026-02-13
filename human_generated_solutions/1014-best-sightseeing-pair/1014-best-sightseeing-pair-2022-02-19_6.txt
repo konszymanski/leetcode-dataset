@@ -1,0 +1,15 @@
+class Solution:
+    def maxScoreSightseeingPair(self, values: List[int]) -> int:
+        #max value = a[i] + i + a[j] - j, we want make sure both a[i] + i and a[j] - j part as large as possible
+		
+		#initialization
+        start = values[0] #here is a[0] + 0
+        max_value = float(\'-inf\')
+        
+        for j in range(1, len(values)):
+            #update max_value, compare with current value(end point with formula a[j] - j)
+            max_value = max(max_value, start + values[j] - j)
+            #update start, compare with current value(start point with formula a[i] + i)
+            start = max(start, values[j] + j)
+        
+        return max_value

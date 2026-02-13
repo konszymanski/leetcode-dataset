@@ -1,0 +1,15 @@
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        curr1, curr2 = headA,headB
+        
+        while curr1 or curr2: # once any of the two pointers reach the end then move other pointer head such that both heads will be at same distance from intersection
+            if curr1: curr1 = curr1.next
+            else: headB = headB.next
+            if curr2: curr2 = curr2.next
+            else: headA = headA.next
+        
+        while headA is not headB: # find the intersection point when it becomes equal
+            headA = headA.next
+            headB = headB.next
+        
+        return headA

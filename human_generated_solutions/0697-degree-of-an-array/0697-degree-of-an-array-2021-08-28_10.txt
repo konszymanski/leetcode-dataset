@@ -1,0 +1,15 @@
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        repetitions = defaultdict(list)
+        for idx, n in enumerate(nums):
+            repetitions[n].append(idx)
+            
+        answer = float(\'inf\')
+        answer_repetitions = 0
+        for key in repetitions:
+            if len(repetitions[key]) > answer_repetitions:
+                answer = repetitions[key][-1]+1 - repetitions[key][0]
+                answer_repetitions = len(repetitions[key])
+            elif len(repetitions[key]) == answer_repetitions:
+                answer = min(answer, repetitions[key][-1]+1 - repetitions[key][0])
+        return answer

@@ -1,0 +1,18 @@
+from sortedcontainers import SortedList
+
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.single=[]
+        self.double=[]
+
+    def book(self, start: int, end: int) -> bool:
+        for u,v in self.double:
+            if max(u,start)<min(end,v):
+                return False
+        for u,v in self.single:
+            if max(u,start)<min(end,v):
+                self.double.append((max(u,start),min(end,v)))
+                
+        self.single.append((start,end))
+        return True

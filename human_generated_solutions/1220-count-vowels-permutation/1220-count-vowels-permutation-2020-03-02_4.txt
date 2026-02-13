@@ -1,0 +1,30 @@
+class Solution:
+    def countVowelPermutation(self, n: int) -> int:
+        
+        modulo = 10**9 + 7
+        
+        # initialization for length of permutation = 1
+        (a, e, i, o, u) = (1, 1, 1, 1, 1)
+        
+        length_of_permutation = 1
+        while length_of_permutation < n:
+            
+            # update total method count by transition rule
+            end_with_a = e + i + u
+    
+            end_with_e = a + i
+
+            end_with_i = e + o
+           
+            end_with_o = i
+   
+            end_with_u = i + o
+			
+			# update method count of ending with a e i o u
+            (a, e, i, o, u) = (end_with_a, end_with_e, end_with_i, end_with_o, end_with_u )
+            
+        
+            length_of_permutation += 1
+        
+
+        return (a + e + i + o + u) % modulo

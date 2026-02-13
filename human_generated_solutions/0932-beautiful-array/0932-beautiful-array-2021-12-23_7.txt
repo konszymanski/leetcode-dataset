@@ -1,0 +1,4 @@
+def beautifulArray(self, n):
+        nums = list(range(1,n+1))
+        nums.sort(key=lambda x: bin(x)[:1:-1])
+        return nums

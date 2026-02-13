@@ -1,0 +1,9 @@
+class Solution:
+    def maxEvents(self, events: List[List[int]]) -> int:
+        events.sort(key=lambda event: event[1])
+        bitmask = 0
+        for start, end in events:
+            mask = ((1 << (end + 1)) - 1) ^ ((1 << start) - 1)
+            if cover := (~bitmask & mask):
+                bitmask |= cover & (-cover)
+        return f\'{bitmask:b}\'.count(\'1\')

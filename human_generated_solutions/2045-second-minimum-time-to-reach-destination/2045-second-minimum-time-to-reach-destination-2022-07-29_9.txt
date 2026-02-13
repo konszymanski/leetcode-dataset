@@ -1,0 +1,27 @@
+class Solution:
+    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+        seen = {1:0}
+        hasSecond = [0] * (n+1)
+        g = [[] for _ in range(n+1)]
+        for u,v in edges:
+            g[u].append(v)
+            g[v].append(u)
+        q = [1]
+        for u in q:
+            for v in g[u]:
+                if seen.get(v) == seen[u]:
+                    hasSecond[v] = hasSecond[u] = 1
+            for v in g[u] :
+                if v not in seen:
+                    seen[v] = seen[u] + 1
+                    q.append(v)
+                if seen[v] == seen[u] + 1:
+                    hasSecond[v] |= hasSecond[u]
+                
+        length = seen[n] + 2 - hasSecond[n]
+        res = 0
+        for _ in range(length):
+            if (res//change) & 1:
+                res = (res+change) // change * change
+            res += time
+        return res

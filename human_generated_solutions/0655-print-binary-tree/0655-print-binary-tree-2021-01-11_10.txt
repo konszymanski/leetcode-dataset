@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def printTree(self, root: TreeNode) -> List[List[str]]:
+        
+        \'\'\'
+        Node count of each row is 2**(depth-1). Add empty space for sum of previous node counts. 
+        We add the extra spaces because each node takes up its own entire column in the grid.
+        
+        Example: 
+        depth 1, 2**0 + 0
+        depth 2, 2**1 + 1
+        depth 3, 2**2 + 3
+        
+        Find the size of final row based on those numbers, then create a grid of ([""] * size) * depth.
+        
+        Root goes at middle of first row.
+        
+        Traverse the tree, putting children in the middle of the left or right half of the next row.
+        \'\'\'
+        
+        def get_depth(node):
+            if not node:
+                return 0
+            return 1 + max(get_depth(node.left), get_depth(node.right))
+        
+        depth = get_depth(root)
+        extra = sum(2**i for i in range(depth-1))
+        
+        size = 2**(depth - 1) + extra
+        
+        grid = [[\'\' for _ in range(size)] for _ in range(depth)]
+        
+        def traverse(node, row, left, right):
+            if not node:
+                return
+            
+            idx = left + (right - left) // 2
+            
+            grid[row][idx] = str(node.val)
+            
+            traverse(node.left, row + 1, left, idx)
+            traverse(node.right, row + 1, idx + 1, right)
+            
+        traverse(root, 0, 0, size-1)
+        return grid

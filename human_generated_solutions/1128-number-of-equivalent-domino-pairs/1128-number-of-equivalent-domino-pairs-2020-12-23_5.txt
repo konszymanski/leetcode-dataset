@@ -1,0 +1,15 @@
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        num_dic = collections.defaultdict(int)
+        n = len(dominoes)
+        for i in range(n):
+		# make dominoe like [1, 2] and [2, 1] become the same
+            a, b = sorted(dominoes[i])
+            num_dic[(a, b)] += 1
+        pairs = 0
+        for k, v in num_dic.items():
+		# number of equivalents in dictionary
+            if v >= 2:
+			# formula of comtinational number, C(2, n) = n(n-1)/2. For example, item a, b, c could form three combinations of two: (a, b), (a, c), (b, c)
+                pairs += (v * (v-1))//2
+        return pairs

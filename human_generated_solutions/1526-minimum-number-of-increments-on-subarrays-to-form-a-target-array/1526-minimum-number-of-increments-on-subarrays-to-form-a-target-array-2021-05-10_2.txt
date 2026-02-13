@@ -1,0 +1,8 @@
+class Solution:
+    def minNumberOperations(self, target: List[int]) -> int:
+        prev_num = 0
+        steps = 0
+        for val in target:
+            steps += val-prev_num if val > prev_num else 0
+            prev_num = val
+        return steps

@@ -1,0 +1,14 @@
+def zeroFilledSubarray(self, nums: List[int]) -> int:
+        i,j=0,0
+        n=len(nums)
+        count=0
+        while j<n:
+            if nums[j]==0:
+                while j<n and nums[j]==0:
+                    count+=(j-i+1)
+                    j+=1
+                i=j
+            else:
+                i+=1
+                j+=1
+        return count

@@ -1,0 +1,17 @@
+def nextLargerNodes(self, head: Optional[ListNode]) -> List[int]:
+	ans = []
+	stack = []
+	i = 0
+	curr = head
+	while(curr):
+	# just for the length of the linked list.
+		ans.append(0)
+		curr = curr.next
+	while(head):
+		while(stack and stack[-1][1] < head.val):
+			index, _ = stack.pop()
+			ans[index] = head.val
+		stack.append([i, head.val])
+		i += 1
+		head = head.next
+	return ans

@@ -1,0 +1,23 @@
+class Solution(object):
+  
+    def numWays(self, steps, arrLen):
+        """
+        :type steps: int
+        :type arrLen: int
+        :rtype: int
+        """
+        return self.helper(0, steps, arrLen, {})
+
+    def helper(self, i, steps, length, memo):
+        if i < 0 or i >= length or i > steps:
+            return 0
+        if steps == i:
+            return 1
+
+        if (i, steps) not in memo:
+            ans = self.helper(i + 1, steps - 1, length, memo) + \\
+                  self.helper(i - 1, steps - 1, length, memo) + \\
+                  self.helper(i, steps - 1, length, memo)
+            memo[i, steps] = ans % MOD
+
+        return memo[i, steps]

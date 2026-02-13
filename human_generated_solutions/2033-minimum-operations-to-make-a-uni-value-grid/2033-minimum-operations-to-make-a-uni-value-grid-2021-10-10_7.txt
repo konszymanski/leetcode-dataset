@@ -1,0 +1,10 @@
+class Solution:
+    def minOperations(self, grid: List[List[int]], x: int) -> int:
+        lks=sorted([y for x in grid for y in x])
+        mid=lks[len(lks)//2]
+        ans=0
+        for i in lks:
+            if abs(i-mid)%x!=0:
+                return -1
+            ans+=(abs(i-mid)//x)
+        return ans

@@ -1,0 +1,10 @@
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        n = len(arr)
+        n_4th = n / 4
+        candidates_loc = [n//4, n//2, n * 3 // 4]
+        for loc in candidates_loc:
+            idx1 = bisect_left(arr, arr[loc])
+            idx2 = bisect_right(arr, arr[loc])
+            if idx2 - idx1 > n_4th:
+                return arr[loc]

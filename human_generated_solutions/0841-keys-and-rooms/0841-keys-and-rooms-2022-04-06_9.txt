@@ -1,0 +1,13 @@
+def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        def dfs(rooms,source,visited):
+            if(source in visited):
+                return 
+            else:
+                visited.append(source)
+                for i in rooms[source]:
+                    dfs(rooms,i,visited)
+        visited=[]
+        dfs(rooms,0,visited)
+        if(len(visited)==len(rooms)):
+            return True
+        return False

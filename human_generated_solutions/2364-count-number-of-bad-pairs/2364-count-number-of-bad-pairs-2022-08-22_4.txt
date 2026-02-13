@@ -1,0 +1,9 @@
+def countBadPairs(self, nums: List[int]) -> int:
+	good = 0
+	n = len(nums)
+	d = defaultdict(int)
+	for i in range(n):
+		if(nums[i]-i in d):
+			good += d[nums[i]-i]
+		d[nums[i]-i] += 1
+	return (n*(n-1)//2) - good

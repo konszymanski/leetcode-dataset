@@ -1,0 +1,25 @@
+class Solution:
+    def findLexSmallestString(self, s: str, a: int, b: int) -> str:
+        visited, sz = set(), len(s)
+        
+        def rotate(s: str, b: int) -> str:
+            return s[b:] + s[:b]
+        
+        def add(s: str, a: int) -> str:
+            s = list(s)
+            for idx in range(1, sz, 2):
+                s[idx] = chr(ord(\'0\') + ((ord(s[idx]) - ord(\'0\') + a) % 10))
+            return \'\'.join(s)
+        
+        def dfs(s: str) -> None:
+            nonlocal ans
+            if s in visited:
+                return
+            ans = min(ans, s)
+            visited.add(s)
+            dfs(rotate(s, b))
+            dfs(add(s, a))
+            
+        ans = s
+        dfs(s)
+        return ans

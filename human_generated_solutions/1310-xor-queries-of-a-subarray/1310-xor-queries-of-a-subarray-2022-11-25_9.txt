@@ -1,0 +1,14 @@
+class Solution:
+    def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
+        accum = [arr[0]]
+        answer = []
+        for num in arr[1:]:
+            accum.append(accum[-1] ^ num)
+            
+        for i, j in queries:
+            if i == 0:
+                answer.append(accum[j])
+            else:
+                answer.append(accum[j] ^ accum[i-1])
+            
+        return answer

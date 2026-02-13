@@ -1,0 +1,32 @@
+from collections import deque
+
+class Solution:
+    def secondMinimum(self, n, edges, time, change):
+        g = [[] for _ in range(n + 1)]
+        
+        for u, v in edges:
+            g[u].append(v)
+            g[v].append(u)
+            
+        visited_at = [-1 for _ in range(n + 1)]
+        visited_cnt = [0 for _ in range(n + 1)]
+        first = None
+        q = deque([(0, 1)])
+        
+        while q:
+            t, u = q.popleft()
+            if visited_at[u] == t or visited_cnt[u] > 1:
+                continue
+            visited_cnt[u] += 1
+            visited_at[u] = t
+            if u == n:
+                if first is None:
+                    first = t
+                else:
+                    return t
+            is_green = (t // change) % 2 == 0
+            move_at = t if is_green else change * (t // change + 1)
+            for v in g[u]:
+                q.append((move_at + time, v))
+                
+        return -1

@@ -1,0 +1,21 @@
+class Solution:
+    def divideString(self, s: str, k: int, fill: str) -> List[str]:
+		
+		ans = []
+        n = len(s)
+        end = 0
+        while end<len(s):
+                        
+            if end+k<=len(s): 
+                ans.append(s[end:end+k])
+            else:
+                res  = s[end:]   # remaining string 
+                left = (end+k)-n # Number of places left
+                to_add = fill*left # Use that many fill characters
+                c = res+to_add # Append it to the remainign string
+                ans.append(c)   
+                break
+                
+            
+            end = end+k
+        return ans

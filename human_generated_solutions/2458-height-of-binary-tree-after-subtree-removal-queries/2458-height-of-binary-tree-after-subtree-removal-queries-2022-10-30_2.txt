@@ -1,0 +1,36 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        def solve(node,level):
+            euler_tour.append((node.val,level))
+            if node.left:
+                solve(node.left,level+1)
+            if node.right:
+                solve(node.right,level+1)
+            euler_tour.append((node.val,level))
+        euler_tour=[]
+        solve(root,1)
+        d={}
+        for i,el in enumerate(euler_tour):
+            if el[0] in d:
+                d[el[0]].append(i)
+            else:
+                d[el[0]]=[i]
+        pre=[0]
+        for el,l in euler_tour:
+            pre.append(max(pre[-1],l))
+        suf=[0]
+        for el,l in euler_tour[::-1]:
+            suf.append(max(suf[-1],l))
+        suf=suf[::-1]
+        ans=[]
+        
+        for el in queries:
+            start,end=d[el]
+            ans.append(max(pre[start],suf[end+1])-1)
+        return ans

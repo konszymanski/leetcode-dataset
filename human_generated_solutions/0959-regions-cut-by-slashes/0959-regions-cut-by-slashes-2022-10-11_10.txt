@@ -1,0 +1,40 @@
+class Solution(object):
+    def regionsBySlashes(self, grid):
+        """
+        :type grid: List[str]
+        :rtype: int
+        """
+        n = len(grid)
+        posToVertice = defaultdict(lambda : list())
+        for i in xrange(n):
+            pos = 0
+            for j in xrange(n):
+                #posToVertice[(i, j, \'west\')], posToVertice[(i, j, \'east\')], posToVertice[(i, j, \'north\')], posToVertice[(i, j, \'south\')] = [], [], [], []
+                groups = [[\'east\', \'south\'], [\'north\', \'west\']] if grid[i][j] == \'/\' else ([[\'east\', \'north\'], [\'south\', \'west\']] if grid[i][j] == \'\\\\\' else [[\'east\', \'south\', \'north\', \'west\']])
+                self.addInternalEdges(posToVertice, i, j, groups)                                        
+                if j > 0:
+                    posToVertice[(i, j, \'west\')].append((i, j-1, \'east\')) 
+                    posToVertice[(i, j-1, \'east\')].append((i, j, \'west\')) 
+                if i > 0:
+                    posToVertice[(i, j, \'north\')].append((i-1, j, \'south\'))
+                    posToVertice[(i-1, j, \'south\')].append((i, j, \'north\'))                
+        
+        res = 0
+        vertices = set(posToVertice.keys())
+        while len(vertices) > 0:
+            q = deque()           
+            q.append(vertices.pop())
+            while len(q) > 0:
+                for nb in posToVertice[q.popleft()]:
+                    if nb in vertices:
+                        vertices.remove(nb)
+                        q.append(nb)
+            res += 1
+        return res
+    
+    def addInternalEdges(self, posToVertice, i, j, groups):
+        for group in groups:
+            for el1 in xrange(len(group)):
+                for el2 in xrange(el1 + 1, len(group)):
+                    posToVertice[(i, j, group[el1])].append((i, j, group[el2]))
+                    posToVertice[(i, j, group[el2])].append((i, j, group[el1]))

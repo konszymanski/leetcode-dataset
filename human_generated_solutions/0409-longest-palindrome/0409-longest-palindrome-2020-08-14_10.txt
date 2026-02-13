@@ -1,0 +1,23 @@
+class Solution(object):
+    def longestPalindrome(self, s):
+        map = {}
+        # Map every letter to the count of appearances
+        for c in s:
+            if c in map:
+                map[c] += 1
+            else:
+                map[c] = 1
+
+        # Use this bool to find if there is an odd count of some character
+        # and add +1 to result if there is
+        oddCountFound = False
+        res = 0
+        for key in map:
+            # Always add the value to the result, and then subtract -1 if it was odd
+            res += map[key]
+            if map[key] % 2 == 1:
+                res -= 1
+                if not oddCountFound:
+                    oddCountFound = True
+                    res += 1
+        return res

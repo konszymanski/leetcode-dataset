@@ -1,0 +1,12 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        dp = [None] + [set() for i in range(target)]
+        for cand in candidates:
+            if cand > target:
+                break
+            for i in range(target-cand, 0, -1):
+                dp[cand+i] |= {comb + (cand,) for comb in dp[i]}
+            dp[cand].add((cand,))
+            
+        return dp[target]

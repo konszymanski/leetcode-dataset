@@ -1,0 +1,26 @@
+class Solution:
+    def colorTheGrid(self, m: int, n: int) -> int:
+        M = 10**9 + 7
+        def conjugate(x, y):
+            out = {0,1,2}
+            if x>=0: out.remove(x)
+            if y>=0: out.discard(y)
+            return out
+
+        @lru_cache(None)
+        def genPerm(col):
+            ans = []
+            def backtrack(curr, i):
+                if i == m: 
+                    ans.append(curr)
+                    return
+                for j in conjugate(col[i], curr[-1] if curr else -1): 
+                    backtrack(curr + (j,), i + 1)
+            backtrack(tuple(), 0)
+            return ans
+    
+        @lru_cache(None)
+        def dp(col,i):
+            if i==n: return 1
+            return sum(dp(c, i + 1) for c in genPerm(col)) % M
+        return dp(tuple([-1] * m),0)

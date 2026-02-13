@@ -1,0 +1,47 @@
+class Trie:
+    def __init__(self, dictionary) -> None:
+        self.root = {}
+        for word in dictionary:
+            self.insert(word)
+        
+    def insert(self, word) -> None:
+        node = self.root
+        for char in word:
+            if char not in node:
+                node[char] = {}
+            node = node[char]
+
+        # mark this node as a word
+        node[\'is_word\'] = True
+        
+    def get(self, word) -> str:
+        node = self.root
+        prefix = \'\'
+        for char in word:
+            # if it\'s a word, we should return it
+            if \'is_word\' in node:
+                return prefix
+            
+            # if char is not in the node there is no reason to continue
+            if char not in node:
+                break
+            
+            # keep adding chars to prefix
+            prefix += char
+            node = node[char]
+        
+        # just return the original word
+        return word
+            
+
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        words = sentence.split()
+        
+        trie = Trie(dictionary)
+        
+        for i, word in enumerate(words):
+            # replace a word with either the root of the word or the original word
+            words[i] = trie.get(word)
+            
+        return \' \'.join(words)

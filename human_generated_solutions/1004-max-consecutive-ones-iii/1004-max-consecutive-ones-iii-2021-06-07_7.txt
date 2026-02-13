@@ -1,0 +1,29 @@
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        n=len(nums)
+        left=0
+        right=0
+        while(right<n and k>0):
+            if nums[right]==0:
+                k-=1
+            right+=1
+        if right==n:
+            return n
+        
+        maxlen=right-left
+        #the range[left to right] has exactly in k zeroes
+        
+        while(right<n):
+            # if next is 1 we include it and increase our maxlen
+            if nums[right]==1:
+                right+=1
+                maxlen=max(maxlen,right-left)
+                
+            # if next is 0 then to include that 0 we need to remove the leftmost 0 from our sliding window
+            else:
+                while(nums[left]==1):
+                    left+=1
+                left+=1 #eleminate leftmost zero
+                right+=1
+            
+        return maxlen

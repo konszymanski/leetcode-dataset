@@ -1,0 +1,25 @@
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        n=len(days)
+        l=[]
+        le=0
+        for i in range(n):
+            if days[i]!=0 or apples[i]!=0:
+                l.append([apples[i],days[i]+i])
+                le+=1
+        l.sort(key=lambda x:x[1])
+        day=0
+        res=0
+        i=0
+        while(i<le):
+            A=l[i][0]
+            D=l[i][1]
+            if day<D:
+                diff_days=D-day
+  
+                mn=min(diff_days,A)
+                day+=mn
+                res+=mn
+            i+=1
+  
+        return res

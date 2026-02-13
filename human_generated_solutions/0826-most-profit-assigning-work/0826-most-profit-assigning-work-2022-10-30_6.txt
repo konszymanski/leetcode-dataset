@@ -1,0 +1,41 @@
+class Solution:
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        """
+        idea: 
+        - zip difficulty and profit
+        -   sort by difficulty 
+        
+        - iterate through each worker\'s ability (worker)
+        - find the greatest difficulty using binary search , returning the high (bisect right)
+        -    max_profit += profit_of_worker[index found with binary search]
+        """
+        diff_prof = [list(i) for i in zip(difficulty, profit)]
+        diff_prof.sort(key = lambda x: x[0])
+		
+        # need to make profit be the max up to i
+        prev = diff_prof[0][1]
+        for i in range(len(diff_prof)):
+            diff_prof[i][1] = max(diff_prof[i][1], prev)
+            prev = diff_prof[i][1]
+
+        max_profit = 0
+        for ability in worker:
+            index = self.binary_search(diff_prof, ability)
+            if index >= 0 and index < len(diff_prof):
+                max_profit += diff_prof[index][1]
+        return max_profit
+                
+            
+    def binary_search(self, diff_prof: List, ability: int) -> int:
+        lo, hi = 0 , len(diff_prof) - 1
+        index = -1
+        while lo <= hi:
+            mid = (lo + (hi - lo)//2)
+            #mid = (hi + lo) // 2
+            if diff_prof[mid][0] <= ability:
+                # save index of what a worker can do up to
+                index = mid 
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        return index

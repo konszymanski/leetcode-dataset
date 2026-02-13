@@ -1,0 +1,8 @@
+def rearrangeArray(self, nums: List[int]) -> List[int]: # nums = [3,1,-2,-5,2,-4]
+        pos_arr = [num for num in nums if num > 0] # [3, 1, 2]
+        neg_arr = [num for num in nums if num < 0] # [-2, -5, -4]
+        output = list()
+        for i in range(len(pos_arr)):
+            output.append(pos_arr[i])
+            output.append(neg_arr[i])
+        return output # [3,-2,1,-5,2,-4]

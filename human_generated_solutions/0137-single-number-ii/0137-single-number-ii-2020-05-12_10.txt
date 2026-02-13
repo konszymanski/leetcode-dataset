@@ -1,0 +1,10 @@
+from collections import Counter
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        
+		# key: number
+		# value: occurrennce
+        num_occ_dict = Counter( nums )
+        
+        return [ number for number in num_occ_dict if num_occ_dict[number] == 1][0]

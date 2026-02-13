@@ -1,0 +1,23 @@
+class Solution:
+    def matrixReshape(self, nums: List[List[int]], r: int, c: int) -> List[List[int]]:
+        
+        ori_rows, ori_cols = len(nums), len(nums[0])
+        
+        if ori_rows * ori_cols != r * c or (ori_rows, ori_cols) == (r, c):
+            # Quick response:
+            # 
+            # mismatch of total number of elements
+            # or
+            # dimension is the same as original
+            
+            return nums
+        
+        else:
+            
+            # flatten nums to 1D array
+            flatten_array = [ element for rows in nums for element in rows ]
+            
+            # construct  reshape_arr by list comprehension
+            reshape_arr = [ flatten_array[ y*c : y*c+c ] for y in range(r) ]
+            
+            return reshape_arr

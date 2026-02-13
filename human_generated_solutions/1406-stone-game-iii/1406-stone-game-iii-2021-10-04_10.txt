@@ -1,0 +1,23 @@
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n=len(stoneValue)
+        @lru_cache(None)
+        def dfs(strt):
+            ans=-float(\'inf\')
+            op1,op2,op3=-float(\'inf\'),-float(\'inf\'),-float(\'inf\')
+            if strt>=n:
+                return 0
+            op1=stoneValue[strt]-dfs(strt+1)
+            if strt+1<n:
+                op2=stoneValue[strt]+stoneValue[strt+1]-dfs(strt+2)
+            if strt+2<n:
+                op3=stoneValue[strt]+stoneValue[strt+1]+stoneValue[strt+2]-dfs(strt+3)
+            ans=max(ans,op1,op2,op3)
+            return ans
+        k=dfs(0)
+        if k>0:
+            return "Alice"
+        elif k<0:
+            return "Bob"
+        else:
+            return "Tie"

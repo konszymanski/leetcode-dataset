@@ -1,0 +1,16 @@
+def getMinimumDifference(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def inOrder(node,ans):
+            if not node:return
+            inOrder(node.left,ans)
+            ans.append(node.val)
+            inOrder(node.right,ans)
+
+        mn,res=sys.maxsize,[]
+        inOrder(root,res)
+        for i in range(len(res)-1):
+            mn=min(res[i+1]-res[i], mn)
+        return mn

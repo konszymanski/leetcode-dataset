@@ -1,0 +1,37 @@
+from collections import defaultdict
+
+
+class Solution:
+    
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        
+        undirected_graph = defaultdict(list)
+        
+        for origin, destination in connections:
+            undirected_graph[origin].append(destination)
+            undirected_graph[destination].append(origin)
+            
+        connections = set(map(tuple, connections))
+        
+        # to adjust for initial miss 
+        # because edge 0->0 never exists
+        count = -1
+        prev = current = 0
+        stack = [(prev, current)]
+        seen = {0}
+        
+        while stack:
+            
+            prev, current = stack.pop()
+            
+            # as we descend from the root we need to check 
+            # for an edge in the opposite direction
+            if (current, prev) not in connections:
+                count += 1
+                                            
+            for neighbor in undirected_graph[current]:
+                if neighbor not in seen:
+                    seen.add(neighbor)
+                    stack.append((current, neighbor))
+        
+        return count

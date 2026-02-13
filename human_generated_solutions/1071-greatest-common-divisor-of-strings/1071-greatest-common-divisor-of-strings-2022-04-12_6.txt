@@ -1,0 +1,15 @@
+class Solution:
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        def gcd(x, y):
+            while y:
+                x, y = y, x % y
+            return x
+        
+        k = gcd(len(str1), len(str2))
+        
+        gcd1, gcd2 = str1[:k], str2[:k]
+        
+        if gcd1 == gcd2 and str1+str2 == str2+str1:
+            return gcd1
+        
+        return ""

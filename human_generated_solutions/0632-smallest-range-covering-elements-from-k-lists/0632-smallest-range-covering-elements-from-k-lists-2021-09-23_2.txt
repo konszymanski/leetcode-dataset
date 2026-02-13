@@ -1,0 +1,20 @@
+import heapq
+class Solution:
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        result = []
+        hq = []
+        high = -sys.maxsize
+        for i in range(len(nums)):
+            heapq.heappush(hq, (nums[i][0], i, 0))
+            high = max(high, nums[i][0])
+        result = [hq[0][0], high]
+        while True:
+            num , listIndex, numIndex = heapq.heappop(hq)
+            if numIndex == len(nums[listIndex]) - 1:
+                break;
+            nextNum = nums[listIndex][numIndex + 1]
+            heapq.heappush(hq, (nextNum, listIndex, numIndex + 1))
+            high = max(high, nextNum)
+            if high - hq[0][0] < result[1] - result[0]:
+                result = [hq[0][0], high]
+        return result

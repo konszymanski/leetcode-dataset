@@ -1,0 +1,23 @@
+class Solution:
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        t=[root]
+        flg=0
+        while(len(t)>0):
+            if(len(t)==t.count(None)):
+                print("yo")
+                break
+            if(flg==1):
+                return False
+            
+            n=len(t)
+            tt=[]
+            for i in range(n):
+                if(t[i]!=None):
+                    if(flg==1):
+                        return False
+                    tt.append(t[i].left)
+                    tt.append(t[i].right)
+                elif(t[i]==None):
+                    flg=1
+            t=tt
+        return(True)

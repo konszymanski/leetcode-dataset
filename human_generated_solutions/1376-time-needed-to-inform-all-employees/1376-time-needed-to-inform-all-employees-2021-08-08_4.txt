@@ -1,0 +1,25 @@
+def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        """
+        This is a very easy question, we need dict/graph mapping managers to employees and then
+        we can do dfs to find time for each leaf node to be informed. The max of such leaf node
+        times is the answer as that will be the maximum time taken to inform all employees
+        """
+        rel_map = collections.defaultdict(list)
+        ans = 0
+        
+        # initalizing rel_map for building graph
+        for emp,manager in enumerate(manager):
+            rel_map[manager].append(emp)
+            
+        # now calculate time for each leaf node and find max
+        def dfs(eid):
+            # no further subordinate
+            if not rel_map.get(eid):
+                return 0
+            
+            time = informTime[eid] 
+            time += max([ dfs(cid) for cid in rel_map.get(eid)])
+            
+            return time
+        
+        return dfs(headID)

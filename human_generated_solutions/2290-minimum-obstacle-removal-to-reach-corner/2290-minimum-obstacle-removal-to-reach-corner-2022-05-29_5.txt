@@ -1,0 +1,21 @@
+class Solution:
+    def minimumObstacles(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        noOfObstaclesToReach = [[-1]*n for _ in range(m)]   # s: O(m*n)
+		noOfObstaclesToReach[0][0] = grid[0][0]
+        nodeQueue = deque([(0,0)])                          # s: O(m*n)
+        directions = [0,1,0,-1,0]
+        
+        while len(nodeQueue) > 0 and noOfObstaclesToReach[m-1][n-1] == -1:
+            currNodeX, currNodeY = nodeQueue.popleft()      # each node gets in and out atmost once - O(m*n)
+            for i in range(4):                              # O(1)
+                neighborX, neighborY = currNodeX + directions[i], currNodeY + directions[i+1]
+                if 0 <= neighborX < m and 0 <= neighborY < n and noOfObstaclesToReach[neighborX][neighborY] == -1:    # unvisited valid nodes
+                    if grid[neighborX][neighborY] == 0:                # node without obstacle added to the beginning
+                        noOfObstaclesToReach[neighborX][neighborY] = noOfObstaclesToReach[currNodeX][currNodeY]
+                        nodeQueue.appendleft((neighborX, neighborY))
+                    else:                                              # node with obstacle added to the end
+                        noOfObstaclesToReach[neighborX][neighborY] = noOfObstaclesToReach[currNodeX][currNodeY] + 1
+                        nodeQueue.append((neighborX, neighborY))
+        return noOfObstaclesToReach[m-1][n-1]

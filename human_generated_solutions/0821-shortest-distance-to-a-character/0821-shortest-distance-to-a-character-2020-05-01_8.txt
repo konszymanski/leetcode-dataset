@@ -1,0 +1,32 @@
+def using_solution_tab_solution(self, S, C):
+        out = []
+        prev = float(\'inf\')
+        for i, v in enumerate(S):
+            if v == C: prev = i
+            out.append(abs(prev - i))
+        prev = float(\'inf\')
+        for i in range(len(S) -1 , -1 , -1):
+            v = S[i]
+            if v == C: prev = i
+            out[i] = min(out[i], abs(prev - i))
+        return out
+        
+    def using_binary_search(self, S, C):
+        occurences = [i for i,v in enumerate(S) if v == C]
+        out = []
+        for i,v in enumerate(S):
+            closest = self.find_closest(occurences, i)
+            out.append(abs(closest - i))
+        return out
+      
+    def find_closest(self, arr, target):
+        # using binary search to find closest
+        start, end = 0, len(arr) - 1
+        while start < end - 1:
+            mid = (start + end) // 2
+            diff = arr[mid] - target
+            if diff == 0: return arr[mid]
+            elif diff < 0: start = mid
+            else: end = mid
+        # print(arr[start], arr[end])
+        return arr[end] if abs(arr[end] - target) <= abs(arr[start] - target) else arr[start]

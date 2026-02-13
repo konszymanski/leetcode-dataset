@@ -1,0 +1,26 @@
+class CombinationIterator:
+
+    def __init__(self, characters: str, combinationLength: int):
+        self.chars = characters
+        self.length = combinationLength
+        def permutation(curr, idx):
+            if len(curr) == self.length:
+                yield curr
+                return
+            for i in range(idx, len(self.chars)):
+                yield from permutation(curr + self.chars[i], i + 1)      
+        self.curr = permutation("", 0)
+        self.cache = ""
+
+    def next(self) -> str:
+        ans = self.cache or next(self.curr)
+        self.cache = ""
+        return ans
+
+    def hasNext(self) -> bool:
+        try:
+            if self.cache: return True
+            self.cache = next(self.curr)
+            return True
+        except:
+            return False

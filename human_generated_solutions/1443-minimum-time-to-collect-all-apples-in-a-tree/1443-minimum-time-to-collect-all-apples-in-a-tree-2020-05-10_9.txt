@@ -1,0 +1,53 @@
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+	 # go number wise ex. 1 ,2 ,3...
+	 
+	 
+	 # 4. Dfs Function  
+        def helper(v,p,visited):
+            visited[v] = 1
+            self.parent[v] = p
+            for i in tree[v]:
+                if not visited[i]:
+                    self.ans += 1  # while going use edge so + 1
+                    helper(i,v,visited)
+                    self.ans +=  1  # while returning use edge so + 1
+                    
+        # 1. define tree  -------
+        tree = defaultdict(list)
+        self.ans = 0
+        # 2. construct tree --------
+        for i in edges:
+            tree[i[0]].append(i[1])
+            tree[i[1]].append(i[0])
+            
+        # 2.1 print(tree)     
+        
+       
+        # 3. Use Dfs  ----------   
+        visited = [0]*len(tree)
+        self.parent = [None]*len(tree)
+        helper(0,-1,visited)
+        
+        # 4.1 see all ancestors and track it
+        s = set()      # tracks all ancestors of  apple nodes
+        for i in range(len(hasApple)):
+            if hasApple[i]:
+                child = i
+				s.add(child) # reverse Path using parent array and store each  
+                while 1:
+                    para = self.parent[child]
+                    s.add(para)
+                    child = para
+                    if para == -1:
+                        break
+        # print(s)
+		
+        # 5. Final touch up    
+		#  remove dege count for those node who is not included in s i.e. either not apple or not in path of apple  
+        for i in range(1,len(hasApple)):
+            if i not in s:
+                self.ans -= 2
+				
+				
+		 return self.ans

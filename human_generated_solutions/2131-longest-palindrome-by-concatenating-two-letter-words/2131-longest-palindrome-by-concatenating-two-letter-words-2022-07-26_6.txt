@@ -1,0 +1,31 @@
+from collections import Counter
+
+def longestPalindrome(words):
+    # creating a hashmap and memory variables
+    C = Counter(words) 
+    res = 0
+    middle = False
+    
+    # going through each individual word
+    # C will be updated to avoid second passage use e.g. "cl" "lc"
+    for word in C:
+        # if the word contains the same letters e.g. "gg"
+        if word==word[::-1]:
+            uni = C[word]%2             # can it "be" unique
+            res += (C[word]//2)*4       # properly adding
+            C.update({word: -C[word]})  # updating C
+            
+            # a middle for the palindrome has been found
+            if not middle and uni: middle = True
+            continue # avoid second passage with second if 
+        
+        # cases like "ab" "ba"
+        if word[::-1] in C:
+            tmp = min(C[word],C[word[::-1]])
+            res += tmp*4
+            C.update({word:-tmp, word[::-1]:-tmp})
+    
+    # palindrome\'s middle exists "aa", add +2 to res
+    if middle: res+= 2
+        
+    return res

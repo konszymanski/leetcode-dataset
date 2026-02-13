@@ -1,0 +1,1 @@
+return min( s := sum([i%2 for i in position]), len(position) - s)

@@ -1,0 +1,15 @@
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+
+        s = list(s)                                     # string --> list
+
+        l,r, vowels = 0, len(s) - 1, \'aeiouAEIOU\'
+        
+        while l < r:
+            while l < r and s[l] not in vowels: l += 1  # Increment each pointer l and r until
+            while l < r and s[r] not in vowels: r -= 1  # each is pointing at a vowel or l >= r.
+
+            s[l], s[r] = s[r], s[l]                     # Swap the pointed vowels and increment
+            l += 1   ;   r -= 1                         # each pointer.
+
+        return \'\'.join(s)                               # list --> string

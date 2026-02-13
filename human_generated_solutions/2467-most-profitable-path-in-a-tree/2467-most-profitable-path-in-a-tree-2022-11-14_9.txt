@@ -1,0 +1,37 @@
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        n = len(amount)
+        parent = [-1 for i in range(n)]
+        dist = [0 for i in range(n)]
+        graph = [[] for i in range(n)]
+        for u,v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        def findDistance(curr,currParent):
+            for it in graph[curr]:
+                if it!=currParent:
+                    dist[it] = dist[curr] + 1
+                    findDistance(it,curr)
+                    parent[it] = curr
+            return
+        def modifyCost(currBob,currDist):
+            while currBob!=0:
+                if currDist < dist[currBob]:
+                    amount[currBob] = 0
+                elif currDist == dist[currBob]:
+                    amount[currBob] = amount[currBob]//2
+                currBob = parent[currBob]
+                currDist+=1
+            return
+        def findMaxProfitPath(curr,currParent):
+            if len(graph[curr]) == 1 and curr > 0:
+                return amount[curr]
+            val = -math.inf
+            for it in graph[curr]:
+                if it!=currParent:
+                    val = max(val,findMaxProfitPath(it,curr))
+            return val + amount[curr] 
+                    
+        findDistance(0,-1)
+        modifyCost(bob,0)
+        return findMaxProfitPath(0,-1)

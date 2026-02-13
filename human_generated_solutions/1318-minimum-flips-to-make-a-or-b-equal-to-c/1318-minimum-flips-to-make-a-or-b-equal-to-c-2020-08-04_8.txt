@@ -1,0 +1,30 @@
+class Solution:
+    def minFlips(self, a: int, b: int, c: int) -> int:        
+        # convert a, b, c into binary representation
+        # [2:] to get rid of the heading \'0b\'
+        # rjust(32,\'0\') to make them the same length
+        binaryA = bin(a)[2:].rjust(32,\'0\')
+        binaryB = bin(b)[2:].rjust(32,\'0\')
+        binaryC = bin(c)[2:].rjust(32,\'0\')
+        
+		# you can add print statements here to see what the binary representation looks like
+		
+        flips = 0
+        # loop through each bit
+        for i in range(len(binaryC)):
+            # get the current bit in each number
+            bitA = binaryA[i]
+            bitB = binaryB[i]
+            bitC = binaryC[i]
+            
+            if bitC == \'1\':
+                if bitA == \'0\' and bitB == \'0\':
+                    flips += 1 # at least one of bitA or bitB mus be 1 to make "bitA OR bitB" 1
+            else: # bitC is \'0\'
+                # bitA and bitB must be both 0
+                if bitA == \'1\':
+                    flips += 1
+                if bitB == \'1\':
+                    flips += 1
+
+        return flips

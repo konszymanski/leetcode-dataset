@@ -1,0 +1,29 @@
+from math import inf
+
+class Solution:
+    def maxScoreSightseeingPair(self, values: List[int]) -> int:
+        
+        # The best value to the left of the array
+        left_best = values[0]
+        
+        # The current best value between the pairs
+        curr_best = -inf
+        
+        # Scan the values from index 1 onwards
+        for v in values[1:]:
+            
+            # Compare with current best and the distance
+            # betweent the best to the left of the current
+            # index. Here -1 added to the value giving
+            # a notion that distance increases by 1 on every
+            # index
+            curr_best = max(curr_best, left_best + v - 1)
+            
+            # The best to the left of the current index
+            # must be maintained to compute the current best
+            # value in the next iteration. Here also, -1
+            # is added to left best to make sure to increase
+            # distance from the left best for next index.
+            left_best = max(left_best - 1, v)
+            
+        return curr_best

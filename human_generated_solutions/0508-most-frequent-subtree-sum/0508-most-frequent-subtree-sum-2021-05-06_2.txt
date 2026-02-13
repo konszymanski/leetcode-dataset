@@ -1,0 +1,8 @@
+def subtree_sum(node, curr_sum=0):
+            if node is None:  # this is our base recursive case
+                return 0
+            print(f"At node {node.val}, sum {curr_sum}")
+            curr_sum += subtree_sum(node.left, curr_sum) + subtree_sum(node.right, curr_sum)  # adds the sum of the subtree rooted on the left node and the right node
+            curr_sum += node.val  # adds the value of the node itself
+            print(f"Back at node {node.val}, sum {curr_sum}")
+            return curr_sum

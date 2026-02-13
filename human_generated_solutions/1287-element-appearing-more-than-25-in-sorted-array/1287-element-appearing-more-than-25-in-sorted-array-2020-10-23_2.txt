@@ -1,0 +1,5 @@
+class Solution:
+  def findSpecialInteger(self, arr: List[int]) -> int:
+    for i in [len(arr) // 2, len(arr) // 4, len(arr) // 4 * 3]:
+      if bisect.bisect_right(arr, arr[i]) - bisect.bisect_left(arr, arr[i]) >= len(arr) // 4:
+        return arr[i]

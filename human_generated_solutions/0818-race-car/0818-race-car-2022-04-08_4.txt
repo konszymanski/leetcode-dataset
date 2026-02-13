@@ -1,0 +1,28 @@
+# customized BFS
+class Solution:
+    def racecar(self, target: int) -> int:
+        # use a queue to solve BFS
+        q = [[0,1]]
+        level = 0
+        while len(q)>0:
+            print(level)
+            len_q = len(q)
+            for i in range(len_q):
+                print(q[0])
+                position,speed = q.pop(0)
+                if target==position:
+                    return level
+                else:
+                    # always perform advance
+                    # sometime advance reduces the position as well when speed -1,-2,-4,-8
+                    q.append([position+speed,speed*2])
+                    cur_speed = -1 if speed > 0 else 1
+                    # apply reverse only in 2 conditions (hint is in the problem statment itself)
+                    # hint 1: If your speed is positive then speed = -1
+                    # when we exceed the target and now we want to reduce our position perform reverse
+                    # hint 2: otherwise speed = 1
+                    # when we are short of target and when speed < 0, we have to reverse to make the speed positive. in this case as well apply reverse. Reverse not required in any other cases.
+                    
+                    if (position + speed > target and speed > 0) or (position + speed < target and speed < 0):
+                        q.append([position,cur_speed])
+            level+=1

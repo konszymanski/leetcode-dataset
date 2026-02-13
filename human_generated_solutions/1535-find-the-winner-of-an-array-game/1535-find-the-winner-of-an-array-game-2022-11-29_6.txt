@@ -1,0 +1,18 @@
+class Solution:
+    def getWinner(self, arr: List[int], k: int) -> int:
+        # curr stores current winning player
+        # wins stores the current win streak
+        curr, wins = arr.pop(0), 0
+        # Run the simulation min(len(arr), k) times
+        for num in arr:
+            # curr loses the game, win streak gets reset
+            if num > curr:
+                curr, wins = num, 0
+            # a new win streak is created
+            wins += 1
+            # when enough wins are racked up for current element, break
+            if wins == k:
+                return curr
+        # In case the winner hasn\'t been found out after 1 pass,
+        # Winner is always max(arr)
+        return curr

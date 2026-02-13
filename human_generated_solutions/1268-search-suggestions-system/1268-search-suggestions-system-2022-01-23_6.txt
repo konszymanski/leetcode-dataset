@@ -1,0 +1,22 @@
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        """
+            sort words
+            loop through chars of searchWord
+            
+            if the index being looked at on searchWord is equal to word in product, add                   product
+        """
+        res = []
+        products.sort()
+        
+        for i in range(0, len(searchWord)):
+            temp = []
+            
+            for product in products:
+                if i < len(product) and product[i] == searchWord[i]:
+                    temp.append(product)
+                    
+            res.append(temp[:3])
+            products = temp
+            
+        return res

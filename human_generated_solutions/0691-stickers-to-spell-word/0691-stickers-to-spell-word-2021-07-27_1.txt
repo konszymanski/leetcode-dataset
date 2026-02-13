@@ -1,0 +1,18 @@
+class Solution:
+    def minStickers(self, stickers: List[str], target: str) -> int:
+        freqs = [Counter(x) for x in stickers]
+        
+        @cache
+        def fn(x):
+            """Return min sticks to give x."""
+            if not x: return 0 
+            ans = inf
+            freq = Counter(x)
+            for cnt in freqs: 
+                if x[0] in cnt: 
+                    xx = "".join(k*v for k, v in (freq - cnt).items())
+                    ans = min(ans, 1 + fn(xx))
+            return ans 
+        
+        ans = fn(target)
+        return ans if ans < inf else -1

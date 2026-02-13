@@ -1,0 +1,22 @@
+class Solution:
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        def isPossible(k):
+            shops = n
+            for quantity in quantities:
+                shop = math.ceil(quantity/k)
+                if shops>=shop:
+                    shops-= shop
+                else:
+                    return False
+            return True
+        Max = max(quantities)
+        Min = 1
+        ans = Max
+        while Min<=Max:
+            mid = Min+(Max-Min)//2
+            if isPossible(mid):
+                ans = min(ans, mid)
+                Max = mid-1
+            else:
+                Min = mid+1
+        return ans

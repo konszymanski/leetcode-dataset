@@ -1,0 +1,26 @@
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        
+        def find_long(n):
+            # find the longest consecutive 1\'s in the binary representation
+            i = 0
+            while n:
+                n = n & (n << 1)
+                i = i +1
+            return i
+        
+        row_number = []
+        
+        for i in range(len(matrix)):
+            row_number.append(int(\'\'.join(matrix[i]),2  )  )
+        
+        res = 0
+        
+        # loop through every possible combination to get max
+        for i in range(len(row_number)):
+            tmp = row_number[i]
+            for j in range(i,len(row_number)):
+                tmp &= row_number[j]
+                res = max(res,find_long(tmp) * (j-i+1))
+            
+        return res

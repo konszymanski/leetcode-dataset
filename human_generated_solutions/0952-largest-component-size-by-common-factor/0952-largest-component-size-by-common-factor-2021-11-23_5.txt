@@ -1,0 +1,61 @@
+import math
+
+
+class DisjointSet:
+    def __init__(self, vertices):
+        self.parent = {}
+        self.rank = {}
+        for vertex in range(len(vertices)):
+            self.parent[vertex] = vertex
+            self.rank[vertex] = 0
+
+    def find(self, u):
+        if self.parent[u] != u:
+            self.parent[u] = self.find(self.parent[u])
+        return self.parent[u]
+
+    def union(self, u, v):
+        x = self.find(u)
+        y = self.find(v)
+        if x != y:
+            if self.rank[x] > self.rank[y]:
+                self.parent[y] = x
+            elif self.rank[y] > self.rank[x]:
+                self.parent[x] = y
+            else:
+                self.parent[y] = x
+                self.rank[x] += 1
+        
+        
+class Solution:
+    def getPrimesFactors(self, num):
+        for i in range(2, int(math.sqrt(num))+1):
+            if num % i == 0:
+                return self.getPrimesFactors(num//i) | {i}
+        return {num}
+
+    def largestComponentSize(self, nums: List[int]) -> int:
+        primeFactors = {}
+        for index, num in enumerate(nums):
+            for prime in self.getPrimesFactors(num):
+                if prime in primeFactors:
+                    primeFactors[prime].append(index)
+                else:
+                    primeFactors[prime] = [index]
+
+        djs = DisjointSet(nums)
+        for indexes in primeFactors.values():
+            for index in range(len(indexes) - 1):
+                djs.union(indexes[index], indexes[index + 1])
+
+        longestConnectedComponentLength = 1
+        components = {}
+        for index in range(len(nums)):
+            x = djs.find(index)
+            if x in components:
+                components[x] += 1
+                longestConnectedComponentLength = max(longestConnectedComponentLength, components[x])
+            else:
+                components[x] = 1
+
+        return longestConnectedComponentLength

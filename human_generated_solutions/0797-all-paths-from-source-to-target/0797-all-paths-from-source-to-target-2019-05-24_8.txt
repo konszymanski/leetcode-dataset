@@ -1,0 +1,19 @@
+class Solution(object):
+    def __init__(self):
+        self.memo = {}
+    def allPathsSourceTarget(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        self.memo = {len(graph)-1:[[len(graph)-1]]}
+        def calc(N):
+            if N in self.memo:
+                return self.memo[N]
+            a = []
+            for n in graph[N]:
+                for path in calc(n):
+                    a.append([N]+path)
+            self.memo[N] = a
+            return a
+        return calc(0)

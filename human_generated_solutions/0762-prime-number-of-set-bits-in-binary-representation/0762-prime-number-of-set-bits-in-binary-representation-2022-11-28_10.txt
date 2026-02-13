@@ -1,0 +1,28 @@
+class Solution:
+    def countPrimeSetBits(self, left: int, right: int) -> int:
+        cnt = 0 
+        for i in range(left,right+1):
+            a = self.count_ones(i)
+            b = self.prime(a)
+            if b : 
+                cnt+=1
+        return cnt 
+
+        
+    @staticmethod 
+    def prime(n):
+        if n==1:
+            return False 
+        for i in range(2,int(sqrt(n))+1):
+            if n%i == 0:
+                return False 
+        return True 
+
+    @staticmethod 
+    def count_ones(n):
+        cnt = 0 
+        while n :
+            if n&1:
+                cnt+=1
+            n>>=1
+        return cnt

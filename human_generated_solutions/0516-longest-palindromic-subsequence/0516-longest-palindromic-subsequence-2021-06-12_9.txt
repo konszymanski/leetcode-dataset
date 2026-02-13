@@ -1,0 +1,21 @@
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+        res = 0
+        L = len(s)
+        memo = [[-1 for _ in range(L)] for _ in range(L)]
+        return self.helper(s, 0, L-1, memo)
+        
+    def helper(self, s, left, right, memo) -> int:
+        if memo[left][right] != -1:
+            return memo[left][right]
+        if left > right:
+            return 0
+        if left == right:
+            return 1
+        res = 0
+        if s[left] == s[right]:
+            res = 2 + self.helper(s, left+1, right-1, memo)
+        else:
+            res = max(self.helper(s, left+1, right, memo), self.helper(s, left, right-1, memo))
+        memo[left][right] = res
+        return res

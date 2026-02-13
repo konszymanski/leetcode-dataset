@@ -1,0 +1,58 @@
+class Solution(object):
+    def fractionAddition(self, expression):
+        def gcd(a,b):
+            if b==0:
+                return a
+            if a==0:
+                return b
+            elif a>b:
+                return gcd(a%b,b)
+            else:
+                return gcd(b%a,a)
+        ans=[]
+        if expression[0]=="-":
+            start=1
+            count=1
+            temp="-"
+        else:
+            start=0
+            temp=""
+            count=1
+        for i in range(start,len(expression)):
+            if expression[i]=="-" or expression[i]=="+":
+                ans.append(temp)
+                if expression[i]=="-":
+                    temp="-"
+                else:
+                    temp=""
+            else:
+                temp+=expression[i]
+        ans.append(temp)
+        if len (ans)==1:
+            return expression
+        num=[]
+        den=[]
+        for i in ans:
+            temp=i.split(\'/\')
+            num.append(int(temp[0]))
+            den.append(int(temp[1]))
+        temp_gcd=den[0]
+        temp_mul=1
+        for i in den:
+            temp_gcd=gcd(temp_gcd,i)
+            temp_mul*=i
+        temp_lcm=temp_mul/temp_gcd
+        #print(temp_lcm,temp_gcd)
+        numerator=0
+        for i in range(0,len(num)):
+            temp_num=num[i]*(temp_lcm//den[i])
+            numerator+=temp_num
+        if numerator<0:
+            temp_numerator=-1*numerator
+        else:
+            temp_numerator=numerator
+        gcd_fraction=gcd(temp_numerator,temp_lcm)
+        numerator=str(numerator//gcd_fraction)
+        temp_lcm=str(temp_lcm//gcd_fraction)
+        ans=numerator+"/"+temp_lcm
+        return ans

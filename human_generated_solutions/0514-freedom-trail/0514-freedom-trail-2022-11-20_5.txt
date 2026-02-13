@@ -1,0 +1,16 @@
+@cache
+def dfs(i, j):
+	if j == len(key):
+		return 0
+	stepInit = float("inf")
+	for m in range(len(ring)):
+		if ring[m] == key[j]:
+			if m > i:
+				steps = min(m-i, i+len(ring)-m)
+			else:
+				steps = min(i-m, len(ring)-i+m)
+			stepInit = min(stepInit, steps+dfs(m, j+1)+1)
+
+	return stepInit
+
+return dfs(0, 0)

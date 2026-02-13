@@ -1,0 +1,60 @@
+def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
+      stack1 = []
+      stack2 = []
+      result = []
+      
+	  while root1:    # "get the left most child (minimum element) of root1"
+        stack1.append(root1)
+        root1 = root1.left
+
+      while root2:    # "get the left most child (minimum element) of root2"
+        stack2.append(root2)
+        root2 = root2.left
+
+      while stack1 and stack2:    # "in-order traversal"
+        if stack1[-1].val < stack2[-1].val:    # "if tree1 has minimum element, add it\'s next "in-order" element to stack1"
+          node1 = stack1.pop()
+          result.append(node1.val)
+
+          if node1.right:
+            stack1.append(node1.right)
+            node1 = node1.right.left
+            while node1:
+              stack1.append(node1)
+              node1 = node1.left
+        else: # "stack1[-1].val >= stack2[-1].val, (if tree1 has minimum element, add it\'s next **in-order** element to stack2)"
+          node2 = stack2.pop()
+          result.append(node2.val)
+
+          if node2.right:
+            stack2.append(node2.right)
+            node2 = node2.right.left
+            while node2:
+              stack2.append(node2)
+              node2 = node2.left
+
+      # "empty stack1 into result"
+      while stack1:
+        node1 = stack1.pop()
+        result.append(node1.val)
+
+        if node1.right:
+            stack1.append(node1.right)
+            node1 = node1.right.left
+            while node1:
+              stack1.append(node1)
+              node1 = node1.left
+
+      # "empty stack2 into result" 
+      while stack2:
+        node2 = stack2.pop()
+        result.append(node2.val)
+
+        if node2.right:
+            stack2.append(node2.right)
+            node2 = node2.right.left
+            while node2:
+              stack2.append(node2)
+              node2 = node2.left
+              
+      return result

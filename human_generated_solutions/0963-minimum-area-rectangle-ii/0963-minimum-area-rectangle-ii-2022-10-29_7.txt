@@ -1,0 +1,38 @@
+from math import sqrt
+class Solution:
+    def minAreaFreeRect(self, points: List[List[int]]) -> float:
+        def isPerp(p1, p2, p3):
+            v1 = (p1[0] - p2[0], p1[1] - p2[1])
+            v2 = (p2[0] - p3[0], p2[1] - p3[1])
+            return (v1[0] * v2[0] + v1[1] * v2[1]) == 0
+        def sq3(p1, p2, p3):
+            return sqrt((p3[0] - p2[0])**2 + (p3[1] - p2[1])**2) * sqrt((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2)
+        def squareR(p1, p2, p3, p4):
+            if (isPerp(p1, p3, p4) and isPerp(p2, p4, p3)):
+                return sq3(p1, p3, p4)
+            if (isPerp(p2, p3, p4) and isPerp(p1, p4, p3)):
+                return sq3(p2, p3, p4)
+            return 0
+            
+        d = dict()
+        for i in range(len(points) - 1):
+            x1, y1 = points[i]
+            for j in range(i + 1, len(points)):
+                x2, y2 = points[j]
+                l = (x1-x2)**2 + (y1-y2)**2
+                a = (x2 - x1) if y2 >= y1 else x1 - x2
+                t = (l, a)
+                if t not in d:
+                    d[t] = []
+                d[t].append((points[i], points[j]))
+        ans = float(\'inf\')
+        for (l, xDiff), v in d.items():
+            xDiff = abs(xDiff)
+            for i in range(len(v) - 1):
+                p1, p2 = v[i]
+                for j in range(i + 1, len(v)):
+                    p3, p4 = v[j]
+                    s = squareR(p1, p2, p3, p4)
+                    if s:
+                        ans = min(ans, s)
+        return ans if ans < float(\'inf\') else 0

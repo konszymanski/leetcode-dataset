@@ -1,0 +1,19 @@
+def shortestToChar(self, S: str, C: str) -> List[int]:
+        r, seen_c, l = [], False, 0
+        for w in S:
+            if w == C:
+                if seen_c:                              # C"substring"C
+                    for i in range(1,l//2+1):
+                        r.append(i)
+                    for i in range(l//2+l%2,0,-1):
+                        r.append(i)
+                else:                                     # ["substring"C
+                    for i in range(l,0,-1):
+                        r.append(i)
+                seen_c, l = True, 0
+                r.append(0)
+            else:
+                l += 1
+        for i in range(1,l+1):               # C"substring"]
+            r.append(i)
+        return r

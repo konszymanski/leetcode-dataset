@@ -1,0 +1,15 @@
+class Solution:
+    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
+        m, n = len(horizontalCuts), len(verticalCuts)
+        #For horizontal cuts
+        horizontalCuts.sort()
+ \xA0 \xA0 \xA0 \xA0maxh = max(horizontalCuts[0],h-horizontalCuts[-1])#max of starting and endind cake piece
+ \xA0 \xA0 \xA0 \xA0for i in range(1, m):
+            maxh = max(maxh, horizontalCuts[i]-horizontalCuts[i-1])
+        
+        #For vertical cuts
+ \xA0 \xA0 \xA0 \xA0verticalCuts.sort()
+		maxv = max(verticalCuts[0], w-verticalCuts[-1])#max of starting and ending cake piece
+ \xA0 \xA0 \xA0 \xA0for i in range(1, n):
+ \xA0 \xA0 \xA0 \xA0 \xA0 \xA0maxv = max(maxv, verticalCuts[i]-verticalCuts[i-1])
+        return (maxh*maxv)%(int(1e9)+7)

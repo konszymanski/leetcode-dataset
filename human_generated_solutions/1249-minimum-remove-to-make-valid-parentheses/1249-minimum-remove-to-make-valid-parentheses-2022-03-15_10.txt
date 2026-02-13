@@ -1,0 +1,15 @@
+def minRemoveToMakeValid(self, s: str) -> str:
+        string = list(s)
+        stack = []
+        for i in range(len(string)):
+            if string[i] == \'(\':
+                stack.append((\'(\',i))
+            elif string[i] == \')\':
+                if stack:
+                    stack.pop()
+                else:
+                    string[i] = ""
+        for i in range(len(stack)):
+            string[stack[i][1]] = ""
+            
+        return "".join(string)

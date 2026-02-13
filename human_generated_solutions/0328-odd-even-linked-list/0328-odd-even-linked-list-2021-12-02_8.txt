@@ -1,0 +1,26 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+        
+        even = head.next
+        odd_dummy = ListNode(0, head)
+        even_dummy = ListNode(0, even)
+        
+        while head.next and even.next:
+            head.next = even.next
+            head = head.next
+            even.next = head.next
+            even = even.next
+        
+		#if the length of the linked list is even, even pointer finishes first meaning odd pointer is still pointing to last index. As a result it will create a cycle.
+        if head.next:
+            head.next = head.next.next
+            
+        head.next = even_dummy.next
+        return odd_dummy.next

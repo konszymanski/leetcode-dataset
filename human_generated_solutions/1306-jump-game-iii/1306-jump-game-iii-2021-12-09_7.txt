@@ -1,0 +1,22 @@
+from queue import Queue
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        q = Queue()
+        q.put(start)
+        n = len(arr)
+        visited = [False for i in range(n)]
+        while(q.empty()==False):
+            ind = q.get()
+          
+            visited[ind] = True
+            if(arr[ind] == 0):
+                return True
+            else:
+                
+                if ind + arr[ind] >= 0 and ind + arr[ind] < n and visited[ind + arr[ind]] == False:
+                    q.put(ind + arr[ind])
+                
+                if ind - arr[ind] >= 0 and ind - arr[ind] < n and visited[ind - arr[ind]] == False: 
+                    q.put(ind - arr[ind])
+        
+        return False

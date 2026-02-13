@@ -1,0 +1,12 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        if len(connections) < n - 1:
+            return -1
+        
+        parent = list(range(n))
+        find = lambda x: x if parent[x] == x else find(parent[x])
+        
+        for a, b in connections:
+            parent[find(b)] = find(a)
+        
+        return sum(parent[x] == x for x in range(n)) - 1

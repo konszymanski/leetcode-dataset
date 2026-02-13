@@ -1,0 +1,9 @@
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        if(len(s.split(" ")) != len(pattern)):
+            return False
+        ar = set(zip(pattern, s.split(" ")))
+        b = [i[1] for i in ar]
+        if(len(ar) == len(set(pattern)) and len(set(b)) == len(ar)):
+            return True
+        return False

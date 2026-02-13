@@ -1,0 +1,37 @@
+# https://leetcode.com/problems/maximum-number-of-points-with-cost/discuss/1344893/Similar-to-931.-Minimum-Falling-Path-Sum
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        # current row depends on previous row
+        # for each element in current row
+        # take the max cost of the previous - abs col difference 
+        # and add it to the current position (change / increment)
+        n, m = len(points), len(points[0])
+        
+        for r in range(1, n):
+            # votrubac, two pass leftmax and rightmax 
+            runningMax = 0
+            leftChange = [0]*m
+            for c in range(m):
+                # new abs() == 0, prev -1 (coz distance increased)
+                runningMax = max(runningMax-1, points[r-1][c]) 
+                leftChange[c] = runningMax
+            
+            runningMax = 0
+            rightChange = [0]*m
+            for c in range(m-1,-1,-1):
+                runningMax = max(runningMax-1, points[r-1][c]) 
+                rightChange[c] = runningMax
+                
+            for c in range(m):
+                points[r][c] += max(leftChange[c], rightChange[c])
+        
+        return max(points[-1])
+    
+"""
+Important Test Cases
+
+[[1,2,3],[1,5,1],[3,1,1]]
+[[1,5],[2,3],[4,2]]
+[[0,3,0,4,2],[5,4,2,4,1],[5,0,0,5,1],[2,0,1,0,3]]
+
+"""

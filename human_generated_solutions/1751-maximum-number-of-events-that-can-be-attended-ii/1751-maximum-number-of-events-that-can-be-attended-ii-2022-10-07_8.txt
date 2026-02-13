@@ -1,0 +1,13 @@
+class Solution:
+    def maxValue(self, events: List[List[int]], k: int) -> int:
+        n=len(events)
+        events.sort()
+        @lru_cache(None)
+        def dfs(ind,k):
+            if ind==n or k==0:
+                return 0
+            ans=dfs(ind+1,k)
+            nextInd=bisect.bisect_left(events,[events[ind][1]+1])
+            ans=max(ans,events[ind][2]+dfs(nextInd,k-1))
+            return ans
+        return dfs(0,k)

@@ -1,0 +1,22 @@
+from collections import deque
+
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        target = stones[-1]
+        stone_set, visited = set(stones), set()
+        queue = deque([(0, 0)])
+        
+        while queue:
+            curr_stone, prev_step = queue.popleft()
+            for step in [prev_step - 1, prev_step, prev_step + 1]:
+                if step <= 0:
+                    continue
+                    
+                next_stone = curr_stone + step
+                if next_stone == target:
+                    return True
+                if next_stone in stone_set and (next_stone, step) not in visited:
+                    visited.add((next_stone, step))
+                    queue.append((next_stone, step))
+        
+        return False

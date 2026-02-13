@@ -1,0 +1,45 @@
+class Node:
+#   Trie Node, modificarion -> idx variable to store latest index of word
+    def __init__(self, idx=-1):
+        self.child={}
+        self.idx=idx
+
+class Trie:
+    
+    def __init__(self):
+        self.root=Node()
+        
+    def insert(self, word, idx):
+#       Insert as usual in a normal trie, just update the index to latest one while inserting
+        root=self.root
+        for w in word:
+            if w not in root.child:
+                root.child[w]=Node(idx)
+            root.idx=idx
+            root=root.child[w]
+        root.idx=idx
+        
+    
+    def contains(self, word):
+#       if suff+"#"+pre is present in trie return the latest idx as updated during insert operation
+        root=self.root
+        for w in word:
+            if w not in root.child:
+                return -1
+            root=root.child[w]
+        return root.idx
+    
+class WordFilter:
+
+    def __init__(self, words: List[str]):
+        self.trie=Trie()
+        for i,word in enumerate(words):
+#           for each index,word insert all (all possible suffix)+"#"+word and updated index in trie 
+            x="#"+word
+            self.trie.insert(x,i)
+            for c in word[::-1]:
+                x=c+x
+                self.trie.insert(x,i)
+        
+    def f(self, prefix: str, suffix: str) -> int:
+        return self.trie.contains(suffix+"#"+prefix)

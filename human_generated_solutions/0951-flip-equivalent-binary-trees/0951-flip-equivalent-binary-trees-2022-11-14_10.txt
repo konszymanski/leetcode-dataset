@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+
+        # flipping does not change the children, therefore we can just go through every
+        # node and look whether they equal
+        return self.dfs(root1, root2)
+        
+    def dfs(self, node1, node2):
+        
+        # check if both are none
+        if not node1 and not node2:
+            return True
+        
+        # check if one is none and the other not
+        elif not node1 and node2:
+            return False
+        elif not node2 and node1:
+            return False
+
+        # check if nodes are equal from the value
+        if node1.val != node2.val:
+            return False
+        
+        # go further into the tree and check if either the children are
+        # are equal or will be equal after switching
+        return (self.dfs(node1.left, node2.left) and self.dfs(node1.right, node2.right)) or (self.dfs(node1.left, node2.right) and self.dfs(node1.right, node2.left))

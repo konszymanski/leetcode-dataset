@@ -1,0 +1,72 @@
+def oddEvenJumps(self, arr: List[int]) -> int:
+        arrrev=arr[::-1]
+        N = len(arr)
+        dic = {N-1:[True,True]}
+        total = 0
+        connectarr = sorted(range(N), key = lambda i:arr[i])
+        revconnectarr = sorted(range(N), key = lambda i:arrrev[i])[::-1]
+        odddic,evendic,oddstack,evenstack = {},{},[],[]
+        for i in range(N-1):
+            if connectarr[i] < connectarr[i+1]:
+                odddic[connectarr[i]] = connectarr[i+1]
+                while oddstack != [] and oddstack[-1] < connectarr[i+1]:
+                    odddic[oddstack.pop()] = connectarr[i+1]
+            else:
+                oddstack.append(connectarr[i])
+            
+            if revconnectarr[i] > revconnectarr[i+1]:
+                evendic[N-1-revconnectarr[i]] = N-1-revconnectarr[i+1]
+                while evenstack != [] and evenstack[-1] > revconnectarr[i+1]:
+                    evendic[N-1-evenstack.pop()] = N-1-revconnectarr[i+1]
+            else:
+                evenstack.append(revconnectarr[i])
+            
+        for pos in range(N-1, -1, -1):
+            if pos == N-1:
+                total += 1
+                continue
+            ind = pos
+            jumptype = "even"
+            posfate = []
+            while len(posfate) < 2:
+                if jumptype == "even":
+                    if ind in dic:
+                        posfate.append(dic[ind][0])
+                        jumptype = "even"
+                    else:
+                        temp = self.getNextInd(evendic, ind, "even")
+                        if temp != "None":
+                            ind = temp
+                        else:
+                            posfate.append(False) 
+                        jumptype = "odd"
+                        
+                if jumptype == "odd":
+                    if ind in dic:
+                        posfate.append(dic[ind][1])
+                        jumptype = "odd"
+                        ind = pos
+                    else:
+                        temp = self.getNextInd(odddic, ind, "odd")
+                        if temp != "None":
+                            ind = temp
+                        else:
+                            posfate.append(False)
+                        jumptype = "even"
+            
+            total += int(posfate[-1])
+            dic[pos] = [posfate[0],posfate[1]]
+        
+        return total
+            
+    def getNextInd(self, dic, ind, jump):
+        if jump == "odd":
+            if ind in dic:
+                return dic[ind]
+            else:
+                return "None"
+        elif jump == "even":
+            if ind in dic:
+                return dic[ind]
+            else:
+                return "None"

@@ -1,0 +1,10 @@
+def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+	asize, bsize = sum(aliceSizes), sum(bobSizes)
+	balance = (asize+bsize)//2
+	add = asize-balance
+
+	b = set(bobSizes)
+
+	for a in aliceSizes:
+		if a-add in b:
+			return [a, a-add]

@@ -1,0 +1,33 @@
+import collections
+
+def shortestPathLength(graph):
+    n = len(graph)
+    endState = (1<<n)-1
+
+    path_len = 0
+    queue = collections.deque() # add tuple (node, state)
+    visited = set()
+
+    #Since every node is a possible starting point, add it to queue
+    for i in range(n):
+        queue.append((i, 1<<i))
+    
+    # Now it\'s a simple BFS algorithm
+    while queue:
+        for i in range(len(queue)):
+            node, curState = queue.popleft()
+
+            if curState == endState:
+                return path_len
+
+            #For example: 1->0->1->0.  First 1 we have {1, 10}, then we have {0, 11}, then we will have {1, 11}. 
+			#Lastly, we have {0, 11} which is a state we already had before. So we don\'t visit this again.
+            if (node, curState) in visited:
+                continue
+            
+            visited.add((node, curState))
+            for next_node in graph[node]:
+                queue.append((next_node, curState | 1<<next_node))
+        path_len+=1
+    
+    return -1

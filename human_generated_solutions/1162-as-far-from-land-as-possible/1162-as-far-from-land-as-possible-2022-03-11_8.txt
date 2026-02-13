@@ -1,0 +1,63 @@
+# constant for all 4 directions
+DIRECTIONS = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+
+class Solution:
+    def maxDistance(self, grid: List[List[int]]) -> int:
+        from collections import deque
+        
+		# we need a double ended queue for bfs (we need O(1) removing/adding at both ends)
+		# this queue will store all the positions we are going to visit next
+        q = deque()
+        rows = len(grid)
+        cols = len(grid[0])
+        
+		# we go through the grid one by one and add all land position into the queue
+		# because those positions will be our starting points, this will cost us O(n^2) time and maximum of O(n^2) space
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == 1:
+                    q.append((row, col))
+					
+		# if we don\'t have any land cell or any sea cell, well, our job is done, see ya
+        if len(q) == 0:
+            return -1
+        if len(q) == len(grid) * len(grid[0]):
+            return -1
+        
+		# we will modify the original grid by `color` each position with current distance
+        color = 0
+       
+	    # as long as we still have more position to explore
+		# and we will visit each position exactly once, hence the time complexity here is also O(n^2)
+	    while q:
+			
+			# distance + 1
+            color += 1
+			
+			# this is the fun part, why we need the count here?
+			# because we only want to check all the positions with same distance each step
+            count = len(q)
+            for _ in range(count):
+			
+			    # try the next possible cell
+                curr_row, curr_col = q.popleft()
+                for d in DIRECTIONS:
+                    next_row = curr_row + d[0]
+                    next_col = curr_col + d[1]
+                    if next_row < 0 or next_row >= rows or next_col < 0 or next_col >= cols:
+                        continue
+					# if it\'s a sea cell, we can color it with distance (thus it\'s not 0 anymore, and will not be visited again)
+					# so by doing this we are also using the grid as a visited structure
+                    if grid[next_row][next_col] == 0:
+                        grid[next_row][next_col] = color
+                        q.append((next_row, next_col))
+		
+		# run the code with the following print uncommented
+		# can really help you better understand
+		# you can even put this line in the loop, so you can see how the grid got colored each round
+		# print(grid)
+						
+		# once we processed everything, color - 1 will be the result
+		# why we need minus 1 here? simple! because the last bunch of cell we visit won\'t have anymore neighouring sea cells
+		# but we always do a +1 at the beginning of loop
+        return color - 1

@@ -1,0 +1,23 @@
+def snakesAndLadders(self, board: List[List[int]]) -> int:
+	n = len(board)
+	flat = []
+	p = 0
+	for row in board[::-1]:
+		if(p): flat += row[::-1]
+		else: flat += row
+		p = not p
+	vis = set()
+	s = [1]
+	c = 0
+	while(s):
+		l = len(s)
+		c += 1
+		for _ in range(l):
+			temp = s.pop(0)
+			if(temp == n**2): return c-1
+
+			for jump in range(1, 7):
+				if((temp+jump) not in vis and temp+jump <= n**2):
+					vis.add(temp+jump)
+					s.append(flat[temp+jump-1] if(flat[temp+jump-1] != -1) else temp + jump)
+	return -1

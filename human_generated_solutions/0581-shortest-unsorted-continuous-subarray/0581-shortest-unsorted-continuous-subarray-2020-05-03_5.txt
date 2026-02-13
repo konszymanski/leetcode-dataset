@@ -1,0 +1,17 @@
+python
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+	
+        snums = sorted(nums) # Runtime: O(nlog(n))
+        start = len(nums)-1 # If you are not sure about these initializations, check the code where start and end are updated in the loop
+        end=0
+        
+        for i in range(len(nums)): # Runtime: O(n)
+            if nums[i] != snums[i]:
+                start = min(i, start) # Start will be stuck at the starting point of the mismatch
+                end = max(i, end) # End will always be updated until there are no more mismatches
+                
+        if start>=end:
+            return 0
+        else:
+            return (end-start)+1

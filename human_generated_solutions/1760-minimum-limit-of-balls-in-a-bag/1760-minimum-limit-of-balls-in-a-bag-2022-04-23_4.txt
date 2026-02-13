@@ -1,0 +1,32 @@
+import math
+
+class Solution:
+    """
+    approach:
+    we can tackle this problem by applying binary search to find the optimal 
+    value of penalty
+    min_penalty = 1 (when bag has maximum of 1 ball)
+    max_penalty = max(nums)
+    """
+    def check_fulfilment(self, nums, penalty, maxOperations):
+        ops = 0
+        for num in nums:
+            if num <= penalty:
+                continue
+            else:
+                ops+=math.ceil(num/penalty)-1
+            
+        return ops <= maxOperations
+    
+    def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+        min_penalty = 1
+        max_penalty = max(nums)
+        while min_penalty <= max_penalty:
+            mid = (min_penalty + max_penalty) // 2
+            status = self.check_fulfilment(nums, mid, maxOperations)
+            if status:
+                max_penalty = mid - 1
+            else:
+                # need to increase penalty to reduce operations
+                min_penalty = mid + 1
+        return min_penalty

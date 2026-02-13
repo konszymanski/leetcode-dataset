@@ -1,0 +1,74 @@
+class Solution:
+    def reachNumber(self, target: int) -> int:
+        """
+        This program uses math and binary search to determine
+        the minimum number of steps needed to reach the given
+        target value (target).
+
+        :param target: target number to reach
+        :type target: int
+        :return: minimum steps to reach target
+        :rtype: int
+        """
+
+        def enough_steps(steps) -> bool:
+            """
+            This routine determines whether the candidate number
+            of steps (steps) is enough to equal or exceed the
+            target.
+
+            :param steps: candidate number of steps to reach
+                          target
+            :type steps: int
+            :return: True if steps, the variable, is greater
+                     than or equal to the number of steps needed
+                     to reach target, else False
+            :rtype: bool
+            """
+
+            """
+            Return True if the total distance traveled by the
+            candidate number of steps equals or exceeds target.
+            Otherwise, return False.
+            """
+            if steps * (steps + 1) // 2 >= target:
+                return True
+            return False
+
+        """
+        Binary Search:
+        - Since the number of steps to reach target and -target
+          are the same, we use the positive value of target.
+        - Find minimum number of steps (min_steps) such that:
+                min_steps * (min_steps + 1) // 2 >= target
+        - The left index (left) will point to the correct value
+          of the binary search.
+        """
+        target = abs(target)
+        left = 1
+        right = target
+        while left < right:
+            min_steps = left + (right - left) // 2
+            if enough_steps( min_steps ):
+                right = min_steps
+            else:
+                left = min_steps + 1
+        min_steps = left
+
+        """
+        Adjust min_steps:
+        - Determine the difference (diff) between the total
+          distance traveled, min_steps * (min_steps + 1) // 2,
+          and target.
+        - If diff is 0, min_steps does not change.
+        - If diff is even, it is possible to flip a step from
+          positive to negative to get target. Again, min_steps
+          does not change.
+        - If diff is odd, we need to add one or two steps to
+          create an even difference, at which point we can flip
+          one or more steps to get target.
+        """
+        diff = min_steps * (min_steps + 1) // 2 - target
+        if diff % 2:
+            min_steps += min_steps % 2 + 1
+        return min_steps

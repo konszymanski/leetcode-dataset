@@ -1,0 +1,24 @@
+class Solution:
+    def subArrayRanges(self, nums: List[int]) -> int:
+        nums = nums
+        N = len(nums)
+        maxRes = collections.defaultdict(int) # maxRes[-1] = 0 
+        decMonoStack = []
+        minRes = collections.defaultdict(int) # minRes[-1] = 0 
+        incMonoStack = []
+        
+        for i in range(N):
+            while decMonoStack and nums[decMonoStack[-1]] < nums[i]:
+                decMonoStack.pop()
+            j = decMonoStack[-1] if decMonoStack else -1
+            maxRes[i] = maxRes[j] + (i - j) * nums[i]
+            decMonoStack.append(i)
+        
+        for i in range(N):
+            while incMonoStack and nums[incMonoStack[-1]] > nums[i]:
+                incMonoStack.pop()
+            j = incMonoStack[-1] if incMonoStack else -1
+            minRes[i] = minRes[j] + (i - j) * nums[i]
+            incMonoStack.append(i)
+        
+        return sum(maxRes.values()) - sum(minRes.values())

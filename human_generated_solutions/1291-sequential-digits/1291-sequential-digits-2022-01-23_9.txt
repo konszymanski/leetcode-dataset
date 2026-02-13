@@ -1,0 +1,19 @@
+class Solution(object):
+    def sequentialDigits(self, low, high):
+        """
+        :type low: int
+        :type high: int
+        :rtype: List[int]
+        """
+        reqdNumbers=[]
+        def generateNumbers(currentNum,currentDigit,low,high):
+            if currentNum>=low and currentNum<=high:
+                reqdNumbers.append(currentNum)
+            if currentNum>high or currentDigit>=9:
+                return
+            generateNumbers((currentNum*10+(currentDigit+1)),currentDigit+1,low,high)
+            
+        for i in range(1,10):
+            generateNumbers(i,i,low,high)
+        reqdNumbers.sort()
+        return reqdNumbers

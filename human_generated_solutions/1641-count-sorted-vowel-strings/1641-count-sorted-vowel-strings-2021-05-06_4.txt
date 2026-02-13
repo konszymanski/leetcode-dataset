@@ -1,0 +1,9 @@
+def count(n, last=\'\'):
+    if n == 0:
+        return 1
+    else:
+        nb = 0
+        for vowel in [\'a\', \'e\', \'i\', \'o\', \'u\']:
+            if last <= vowel:
+                nb += count(n-1, vowel)
+        return nb

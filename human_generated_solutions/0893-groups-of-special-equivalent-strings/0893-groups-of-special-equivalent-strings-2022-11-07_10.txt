@@ -1,0 +1,8 @@
+Short Version ->
+class Solution:
+    def numSpecialEquivGroups(self, words: List[str]) -> int:
+        x = set() 
+        for word in words :   
+            hashOE = \'\'.join(sorted(word[1::2])+ sorted(word[0::2]))
+            x.add(hashOE)
+        return len(x)

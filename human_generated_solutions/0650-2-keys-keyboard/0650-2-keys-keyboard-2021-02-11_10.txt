@@ -1,0 +1,14 @@
+class Solution:
+    def minSteps(self, n: int) -> int:
+        if n == 1:
+            return 0
+        @lru_cache(None)
+        def dp(n_as, buffer):
+            if n_as == n:
+                return 1
+            elif n_as > n:
+                return sys.maxsize            
+            copy_paste = 2 + dp(n_as + n_as, n_as)
+            paste = 1 + dp(n_as + buffer, buffer)
+            return min(copy_paste, paste)
+        return dp(1, 1)

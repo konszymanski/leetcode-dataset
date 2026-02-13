@@ -1,0 +1,33 @@
+class Solution:
+    def longestSubarray(self, nums: List[int]) -> int:
+		## if all the elements are different then ans will be the max of th array which means 
+		## the single element , so length of subarray will be 1
+        if len(set(nums))==len(nums):
+            return 1
+			
+		## if only one element present in nums then thats the ans, so length of subarray will be 1
+        if len(nums)==1:
+            return 1
+			
+		## now we have excluded conditions of all differnet elements , means the below condition will 
+		## be defenitely having duplicates elements in the nums 
+		
+		## always the max of nums will be having the maximum BITWISE AND
+        m=max(nums)
+        c=0
+        ma=0
+		
+		## we will search for m here, means the maximum length subarray making by same number as m
+        for i in nums: 
+			## if found the same as m , calculate the count as its length of subarray
+            if i==m:
+                c+=1
+				
+			## if anywhere the subarray is broken (not finding the element as m)
+			## then store the max count in ma and refresh the count c to 0 (which will 
+			## then going to calculate the count of new subarray if forming)
+            else:
+                ma=max(c,ma)
+                c=0
+		## return the max count (max length of subarray)
+        return max(c,ma)

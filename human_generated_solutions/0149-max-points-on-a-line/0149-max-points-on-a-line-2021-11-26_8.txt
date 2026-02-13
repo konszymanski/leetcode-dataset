@@ -1,0 +1,24 @@
+class Solution:
+    def _slope_intercept(self, x1, y1, x2, y2) -> float:
+        if x1 == x2:
+            return float(\'inf\'), x1  # use x-intercept for this case
+        
+        slope = (y2 - y1) / (x2 - x1)
+        y_intercept = y1 - slope * x1
+        return slope, y_intercept
+        
+    def maxPoints(self, points: List[List[int]]) -> int:
+        n = len(points)
+        if n < 2:
+            return n
+        
+        slopes = defaultdict(set)
+        for i in range(n):
+            for j in range(i + 1, n):
+                x1, y1 = points[i]
+                x2, y2 = points[j]
+                key = self._slope_intercept(x1, y1, x2, y2)
+                slopes[key].add((x1, y1))
+                slopes[key].add((x2, y2))
+                
+        return max([len(s) for s in slopes.values()])

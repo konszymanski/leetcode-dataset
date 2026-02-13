@@ -1,0 +1,36 @@
+def isMatchRecursive(self, s, p ,p1, p2):
+ 
+ \'\'\'   if all char in pattern is checked then return by checking 
+       whether text is equal to iterated position value \'\'\'
+        if p2 == len(p):
+            return len(s) == p1    
+       
+	   \'\'\' If * then try to match maximum char in pattern and if \'?\' is found
+	      match it with one char else recursively call the function with increased 
+		  position values \'\'\'
+		  
+        if p[p2] != \'*\':
+            if p1 < len(s) and (s[p1] == p[p2] or p[p2] == \'?\'):
+                return self.isMatchRecursive(s, p,p1+1,p2+1)
+            else:
+                return False
+		\'\'\' This else condition is for maching \'*\' int the pattern like we 
+		have 3 \'*\' so we need to bypass all the \'*\'. \'\'\'
+		
+        else: 
+            while p2< len(p)-1 and p[p2+1] == \'*\':
+                p2 += 1
+            p1 -= 1
+
+            \'\'\' This loop recursively calls the function with next chars in the pattern by incrementing the poistions in the pattern and text strings\'\'\'
+            while p1< len(s):
+                if self.isMatchRecursive(s,p,p1+1, p2+1):
+                    return True
+
+                p1 += 1
+
+        return False
+
+def isMatch(self, s, p):
+
+	return self.isMatchRecursive(s, p, 0 , 0)

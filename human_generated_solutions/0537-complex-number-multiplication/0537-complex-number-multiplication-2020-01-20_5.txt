@@ -1,0 +1,5 @@
+class Solution:
+    def complexNumberMultiply(self, a: str, b: str) -> str:
+        ca, cb = [int(x) for x in a[:-1].split(\'+\')], [int(x) for x in b[:-1].split(\'+\')]
+        cp = [str(ca[0]*cb[0] - ca[1]*cb[1]), str(ca[0]*cb[1] + ca[1]*cb[0])]
+        return \'+\'.join(cp) + \'i\'

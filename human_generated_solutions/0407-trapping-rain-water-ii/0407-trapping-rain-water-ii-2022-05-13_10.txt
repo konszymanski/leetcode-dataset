@@ -1,0 +1,59 @@
+class Solution:
+    def trapRainWater(self, heightMap: List[List[int]]) -> int:
+        """
+        We start from the boundary of the matrix and push the boundary
+        values into a heap. Then we pop the minimum value from the heap
+        and check its neighbors. If the neighbor is smaller than the
+        current value, we know that it can trap some water. We update
+        the neighbor with the max of the current value and the neighbor
+        value. We also update the result with the difference between the
+        current value and the neighbor value. We keep doing this until
+        the heap is empty.
+        
+        :param heightMap: The height map of the map
+        :type heightMap: List[List[int]]
+        :return: The amount of water that can be trapped in the given
+            map.
+        """
+        m, n = len(heightMap), len(heightMap[0])
+        heap = []
+        directions = [(-1, 0), (1, 0), (0, -1), (0,1)]
+
+        # Push all the cells onto the heap and mark them as visited
+        for i in range(m):
+            for j in range(n):
+                # Check if cell is on boundary
+                if i in {0, m-1} or j in {0, n-1}:
+                    # Push height onto heap
+                    heapq.heappush(heap, (heightMap[i][j], i, j))
+                    heightMap[i][j] = -1
+        res = 0
+        while heap:
+            # Get the smallest valued cell from top of the heap
+            h, i, j = heapq.heappop(heap)
+
+            # Check all neighbors of h
+            for dx, dy in directions:
+                x = i + dx
+                y = j + dy
+
+                # Skip cell if it\'s on the boundary or already been
+                # visited
+                if (x < 0 
+                    or x >= m 
+                    or y < 0 or y >= n 
+                    or heightMap[x][y] == -1
+                ):
+                    continue
+
+                # If the height (h) of current cell is higher than its
+                # neighbor, you can hold water, otherwise you hold 0
+                res += max(0, h - heightMap[x][y])
+
+                # Push new boundary if the inside cell is larger than h
+                # Otherwise h is still the boundary and mark
+                # heightMap[x][y] as visited
+                heapq.heappush(heap, (max(h, heightMap[x][y]), x, y))
+                heightMap[x][y] = -1
+
+        return res

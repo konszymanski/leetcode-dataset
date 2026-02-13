@@ -1,0 +1,15 @@
+class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        nodes = deque(preorder.split(\',\'))
+        count = 1    # number(s) of \'null\'/\'None\' to take care of at any point in time 
+        while nodes:
+            node = nodes.popleft()
+            if node != \'#\':
+                count += 1 
+            else:
+                count -= 1    # one less \'null\'/\'None\' to take care of
+            if not count and nodes:    # if there are still nodes left
+                return False
+        if count:    # if the number of \'null\'/\'None\' in the input string is less than what is needed 
+            return False
+        return True

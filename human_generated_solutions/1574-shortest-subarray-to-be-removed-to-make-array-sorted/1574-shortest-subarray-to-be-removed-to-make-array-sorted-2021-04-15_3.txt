@@ -1,0 +1,44 @@
+class Solution(object):
+    def findLengthOfShortestSubarray(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        l = len(arr)
+        low, high = 0, l - 1
+        # "low" is the index of first element which made the array unsorted (left to right).
+        while (low < l - 1 and arr[low] <= arr[low + 1]):
+            low += 1
+        if low == l - 1:  # if the array is sorted
+            return 0
+        # "high" is the index of the element that make the array unsorted (right to left)
+        while (high > 0 and arr[high] >= arr[high - 1]):
+            high -= 1
+        # We have to remove anything in between low and high. 
+        # there are three cases we can consider
+        ####--------     -----####
+        ###|    low|    |high   |#
+        # First case : keeping right elements, removing "high" number of elements
+        # Second case: keeping left elements, removing l - (low + 1) elements.
+        subarr_len = min((l - (low + 1) ), high)
+        # Third case: we keep some elements from both left and right sections
+        # for each element at left we shrink the right section untill we can connect
+        # both sections. The elements we have to remove will be between these two pointers.
+        # we set the right pointer to high and iterate over the left one.
+        right = high
+        for left in range(low + 1):
+            # For each element at left shrink the right 
+            # window till you find the first element which is 
+            # larget than the right one, 
+            # e.g. if all elements of left are smaller than
+            # all elements of right the right window will not be shrinked.
+            while right < l and arr[left] > arr[right]:
+                right += 1
+            # the right search space is empty which is equal to the 
+            # case we considered before
+            if right == l:
+                break
+            # in new candidate subarray there are left + 1 elements
+            # from the left subarray and 
+            subarr_len = min(subarr_len, right - left -1)
+        return subarr_len

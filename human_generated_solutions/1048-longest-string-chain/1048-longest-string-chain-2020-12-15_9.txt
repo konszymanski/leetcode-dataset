@@ -1,0 +1,80 @@
+from collections import defaultdict
+from functools import lru_cache as cache
+
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        
+        \'\'\'
+        DFS Solution
+        
+        Build a graph.
+            Turn words into a set for fast lookups.
+            For each word, generate every possible previous word by removing each letter.
+                If the previous word is in the set, do graph[prev].add(word)
+        
+        DFS the graph and keep track of longest path. 
+        We need to DFS from every word, to handle the case of unconnected components of the graph.
+        If we cache response from the DFS function, we save significant runtime.
+        
+        Analysis:
+        Time:
+            - Building the graph: O(n * k) where k is the biggest word length in words. 
+                For each word we do len(word) operations to build the graph.
+            - Traversing the graph: O(n) since we visit each node in the graph once and use a cache afterwards.
+        Space:
+            - Building the graph: O(n^2) since the worst case could have every word be a neighbor with every word.
+            - Traversing the graph: O(n) recursion stack if the graph was just one long line.
+        \'\'\'
+        
+#         graph = defaultdict(set)
+#         words = set(words)
+        
+#         for word in words:
+#             if len(word) > 1: # one-letter words have no predecessors
+#                 for i in range(len(word)):
+#                     prev = word[:i] + word[i+1:]
+#                     if prev in words:
+#                         graph[prev].add(word)
+        
+#         @cache(None)
+#         def dfs(word):
+            
+#             # if the word has no neighbors, it is a sequence of a length 1, and we can never have a sequence of length 0.
+#             answer = 1 
+            
+#             for nei in graph[word]:
+#                 answer = max(answer, 1 + dfs(nei))
+                
+#             return answer
+        
+#         return max(dfs(word) for word in words)
+
+        \'\'\'
+        DP Solution
+        
+        d[word] is the longest chain ending at word.
+        We sort the words by length, iterate through them, and generate all predecessors by removing letters.
+        If a predecessor p is in d, d[word] = max(1 + d[p], d[word])
+        We can track the max value along the way as well.
+        
+        Analysis
+        Time:
+            - Building the DP dictionary: O(n * k) where k is the biggest word length in words. 
+                For each word we do len(word) operations to calculate predecessors.
+                Lookups and updates to the dict are O(1), so our total time is O(n * k).
+        Space:
+            - Building the DP dictionary: O(n), since we have 1 entry for each word. O(n) overall.
+        \'\'\'
+    
+        words.sort(key=lambda word: len(word))
+        d = {word: 1 for word in words}
+        answer = 1 # Impossible to have a sequence of length 0.
+        
+        for word in words:
+            for i in range(len(word)):
+                prev = word[:i] + word[i+1:]
+                if prev in d:
+                    d[word] = max(1 + d[prev], d[word])
+                    answer = max(answer, d[word])
+        
+        return answer

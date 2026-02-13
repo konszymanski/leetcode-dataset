@@ -1,0 +1,22 @@
+class CustomStack:
+    # Solution O(k) or O(n).
+    def __init__(self, maxSize: int):
+        self.n = maxSize
+        self.stack = []
+        self.inc = []
+
+
+    def push(self, x: int) -> None:
+        if len(self.stack) < self.n:
+            self.stack.append(x)
+            self.inc.append(0) 
+        
+    def pop(self) -> int:
+        if len(self.inc) == 0:
+            return -1
+        else:
+            return self.stack.pop() + self.inc.pop()
+        
+    def increment(self, k: int, val: int) -> None:
+        for i in range(min(k,len(self.inc))):
+            self.inc[i] += val

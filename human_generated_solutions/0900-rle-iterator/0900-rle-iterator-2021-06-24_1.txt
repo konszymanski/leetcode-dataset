@@ -1,0 +1,20 @@
+class RLEIterator:
+
+    def __init__(self, encoding: List[int]):
+        self.a = encoding
+        self.idx = 0
+            
+
+    def next(self, n: int) -> int:
+        while self.idx + 1 < len(self.a):
+            f, num = self.a[self.idx], self.a[self.idx + 1]
+            if n > f:
+                n -= f
+                self.idx += 2
+            elif n == f:
+                self.idx += 2
+                return num
+            else:
+                self.a[self.idx] -= n
+                return num
+        return -1

@@ -1,0 +1,32 @@
+class Codec:
+
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        self.ans = []
+        
+        def dfs(node):
+            if not node: return
+            self.ans.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+        
+        dfs(root)
+        return ",".join(self.ans)
+        
+
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        if not data: return None
+        ans = [int(d) for d in data.split(",")]
+        
+        
+        def dfs(ans, l, u):
+            if not ans: return None
+            if not l <= ans[0] <= u : return None
+            
+            node = ans.pop(0) #O(n)
+            root = TreeNode(node)
+            
+            root.left = dfs(ans, l, root.val)
+            root.right = dfs(ans, root.val, u)
+            
+            return root
+        return dfs(ans, -float(\'inf\'), float(\'inf\'))

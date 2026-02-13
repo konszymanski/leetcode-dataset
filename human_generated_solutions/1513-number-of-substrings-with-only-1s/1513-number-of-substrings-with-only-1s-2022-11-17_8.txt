@@ -1,0 +1,12 @@
+class Solution:
+    def numSub(self, s: str) -> int:
+        res = c = 0
+        
+        for i in s:
+            if i == \'1\':
+                c += 1
+                res = (res + c) % (10 ** 9 + 7)
+            else:
+                c = 0
+        
+        return res

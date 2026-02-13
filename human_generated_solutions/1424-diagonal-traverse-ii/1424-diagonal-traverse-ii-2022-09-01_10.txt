@@ -1,0 +1,12 @@
+class Solution:
+    def findDiagonalOrder(self, nums: List[List[int]]) -> List[int]:
+        result = []
+        d = {}
+        for i in range(len(nums)):
+            for j in range(len(nums[i])):
+                d[i + j] = [nums[i][j]] + d.get(i + j, [])
+    
+        for key in d.keys():
+            result += d[key]
+            
+        return result

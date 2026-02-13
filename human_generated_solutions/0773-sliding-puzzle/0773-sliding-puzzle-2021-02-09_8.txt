@@ -1,0 +1,49 @@
+\'\'\'
+w: least steps --> BFS
+h: use two deque, one is to store the coordinates, one is to store the current board
+    again, we might need to visit a previous cell so we do not add the coordinates  
+    when append coordinates to the queue, instead, we record the different states of board
+    we have seen
+\'\'\'
+import collections
+import copy
+
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        directions = [(0,1),(0,-1),(1,0),(-1,0)]
+        rows = len(board)
+        cols = len(board[0])
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == 0:
+                    start = (r, c)
+        
+        deque1 = collections.deque([(start[0], start[1])])
+        deque2 = collections.deque([tuple(map(tuple, board))])
+        seen = set()
+        steps = 0
+        while deque1:
+            #print(deque2)
+            size = len(deque1)
+            for _ in range(size):
+                x, y = deque1.popleft()
+                b = deque2.popleft()
+                if b == ((1,2,3), (4,5,0)):
+                    return steps
+                if b in seen: 
+                    continue     
+                seen.add(b)
+                
+                for dx, dy in directions:
+                    nx = x + dx
+                    ny = y + dy
+                    if 0 <= nx < rows and 0 <= ny < cols:
+                        nb = list(map(list, b))
+                        nb[x][y], nb[nx][ny] = nb[nx][ny], nb[x][y]
+                        nb = tuple(map(tuple, nb))
+                        deque1.append((nx,ny))
+                        deque2.append(nb)
+            
+            steps += 1
+
+        return -1

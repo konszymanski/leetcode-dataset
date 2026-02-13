@@ -1,0 +1,22 @@
+class Solution:
+    def partitionDisjoint(self, A: list):
+        left_max = A[0]
+        next_max = 0
+        res = 0
+        
+        for i in range(1, len(A)):
+            
+            # Always update to get the largest we see
+            if A[i] > next_max:
+                next_max = A[i]
+            
+            # Anything that is smaller than the largest in left part
+            if A[i] < left_max:
+                res = i
+                
+                # Update the largest in left part
+                # Why are we able to do this?
+                # Because question guarantees that there is always a valid partitioning
+                left_max = max(left_max, next_max)
+                    
+        return res + 1

@@ -1,0 +1,6 @@
+def tupleSameProduct(self, nums: List[int]) -> int:
+	count, table = 0, defaultdict(int)
+	for c in combinations(nums, 2):
+		count += table[c[0]*c[1]]
+		table[c[0]*c[1]] += 1
+	return count * 8

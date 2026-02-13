@@ -1,0 +1,59 @@
+class Solution:
+    def shortestSuperstring(self, words: List[str]) -> str:
+        N, suffixes = len(words), defaultdict(list)
+        edges = [[0] * N for _ in range(N)]
+        
+        # Build the suffixes map and edge graph
+        for i in range(N):
+            for k in range(1, len(words[i])):
+                suffixes[words[i][k:]].append(i)
+        for j in range(N):
+            for k in range(1, len(words[j])):
+                for i in suffixes[words[j][:k]]:
+                    edges[i][j] = max(edges[i][j], k)
+        
+        # Initialize DP array
+        M = N - 1
+        dp = [[0] * (1 << M) for _ in range(M)]
+                    
+        # Helper function to find the best value for dp[curr][currSet]
+        # Store the previous node with bit manipulation for backtracking
+        def solve(curr: int, currSet: int) -> int:
+            prevSet, bestOverlap, bestPrev = currSet - (1 << curr), 0, 0
+            if not prevSet: return (edges[M][curr] << 4) + M
+            for prev in range(M):
+                if prevSet & 1 << prev:
+                    overlap = edges[prev][curr] + ((dp[prev][prevSet]) >> 4)
+                    if overlap >= bestOverlap:
+                        bestOverlap, bestPrev = overlap, prev
+            return (bestOverlap << 4) + bestPrev
+    
+        # Build DP using solve
+        for currSet, curr in product(range(1, 1 << M), range(M)):
+            if currSet & 1 << curr:
+                dp[curr][currSet] = solve(curr, currSet)
+    
+        # Join the ends at index M
+        curr = solve(M, (1 << N) - 1) & ((1 << 4) - 1)
+    
+        # Build the circle by backtracking path info from dp
+        # and find the best place to cut the circle
+        path, currSet = [curr], (1 << M) - 1
+        bestStart, lowOverlap, prev = 0, edges[curr][M], 0
+        while curr != M:
+            prev = dp[curr][currSet] & ((1 << 4) - 1)
+            currSet -= 1 << curr
+            overlap = edges[prev][curr]
+            if overlap < lowOverlap:
+                lowOverlap, bestStart = overlap, N - len(path)
+            curr = prev
+            path[:0] = [curr]
+    
+        # Build and return ans by cutting the circle at bestStart
+        ans = []
+        for i in range(bestStart, bestStart+M):
+            curr, nxt = path[i%N], path[(i+1)%N]
+            word = words[curr]
+            ans.append(word[:len(word)-edges[curr][nxt]])
+        ans.append(words[path[(bestStart+M)%N]])
+        return "".join(ans)

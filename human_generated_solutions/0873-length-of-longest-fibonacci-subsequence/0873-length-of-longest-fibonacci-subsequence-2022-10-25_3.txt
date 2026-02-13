@@ -1,0 +1,36 @@
+class Solution:
+    def lenLongestFibSubseq(self, arr: List[int]) -> int:
+        # pos hashmap will contain the position(indices) of elements
+        sz, pos, result = len(arr), {}, 0
+        # dp[i][j] will contain length of the subsequence whose 2nd last element is
+        # arr[i] and last element is arr[j]
+        dp = [[0] * sz for _ in range(sz)]
+        for i in range(sz):
+            pos[arr[i]] = i
+            # Set all dp[i][j] = 2 where j > i because minimum length subsequence we can
+            # have is of length 2
+            for j in range(i, sz):
+                dp[i][j] = 2
+        # Iterate through indices of the last element
+        for j in range(2, sz):
+            # Iterate through the indices of 2nd last element
+            for i in range(j - 1, 0, -1):
+                # the previous element should be arr[j] - arr[i]
+                prev = arr[j] - arr[i]
+                # previous element cannot be greater than 2nd last
+                if prev >= arr[i]:
+                    break
+                # Check if the previous element is present in the array
+                if prev not in pos:
+                    continue
+                # If the previous element is present in the array,
+                # Include that into the subsequence containing arr[i] and arr[j]
+                # Increment whatever the length of the subsequence was by 1
+                dp[i][j] = dp[pos[prev]][i] + 1
+        # Check for all the valid subsequences(the ones with length >= 3)
+        for j in range(2, sz):
+            for i in range(1, sz - 1):
+                # Update result to the length of longest subsequence
+                if dp[i][j] > 2:
+                    result = max(result, dp[i][j])
+        return result

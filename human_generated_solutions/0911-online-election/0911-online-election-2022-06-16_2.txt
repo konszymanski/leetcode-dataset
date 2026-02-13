@@ -1,0 +1,81 @@
+#times:     [0, 5,  10]
+#persons:   [0, 1,  1]
+#leader:    [0, 1,  1]
+#array item values represent the candidates
+#at a specific timestamp, the candidate was casted a vote by someone
+#each occurence of candidate in persons list represent the vote received by the candidate
+#https://leetcode.com/problems/online-election/discuss/180972/Anyone-else-just-find-this-question-really-confusing
+#votes dict would contain the votes for each candidate
+#build a leader list with winners for corresponding timestamp
+#binary search the timestamp <= query_timestamp
+#return winner at index of timestamp found
+from collections import defaultdict
+class TopVotedCandidate:
+    #T=O(n), S=O(n)
+    def __init__(self, persons: List[int], times: List[int]):
+        #class variable to make it accessible from query method
+        self.times = times
+        self.leader = [None]*len(persons)
+        #arbitrary value for the init
+        winner = -1
+        #votes dict would contain votes received by each candidate
+        #votes = {person1: votes, person2: votes}
+        votes = defaultdict(int)
+        for i, p in enumerate(persons):
+            #increment the vote received by the specific candidate
+            #votes = {person1: 2, person2: 6}
+            votes[p] += 1
+            #check if votes of current person is greater than or equal to votes received by the latest winner
+            #equal to because for same vote count, we take the recent candidate
+            #winner should be one of the candidates
+            if votes[p] >= votes[winner]:
+                #update the winner to current person
+                winner = p
+            #modify the leader list to current winner (person)
+            #self.leader = [person1, person1, person2,...]
+            self.leader[i] = winner
+        
+    #T=O(lgn), S=O(1)
+    def q(self, t: int) -> int:
+        #binary-search because time is monotonic increasing
+        #search space
+        #find the winner at timestamp <= query_timestamp (t)
+        left, right = 0, len(self.times)
+        while left < right:
+            mid = left + (right-left)//2
+            #final value of left would be the min that satisfies below condition
+            if t < self.times[mid]:
+                right = mid
+            else:
+                left = mid + 1
+		#return the winner
+		#left pointer represent the min timestamp greater than query_timestamp
+		#therefore, take (left-1) to get the timestamp that equals to or lesser than query_timestamp
+        return self.leader[left-1]
+		
+		
+		
+
+#CONCISE
+class TopVotedCandidate:
+
+    def __init__(self, persons: List[int], times: List[int]):
+        self.times = times
+        self.leader = []
+        votes = defaultdict(int)
+        winner = -1
+        for p in persons:
+            votes[p] += 1
+            if votes[p] >= votes[winner]:
+                winner = p
+            self.leader.append(winner)
+
+    def q(self, t: int) -> int:
+        l, r = 0, len(self.times)
+        while l<r:
+            m = l+(r-l)//2
+            if t < self.times[m]:
+                r = m
+            else:
+                l = m+1
+        return self.leader[l-1]

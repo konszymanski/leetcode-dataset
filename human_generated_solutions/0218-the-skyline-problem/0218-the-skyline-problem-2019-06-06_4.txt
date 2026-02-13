@@ -1,0 +1,44 @@
+def getSkyline(buildings: [[int]]) -> [[int]]:
+    points = []
+    delete = {}  ## record the point that should be removed, key is the height, value is times
+                ## delete\u91CC\u9762\u7684key\u90FD\u662Fpositive\uFF0C
+    for building in buildings:   ## \u8FD9\u9053\u9898\u7B2C\u4E00\u4E2Atrick\u7684\u5730\u65B9: \u5BF9\u5F62\u6210\u7684\u70B9\u8FDB\u884C\u6392\u5E8F,\u6709\u51E0\u4E2A\u8981\u6C42
+                                ## 1. \u5728\u540C\u4E00\u4E2A\u70B9\u4E0A\uFF0C\u4E0A\u5347\u7684\u8981\u51FA\u73B0\u5728\u4E0B\u964D\u7684\u4E4B\u524D
+                                ## 2. \u90FD\u662F\u4E0A\u5347\u7684\u8BDD, \u6700\u9AD8\u7684\u4E00\u5B9A\u8981\u5728\u6700\u524D\u9762, \u662F\u4E2A\u964D\u5E8F
+                                ## 3. \u90FD\u662F\u4E0B\u964D\u7684\u8BDD, \u6700\u77EE\u7684\u4E00\u5B9A\u8981\u5728\u6700\u524D\u9762, \u662F\u4E2A\u5347\u5E8F
+        tmp1 = [building[0],-building[2]]   ## negative means up
+        tmp2 = [building[1],building[2]]    ## positive means down
+        points.append(tmp1)
+        points.append(tmp2)
+    points.sort(key=lambda x: (x[0], x[1]))
+    print(points)
+    max_value = 0   ## max_value\u6C38\u8FDC\u5927\u4E8E\u7B49\u4E8E0!!!!
+    heap = []  ## used as max heap, \u90FD\u662F\u8D1F\u6570\u5728\u91CC\u9762
+    heapq.heappush(heap,max_value)
+    ret = []
+    for point in points:
+        if point[1] <0:   ## point[1] <0, \u662F\u8D1F\u6570, \u8BF4\u660E\u662F\u4E0A\u5347
+            heapq.heappush(heap,point[1])  ## \u6700\u5927\u5806\u9700\u8981\u7528\u8D1F\u53F7\u6765\u5B8C\u6210, \u6240\u4EE5\u8FD9\u91CC\u76F4\u63A5\u6DFB\u52A0point[1]
+            if -point[1] > max_value:
+                max_value = -point[1]  ## \u66F4\u65B0max_value
+                ret.append([point[0],max_value])  ## \u4E00\u65E6max_value\u6709\u53D8\u5316, \u5C31\u8981\u6DFB\u52A0\u8FD9\u4E2A\u70B9\uFF0C\u6700\u5173\u952E\u7684\u4E00\u6B65
+        else:
+            tmp = -point[1]  ## \u8981\u5220\u7684\u503C, \u8FD9\u91CC\u8981\u53D6\u8D1F\u6570\uFF01
+            if tmp == heap[0]: ## \u5982\u679C\u8981\u5220\u7684\u503C\u5C31\u662F\u76EE\u524Dheap\u91CC\u9762\u7684\u6700\u5927\u503C\uFF0C\u90A3\u5C31\u5220\u6389
+                heapq.heappop(heap)
+                while heap[0] in delete:   ## \u5982\u679C\u5220\u6389\u540E\u7684heap\u7684\u5F00\u5934\u4E5F\u662F\u6211\u4EEC\u4E4B\u524D\u8981\u5220\u7684, \u5C31\u8FDB\u884C
+                    value = heap[0]  ## \u5148\u6682\u5B58\u4E0B\u6765\u8FD9\u4E2A\u503C\u662F\u591A\u5C11
+                    heapq.heappop(heap)
+                    delete[value] -=1
+                    if delete[value] ==0:
+                        del delete[value]
+                if -heap[0] < max_value:   ## \u8FD9\u91CC\u7684heap[0]\u4E00\u5B9A\u8981\u53D6\u53CD!\uFF0C\u56E0\u4E3Aheap\u91CC\u9762\u7684\u503C\u90FD\u662F\u8D1F\u7684
+                    max_value = -heap[0]
+                    ret.append([point[0],max_value]) ## \u4E00\u65E6max_value\u6709\u53D8\u5316, \u5C31\u8981\u6DFB\u52A0\u8FD9\u4E2A\u70B9
+            else:  ## \u5982\u679C\u8981\u5220\u7684\u503C\u5E76\u4E0D\u662F\u6700\u5927\u7684,\u4E0D\u5728\u5806\u9876,\u5C31\u5148\u8BB0\u4E0B\u6765
+                if tmp not in delete:
+                    delete[tmp] =1
+                else:
+                    delete[tmp] +=1
+                ## \u56E0\u4E3A\u76EE\u524D\u6700\u5927\u7684\u503C\u6CA1\u6709\u5220\u6389, \u6CA1\u6709\u53D8\u5316, \u6240\u4EE5\u4E0D\u6DFB\u52A0\u70B9\u5230\u7ED3\u679C\u91CC\u9762
+    return ret

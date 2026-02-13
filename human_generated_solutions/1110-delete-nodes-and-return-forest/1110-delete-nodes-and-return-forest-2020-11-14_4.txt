@@ -1,0 +1,27 @@
+def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+	disjointTrees = []
+	to_delete_nodes = set(to_delete)
+	node = root
+
+	node = self.delNodesHelper(root, to_delete_nodes, disjointTrees)
+	if node is not None:
+		disjointTrees.append(root)
+
+	return disjointTrees
+
+def delNodesHelper(self, node, to_delete_nodes, disjointTrees):
+	if not node:
+		return None
+
+	leftNode = self.delNodesHelper(node.left, to_delete_nodes, disjointTrees)
+	rightNode = self.delNodesHelper(node.right, to_delete_nodes, disjointTrees)
+
+	if not leftNode:    node.left = None
+	if not rightNode:   node.right = None
+
+	if node.val in to_delete_nodes:
+		if leftNode:    disjointTrees.append(leftNode)
+		if rightNode:   disjointTrees.append(rightNode)
+		node = None
+
+	return node

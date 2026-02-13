@@ -1,0 +1,12 @@
+from functools import cache
+class Solution:
+    def minScoreTriangulation(self, values: List[int]) -> int:
+        @cache
+        def dfs(l, r):
+            if r-l+1 < 3:
+                return 0
+            m = float(\'inf\')
+            for i in range(l+1, r):
+                m = min(m, dfs(l, i) + dfs(i, r) + values[l]*values[r]*values[i])
+            return m
+        return dfs(0, len(values)-1)

@@ -1,0 +1,37 @@
+def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        """
+        We will do postorder traversal in this problem. We start from the leaves and move our way up.
+        """
+        num_moves = 0
+        
+        # This method actually returns the balance at each node. This could be a positive balance or a 
+        # negative balance. Think of balance as the bank balance each node has in the tree.
+        def move_coins(node):
+            nonlocal num_moves
+            
+            # The balance (excess/needed) is 0 for nodes that don\'t exist
+            if not node:
+                return 0
+            
+            left_balance = move_coins(node.left)
+            right_balance = move_coins(node.right)
+            
+            # The total amount of excess/needed coins is calculated with this formula. The -1 portion in
+            # the formula is to include 1 coin for the current node. This formula directly means
+            # that the curr_node_balance reaches 0 at the root. This can be seen with a diagram.
+            curr_node_balance = left_balance + right_balance + node.val - 1
+            
+            # While calculating the balance of each node in this recursion, we also need to find the 
+            # number of nodes needed to reach the current balance of the node. This number of moves to 
+            # balance current node has a relationship to the left and right balance of the current 
+            # recursion. This number is abs(left_balance) + abs(right_balance). This can be seen from a 
+            # diagram and proved. Then, the result is progressively updated moving upwards in
+            # the binary tree, so num_moves is updated.
+            n_moves_needed_to_balance_curr_node = abs(left_balance) + abs(right_balance) 
+            num_moves+=n_moves_needed_to_balance_curr_node
+            
+            return curr_node_balance
+        
+        move_coins(root)
+        
+        return num_moves

@@ -1,0 +1,16 @@
+class Solution:
+    def productQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        inp=bin(n).replace("0b", "")        
+        pows, result = [] , []
+        multiple, N = 1, len(inp)
+        for i in range(N - 1, -1, -1):                        
+            if i < N - 1:
+                multiple *= 2            
+            if inp[i] == \'1\':
+                pows.append(multiple)                
+        for s, e in queries:
+            tmp = 1
+            for i in range(s, e + 1):
+                tmp *= pows[i]
+            result.append( tmp % ((10 ** 9) +7 ))              
+        return result

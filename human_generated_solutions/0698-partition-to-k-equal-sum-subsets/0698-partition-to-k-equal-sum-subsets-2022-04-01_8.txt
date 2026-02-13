@@ -1,0 +1,46 @@
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        # some edge cases
+        if len(nums) < k or sum(nums) % k != 0 or max(nums) > sum(nums) // k:
+            return False
+        
+        # assuming that we will split to k partitions, partition[i] means the sum of elements belong to the i-th partition
+        partitions = [0] * k
+        target = sum(nums) // k # we expect each partition[i] = sum / k
+        nums.sort(reverse = True) # reverse sorting is useful to more likely run into the partitions[part] + num > target situation, thus can achieve the pruning effect
+        
+        # backtrack
+        def find_paritition(idx):
+            if idx == len(nums):
+                # seems there is no need to check if partition[i] == target because all the previous partition[i] == target (if larger it won\'t be added to seen, if smaller it will keep adding num) and sum(num) % k == 0
+                return True
+            
+                # but using the following code got similar performance
+                # for i in range(len(partitions)):
+                #     if partitions[i] != target:
+                #         return False
+                # return True
+            seen = set() # memorize the partition we have filled
+            num = nums[idx]
+            for part in range(k):
+                if partitions[part] in seen:
+                    continue
+                if partitions[part] + num > target: 
+                    # no need to explore further, this would be skipped, 
+                    # since it\'s reverse sorted, 
+                    # we can quickly discard such situation and enable fewer backtrack
+                    continue
+                seen.add(partitions[part])
+                # make the choice
+                partitions[part] += num
+                
+                # backtrack if we can fill next partition
+                if find_paritition(idx + 1):
+                    return True  
+                # revoke the choice
+                partitions[part] -= num
+            
+            # if not return True, then default is False
+            return False
+        
+        return find_paritition(0)

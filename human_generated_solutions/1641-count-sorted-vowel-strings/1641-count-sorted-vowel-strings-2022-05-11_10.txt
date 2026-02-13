@@ -1,0 +1,15 @@
+def countVowelStrings(self, n):
+        vowels = [\'a\', \'e\', \'i\', \'o\', \'u\']
+        res = []
+        idx = 0
+
+        def rec(s, idx):
+            if len(s) == n:
+                res.append(s)
+                return
+            for i in vowels[idx:]:
+                rec(s + i, idx)
+                idx += 1
+            return res
+			
+        return len(rec(\'\', idx))

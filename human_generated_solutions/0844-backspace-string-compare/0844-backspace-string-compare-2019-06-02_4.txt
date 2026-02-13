@@ -1,0 +1,22 @@
+class Solution(object):
+    def backspaceCompare(self, S, T):
+        s = []
+        t = []
+        for c in S:
+            if c == \'#\':
+                if s != []:
+                    s.pop()
+            else:
+                s.append(c)
+        for c in T:
+            if c == \'#\':
+                if t != []:
+                    t.pop()
+            else:
+                t.append(c)
+        return s == t
+        """
+        :type S: str
+        :type T: str
+        :rtype: bool
+        """

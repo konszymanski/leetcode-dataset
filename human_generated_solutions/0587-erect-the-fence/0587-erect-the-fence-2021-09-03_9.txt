@@ -1,0 +1,43 @@
+class Point:
+    def __init__(self, point: List[int]):
+        self.x = point[0]
+        self.y = point[1]
+        
+    def __eq__(self, other: \'Point\'):
+        return self.x == other.x and self.y == other.y
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+    def __repr__(self) -> str:
+        return f\'({self.x}, {self.y})\'
+
+
+class Solution:    
+    def orientation(self, p1: Point, p2: Point, p: Point):
+        return (p2.y - p1.y) * (p.x - p2.x) - (p2.x - p1.x) * (p.y - p2.y)  # cross product
+ 
+    def outerTrees(self, trees: List[List[int]]) -> List[List[int]]:
+        n = len(trees)
+        if n < 2:
+            return trees
+
+        trees.sort(key=lambda x: (x[0], x[1]))
+
+        lower_hull = []
+        for tree in trees:
+            point = Point(tree)
+            while len(lower_hull) > 1 and self.orientation(lower_hull[-2], lower_hull[-1], point) > 0:
+                lower_hull.pop()
+
+            lower_hull.append(point)
+
+        upper_hull = []
+        for tree in reversed(trees):
+            point = Point(tree)
+            while len(upper_hull) > 1 and self.orientation(upper_hull[-2], upper_hull[-1], point) > 0:
+                upper_hull.pop()
+
+            upper_hull.append(point)
+
+        return [[p.x, p.y] for p in set(lower_hull[:-1] + upper_hull[:-1])]

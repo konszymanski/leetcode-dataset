@@ -1,0 +1,180 @@
+def doJump(self, sortedArray, i, isGoodEvenJump, isGoodOddJump):
+        currentNumber, currentNumberIndex = sortedArray[i]
+
+        jumpSequence = []
+
+        # our first jump is always odd
+        isEvenJump = False
+
+        while True:
+            # while looping, if we encounter the last element in the array, it means we reached the end so true
+            if currentNumberIndex == (len(sortedArray) - 1):
+                # success we reached the end, mark everything as true and return
+                for elementIndex, elementIsEvenJump in jumpSequence:
+                    if elementIsEvenJump:
+                        isGoodEvenJump[elementIndex] = True
+                    else:
+                        isGoodOddJump[elementIndex] = True
+
+                # finally we set our own jump value
+                # this was an even jump so we set the right memo
+                if isEvenJump:
+                    isGoodEvenJump[currentNumberIndex] = True
+                else:
+                    isGoodOddJump[currentNumberIndex] = True
+
+                return
+
+            # we find the nextElement we\'re going to jump to
+            if isEvenJump:
+                # even jump
+                # from i+1 to n, search for largest number smaller than currentNumber.
+                # in case of duplicates, keep only the smallest j.
+
+                # find the first element smaller than or equal to current element but has bigger index (i.e. comes after it)
+                # to cover the equal case, in order for a number to be equal with bigger index than current element,
+                # it has to be right after it in sortedArray
+
+                # first we cover our equal case
+                equalElementIndex = -1
+
+                if (i + 1) < len(sortedArray) and sortedArray[i + 1][0] == currentNumber:
+                    equalElementIndex = i + 1
+
+                if equalElementIndex != -1 and equalElementIndex < len(sortedArray):
+                    # this will be the largest element <= to our element so no need to look further
+                    nextElementIndex = equalElementIndex
+                else:
+                    # since there\'s nothing equal to our element that has index bigger, we need to find something smaller
+                    # largest number smaller than current number is at i - 1
+                    nextElementIndex = i - 1
+
+                    while nextElementIndex >= 0 and sortedArray[nextElementIndex][1] < currentNumberIndex:
+                        nextElementIndex -= 1
+
+                    if nextElementIndex >= 0:
+                        # we found our next element => smaller than our current element but index is larger
+                        nextElement = sortedArray[nextElementIndex]
+
+                        # after we find the element, we need to keep going backwards as long as we have duplicate values of this element
+                        while nextElementIndex >= 0 and sortedArray[nextElementIndex][0] == nextElement[0] and sortedArray[nextElementIndex][1] > currentNumberIndex:
+                            nextElementIndex -= 1
+
+                        # when we hit the end => we either exceeded the array limits or found an element not equal
+                        # we do backIndex + 1 to go back to our element
+                        nextElementIndex += 1
+                    else:
+                        # could not find a next element to jump to so entire sequence is False
+                        for elementIndex, elementIsEvenJump in jumpSequence:
+                            if elementIsEvenJump:
+                                isGoodEvenJump[elementIndex] = False
+                            else:
+                                isGoodOddJump[elementIndex] = False
+
+                        # finally we set our own jump value
+                        # this was an even jump so we set the right memo
+                        isGoodEvenJump[currentNumberIndex] = False
+
+                        return
+            else:
+                # odd jump
+                # from i+1 to n, search for smallest number larger than currentNumber.
+                # in case of duplicates, keep only the smallest j.
+                # the smallest number larger than or equal to current number is at i + 1 onwards
+                nextElementIndex = i + 1
+
+                while nextElementIndex < len(sortedArray) and sortedArray[nextElementIndex][1] < currentNumberIndex:
+                    nextElementIndex += 1
+
+                if nextElementIndex >= len(sortedArray):
+                    # could not find a next element to jump to so entire sequence is False
+                    for elementIndex, elementIsEvenJump in jumpSequence:
+                        if elementIsEvenJump:
+                            isGoodEvenJump[elementIndex] = False
+                        else:
+                            isGoodOddJump[elementIndex] = False
+
+                    # finally we set our own jump value
+                    # this was an odd jump so we set the right memo
+                    isGoodOddJump[currentNumberIndex] = False
+
+                    return
+
+            # since we didn\'t return after finding the next element, it means we have a valid index
+            nextElement = sortedArray[nextElementIndex]
+
+            # depending on our jump type, we check the right structure to see if we solved nextElement or not yet
+            if isEvenJump:
+                # we check the odd jumps for next element
+                isValidNextElementJump = isGoodOddJump[nextElement[1]]
+            else:
+                # we check the even jumps for next element
+                isValidNextElementJump = isGoodEvenJump[nextElement[1]]
+
+            if isValidNextElementJump is not None:
+                # we already solved this problem for the next element so we take its value it and set the same for the sequence
+                for elementIndex, elementIsEvenJump in jumpSequence:
+                    if elementIsEvenJump:
+                        isGoodEvenJump[elementIndex] = isValidNextElementJump
+                    else:
+                        isGoodOddJump[elementIndex] = isValidNextElementJump
+
+                # finally we set our own jump value
+                # this was an even jump so we set the right memo
+                if isEvenJump:
+                    isGoodEvenJump[currentNumberIndex] = isValidNextElementJump
+                else:
+                    isGoodOddJump[currentNumberIndex] = isValidNextElementJump
+
+                # we are done with computing for this jump so we return
+                return
+            else:
+                # we haven\'t solved for this element so we need to keep solving
+                # we need to compute the value so we have to make the jump and see what happens
+                # our next jump is even so we do an even jump
+                # we add to sequence that we did an odd jump from i
+                jumpSequence.append((currentNumberIndex, isEvenJump))
+
+                # flip the jump type for next iteration
+                isEvenJump = not isEvenJump
+
+                # we have a valid jump so we can take it
+                currentNumber, currentNumberIndex = sortedArray[nextElementIndex]
+
+                # update i to be the position in sortedArray of next element
+                i = nextElementIndex
+
+    def oddEvenJumps(self, arr: [int]) -> int:
+        # first we will sort the elements in arr by value in asc and then by index in asc
+        sortedArray = []
+
+        for i in range(0, len(arr)):
+            sortedArray.append((arr[i], i))
+
+        sortedArray.sort()
+
+        # index of last element in array
+        n = len(arr) - 1
+
+        # now that we have our sorted array, it will be easy for us to find the next jump location
+        isGoodEvenJump = [None] * len(arr)
+        isGoodOddJump = [None] * len(arr)
+
+        # we know that we can reach the end by start at the end
+        isGoodOddJump[n] = True
+        isGoodEvenJump[n] = True
+
+        goodJumpsCount = 0
+
+        # we will use this loop to go through the elements in sortedArray
+        for i in range(0, len(sortedArray)):
+            if isGoodOddJump[sortedArray[i][1]] is None:
+                # from this number we start with odd jump and see if we end up at the end of array
+                self.doJump(sortedArray, i, isGoodEvenJump, isGoodOddJump)
+
+            # total number of good jumps only depends on the isGoodOddJump True values because
+            # the 1st jump is always odd
+            if isGoodOddJump[sortedArray[i][1]]:
+                goodJumpsCount += 1
+
+        return goodJumpsCount

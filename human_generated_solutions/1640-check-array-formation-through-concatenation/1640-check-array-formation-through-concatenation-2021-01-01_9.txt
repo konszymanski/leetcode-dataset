@@ -1,0 +1,8 @@
+class Solution:
+    def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
+        table = {l[0] : l for l in pieces}
+        cur = 0
+        while cur < len(arr):
+            if (arr[cur] not in table or arr[cur:cur + len(table[arr[cur]])] != table[arr[cur]]): return False
+            cur += len(table[arr[cur]])
+        return True

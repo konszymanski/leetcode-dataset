@@ -1,0 +1,13 @@
+def longestIdealString(self, s: str, k: int) -> int:
+    """a better approach
+
+    we maintain a list of length 26 called letter
+    letter[i] presents the longest length of ideal subsequences that end with letter \'a\' + i
+    """
+    if k == 25: return len(s)
+    letter = [0] * 26
+    for i in s:
+        idx = ord(i) - ord(\'a\')
+        left_boundary, right_boundary = max(0, idx - k), min(25, idx + k)
+        letter[idx] = max(letter[left_boundary : right_boundary + 1]) + 1
+    return max(letter)

@@ -1,0 +1,5 @@
+class Solution:
+    def validPartition(self, nums: List[int]) -> bool:
+        V = [True] + [False] + [nums[0] == nums[1]]
+        for idx in range(2,len(nums)): V = V[1:] + [(nums[idx] == nums[idx-1] and V[-2]) or (nums[idx] == nums[idx-1] == nums[idx-2] and V[-3]) or (nums[idx-2] == nums[idx-1] - 1 == nums[idx] - 2 and V[-3])]
+        return V[-1]

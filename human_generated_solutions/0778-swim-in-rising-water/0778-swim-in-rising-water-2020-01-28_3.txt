@@ -1,0 +1,25 @@
+import heapq
+class Solution(object):
+    def swimInWater(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        r = len(grid)
+        pq = [(0,(0,0))]
+        visited = set()
+        res = grid[0][0]
+        while pq:
+          currTime,currIndex = heapq.heappop(pq)
+          if currIndex in visited:
+            continue
+          visited.add(currIndex)
+          res = max(res,currTime)
+          if currIndex == (r-1,r-1):
+            return res
+          for item in [(-1,0),(0,-1),(1,0),(0,1)]:
+            newX = currIndex[0]+item[0]
+            newY = currIndex[1]+item[1]
+            if 0<=newX<r and 0<=newY<r:
+              heapq.heappush(pq,(grid[newX][newY],(newX,newY)))
+        return res

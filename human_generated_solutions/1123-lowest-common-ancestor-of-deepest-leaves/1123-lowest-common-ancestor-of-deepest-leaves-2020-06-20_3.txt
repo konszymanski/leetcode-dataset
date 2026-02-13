@@ -1,0 +1,20 @@
+class Solution:
+    def lcaDeepestLeaves(self, root: TreeNode) -> TreeNode:
+        def traversal(node):
+            if not node:
+                return 0
+            if getHeight(node.left) == getHeight(node.right):
+                return node
+            if getHeight(node.left) > getHeight(node.right):
+                return traversal(node.left)
+            return traversal(node.right)
+        def getHeight(node):
+            if node in memo:
+                return memo[node]
+            if not node:
+                return 0
+            result = 1 + max(getHeight(node.left) , getHeight(node.right))
+            memo[node] = result
+            return result
+        memo = {}
+        return traversal(root)

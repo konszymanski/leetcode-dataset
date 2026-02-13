@@ -1,0 +1,24 @@
+from collections import defaultdict
+class Solution:
+    def maximumSum(self, nums: List[int]) -> int:
+        c=defaultdict(list)
+        nums.sort()
+        ## Approach:
+        ## Find some of digits of all numbers
+        ## Store the sum value in a dictionary. The sum value is the key and the number itself is appended in a list
+        ## This gives me all the numbers that has some particular value as sum
+        ## Numbers are sorted in ascending order, so the list corresponding to the digits sums also gets sorted automatically
+        for x in nums:
+            y=x
+            t=0
+            while x:
+                t+=x%10
+                x//=10
+            c[t].append(y)
+
+        res=-1
+        for x in c:
+            if len(c[x])>1:
+                y=c[x]
+                res=max(res,y[-1]+y[-2])
+        return res

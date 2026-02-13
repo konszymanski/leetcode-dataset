@@ -1,0 +1,41 @@
+class SnapshotArray(object):
+
+    def __init__(self, length):
+        """
+        :type length: int
+        """
+        self.snaps = 0
+        self.store = dict()
+        self.store[0] = dict()
+        
+        
+
+    def set(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        self.store[self.snaps][index] = val
+        
+
+    def snap(self):
+        """
+        :rtype: int
+        """
+        self.snaps += 1
+        a = (self.store[self.snaps -1]).copy()
+        self.store[self.snaps] = a
+        return self.snaps -1
+            
+
+    def get(self, index, snap_id):
+        """
+        :type index: int
+        :type snap_id: int
+        :rtype: int
+        """
+        if index in self.store[snap_id]:
+            return self.store[snap_id][index]
+        else:
+            return 0

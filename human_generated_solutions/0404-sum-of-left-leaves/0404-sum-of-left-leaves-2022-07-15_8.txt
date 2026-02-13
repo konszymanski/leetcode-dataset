@@ -1,0 +1,15 @@
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        ans=[0]
+        def finder(node,ans,check):
+            if not node:
+                return
+            if not node.left and not node.right and check:
+                # print(node.val)
+                ans[0]+=node.val
+                return
+            finder(node.left,ans,True)
+            finder(node.right,ans,False)
+            return
+        finder(root,ans,False)
+        return ans[0]

@@ -1,0 +1,9 @@
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        # if non-leaf node 2 -> OR
+        if root.val == 2:
+            return self.evaluateTree(root.left) or self.evaluateTree(root.right)
+        # if non-leaf node 3 -> AND
+        elif root.val == 3:
+            return self.evaluateTree(root.left) and self.evaluateTree(root.right)
+        return root.val

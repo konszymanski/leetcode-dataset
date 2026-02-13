@@ -1,0 +1,20 @@
+class Solution(object):
+    def kLengthApart(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        count = 0
+        for i, n in enumerate(nums):        
+			# meet 1 and count less than k, return False
+			if n == 1 and i > 0:
+                if count < k:
+                    return False                
+				# count equal or larger than k, reset count to 0
+				else:
+                    count = 0
+            else:
+				# meet 0 and increase count
+                count += 1        
+        return True

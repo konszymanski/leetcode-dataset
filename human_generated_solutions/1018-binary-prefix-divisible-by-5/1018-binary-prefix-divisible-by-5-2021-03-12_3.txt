@@ -1,0 +1,10 @@
+class Solution:
+    def prefixesDivBy5(self, A: List[int]) -> List[bool]:
+        answer = [None] * len(A)
+        S = 0
+        for idx, i in enumerate(A):
+            S <<= 1                           # bit shift left
+            S += i                            # add new least-sig bit
+            S %= 5                            # mod math to keep S small (big speed-up)
+            answer[idx] = S == 0
+        return answer

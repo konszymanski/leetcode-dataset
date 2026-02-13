@@ -1,0 +1,27 @@
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        
+        #We\'ll fill result list in inverse order compare to description, from the highest level
+        level = 0
+        result = []
+        #Start filling result list. O(n) complexity - we\'ll iterate over all elements of tree
+        self.append_level(root, result, level)
+        #return inversed result. It took O(log n) time so it is not necessary
+        return result[::-1]
+    
+    def append_level(self, root, result, level):
+        #Check if empty tree, if True - not fill result
+        if not root:
+            return
+        #Appending new list for new level
+        if len(result) < level+1:
+            result.append([])
+            
+        #Always append root value (due to recursion order we\'ll not be mistaken by order)
+        result[level].append(root.val)
+        
+        #First - left, second - right, as in description
+        if root.left:
+            self.append_level(root.left, result, level=level+1)
+        if root.right:
+            self.append_level(root.right, result, level=level+1)

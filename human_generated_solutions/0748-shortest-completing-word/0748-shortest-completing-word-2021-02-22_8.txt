@@ -1,0 +1,19 @@
+def shortestCompletingWord(self, licensePlate, words):
+        licensePlate=licensePlate.lower()
+        map_={}
+        arr=[]
+        for i in licensePlate:
+            if i.isalpha():
+                if i not in map_:
+                    map_[i]=1
+                else:
+                    map_[i]+=1
+        for i, word in enumerate(words):
+            count=0
+            for key, value in map_.items():
+                if word.count(key)>=value:
+                    count+=1
+            if count==len(map_):
+                arr.append((word, len(word), i))
+        arr=sorted(arr, key=lambda x:(x[1], x[2]))
+        return arr[0][0]

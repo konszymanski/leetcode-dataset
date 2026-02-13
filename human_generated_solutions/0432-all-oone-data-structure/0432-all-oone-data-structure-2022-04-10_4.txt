@@ -1,0 +1,72 @@
+from collections import namedtuple
+
+CountedSet = namedtuple("CountedSet", "set_, count")
+
+
+class Node:
+    def __init__(self, val, next, prev):
+        self.val = val
+        self.next = next
+        self.prev = prev
+
+
+def _remove_node(node):
+    prev, next = node.prev, node.next
+    prev.next = next
+    next.prev = prev
+    node.prev, node.next = None, None
+
+
+def _create_node_next(node, val):
+    next_node = Node(val, node.next, node)
+    node.next.prev = next_node
+    node.next = next_node
+    return next_node
+
+
+class AllOne:
+
+    def __init__(self):
+        self.head = Node(CountedSet(None, 0), None, None)
+        self.head.next = self.head
+        self.head.prev = self.head
+
+        self.key_node = {}
+
+    def inc(self, key: str) -> None:
+        node = self.key_node.pop(key, None)
+        if node is None:  # New key
+            node = self.head
+        current_count = node.val.count
+        next_count = node.next.val.count
+        if current_count + 1 != next_count:  # Need to create node for next count
+            _create_node_next(node, CountedSet(set(), current_count + 1))
+
+        node.next.val.set_.add(key)
+        self.key_node[key] = node.next
+
+        if current_count:  # key already exists
+            node.val.set_.remove(key)
+            if not node.val.set_:
+                _remove_node(node)
+
+    def dec(self, key: str) -> None:
+        node = self.key_node.pop(key)
+        node.val.set_.remove(key)
+        current_count = node.val.count
+        prev_count = node.prev.val.count
+
+        if prev_count != current_count - 1:
+            node = _create_node_next(node.prev, CountedSet(set(), current_count - 1)).next
+        if node.prev.val.set_ is not None:
+            node.prev.val.set_.add(key)
+            self.key_node[key] = node.prev
+
+        if current_count and not node.val.set_:
+            _remove_node(node)
+
+    def getMaxKey(self) -> str:
+        return next(iter(self.head.prev.val.set_ or [""]))
+
+    def getMinKey(self) -> str:
+        return next(iter(self.head.next.val.set_ or [""]))

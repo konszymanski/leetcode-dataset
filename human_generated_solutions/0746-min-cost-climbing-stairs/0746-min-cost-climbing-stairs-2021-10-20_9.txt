@@ -1,0 +1,12 @@
+def minCostClimbingStairs(self, cost):
+        n = len(cost)
+        dp = [0]*( n +1)
+        
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+        for i in range(2, n+1):
+            if i <  n : # to avoid the last n+1 iteration becuse cost[n+1] is out of range
+                dp[i] = min(dp[i-2], dp[i-1])+cost[i] # take the minimum of the last two steps and add the curent cost
+            else:
+                dp[i] = min(dp[i-1], dp[i-2])  # since we finsh the steps only take the minum of the last two steps
+        return dp[n]

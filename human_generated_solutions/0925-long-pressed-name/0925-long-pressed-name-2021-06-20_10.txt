@@ -1,0 +1,23 @@
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -> bool:
+        
+        t = collections.deque(typed)
+        n = collections.deque(name)
+        while t and n:
+            c = n.popleft()
+            tmp = [c]
+            
+            while n and n[0] == c:
+                tmp += [n.popleft()]
+                
+            while tmp and t and t[0] == c:
+                tmp.pop()
+                t.popleft()
+                
+            while t and t[0] == c:
+                t.popleft()
+                    
+            if len(tmp) > 0:
+                return False
+
+        return len(n) == 0 and len(t) == 0

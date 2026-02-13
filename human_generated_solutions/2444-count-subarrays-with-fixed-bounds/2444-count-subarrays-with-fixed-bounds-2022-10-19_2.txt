@@ -1,0 +1,28 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+        
+        # [1] storage for indices of the last encountered
+        #     types of numbers (minK, maxK and out-of-range)
+        last_out = -1
+        last_min = -1
+        last_max = -1
+        
+        count = 0
+        
+        for i,n in enumerate(nums):
+            
+            if minK <= n <= maxK: 
+                if n == minK : last_min = i
+                if n == maxK : last_max = i
+                # [2] magic happens here: if on current iteration the
+                #     number \'n\' falls in a given range, then we:
+                #     - first, ensure that both minK and maxK have been
+                #       seen after the last ouf-range-number;
+                #     - second, we add all intervals that start right after
+                #       the last out-of-range number and incorporate
+				#       at least one minK and at least one maxK
+                count += max(min(last_min, last_max) - last_out, 0)
+            else:
+                last_out = i
+            
+        return count

@@ -1,0 +1,49 @@
+class SummaryRanges:
+
+    def __init__(self):
+        self.l = []
+        self.s = set()
+        
+
+    def addNum(self, value: int) -> None:
+        
+        if value in self.s :
+            return
+        
+        idx = bisect.bisect_left(self.l,value)
+        
+        if idx > 0 and self.l[idx-1] == value-1 and idx < len(self.l) and self.l[idx] == value +1:
+            del self.l[idx-1]
+            del self.l[idx-1]
+            
+        elif idx > 0 and self.l[idx-1] == value-1:
+            self.l[idx-1] = value
+        elif idx < len(self.l) and self.l[idx] == value +1:
+            self.l[idx] =value
+        else:
+            bisect.insort_left(self.l,value)
+            bisect.insort_left(self.l,value)
+        self.s.add(value)
+        
+        
+
+    def getIntervals(self) -> List[List[int]]:
+        res = []
+        for i,n in enumerate(self.l):
+            if i % 2 == 0:
+                res.append([n])
+            else:
+                res[-1].append(n)
+                
+        return res
+            
+        
+        
+        
+        
+
+
+# Your SummaryRanges object will be instantiated and called as such:
+# obj = SummaryRanges()
+# obj.addNum(value)
+# param_2 = obj.getIntervals()

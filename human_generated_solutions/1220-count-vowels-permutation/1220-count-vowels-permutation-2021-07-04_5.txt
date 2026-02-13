@@ -1,0 +1,19 @@
+class Solution:
+    def countVowelPermutation(self, n: int) -> int:
+        mod = 1000000007
+        j = 1
+        A, E, I, O , U = 1, 1, 1, 1, 1 # base case for n = 1
+        while j < n:
+            prev_A, prev_E, prev_I, prev_O, prev_U = A, E, I, O, U
+            A = prev_E + prev_I + prev_U
+            E = prev_A + prev_I
+            I = prev_E + prev_O
+            O = prev_I
+            U = prev_I + prev_O
+            if A >= mod: A %= mod
+            if E >= mod: E %= mod
+            if I >= mod: I %= mod
+            if O >= mod: O %= mod
+            if U >= mod: U %= mod
+            j += 1
+        return (A + E + I + O + U) % mod

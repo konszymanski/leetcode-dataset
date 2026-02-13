@@ -1,0 +1,44 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        to_delete = set(to_delete)
+        queue = deque()
+        queue.append((root, False))
+        result = []
+        
+        while queue:
+            
+            node, parentAlive = queue.popleft()
+            
+            #Adding only the ones who doesnt have a parent and not in delete 
+            # because if the parent hasnt been deleted then the node has already been added to result beacuse of the parent
+            if node.val not in to_delete and not parentAlive:
+                result.append(node)
+            
+            
+            # Doing this to determine if the next node has a paren or the parent has been marked to be deleted 
+            if node.val not in to_delete:
+                parentAlive = True 
+            else:
+                parentAlive = False
+            
+            if node.left:
+                queue.append((node.left, parentAlive))
+                if node.left.val in to_delete:
+                    node.left = None
+            
+            if node.right:
+                queue.append((node.right, parentAlive))
+                if node.right.val in to_delete:
+                    node.right = None
+        return result

@@ -1,0 +1,40 @@
+from collections import deque
+def treeSum(root):
+    stack = deque()
+    result = 0
+    stack.append(root)
+    while stack:
+        current = stack.pop()
+        if current is None:
+            continue
+        result += current.val
+        if current.left:
+            stack.append(current.left)
+        if current.right:
+            stack.append(current.right)
+    return result
+
+class Solution:
+    def findTilt(self, root: Optional[TreeNode]) -> int:
+        cache = {}
+        tilts = 0
+        stack = deque()
+        stack.append(root)
+        while stack:
+            current = stack.pop()
+            if current is None:
+                continue
+            elif current.left is None and current.right is None:
+                continue
+            elif current.left is None:
+                tilts += abs(treeSum(current.right))
+                stack.append(current.right)
+            elif current.right is None:
+                tilts += abs(treeSum(current.left))
+                stack.append(current.left)
+            else:
+                tilts += abs(treeSum(current.left) - treeSum(current.right))
+                stack.append(current.left)
+                stack.append(current.right)
+                
+        return tilts

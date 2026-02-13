@@ -1,0 +1,12 @@
+def luckyNumbers (self, matrix):
+        l=[]
+        a=[]
+        for i in range (len(matrix)):
+            l.append(min(matrix[i]))
+        print(l)
+        for j in range (len(matrix[0])):
+            col = [num[j] for num in matrix]
+            a.append(max(col))
+        for i in l:
+            if i in a:
+                return [i]

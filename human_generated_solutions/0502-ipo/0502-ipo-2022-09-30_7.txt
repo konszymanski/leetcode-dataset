@@ -1,0 +1,22 @@
+from collections import namedtuple
+import heapq
+
+Project = namedtuple(\'Project\', [\'profit\', \'capital\'])
+
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        # it asked final capital not total profit
+        projects = [Project(p, c) for p, c in zip(profits, capital)]
+        projects.sort(key=lambda p: p.capital)
+        feasible_projects_profits = []
+        fp_pos = 0
+        for _ in range(k):
+            # update feasible projects with new w
+            while fp_pos < len(projects) and w >= projects[fp_pos].capital:
+                heapq.heappush(feasible_projects_profits, -projects[fp_pos].profit)
+                fp_pos += 1
+            # pick the best project from heapq
+            cur_project_profit = -heapq.heappop(feasible_projects_profits) if feasible_projects_profits else 0
+            w += cur_project_profit
+        
+        return w

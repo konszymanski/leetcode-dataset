@@ -1,0 +1,16 @@
+class FreqStack:
+
+    def __init__(self):
+        self.heap = []
+        self.dict = collections.defaultdict(int)
+        self.cnt = 0
+        
+     def push(self, x: int) -> None:
+        self.cnt += 1 #represents the order in which we push elements in the queue
+        self.dict[x] += 1
+        heapq.heappush(self.heap, [-self.dict[x], -self.cnt, x]) #push frequency, counter and element in the queue
+        
+	 def pop(self) -> int:
+        largest = heapq.heappop(self.heap)
+        self.dict[largest[2]] -= 1#largest[2] == element
+        return largest[2]

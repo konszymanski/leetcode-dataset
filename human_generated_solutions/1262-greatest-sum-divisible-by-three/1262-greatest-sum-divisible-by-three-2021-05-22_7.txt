@@ -1,0 +1,29 @@
+class Solution:
+    def maxSumDivThree(self, nums: List[int]) -> int:
+        
+        rem1 = [float(\'inf\')]
+        rem2 = [float(\'inf\')]
+        
+        
+        ans = sum(nums)
+        
+        for item in nums:
+            if item%3 == 1:
+                rem1.append(item)
+                
+            elif item%3 == 2:
+                rem2.append(item)
+                
+        rem1.sort()
+        rem2.sort()
+        if ans%3==1:
+            return ans-min(rem1[0],sum(rem2[:2]))
+            
+        
+        elif ans%3==2:
+            
+            return ans-min(rem2[0],sum(rem1[:2]))
+            
+        
+        else:
+            return ans

@@ -1,0 +1,7 @@
+def maxScore(self, s: str) -> int:
+        count_one, count_zero, max_ = s.count(\'1\'), 0, 0
+        for i in range(len(s)-1):
+            count_zero += s[i] == \'0\'
+            count_one -= s[i] == \'1\'
+            max_ = max(max_, count_zero+count_one)
+        return max_

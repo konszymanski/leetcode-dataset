@@ -1,0 +1,27 @@
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+		# Flatten board first
+        full_game = []
+        for i in range(len(board)):
+            full_game.extend(board[-i-1] if i % 2 == 0 else reversed(board[-i-1]))
+        
+		# BFS
+        steps = 0
+        destination = len(full_game) - 1
+        neighbors = {i for i in range(1, 7)}
+        visited = set()
+        while destination not in neighbors and len(neighbors) > 0:
+            next_neighbors = set()
+            for neighbor in neighbors:
+                if full_game[neighbor] == -1:
+                    next_neighbors.update([neighbor+i for i in range(1, 7)])
+                else:
+                    detour = full_game[neighbor] - 1
+                    if detour == destination:
+                        # ladder/snake is part of same step, so return right away
+                        return steps+1
+                    next_neighbors.update([detour+i for i in range(1, 7)])
+            steps += 1
+            visited = visited | neighbors
+            neighbors = next_neighbors - visited
+        return steps+1 if destination in neighbors else -1

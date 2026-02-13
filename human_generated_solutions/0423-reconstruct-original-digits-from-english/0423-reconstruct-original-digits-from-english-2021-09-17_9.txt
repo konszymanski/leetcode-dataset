@@ -1,0 +1,35 @@
+from collections import defaultdict
+unique_number = {0: ["zero", "z"],
+                2 : ["two", "w"],
+                4 : ["four","u"],
+                6 : ["six", "x"],
+                8 : ["eight", "g"],
+                }
+nu_number = {
+    1:["one","o"],
+    3:["three","t"],
+    5:["five","f"],
+    7:["seven","s"],
+}
+
+class Solution:
+    def originalDigits(self, s: str) -> str:
+        graph = defaultdict(int)
+        for x in s:
+            graph[x] += 1
+        
+        ans = [0]*10
+        for map_ in [unique_number, nu_number]:
+            for index, lst in map_.items():
+                count = graph.get(lst[1], 0)
+                if count > 0:
+                    # print(count, lst[1], graph)
+                    for x in lst[0]:
+                        graph[x] -= count
+                        if graph[x] == 0:
+                            graph.pop(x)
+                    ans[index] += count
+        
+        if graph:
+            ans[9] += graph[\'i\'] # nine
+        return \'\'.join([x*str(i) for i, x in enumerate(ans) if x>0])

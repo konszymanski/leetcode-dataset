@@ -1,0 +1,13 @@
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        @functools.cache
+        def doIWin(l,r):
+            if l > r: return 0
+            
+            left = piles[l] - doIWin(l+1,r) # `-` because my opponent!
+            
+            right= piles[r] - doIWin(l,r-1)
+            
+            return max(left, right)
+        
+        return (doIWin(0,len(piles)-1) + sum(piles) )//2

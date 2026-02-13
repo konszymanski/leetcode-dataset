@@ -1,0 +1,45 @@
+class Solution:
+    def consecutiveNumbersSum(self, n: int) -> int:
+        
+    # First solution 
+    # representing N as sum of k consecutive integers with starting value as a
+    # N = a + (a+1) + (a+2) + ....... + (a+k) 
+    # N = (k*a) + (1+2+3+....+k)
+    # N = k*a + k*(k+1)/2
+    # Hence, a = ( N - k*(k+1)/2 ) / k
+    
+    # DRY RUN:
+    # 15 = 1 + 2 + 3 + 4 + 5 ; k = 5
+    # 15 = 1 + (1+1) + (1+2) + (1+3) + (1+4)
+    # 15 = 5*1 + 5*(5-1)/2 = 5 + 10 = 15
+    
+        k = 1
+        count = 0
+        while (k*(k+1)//2)<=n:
+            sum_until_k = k*(k+1)//2
+            if ( n - sum_until_k ) % k == 0:
+                count += 1
+            k += 1
+        return count
+    
+    # Observation 2:
+    # 15 = 4 + 5 + 6 ; k = 3 ; start = 4 (seq. starts at 4)
+    # 15 = (3+1) + (3+2) + (3+3)
+    # 15 = 3 + 3 + 3 + 1 + 2 + 3
+    # 15 - 1 - 2 - 3 = 3 + 3 + 3
+    # 15 - (start-3) - (start-2) - (start-1) = k*(start-1)
+    # Hence for a base/start = 3 if LHS is divisible by base
+    # then it means we formed a consecutive sequence.
+    # eg: 15 = 1 + 2 + 3 + 4 + 5 
+    # so if 15 - 1  = 2 + 3 + 4 + 5 = 1*4 + 1*(1+2+3)
+    # so at each step if num - start is divisble by start
+    # then that start forms a sequence.
+    
+        count = 0
+        start = 1
+        while n > 0:
+            n -= start
+            if n%start == 0:
+                count += 1
+            start += 1
+        return count

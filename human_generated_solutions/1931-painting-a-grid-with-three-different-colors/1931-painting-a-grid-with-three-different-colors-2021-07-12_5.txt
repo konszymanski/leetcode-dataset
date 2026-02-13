@@ -1,0 +1,64 @@
+class Solution:
+    def colorTheGrid(self, m: int, n: int) -> int:
+        M = 10**9 + 7
+        ans = 3
+        if m == 1:
+            for i in range(n-1):
+                ans *= 2
+                ans %= M
+            return ans % M
+        
+        def IsValid(a):
+            return all ( a[i] != a[i+1] for i in range(len(a) - 1) )
+            
+        if m >= 2:
+            # AllStates contains all colorings of a single row of length m using 3 colors (0, 1, 2), hence of size 3^m
+            # For example, m = 2, AllStates = [(0,0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+            AllStates = [[0], [1], [2]]
+            colors = [0, 1, 2]
+            for j in range(m-1):
+                L = len(AllStates)
+                for i in range(L):
+                    x = AllStates.pop(0)
+                    for c in colors:
+                        AllStates.append(tuple([*x, c]))
+            
+            # v contains all valid colorings of a single row of length m using 3 colors
+            v = set()
+            for a in AllStates:
+                if IsValid(a):
+                    v.add(a)
+            d = {i:a for i, a in enumerate(v)}
+            
+            # construct a graph where vertices are valid single row colorings
+            # an edge is present if two colorings satisfy the constraints
+            numStates = len(v)
+            def IsValidNeigbor(a, b):
+                if a not in v or b not in v:
+                    return False
+                else:
+                    for i in range(len(a)):
+                        if a[i] == b[i]:
+                            return False
+                    return True
+            
+            adj = {i:[] for i in range(numStates)}
+            for i in range(numStates):
+                for j in range(i+1, numStates):
+                    if IsValidNeigbor(d[i], d[j]):
+                        adj[i].append(j)
+                        adj[j].append(i)
+            
+            # then the problem becomes: finding the number of paths of length n in the constructed graph,
+            # which can be done by an easy-to-understand dp.
+            dp = [[0 for _ in range(n+1)] for _ in range(numStates)]
+            for i in range(numStates):
+                dp[i][1] = 1
+            
+            
+            for j in range(2, n+1):
+                for i in range(numStates):
+                    for k in adj[i]:
+                        dp[i][j] += dp[k][j-1]
+                        dp[i][j] %= M
+            return sum(dp[i][n] for i in range(numStates)) % M

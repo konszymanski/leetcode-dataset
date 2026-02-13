@@ -1,0 +1,34 @@
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        # a: [x, y], b: [u, v].
+        ret = []
+        
+        # while there is still both, since will ignore everything that is not in.
+        i = j = 0
+        while i < len(firstList) and j < len(secondList):
+            interval = firstList[i]
+            interval2 = secondList[j]
+            
+            # case where x > u
+            if interval[0] > interval2[0]:
+                start = interval[0]
+            # case where u >= x
+            else:
+                start = interval2[0]
+                
+            # could be optimized but I am lazy
+            end = min(interval[1], interval2[1])
+            
+            if start <= end:
+                ret.append([start, end])
+            
+            # too lazy to manually calculate min
+            if end == interval[1]:
+                i += 1
+                
+            # using if for a reason.
+            # reason is because both could be at end lol.
+            if end == interval2[1]:
+                j += 1
+                
+        return ret

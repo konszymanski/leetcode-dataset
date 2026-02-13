@@ -1,0 +1,12 @@
+from collections import Counter
+
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr, k):
+        counts = sorted(Counter(arr).values())
+        
+        i = 0
+        while k > 0:
+            k -= counts[i]
+            i += 1
+        
+        return len(counts) - i + (k < 0)

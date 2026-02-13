@@ -1,0 +1,22 @@
+class Solution:
+    def beautifulArray(self, N: int) -> List[int]:
+        res = [0] * N
+        if N==1:
+            return [1]
+        if N==2:
+            return [1,2]
+        if N%2 == 0:
+            half = self.beautifulArray(int(N/2))
+            for i in range(int(N/2)):
+                res[i] = half[i] * 2-1
+            for i in range(int(N/2), N):
+                res[i] = half[i-int(N/2)] * 2
+        
+        else:
+            res[int((N-1)/2)] = N
+            whole = self.beautifulArray(N-1)
+            for i in range(int((N-1)/2)):
+                res[i] = whole[i+int((N-1)/2)]
+            for i in range(int((N-1)/2),N-1):
+                res[i+1] = whole[i-int((N-1)/2)]
+        return res

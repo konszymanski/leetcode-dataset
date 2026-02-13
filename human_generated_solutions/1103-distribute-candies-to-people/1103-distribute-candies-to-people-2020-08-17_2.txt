@@ -1,0 +1,44 @@
+class Solution:
+    def distributeCandies(self, candies, num_people):
+       \'\'\'
+        Idea: Round number k (starting from 1)
+              -> give away
+              (k-1)*n+1 + (k-1)*n+2 + ... + (k-1)*n + n = 
+              (k-1)*n^2 + n*(n+1)/2 candies
+              
+        Assume we have completed K full rounds, then K is the largest integer >= 0 with
+        
+        K*n*(n+1)/2 + K * (K-1)/2 * n^2 <= candies 
+        
+        Find K by binary search and then simulate the last round.
+        
+        The person at index i gets
+    
+        0*n+i+1 + ... + (K-1)*n+i+1 = K*(i+1) + n*K*(K-1)/2 
+        
+        candies from rounds 1 to K, plus everything they get on their
+        last round.
+        
+        Important: Allow for the fact that we may not complete a single round.
+
+        REVIEW
+		\'\'\'
+		
+        lo, hi = 0, candies
+        K = 0
+        while lo <= hi:
+            k = (lo + hi)//2
+            if k*(num_people*(num_people+1))//2 + (k*(k-1))//2 * num_people**2 <= candies:
+                K = k
+                lo = k + 1
+            else:
+                hi = k - 1
+        result = [(i+1)*K+num_people*(K*(K-1))//2 for i in range(num_people)]
+        candies -= sum(result)
+        for i in range(num_people):
+            add = min(candies, K * num_people + i + 1)
+            result[i] += add
+            candies -= add
+            if candies == 0:
+                break
+        return result

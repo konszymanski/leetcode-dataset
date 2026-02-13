@@ -1,0 +1,11 @@
+class Solution:
+    def longestSubsequence(self, arr: List[int], difference: int) -> int:
+        ans = 1
+        dp = [1 for _ in range(len(arr))]
+        d = collections.defaultdict(int)
+        for i,a in enumerate(arr):
+            if arr[i]-difference in d:
+                dp[i] = dp[d[arr[i]-difference]]+1
+                ans = max(ans,dp[i])
+            d[a] = i
+        return ans

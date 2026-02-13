@@ -1,0 +1,36 @@
+class Solution:
+    def minFlips(self, mat: List[List[int]]) -> int:
+        vector = [] # flat matrix as vector
+        for row in mat:
+            for num in row:
+                vector.append(num)
+	    ans = self.dfs(vector, 0, {}, len(mat[0]))
+        return ans if ans != float("inf") else -1
+    
+    def dfs(self, vector, start, memo, row_len):
+        this_str = \'\'.join(str(num) for num in vector) # convert the vector to string, which is used as the key for dict
+        if this_str in memo: # if the key is already calculated, return the result
+            return memo[this_str]
+        if sum(vector) == 0: # This is all zero, return, and put the key in the dict
+            memo[this_str] = 0
+            return memo[this_str]
+        
+        ans = float("inf")
+        for i in range(start, len(vector)):
+            self.flip(vector, i, row_len)
+            next_str = \'\'.join(str(num) for num in vector)
+            ans = min(ans, self.dfs(vector, start + 1,memo, row_len) + 1) 
+            self.flip(vector, i, row_len) # flip back, this is the back track process
+        memo[this_str] = ans
+        return memo[this_str]
+    
+    def flip(self, vector, i, row_len):
+        vector[i] = 0 if vector[i] == 1 else 1
+        if i - row_len >= 0:
+            vector[i - row_len] = 0 if vector[i - row_len] == 1 else 1
+        if i + row_len < len(vector):
+            vector[i + row_len] = 0 if vector[i + row_len] == 1 else 1
+        if i % row_len != 0:
+            vector[i - 1] = 0 if vector[i - 1] == 1 else 1
+        if i % row_len != row_len - 1:
+            vector[i + 1] = 0 if vector[i + 1] == 1 else 1

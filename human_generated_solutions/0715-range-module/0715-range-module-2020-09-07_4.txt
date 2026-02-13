@@ -1,0 +1,35 @@
+from sortedcontainers import SortedDict
+class RangeModule:
+
+    def __init__(self):
+        self.data = SortedDict()
+        
+    def addRange(self, left: int, right: int) -> None:
+        l, r = self.data.bisect(left), self.data.bisect(right)
+        if l != 0:
+            l -= 1
+            if self.data.peekitem(l)[1] < left:
+                l += 1
+        if l != r:
+            left, right = min(left, self.data.peekitem(l)[0]), max(right, self.data.peekitem(r-1)[1])
+            for _ in range(l, r):
+                self.data.popitem(l)
+        self.data[left] = right
+
+    def queryRange(self, left: int, right: int) -> bool:
+        l, r = self.data.bisect_right(left), self.data.bisect_right(right)
+        if l == 0 or self.data.peekitem(l-1)[1] < right: return False
+        return True
+
+    def removeRange(self, left: int, right: int) -> None:
+        l, r = self.data.bisect_right(left), self.data.bisect_right(right)
+        if l != 0:
+            l -= 1
+            if self.data.peekitem(l)[1] < left:
+                l += 1
+        if l != r:
+            ll, rr = min(left, self.data.peekitem(l)[0]), max(right, self.data.peekitem(r-1)[1])
+            for _ in range(l, r):
+                self.data.popitem(l)
+            if ll < left: self.data[ll] = left
+            if right < rr: self.data[right] = rr

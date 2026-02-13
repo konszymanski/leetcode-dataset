@@ -1,0 +1,54 @@
+class Solution:
+    def maxUncrossedLines(self, A, B) -> int:
+        """
+        This program uses dynamic programming to determine the maximum
+        number of uncrossed lines from array A to matching elements
+        of array B.
+
+        :param A: array of integers
+        :type A: list[int]
+        :param B: array of integers
+        :type B: list[int]
+        :return: maximum number of uncrossed lines from A to B
+        :rtype: int
+        """
+        """
+        Initialize:
+        - Add padding to arrays A and B to ease the handling of edge cases
+        - Initialize dp matrix to all zeros. The rows represent the elements
+          of A in order top to bottom. The columns represent the elements of
+          B in order left to right.
+        """
+        A = [0] + A
+        B = [0] + B
+        rows = len(A)
+        cols = len(B)
+        dp = [([0] * cols) for r in range(rows)]
+
+        """
+        Dynamic Programming:
+        - To better understand the dynamic programming better, it is helpful
+          to be aware that not only does each row represent an element of A,
+          it really represent the array A up to that element.  The same is
+          true for the columns and array B.
+        - The indexes r and c are used to access elements of the dp matrix.
+          The same indexes are used to access array elements in A and B.
+        - Dynamic programming proceeds top down from the upper left corner
+          to the lower right corner of the matrix, or from the start of the
+          arrays to the end.
+        - Each element of the dp matrix contains the maximum uncrossed lines
+          up to the respective elements in A and B.
+        """
+        for r in range(1, rows):
+            for c in range(1, cols):
+                if A[r] == B[c]:
+                    """
+                    New uncrossed line: add 1 to the current maximum value
+                    """
+                    dp[r][c] = dp[r - 1][c - 1] + 1
+                else:
+                    """
+                    No new line: inherit the current maximum value
+                    """
+                    dp[r][c] = max(dp[r][c - 1], dp[r - 1][c])
+        return dp[-1][-1]

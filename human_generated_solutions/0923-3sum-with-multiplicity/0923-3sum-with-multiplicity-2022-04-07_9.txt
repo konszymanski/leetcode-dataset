@@ -1,0 +1,22 @@
+from collections import Counter
+class Solution:
+    def threeSumMulti(self, arr: List[int], target: int) -> int:
+        d=Counter(arr)
+        dk=d.keys()
+        ans=0
+        for i in dk:
+            for j in dk:
+                el3=target-i-j
+                if el3 in dk:
+                    f1=d[i]
+                    f2=d[j]
+                    f3=d[el3]
+                    if i==j==el3:
+                        ans+=f1*(f1-1)*(f1-2)/6
+                    elif i==j and i<el3:
+                        ans+=f1*(f1-1)/2*f3
+                    elif i<j and j==el3:
+                        ans+=f1*f2*(f2-1)/2
+                    elif i<j<el3:
+                        ans+=f1*f2*f3
+        return int(ans)%(10**9+7)

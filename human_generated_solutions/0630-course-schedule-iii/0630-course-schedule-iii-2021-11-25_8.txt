@@ -1,0 +1,14 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+	    # Sort by lastDay
+        courses.sort(key=lambda x: x[1])
+        day, taken = 0, []
+        for duration, lastDay in courses:
+		    # If we can take the current course, update day and add the course to the heap
+            if day + duration <= lastDay:
+                day += duration
+                heapq.heappush(taken, -duration)
+			# If we cannot take the course but there is a previous course with a longer duration, replace it with the current one and adjust day
+            elif taken and -taken[0] > duration:
+                day += duration + heapq.heapreplace(taken, -duration)
+        return len(taken)

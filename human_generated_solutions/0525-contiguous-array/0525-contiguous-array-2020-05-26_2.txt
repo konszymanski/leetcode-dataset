@@ -1,0 +1,19 @@
+python
+1. class Solution:
+2.     def findMaxLength(self, nums: List[int]) -> int:
+3.         count = 0
+4.         result = 0
+5.         dict_seen = {0: -1}
+6.         for i in range(len(nums)):
+7.             n = nums[i]
+8.             if n == 0:
+9.                 count -= 1
+10.             if n == 1:
+11.                 count += 1
+12.                 
+13.             if count in dict_seen:                       # You have been here before
+14.                 result = max(result, i-dict_seen[count]) # Get the furthest distance
+15.             else:                     # You haven\'t been here before
+16.                 dict_seen[count] = i  # Mark it
+17.                 
+18.         return result

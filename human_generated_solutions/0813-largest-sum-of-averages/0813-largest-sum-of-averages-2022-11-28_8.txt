@@ -1,0 +1,18 @@
+# solution with 2-D DP table
+class Solution:
+    def largestSumOfAverages(self, nums: List[int], k: int) -> float:
+        prefix = list(accumulate(nums, initial=0))
+        n = len(nums)
+        # initialize dp
+        dp = [[0] * (n + 1) for _ in range(k+1)]
+        for i in range(n-1, -1, -1):
+            dp[1][i] = (prefix[-1] - prefix[i]) / (n - i)
+        # update dp
+        for part in range(2, k+1):
+            for i in range(n-part, -1, -1):
+                local_max = 0
+                for j in range(i, n-part+1):
+                    local_mean = (prefix[j+1] - prefix[i]) / (j+1-i)
+                    local_max = max(local_max, local_mean + dp[part-1][j+1])
+                dp[part][i] = local_max
+        return max(x[0] for x in dp)

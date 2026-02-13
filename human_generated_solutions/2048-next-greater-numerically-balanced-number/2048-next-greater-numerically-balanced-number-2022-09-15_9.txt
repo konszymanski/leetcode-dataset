@@ -1,0 +1,19 @@
+class Solution:
+    def nextBeautifulNumber(self, n: int) -> int:
+        count = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        def solve(count: List[int], size: int, val: int) -> List[int]:
+            if not size:
+                for digit, cnt in enumerate(count):
+                    if cnt != digit and cnt != 0:
+                        return 0
+                yield val if val > n else 0
+            for digit in range(10):
+                if count[digit] > 0 and count[digit] <= size:
+                    count[digit] -= 1
+                    yield from solve(count, size - 1, val * 10 + digit)
+                    count[digit] += 1
+        
+        for numLen in range(len(str(n)), len(str(n)) + 2):
+            for num in solve(count, numLen, 0):
+                if num:
+                    return num

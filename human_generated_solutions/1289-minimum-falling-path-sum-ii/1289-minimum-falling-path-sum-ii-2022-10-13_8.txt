@@ -1,0 +1,14 @@
+class Solution:
+    def minFallingPathSum(self, g: List[List[int]]) -> int:
+        height, width = len(g), len(g[0])
+        for i in range(1, height):
+            for j in range(0, width):
+                li = []
+                
+                for k in range(0, width):
+                    if j is not k:
+                        li.append(g[i-1][k])
+                    
+                g[i][j] += min(li)
+                
+        return min(g[height-1])

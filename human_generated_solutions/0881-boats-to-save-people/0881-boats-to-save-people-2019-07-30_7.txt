@@ -1,0 +1,14 @@
+def numRescueBoats(self, people: List[int], limit: int) -> int:
+        people.sort() # O(NlogN)
+        i, j = 0, len(people)-1
+        ans = 0
+        while i <= j:
+            if i == j:
+                return ans + 1
+            if people[i] + people[j] > limit:
+                j -= 1
+                ans += 1
+            else: # people[i] + people[j] <= limit:
+                i, j = i+1, j-1
+                ans += 1
+        return ans

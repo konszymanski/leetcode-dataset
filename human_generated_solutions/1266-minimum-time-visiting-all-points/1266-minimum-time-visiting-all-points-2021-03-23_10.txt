@@ -1,0 +1,9 @@
+class Solution:
+    def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+        time = 0                            #initially time is assigned 0
+        current = points[0]                 #consider the first point from points list
+        remaining = points[1:]              #the remaing points
+        for point in remaining:             #for each point in the list of remaining points
+            time += max(abs(point[0]-current[0]),abs(point[1]-current[1]))       #add the maximum time required to reach point
+            current = point                 #change the current point
+        return time

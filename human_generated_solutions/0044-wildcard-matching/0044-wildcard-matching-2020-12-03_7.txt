@@ -1,0 +1,36 @@
+import collections
+
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        if not p: return False if s else True
+        
+        delta = collections.defaultdict(int)
+        delta[(0, \'*\')] = 0
+        state = 1
+        for c in p:
+            if c == \'*\':
+                delta[(state, \'*\')] = state
+                continue
+                
+            delta[(state, c)] = state + 1
+            state += 1
+        
+        accept_state = state
+        cur_states = set([1])
+        i = 0
+        while i < len(s):
+            next_states = set()
+            cur_char = s[i]
+            for cur_state in cur_states:
+                if (cur_state, \'*\') in delta:
+                    next_states.add(delta[(cur_state, \'*\')])
+                    
+                if (cur_state, \'?\') in delta:
+                    next_states.add(delta[(cur_state, \'?\')])
+                else:
+                    next_states.add(delta[(cur_state, cur_char)])
+            
+            cur_states = next_states
+            i += 1
+        
+        return accept_state in cur_states and i == len(s)

@@ -1,0 +1,22 @@
+class CombinationIterator:
+
+    def __init__(self, s: str, n: int):
+        self.s = s
+        self.n = n
+        self.st = []
+        for i in reversed(range(len(s))):
+            self.st.append((s[i], i+1))
+            
+    def next(self) -> str:
+        while self.st:
+            el, idx = self.st.pop()
+            if len(el)==self.n:
+                return el
+            for i in reversed(range(idx, len(self.s))):
+                self.st.append((el+self.s[i], i+1))
+        
+    def hasNext(self) -> bool:
+        while self.st and self.n-len(self.st[-1][0])+self.st[-1][1]>len(self.s):
+            self.st.pop()
+            
+        return len(self.st)!=0

@@ -1,0 +1,4 @@
+def repeatLimitedString(self, s: str, k: int) -> str:
+        leters , sol, stack, rep, prev , ll = (x for x in sorted(s, reverse=True)) , [], [], 0, None ,len(s)
+        while ele:=stack.pop() if rep <= k and stack else next(leters, 0):_,prev = sol.append(ele) if (rep:=1 if ele != prev else rep+1) <= k else stack.append(ele) , ele
+        return "".join(sol)

@@ -1,0 +1,42 @@
+class Solution(object):
+    
+    def isValid(self, location, queens):
+        row, col = location
+        for queen in queens:
+            x, y = queen
+            if abs(row - x) == abs(col - y):
+                return False
+            if row == x or col == y:
+                return False
+        return True
+    
+    def nextQueen(self, grid):
+        for x in range(len(grid)):
+            for y in range(len(grid[x])):
+                if grid[x][y] == \'.\':
+                    return (x, y)
+        return None
+    
+    def solve(self, grid, n, col, queens, solution):
+        if col >= n:
+            solution.append([\'\'.join(reversed(row)) for row in grid])
+        for i in range(n):
+            if self.isValid((i, col), queens):
+                grid[i][col] = \'Q\'
+                queens.append((i, col))
+                self.solve(grid, n, col + 1, queens, solution)
+                grid[i][col] = \'.\'
+                queens.remove((i, col))
+        return
+    
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        queens = []
+        grid = [[\'.\' for i1 in range(n)] for i2 in range(n)]
+        solution = []
+        self.solve(grid, n, 0, queens, solution)
+        
+        return solution

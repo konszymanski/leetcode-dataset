@@ -1,0 +1,13 @@
+class Solution:
+    def advantageCount(self, A: List[int], B: List[int]) -> List[int]:
+        ans = [0] * len(A)
+        index = sorted(range(len(B)), key=lambda x:B[x], reverse=True)
+        remaining = []
+        for a in sorted(A):
+            if a > B[index[-1]]:
+                ans[index.pop()] = a
+            else:
+                remaining.append(a)
+        for b, a in zip(index, remaining):
+            ans[b] = a
+        return ans

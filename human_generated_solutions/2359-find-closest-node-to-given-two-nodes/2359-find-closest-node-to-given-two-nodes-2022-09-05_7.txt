@@ -1,0 +1,23 @@
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        queue = deque([(node1, 0), (node2, 1)])
+
+        visited = set()
+        res = float(inf)
+        found = False
+        while queue and not found:
+            for _ in range(len(queue)):
+                n,t = queue.popleft()
+                visited.add((n,t))
+
+                if (n,0) in visited and (n,1) in visited:
+                    found = True
+                    res = min(res, n)
+
+                if edges[n] == -1:
+                    continue
+
+                if (edges[n], t) not in visited:
+                    queue.append((edges[n], t))
+        
+        return -1 if res == float(inf) else res

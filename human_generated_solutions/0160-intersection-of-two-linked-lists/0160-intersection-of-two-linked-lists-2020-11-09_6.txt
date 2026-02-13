@@ -1,0 +1,53 @@
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        return self.withConstantSpaceAndLinearTime(headA, headB)
+      
+    def getLength(self, head):
+        length = 0
+        while head:
+            head = head.next
+            length += 1
+        return length
+    
+    # Faster than 96.35% (Yay!!)
+    def withConstantSpaceAndLinearTime(self, headA, headB):
+        lenA = self.getLength(headA)
+        lenB = self.getLength(headB)
+        if lenB > lenA:
+            headA, headB = headB, headA
+            lenA, lenB = lenB, lenA
+        
+        
+        diff = lenA - lenB
+        while diff:
+            headA = headA.next
+            diff -= 1
+        
+        # print(headA.val, headB.val)
+        
+        while headA and headB and headA != headB:
+            headA = headA.next
+            headB = headB.next
+        return headA
+        
+    # Faster than 81.92% (At that time ;)
+    def usingSets(self, headA, headB):
+        visited = set()
+        while headA:
+            visited.add(headA)
+            headA = headA.next
+        
+        while headB:
+            if headB in visited: return headB
+            headB = headB.next
+        return None
+    
+    # Gives us TLE
+    def bruteForce(self, headA, headB):
+        while headA:
+            temp = headB
+            while temp:
+                if temp == headA: return headA
+                temp = temp.next
+            headA = headA.next
+        return None

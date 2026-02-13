@@ -1,0 +1,19 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+        n = len(nums) 
+        # store indices of previous minK, maxK, outliers      
+        prev_min, prev_max, prev_out = -1, -1, -1
+
+        cnt = 0        
+        for i in range(n):
+            if nums[i] < minK or nums[i] > maxK: 
+                prev_out = i
+                continue               
+            if nums[i] == minK: prev_min = i
+            if nums[i] == maxK: prev_max = i
+        
+            # count subarrays, minK <= nums[i] <= maxK           
+            if prev_out < prev_max and prev_out < prev_min:
+                cnt += min(prev_max, prev_min) - prev_out
+                            
+        return cnt

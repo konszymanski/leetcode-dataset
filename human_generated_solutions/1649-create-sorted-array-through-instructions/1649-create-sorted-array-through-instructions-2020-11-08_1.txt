@@ -1,0 +1,23 @@
+class Solution:
+    def createSortedArray(self, instructions):
+        t = [0] * 100001
+        
+        def incr(i):
+            while i < 100001:
+                t[i] += 1
+                i += i & -i
+                
+        def query(i):
+            ret = 0
+            while i > 0:
+                ret += t[i]
+                i -= i & -i
+            return ret
+        
+        ans = 0
+        for i, x in enumerate(instructions):
+            ans += min(query(x - 1), i - query(x))
+            ans %= 1000000007
+            incr(x)
+
+        return ans

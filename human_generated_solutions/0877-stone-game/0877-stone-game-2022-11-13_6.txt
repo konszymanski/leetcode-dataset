@@ -1,0 +1,12 @@
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        a = []
+        b = []
+        c = len(piles)
+        for i in range(c):
+            a.append(max(piles))
+            piles.remove(max(piles))
+        if sum(a) > sum(b):
+            return 1
+        else:
+            return 0

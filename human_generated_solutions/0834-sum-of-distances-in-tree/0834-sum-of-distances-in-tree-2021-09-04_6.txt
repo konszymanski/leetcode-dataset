@@ -1,0 +1,48 @@
+class Solution:
+    def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
+        \'\'\'
+        Time: O(n)
+        Space: O(n)
+
+            x -------- y 
+         1/ |1      1/1| \\1 
+        x1  x2      y1 y2 y3
+          2/|2            2|\\2
+         x4 x5            y4 y5 
+        
+        # N = 11, count[x]  = 5, count[y] = 6 
+        # ans[x] = x@x + y@y + count[y] = 6 + 7 + 6 = 19
+        # ans[y] = y@y + x@x + count[x] = 7 + 6 + 5 = 18
+        # ans[x] - ans[y] = count[y] - count[x]
+        # ans[x] = ans[y] +  count[y] - count[x]
+        # ans[x] = ans[y] + (N-count[x]) - count[x]
+        \'\'\'
+        count, ans = [1]*n, [0]*n
+        tree = [[] for _ in range(n)]
+        for a, b in edges:
+            tree[a].append(b)
+            tree[b].append(a)
+        
+        def dfs(curr, parent):
+            for child in tree[curr]:
+                if child != parent:
+                    dfs(child, curr)
+                    count[curr] += count[child]
+                    ans[curr] += ans[child] + count[child]
+        
+        
+        def dfs2(curr, parent):
+            # from ans[curr], get ans[child]
+            for child in tree[curr]:
+                if child != parent:
+                    # ans[child] = ans[curr] + count[curr] - count[child]
+                    ans[child] = ans[curr] + (n-count[child]) - count[child]
+                    # from ans[child] get ans[sub-child]
+                    dfs2(child, curr)
+        
+        # get count[i] from view 0, and get ans[0]
+        dfs(0, -1)
+        # from ans[0], get ans[child] and more
+        dfs2(0, -1)
+        
+        return ans

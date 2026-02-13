@@ -1,0 +1,47 @@
+class Solution:
+    def maximumDetonation(self, bombs: List[List[int]]) -> int:
+        def is_connected(a,b):
+            \'\'\'
+            return whether two points should be connected or not.
+            \'\'\'
+            x1, y1, r1 = bombs[a]
+            x2, y2, r2 = bombs[b]
+            dist = math.sqrt((x1-x2)**2 + (y1-y2)**2)
+            return dist <= r1
+
+        q = deque()
+        def bfs(start_node):
+            \'\'\'
+            This function runs bfs from the start node, and returns the 
+            number of points we can detonate starting at that point.
+            \'\'\'
+            q.append(start_node)
+            visited.add(start_node)
+            detonated_count = 0  
+            while q:
+                curr = q.popleft()
+                detonated_count += 1 
+                for child in graph[curr]:
+                    if child not in visited:
+                        visited.add(child)
+                        q.append(child)
+            return detonated_count
+        
+        # 1) Build The graph by connecting points in the same range
+        graph = defaultdict(list)
+        points = range(len(bombs))
+        # Undirected Graph: try all possible combinations of lenghth 2 (p1, p2)
+        for a, b in combinations(points, 2):
+            if is_connected(a, b):
+                graph[a].append(b)
+            if is_connected(b, a):
+                graph[b].append(a)
+
+        # 2) Run BFS from each point and take the maximum of them
+        maxCount = 1
+        for point in points:
+            if graph[point]:
+                visited = set()
+                maxCount = max(maxCount, bfs(point))
+            
+        return maxCount

@@ -1,0 +1,2 @@
+def minimumReplacement(self, a: List[int]) -> int:
+   return reduce(lambda p,x:(x//(x//p[0]-(not x%p[0])+1),p[1]+x//p[0]-(not x%p[0])),reversed(a),(a[-1],0))[1]

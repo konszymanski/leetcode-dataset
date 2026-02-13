@@ -1,0 +1,31 @@
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        
+        # we create a adjacency list for each stop and its presence in routes
+        # for faster look up we use a set instead of list 
+        stop_route_adjacency_list = defaultdict(set)
+        
+        for route_index, route in enumerate(routes):
+            for stop in route:
+                stop_route_adjacency_list[stop].add(route_index)
+                
+        stops_queue = deque([[source, 0]])
+        visited = set([source])
+        
+        while stops_queue:
+            stop, bus_count = stops_queue.popleft()
+            
+            if stop == target:
+                return bus_count
+            
+            for possible_route_index in stop_route_adjacency_list[stop]:
+                for stop in routes[possible_route_index]:
+                    if stop not in visited:
+                        # we increment the bus count, since it\'s new route we hop in new bus 
+                        stops_queue.append([stop, bus_count + 1])
+                        visited.add(stop)
+                # we have visited all stops in current possible route so if any other stop
+                # leading to this route in future is redundant so we empty that route
+                routes[possible_route_index] = []
+        
+        return -1

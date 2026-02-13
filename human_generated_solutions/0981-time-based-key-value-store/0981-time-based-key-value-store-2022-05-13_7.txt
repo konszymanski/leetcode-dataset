@@ -1,0 +1,30 @@
+class TimeMap:
+
+    def __init__(self):
+        self.mapping = collections.defaultdict(list)
+        
+    def set(self, key, value, timestamp):
+        self.mapping[key].append((timestamp, value))
+        
+    def get(self, key, timestamp):
+        
+        values = self.mapping[key]
+        if not values:
+            return \'\'
+        
+        left, right = 0, len(values) - 1
+        while left + 1 < right:
+            mid = (left + right) // 2
+            pre_time, value = values[mid]
+            if pre_time == timestamp:
+                return value
+            if pre_time > timestamp:
+                right = mid
+            else:
+                left = mid
+        if values[right][0] <= timestamp:
+            return values[right][1]
+        if values[left][0] <= timestamp:
+            return values[left][1]
+        
+        return \'\'

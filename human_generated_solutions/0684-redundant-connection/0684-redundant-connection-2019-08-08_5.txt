@@ -1,0 +1,44 @@
+def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+    
+        # helper - hasCycle - #
+        def hasCycle(node):
+            \'\'\'DFS - detec cycle in undirected graph using visited set\'\'\'
+            stack = [node]
+            visited = set()
+            while stack:
+                node = stack.pop()
+                for n in treeDict[node]:
+                    if n not in visited:
+                        stack.append(n)
+                        visited.add(n)
+                        treeDict[n].remove(node)
+                    else: # n is in visit -> cycel
+                        return True
+                del treeDict[node]
+            return False
+            
+        # main function #
+        # 1 - convert edges to adjlist dict:
+        from collections import defaultdict
+        d = defaultdict(list)
+        for edge in edges:
+            k, v = edge
+            d[k].append(v)
+            d[v].append(k) # undirected
+            
+        for i in reversed(range(len(edges))): # reversed becuz we are told to give priority to edges near the end
+            # copies:
+            candidateTree = copy.deepcopy(edges)
+            treeDict = copy.deepcopy(d)
+            # mutate edges (edge list)
+            candidateTree.pop(i)
+            # mutate (adj list) dict - remove symmetric edge:
+            treeDict[edges[i][0]].remove(edges[i][1])
+            treeDict[edges[i][1]].remove(edges[i][0])
+            
+            # now check if candidateTree is acyclic
+            startNode = candidateTree[0][0] # random choice
+            if not hasCycle(startNode):
+                print(edges[i])
+                return edges[i]
+        return [0]

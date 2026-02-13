@@ -1,0 +1,19 @@
+class Solution:
+    def maxLength(self, arr: List[str]) -> int:
+        sz, combinedWords, maxLength = len(arr), [\'\'], 0
+        # Iterate over every string present in arr
+        for string in arr:
+            # combinedWords contains all possible combinations of the strings present in arr
+            # combinedWords array is incrementally built upon by adding the current string
+            # in arr to all the present combinations already present in combinedWords
+            for word in combinedWords:
+                # add the present string to present combination
+                resultantWord = word + string
+                # if the combination contains duplicates, discard it
+                if len(resultantWord) != len(set(resultantWord)):
+                    continue
+                # append the new combination in the list of combinations
+                combinedWords.append(resultantWord)
+                # update the maximum length
+                maxLength = max(maxLength, len(resultantWord))
+        return maxLength

@@ -1,0 +1,21 @@
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        if len(start) != len(end) or start.replace(\'X\', \'\') != end.replace(\'X\', \'\'):
+            return False
+
+        idxS, idxE = 0, 0
+        n = len(start)
+        while idxS < n and idxE < n:
+            while idxS < n and start[idxS] == \'X\':
+                idxS += 1
+
+            while idxE < n and end[idxE] == \'X\':
+                idxE += 1
+
+            if idxE < n and idxS < n and ((start[idxS] == \'L\' and idxS < idxE) or (start[idxS] == \'R\' and idxS > idxE)):
+                return False
+
+            idxS += 1
+            idxE += 1
+
+        return True

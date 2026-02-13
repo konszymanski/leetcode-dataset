@@ -1,0 +1,19 @@
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        ans = []
+        n,m = len(words), len(words[0])
+        words = collections.Counter(words)
+        
+        for i in range(len(s)-n*m+1):
+            tmp = collections.Counter()
+            cnt = 0
+            for j in range(i,i+n*m,m): # at most n*m characters in the sliding window 
+                w = s[j:j+m]
+                if w in words:
+                    tmp[w]+=1
+                    cnt+=1
+                    if tmp[w]>words[w]: # ditch current sliding window
+                        break
+                    if cnt==n:
+                        ans.append(i)
+        return ans

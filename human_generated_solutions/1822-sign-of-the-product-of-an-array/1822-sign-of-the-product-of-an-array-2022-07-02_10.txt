@@ -1,0 +1,7 @@
+class Solution:
+    def arraySign(self, nums: List[int]) -> int:
+        
+        def signFun(x):
+            return 1 if x > 0 else -1 if x < 0 else 0
+        
+        return signFun(math.prod(nums))

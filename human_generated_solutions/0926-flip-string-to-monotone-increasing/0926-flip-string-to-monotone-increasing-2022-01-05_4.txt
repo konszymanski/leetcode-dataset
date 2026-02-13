@@ -1,0 +1,19 @@
+class Solution:
+    def minFlipsMonoIncr(self, s: str) -> int:
+        
+        n = len(s)
+        min_flip, one_count = 0, 0
+        
+        for i in range(n):
+            char = s[i]
+            
+            if char == \'1\':
+                # if last char is 1, we don\'t flip it (yet). min_flip remains the same
+                one_count += 1  
+                continue
+                
+            # char is zero. let\'s decide if we flip this zero or still stick to \'one\' count
+            min_flip += 1  # try flipping zeros
+            min_flip = min(min_flip, one_count)  # if we have less 1\'s, stick to flipping ones
+        
+        return min_flip

@@ -1,0 +1,16 @@
+class Solution:
+    def licenseKeyFormatting(self, s: str, k: int) -> str:
+        
+        keys = "".join(s.split("-")).upper()
+        
+        startSize = len(keys)%k
+        
+        res = []
+        
+        if startSize != 0:
+            res.append(keys[:startSize])
+        
+        for index in range(startSize, len(keys), k):
+            res.append(keys[index:index+k])
+        
+        return "-".join(res)

@@ -1,0 +1,14 @@
+def findMin(self, nums: List[int]) -> int:
+        return self.find_min(nums, 0, len(nums)-1)
+        
+    def find_min(self, nums, low, high):
+        mid = (low + high)//2
+        if low == high: return nums[low]
+        if nums[low] < nums[high]: return nums[low]
+        
+        if nums[mid] > nums[low]:
+            return self.find_min(nums, mid + 1, high)
+        elif nums[mid] < nums[low]:
+            return self.find_min(nums, low, mid)
+        else:
+            return min(self.find_min(nums, mid + 1, high), self.find_min(nums, low, mid))

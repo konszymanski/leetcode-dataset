@@ -1,0 +1,19 @@
+class Solution:
+    def reverseOnlyLetters(self, s: str) -> str:
+        #used two pointer techniques to traverse through string and check 
+        #if p1 and p2 both are english letters then swap else just increment p1 or p2 depending on english letters or not
+        #Time O(n)
+        p1,p2=0,len(s)-1
+        s=list(s) #convert string to list as string is immutable
+        
+        while(p1<p2):
+                
+            if not s[p1].isalpha():
+                p1+=1
+            elif not s[p2].isalpha():
+                p2-=1
+            else:
+                s[p1],s[p2] = s[p2],s[p1] 
+                p1+=1
+                p2-=1
+        return \'\'.join(s)

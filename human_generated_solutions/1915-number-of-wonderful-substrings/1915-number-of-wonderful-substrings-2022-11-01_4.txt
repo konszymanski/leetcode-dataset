@@ -1,0 +1,25 @@
+class Solution:
+    def wonderfulSubstrings(self, word: str) -> int:
+        
+        count={}
+        count[0]=1
+        curr=0
+        res=0
+        for i in range(0,len(word)):
+            curr^=1<<(ord(word[i])-ord("a"))
+            
+            
+            if(curr in count):
+                res+=count[curr]
+            
+            for j in range(0,10):
+                new_mask=curr^1<<j
+                if(new_mask in count):
+                    res+=count[new_mask]
+            
+            if(curr not in count):
+                count[curr]=1
+            else:
+                count[curr]+=1
+       
+        return res

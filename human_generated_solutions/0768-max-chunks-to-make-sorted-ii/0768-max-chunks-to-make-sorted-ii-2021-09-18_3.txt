@@ -1,0 +1,36 @@
+"""
+The main idea is to get longest non-decreasing interval.
+
+For decreasing interval (such an interval that we need to sort) we must the maximum of such interval.
+
+Example:
+
+arr: [3,8,9,4,5]
+
+0. [] - empty stack
+1. [3] - it is non-decreasing interval
+2. [3,8] - it is non-decreasing interval
+3. [3,8,9] - it is non-decreasing interval
+4. [3,8,9,4] - it is decreasing interval (9 > 4)
+  4.1. need find position such we will have non-decreasing interval [3,4,8,9] - we need sort [8,9,4]
+       while stack and stack[-1] > a
+  4.2. while we find begin of decreasing interval [8,9,4] we must find max value of such interval
+  4.3. why maximum ?
+    4.3.1. [3,8,9,4,5]. We can insert 5. Now decreasing interval - [8,9,4,5]. We must sort [8,9,4,5]. For [8,9,4] we can stay 9 in stack, and when we will consider element = 5 we will get decreasing interval again [9,5].
+
+"""
+
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        stack = []
+
+        for a in arr:
+            _max = a
+            while stack and stack[-1] > a:
+                top = stack.pop()
+                _max = max(_max, top)
+            
+            
+            stack.append(_max)
+            
+        return len(stack)

@@ -1,0 +1,39 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        
+		#each node stores (value, max_height to left + own height, max_height to right + own height)
+        def get_height(root, current):
+            if not root: return [0, 0]
+            else:
+                left = get_height(root.left, current + 1)
+                right = get_height(root.right, current + 1)
+                root.val = [root.val, current + max(left), current + max(right)]
+                return [max(left) + 1, max(right) + 1]
+           
+		#traverse the tree and store the solution for all subtrees
+		#carry stores the maximum height so far
+        def gen_sol(root, carry, dicts):
+            if root.left:
+                dicts[root.left.val[0]] = max(carry, root.val[2])
+                gen_sol(root.left, max(carry, root.val[2]), dicts)
+            if root.right:
+                dicts[root.right.val[0]] = max(carry, root.val[1])
+                gen_sol(root.right, max(carry, root.val[1]), dicts)
+                
+        dicts = {}
+        get_height(root, 0)
+        gen_sol(root, -1, dicts)
+        
+        res = []
+        
+		#get solutions from the dictionary
+        for element in queries:
+            res.append(dicts[element])
+        
+        return res

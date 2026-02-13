@@ -1,0 +1,46 @@
+class DSU:
+    def __init__(self, n: int):
+        # Initialize the parent and rank arrays
+        self.parent, self.rank = list(range(n)), [1] * n
+    
+    # Classic Find logic in Union Find
+    def find(self, node: int) -> int:
+        if node != self.parent[node]:
+            self.parent[node] = self.find(self.parent[node])
+        return self.parent[node]
+    
+    # Classic Union Logic in Union Find
+    def union(self, node1: int, node2: int) -> bool:
+        node1, node2 = self.find(node1), self.find(node2)
+        if node1 == node2:
+            return False
+        # Check which node is bigger
+        if self.rank[node1] > self.rank[node2]: 
+            node1, node2 = node2, node1
+        # bigger node becomes parent of smaller node
+        self.parent[node1] = node2
+        # rank of parent gets incremented by rank of child
+        self.rank[node2] += self.rank[node1]
+        return True
+
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        # Sort queries by increasing order of weight
+        queries = sorted((wt, node1, node2, i) for i, (node1, node2, wt) in enumerate(queries))
+        # Sort edges by increasing order of weight
+        edgeList = sorted((wt, node1, node2) for node1, node2, wt in edgeList)
+        # Initialize union find data structure and answer variable
+        dsu, idx, ans = DSU(n), 0, [None] * len(queries)
+        for wt, node1, node2, i in queries:
+            # We can connect an edge to the union if the weight of that edge
+            # is less than the required weight in the query
+            while idx < len(edgeList) and edgeList[idx][0] < wt:
+                _, nodeA, nodeB = edgeList[idx]
+                # We connect all the edges which satisfy the criteria into the union
+                dsu.union(nodeA, nodeB)
+                idx += 1
+            # We see if the nodes are a part of the same union or not
+            # nodes will be a part of same union if all the edges traversed
+            # in connecting node1 and node2 are of lesser weight than the query weight
+            ans[i] = dsu.find(node1) == dsu.find(node2)
+        return ans

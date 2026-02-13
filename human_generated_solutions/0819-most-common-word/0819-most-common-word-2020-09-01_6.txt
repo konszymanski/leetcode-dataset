@@ -1,0 +1,15 @@
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        my_dict = defaultdict(int)
+        # split string into list ignoring cases and punctuation
+        par = re.split("[" + string.punctuation + " "+ "]+", paragraph.lower())
+        # keep counts of words in dict and keep track of most frequent
+        max_count = 0
+        max_word = ""
+        for word in par:
+            if word not in banned:
+                my_dict[word]+=1
+                if my_dict[word] > max_count:
+                    max_count = my_dict[word]
+                    max_word = word
+        return max_word

@@ -1,0 +1,20 @@
+def stoneGameIII(self, stoneValue: List[int]) -> str:
+        # this is the suffix sums.
+        stoneValue = list(itertools.accumulate(stoneValue[::-1]))[::-1]
+
+        @functools.lru_cache(None)
+        def dfs(i):
+            if i == len(stoneValue):
+                return 0
+            maxScores = -math.inf
+            for x in range(i, min(i + 3, len(stoneValue))):
+                maxScores = max(maxScores, stoneValue[i] - dfs(x + 1))
+            return maxScores
+        alice = dfs(0)
+        bob = stoneValue[0] - alice
+        if alice == bob:
+            return "Tie"
+        elif alice > bob:
+            return "Alice"
+        else:
+            return "Bob"

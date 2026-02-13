@@ -1,0 +1,36 @@
+class MagicDictionary:
+    def __init__(self):
+        self.root = {}
+
+    def buildDict(self, dictionary) -> None:
+        for word in dictionary:
+            curr = self.root  #resetting curr to root
+            for letter in word:
+                if letter not in curr:
+                    curr[letter] = {}
+                curr = curr[letter]
+            curr["~"] = True  #to signify word end
+
+    def search(self, searchWord: str) -> bool:
+        return self._search(searchWord, self.root, 0, 0)
+		
+    #I got the idea for this implementation from the knapsack pattern we use in dynamic programming
+	#At every iteration we have two options either we choose the letter at index i or we skip it and choose any other letter from Trie marking diff as 1
+	#we will try both options and keep the best result
+	#but only if diff is 0 ,if diff is already 1 that means we have already changed a letter and now we can only choose letter at current index i, since we need exactly 1 different character
+	
+    def _search(self, word, node, diff, i):
+        if i == len(word):
+            if "~" in node and diff == 1: return True  #since we need difference of exactly one character
+            else: return False
+        
+        res = False
+        if diff == 0:  
+            for letter in node:
+                if letter == word[i] or letter == "~": continue  #ignoring curr index and "~"
+                res = res or self._search(word, node[letter], diff+1, i+1)
+        
+        if word[i] in node:
+            res = res or self._search(word, node[word[i]], diff, i+1)  # using "or" so that if any of the recursive calls returns true res will be true
+                
+        return res

@@ -1,0 +1,31 @@
+\'\'\'
+		KAISE SOCHE?
+		
+        pehle toh apna kaam thoda sa asaan krne ke liye sort krlo
+        doosra ye socho ki kab tum do logo ko ek boat me daal skte ho aur kab sirf ek ko ek boat me?
+        soch lia?
+        
+        ab do pointer lo (i,j) i ko sbse base element pr rakkho aur j ko sbse chote element pr
+        --OPTION 1:
+        ab socho ki agar (people[sbse bada]+people[sbse chota])>limit ho toh kya hoga??
+        hum people[sbse bada] ko boat me daal ke bhej denge aur i++ kr denge
+        --OPTION 2:
+        lekin agar aisa ni hota aur sum<limit hota toh i aur j dono ko boat me baitha ke bhej denge aur i+=1 aur j-=1 kr denge
+        
+        aur indono operation ko krte time count badhate rahenge
+        \'\'\'
+        n=len(people)
+        people.sort(reverse=True)
+        i,j,count=0,n-1,0
+        
+        while i<=j:
+            sum=people[i]+people[j]
+            # ye option 1
+            if  sum>limit:
+                i+=1
+            # ye option 2
+            else :
+                i+=1
+                j-=1
+            count+=1
+        return count

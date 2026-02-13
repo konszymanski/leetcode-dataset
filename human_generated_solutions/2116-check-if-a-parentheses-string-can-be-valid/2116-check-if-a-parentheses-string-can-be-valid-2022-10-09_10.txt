@@ -1,0 +1,27 @@
+class Solution:
+    def canBeValid(self, s: str, locked: str) -> bool:
+        sz, openingBrackets, closingBrackets = len(s), 0, 0
+        if sz % 2:
+            return False
+        for i in range(sz):
+            if locked[i] == \'0\':
+                openingBrackets += 1
+            elif locked[i] == \'1\':
+                if s[i] == \'(\':
+                    openingBrackets += 1
+                else:
+                    closingBrackets += 1
+            if closingBrackets > openingBrackets:
+                return False
+        openingBrackets, closingBrackets = 0, 0
+        for i in range(sz - 1, -1, -1):
+            if locked[i] == \'0\':
+                closingBrackets += 1
+            elif locked[i] == \'1\':
+                if s[i] == \')\':
+                    closingBrackets += 1
+                else:
+                    openingBrackets += 1
+            if closingBrackets < openingBrackets:
+                return False
+        return True

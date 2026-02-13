@@ -1,0 +1,15 @@
+def bi_search(n):
+            l, r = 0, len(mono) - 1
+            while l < r:
+                m = (l + r) >> 1
+                if nums[mono[m]] > n: l = m + 1
+                else: r = m
+            return mono[l]
+                
+        mono, best = [], 0
+        for j, n in enumerate(nums):
+            if not mono or n < nums[mono[-1]]:
+                mono.append(j)
+            else:
+                best = max(best, j - bi_search(n))
+        return best

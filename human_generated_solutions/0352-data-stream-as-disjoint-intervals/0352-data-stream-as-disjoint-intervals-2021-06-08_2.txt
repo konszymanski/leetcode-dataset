@@ -1,0 +1,25 @@
+class SummaryRanges:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.intervals=[]
+        
+
+    def addNum(self, val: int) -> None:
+         heapq.heappush(self.intervals, [val, val])
+        
+
+    def getIntervals(self) -> List[List[int]]:
+        tmp = []
+
+        while self.intervals:
+            cur = heapq.heappop(self.intervals)
+            if tmp and cur[0] <= tmp[-1][1] + 1:
+                tmp[-1][1] = max(tmp[-1][1], cur[1])
+            else:
+                tmp.append(cur)
+
+        self.intervals = tmp
+        return self.intervals

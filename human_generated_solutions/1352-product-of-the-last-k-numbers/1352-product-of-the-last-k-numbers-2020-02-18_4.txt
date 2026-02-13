@@ -1,0 +1,25 @@
+class ProductOfNumbers:
+
+    def __init__(self):
+        
+        self.product_table = [1]
+        
+    def add(self, num: int) -> None:
+        
+        if num != 0:
+            # update product table if num is non-zero.
+            self.product_table.append( num * self.product_table[-1] )
+        else:
+            # reset product table after 0 is insert
+            self.product_table = [1]
+
+            
+            
+    def getProduct(self, k: int) -> int:
+        
+        if k >= len( self.product_table ):
+            #  last k elements include at least one zero, which was inserted before getProduct() query
+            return 0
+        else:
+            # compute the product of last k elemetns by look-up table
+            return self.product_table[-1] // self.product_table[-(k+1)]

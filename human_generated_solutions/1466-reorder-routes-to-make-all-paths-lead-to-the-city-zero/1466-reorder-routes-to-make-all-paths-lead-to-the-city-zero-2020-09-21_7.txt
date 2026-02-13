@@ -1,0 +1,10 @@
+def minReorder(self, n: int, connections: List[List[int]]) -> int:
+    edges = collections.defaultdict(list)
+    for a, b in connections:
+        edges[a].append((b, 1))
+        edges[b].append((a, 0))
+
+    def dfs(i, p):
+        return sum(d + dfs(j, i) for j, d in edges[i] if j != p)
+
+    return dfs(0, -1)

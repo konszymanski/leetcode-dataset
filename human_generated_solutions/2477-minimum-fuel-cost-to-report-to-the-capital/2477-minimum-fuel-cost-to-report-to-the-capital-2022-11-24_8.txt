@@ -1,0 +1,25 @@
+class Solution:
+    def minimumFuelCost(self, roads: List[List[int]], seats: int) -> int:
+        visited = set()
+        
+        edges = defaultdict(list)
+        
+        for src, tar in roads:
+            edges[src].append(tar)
+            edges[tar].append(src)
+        
+        res = [0]
+            
+        def dfs(current):
+            temp_res = 1
+            visited.add(current)
+            for element in edges[current]:
+                if element not in visited:
+                    temp = dfs(element)
+                    res[0] += ceil(temp/seats)
+                    temp_res += temp
+            return temp_res
+        
+        dfs(0)
+        
+        return res[0]

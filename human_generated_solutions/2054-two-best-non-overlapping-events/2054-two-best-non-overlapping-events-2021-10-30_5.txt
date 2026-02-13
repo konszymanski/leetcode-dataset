@@ -1,0 +1,25 @@
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+        events.sort()
+        N = len(events)
+
+        start, end, vals = [], [], []
+        for s,e,v in events:
+            start.append(s)
+            end.append(e)
+            vals.append(v)
+        
+        max_at_index = {}
+        curr = float("-inf")
+        for i in range(N-1,-1,-1):
+            curr = max(vals[i], curr)
+            max_at_index[i] = curr
+        
+        ans = float(\'-inf\')
+        for i,s in enumerate(start):
+            second = bisect.bisect(start, end[i])
+            if second < N:
+                ans = max(ans, vals[i] + max_at_index[second])
+            else:
+                ans = max(ans,vals[i])
+        return ans

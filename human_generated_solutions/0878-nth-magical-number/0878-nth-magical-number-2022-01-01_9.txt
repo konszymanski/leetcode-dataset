@@ -1,0 +1,24 @@
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        def lcm(a,b):
+            n,m = a,b
+            while a % b != 0:
+                rem = a%b
+                a = b
+                b = rem
+            
+            return (n*m)//b
+            
+        def count(a,b,mid):
+            return mid//a + mid//b - mid//lcm(a,b)
+        
+        low = 1
+        high = 10**18 + 1
+        while low < high:
+            mid = low + (high - low)//2
+            if count(a,b,mid) < n:
+                low  = mid + 1
+            else:
+                high = mid
+                
+        return low % (10**9+7)

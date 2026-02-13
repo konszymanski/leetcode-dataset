@@ -1,0 +1,53 @@
+class Solution:
+    def find(self,x):
+        while x  != self.root[x] :
+            x  = self.root[x] 
+        return x 
+    def union(self,x,y):
+        rootX = self.find(x)
+        rootY = self.find(y)
+        if rootX != rootY:
+            self.root[rootY] = rootX
+    def isConnected(self,x,y):
+        if self.find(x) == self.find(y):
+            return True
+        return False
+    def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
+        self.root = []
+        s = set()
+        count = 0 
+        child = {}
+        root = []
+        candidate = []
+        for i in range(len(edges)):
+            for j in range(2):
+                if edges[i][j] not in s:
+                    s.add(edges[i][j])
+                
+        for i in range(len(edges)):
+
+            if edges[i][1] not in child:
+                child[edges[i][1]] = edges[i][0]
+            else:
+                candidate.append(edges[i])
+                candidate.append([child[edges[i][1]],edges[i][1]])
+                
+        n = len(s)
+        for i in range(n):
+            self.root.append(i)
+        temp = []
+        for i in range(len(edges)):
+            if edges[i] in candidate :
+                    continue
+            if self.isConnected(edges[i][0]-1,edges[i][1]-1):
+                temp = edges[i]
+            else:
+                self.union(edges[i][0]-1,edges[i][1]-1)
+        if len(candidate) == 0:
+            return temp
+        
+        for i in candidate :
+            if self.isConnected(i[0]-1,i[1]-1):
+                return i
+                
+        return candidate[0]

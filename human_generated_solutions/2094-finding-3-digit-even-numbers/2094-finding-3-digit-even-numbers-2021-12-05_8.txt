@@ -1,0 +1,12 @@
+from collections import Counter
+
+class Solution:
+    def findEvenNumbers(self, digits: List[int]) -> List[int]:
+        ans = []
+        dc = Counter(digits)
+        for n in range(100, 999, 2):
+            s = [int(i) for i in str(n)]
+            ds = Counter(s)
+            if all([i in dc for i in s]) and all([ds[i] <= dc[i] for i in s]):
+                ans.append(n)
+        return ans

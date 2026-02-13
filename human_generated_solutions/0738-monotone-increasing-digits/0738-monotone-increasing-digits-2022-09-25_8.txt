@@ -1,0 +1,11 @@
+class Solution:
+    def monotoneIncreasingDigits(self, n: int) -> int:
+        num = str(n)
+        cur = ""
+        for i in range(len(num)):
+            if  int(cur+(num[i]*(len(num)-i))) <= n:
+                cur += str(num[i])
+            else:
+                cur += str(int(num[i])-1)+str(9)*(len(num)-i-1)
+                break
+        return int(cur)

@@ -1,0 +1,75 @@
+initially was getting TLE but caching solved it
+# """
+# This is MountainArray\'s API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class MountainArray:
+#    def get(self, index: int) -> int:
+#    def length(self) -> int:
+
+class Solution:
+    def findInMountainArray(self, target: int, mountain_arr: \'MountainArray\') -> int:
+        # find the mountain peak
+        # bs to find target on left side
+        # bs on right side 
+        cache = {}
+        def get(i):
+            if i not in cache:
+                if i >= n or i < 0: # prevent index error
+                    return float(\'-inf\')
+                cache[i] = mountain_arr.get(i)
+            return cache[i]
+        
+        def get_mountain_peak(start, end):
+            if start == end:
+                return start
+            mid = (start + end) // 2
+            mid_val = get(mid)
+            val_prev = get(mid-1)
+            val_next = get(mid+1)
+            if val_prev < mid_val > val_next:
+                return mid
+            elif val_prev < mid_val < val_next:
+                return get_mountain_peak(mid+1, end)
+            elif val_prev > mid_val > val_next:
+                return get_mountain_peak(start, mid-1)
+        
+        def binary_search(start,end):
+            if start > end:
+                return
+            if start == end:
+                if get(start) != target:
+                    return None
+                else:
+                    return start
+            mid = (start + end) // 2
+            mid_val = get(mid)
+            if mid_val == target:
+                return mid
+            
+            val_prev = get(mid-1)
+            val_next = get(mid+1)
+            if val_prev < mid_val < val_next:  # ascending slope
+                if mid_val < target:
+                    return binary_search(mid+1, end)
+                if mid_val > target:
+                    return binary_search(start, mid-1)
+            if val_prev > mid_val > val_next: # descending slope
+                if mid_val < target:
+                    return binary_search(start, mid-1)
+                if mid_val > target:
+                    return binary_search(mid+1, end)
+                
+            
+        n = mountain_arr.length()
+        peak = get_mountain_peak(0, n-1)
+        if mountain_arr.get(peak) == target:
+            return peak
+        # look at ascending slope
+        left = binary_search(0, peak-1)
+        
+        if left != None:  # lowest index
+            return left
+        # descending slope
+        right = binary_search(peak+ 1, n-1)        
+        return right if right!= None else -1

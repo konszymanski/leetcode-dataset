@@ -1,0 +1,48 @@
+# intuition: use graph to describe the dependency from the rules, 
+    # and then use topological sort to get the order for both row and col
+    def buildMatrix(self, k, rowCond, colCond):
+        """
+        :type k: int
+        :type rowConditions: List[List[int]]
+        :type colConditions: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        def topoSort(k, cond):
+            nei = collections.defaultdict(list)
+            for s, e in cond:
+                nei[e].append(s)
+            
+            def helper(i):
+                if i in visited and visited[i] == -1:
+                    return False
+                if i in visited and visited[i] == 1:
+                    return True
+                visited[i] = -1
+                for n in nei[i]:
+                    if not helper(n):
+                        return False 
+                res.append(i)
+                visited[i] = 1
+                return True
+            
+            res = []
+            visited = {}
+            for i in range(1, k + 1):
+                if not helper(i):
+                    return []
+            return res
+    
+        rowOrder = topoSort(k, rowCond)
+        if rowOrder == []:
+            return []
+        colOrder = topoSort(k, colCond)
+        if colOrder == []:
+            return []
+        colMap = {}
+        for i in range(len(colOrder)):
+            colMap[colOrder[i]] = i
+        
+        res = [[0 for j in range(k)] for i in range(k)]
+        for i in range(len(rowOrder)):
+            res[i][colMap[rowOrder[i]]] = rowOrder[i]
+        return res

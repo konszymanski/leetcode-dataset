@@ -1,0 +1,36 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        
+        # store x coordination, init as -1
+        stack = [ -1 ]
+        
+        # add zero as dummy tail 
+        heights.append( 0 )
+        
+        # top index for stack
+        top = -1
+        
+        # area of rectangle
+        rectangle = 0
+        
+        # scan each x coordination and y coordination
+        for x_coord, y_coord in enumerate(heights):
+            
+            while heights[ stack[top] ] > y_coord:
+            # current height is lower than previous
+            # update rectangle area from previous heights
+                
+                # get height
+                h = heights[ stack.pop() ]
+                
+                # compute width
+                w = x_coord - stack[top] -1 
+                
+                # update maximal area
+                rectangle = max(rectangle, h * w)
+                
+            # push current x coordination into stack
+            stack.append( x_coord )
+            
+        
+        return rectangle

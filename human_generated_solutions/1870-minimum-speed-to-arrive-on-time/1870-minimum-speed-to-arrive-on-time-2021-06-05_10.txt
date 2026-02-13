@@ -1,0 +1,21 @@
+class Solution:
+    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+        lo, hi, ans = 1, 10**7, -1
+        
+        # binary search loop
+        while lo <= hi:
+            
+            # calculate new speed
+            speed = (lo+hi)//2
+            
+            # total time taken at current speed including waiting for the next train
+            time = sum(math.ceil(distance/speed) for distance in dist[:-1]) + dist[-1]/speed
+            
+            # check if there is enough time to reach the office at given speed
+            if time <= hour:
+                hi = speed - 1   # check for reduced speed
+                ans = speed      # update the best answer so far
+            else:
+                lo = speed + 1  # check for higher speed
+                
+        return ans

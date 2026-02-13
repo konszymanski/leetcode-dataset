@@ -1,0 +1,18 @@
+class Solution:
+    def arrayRankTransform(self, arr: List[int]) -> List[int]:
+        
+        arrx = [i for i in set(arr)]
+        arrx.sort()
+        
+        hp={}
+        for i in range(len(arrx)):
+            if arrx[i] in hp:
+                continue
+            else:
+                hp[arrx[i]] = i+1 
+                
+        print(hp)        
+        for j in range(len(arr)):
+            arr[j] = hp[arr[j]]
+            
+        return arr

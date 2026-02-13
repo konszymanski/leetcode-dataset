@@ -1,0 +1,31 @@
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        #Stack for keeping elements to check
+        st = [start]
+        
+        #For Keeping visited elements
+        visited = set()
+        
+        #Iterate until the stack is empty
+        while st:
+            x = st.pop()
+            if arr[x]==0:
+                return True
+            visited.add(x)      #Add the index to visited so that we don\'t visit it again
+            
+            #Calculate positions that we can jump to
+            ahead = x + arr[x]
+            behind = x - arr[x]
+            
+            # We only check if index ahead is less than len(arr), because starting from an index
+			#that is greater than or equal to 0, we cannot jump \'forward\' to a non negative index.
+            if ahead<len(arr) and ahead not in visited:
+                st.append(ahead)
+                
+            # We only check if index behind is greater than zero, because starting from an index
+			# less than len(arr), we cannot jump \'behind\' to an index greater than len(arr).
+            if behind>=0 and behind not in visited:
+                st.append(behind)
+          
+		#If zero is not found
+        return False

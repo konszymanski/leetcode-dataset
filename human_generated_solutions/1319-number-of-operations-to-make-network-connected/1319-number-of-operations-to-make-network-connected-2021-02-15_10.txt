@@ -1,0 +1,43 @@
+\'\'\'
+w: graph, connected component --> BFS
+h: Union-Find may be the straightforward method, but we can also use
+    BFS to connect the node:
+    1) for each node, we find the connected nodes, if the node
+        was seen, we continue
+    2) we record the number of components and the size of each component
+    3) the minimum number of operation is 
+        Total number of nodes - total number of nodes are connected + 
+        total number of component - 1
+\'\'\'
+import collections
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        # if the connections are less than n-1
+        # it is impossible to connect all the computers
+        if len(connections) < n-1:
+            return -1
+        
+        graph = collections.defaultdict(set)
+        for n1, n2 in connections:
+            graph[n1].add(n2)
+            graph[n2].add(n1)
+            
+        component = 0 # record how many component we have
+        seen = set()
+        cnt = {}
+        
+        for node in graph:
+            if node not in seen:
+                component += 1
+            else:
+                continue
+            queue = [node]
+            seen.add(node)
+            for i in queue:
+                for nei in graph[i]:
+                    if nei not in seen:
+                        queue.append(nei)
+                        seen.add(nei)
+            cnt[node] = len(queue) # this is the size of the connected component
+
+        return n - sum(cnt.values()) + component - 1

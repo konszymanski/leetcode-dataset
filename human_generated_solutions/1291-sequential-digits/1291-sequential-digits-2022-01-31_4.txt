@@ -1,0 +1,11 @@
+class Solution:
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        digits="123456789"
+        a=[]
+        for i in range(len(digits)):
+            for j in range(i+1,len(digits)):
+                num=int(digits[i:j+1])
+                if num>=low and num<=high:
+                    a.append(num)
+        a.sort()
+        return a

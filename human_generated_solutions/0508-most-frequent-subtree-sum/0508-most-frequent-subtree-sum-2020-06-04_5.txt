@@ -1,0 +1,58 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def findFrequentTreeSum(self, root: TreeNode) -> List[int]:
+        
+        ## dictionary:
+        # key: value of subtree sum
+        # value: frequency
+        self.subtree_sum_dict = {}
+        
+        # record of highest frequency among subtree sum
+        self.highest_frequency = 0
+        
+        # record of subtree sum value with higest frequency
+        self.highest_freq_sum = []
+        
+		# ------------------------------------------------------------
+		
+        def helper( node ):
+            
+            if not node:
+                # Base case:
+                # Empty node or empty tree
+                return 0
+            
+            else:
+                # General case:    
+                # update subtree sum record with DFS in post-order traversal
+                
+                left_sum = helper( node.left )
+                right_sum = helper( node.right )
+                
+                cur_sum = left_sum + right_sum + node.val
+                
+                self.subtree_sum_dict[cur_sum] = self.subtree_sum_dict.get(cur_sum, 0) + 1
+                
+                if self.subtree_sum_dict[cur_sum] >= self.highest_frequency:
+                    
+                    if self.subtree_sum_dict[cur_sum] > self.highest_frequency:
+                        # break the record of highest frequency, clear and reset original result
+                        self.highest_frequency = self.subtree_sum_dict[cur_sum]
+                        self.highest_freq_sum = []
+                    
+                    # update most frequent subtree sum
+                    self.highest_freq_sum.append(cur_sum)
+                    
+                
+                return cur_sum
+        # ------------------------------------------------------------
+        
+        helper( root )
+        
+        return self.highest_freq_sum

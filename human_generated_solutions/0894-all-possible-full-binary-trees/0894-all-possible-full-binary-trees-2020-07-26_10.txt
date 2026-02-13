@@ -1,0 +1,50 @@
+from copy import deepcopy
+class Solution:
+    def __init__(self):
+        self.new_trees ={}
+    
+    def preorderTraversal(self,root,order):
+        if root== None:
+            order.append(1)
+            return order
+        order.append(root.val)
+        self.preorderTraversal(root.left,order)
+        self.preorderTraversal(root.right,order)
+        return order
+    
+    def addNodes(self,root):
+        S = [root]
+        while S:
+            node = S.pop()
+            if node.left:
+                S.append(node.left)
+                S.append(node.right)
+            else:
+                leaf1 = TreeNode(0)
+                leaf2 = TreeNode(0)
+                node.left,node.right = leaf1,leaf2
+                new_root = deepcopy(root)
+                r = self.preorderTraversal(new_root,[])
+                self.new_trees[str(r)] = new_root
+                node.left,node.right = None,None
+        return 
+                
+    
+    def allPossibleFBT(self, N: int) -> List[TreeNode]:
+        
+        if N%2==0:
+            return []
+        else:
+            
+            for i in range(1,N+1,2):
+                if i==1:
+                    tree = TreeNode(0)
+                    self.new_trees["0"] = tree
+                else:
+                    combinations = list(self.new_trees.values())
+                    self.new_trees ={}
+                    self.temp = []
+                    while combinations:
+                        temp = combinations.pop()
+                        self.addNodes(temp)
+            return list(self.new_trees.values())

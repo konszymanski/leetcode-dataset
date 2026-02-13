@@ -1,0 +1,56 @@
+primes=[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 
+            61, 67, 71, 73, 79, 83, 89, 97,
+            101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
+            173, 179, 181, 191, 193, 197, 199,
+            211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293,307, 311, 313] #313 is greatest prime less than sqrt(1E5)
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        d={}
+        roots=set()
+        def findRoot(v):
+            stk=[v]
+            while d[v]>0:
+                v=d[v]
+                stk.append(v)
+            for s in stk[:-2]: #compress the depth
+                d[s]=v
+            return v
+        for n in nums:
+            visited, newVisit=[],[]
+            for p in primes:
+                if n==1 or n in d:
+                    break
+                if n%p==0:
+                    if p in d:
+                        visited.append(p)
+                    else:
+                        newVisit.append(p)
+                    while n%p==0:
+                        n=n//p
+            #now n is either 1 or a prime
+            if 1<n<50001:
+                if not n in d:
+                    newVisit.append(n)
+                else:
+                    visited.append(n)
+            if visited:
+                for i,f in enumerate(visited):
+                    r=findRoot(f)
+                    if i==0:
+                        r0=r
+                        d[r0]-=1 #increase the count by 1. Since count is negative, use -=
+                    elif r!=r0:
+                        d[r0]+=d[r] #merge the r-tree into r0-tree
+                        d[r]=r0
+                        roots.remove(r)
+                for f in newVisit:
+                    d[f]=r0 #point to r0
+            elif newVisit:
+                d[newVisit[0]]=-1 #negative number is count
+                for f in newVisit[1:]:
+                    d[f]=newVisit[0] #positive number is a pointer to newVisit[0]
+                roots.add(newVisit[0])
+        M=1
+        for r in roots:
+            M=max(M,-d[r])
+        return M

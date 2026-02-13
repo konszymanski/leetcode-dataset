@@ -1,0 +1,18 @@
+class Solution		
+    def matrixScore(self, grid: List[List[int]]) -> int:
+
+        n = len(grid[0])
+        maxNum, nums = (1<<n)-1, []
+
+        for row in grid:
+            num = int(\'\'.join(map(str,row)),2)
+            nums.append(max(num, num^maxNum))       # row flip move
+            ans= s = sum(nums)
+            k = 1
+
+        for i in range(n-1):
+            flip = sum([n^k for n in nums]) - s     # column flip move
+            if flip > 0: ans+= flip
+            k*= 2
+
+        return  ans

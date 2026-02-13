@@ -1,0 +1,29 @@
+5
+ /   |  \\
+2    1    6
+    /    \\
+   7     3
+def soln(root, m):
+    return recurse(root, m)[1]
+
+def recurse(node, m):
+    if not node:
+        return (0, None) #return the count of m nodes seen and ans
+    
+    count = 0
+    ans = None
+    for child in node.children:
+        seen, prev = self.recurse(child, m)
+        if seen == -1:
+            # this means we have already foundthe ans
+            return (-1, prev)
+        ans = prev
+        count+=seen
+    
+    if node in m:
+        count+=1
+        prev = node # use this node now as LCA
+        
+    if count == len(m):
+        return (-1, root)
+    return (count, prev)

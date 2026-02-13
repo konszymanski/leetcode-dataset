@@ -1,0 +1,15 @@
+def restoreMatrix(self, rowSum: List[int], colSum: List[int]) -> List[List[int]]:
+	r = len(rowSum)
+	c = len(colSum)
+	ans = [[-1 for _ in range(c)] for _ in range(r)]
+	for i in range(r):
+		for j in range(c):
+			if(rowSum[i] <= colSum[j]):
+				ans[i][j] = rowSum[i]
+				colSum[j] -= rowSum[i]
+				rowSum[i] = 0
+			else:
+				ans[i][j] = colSum[j]
+				rowSum[i] -= colSum[j]
+				colSum[j] = 0
+	return ans

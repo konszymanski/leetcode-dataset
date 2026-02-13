@@ -1,0 +1,33 @@
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+
+        def getNumPairs(diff):
+            """
+            Returns number of pairs which have difference less than or equal given diff param
+            """
+            # Left pointer as l
+            l = 0
+            pairs = 0
+            for r in range(len(nums)):
+                while nums[r] - nums[l] > diff:
+                    # Increment the left index if the difference is more than diff
+                    l += 1
+                # Number of pairs will be equal right pointer-left pointer 
+                pairs += r - l
+            return pairs
+        
+        
+        nums.sort()
+        low, high = 0, nums[-1] - nums[0]
+        while low < high:
+            mid = (low + high - 1) // 2
+            res = getNumPairs(mid)
+            #  Result of getNumPairs increases with input parameter.
+            # If the res> k, we need to decrease input value to the function. So high=mid
+            # If res==k, We still want to decrease the input value to get the minimum input value for which res==k
+            if res >= k:
+                high = mid
+            else:
+                # If res<k, increment the input value
+                low = mid + 1
+        return low

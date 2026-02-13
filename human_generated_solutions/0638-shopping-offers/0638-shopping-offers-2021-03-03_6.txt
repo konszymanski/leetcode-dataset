@@ -1,0 +1,29 @@
+import sys
+from functools import lru_cache
+
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        def price_without_so(needs):
+            return sum(list(map(lambda t: t[0]*t[1], zip(price, needs))))
+            
+        def meet_need(needs, so):
+            return all(map(lambda t: t[0]>=t[1], zip(needs, so[:-1])))
+        
+        def deduct_so(needs, so):
+            deduct_list = []
+            for i, j in zip(needs, so):
+                deduct_list.append(i-j)
+                
+            return tuple(deduct_list)
+            
+        @lru_cache
+        def search_optm_price(needs):
+            optm_price = price_without_so(needs)
+            for so in special:
+                if meet_need(needs, so):
+                    deduct_list = deduct_so(needs, so)
+                    optm_price = min(optm_price, so[-1]+search_optm_price(deduct_list))
+        
+            return optm_price
+        
+        return search_optm_price(tuple(needs))

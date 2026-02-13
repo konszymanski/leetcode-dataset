@@ -1,0 +1,39 @@
+from collections import deque
+
+
+class Solution:
+    def rearrangeArray(self, A: list[int]) -> list[int]:
+        # return self.using_two_queues(A)
+        return self.using_one_list(A)
+
+    @staticmethod
+    def using_one_list(A: list[int]) -> int:
+        n = len(A)
+
+        output = [0] * n
+        pos_idx, neg_idx = 0, 1
+
+        for a in A:
+            if a > 0:
+                output[pos_idx] = a
+                pos_idx += 2
+            else:
+                output[neg_idx] = a
+                neg_idx += 2
+
+        return output
+
+    @staticmethod
+    def using_two_queues(A: list[int]) -> int:
+        pos, neg = deque(), deque()
+
+        for a in A:
+            if a > 0:
+                pos.append(a)
+            else:
+                neg.append(a)
+
+        for i in range(0, len(A), 2):
+            A[i], A[i + 1] = pos.popleft(), neg.popleft()
+
+        return A

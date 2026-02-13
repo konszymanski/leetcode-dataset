@@ -1,0 +1,26 @@
+class Solution:
+    def makeS(self,nums,k):
+        s = sum(nums[:k])
+        S = [ s ]
+        for i in range(k,len(nums)):
+            s += nums[i] - nums[i-k]
+            S.append( s )
+        return S
+    def maxSumOfThreeSubarrays(self, nums, k, m = 3):
+        L = len(nums)
+        if (k*m)>=L:
+            return sum( nums )
+        #
+        S    = self.makeS(nums,k)
+        Aprev = [ [0,[]] for _ in range(L) ]
+        for i in range(m):
+            Anew  = [ [ Aprev[0][0]+S[i*k], Aprev[0][1] + [i*k] ] ]
+            for j in range(i*k+1,len(S)):
+                sp,ip = Aprev[j-i*k]
+                s = S[j] + sp
+                if s>Anew[-1][0]:
+                    Anew.append( [s, ip + [j] ] )
+                else:
+                    Anew.append( Anew[-1] )
+            Aprev = Anew
+        return Anew[-1][-1]

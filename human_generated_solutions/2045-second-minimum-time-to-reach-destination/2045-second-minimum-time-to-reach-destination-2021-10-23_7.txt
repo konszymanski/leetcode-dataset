@@ -1,0 +1,32 @@
+class Solution:
+    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+        graph = collections.defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        # loc, time, path
+        q = collections.deque([(1, 0, \'1(0)\')])
+        seen = [[] for _ in range(n+1)]
+        seen[1] = [0]
+        res = -1
+        while q:
+            for _ in range(len(q)):
+                c, t, p = q.popleft()
+                wait = change - t % change
+                # odd is red
+                is_red = (t // change) % 2 == 1
+                if c == n:
+                    if res == -1:
+                        res = t
+                    elif t > res:
+                        return t
+                        
+                for nxt in graph[c]:
+                    nxt_time = t+time
+                    if is_red:
+                        nxt_time += wait
+                    if not seen[nxt] or (len(seen[nxt])==1 and seen[nxt][0] < nxt_time):
+                        seen[nxt].append(nxt_time)
+                        q.append((nxt, nxt_time, p+\'->\'+str(nxt)+\'(\'+str(nxt_time)+\')\'))
+        return -1

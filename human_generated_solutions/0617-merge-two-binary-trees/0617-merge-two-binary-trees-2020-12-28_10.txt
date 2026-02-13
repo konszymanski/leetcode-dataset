@@ -1,0 +1,10 @@
+def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+        result_node = TreeNode()
+        if not t1: return t2
+        if not t2: return t1
+
+        result_node.data = t1.data + t2.data
+
+        result_node.left = self.mergeTrees(t1.left, t2.left)
+        result_node.right = self.mergeTrees(t1.right, t2.right)
+        return result_node

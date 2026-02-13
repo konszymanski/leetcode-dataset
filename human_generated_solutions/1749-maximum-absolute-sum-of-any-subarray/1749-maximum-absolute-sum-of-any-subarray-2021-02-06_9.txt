@@ -1,0 +1,19 @@
+\'\'\'
+w: kadane\'s algorithm
+h: since it is absolute value of sum, we need to pay attention to postive and negative values
+    1) postive prefix sum -> negative, it cannot be a part of maximum absolute sum
+    2) negative prefix sum becomes positive, it cannot be a part of maximum absolute sum
+\'\'\'
+
+class Solution:
+    def maxAbsoluteSum(self, nums: List[int]) -> int:
+        res = 0
+        max_ = 0
+        min_ = 0
+
+        for num in nums:
+            max_ = max(0, max_+num)
+            min_ = min(0, min_+num)
+            res = max(res, max_, -min_)
+        
+        return res

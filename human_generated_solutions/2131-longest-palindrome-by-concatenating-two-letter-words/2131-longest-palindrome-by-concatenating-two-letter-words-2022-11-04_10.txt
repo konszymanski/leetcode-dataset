@@ -1,0 +1,10 @@
+class Solution:
+    def longestPalindrome(self, words: List[str]) -> int:
+        pairs, res, odd = Counter(words), 0, 0
+        for key, freq in pairs.items():
+            if key[0] == key[-1]:
+                res += freq & ~1
+                odd = freq % 2 or odd
+            elif key[::-1] in pairs:
+                res += min(freq, pairs[key[::-1]])
+        return (res + odd) * 2

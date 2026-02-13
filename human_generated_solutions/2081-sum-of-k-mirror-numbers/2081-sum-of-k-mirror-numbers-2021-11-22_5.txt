@@ -1,0 +1,33 @@
+class Solution:
+    def kMirror(self, k: int, n: int) -> int:
+        def backtrack(uptonow: str, remaining_count: int):
+            \'\'\'Generator for yielding next base k symmetric string\'\'\'
+            if not uptonow:
+                yield from itertools.chain.from_iterable(backtrack(str(i), remaining_count - 1) for i in range(1, k))
+            elif not remaining_count:
+                yield uptonow
+            elif remaining_count > len(uptonow):
+                yield from itertools.chain.from_iterable(
+                    backtrack(uptonow + str(i), remaining_count - 1) for i in range(k))
+            else:
+                yield from backtrack(uptonow + uptonow[remaining_count - 1], remaining_count - 1)
+
+        def generate_next_symmetric_base_k():
+            \'\'\'Generating Symmetric base k string with different lengths\'\'\'
+            number_length = 1
+            while True:
+                yield from backtrack(remaining_count=number_length, uptonow=\'\')
+                number_length += 1
+
+        res = 0
+        base_k_symmetric_generator = generate_next_symmetric_base_k()
+        for _ in range(n):
+            while True:
+                next_symmetric_base_k = next(base_k_symmetric_generator)
+                base10 = int(next_symmetric_base_k, k)
+                base10_string = str(base10)
+                if base10_string == base10_string[::-1]:
+                    break
+            res += base10
+
+        return res

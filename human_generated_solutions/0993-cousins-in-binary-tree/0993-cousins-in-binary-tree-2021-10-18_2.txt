@@ -1,0 +1,4 @@
+def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+	if root.val == x or root.val == y:
+		return False
+	pass  # main logic

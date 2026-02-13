@@ -1,0 +1,30 @@
+def shortestSubarray(self, nums: List[int], k: int) -> int:
+    n = len(nums)
+    sums = list(accumulate(nums))
+
+    def c_sum(i, j):
+        return sums[i] - (sums[j] if j > -1 else 0)
+
+    que = deque()
+    j = -1
+    ans = inf
+    for i in range(n):
+        if c_sum(i, j) <= 0:
+            j = i
+        
+        if nums[i] <= 0:
+            while que and sums[i] <= sums[que[-1]]:
+                que.pop()
+            que.append(i)
+        
+        while c_sum(i, j) >= k:
+            ans = min(ans, i - j)
+            j += 1
+            
+            while que and que[0] <= j:
+                que.popleft()
+            
+            if que and sums[que[0]] - sums[j] <= 0:
+                j = que.popleft()
+    
+    return ans if ans!=inf else -1

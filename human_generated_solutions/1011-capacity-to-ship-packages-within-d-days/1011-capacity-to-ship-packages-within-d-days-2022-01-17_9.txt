@@ -1,0 +1,31 @@
+class Solution:
+    def shipWithinDays(self, weights, days):
+        min_capacity = max(weights)
+        max_capacity = sum(weights)
+
+        def search_best_capacity(min_capacity, max_capacity, days):
+            while min_capacity < max_capacity:
+                mid_capacity = (max_capacity + min_capacity) // 2
+                curr_days = calculate_days(weights, mid_capacity)
+
+                if curr_days > days:
+                    min_capacity = mid_capacity + 1
+                else:
+                    max_capacity = mid_capacity
+
+            return min_capacity
+
+        def calculate_days(weights, capacity):
+            load = 0
+            num_days = 1
+
+            for weight in weights:
+                if load + weight <= capacity:
+                    load += weight
+                else:
+                    num_days += 1
+                    load = weight
+
+            return num_days
+
+        return search_best_capacity(min_capacity, max_capacity, days)

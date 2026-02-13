@@ -1,0 +1,54 @@
+def movesToStamp(self, stamp: str, target: str) -> List[int]:
+  ret = []
+  def expand_out(full_idx: int, prev_end: int):
+    # Move left from the full stamp index until we reach the prev_end
+    left_idx = full_idx
+    while left_idx > prev_end:
+      # Try match the stamp, from longest size to smallest, ending at left_idx of target
+      max_sz = min(len(stamp) - 1, left_idx)
+      for sz in range(max_sz, 0, -1):
+        if target[left_idx - sz:left_idx] == stamp[:sz]:
+          ret.append(left_idx - sz)
+          left_idx -= sz
+          break
+      else:
+        # We can\'t move left any further unless we can join the this full stamp and the previous
+        sz = left_idx - prev_end
+        for offset in range(max(len(stamp) - sz, 0)):
+          if target[prev_end:prev_end + sz] == stamp[offset:offset + sz:]:
+            left_idx = prev_end - offset
+            ret.append(left_idx)
+            break
+        else:
+          # No solution exists
+          return [False, 0]
+
+    # Move right from the full stamp index as far as we can
+    right_idx = full_idx
+    while 1:
+      # Index just past the end of the last stamp		
+      fin_idx = right_idx + len(stamp)
+      max_sz = min(len(stamp), len(target) - fin_idx)
+      for sz in range(max_sz, 0, -1):
+        if target[fin_idx:fin_idx + sz] == stamp[len(stamp) - sz:]:
+          right_idx += sz
+          ret.append(right_idx)
+          break
+      else:
+        return [True, fin_idx]
+
+  # Find full stamps, from left to right, and expand out from there
+  prev_end = 0
+  idx = 0
+  while idx + len(stamp) <= len(target):
+    if target[idx:idx + len(stamp)] != stamp:
+      idx += 1
+      continue        
+    ret.append(idx)
+    doable, prev_end = expand_out(idx, prev_end)
+    idx = prev_end
+    if not doable:
+      return []
+
+  # Reverse the indexes, which were added from last to first
+  return ret[-1::-1] if prev_end == len(target) else []

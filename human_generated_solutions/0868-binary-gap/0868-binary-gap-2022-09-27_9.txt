@@ -1,0 +1,16 @@
+class Solution:
+    def binaryGap(self, n: int) -> int:
+        
+        binary_string = bin(n)[2:]
+        
+        start = -1
+        max_dis = 0
+        
+        for i in range(0 , len(binary_string)):
+            if binary_string[i] == \'1\':
+                if start == -1:
+                    start = i
+                else:
+                    max_dis = max(max_dis , i - start)
+                    start = i
+        return max_dis

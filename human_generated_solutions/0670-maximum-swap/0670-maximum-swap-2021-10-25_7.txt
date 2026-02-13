@@ -1,0 +1,10 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        al = [str(c) for c in str(num)]
+        sal = sorted(al, reverse=True)
+        for i in range(len(al)):
+            if al[i] != sal[i]:
+                lst = len(al) - al[::-1].index(sal[i]) - 1
+                al[i] , al[lst] = al[lst], al[i]
+                return int("".join(al))
+        return num

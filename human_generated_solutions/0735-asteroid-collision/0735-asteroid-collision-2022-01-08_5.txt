@@ -1,0 +1,25 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        stack = []
+        
+        for i in range(len(asteroids)):
+            added_to_stack = False
+            curr = asteroids[i]
+            
+            #make all the collisions possible using current element
+            while stack and stack[-1]>0 and curr<0:
+                prev = stack.pop()
+                
+                #same size, demolish both 
+                if abs(prev)==abs(curr):
+                    added_to_stack = True
+                    break
+                    
+                #unequal size, demolish smaller one
+                if abs(prev)>abs(curr):
+                    curr = prev
+            
+            if not added_to_stack:
+                stack.append(curr)
+
+        return stack

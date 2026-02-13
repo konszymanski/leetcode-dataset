@@ -1,0 +1,13 @@
+class Solution:
+    def __init__(self):
+        self.sum = 0
+
+    def trav(self, root, parent, grand_parent):
+        if grand_parent and grand_parent % 2 == 0: self.sum += root.val
+        if root.left: self.trav(root.left, root.val, parent)
+        if root.right: self.trav(root.right, root.val, parent)
+
+
+    def sumEvenGrandparent(self, root):
+        self.trav(root, None, None)
+        return self.sum

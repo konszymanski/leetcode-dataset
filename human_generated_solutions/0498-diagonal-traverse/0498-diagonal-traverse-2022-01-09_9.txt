@@ -1,0 +1,49 @@
+from collections import deque
+
+class Solution:
+    def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
+        nrows, ncols = len(mat), len(mat[0])
+
+        def get_neighbors(r, c):
+            res = []
+            delta = [(0, 1), (1, 0)]
+            
+            for dr, dc in delta:
+                row = r + dr
+                col = c + dc
+                                
+                if 0 <= row < nrows and 0 <= col < ncols:
+                    res.append((row, col))
+            return res
+                
+                
+        def bfs(r, c):
+            queue = deque()
+            visited = set()
+            res = []
+            
+            queue.append((r, c))
+            visited.add((r, c))
+            
+            flip = True
+            while queue:
+                size = len(queue)
+                level_res = deque()
+                for _ in range(size):
+                    r, c = queue.popleft()
+                    
+                    if flip:                
+                        level_res.appendleft(mat[r][c])
+                    else:
+                        level_res.append(mat[r][c])                        
+                    
+                    for nr, nc in get_neighbors(r, c):
+                        if (nr, nc) not in visited:
+                            queue.append((nr, nc))
+                            visited.add((nr, nc))
+                    
+                flip = not flip
+                res.extend(list(level_res))
+            return res
+        
+        return bfs(0, 0)

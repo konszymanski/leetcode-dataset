@@ -1,0 +1,5 @@
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        alpha = "abcdefghijklmnopqrstuvwxyz"
+        d = {key: val for key, val in zip(order, alpha)}
+        return words == sorted(words, key=lambda word: \'\'.join(map(d.get, word)))

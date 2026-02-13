@@ -1,0 +1,22 @@
+import heapq
+class Solution:
+    def minDifference(self, A):
+        # 1) Trivial cases
+        if len(A)<=4:
+            return 0
+        #
+        # 2) Find: routine to find the top-4 highest or lowest elements (both cases are covered)
+        def find(high):
+            k    = 1 if high else -1
+            heap = [ k*x for x in A[:4] ]
+            heapq.heapify(heap)
+            for x in A[4:]:
+                heapq.heappushpop(heap,k*x)
+            return sorted([ k*x for x in heap ])
+        #
+        # 3) Fetch the top-4 elements at each extreme
+        big   = find(high=True)
+        small = find(high=False)
+        #
+        # 4) Find the optimal answer
+        return min([ (big[-4+i] - small[i]) for i in range(4) ])

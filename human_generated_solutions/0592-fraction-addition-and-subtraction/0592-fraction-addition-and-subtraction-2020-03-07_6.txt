@@ -1,0 +1,24 @@
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        def gcd(a, b):      # Euclid\'s Algorithm w/ division
+            while b != 0:
+                t = b
+                b = a % b
+                a = t
+            return int(a)
+
+        def lcm(*args):
+            l = 1
+            for i in args:
+                if l % i != 0:
+                    l *= (i // gcd(l, i))
+            return l
+
+        E = [tuple(e.split(\'/\')) for e in expression.replace(\'-\',\'+-\').strip(\'+\').split(\'+\')]
+        numerators = (int(i[0]) for i in E)
+        denominators = [int(i[1]) for i in E]
+		
+        D = lcm(*{i for i in denominators})                                           # Sum demoninator, least common multiple
+        N = sum(n * f for n, f in zip(numerators, [D // i for i in denominators]))    # Sum of scaled numerators
+        g = gcd(abs(N), D)                                                            # Greatest common divisor of Numerator and Denominator
+        return f\'{N // g}/{D // g}\'                                                   # Scaling/reducing Numerator and Denominator

@@ -1,0 +1,21 @@
+class Solution:
+    def maxProfitAssignment(self, D: List[int], P: List[int], W: List[int]) -> int:
+        n = len(D)
+        
+        # will be used to get sorted profits. sorted as per elements of difficulty
+        indexes = sorted(range(n), key=lambda x:D[x])
+        D.sort()
+        
+        # max prefix array
+        max_profit = []
+        mx = 0
+        for i in range(n):
+            mx = max(mx, P[indexes[i]])
+            max_profit.append(mx)
+            
+        res = 0
+        for w in W:
+            idx = bisect.bisect(D, w) - 1
+            if idx < 0:   continue
+            res += max_profit[idx]
+        return res

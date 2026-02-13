@@ -1,0 +1,18 @@
+class Solution:
+    def nextGreatestLetter(self, arr: List[str], target: str) -> str:
+        n=len(arr)
+        low,high=0,n-1
+        if target<arr[0]:
+            return arr[0]
+        if target>=arr[n-1]:
+            return arr[0]
+        
+        res=None
+        while low<=high:
+            mid=low+(high-low)//2
+            if target>=arr[mid]:
+                low=mid+1
+            else:
+                res=arr[mid]
+                high=mid-1
+        return res

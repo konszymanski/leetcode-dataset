@@ -1,0 +1,13 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        
+        @lru_cache(None)
+        def fn(*args): 
+            """Return the lowest price one has to pay to get items in args."""
+            ans = sum(x*y for x, y in zip(args, price))
+            for offer in special: 
+                if all(x >= y for x, y in zip(args, offer)):
+                    ans = min(ans, fn(*(x-y for x, y in zip(args, offer))) + offer[-1])
+            return ans 
+            
+        return fn(*needs)

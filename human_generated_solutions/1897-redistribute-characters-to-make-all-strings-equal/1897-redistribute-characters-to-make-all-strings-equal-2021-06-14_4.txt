@@ -1,0 +1,14 @@
+class Solution:
+    def makeEqual(self, arr: List[str]) -> bool:
+        
+        h = [0]*26
+        n = len(arr)
+        
+        for w in arr:
+            for i in w:
+                h[ord(i)-ord(\'a\')] += 1
+        
+        for i in h:
+            if i%n!=0:
+                return 0
+        return 1

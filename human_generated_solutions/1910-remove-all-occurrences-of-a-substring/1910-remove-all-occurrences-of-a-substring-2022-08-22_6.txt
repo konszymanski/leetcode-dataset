@@ -1,0 +1,19 @@
+def removeOccurrences(self, s: str, part: str) -> str:
+	stack = []
+	temp = []
+	letters = set([i for i in part])
+	l = len(part)
+	part = [i for i in part]
+	c = 0
+	for i in s:
+		if(i not in letters):
+			temp += stack + [i]
+			stack = []
+		else:
+			stack.append(i)
+			if(len(stack) >= l):
+				if(stack[-l:] == part):
+					for i in range(l):
+						stack.pop()
+	temp += stack
+	return "".join(temp)

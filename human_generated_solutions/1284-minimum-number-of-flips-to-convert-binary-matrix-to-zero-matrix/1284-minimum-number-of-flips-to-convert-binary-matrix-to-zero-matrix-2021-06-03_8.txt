@@ -1,0 +1,30 @@
+class Solution:
+    def minFlips(self, mat: List[List[int]]) -> int:
+        M = len(mat)
+        N = len(mat[0])
+        MN = M*N
+        nei = [ None for _ in range(MN)]
+        matcode = 0
+        for r in range(M):
+            for c in range(N):
+                i = r*N+c
+                l = [i]
+                if r>0: l.append(i-N)
+                if r<M-1: l.append(i+N)
+                if c>0: l.append(i-1)
+                if c<N-1: l.append(i+1)
+                nei[i] = sum(1<<t for t in l)
+                if mat[r][c]:
+                    matcode |= (1<<i)
+        
+        best = MN+1
+        for code in range(2**MN):
+            m = 0
+            bits = 0
+            for t in range(MN):
+                if code&(1<<t):
+                    m ^= nei[t]
+                    bits += 1
+            if m==matcode:
+                best = min(best,bits)
+        return best if best<=MN else -1

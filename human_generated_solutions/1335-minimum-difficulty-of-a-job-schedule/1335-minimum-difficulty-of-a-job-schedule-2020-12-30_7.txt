@@ -1,0 +1,22 @@
+from functools import lru_cache
+class Solution:
+    def minDifficulty(self, jobDifficulty: List[int], d: int) -> int:
+        
+        @lru_cache(None)
+        def helper(idx, d): 
+            if d == 1: 
+                return max(jobDifficulty[idx:])
+            
+            res = float(\'inf\')
+            max_sofar = float(\'-inf\')
+            for i in range(idx, n - d + 1): 
+                max_sofar = max(max_sofar, jobDifficulty[i])
+                res = min(res, max_sofar + helper(i+1, d-1))
+            return res
+        
+        
+        n = len(jobDifficulty)
+        if n < d: 
+            return -1
+        else:
+            return helper(0, d)

@@ -1,0 +1,5 @@
+class Solution:
+    def longestSubsequence(self, arr: List[int], d: int) -> int:
+        f=defaultdict(int)
+        for i in arr:f[i] = max(1,f[i-d]+1)   
+        return max(list(f.values()))

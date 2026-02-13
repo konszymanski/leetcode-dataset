@@ -1,0 +1,43 @@
+from dataclasses import dataclass, field
+
+
+class Solution(object):
+    @dataclass
+    class Node:
+        time: int
+        _next: list["Solution.Node"] = field(default_factory=list)
+        _duration_for_next: int = -1
+
+        def remaining_time(self) -> int:
+            if self._duration_for_next == -1:
+                self._duration_for_next = self.time
+                if self._next:
+                    max_remaining_time = self._next[0].remaining_time()
+                    for r in self._next[1:]:
+                        next_rt = r.remaining_time()
+                        if next_rt > max_remaining_time:
+                            max_remaining_time = next_rt
+                    self._duration_for_next += max_remaining_time
+            return self._duration_for_next
+
+    def minimumTime(self, n, relations, time):
+        nodes = []
+        for i in range(0, n):
+            nodes.append(Solution.Node(time[i]))
+
+        nodes_with_dependencies = set()
+        # Link relations
+        for i in relations:
+            from_node, to_node = i
+            nodes[from_node - 1]._next.append(nodes[to_node - 1])
+            nodes_with_dependencies.add(to_node - 1)
+            pass
+
+        # Create a root node
+        nodes_with_no_dependencies = []
+        for i in range(0, n):
+            if i not in nodes_with_dependencies:
+                nodes_with_no_dependencies.append(nodes[i])
+        root_node = Solution.Node(0, _next=nodes_with_no_dependencies)
+
+        return root_node.remaining_time()

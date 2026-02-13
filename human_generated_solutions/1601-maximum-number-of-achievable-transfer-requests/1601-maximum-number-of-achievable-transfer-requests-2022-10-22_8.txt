@@ -1,0 +1,19 @@
+class Solution:
+    def maximumRequests(self, n: int, requests: List[List[int]]) -> int:
+        @lru_cache(None)
+        def dfs(idx : int, originalBalance: Tuple[int]) -> int:
+            # If we reach the end of requests, check the balance
+            # To see if net influx in all buildings is 0
+            if idx == len(requests):
+                return 0 if all(b == 0 for b in originalBalance) else float(\'-inf\') 
+            # Initialise balance with take
+            balanceWithTake = list(originalBalance)
+            # If we take current request, influx of requests[idx][0] decrements by 1
+            # and influx of requests[idx][1] increments by 1
+            balanceWithTake[requests[idx][0]] -= 1
+            balanceWithTake[requests[idx][1]] += 1
+            # Return the maximum possible requests serves if we
+            # Either take or leave the current request
+            return max(1 + dfs(idx + 1, tuple(balanceWithTake)), dfs(idx + 1, originalBalance))
+        
+        return dfs(0, tuple([0] * n))

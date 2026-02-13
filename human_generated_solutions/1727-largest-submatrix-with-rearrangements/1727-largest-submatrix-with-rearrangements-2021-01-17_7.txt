@@ -1,0 +1,11 @@
+class Solution:
+    def largestSubmatrix(self, matrix: List[List[int]]) -> int:
+        m, n = len(matrix), len(matrix[0]) # dimensions
+        ans = 0
+        hist = [0] * n
+        for i in range(m): 
+            for j in range(n): 
+                hist[j] = hist[j] + 1 if matrix[i][j] else 0
+            for i, x in enumerate(sorted(hist, reverse=True)): 
+                ans = max(ans, x*(i+1))
+        return ans

@@ -1,0 +1,27 @@
+class LinkedList:
+    def __init__(self, url: str, prev_page=None, next_page=None):
+        self.page = url
+        self.prev_page = prev_page
+        self.next_page = next_page
+        
+class BrowserHistory:
+
+    def __init__(self, homepage: str):
+        self.here = LinkedList(homepage)
+
+    def visit(self, url: str) -> None:
+        place = LinkedList(url, self.here)
+        self.here.next_page = place
+        self.here = self.here.next_page
+
+    def back(self, steps: int) -> str:
+        while steps > 0 and self.here.prev_page is not None:
+            steps -= 1
+            self.here = self.here.prev_page
+        return self.here.page
+
+    def forward(self, steps: int) -> str:
+        while steps > 0 and self.here.next_page is not None:
+            steps -= 1
+            self.here = self.here.next_page
+        return self.here.page

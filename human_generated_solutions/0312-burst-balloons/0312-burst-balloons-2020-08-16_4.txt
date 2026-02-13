@@ -1,0 +1,42 @@
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:                
+        # number of real balloons ( no padding fake ones)
+        n = len(nums)
+        
+        if n <= 0:
+            return 0
+
+        # add 1 padding (fake balloon) on each side
+        nums = [1] + nums + [1]
+        
+        # number of all balloons (fake and real)
+        m = len(nums)
+        
+        # create table with default value 0
+        dp = [[0 for x in range(m)] for y in range(m)]
+        
+        # fill dp table with sliding window
+        
+        # create window size from 1 till amount of real balloons, (-1 to be exclude the fake right balloon padding)
+        for window_size in range(1, m-1):
+            # left border slides from 1 to the end until the right border hits the last real balloon
+            for left in range(1, (m - window_size)):
+                # right border is the left border plus the windows size ( -1 to only use balloons in window)
+                right = left + window_size - 1
+                # go from left to right ( +1 to include the right balloon)
+                # i is the index of the balloon which gets burst last in the selected window (left,right)
+                for i in range(left,right+1):
+                    # max sum of the values left to i in the selected window
+                    l_value = dp[left][i-1]
+                    # max sum of the values right to i in the selected window
+                    r_value = dp[i+1][right]
+                    # calculate the sum if balloon at i gets bursted last (meaning all other elements in the window are not existend)
+                    element_value = nums[left-1] * nums[i] * nums[right+1]
+                    # add up all the results
+                    i_sum = l_value + element_value + r_value
+                    
+                    # fill the table with the max value for the selected window
+                    dp[left][right] = max(dp[left][right], i_sum)
+                    
+
+        return dp[1][n]

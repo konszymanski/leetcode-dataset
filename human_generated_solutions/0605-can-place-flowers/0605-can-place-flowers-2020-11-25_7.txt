@@ -1,0 +1,10 @@
+class Solution:
+    def canPlaceFlowers(self, fbed: List[int], n: int) -> bool:
+        free_spots = 0
+        for i in range(len(fbed)):
+            if fbed[i] == 0 and (i == 0 or fbed[i-1] == 0) and (i == len(fbed) - 1 or fbed[i+1] == 0):
+                fbed[i] = 1
+                free_spots += 1
+            if free_spots >= n:
+                return True
+        return False

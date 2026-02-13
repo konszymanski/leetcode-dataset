@@ -1,0 +1,20 @@
+def __init__(self):
+        self.lst = []
+        
+    \'\'\'
+    O(nlogN) sorting
+    outer loop * remove => O(N) * O(N) => O(N^2)
+    \'\'\'
+    def book(self, start: int, end: int) -> bool:
+        self.lst.append((start, +1)) # one booking added at startingtime = start
+        self.lst.append((end, -1)) # booking ends at timestamp = end
+        
+        self.lst.sort()
+        overlaps = 0
+        for book in self.lst:
+            overlaps += book[1]
+            if overlaps > 2:
+                self.lst.remove((start, +1)) # remove the booking that is causing problems (triple overlap)
+                self.lst.remove((end, -1))
+                return False
+        return True

@@ -1,0 +1,4 @@
+class Solution:
+    def canBeTypedWords(self, text: str, brokenLetters: str) -> int:
+        text = text.split()
+        return len(text) - sum(any(c in w for c in brokenLetters) for w in text)

@@ -1,0 +1,46 @@
+class Solution:
+    def crackSafe(self, n: int, k: int) -> str:
+        \'\'\'
+        n = 2; k = 2
+ 
+    nodes = 00,01,10,11
+            00
+            01
+        10      11
+               10  
+               
+        00110
+        \'\'\'
+        out_len = k**n + 1
+        
+        depth = k**n 
+        
+        visited = set()
+        
+        start_node = "0"*n
+        
+        def recurse(node, path):
+            if len(path) == depth:
+                return path
+            
+            ret = []
+            for i in range(k):
+                next_node = node[1:] + str(i)
+                if next_node not in visited:
+                    visited.add(next_node)
+                    ret = recurse(next_node, path+[next_node])
+                    if len(ret) == depth: # we have already found a solution so lets just return it.
+                        return ret
+                    visited.remove(next_node) #backtrack
+            
+            return ret
+            
+        visited.add(start_node)
+        res = recurse(start_node, [start_node])
+        
+        # build the output using res
+        out = res[0]
+        for ele in res[1:]:
+            out += ele[n-1:] 
+        
+        return out

@@ -1,0 +1,18 @@
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        if not num:
+            return []
+        stack = [(1, num[0], num[0]==\'0\')] # next_index, path, has_leading_zero
+        ans = []
+        while stack:
+            index, path, zero = stack.pop()
+            if index == len(num):
+                if eval(path) == target:
+                    ans.append(path)
+            if index < len(num):
+                if not zero:
+                    stack.append((index+1, path+num[index], zero))
+                stack.append((index+1, path+\'+\'+num[index], num[index]==\'0\'))
+                stack.append((index+1, path+\'-\'+num[index], num[index]==\'0\'))
+                stack.append((index+1, path+\'*\'+num[index], num[index]==\'0\'))
+        return ans

@@ -1,0 +1,17 @@
+class Solution:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        rowH = collections.defaultdict(int)
+        
+        for i in range(len(grid)):
+            num = 0
+            for n in grid[i]:
+                num = (num*10) + n
+            rowH[num] += 1
+        
+        res = 0
+        for j in range(len(grid)):
+            num = 0
+            for i in range(len(grid)):
+                num = (num*10) + grid[i][j]
+            res += rowH[num]
+        return res

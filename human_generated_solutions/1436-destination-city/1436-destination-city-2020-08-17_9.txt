@@ -1,0 +1,15 @@
+class Solution:
+    def destCity(self, paths: List[List[str]]) -> str:
+		# Get the source (start), which is the initial point
+        source = paths[0][0]
+        
+		# Create a dictionary to map each source with its destination (source -> destination)
+        graph = {source: destination for source, destination in paths}
+        
+		# Iterate over the graph, if you can not visit any city from you current position, you reached the end
+		current = source
+        while current in graph:
+            current = graph[current]
+        
+		# Return your current position which is the destination
+        return current

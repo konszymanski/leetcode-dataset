@@ -1,0 +1,25 @@
+class Solution:
+    def powerfulIntegers(self, x: int, y: int, bound: int) -> List[int]:
+        # build a list of all x powers until bound
+        xpow = []
+        if x == 1:
+            xpow = [1]
+        else:
+            _x = 1
+            while _x < bound:
+                xpow.append(_x)
+                _x *= x
+        # build a list of all y powers until bound
+        ypow = []
+        if y == 1:
+            ypow = [1]
+        else:
+            _y = 1
+            while _y < bound:
+                ypow.append(_y)
+                _y *= y
+
+        # get all relevant sums, now we only need to add. multiplication was done once
+        # use set to remove duplicates
+        s = set([x+y for x in xpow for y in ypow if x+y<= bound])
+        return list(s)

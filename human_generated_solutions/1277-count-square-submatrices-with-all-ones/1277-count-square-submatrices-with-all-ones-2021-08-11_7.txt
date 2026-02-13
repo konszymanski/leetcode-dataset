@@ -1,0 +1,33 @@
+class Solution:
+    def countSquares(self, A: List[List[int]]) -> int:
+        # Stores final squares count
+        countSquares = 0
+        
+        # dp[i][j] represents how many squares can be created if A[i][j]th element is used
+        # We will always consider using A[i][j]th element in the right corner when building a square
+        dp = [[0 for i in A[0]] for j in range(len(A))]
+        
+        for i in range(len(A)):
+            for j in range(len(A[0])):
+                # Checking if A[i][j]th element can acutally be used to create a square
+                # which will only happen if the element is 1 and there are adjacent elements
+                if A[i][j] and i > 0 and j > 0:
+                    # Considering A[i][j]th element to be on the right corner the number of squares 
+                    # that can be created depends on adjacent 3 elements square count in dp
+                    # Consider below cases
+                    # ......
+                    # ..1,1
+                    # ..1,x    x depend on left, left-top, top if they are able to make square by staying on the right corner 
+                    # .....    then joining x will also be able to make square by staying in the right corner. 
+                    #          So what will be the number of square that x can make depends 
+                    #          on how long square or how many squares 
+                    #          that left, left-top, top element can make so we need to take the minimum of the 3
+                    #
+                    dp[i][j] = min(dp[i][j-1], dp[i-1][j-1], dp[i-1][j]) + 1
+                else:
+                    dp[i][j] = A[i][j]
+                
+                # Add the count to total count
+                countSquares += dp[i][j]
+        
+        return countSquares

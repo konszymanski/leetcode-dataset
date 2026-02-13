@@ -1,0 +1,22 @@
+def solve(nums: List[int], window: int):
+    mono = deque()
+    n = len(nums)
+    res = [] # or some initial values like 0 (for finding a max) or 1 << 30 (for finding a min)
+
+    for i in range(n):
+        while mono and nums[mono[-1]] ? nums[i]: # ? can be one of >, <, >=, <=
+            mono.pop()  # pop from top, like monotonic stacks
+            # if we can update max/min/res here, then maybe monotonic stack is enough
+
+        while mono and nums[mono[0]] ? nums[i]:
+            # update max/min/res here, this is why we need a queue instead of a stack
+            mono.popleft()
+
+        if check(mono[0]):
+            pass
+            # or we can update max/min/res here, based on mono[0]
+
+        mono.append(i)
+
+
+    return res

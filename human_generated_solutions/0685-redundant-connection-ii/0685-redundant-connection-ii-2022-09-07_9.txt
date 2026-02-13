@@ -1,0 +1,69 @@
+# Bruteforce
+from collections import defaultdict
+
+class Solution:
+    def findRedundantDirectedConnection(self, edges: list[list[int]]) -> list[int]:
+
+        # Find numbers of vertices and edges
+        V, E = max(max(edge) for edge in edges), len(edges)
+
+        # Check if remaining edges can make a tree
+        def isTree(skip):
+
+            # Initialize the adjacency list
+            adj = defaultdict(list)
+
+            # Initialize a set to keep track of nodes that have no parent
+            noParent = set(range(1, V + 1))
+
+            # Iterate through all edges
+            for i in range(E):
+
+                # Skip an edge
+                if i == skip:
+                    continue
+
+                # Find the src and dst vertices
+                src, dst = edges[i]
+
+                # If there are more than 1 incoming edges to a vertex, return False
+                if dst not in noParent:
+                    return False
+
+                # Add edge to the adjacency list
+                adj[src].append(dst)
+
+                # Mark the current dst vertex as has parent
+                noParent.remove(dst)
+
+            # Use dfs to check if there is a cycle
+            # Initlaize the stack and visited set
+            stack = list(noParent)
+            visited = set(stack)
+
+            # Iterate until stack is empty
+            while stack:
+
+                # Pop a vertex
+                vertex = stack.pop()
+
+                # Iterate through neighboring vertices
+                for nextVertex in adj[vertex]:
+
+                    # If we visited a neighboring vertex already, there is a cycle
+                    if nextVertex in visited:
+                        return False
+
+                    # Add the neighboring vertex to the stack
+                    visited.add(nextVertex)
+
+                    # Mark such vertex as visited
+                    stack.append(nextVertex)
+
+            # Check if we were able to visit all vertices
+            return len(visited) == V
+
+        # Skip all edges one a time and check if we can make a tree with reamining edges
+        for i in range(E - 1, -1, -1):
+            if isTree(i):
+                return edges[i]

@@ -1,0 +1,15 @@
+class Solution:
+    def numberOfSteps (self, num: int) -> int:
+        ans = 0  # count the steps
+        while num:  
+			# [num & 1] determines current num is odd 
+			# e.g. decimal numbers 1, 2, 3; 
+			# binary representation is 01, 10 and 11 respectively;
+			# 10(2) & 01(1) = 00(0) (false means 2 is even)
+			# 11(3) & 01(1) = 01(1) (true means 3 is odd)
+			if num & 1:  
+                num -= 1  
+            else:  # if current num is even
+                num >>= 1  # move right with 1 position, which is equal to // 2
+            ans += 1
+        return ans

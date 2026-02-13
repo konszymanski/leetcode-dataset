@@ -1,0 +1,40 @@
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        # keep a cumulative mod of all nums
+        # if same mod appears twice, 
+        # by definition a multiple of k must be between them
+        # let\'s say num = 2, k = 5, mod is 2 % 5 = 2
+        # to get 2 again, we must have added 5 to 2,
+		#      \u2193 sums to 5
+        # 2, (2, 3), 2
+        # mods: 2, 4, 2, 4
+        #             ^ we got 2 again
+		
+        # answer needs at least 2 elements\' sum
+        if len(nums) < 2:
+            return False
+
+        # 0: -1 for the edge case of [0, 0], more explanation below
+        seen_mods = {0:-1}
+        mod = 0
+        for i, num in enumerate(nums):
+            mod = (num + mod) % k
+            # if mod is 0, it means sum of previous nums were divisible by k
+            # however, the number can\'t be 0 itself since 0 mod any number will be 0
+            # it also can\'t be the first number (problem specifies at least 2 nums)
+            if mod == 0 and num != 0 and i > 0:
+                return True
+            elif mod in seen_mods:
+                # if we\'ve seen this mod, then k have been added since, as explained above
+                # distance needs to be at least 2 for the case of a 0
+                # for example, [2, 0], k = 4
+                # 2 % 4 is 2, (2 + 0) % 4 is 2 again, the program would be tricked, so we require a distance of 2
+				if i - seen_mods[mod] >= 2:
+                    return True
+                # in the case of [0, 0], first 0\'s index will be stored, second time when we check the distance it would be 1
+				# that\'s why we initialized seen_mods with {0:-1}
+                # on second zero, distance will be 2 as opposed to 1, and program returns True
+            else:
+                seen_mods[mod] = i
+            
+        return False

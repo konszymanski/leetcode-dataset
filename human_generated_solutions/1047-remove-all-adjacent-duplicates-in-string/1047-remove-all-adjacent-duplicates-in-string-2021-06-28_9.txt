@@ -1,0 +1,25 @@
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        arr = [i for i in s]            # Make an array of chars from the string \'s\'
+        found = True                    # Initialize a var \'found\' to \'True\'
+        
+        while found:                    # Traverse until \'found\' is \'True\'
+            
+            found = False               # Change the value of \'found\' to \'False\'
+            i = 0                       # A var to traverse the array \'arr\'
+            
+            while i < len(arr)-1:       # Traverse till the 2nd last element of \'arr\'
+                
+                if arr[i] == arr[i+1]:  # If any duplicate adjacent chars are found
+                    del arr[i]          # Delete the ith char
+                    del arr[i]          # Delete the i+1 th char
+                    found = True        # Change the value of \'found\' to \'True\'
+                    continue            # Skip the rest of the loop
+                    
+                i += 1                  # Else, Increase \'i\' to move to the next index
+        
+        s = ""                          # Take an empty string to create the resultant string
+        for i in arr:                   # For each remaining char in the array, \'arr\'
+            s += i                      # Append it to the resultant string, \'s\'
+            
+        return s                        # Finally, return the resultant string, \'s\'

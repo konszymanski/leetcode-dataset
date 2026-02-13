@@ -1,0 +1,11 @@
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        arr = path.split(\'/\'); j = 1
+        for a in arr:
+            if a == \'..\':
+                j = max(1, j-1)
+            elif a and a != \'.\':
+                arr[j] = a; j += 1
+        del arr[j:]
+        
+        return \'/\'.join(arr) or \'/\'

@@ -1,0 +1,37 @@
+class Solution(object):
+    def splitArray(self, nums, m):
+        """
+        :type nums: List[int]
+        :type m: int
+        :rtype: int
+        """
+        def split(nums, largest_sum):
+            """
+            Given the largest_sum returns the number of pieces.
+            """
+            pieces = 1
+            tmp_sum = 0
+            for num in nums:
+                if tmp_sum + num > largest_sum:
+                    tmp_sum = num
+                    pieces += 1
+                else:
+                    tmp_sum += num
+            return pieces
+        
+        # p is number of pieces for a given largest_sum
+        # For p = len(nums) the largest_sum is max(nums)
+        # for p = 1 the largest_sum is sum(nums)
+        # We are looking for p=m, as we go from p=1 to p=len(nums) the 
+        # largest sum goes from max(nums) to sum(nums) - > search space
+        low = max(nums) # m = len(nums)
+        high = sum(nums) # m = 1
+        # if pieces > m high is small
+        while low < high:
+            mid = low + (high - low) / 2
+            pieces = split(nums, mid)
+            if pieces > m: # the largest_sum is small, we have too many pieces and we can merge some of them
+                low = mid + 1
+            else:
+                high = mid 
+        return low

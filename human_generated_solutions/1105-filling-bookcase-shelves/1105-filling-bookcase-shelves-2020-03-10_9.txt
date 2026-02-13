@@ -1,0 +1,17 @@
+from functools import lru_cache 
+
+class Solution:
+    def minHeightShelves(self, books: List[List[int]], shelf_width: int) -> int:
+        
+        @lru_cache(None)
+        def fn(i):
+            if i == len(books): return 0
+            w = h = 0
+            ans = float("inf")
+            for j in range(i, len(books)):
+                if (w := w+books[j][0]) > shelf_width: return ans 
+                h = max(h, books[j][1])
+                ans = min(ans, h + fn(j+1))
+            return ans 
+            
+        return fn(0)

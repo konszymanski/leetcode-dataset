@@ -1,0 +1,25 @@
+class Solution:
+    def atMostNGivenDigitSet(self, digits: List[str], n: int) -> int:
+        
+        @cache
+        def dp(pos, tight, canBeLeadingZero):
+            if pos >= N:
+                return 1
+            ans = 0
+            upperLimit = A[pos] if tight else 9
+            idx = bisect_right(digits, upperLimit)
+            for i in range(idx):
+                d = digits[i]
+                if not canBeLeadingZero and d == 0:
+                    continue
+                tight2 = tight and d == upperLimit
+                canBeLeadingZero2 = canBeLeadingZero and d == 0
+                ans += dp(pos + 1, tight2, canBeLeadingZero2)
+            return ans
+        
+        digits = [0] + list(map(int, digits))
+        A = list(map(int, str(n)))
+        N = len(A)
+        return dp(0, True, True) - 1
+    # Time: O(m) where m is the number of digits of n
+    # Space: O(m)

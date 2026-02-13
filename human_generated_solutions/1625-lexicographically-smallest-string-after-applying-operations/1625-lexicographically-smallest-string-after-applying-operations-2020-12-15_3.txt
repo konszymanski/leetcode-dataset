@@ -1,0 +1,39 @@
+class Solution(object):
+    def findLexSmallestString(self, s, a, b):
+        s = [int(x) for x in s]
+        
+        allVals = set()
+        
+        def rotateValue(values, index):
+            values = list(values)
+            r = []
+            for i in range(index):
+                r.append(values.pop(-1))
+            return list(r[::-1] + values)
+        
+        def addValue(values, amt):
+            values = list(values)
+            for i in range(len(values)):
+                if i % 2 != 0:
+                    values[i] += amt
+                    values[i] = values[i] % 10
+            return values
+        
+        def convert_to_string(values):
+            return \'\'.join([str(x) for x in values])
+            
+        def check(value):
+            # Takes in a [int, int, int...]
+            value_as_string = convert_to_string(value)
+            if value_as_string not in allVals:
+                self.minValue = min(self.minValue, value_as_string)
+                allVals.add(value_as_string)
+				
+				check(rotateValue(value, b))
+				check(addValue(value, a))
+				
+            return self.minValue
+        
+        self.minValue = convert_to_string(s)
+        
+        return check(s)

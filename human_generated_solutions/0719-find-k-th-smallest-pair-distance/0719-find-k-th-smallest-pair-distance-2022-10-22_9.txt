@@ -1,0 +1,23 @@
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        N = len(nums)
+
+        def less(v):
+            """number of distances < v"""
+            cnt, left = 0, 0
+            for right in range(1, N):
+                while left < right and nums[right] - nums[left] >= v:
+                    left += 1
+                cnt += right - left
+            return cnt
+
+        lo, hi = 0, max(nums) - min(nums)
+        while lo <= hi:
+            v = (lo+hi) // 2
+            cnt = less(v)
+            if cnt < k:
+                lo = v + 1
+            else:
+                hi = v - 1
+        return hi

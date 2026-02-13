@@ -1,0 +1,23 @@
+class Solution:
+    def getMaximumGold(self, grid: List[List[int]]) -> int:
+        maxGold=0
+        directions=[(1,0),(0,1),(-1,0),(0,-1)]   
+        def dfs(points,visited,x,y):
+            maxPoints=0
+            for d in directions:
+                new_x,new_y=x+d[0],y+d[1]
+                if (new_x,new_y) not in visited and 0<=new_x<len(grid) and 0<=new_y<len(grid[0]) and grid[new_x][new_y]!=0:
+                    visited.add((new_x,new_y))
+                    collectedPoints=dfs(grid[new_x][new_y],visited,new_x,new_y)
+                    visited.remove((new_x,new_y))
+                    maxPoints=max(collectedPoints,maxPoints)
+            return points+maxPoints
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j]!=0:
+                    visited=set()
+                    visited.add((i,j))
+                    totalCount=dfs(grid[i][j],visited,i,j)
+                    maxGold=max(maxGold,totalCount)
+                    visited.remove((i,j))
+        return maxGold

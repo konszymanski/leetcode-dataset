@@ -1,0 +1,24 @@
+class Solution:
+    def numPermsDISequence(self, S: str) -> int:
+        dp = {0: 1}
+        p = 0
+        while p < len(S):
+            new_dp = {}
+            if S[p] == \'D\':
+                for x in dp:
+                    for y in range(0,x+1):
+                        if y in new_dp:
+                            new_dp[y] += dp[x]
+                        else:
+                            new_dp[y] = dp[x]
+            else:
+                for x in dp:
+                    for y in range(x+1,p+2):
+                        if y in new_dp:
+                            new_dp[y] += dp[x]
+                        else:
+                            new_dp[y] = dp[x]
+            dp = new_dp
+            p += 1
+
+        return sum(dp.values()) % int(1e9 + 7)

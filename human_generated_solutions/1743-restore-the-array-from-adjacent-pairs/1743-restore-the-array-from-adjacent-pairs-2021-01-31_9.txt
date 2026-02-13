@@ -1,0 +1,44 @@
+\'\'\'
+w: hashmap + simple Graph (degree)
+h: we can obeserve some facts:
+    1) there are only two number have one adjecnt (the first one and last one), then their out-degree are 1
+    2) all other number has two adjacent numbers, then their out-degree are 2
+    
+    then we can use and dictionary to store the adjacent number for each number, they are 2 at most for each one
+    
+    we looked for the number that has only one adjacent number, and start from this one
+    to link others, when we meet the second number that has only one adjacent, this means we finished building the array
+\'\'\'
+import collections
+
+class Solution:
+    def restoreArray(self, adjacentPairs: List[List[int]]) -> List[int]:
+        link = collections.defaultdict(list)
+        for num1, num2 in adjacentPairs:
+            link[num1].append(num2)
+            link[num2].append(num1)
+        
+        for k in link:
+            if len(link[k]) == 1: # find the first num in the array
+                nxt = link[k][0]
+                break
+        
+        seen = {k, nxt}
+        res = [k, nxt]
+        
+        
+        while True:
+            nextTwo = link[nxt]
+            if len(nextTwo) == 2:
+                for i in nextTwo:
+                    if i in seen:
+                        continue
+                    else:
+                        nxt = i
+                        res.append(nxt)
+                        seen.add(nxt)
+            
+            else:
+                break
+                
+        return res

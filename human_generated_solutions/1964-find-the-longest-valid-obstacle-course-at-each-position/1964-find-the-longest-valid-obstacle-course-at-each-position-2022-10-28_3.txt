@@ -1,0 +1,13 @@
+def longestObstacleCourseAtEachPosition(self, obstacles: List[int]) -> List[int]:
+    LIS = []
+    ans = []
+    for obstacle in obstacles:
+        if not LIS or (LIS and LIS[-1] <= obstacle):
+            LIS.append(obstacle)
+            ans.append(len(LIS))
+        else:
+            idx = bisect_right(LIS, obstacle)
+            LIS[idx] = obstacle
+            ans.append(idx + 1)
+    
+    return ans

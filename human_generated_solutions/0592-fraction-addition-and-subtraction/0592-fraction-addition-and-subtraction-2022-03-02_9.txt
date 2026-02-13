@@ -1,0 +1,24 @@
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        curr = ""
+        pair = []
+        multiple = 1
+        
+        def gcd(a,b):
+            while b:
+                a,b = b, a%b
+            return abs(a)
+        
+        for c in expression+\'+\':
+            if c in "-+" and curr:
+                n,d = curr.split("/")
+                pair.append((int(n), int(d)))
+                multiple *= int(d)
+                curr = c
+            else:
+                curr+=c
+        
+        pair = [p[0]*multiple//p[1] for p in pair]
+        s = sum(pair)
+        gcdValue = gcd(s, multiple)
+        return str(s//gcdValue) + \'/\' +str(multiple//gcdValue)

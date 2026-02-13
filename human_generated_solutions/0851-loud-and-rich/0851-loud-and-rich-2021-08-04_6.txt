@@ -1,0 +1,21 @@
+class Solution:
+    def loudAndRich(self, richer: List[List[int]], quiet: List[int]) -> List[int]:
+        n = len(quiet)
+        
+        # build adjacency list and indegree for topological sort
+        adj_list = [[] for _ in range(n)]
+        indegree = [0] * n
+        for rich, poor in richer:
+            adj_list[rich].append(poor)
+            indegree[poor] += 1
+        
+        # traverse(or rob) each node(or person) in topological order, from richest to poorest
+        richer_and_louder = list(range(n))
+        richest = [i for i, count in enumerate(indegree) if count == 0]
+        for rich in iter(lambda: richest.pop() if richest else None, None):    #rob one by one until they all broke
+            for poor in adj_list[rich]:
+                richer_and_louder[poor] = min(richer_and_louder[poor], richer_and_louder[rich], key=quiet.__getitem__)
+                indegree[poor] -= 1    # lower the poor\'s poverty ranking since the richer has been robbed
+                if indegree[poor] == 0:
+                    richest.append(poor)   # poor is the one of the richest since no one is richer than him/her
+        return richer_and_louder

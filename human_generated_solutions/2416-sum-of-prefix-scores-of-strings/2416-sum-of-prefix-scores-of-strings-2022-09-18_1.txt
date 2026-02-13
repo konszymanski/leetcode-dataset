@@ -1,0 +1,32 @@
+class TrieNode:
+    def __init__(self):
+        self.next = {}
+        self.score = 0
+
+
+class Solution:
+    def sumPrefixScores(self, words: List[str]) -> List[int]:
+        result = []
+        
+        root = TrieNode()
+        
+        # build the trie
+        for i, word in enumerate(words):
+            node = root
+            for j, c in enumerate(word):
+                if c not in node.next:
+                    node.next[c] = TrieNode()
+                node.next[c].score += 1
+                node = node.next[c]
+        
+        # get the scores
+        for i, word in enumerate(words):
+            node = root
+            sum_score = 0
+            for j, c in enumerate(word):
+                sum_score += node.score
+                node = node.next[c]
+            sum_score += node.score
+            result.append(sum_score)
+        
+        return result

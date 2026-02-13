@@ -1,0 +1,30 @@
+def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+	word_set = set(wordlist)
+	word_capn = defaultdict(list)
+	word_vwn = defaultdict(list)
+	vwls = set([\'a\', \'e\', \'i\', \'o\', \'u\'])
+	result = []
+
+	def vowel_norm(word):
+		chrs = []
+		for ch in word:
+			ch = ch.lower()
+			if ch in vwls: chrs.append(\'*\')
+			else: chrs.append(ch)
+		return \'\'.join(chrs)
+
+	for word in wordlist:
+		word_capn[word.lower()].append(word)
+		word_vwn[vowel_norm(word)].append(word)
+
+	for query in queries:
+		if query in word_set:
+			result.append(query)
+		elif (lq := query.lower()) in word_capn:
+			result.append(word_capn[lq][0])
+		elif (vn := vowel_norm(query)) in word_vwn:
+			result.append(word_vwn[vn][0])
+		else:
+			result.append(\'\')
+
+	return result

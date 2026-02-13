@@ -1,0 +1,17 @@
+class Solution:
+    def countNicePairs(self, nums: List[int]) -> int:
+        def rev(n):
+            return int(str(n)[::-1])
+
+        nice = 0
+        pairs = {}
+        for i in range(len(nums)):
+            value = nums[i] - rev(nums[i])
+
+            if value in pairs:
+                nice += pairs[value]
+                pairs[value] += 1
+            else:
+                pairs[value] = 1
+
+        return nice % (10**9 + 7)

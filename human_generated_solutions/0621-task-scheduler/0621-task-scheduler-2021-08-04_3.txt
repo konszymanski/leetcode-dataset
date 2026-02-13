@@ -1,0 +1,28 @@
+# Suppose {A:6,B:4,C:2} n = 2 then we can fill the slot  in the matrix for clear visualization
+	# At every row there will be three element since n = 2
+	# So [
+	#		[ A  , B , C ],
+	#		[ A  , B , C ],
+	#		[ A , B , idle],
+	#		[ A , B , idle ],
+	#		[ A, idle , idle ],
+	#       [ A , empty ,empty ]
+	#    Here we can see that for first 5 row number of element is 
+	#     (maxfreq - 1) * ( number of element in column i.e (n + 1)
+	
+	#    For last row there might be all all three n + 1 element or less than that ,which depends upon 
+	#    frequency  of  elements in array.So we handle that case diffrently.
+	
+	#    For calculating number of element in last row,we can check how many character have
+	
+	#    max frequency which value of  last_row
+	# So final answer will be 
+					#    ans = (number of row - 1) * ( column) + number of element in last row
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        freq = Counter(tasks)
+        max_freq = max(freq.values())
+        freq = list(freq.values())
+        last_row = freq.count(max_freq)
+        ans = (max_freq - 1) * (n + 1) + last_row
+        return max(len(tasks),ans)

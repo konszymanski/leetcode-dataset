@@ -1,0 +1,21 @@
+def monotoneIncreasingDigits(self, N):
+        """
+        :type N: int
+        :rtype: int
+        """
+        s = str(N)
+        if len(s) < 2:
+            return N
+        ans = ""
+        pre = 0
+        for i in range(len(s)):
+            if int(s[i]) >= pre:
+                ans += s[i]
+                pre = int(s[i])
+            else:
+                j = len(ans)-1
+                while j-1 >= 0 and ans[j] == ans[j-1]:
+                    j -= 1
+                ans = ans[:j+1] + (len(s)-j-1)*\'0\'
+                return int(ans)-1
+        return int(ans)

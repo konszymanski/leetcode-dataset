@@ -1,0 +1,18 @@
+def tree2str(self, root: Optional[TreeNode]) -> str:
+
+    def dfs(node):
+        if not node:
+            return \'\'
+
+        left = dfs(node.left)
+        right = dfs(node.right)
+
+        #  if its not a leaf node, then left child should not be omitted
+        #  it should give an empty bracket
+        if (node.left or node.right) and not left:
+            left = "()"
+
+        return f\'({node.val}{left}{right})\'
+
+    # remove extra brackets around result
+    return dfs(root)[1: -1]

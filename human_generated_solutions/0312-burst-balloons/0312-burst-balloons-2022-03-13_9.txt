@@ -1,0 +1,17 @@
+class Solution:
+    
+    @cache
+    def dp(self, i, j):
+        maximum = 0
+        for k in range(i+1,j):
+            current = self.nums[i] * self.nums[k] * self.nums[j]
+            left = self.dp(i, k)
+            right = self.dp(k, j)
+            maximum = max(maximum, current + left + right)
+        return maximum
+    
+    def maxCoins(self, nums: List[int]) -> int:
+        nums = [1] + nums + [1]
+        self.nums = nums
+        res = self.dp(0, len(nums)-1)
+        return res

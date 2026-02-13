@@ -1,0 +1,38 @@
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        def helper(group0=[], group1=[], div_bit=0):
+            if len(group0) + len(group1) <= 1: return 0
+            if len(group0) == 1 and len(group1) == 1: return group0[0] ^ group1[0]
+            if div_bit == -1 and group0 and group1: return group0[0] ^ group1[0]
+            if div_bit == -1: return 0
+            nbit = div_bit - 1
+            
+            if group0 and group1:
+                group00, group01 = divide_by_bit(group0, div_bit)
+                group10, group11 = divide_by_bit(group1, div_bit)
+                if (group00 and group11) and (group01 and group10):
+                    return max(helper(group00, group11, nbit), helper(group10, group01, nbit))
+                elif group00 and group11:
+                    return helper(group00, group11, nbit)
+                elif group01 and group10:
+                    return helper(group10, group01, nbit)
+                else:
+                    return helper(group00 or group01, group10 or group11, nbit)
+            else:
+                group0, group1 = divide_by_bit(group0 or group1, div_bit)
+                return helper(group0, group1, nbit)
+                
+        max_num = max(nums)
+        max_bit = int(math.log(max_num, 2)) if max_num else 0
+        return helper(nums, [], max_bit)
+        
+
+def divide_by_bit(nums, bit):
+    mask = 1 << bit
+    g0, g1 = [], []
+    for num in nums:
+        if num & mask == 0:
+            g0.append(num)
+        else:
+            g1.append(num)
+    return g0, g1

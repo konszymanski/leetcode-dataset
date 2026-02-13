@@ -1,0 +1,17 @@
+import time
+class Solution:
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+        self.shuffled = nums[:]
+        
+    def reset(self) -> List[int]:
+        return self.nums
+
+    def shuffle(self) -> List[int]:
+        t = time.perf_counter_ns
+        shuffled = self.shuffled
+        for available in range(len(shuffled), 0, -1):
+            choice = t() % available
+            shuffled[choice], shuffled[available-1] = shuffled[available-1], shuffled[choice]
+        
+        return shuffled

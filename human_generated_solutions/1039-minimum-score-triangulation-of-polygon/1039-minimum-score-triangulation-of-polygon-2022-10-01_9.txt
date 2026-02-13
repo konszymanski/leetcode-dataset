@@ -1,0 +1,11 @@
+class Solution:
+    def minScoreTriangulation(self, values: List[int]) -> int:
+        def count(f, v, i, k, j):
+             return v[i] * v[j - 1] * v[k] + f(i, k + 1) + f(k, j)
+            
+        @lru_cache(None)
+        def solve(i, j):
+            if j - i <= 3: return (j - i == 3) * reduce(mul, values[i: j])
+ \xA0 \xA0 \xA0 \xA0 \xA0 \xA0return min(count(solve, values, i, k, j) for k in range(i + 1, j - 1))
+
+        return solve(0, len(values))

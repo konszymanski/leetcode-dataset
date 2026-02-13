@@ -1,0 +1,45 @@
+\'\'\'
+w: dp
+h: when n = 1, we only have 5 choice,
+   wheb n = 2, we have 15 options, how they related
+   consider: [a, e, i, o, u]
+             [aa, ae, ai, ao, au  -- 5 strings
+                  ee, ei, eo, eu  -- 4 strings
+                      ii, io, iu  -- 3 strings
+                          oo, ou  -- 2 strings
+                              uu] -- 1 strings
+                              
+   we find a can be placed before any vowel, 
+           e can be place before e, i, o, u; 
+           i can be placed before i, o, u...
+           
+   so if n = 3, we can place a before any string when n = 2, which is 15
+                we can place e before string not start with a, which is 10
+                we can place i before strings not start with a, e, which is 6
+                
+   now see the pattern? 
+
+   let\'s present the valid number of string for each vowel in a list:
+   n = 2, [5, 4, 3, 2, 1], 15 in total
+   n = 3, [15, 10, 6, 3, 1], 35 in total
+   n = 4, [35, 20, 10, 4, 1], 70 in total
+   ...
+   consider n = 2 and n = 3, from the end to the beginining, we can see
+   3 = 1 + 2, 6 = 3 + 3, 10 = 6 + 4, 15 = 10 + 5 
+   
+   now the pattern is clear, and you can try n=3 and n=4
+\'\'\'
+
+class Solution:
+    def countVowelStrings(self, n: int) -> int:
+        # n = 1, base case
+        dp = [1, 1, 1, 1, 1]
+        # the valid number of string started with u is always 1
+        # or you can say dp[-1] is always 1 
+        u = 1
+        for i in range(n-1):
+            dp[4] = u
+            for j in range(1, 5)[::-1]:   
+                dp[j-1] = dp[j-1] + dp[j]
+
+        return sum(dp)

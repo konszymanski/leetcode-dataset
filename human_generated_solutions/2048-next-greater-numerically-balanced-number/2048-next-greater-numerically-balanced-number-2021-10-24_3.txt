@@ -1,0 +1,13 @@
+class Solution:
+    def nextBeautifulNumber(self, n: int) -> int:
+        for i in range(n + 1, 10 ** 7):
+            if self.balance(i):
+                return i
+    
+    def balance(self, x):
+        counter = Counter(str(x))
+        for k,v in counter.items():
+            if int(k) != v:
+                return False
+            
+        return True

@@ -1,0 +1,66 @@
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        
+        def mah(t):    
+            n= len(t)
+            #next smaller element in right
+            stack1=[]
+            nsr = []
+            
+            for j in range(n-1,-1,-1):
+                if len(stack1)==0:
+                    nsr.append(t[j]*1)
+                else:
+                    while stack1 and t[stack1[-1]]>=t[j]:
+                        stack1.pop()
+                        
+                    if len(stack1)==0:
+                        nsr.append((n-j)*t[j])
+                    else:
+                        nsr.append((stack1[-1]-j)*t[j])
+                stack1.append(j)
+            
+            # next smaller element in left
+            
+            stack2=[]
+            nsl=[]
+            
+            for i in range(n):
+                if len(stack2)==0:
+                    nsl.append((i+1)*t[i])
+                else:
+                    
+                    while stack2 and t[stack2[-1]]>=t[i]:
+                        stack2.pop()
+                    
+                    if len(stack2)==0:
+                        nsl.append((i+1)*t[i])
+                    else:
+                        nsl.append((i-stack2[-1])*t[i])
+                stack2.append(i)
+                
+            ans=0
+            for i in range(n):
+                ans = max(ans,   nsl[i]+nsr[-(i+1)]-t[i])
+            return ans
+        
+        if not matrix:
+            return 0
+        n=len(matrix)
+        m= len(matrix[0])
+        
+        g=[0]*(m)
+        
+        u=0
+        ans=0
+        while u<n:
+            
+            for i in range(m):
+                x=int(matrix[u][i])
+                if x==0:
+                    g[i]=0
+                else:
+                    g[i]+=x
+            ans=max(mah(g),ans)
+            u+=1
+        return ans

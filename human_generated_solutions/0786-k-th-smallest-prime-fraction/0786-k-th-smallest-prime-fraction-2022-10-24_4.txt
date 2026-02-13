@@ -1,0 +1,14 @@
+class Solution:
+    def kthSmallestPrimeFraction(self, arr: List[int], k: int) -> List[int]:
+        minHeap, sz = [], len(arr)
+        for i in range(sz):
+            heappush(minHeap, [(arr[i] / arr[-1]), i, sz - 1])
+            if i == k - 1: break
+        while minHeap:
+            k -= 1
+            if k == 0: break
+            minElem = heappop(minHeap)
+            minElem[2] -= 1
+            if minElem[2] > minElem[1]:
+                heappush(minHeap, [(arr[minElem[1]] / arr[minElem[2]]), minElem[1], minElem[2]])
+        return [arr[minHeap[0][1]], arr[minHeap[0][2]]]

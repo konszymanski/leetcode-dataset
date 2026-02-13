@@ -1,0 +1,18 @@
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        letLogs = []
+        digLogs = []
+        
+        for log in logs:
+            curLog = log.split(" ", 1)
+            if curLog[1][0].isdigit():
+                # Simply store digLogs in order as we see them
+                digLogs.append(log)
+            else:
+                # Store letter logs in tuple of sort priority - (contents, tag)
+                letLogs.append((curLog[1], curLog[0]))
+                
+        letLogs.sort()
+        
+        # rejoin letLogs properly and add digLogs to end       
+        return [" ".join([log[1], log[0]]) for log in letLogs] + digLogs

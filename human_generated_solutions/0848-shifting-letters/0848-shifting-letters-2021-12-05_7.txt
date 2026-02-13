@@ -1,0 +1,29 @@
+class Solution(object):    
+    def shiftingLetters(self, s, shifts):
+        fin = ""
+        cumusum = shifts[len(shifts)-1]
+        
+        for sbk in range(len(shifts)-1, -1, -1):
+			# we use cumulative shift % 26 since it shifts back to the original character every 26th anyways
+			# then pass the original character and the shift number to getShiftedTo to get the shifted character
+			# prepend to fin because we start iteration from the last letter
+            fin = self.getShiftedTo(s[sbk], cumusum % 26) + fin 
+			
+			# the shift we will be making to nth character is the cumulative sum from the n to last shift
+            cumusum += shifts[sbk-1]
+
+        return fin
+    
+    def getShiftedTo(self, char, shift):
+		# ord() gets the ascii code of letter - a-z is 97-122
+		# then add the shift
+        newcharcode = ord(char) + shift
+        
+		# 122 is the ascii code for "z" 
+		# get the excess off 122 and add 96 
+		# as if starting shift from "a" again
+        if newcharcode > 122:
+            newcharcode = (newchar % 122) + 96
+            
+		# chr() gets the letter corresponding to the ascii code
+        return chr(newcharcode)

@@ -1,0 +1,32 @@
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        
+		# Step 1:
+		# Build the index <-> character mapping relation based on givern alien order
+		
+        ## dictionary
+        # key: alien character
+        # value: index of alien character
+        char_idx_dict = { char: idx for idx, char in enumerate(order) }
+        
+        size = len(words)
+        
+		
+		# Step 2:
+        # Convert words to numerical mapping by dictionary
+		
+        numerical_mapping = [[char_idx_dict[char] for char in word] for word in words]
+        
+		
+		# Step 3:
+        # Check numerical mapping is sorted in ascending order
+		
+        for i in range(0, size-1):
+            
+            if numerical_mapping[i] > numerical_mapping[i+1]:
+                
+                # Reject if we find out-of-order
+                return False
+        
+        # Accept, otherwise.
+        return True

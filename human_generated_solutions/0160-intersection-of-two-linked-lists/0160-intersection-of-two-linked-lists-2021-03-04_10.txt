@@ -1,0 +1,18 @@
+def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+	if not headA or not headB: return None
+	a = headA
+	b = headB
+	swaps = 0
+
+	while swaps < 3:
+		if a == b: return a
+		a = a.next
+		b = b.next
+		if not a:
+			swaps += 1
+			a = headB
+		if not b:
+			swaps += 1
+			b = headA
+
+	return None

@@ -1,0 +1,44 @@
+def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        #Brute Force: run BFS for each node separately and find pair of nodes which satisfy good path conditions
+        #n = 10^4 so too slow
+        
+        #path exists between any two nodes
+        #if the max value in that path is equal to the value of two nodes, it becomes a good path
+        
+        #start by considering each node as separate subtress
+        #the aim is to group same value nodes together as long as there is no higher value node in the middle
+        #this should tell you that in each edge, the higher value node is more important.
+        #So we sort edges by higher value node
+        edges.sort(key=lambda x: max(vals[x[0]], vals[x[1]]))
+        #max value of each group is the parent of that group
+        #if the maxValue of group1 == maxValue of group2, then increase goodPaths by sizeOfParent1 * sizeOfParent2 and connect the two groups
+        
+        #why this works?
+        #lets say group 1 has [1,2,3] group 2 has [2,3]
+        #two groups are connected by an edge, we dont care b/w which two vertices. We only care about max value in that group
+        #3 from group1 can DEFINITELY make a good path with 3 from group2
+        #if 2 from group 1 had a good path to 2 from group2, it would have been considered in some earlier edge
+        #thats why sorting gurantees all goodPaths to have been considered and is crucial here
+        
+        n = len(vals)
+        parents = list(range(n)); size = [1]*n
+        
+        def find(i): #find parent of node i
+            if parents[i] != i:
+                parents[i] = find(parents[i])
+            return parents[i]
+        
+        goodPaths = n
+        for a,b in edges:
+            parent_a, parent_b = find(a), find(b)
+            
+            if vals[parent_a] == vals[parent_b]:
+                goodPaths += size[parent_a] * size[parent_b]
+                parents[parent_a] = parent_b
+                size[parent_b] += size[parent_a]
+            elif vals[parent_a] > vals[parent_b]:
+                parents[parent_b] = parent_a
+            else:
+                parents[parent_a] = parent_b
+                
+        return goodPaths

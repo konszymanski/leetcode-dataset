@@ -1,0 +1,24 @@
+class Solution:
+    def shortestAlternatingPaths(self, n: int, redEdges: List[List[int]], blueEdges: List[List[int]]) -> List[int]:
+        neighbours = [[[], []] for _ in range(n)]
+        res = [[0, 0]] + [[float(\'inf\'), float(\'inf\')] for _ in range(n - 1)]
+        for fromm, to in redEdges:
+            neighbours[fromm][0].append(to)
+        for fromm, to in blueEdges:
+            neighbours[fromm][1].append(to)
+        
+        def dfs(node, color, distance):
+            for neigh in neighbours[node][color]:
+                if distance + 1 < res[neigh][color]:
+                    res[neigh][color] = distance + 1
+                    dfs(neigh, 1 - color, distance + 1)
+        # Colors:
+        #     0 --> red
+        #     1 --> blue
+        dfs(0, 0, 0)
+        dfs(0, 1, 0)
+        for i in range(len(res)):
+            res[i] = min(res[i][0], res[i][1])
+        return [x if x != float(\'inf\') else -1 for x in res]
+    # Time: O(V + E)
+    # Space: O(V)

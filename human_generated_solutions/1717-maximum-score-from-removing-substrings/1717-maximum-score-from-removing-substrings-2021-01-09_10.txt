@@ -1,0 +1,37 @@
+class Solution:
+    
+    def maximumGain(self, s: str, x: int, y: int) -> int:
+            
+        res = 0
+        stack = []
+        trigger, points = (\'b\', x) if x >= y else (\'a\', y)
+        
+        def clean_stack():
+            nonlocal res, stack
+            
+            if len(stack) == 2:
+                res += (x if points==y else y) * min(stack[0][1], stack[1][1])
+                        
+            stack = []
+            
+            
+        for ch in s:
+            if ch in \'ab\':
+                if len(stack) == 0:
+                    stack.append([ch, 1])
+                elif stack[-1][0] == ch:
+                    stack[-1][1] += 1
+                elif ch == trigger:
+                    res += points
+
+                    stack[-1][1] -= 1
+                    if stack[-1][1] == 0:
+                        stack.pop()
+                else:
+                    stack.append([ch, 1])
+            else:
+                clean_stack()
+
+        clean_stack()
+
+        return res

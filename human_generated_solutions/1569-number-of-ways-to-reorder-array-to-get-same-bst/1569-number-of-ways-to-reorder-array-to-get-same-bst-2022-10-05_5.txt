@@ -1,0 +1,22 @@
+class Solution:
+    def numOfWays(self, nums: List[int]) -> int:
+        numNodes, MOD = len(nums), 1000000007
+        table = [[1] * (numNodes + 1) for _ in range(numNodes + 1)]
+        for i in range(numNodes + 1):
+            for j in range(1, i):
+                table[i][j] = (table[i - 1][j - 1] + table[i - 1][j]) % MOD
+        
+        def dfs(nums: List[int], MOD: int) -> int:
+            numNodes, left, right = len(nums), [], []
+            if numNodes <= 2:
+                return 1
+            for i in range(1, numNodes):
+                if nums[i] < nums[0]:
+                    left.append(nums[i])
+                else:
+                    right.append(nums[i])
+            leftResult, rightResult = dfs(left, MOD) % MOD, dfs(right, MOD) % MOD
+            leftLength, rightLength = len(left), len(right)
+            return (((table[numNodes - 1][leftLength] * leftResult) % MOD) * rightResult) % MOD
+        
+        return dfs(nums, MOD) % MOD - 1

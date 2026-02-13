@@ -1,0 +1,43 @@
+# DP = DFS + memoization = DFS + DP table
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+
+        # word set to speed up element membership lookup
+        wordBank  = set(wordDict)
+
+        # set of length of words
+        possible_length = set( map(len,wordBank ) ) 
+
+
+        ##\u3000DP table
+        # key: search index
+        # value: list of matched words in s[index:]
+        dp = { len(s): [ [] ]}
+
+        def match(index: int) -> List[List[str]]:
+            
+            if index in dp:
+                return dp[index]
+
+            ans = list()
+
+            # Scan each possible split index from left to right
+            for length in possible_length:
+                
+                # This round is skipped due to length out of boundary
+                if index+length > len(s):
+                    continue
+
+                word = s[index:index+length]
+                if word in wordBank:
+                    # Current word is matched
+                    # Try to match remaining substring
+                    parse_postfix = match(index+length)
+                    for parsing_reulst in parse_postfix:                        
+                        ans.append( [word] + parsing_reulst )
+
+            dp[index] = ans
+            return ans
+        
+        # ------------------------------------------
+        return [" ".join(words) for words in match(index=0) ]

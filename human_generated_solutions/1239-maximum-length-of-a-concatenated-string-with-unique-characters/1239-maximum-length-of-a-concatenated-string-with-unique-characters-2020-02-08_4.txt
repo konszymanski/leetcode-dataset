@@ -1,0 +1,23 @@
+class Solution:
+    def maxLength(self, arr: List[str]) -> int:
+        """
+        []
+        un                              iq           ue    
+        iq              ue(duplicate)
+        ue(duplicate)
+        we don\'t want to going deep after we already find a duplicate
+        """
+        self.output = 0
+        self.backtracking([],arr,0)
+        return self.output
+    def backtracking(self,subset,arr,start):
+        concatenate = \'\'.join(subset)
+        #print(start,concatenate)
+        if len(concatenate) == len(set(concatenate)):
+            self.output = max(self.output, len(concatenate))
+        for i in range(start,len(arr)):
+            if len(concatenate) > len(set(concatenate)):
+                break
+            subset.append(arr[i])
+            self.backtracking(subset,arr,i+1)
+            subset.pop()

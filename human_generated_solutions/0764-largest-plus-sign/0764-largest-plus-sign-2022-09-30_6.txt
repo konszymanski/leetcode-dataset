@@ -1,0 +1,24 @@
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:
+        s, res = set((x, y) for x, y in mines), 0
+        up, down, left, right = [[[0] * n for i in range(n)] for j in range(4)]
+        # from top left
+        for i in range(n):
+            for j in range(n):
+                if (i, j) not in s:
+                    if i == 0 or j == 0:
+                        up[i][j] = left[i][j] = 1
+                    else:
+                        up[i][j] = up[i - 1][j] + 1
+                        left[i][j] = left[i][j - 1] + 1
+        # from down right and find the max
+        for i in range(n - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                if (i, j) not in s:
+                    if i == n - 1 or j == n - 1:
+                        down[i][j] = right[i][j] = 1
+                    else:
+                        down[i][j] = down[i + 1][j] + 1
+                        right[i][j] = right[i][j + 1] + 1
+                res = max(res, min(up[i][j], left[i][j], down[i][j], right[i][j]))
+        return res

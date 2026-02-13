@@ -1,0 +1,59 @@
+# The TNode class represents node for our Trie 
+# We will store all the children for each node and a state
+# All the \'is_complete\' state does is marks it to show where the inserted \'root\' finished
+# E.g if we insert ABC as root we will end up with 3 nodes: 
+# A -> B -> C
+# Where B is a child of A and C is a child of B and in our program we will set is_complete in node B to True 
+# so that we know it represents a complete word ( This will allow us to stop traversing and get the shortest root )
+class TNode:
+    def __init__(self):
+        self.children = {}
+        self.is_complete = False
+        
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        # Store all roots in a tire 
+        tire_root = self.dict_to_trie(dictionary)
+		# Split the sentence into individual words 
+        words = sentence.split(\' \')
+        results = []
+        
+		# Replace each word in a sentence with either the root of itself when no prefix matches
+        for word in words:
+            results.append(self.get_replacement(tire_root, word))
+            
+         # return result as a string
+        return \' \'.join(results)
+    
+    # Store roots in a trie
+    def dict_to_trie(self, dictionary: List[str]) -> TNode:
+        root = TNode()
+        
+		# We have to go through each character in each word 
+        for word in dictionary:
+            node = root
+            for char in word:
+				# Add a new node if doesn\'t exist
+                if char not in node.children:
+                    node.children[char] = TNode()
+				# move to next node 
+                node = node.children[char]
+			# finally, set the last inserted node as complete
+            node.is_complete = True 
+                
+        return root
+    
+   # Get replacement for each word, this will either return 
+   # the root or the successor if no matching prefix is found
+    def get_replacement(self, root: TNode, word: str) -> str:
+        replacement = \'\'
+        node = root
+        
+        for char in word:
+            if char not in node.children or node.is_complete:
+                break
+            
+            replacement += char
+            node = node.children[char]
+        
+        return replacement if node.is_complete == True else word

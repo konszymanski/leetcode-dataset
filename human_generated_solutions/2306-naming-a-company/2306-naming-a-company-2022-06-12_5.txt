@@ -1,0 +1,19 @@
+class Solution:
+    def distinctNames(self, ideas: List[str]) -> int:
+        ideas = set(ideas)
+        initials = set()
+        for name in ideas:
+            initials.add(name[0])
+
+        swapableCount = {c: {c: 0 for c in initials} for c in initials}
+        for name in ideas:
+            for initial in initials:
+                if initial + name[1:] not in ideas:
+                    swapableCount[name[0]][initial] += 1
+
+        count = 0
+        for c1 in initials:
+            for c2 in initials:
+                count += swapableCount[c1][c2]*swapableCount[c2][c1]
+
+        return count

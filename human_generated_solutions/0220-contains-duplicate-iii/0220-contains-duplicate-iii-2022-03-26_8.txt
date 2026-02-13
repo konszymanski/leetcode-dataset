@@ -1,0 +1,161 @@
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], k: int, t: int) -> bool:
+	
+		# This problem needs a clear mathematical proof on 2 core points, that is,
+		# 1) "For the nums in the same bucket, the abs of their subtraction is always <= t."
+        # 2) "For the nums in the adjacent neighbor with only 2 or more than 2 label difference, 
+        # the abs of their subtraction is always > t." 
+		# see my math proof in the last part of this page.
+        
+        # 3 eyes in this problem:
+        
+        # 1, Recall when we study bucket sort in the algorithm course,
+        # we have some range for every bucket, and the elements in every bucket
+        # are all in this range in some sense.
+        
+        # 2, The range in this problem is that, 
+        # the abs of subtraction of elements in every bucket is <= t. 
+        # So this is why we say the bucket size is t.
+        # And this problem needs a new concept of bucket label, which can
+        # let us control the window length within k as the problem requires.
+        
+        # 3, please check my mathematical proof in the last below for two core points:
+        # 1) "For the nums in the same bucket, the abs of their subtraction is always <= t."
+        # 2) "For the nums in the adjacent neighbor with only 2 or more than 2 label difference, 
+        # the abs of their subtraction is always > t."
+		
+                
+        # key is bucket label, value is num
+        buckets = {}
+        
+        for i in range(len(nums)):
+            
+            # get bucket label. For the nums in the same bucket, the abs of their subtraction is always <= t.
+            bucket_label = nums[i] // (t+1)
+            
+            
+            # if this label had appeared before, this means the current num will go into this bucket
+            # and by "For the nums in the same bucket, the abs of their subtraction is always <= t.",
+            # it will return True since index is the same, and the abs of their subtraction is <= t.
+            # check my strict mathematical proof below on
+            # why "For the nums in the same bucket, the abs of their subtraction is always <= t."
+            if bucket_label in buckets:
+                return True
+            
+            
+            # if the current label has not appeared, add this new bucket with label
+            buckets[bucket_label] = nums[i]
+            
+            
+            # check the adjacent neighbor with only 1 label difference
+            # check my strict mathematical proof below on
+            # why "For the nums in the adjacent neighbor with only 2 or more than 2 label difference, 
+            # the abs of their subtraction is always > t."
+			# So we do not need to check the case that the label difference is greater than or equal to 2.
+            if bucket_label - 1 in buckets and abs(buckets[bucket_label - 1] - nums[i]) <= t:
+                return True            
+            if bucket_label + 1 in buckets and abs(buckets[bucket_label + 1] - nums[i]) <= t:
+                return True 
+            
+            
+            # note we have a window.
+            # update the window when the window length > k, our windows is fixed as k
+            if i >= k:
+                del buckets[nums[i-k] // (t+1)]
+                
+        
+        return False
+
+    
+    
+"""
+Claim 1: Under the operation nums[i] // (t+1), 
+for the nums in the same bucket, the abs of their subtraction is always <= t.
+
+
+Proof. Suppose x and y are the nums in the same bucket label, and suppose
+                 
+                 x // (t+1) = a,    x % (t+1) = b,                 
+                 y // (t+1) = c,    y % (t+1) = d,
+
+where 0 <= b < t+1,  0 <= d < t+1.  
+(Understand here by for example 15 % 1, 15 % 2, 15 % 3, 15 % 4, 15 % 5 again. 
+the remainder is 0, 1, 2, 3, 0 and never exceeds divisor). 
+
+Then we know that 
+                
+                 x = a(t+1) + b,    y = c(t+1) + d.
+
+Thus, we need to show
+                
+                 |x - y| <= t for any t >= 0.
+
+Indeed,
+    
+                 |x - y| = |a(t+1) + b - c(t+1) - d|
+                         = |(a-c)(t+1) + (b-d)|        (note here a = c since we have the same label)
+                         = |b - d|                     (1)
+
+Since 0 <= b < t+1,  0 <= d < t+1,  we get
+                 
+                     0 <= b < t+1,
+                  -t-1 < -d <= 0,
+                  -t-1 < b - d < t+1,
+                        |b - d| < t+1.                 (2)       
+
+Taking (2) into (1), we finally get
+
+                |x - y| = |b - d| < t + 1,            
+           ---> |x - y| <= t.                          (since t >= 0 is an integer, so < t + 1 means <= t). 
+
+This finishes the proof of this claim.
+
+
+
+
+
+
+Claim 2: Under the operation nums[i] // (t+1), 
+for the nums in the adjacent neighbor with only 2 or more than 2 label difference, 
+the abs of their subtraction is always > t.
+
+
+Proof. Suppose x and y are the nums in two buckets with only 2 or more than 2 label difference, 
+and suppose
+                 
+                 x // (t+1) = a,    x % (t+1) = b,                 
+                 y // (t+1) = c,    y % (t+1) = d,
+
+where 0 <= b < t+1,  0 <= d < t+1, and "with only 2 or more than 2 label difference" means 
+                
+                    |a - c| >= 2.                       (3)
+
+Then we know that 
+                
+                 x = a(t+1) + b,    y = c(t+1) + d.
+
+Thus, we need to show
+                
+                 |x - y| > t for any t >= 0.
+
+Indeed,
+    
+                 |x - y| = |a(t+1) + b - c(t+1) - d|
+                         = |(a-c)(t+1) + (b-d)|        (note here |a-c| >= 2 by (3))
+                        >= | |(a-c)(t+1)| - |b-d| |,    (4)
+
+where we have used the triangle inequality |p+q| >= | |p|-|q| | in the last step. 
+
+By (2) in Claim 1 and (3), from (4), we get
+
+                 |a-c|(t+1) - |b-d| > (|a-c|-1) (t+1) >= (2-1)(t+1) > 0.
+
+So we can strip the absolute value in (4). When |(a-c)(t+1)| - |b-d| > 0, by (3), using (2) in Claim 1, (4) gives
+
+                 |x - y| >= |a-c||t+1| - |b-d|
+                          > 2(t+1) - (t+1)
+                          = t + 1
+                          > t.
+
+This finishes the proof of the claim.
+"""

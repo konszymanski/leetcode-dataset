@@ -1,0 +1,25 @@
+def isUnivalTree(self, root: TreeNode) -> bool:
+        
+        val = root.val
+
+        while root:
+            if root.left:
+                node = root.left
+
+                while node.right and node.right!=root:  
+                    node = node.right
+
+                if not node.right:   
+                    node.right = root
+                    root = root.left  
+                else:  
+                    if root.val != val:
+                        return False
+                    root = root.right
+
+            else:  
+                if root.val != val:
+                    return False
+                root = root.right
+
+        return True

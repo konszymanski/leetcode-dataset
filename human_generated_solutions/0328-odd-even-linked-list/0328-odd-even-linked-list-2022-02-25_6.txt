@@ -1,0 +1,28 @@
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        # Purpose: to reorder a linked list by odd and even
+        # Method: two pointers
+        # Intuition: skip connection for odd and even, connect odd tail to even head
+        
+        # corner cases
+        if not head or not head.next:
+            return head
+        
+        # init
+        odd = head
+        even = even_head = head.next
+        
+        # run
+        while even and even.next:
+            
+            # skip connection for odd and even
+            odd.next = even.next
+            odd = odd.next
+            even.next = odd.next
+            even = even.next
+            
+        # connect odd tail to even head
+        odd.next = even_head
+        
+        # return 
+        return head

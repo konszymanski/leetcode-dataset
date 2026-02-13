@@ -1,0 +1,26 @@
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        self.quicksort(nums, 0, len(nums)-1)
+        return nums
+    
+    def quicksort(self, nums, start, end):
+        if start >= end:
+            return
+        
+        part = self.part(nums, start, end) # partition the array
+        self.quicksort(nums, start, part-1)
+        self.quicksort(nums, part+1, end) # dont include the parition idx itself since left..... idx......right
+    
+    def part(self, nums, left, right):
+        idx = left
+        ran = randint(left, right)
+        nums[right], nums[ran] = nums[ran], nums[right]
+        pivot = nums[right]
+        
+        for i in range(left, right):
+            if nums[i] <= pivot:
+                nums[idx],nums[i] = nums[i], nums[idx]
+                idx+=1
+        
+        nums[idx],nums[right] = nums[right], nums[idx]
+        return idx # return the idx for part

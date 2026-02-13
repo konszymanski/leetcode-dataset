@@ -1,0 +1,13 @@
+import heapq
+
+class SeatManager:
+    def __init__(self, n: int):
+        self.unreserved = list(range(1, n+1))  # Create a List of Numbered Seats
+        heapq.heapify(self.unreserved)  # We Heapify the List in order to have a min - heap which will always maintain the smallest seat number in the Front
+        
+    def reserve(self) -> int:  # heappop() cost O(logN) time complexity.
+        newSeat = heapq.heappop(self.unreserved)  # Heappop method to Reserve a Seat
+        return newSeat  # Returning the Popped Seat number
+    
+    def unreserve(self, seatNumber: int) -> None:  # heappush() cost O(logN) time complexity.
+        heapq.heappush(self.unreserved,seatNumber)  # Heappush in order to unreserve a seat and still maintaining the min-heap property

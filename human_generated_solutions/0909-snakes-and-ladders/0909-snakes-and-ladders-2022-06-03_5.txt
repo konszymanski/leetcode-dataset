@@ -1,0 +1,48 @@
+class Solution(object):
+    def snakesAndLadders(self, board):
+        """
+        :type board: List[List[int]]
+        :rtype: int
+        """
+        n = len(board)
+        lst_board = []
+		
+        # flatten board to a 1D array
+        rev = 1
+        for row in board[::-1]:
+            if rev == -1:
+                lst_board+= row[::-1]
+            else:
+                lst_board+=row
+            rev*=-1
+        
+        # BFS to search for shortest steps to destination
+        queue = deque([(1,0)])
+        
+		# Initial a n*n 1D array for the minimum steps needed to arrive at each cell.
+        step_count = [float(\'inf\') for _ in range(n*n)]
+        step_count[0]=0 
+        
+        while queue:
+            cur, step = queue.popleft()
+            if cur==n*n:
+                return step
+			
+			# roll the dice to decide the next position we are about to move to.
+            for i in range(1,7):
+                nxt = cur+i
+				
+				# if the dice roll leads us to a value larger than n*n, we just set nxt to n*n
+                if nxt>n*n:
+                    nxt = n*n
+					
+                # Use ladders or snakes
+                if lst_board[nxt-1]!=-1:
+                    nxt = lst_board[nxt-1]
+               
+                # If the nxt cell we are about to visit has a larger step count than step+1, which means we found a better path , then we push the (nxt, step+1) to queue and update the step_count accordingly. 
+                if step_count[nxt-1]>step+1:
+                    queue.append((nxt,step+1))
+                    step_count[nxt-1] = step+1
+     
+        return -1

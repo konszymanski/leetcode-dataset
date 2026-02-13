@@ -1,0 +1,43 @@
+class Solution:
+    def isSubPath(self, head: ListNode, root: TreeNode) -> bool:
+        
+        def string_of_linked_list( head: ListNode ):
+            
+            linked_list_string = \'\'
+            cur = head
+            
+            while cur:
+                linked_list_string += str( cur.val ) + \',\'
+                cur = cur.next
+                
+            return linked_list_string
+                
+        # ----------------------------------------------------
+        
+        # Get the path string of linked list
+        linked_list_string = string_of_linked_list( head )
+        
+        # ----------------------------------------------------
+            
+        def dfs( node: TreeNode, path_string: str) -> bool:
+            
+            if not node:
+                
+                # If path string of binary tree includes path string of linked list, 
+                # then Accept and return True
+                if path_string.find(linked_list_string) != -1:
+                    return True
+                else:
+                    return False
+                
+                
+            else:
+
+                # Update path string of binary tree, and DFS down to next level
+
+                path_string += str( node.val) + \',\'
+                return dfs( node.left, path_string ) or dfs( node.right, path_string )
+        
+        # -----------------------------------------------------
+        
+        return dfs( root, \'\')

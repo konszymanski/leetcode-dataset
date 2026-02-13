@@ -1,0 +1,20 @@
+def trapRainWater(self, heightMap: List[List[int]]) -> int:
+        length, width = len(heightMap), len(heightMap[0])
+        interior = {(i,j):math.inf for i in range(1,length-1) for j in range(1,width-1)}
+        boundary = {(i,j):heightMap[i][j] for i in range(length) for j in range(width) if (i,j) not in interior}
+        def flood(val,i,j):
+            for x,y in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+                if 0<=x<length and 0<=y<width and (x,y) not in boundary:
+                    if heightMap[x][y] >= val:
+                        boundary[x,y] = heightMap[x][y]
+                        if (x,y) in interior:
+                            interior.pop((x,y))
+                        heappush(unchecked_bounds, (heightMap[x][y],x,y))
+                    elif interior[x,y] > val:
+                        interior[x,y] = val
+                        flood(val,x,y)
+        unchecked_bounds = [(val,i,j) for (i,j),val in boundary.items()]
+        heapify(unchecked_bounds)
+        while unchecked_bounds and interior:
+            flood(*heappop(unchecked_bounds))
+        return sum(x - heightMap[i][j] for (i,j),x in interior.items())

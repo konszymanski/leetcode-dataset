@@ -1,0 +1,26 @@
+def sumPrefixScores(self, words: List[str]) -> List[int]:
+
+    preToFreq = {}
+    for word in words:
+        pre = \'\'
+        for c in word:
+            pre += c
+            if not pre in preToFreq:
+                preToFreq[pre] = 0
+            preToFreq[pre] += 1
+    #print(\'preToFreq:\', preToFreq)
+
+    # Sort words in decreasing order of length to avoid re-compute of seen strings & prefixes. Imp optimisation to avoid TLE
+    wordsCopy = sorted(words, key=len, reverse=True)
+    stringToScore = {}
+    for word in wordsCopy:
+        if word not in stringToScore:
+            score = 0
+            pre = \'\'
+            for c in word:
+                pre += c
+                score += preToFreq[pre]
+                stringToScore[pre] = score
+            stringToScore[word] = score
+
+    return [stringToScore[word] for word in words]

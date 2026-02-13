@@ -1,0 +1,17 @@
+# Solution A: Recursion
+class Solution:
+    def addOneRow(self, root, v, d):
+        if d==1:
+            return TreeNode(v,root)
+        #
+        target = d - 1
+        #
+        def dfs(n,x):
+            if n:
+                if x == target:
+                    n.left, n.right = TreeNode(v,n.left,None), TreeNode(v,None,n.right)
+                elif x < target:
+                    dfs(n.left,x+1)
+                    dfs(n.right,x+1)
+        dfs(root,1)
+        return root

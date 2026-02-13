@@ -1,0 +1,17 @@
+from heapq import *
+
+
+class SeatManager:
+
+    def __init__(self, n: int):
+        # Time: O(N)
+        # Space: O(N)
+        self.seat_supply = [i for i in range(1, n+1)]
+
+    def reserve(self) -> int:
+        # Time: O(LogN)
+        return heappop(self.seat_supply)
+
+    def unreserve(self, seatNumber: int) -> None:
+        # Time: O(LogN)
+        heappush(self.seat_supply, seatNumber)

@@ -1,0 +1,17 @@
+class Solution:
+    def maxValue(self, events: List[List[int]], k: int) -> int:
+        numEvents, startTimes = len(events), []
+        events.sort()
+        for event in events:
+            startTimes.append(event[0])
+        dp = [[0] * (k + 1) for _ in range(numEvents)]
+        for j in range(1, k + 1):
+            dp[numEvents - 1][j] = events[-1][2]
+        for i in range(numEvents - 2, -1, -1):
+            for j in range(1, k + 1):
+                nextJob = bisect_right(startTimes, events[i][1])
+                if nextJob < numEvents and j >= 0:
+                    dp[i][j] = max(dp[nextJob][j - 1] + events[i][2], dp[i + 1][j])
+                else:
+                    dp[i][j] = max(events[i][2], dp[i + 1][j])
+        return dp[0][k]

@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        if not root: return None
+        
+        forest_nodes = []
+        to_del = set(to_delete)
+        
+        """
+        Function takes in a node and appends its child to forest if they aren\'t null
+        """
+        def append_childs_to_forest(node):
+            if node.left:
+                    forest_nodes.append(node.left)
+            if node.right:
+                forest_nodes.append(node.right)
+            
+        def purge_nodes(node):
+            if not node: return
+            
+            node.left, node.right = purge_nodes(node.left), purge_nodes(node.right)
+            
+            if node.val in to_del:
+                append_childs_to_forest(node)
+                return None # This will kill the branch bottom to top
+        
+            return node
+        
+        # Call our recursive function
+        purge_nodes(root)
+        
+        # Base case on our root level
+        if root.val not in to_del:
+            forest_nodes.append(root)
+        
+        return forest_nodes

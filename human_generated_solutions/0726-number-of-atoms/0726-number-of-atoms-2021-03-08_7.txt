@@ -1,0 +1,58 @@
+def count(self,formula:str)->dict:
+        \'\'\' A helper method for construct a map from atom to its count\'\'\'
+        counts = collections.defaultdict(lambda:0)
+        i = 0
+        n = len(formula)
+        while i<n:
+            # Base Case: starts with Capital Letter
+            if formula[i].isupper():
+                atom = formula[i]
+                j = i+1
+                # get the whole name with zero or more lowercase letters
+                while j<n and formula[j].islower():
+                    atom += formula[j]
+                    j +=1
+                # get the count for this atom
+                num = \'\'
+                while j<n and formula[j].isdigit():
+                    num += formula[j]
+                    j += 1
+                # if there is no digit follows, then the count is 1
+                if num==\'\':
+                    counts[atom] +=1
+                else:
+                    counts[atom] += int(num)
+                i = j # don\'t forget to increment i
+            # Recursive Case: starts with bracket
+            elif formula[i] == \'(\':
+                lefts = 1 # count the current left bracket
+                rights = 0 # count the current right bracket
+                # why do we need to count the current left& right brackets ?
+                # cuz in this segment of parentheses, there might be inner parentheses, 
+                # so we need to stop counting when lefts==rights
+                sub_formula = \'\'
+                j = i+1
+                # get the whole sub-formula within this parenthese
+                while j<n:
+                    if formula[j] == \'(\':
+                        lefts +=1
+                    elif formula[j] == \')\':
+                        rights +=1
+                        if lefts==rights:
+                            break
+                    sub_formula += formula[j]
+                    j+=1
+                # get the counts for the sub_formula
+                sub_counts = self.count(sub_formula)
+                # get the number follows
+                num = \'\'
+                j += 1
+                while j<n and formula[j].isdigit():
+                    num += formula[j]
+                    j += 1
+                if num==\'\':
+                    num = 1
+                for key in sub_counts:
+                    counts[key] += sub_counts[key]*int(num)
+                i = j # don\'t forget to increment i
+        return counts

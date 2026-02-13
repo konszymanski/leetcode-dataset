@@ -1,0 +1,65 @@
+def matrixRankTransform(self, matrix: List[List[int]]) -> List[List[int]]:
+        def bfs(val):
+            points = []
+            graph = graphs[val]
+            seen = set()
+            
+            for index in graph.keys():
+                if index in seen:
+                    continue
+                    
+                seen.add(index)
+                queue = collections.deque([index])
+                group = set()
+                
+                while queue:
+                    i = queue.popleft()
+                    
+                    for j in graph[i]:
+                        if j not in seen:
+                            seen.add(j)
+                            queue.append(j)
+                            
+                        if i >= 0:
+                            group.add((i, ~j))
+                        else:
+                            group.add((j, ~i))
+                            
+                points.append(group)
+                
+            return points
+            
+            
+        graphs = defaultdict(lambda: 
+                             defaultdict(lambda: 
+                                         list()))
+        
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                val = matrix[i][j]
+                graphs[val][i].append(~j)
+                graphs[val][~j].append(i)
+                
+        val2Points = {}
+        for val in graphs.keys():
+            val2Points[val] = bfs(val)
+            
+        rowMaxes = [0] * len(matrix)
+        colMaxes = [0] * len(matrix[0])
+        ans = [[0] * len(matrix[0]) 
+               for _ in range(len(matrix))]
+        
+        for val in sorted(val2Points.keys()):
+            for points in val2Points[val]:
+                rank = 1
+                
+                for i, j in points:
+                    rank = max(rank, rowMaxes[i] + 1)
+                    rank = max(rank, colMaxes[j] + 1)
+                    
+                for i, j in points:
+                    ans[i][j] = rank
+                    rowMaxes[i] = max(rowMaxes[i], rank)
+                    colMaxes[j] = max(colMaxes[j], rank)
+                    
+        return ans

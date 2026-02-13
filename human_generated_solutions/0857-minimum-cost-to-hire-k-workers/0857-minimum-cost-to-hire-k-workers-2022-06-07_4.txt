@@ -1,0 +1,22 @@
+def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+        
+        # --- Sort Workers by Ratio
+        workers = [(w/q, q) for w, q in zip(wage, quality)]
+        workers.sort()
+
+        # --- Initialize Quality Max-Heap
+        paid_group = [-1*q for r, q in workers[:k]]
+        heapq.heapify(paid_group)
+        sum_q = -1 * sum(paid_group)
+
+        # --- Initialize Cost with Captain = K
+        cost = sum_q * workers[k-1][0]
+
+        # --- Test more expensive Captains.
+        #       higher captain\'s ratio may be worth it if we can reduce sum_q
+        for ratio, q in workers[k:]:
+            sum_q += q + heapq.heappushpop(paid_group, -q)
+            temp = ratio * sum_q
+            cost = min(cost, temp)
+
+        return cost

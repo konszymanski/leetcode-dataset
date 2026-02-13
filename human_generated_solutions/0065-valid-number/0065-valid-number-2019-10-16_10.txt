@@ -1,0 +1,7 @@
+class Solution:
+    def isNumber(self, s):
+        try:
+            float(str(s).strip())
+            return True
+        except ValueError:
+            return False

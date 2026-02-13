@@ -1,0 +1,22 @@
+def findFrequentTreeSum(self, root: Optional[TreeNode]) -> List[int]:
+        sub_sum, self.max_fre_sum = {}, 0
+        
+        def dfs(cur_node: Optional[TreeNode]) -> int:
+            if not cur_node:
+                return 0
+            
+            left = dfs(cur_node.left)
+            right = dfs(cur_node.right)
+            
+            cur_sum = cur_node.val + left + right
+            if cur_sum in sub_sum:
+                sub_sum[cur_sum] += 1
+            else:
+                sub_sum[cur_sum] = 1
+
+            self.max_fre_sum = max(self.max_fre_sum, sub_sum[cur_sum])
+            
+            return cur_sum
+            
+        dfs(root)
+        return [i for i in sub_sum if sub_sum[i] == self.max_fre_sum]

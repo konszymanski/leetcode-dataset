@@ -1,0 +1,31 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        
+        edges = {i:[] for i in range(numCourses)} # initialization. i->be relied on, list []->courses that rely on i.
+        
+        indeg = [0 for i in range(numCourses)]   # initialization. Indegree for elements that reply on the others
+        
+        for x,y in prerequisites:           # initialization.
+            edges[y].append(x)
+            indeg[x]+=1
+            
+        que = collections.deque()
+     
+        for i in range(len(indeg)):
+            if indeg[i] == 0:       #store courses with no reliance on other course(indegree = 0)
+                que.append(i)
+        res = []
+                                    #Begin BFS search
+        while que:
+            x = que.popleft()       #Pop out the course that has indegree = 0, which means
+            res.append(x)           #that courses now is "clear", not relying on other courses now. 
+									#Also means this course is free to take, append it in res.
+            
+            for n in edges[x]:      #Loop every element that depend on x, and minus their indegree by 1
+                indeg[n] -= 1       #(since x now has been poped out and "cleared"
+                if indeg[n] == 0:
+                    que.append(n)
+                
+        if len(res) == numCourses:
+            return res
+        else:return []

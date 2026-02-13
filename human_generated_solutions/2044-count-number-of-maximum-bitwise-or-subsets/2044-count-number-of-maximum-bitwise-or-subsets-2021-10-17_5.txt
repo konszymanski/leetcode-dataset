@@ -1,0 +1,16 @@
+class Solution:
+    def countMaxOrSubsets(self, nums: List[int]) -> int:
+        maxVal = reduce(lambda a, b: a | b, nums)
+        nums.sort(reverse = True)
+        n = len(nums)
+        self.ans = 0
+        def backtrack(curr, i):
+            if curr==maxVal:
+                self.ans+=2**(n-i)
+                return
+            if i==n:
+                return
+            backtrack(curr, i+1)
+            backtrack(curr | nums[i],i+1)
+        backtrack(0,0)
+        return self.ans

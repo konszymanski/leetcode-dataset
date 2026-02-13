@@ -1,0 +1,21 @@
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        stack=[]
+        stack.append(arr[0])
+        top=1
+        largest=0
+        
+        for i in range(1,len(arr)): #scan left to right from 1 to l-1
+            if(arr[i]>stack[top-1]): # if element on top of stack < arr[i] push element in stack and increment top of stack as well 
+                stack.append(arr[i])
+                top+=1
+
+            else:
+                while((top)>0 and arr[i]<stack[top-1]): #if top of stack > arr[i], run loop till stack >arr[i]
+                    if(stack[top-1]>largest): #keeping track of largest element we pop so we can replace pop elements with single largest element
+                        largest=stack[top-1]
+                    stack.pop() #poping element from stack while stack[top-1]>arr[i] and top>0
+                    top-=1
+                stack.append(largest) #pushing largest element in stack
+                top+=1
+        return len(stack)

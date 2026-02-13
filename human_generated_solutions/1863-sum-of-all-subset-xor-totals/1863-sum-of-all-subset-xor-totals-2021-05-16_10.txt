@@ -1,0 +1,16 @@
+class Solution:
+    def subsetXORSum(self, nums: List[int]) -> int:
+        lst = []
+        output = 0
+        for i in range(1, len(nums)):
+            comb = list(itertools.combinations(nums, i))
+            for j in comb:
+                xor = 0
+                for k in j:
+                    xor ^= k
+                output += xor
+        xor = 0
+        for i in nums:
+            xor ^= i
+            
+        return output + xor

@@ -1,0 +1,13 @@
+import re
+
+class Solution:
+    def toGoatLatin(self, S: str) -> str:
+        s = S.split()
+        out = \'\'
+        for i, w in enumerate(s):
+            if re.match(r\'(?i)^[aeiou]\', w):
+                out += w + \'ma\' + (i + 1) * \'a\' + \' \'
+            else:
+                out += w[1:] + w[0] + \'ma\' + (i + 1) * \'a\' + \' \'
+
+        return out.strip()

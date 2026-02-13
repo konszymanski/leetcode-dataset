@@ -1,0 +1,32 @@
+class Solution:
+    def largestRectangleArea(self, heights):
+        stack = []
+        max_area = 0
+        
+        # Adding 0 handles the case for computing
+        # remaining rectangles in the stack.
+        heights.append(0)
+        
+        for idx, curr_rectangle in enumerate(heights):
+            while stack and heights[stack[-1]] > curr_rectangle:
+                popped_rectangle = heights[stack.pop()]
+                
+                # This ternary operator handles the case when we pop the 
+                # current shortest rectangle (head of the stack). If so, then
+                # the largest area (w/ this rectangle) should be:
+                # this rectangle * number of all the rectangles we\'ve visited so far (which 
+				# is equal to the current rectangle\'s index)
+				
+				# If the stack is not empty, then we\'ll find an area from pop 
+				# element (as a lowerbound) ~ current rectangle\'s previous 
+				# element (as an upperbound). To find the index of (the current 
+				# rectangle\'s) previous rectangle, we must subtract the current
+				# rectangle\'s index by 1.
+                width = idx if not stack else (idx - 1) - stack[-1]
+                
+                curr_area = popped_rectangle * width
+                max_area = max(max_area, curr_area)
+            
+            stack.append(idx)
+        
+        return max_area

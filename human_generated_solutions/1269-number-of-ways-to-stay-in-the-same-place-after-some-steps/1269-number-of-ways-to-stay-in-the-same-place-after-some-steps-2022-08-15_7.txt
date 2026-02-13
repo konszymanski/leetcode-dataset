@@ -1,0 +1,35 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        if arrLen == 1:
+		    # only one way, as needs to
+		    # always stay in position 0
+            return 1
+        
+		# number of ways to stay in 
+		# each position after 0 steps
+        prev = [1] + [0] * (steps + 1)
+        
+        cut = 10 ** 9 + 7
+        for i in range(1, steps + 1):
+    		# number of ways to stay in 
+	    	# each position after i steps
+            curr = prev.copy()
+			
+			# for every position reachable after i steps
+            for j in range(min(i + 1, arrLen)):
+                if j == 0:
+				    # stay or jump from the right
+                    curr[j] = (prev[j] + prev[j+1]) % cut
+                elif j == arrLen - 1:
+				    # jump from the left or stay
+                    curr[j] = (prev[j-1] + prev[j]) % cut
+                else:
+				    # jump from the left or stay or jump from the right
+                    curr[j] = (prev[j-1] + prev[j] + prev[j+1]) % cut
+            
+			# swap the lists
+            prev = curr
+        
+		# number of ways to stay after 
+		# `steps` steps in the position 0
+        return prev[0]

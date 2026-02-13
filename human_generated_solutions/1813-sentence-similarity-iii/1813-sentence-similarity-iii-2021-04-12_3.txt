@@ -1,0 +1,15 @@
+class Solution:
+    def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
+        s1 = sentence1.split()
+        s2 = sentence2.split()
+        # let s1 be the shorter sequence
+        if len(s1) > len(s2):
+            s1,s2 = s2,s1
+        # find the first index where they differ
+        i = 0
+        while i < len(s1):
+            if s1[i] != s2[i]:
+                break
+            i += 1
+        # check if the trailing part of s1 matches the end of s2
+        return s1[i:] == s2[len(s2) - (len(s1) - i):]

@@ -1,0 +1,38 @@
+# Learn from @lee215, add my own thought
+# Algorithm:
+# Two Heap:
+#      One heap record the ready room
+#      another heap record the room holding meeting and the end time
+# Also, use the ans arry to record the times each used.
+# if there is a ready room, push the room to the meeting room
+# if there is not a ready room, pop the room with earliest end time, and push again with new end time
+from heapq import heapify, heappush, heappop
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        # sort meetings:
+        meetings.sort()
+        # initialize the two min Heap
+        ready_room = list(range(n))
+        meeting_room = []
+        heapify(ready_room)
+        heapify(meeting_room)
+        # initialize the ans array
+        ans = [0] * n
+        # start to go through the meetings
+        for start, end in meetings:
+            while meeting_room  and meeting_room [0][0] <= start:
+                _, room = heappop(meeting_room)
+                # push the ready room back to the heap
+                heappush(ready_room, room)
+            # if there is a ready room, 
+            if ready_room:
+                room = heappop(ready_room)
+                heappush(meeting_room, [end, room])
+            # if there is not a ready room, pop and push again
+            else:
+                endtime, room = heappop(meeting_room)
+                heappush(meeting_room, [endtime + end - start, room])
+            # in this iteration, we use the room, so + 1
+            ans[room] += 1
+        # return the used-most room
+        return ans.index(max(ans))

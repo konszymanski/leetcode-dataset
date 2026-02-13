@@ -1,0 +1,14 @@
+def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+	start_color = image[sr][sc] #keep track of original color
+	if start_color == color: #the color is already this one so do nothing
+		return image
+	m = len(image) #length of image
+	n = len(image[0]) #column length
+
+	def dfs(r, c): #dfs helper method
+		image[r][c] = color #set spot to color
+		for (row, col) in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]: #look at 4-dimensionally adjacent places
+			if 0 <= row < m and 0 <= col < n and image[row][col] == start_color: #check if in bounds and equal to start_color
+				dfs(row, col) #if so, we must search here
+	dfs(sr, sc) #start searching at (sr,sc)
+	return image

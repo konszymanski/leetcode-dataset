@@ -1,0 +1,6 @@
+class Solution:
+    def diagonalSum(self, mat):
+        row,col,total = len(mat),len(mat[0]),0
+        for i in range(row):
+            total+=mat[i][i]+mat[i][col-i-1]
+        return total-mat[row//2][col//2] if row%2!=0 else total

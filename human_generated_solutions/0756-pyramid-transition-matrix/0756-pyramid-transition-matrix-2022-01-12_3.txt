@@ -1,0 +1,22 @@
+class Solution:
+    def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+        allowed=set(allowed)
+        letters=[\'A\',\'B\',\'C\',\'D\',\'E\',\'F\']
+        @lru_cache(None)
+        def solve(bottom):
+            if len(bottom)==1: return True
+            tops=[""]
+            n=len(bottom)
+            ans=False
+            for i in range(n-1):
+                temp=[]
+                while tops:
+                    top=tops.pop(0)
+                    for letter in letters:
+                        if bottom[i]+bottom[i+1]+letter in allowed:
+                            temp.append(top+letter)
+                tops=temp
+            for top in tops:
+                ans=ans or solve(top)
+            return ans
+        return solve(bottom)

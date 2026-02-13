@@ -1,0 +1,11 @@
+class NumArray:
+
+    def __init__(self, nums: List[int]):
+        
+        self.prefix = {-1:0}
+        for i,num in enumerate(nums):
+            self.prefix[i] = self.prefix[i-1]+num
+        
+
+    def sumRange(self, left: int, right: int) -> int:
+        return self.prefix[right] - self.prefix[left-1]

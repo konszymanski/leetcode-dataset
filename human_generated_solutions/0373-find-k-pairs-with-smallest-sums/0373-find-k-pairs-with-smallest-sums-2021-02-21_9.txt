@@ -1,0 +1,9 @@
+def kSmallestPairs_alt(nums1, nums2, k):  # O(logn * logm) and O(mn), where m and n are lengths of lists 
+    h, res = [], []
+    for i in range(len(nums1)):
+        for j in range(len(nums2)):
+            heapq.heappush(h, (nums1[i] + nums2[j], [nums1[i], nums2[j]]))
+    for _ in range(min(k, len(h))):  # handling an edge case when we have fewer than k elements inside the heap
+        _, pair = heapq.heappop(h)
+        res.append(pair)
+    return res

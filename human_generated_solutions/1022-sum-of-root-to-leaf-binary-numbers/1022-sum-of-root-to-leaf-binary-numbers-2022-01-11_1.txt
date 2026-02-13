@@ -1,0 +1,2 @@
+{// call to a preorder traversal function & passing the value root node & sum variable intialize with 0;
+        return sumRootToLeaf(root, 0);

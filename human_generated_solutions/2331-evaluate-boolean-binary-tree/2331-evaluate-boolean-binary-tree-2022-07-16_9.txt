@@ -1,0 +1,7 @@
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        if not root.left:
+            return root.val
+        x = self.evaluateTree(root.left)
+        y = self.evaluateTree(root.right)
+        return x or y if root.val == 2 else x and y

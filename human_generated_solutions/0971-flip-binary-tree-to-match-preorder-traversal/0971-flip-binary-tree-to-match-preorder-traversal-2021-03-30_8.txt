@@ -1,0 +1,19 @@
+def flipMatchVoyage(self, root: TreeNode, voyage: List[int]) -> List[int]:
+	cur_idx = 0
+	flipped_nodes = []
+
+	def find_nodes(node=root):
+	\'\'\' traverse the nodes and add the flipped ones to the list 
+	    return False if irrecoverable inconsistency is found
+	\'\'\'
+		nonlocal cur_idx
+		if not node: return True
+		if voyage[cur_idx] != node.val: return False
+		cur_idx += 1
+		order = [node.left, node.right] 
+		if node.left and node.left.val != voyage[cur_idx]:
+			flipped_nodes.append(node.val)
+			order = [node.right, node.left]
+		return all(find_nodes(nd) for nd in order)
+
+	return flipped_nodes if find_nodes() else [-1]

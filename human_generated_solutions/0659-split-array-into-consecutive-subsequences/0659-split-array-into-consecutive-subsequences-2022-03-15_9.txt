@@ -1,0 +1,24 @@
+class Solution(object):
+    def isPossible(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        if len(nums)<3:
+            return False
+        #store the length of every array
+        len_heap=[[nums[0],1]]
+        for i in range(1,len(nums)):
+            while len(len_heap)>0 and len_heap[0][0]<nums[i]-1:
+                if len_heap[0][1]<3:
+                    return False
+                heapq.heappop(len_heap)
+            if len(len_heap)==0 or len_heap[0][0]==nums[i]:
+                heapq.heappush(len_heap,[nums[i],1])
+            else:
+                new=[len_heap[0][0]+1,len_heap[0][1]+1]
+                heapq.heappop(len_heap)
+                heapq.heappush(len_heap,new)
+        if min([len_heap[i][1] for i in range(len(len_heap))])<3:
+                return False
+        return True

@@ -1,0 +1,16 @@
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        l = len(nums)
+        hashlist = [0 for i in range(l+1)]
+        for i in nums:
+            if i >= l:
+                hashlist[l] +=1
+            else:
+                hashlist[i] +=1
+        print(hashlist)
+        out = 0
+        for i in range(l, 0, -1):
+            out += hashlist[i]
+            if out == i:
+                return i
+        return -1

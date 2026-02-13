@@ -1,0 +1,67 @@
+class dsu:
+#initializing Parents for alice and bob
+    def __init__(self,n):
+        self.aliceParent=list(range(n+1))
+        self.bobParent=list(range(n+1))
+#p=0 means check for alice and 1 means check for bob.
+    def union(self,x,y,p):
+        if p==0:
+            p1,p2=self.findParent(x,p),self.findParent(y,p)
+            self.aliceParent[p1]=p2
+        else:
+            p1,p2=self.findParent(x,p),self.findParent(y,p)
+            self.bobParent[p1]=p2
+#similar as above p=0 means check for alice and 1 means check for bob.
+    def findParent(self,x,p):
+        if p==0:
+            if self.aliceParent[x]==x:
+                return x
+            self.aliceParent[x]=self.findParent(self.aliceParent[x],p)
+            return self.aliceParent[x]
+        else:
+            if self.bobParent[x]==x:
+                return x
+            self.bobParent[x]=self.findParent(self.bobParent[x],p)
+            return self.bobParent[x]
+class Solution:
+    def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+        uf=dsu(n)
+		#sorting edges on type-3 edges
+        edges.sort(key=lambda x:x[0],reverse=True)
+		#ca means connected edge for alice ,cb means connected edge for bob, tr means total remove.
+        ca,cb,tr=1,1,0
+        for e in edges:
+            t,u,v=e
+            if t==3:
+			#checking for alice whether [u,v] are connected or not. if not then doing union and ca+=1
+                if uf.findParent(u,0)!=uf.findParent(v,0):
+                    uf.union(u,v,0)
+                    ca+=1
+                    b1=True
+			#checking for bob whether [u,v] are connected or not. if not then doing union and cb+=1
+                if uf.findParent(u,1)!=uf.findParent(v,1):
+                    uf.union(u,v,1)
+                    cb+=1
+                    b2=True
+			#if [u,v] already connected for both alice and bob then remove it.
+                if not b1 and not b2:
+                    tr+=1
+			# for t==1 check only for alice.
+            elif t==1:
+                if uf.findParent(u,0)!=uf.findParent(v,0):
+                    uf.union(u,v,0)
+                    ca+=1
+                else:
+                    tr+=1
+		#for t==2 check only for bob.
+            else:
+                if uf.findParent(u,1)!=uf.findParent(v,1):
+                    uf.union(u,v,1)
+                    cb+=1
+                else:
+                    tr+=1
+	#if connected edge for alice or bob !=n then -1
+        if ca!=n or cb!=n:
+            return -1
+        else:
+            return tr

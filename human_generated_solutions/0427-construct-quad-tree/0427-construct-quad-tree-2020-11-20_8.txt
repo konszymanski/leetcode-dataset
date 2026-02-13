@@ -1,0 +1,25 @@
+class Solution(object):
+    def helper(self, grid, start_row, start_col, end_row, end_col):
+        
+        if start_row == end_row and start_col == end_col:
+            return Node(grid[start_row][start_col],isLeaf=True)
+        
+        mid_row = (end_row - start_row)/2 + start_row
+        mid_col = (end_col - start_col)/2 + start_col
+        
+        tl = self.helper(grid, start_row, start_col, mid_row, mid_col)
+        tr = self.helper(grid, start_row, mid_col+1, mid_row, end_col)
+        bl = self.helper(grid, mid_row+1, start_col, end_row, mid_col)
+        br = self.helper(grid, mid_row+1, mid_col+1, end_row, end_col)
+        
+        if (tl.isLeaf and tr.isLeaf and bl.isLeaf and br.isLeaf) and tl.val == tr.val == bl.val == br.val:
+            return Node(tl.val, isLeaf=True)
+        
+        return Node(val=1, isLeaf=False, topLeft=tl, topRight=tr, bottomLeft=bl, bottomRight=br)
+        
+    def construct(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: Node
+        """
+        return self.helper(grid, 0, 0, len(grid)-1, len(grid)-1)

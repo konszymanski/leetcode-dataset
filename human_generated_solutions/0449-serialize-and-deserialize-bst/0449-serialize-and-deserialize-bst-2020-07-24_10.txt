@@ -1,0 +1,38 @@
+class Codec:
+    def serialize(self, root: TreeNode) -> str:
+        if not root:
+            return \'\'
+        ans = []
+        q = collections.deque([root])
+        while q:  # BFS
+            node = q.popleft()
+            ans.append(node.val)
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        return \',\'.join([str(v) for v in ans[::-1]])  # reverse order so that when decoding, popping from the back takes O(1)
+
+    def deserialize(self, data: str) -> TreeNode:
+        if not data:
+            return None
+        data = [int(s) for s in data.split(\',\')]
+        root = TreeNode(data.pop())
+        
+        def insert(node, v):
+            left = True if v < node.val else False
+            if left:
+                if not node.left:
+                    node.left = TreeNode(v)
+                else:
+                    insert(node.left, v)  # recursively insert
+            else:
+                if not node.right:
+                    node.right = TreeNode(v)
+                else:
+                    insert(node.right, v)  # recursively insert
+        
+        while data:
+            insert(root, data.pop())  # insert the value into the tree
+            
+        return root

@@ -1,0 +1,16 @@
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        result = []
+        candidates = deque()
+        candidates.append(num[0])
+        for i in range(1, len(num)):
+            size = len(candidates)
+            next_char = num[i]
+            for _ in range(size):
+                c = candidates.popleft()
+                for op in ["+", "-", "*"]:
+                    candidates.append(c + op + next_char)
+                if c.endswith("0") and (len(c) == 1 or not c[-2].isnumeric()):
+                    continue
+                candidates.append(c + next_char)
+        return [c for c in candidates if eval(c) == target]

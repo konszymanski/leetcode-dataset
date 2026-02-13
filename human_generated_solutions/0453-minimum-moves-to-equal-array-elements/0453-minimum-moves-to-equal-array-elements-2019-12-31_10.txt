@@ -1,0 +1,8 @@
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        \'\'\'
+		min of nums needs x moves to get final number
+        # x moves add x(n-1) to the initial sum (n is the len)
+        # since every number is the same, the final sum is n * (min+x)
+		\'\'\'
+        return sum(nums) - len(nums) * min(nums)

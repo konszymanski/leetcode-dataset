@@ -1,0 +1,49 @@
+def minimumDeleteSum(self, s1: str, s2: str) -> int:
+        
+        #Top down recursive
+        @cache
+        def f(i,j):
+            if i >= len(s1) and j >= len(s2):
+                return 0
+            if i < len(s1) and j >= len(s2):
+                return sum(ord(c) for c in s1[i:])
+            if i >= len(s1) and j < len(s2):
+                return sum(ord(c) for c in s2[j:])
+            if s1[i] == s2[j]:
+                return f(i+1,j+1)
+            return min([ord(s1[i]) + f(i+1,j), ord(s2[j]) + f(i,j+1), ord(s1[i]) + ord(s2[j]) + f(i+1,j+1)])
+        
+        ## Bottom up DP from end of the strings 
+        
+        def bottomUpDpFromEnd():
+            dp = [[0]*(len(s2)+1) for _ in range(len(s1)+1)]
+            dp[len(s1)][len(s2)] = 0
+            for j in range(len(s2)-1,-1,-1):
+                dp[len(s1)][j] = dp[len(s1)][j+1] + ord(s2[j])
+            for i in range(len(s1)-1,-1,-1):
+                dp[i][len(s2)] = dp[i+1][len(s2)] + ord(s1[i])
+            for i in range(len(s1)-1,-1,-1):
+                for j in range(len(s2)-1,-1,-1):
+                    if s1[i] == s2[j]:
+                        dp[i][j] = dp[i+1][j+1]
+                    else:
+                        dp[i][j] = min(ord(s1[i])+dp[i+1][j],ord(s2[j])+dp[i][j+1])
+            return dp[0][0]
+        
+        ## Bottom up DP from start of the strings
+        # Let dp[i+1][j+1] have the answer for s1[:i+1],s2[:j+1]
+        
+        def bottomUpDpFromBeginning()
+            dp = [[0]*(len(s2)+1) for _ in range(len(s1)+1)]
+            dp[0][0] = 0
+            for j in range(0,len(s2)):
+                dp[0][j+1] = dp[0][j]+ord(s2[j])
+            for i in range(0,len(s1)):
+                dp[i+1][0] = dp[i][0] + ord(s1[i])
+            for i in range(1,len(s1)+1):
+                for j in range(1,len(s2)+1):
+                    if s1[i-1] == s2[j-1]:
+                        dp[i][j]= dp[i-1][j-1]
+                    else:
+                        dp[i][j] = min(dp[i-1][j]+ord(s1[i-1]), dp[i][j-1]+ord(s2[j-1]))
+            return dp[len(s1)][len(s2)]

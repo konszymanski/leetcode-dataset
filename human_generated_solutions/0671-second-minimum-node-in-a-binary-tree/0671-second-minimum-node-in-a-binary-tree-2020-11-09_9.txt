@@ -1,0 +1,13 @@
+class Solution:
+    def findSecondMinimumValue(self, root: TreeNode) -> int:
+        def getSecond(node):
+            if not node:
+                return math.inf
+            
+            if node.val != root.val:
+                return node.val
+            
+            return min(getSecond(node.left), getSecond(node.right))
+       
+        second = min(getSecond(root.left), getSecond(root.right))
+        return second if second != math.inf else -1

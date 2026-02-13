@@ -1,0 +1,48 @@
+class Expr:
+
+	def __init__(self, val):
+		self.val = val
+
+class AndExpr(Expr):
+
+	def eval(self):
+		return all(self.val)
+
+class OrExpr(Expr):
+	
+	def eval(self):
+		return any(self.val)
+
+class NotExpr(Expr):
+
+	def eval(self):
+		return not self.val[0]
+
+mapper = {
+    \'!\': NotExpr,
+    \'&\': AndExpr,
+    \'|\': OrExpr,
+}
+
+class Solution:
+    def parseBoolExpr(self, expression: str) -> bool:
+        if len(expression) == 1:
+            return expression == \'t\'
+
+        parsed = [[]]
+        stack = []
+        
+        for i, letter in enumerate(expression):
+
+            if letter in mapper:
+                stack.append(mapper[letter])
+                parsed.append([])
+            elif letter in (\'t\', \'f\'):
+                parsed[-1].append(letter == \'t\')
+            elif letter == \')\':
+                expr = stack.pop()
+                values = parsed.pop()
+                instance = expr(values)
+                parsed[-1].append(instance.eval())
+
+        return parsed[-1][-1]

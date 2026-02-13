@@ -1,0 +1,7 @@
+def trap(height):
+    result = 0
+    for idx, i in enumerate(height):
+        left, right = max(height[:idx]+[0]), max(height[idx+1:]+[0])
+        score = min(left, right)
+        result += max(score-i, 0)
+    return result

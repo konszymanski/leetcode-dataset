@@ -1,0 +1,4 @@
+def reorderedPowerOf2(self, n: int) -> bool:
+	num = set("".join(sorted(str(2**i))) for i in range(0, 32))
+	n = \'\'.join(sorted(str(n)))
+	return n in num

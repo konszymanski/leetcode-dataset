@@ -1,0 +1,13 @@
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        def recursive(s,ans):
+            if len(s)>=low and len(s)<=high:
+                ans+=[s]
+            if len(s)>high:
+                return 
+            recursive(s+"0"*zero,ans)
+            recursive(s+"1"*one,ans)
+            return
+        ans=[]
+        recursive("",ans)
+        return len(ans)

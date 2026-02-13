@@ -1,0 +1,44 @@
+class Solution:
+    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
+        n = len(fruits)
+        ans = 0
+        
+        # get the prefix sum array
+        prefixSum = []
+        curSum = 0
+        for i in range(n):
+            curSum += fruits[i][1]
+            prefixSum.append(curSum)
+        
+        # edge cases
+        if startPos >= fruits[-1][0]:
+            l = bisect.bisect_left(fruits, [startPos-k, -float("inf")])
+            return prefixSum[n-1] - [prefixSum[l-1], 0][l == 0]
+        if startPos <= fruits[0][0]:
+            r = bisect.bisect_left(fruits, [startPos+k, float("inf")])-1
+            return [prefixSum[r], 0][r < 0]
+        
+        # calculate max we can get by going cur -> left -> cur -> right
+        l = bisect.bisect_right(fruits, [startPos, float("inf")])           
+        curl = startPos
+        while(l >= 0 and 2 * (startPos - curl) <= k):
+            rem = k - 2 * (startPos - curl)
+            r = bisect.bisect_right(fruits, [startPos + rem, float("inf")])-1
+            curSum = prefixSum[r] - [prefixSum[l-1], 0][l == 0]
+            ans = max(ans, curSum)
+            l -= 1            
+            curl = fruits[l][0]
+        
+        # calculate max we can get by going cur -> right -> cur -> left
+        fruits.append([float("inf"), float("inf")])  # this is to handle a cornet case
+        r = bisect.bisect_left(fruits, [startPos, -float("inf")])-1         
+        curr = startPos
+        while(r < n and 2 * (curr - startPos) <= k):
+            rem = k - 2 * (curr - startPos)
+            l = bisect.bisect_left(fruits, [startPos - rem, -float("inf")])
+            curSum = prefixSum[r] - [prefixSum[l-1], 0][l == 0]
+            ans = max(ans, curSum)
+            r += 1            
+            curr = fruits[r][0]
+    
+        return ans

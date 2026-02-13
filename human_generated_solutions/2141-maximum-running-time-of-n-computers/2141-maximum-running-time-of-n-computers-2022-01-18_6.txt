@@ -1,0 +1,19 @@
+class Solution:
+    def maxRunTime(self, n: int, batteries: List[int]) -> int:
+        m=len(batteries)
+        if m<n: return 0
+        def solve(val):
+            res=0
+            for no in batteries:
+                if no>val: res+=val
+                else: res+=no
+            return res>=val*n
+        
+        l,h=1,sum(batteries)
+        while l<h:
+            mid=l+(h-l+1)//2
+            if solve(mid):
+                l=mid
+            else:
+                h=mid-1
+        return l

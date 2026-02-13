@@ -1,0 +1,16 @@
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        ans=[]           # resultant list containing all paths.
+        def preorder(root,s):
+            if not root.left and not root.right:        # If leaf node occurs then path ends here so append the string in \'ans\'.
+                ans.append(s+str(root.val))
+                return
+            s+=str(root.val)        # concatenate value of root in the path 
+            if root.left:                # If there is any node in left to traverse
+                preorder(root.left,s+"->")
+            if root.right:             # If there is any node in right to traverse
+                preorder(root.right,s+"->")
+            return
+			
+        preorder(root,"")         # main calling of preOrder with empty string
+        return ans

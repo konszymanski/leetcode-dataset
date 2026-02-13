@@ -1,0 +1,20 @@
+def luckyNumbers (self, matrix: List[List[int]]) -> List[int]:
+        # first find min in each row, store to the set (because all distinct). loop again, find max in each column to setB. compare setA and setB if val is same number
+        setA = set()
+        setB = set()
+        res = []
+        for i in range(len(matrix)):
+            setA.add(min(matrix[i]))
+        
+        for j in range(len(matrix[0])):
+            max_v = matrix[0][j]
+            for i in range(len(matrix)):
+                if matrix[i][j] > max_v:
+                    max_v = matrix[i][j]
+            setB.add(max_v)
+        
+        for v in setA:
+            if v in setB:
+                res.append(v)
+        
+        return res

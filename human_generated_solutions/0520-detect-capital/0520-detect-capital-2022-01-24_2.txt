@@ -1,0 +1,3 @@
+class Solution(object):
+    def detectCapitalUse(self, word):
+        return len(word) <= 1 or max(word) <= \'Z\' or min(word[1:]) >= \'a\'  # note that \'z\' > \'a\' > \'Z\' > \'A\'

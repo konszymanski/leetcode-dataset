@@ -1,0 +1,28 @@
+all_mods = [2] # all primary number
+for i in range(3, int(1e4) + 1, 2):
+    for v in all_mods:
+        if i % v == 0:
+            break
+    else:
+        all_mods.append(i)
+mod_set = set(all_mods)
+class Solution:
+    def idealArrays(self, n: int, maxValue: int) -> int:
+        ans = 1
+        for i in range(2, maxValue + 1):
+            t_ans = 1
+            for m in all_mods:
+                v_count = 0
+                while i % m == 0:
+                    i //= m
+                    v_count += 1
+                if v_count != 0:
+                    t_ans *= comb(n + v_count - 1, v_count)
+                    if i == 1:
+                        break
+                if i in mod_set:
+                    t_ans *= n
+                    break
+
+            ans += t_ans
+        return ans % int(1e9+7)

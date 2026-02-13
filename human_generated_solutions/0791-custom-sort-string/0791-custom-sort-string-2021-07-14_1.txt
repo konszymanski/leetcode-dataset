@@ -1,0 +1,10 @@
+class Solution:
+    def customSortString(self, order: str, str: str) -> str:
+        ans = ""
+        for ch in order:
+            for _ in range(str.count(ch)):
+                ans += ch
+        for ch in str:
+            if ch not in order:
+                ans += ch
+        return ans

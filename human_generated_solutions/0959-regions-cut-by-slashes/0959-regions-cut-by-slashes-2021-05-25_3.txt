@@ -1,0 +1,48 @@
+class Solution:
+    def regionsBySlashes(self, grid: List[str]) -> int:
+        n = len(grid)
+        # 0 = empty, 1 = /, 2 = \\
+        for i in range(n):
+            grid[i] = grid[i].replace(\' \',\'0\').replace(\'/\',\'1\').replace(\'\\\\\',\'2\')
+
+        # now "count the number of islands code"
+        vis = [[[] for j in r] for r in grid] # each block can be visited in 4 triangles, NSEW so this set will store that
+        # [\'N\',\'E\'] means upper and right triangles are visited 
+        res = 0
+        
+        # each block is 4 triangles, with neighbours on 3 sides (may be blocked depending on \'/\'\' or \'\\\')
+        def getNeighbours(i,j,t):
+            neighbours = []
+            if t == \'N\':
+                neighbours.append((i-1,j,\'S\')) # of course we can go the South triangle above me
+                if grid[i][j] != \'1\': neighbours.append((i,j,\'E\')) # can go the the right!!!!
+                if grid[i][j] != \'2\': neighbours.append((i,j,\'W\')) # can go left
+            if t == \'S\':
+                neighbours.append((i+1,j,\'N\'))
+                if grid[i][j] != \'2\': neighbours.append((i,j,\'E\'))
+                if grid[i][j] != \'1\': neighbours.append((i,j,\'W\'))
+            if t == \'W\':
+                neighbours.append((i,j-1,\'E\'))
+                if grid[i][j] != \'1\': neighbours.append((i,j,\'S\'))
+                if grid[i][j] != \'2\': neighbours.append((i,j,\'N\'))
+            if t == \'E\':
+                neighbours.append((i,j+1,\'W\'))
+                if grid[i][j] != \'2\': neighbours.append((i,j,\'S\'))
+                if grid[i][j] != \'1\': neighbours.append((i,j,\'N\'))
+            return neighbours
+        
+        def dfs(i,j,t): # the cell and which triangle \'NSEW\'
+            nonlocal vis, n
+            vis[i][j].append(t)
+            for x,y,nextT in getNeighbours(i,j,t):
+                if 0<=x<n and 0<=y<n and nextT not in vis[x][y]:
+                    dfs(x,y,nextT)
+            
+            
+        for i in range(n):
+            for j in range(n):
+                for t in \'NSEW\':
+                    if t not in vis[i][j]:
+                        dfs(i,j,t)
+                        res += 1
+        return res

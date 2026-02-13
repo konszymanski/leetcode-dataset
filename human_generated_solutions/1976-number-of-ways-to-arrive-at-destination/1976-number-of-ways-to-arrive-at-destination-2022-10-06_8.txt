@@ -1,0 +1,21 @@
+class Solution:
+    def countPaths(self, n: int, roads: List[List[int]]) -> int:
+        MOD, graph = 1000000007, defaultdict(list)
+        heap, minTime = [], [inf] * n
+        for road in roads:
+            graph[road[0]].append([road[2], road[1]])
+            graph[road[1]].append([road[2], road[0]])
+        minTime[0] = 0; heappush(heap, [0, 0])
+        numWays = [0] * n; numWays[0] = 1
+        while heap:
+            currPath = heappop(heap)
+            currNode, currTime = currPath[1], currPath[0]
+            for neighbor in graph[currPath[1]]:
+                neighborNode, neighborTime = neighbor[1], neighbor[0]
+                if currTime + neighborTime < minTime[neighborNode]:
+                    minTime[neighborNode] = currTime + neighborTime
+                    numWays[neighborNode] = numWays[currNode]
+                    heappush(heap, [minTime[neighborNode], neighborNode])
+                elif currTime + neighborTime == minTime[neighborNode]:
+                    numWays[neighborNode] = (numWays[neighborNode] + numWays[currNode]) % MOD
+        return numWays[n - 1] % MOD

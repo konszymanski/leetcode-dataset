@@ -1,0 +1,19 @@
+class FindElements:
+
+    def __init__(self, root: Optional[TreeNode]):
+        root.val = 0
+        self.vals = {}
+        self.manage_tree(root)
+        
+    def find(self, target: int) -> bool:
+        return self.vals.get(target,0)
+    
+    
+    def manage_tree(self,root,f=0):
+        if root == None:
+            return
+        if root.left:
+            self.manage_tree(root.left,2*f+1)
+        if root.right:
+            self.manage_tree(root.right,2*f+2)
+        self.vals[f]=1

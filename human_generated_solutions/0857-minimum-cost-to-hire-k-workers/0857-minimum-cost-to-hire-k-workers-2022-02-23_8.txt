@@ -1,0 +1,24 @@
+# O(nlogn) time | O(K) space
+# Each wage/quality ratio is the potential ratio of the minimum wage. Therefore
+# we calculate the mininum wage for each ratio and compare them to get the global minimal wage. We observe that 
+# wage = ratio * quality. Therefore, when the ratio is fixed, the optimal solution requires the quality
+# to be the minimum. We use a min heap to find the minimum quality for each ratio.
+
+import heapq as hq
+class Solution(object):
+    def mincostToHireWorkers(self, quality, wage, K):
+        workers = sorted((w/q, q) for w, q in zip(wage, quality))
+        ans = float(\'inf\')
+        heap = []
+        pre_q = 0
+        for r, q in workers:
+            # Calculating the minimum wage for the current ratio.
+            if len(heap) == K-1:
+                ans = min(ans, r * (pre_q + q))
+            # We keep updating the heap in each iteration so that the heap always
+            # contain the minimum (k - 1) quality we have seen so far.
+            heapq.heappush(heap, -q)
+            pre_q += q
+            if len(heap) > K-1:
+                pre_q += heapq.heappop(heap)
+        return ans

@@ -1,0 +1,29 @@
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        
+        if source == target:
+            return 0
+        
+        queue = collections.deque([(source, 1)])
+        visited = set([source])
+        graph = self.buildGraph(routes)
+        
+        while queue:
+            node, count = queue.popleft()
+            for neighbor in graph[node]:
+                if neighbor == target:
+                    return count
+                if neighbor in visited:
+                    continue
+                queue.append((neighbor, count + 1))
+                visited.add(neighbor)
+        return -1
+        
+    def buildGraph(self, routes):
+        graph = collections.defaultdict(set)
+        for route in routes:
+            for i in range(len(route)):
+                for j in range(i + 1, len(route)):
+                    graph[route[i]].add(route[j])
+                    graph[route[j]].add(route[i])
+        return graph

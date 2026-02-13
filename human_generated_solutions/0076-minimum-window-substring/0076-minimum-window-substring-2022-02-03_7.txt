@@ -1,0 +1,55 @@
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+
+        # Checks if all the characters from t are contained in the substring s.
+        # count_s = Counter(s), and count_t = Counter(t)
+        def t_is_in_substr(count_s: Counter, count_t: Counter) -> bool:            
+            for char in count_t:
+                if count_s[char] < count_t[char]:
+                    return False
+            return True
+        
+        m = len(s)
+        n = len(t)
+        
+        # Counters for s and t
+        count_s = Counter(s)
+        count_t = Counter(t)
+        
+        # If t is not within the entire string s, we\'re out
+        if not t_is_in_substr(count_s, count_t):
+            return \'\'
+        
+        # Initialize left and right pointers, and the Counter for substring window
+        count_s = Counter(s[0:1])
+        left = 0
+        right = 0
+        
+        # To save partial answers. Worst case scenario we need the whole string s.
+        # We already know all characters of t are contained in it if we got this far
+        curr = (m, s)
+        
+        # While we can still move left AND right, we try to find a smaller window.
+        # If either is not possible to move, we already had the last possible minimal
+        # window in the previous iteration
+        while m - left >= n and right < m - 1:
+            
+            # Moves right pointer to the right (and updates counter_s) until there
+            # are enough characters in substring s[left:right + 1] so that t is 
+            # contained in it (i.e. rightmost character is strictly necessary)
+            while not t_is_in_substr(count_s, count_t) and right < m - 1:
+                right += 1
+                count_s[s[right]] += 1
+            
+            # Moves left pointer to the right (and updates counter_s) right until
+            # the point where s[left:right + 1] no longer contains t (i.e. leftmost
+            # character was strictly necessary)
+            while t_is_in_substr(count_s, count_t):
+                count_s[s[left]] -= 1
+                left += 1
+            
+            # Check size of current window. Keep if smallest so far                    
+            if right - left + 1 < curr[0]:
+                curr = (right - left + 1, s[left - 1:right + 1])
+            
+        return curr[1]

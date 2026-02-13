@@ -1,0 +1,45 @@
+class Solution:
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        rooms_number_heap = [i for i in range(n)]
+        end_interval_heap = []
+        ans = [0] * n
+        
+        meetings.sort(key=lambda x: x[0])
+        heapq.heapify(rooms_number_heap)
+        
+        for meeting_start, meeting_end in meetings:
+            delay = 0
+            
+            # the rooms that are now freed
+            while end_interval_heap and end_interval_heap[0][0] <= meeting_start:
+                end, no = heapq.heappop(end_interval_heap)
+                heapq.heappush(rooms_number_heap, no)
+            
+            
+            # If no empty room - there is a delay
+            if not rooms_number_heap:
+                end_time, room_no = heapq.heappop(end_interval_heap)
+                # push the room number back to heap
+                heapq.heappush(rooms_number_heap, room_no)
+                
+                # count delay
+                delay = max(0, end_time - meeting_start)
+                
+                while end_interval_heap and end_interval_heap[0] == end_time:
+                    end, no = heapq.heappop(end_interval_heap)
+                    heapq.heappush(rooms_number_heap, no)
+                
+            # allocate a room
+            room_no = heapq.heappop(rooms_number_heap)
+            ans[room_no] += 1
+            heapq.heappush(end_interval_heap, (meeting_end + delay, room_no) )
+        
+        
+        best_count = 0
+        ans_i = 0
+        for i, v in enumerate(ans):
+            if v > best_count:
+                best_count = v
+                ans_i = i
+        
+        return ans_i

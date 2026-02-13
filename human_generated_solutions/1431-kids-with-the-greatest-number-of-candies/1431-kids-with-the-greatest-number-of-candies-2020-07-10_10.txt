@@ -1,0 +1,4 @@
+class Solution:
+    def kidsWithCandies(self, candies, extraCandies):
+		maxval = max(candies)
+        return [(x + extraCandies) >= maxval for x in candies]

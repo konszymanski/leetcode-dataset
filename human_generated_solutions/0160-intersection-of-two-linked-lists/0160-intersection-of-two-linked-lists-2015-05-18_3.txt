@@ -1,0 +1,11 @@
+def getIntersectionNode(self, headA, headB):
+        ptA, ptB, jumpToNext = headA, headB, False
+        while ptA and ptB:
+            if ptA == ptB:
+                return ptA
+            ptA, ptB = ptA.next, ptB.next
+            if not ptA and not jumpToNext:
+                ptA, jumpToNext = headB, True
+            if not ptB:
+                ptB = headA
+        return None

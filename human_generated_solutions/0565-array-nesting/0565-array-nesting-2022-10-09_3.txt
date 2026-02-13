@@ -1,0 +1,14 @@
+class Solution(object):
+    def arrayNesting(self, nums):
+        vis = set()
+
+        def dfs(i):
+            if i in vis: return 0;
+            vis.add(i)
+            return 1 + dfs(nums[i])
+        
+        ans = 0
+        for i in range(len(nums)):
+            if i not in vis: ans = max(ans, dfs(i))
+        
+        return ans

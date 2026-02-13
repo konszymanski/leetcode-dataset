@@ -1,0 +1,40 @@
+class Solution:
+    from collections import Counter
+    def maxDiff(self, num: int) -> int:
+        
+        num = str(num)
+        num_1 = [str(i) for i in num]
+        num_2 = [str(i) for i in num]
+
+        n = len(num)
+        if n == 1:
+            return 8
+        
+        first = \'\'
+        second = \'\'
+        
+        i = 0
+        while i < n:
+            if num[i] != \'9\':
+                first = num[i]
+                break
+            else:
+                i += 1
+                
+        i = 0
+        while i < n:
+            if num[i] not in [\'1\',\'0\']:
+                second = num[i]
+                break
+            else:
+                i += 1
+        
+        for i in range(n):
+            if num[i] == first:
+                num_1[i] = \'9\'
+            if num[i] == second and num[0] != \'1\':
+                num_2[i] = \'1\'
+            elif num[i] == second and num[0] == \'1\':
+                num_2[i] = \'0\'
+                
+		return int("".join(num_1)) - int("".join(num_2))

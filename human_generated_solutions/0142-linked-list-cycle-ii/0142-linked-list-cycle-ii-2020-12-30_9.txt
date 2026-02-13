@@ -1,0 +1,22 @@
+class Solution(object):
+    def hasCycle(self, head):
+        slow_ref = head
+        fast_ref = head
+        while fast_ref and fast_ref.next:
+            slow_ref = slow_ref.next
+            fast_ref = fast_ref.next.next
+            if slow_ref == fast_ref:
+                return True, slow_ref
+        return False, slow_ref
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        is_cyclic, fast = self.hasCycle(head)
+        if is_cyclic:
+            while head != fast:
+                head = head.next
+                fast = fast.next
+            return head
+        return None

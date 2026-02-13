@@ -1,0 +1,48 @@
+\'\'\'
+	Approach - 1 -
+	\'\'\'
+	def maxDistance(self, grid: List[List[int]]) -> int:
+			from collections import deque
+			# helper bfs #
+			def bfs_closestLand(i,j):
+				q = deque()
+				q.append(((i,j), 0))
+				visited = set()
+				dirs = [(1,0), (-1,0), (0,1), (0,-1)]
+				while q:
+					node, d = q.popleft()
+					x, y = node
+					if grid[x][y] == 1:
+						return d # return closest dist to a land
+					visited.add(node)
+					for dir in dirs:
+						newX, newY = x+dir[0], y+dir[1]
+						# bounds:
+						if newX >= 0 and newX <= len(grid)-1 and \\
+						newY >= 0 and newY <= len(grid[0])-1:
+							# not seen:
+							if (newX, newY) not in visited:
+								q.append(((newX, newY), d+1))
+				return -1
+
+			# main logic #
+			\'\'\'
+			steps:
+				- iterate over grid - netsed for loop
+				- find cells = 0
+				- run bfs on those cells to find out the CLOSEST land
+				- return the max of all the CLOSEST dist of land to zeros
+			\'\'\'
+			maxDistance = 0
+			lands = 0
+			seas = 0
+			for i in range(len(grid)):
+				for j in range(len(grid[0])):
+					if grid[i][j] == 0:
+						maxDistance = max(maxDistance, bfs_closestLand(i,j))
+						seas += 1
+					else:
+						lands += 1
+			if seas >= 1 and lands >= 1:
+				return maxDistance
+			return -1

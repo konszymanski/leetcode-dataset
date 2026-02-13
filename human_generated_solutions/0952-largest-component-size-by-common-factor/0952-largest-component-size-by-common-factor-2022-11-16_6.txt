@@ -1,0 +1,37 @@
+from collections import Counter
+
+class DisjointSet:
+    def __init__(self, size):
+        self.parent = list(range(size+1))
+        self.size = [1 for _ in range(size+1)]
+    
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        parent_x, parent_y = self.find(x), self.find(y)
+        if parent_x == parent_y: return 
+        if self.size[parent_x] < self.size[parent_y]:
+            self.parent[parent_x] = parent_y 
+            self.size[parent_y] += self.size[parent_x]
+            return parent_y 
+        else:
+            self.parent[parent_y] = parent_x 
+            self.size[parent_x] += self.size[parent_y]
+            return parent_x
+
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        ds = DisjointSet(max(nums))
+        for x in nums:
+            for A in range(2, int(sqrt(x)) + 1):
+                if x % A == 0:
+                    ds.union(x, A)
+                    ds.union(x, x // A)
+        # find the max size among all sets
+        c = Counter()
+        for n in nums:
+            c[ds.find(n)] += 1
+        return max(c.values())

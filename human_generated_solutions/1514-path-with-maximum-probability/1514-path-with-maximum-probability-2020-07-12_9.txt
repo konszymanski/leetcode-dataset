@@ -1,0 +1,21 @@
+class Solution(object):
+    def maxProbability(self, n, edges, succProb, start, end):
+
+        self.g = collections.defaultdict(set)
+        for (x, y), z in zip(edges, succProb):
+            self.g[x].add((y, z))
+            self.g[y].add((x, z))
+        
+        heap = [(-1, start)]
+        from heapq import heappush, heappop
+        prob = [0]*n
+        prob[start] = 1
+        while heap:
+            curr_prob, node = heappop(heap)
+            if prob[node] > -curr_prob: continue
+            for nei, p in self.g[node]:
+                if prob[node]*p > prob[nei]:
+                    prob[nei] = prob[node]*p
+                    heappush(heap, (-prob[nei], nei))
+        
+        return prob[end]

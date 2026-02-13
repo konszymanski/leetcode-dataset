@@ -1,0 +1,131 @@
+class MyBoolParser:
+    def parseBoolExpr(self, expression: str) -> bool:
+        
+        def parseBool(expression, cur):
+            if expression[cur] == \'t\':
+                return True, cur + 1
+            if expression[cur] == \'f\':
+                return False, cur + 1
+
+        def parseNot(expression, cur):
+            if expression[cur] != \'!\':
+                raise Exception(\'Expected "!"\')
+            cur += 1
+            if expression[cur] != \'(\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\'(\'}.{cur}.\'{expression[cur]}\'"))
+            cur += 1
+            expr, cur = parseAll(expression, cur)
+            if cur >= len(expression) or expression[cur] != \')\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\')\'}.{cur}.\'{expression[cur] if cur < len(expression) else \'EMPTY\'}\'"))
+            cur += 1
+            return not expr, cur
+
+        def parseAnd(expression, cur):
+            if expression[cur] != \'&\':
+                raise Exception(\'Not starting with "&"\')
+            cur += 1
+            if expression[cur] != \'(\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\'(\'}.{cur}.\'{expression[cur]}\'"))
+            cur += 1
+            bools = []
+            while cur < len(expression) and expression[cur] != \')\':
+                if expression[cur] == \',\':
+                    cur += 1
+                boolVal, cur = parseAll(expression, cur)
+                bools.append(boolVal)
+            if cur >= len(expression) or expression[cur] != \')\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\')\'}.{cur}.\'{expression[cur] if cur < len(expression) else \'EMPTY\'}\'"))
+            cur += 1
+            return False not in bools, cur
+
+        def parseOr(expression, cur):
+            if expression[cur] != \'|\':
+                raise Exception(\'Not starting with "|"\')
+            cur += 1
+            if expression[cur] != \'(\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\'(\'}.{cur}.\'{expression[cur]}\'"))
+            cur += 1
+            bools = []
+            while cur < len(expression) and expression[cur] != \')\':
+                if expression[cur] == \',\':
+                    cur += 1
+                boolVal, cur = parseAll(expression, cur)
+                bools.append(boolVal)
+            if cur >= len(expression) or expression[cur] != \')\':
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"MISSING_TOKEN.{\')\'}.{cur}.\'{expression[cur] if cur < len(expression) else \'EMPTY\'}\'"))
+            cur += 1
+            return True in bools, cur
+        
+        
+            
+        def parseAll(expression, cur):
+            mapping = {
+                \'&\': parseAnd,
+                \'|\': parseOr,
+                \'!\': parseNot,
+                \'t\': parseBool,
+                \'f\': parseBool
+            }
+            if expression[cur] in mapping:
+                func = mapping[expression[cur]]
+            else:
+                HintHandler.sendErrorMessage(MessageHandler.getMsgStr(f"UNEXPECTED_TOKEN.{expression[cur]}.{cur}"))
+
+            output, cur = func(expression, cur)
+            return output, cur
+        output, cur = parseAll(expression, 0)
+        if cur == len(expression):
+            return output
+        raise Exception(\'Unexpected Error\')
+### Globals
+LANGUAGE = "en"
+TEST = False
+
+### Util Classes
+class HintHandler:
+    @staticmethod
+    def sendErrorMessage(errMsg):
+        raise Exception(errMsg)
+
+class MessageHandler:
+    @staticmethod
+    def getMsgStr(errorStr):
+        splittedStr = errorStr.split(\'.\')
+        code, args = splittedStr[0], splittedStr[1:]
+        msgText = MessageMapping.parsingErr[code][LANGUAGE]
+        for i in range(len(args)):
+            msgText = msgText.replace(f"$$arg{i}$$", args[i])
+        return msgText
+
+class MessageMapping:
+    parsingErr = {
+        \'UNEXPECTED_TOKEN\': 
+          {
+            "en": "I did not expect the token \'$$arg0$$\' at index $$arg1$$",
+            "ch": "\u5728\u4E0B\u6807$$arg1$$\u7684\u7B26\u53F7\'$$arg0$$\'\u662F\u975E\u6CD5\u7684"
+          }
+          ,
+        \'MISSING_TOKEN\':
+          {
+            "en": "I expected token \'$$arg0$$\' at index $$arg1$$, but I got $$arg2$$ instead",
+            "ch": "\u6211\u671F\u5F85 \'$$arg0$$\' \u5728\u4E0B\u6807$$arg1$$, \u4F46\u662F\u5F97\u5230$$arg2$$"
+          }
+        
+    }
+
+
+### Test
+if TEST:
+    print(MessageMapping.parsingErr)
+    print(MessageHandler.getMsgStr("UNEXPECTED_TOKEN.A.2"))
+
+### Running Instances
+parser = MyBoolParser()
+try:
+    output = parser.parseBoolExpr("!(&(f,t)")
+except Exception as msg:
+    print(\'[ERROR]\
+\	\' + str(msg))
+else:
+    print(\'[SUCCESS]\
+\	\' + str(output))

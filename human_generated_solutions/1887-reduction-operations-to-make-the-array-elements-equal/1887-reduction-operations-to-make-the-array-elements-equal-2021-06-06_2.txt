@@ -1,0 +1,8 @@
+def reductionOperations(self, nums: List[int]) -> int:
+        cnt = Counter(nums)
+        operations = freq_of_next_largest = 0
+        for key in sorted(cnt, reverse=True):
+            if len(cnt) > 1:
+                freq_of_next_largest += cnt.pop(key)
+                operations += freq_of_next_largest
+        return operations

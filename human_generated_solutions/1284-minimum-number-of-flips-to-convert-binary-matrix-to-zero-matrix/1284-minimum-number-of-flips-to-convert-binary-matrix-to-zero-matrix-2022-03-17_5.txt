@@ -1,0 +1,49 @@
+def minFlips(self, mat: List[List[int]]) -> int:
+	\'\'\'
+	basic idea: convert mat to integers
+	such as [[1,0],[0,0]] to 0001 which is 1, [[1,0],[1,0]] to 0101 which is 5
+	then use BFS to traverse and flip all elements
+	\'\'\'
+	m, n = len(mat), len(mat[0])
+	dirs = [0, 1, 0, -1, 0, 0]
+	start = 0
+	for i in range(m):
+		for j in range(n):
+			#intial status, collect all 1s
+			start |= (mat[i][j] << (i * n + j))
+
+	def flip(s, x, y):
+		\'\'\'
+		flip  up, down, left, right elements, including istelf
+		\'\'\'
+		for i in range(5):
+			newx, newy = x + dirs[i], y + dirs[i+1]
+			if 0 <= newx < m and 0 <= newy < n:
+				#flip, use XOR
+				s ^= (1 << (newx*n + newy))
+		return s 
+
+	que = collections.deque()
+	que.append(start)
+	step = 0
+	#do not flip more than 1 time. from 0001 to 1111. 1 to 2^(m*n)-1
+	seen = [0] * (1 << m*n)
+	seen[start] = 1
+	#BFS
+	while que:
+		length = len(que)
+		for _ in range(length):
+			s = que.popleft()
+			#all 0, then return step
+			if s == 0:
+				return step
+			for i in range(m):
+				for j in range(n):
+					flipped = flip(s, i, j)
+					if seen[flipped] == 1:
+						continue
+					seen[flipped] = 1
+					que.append(flipped)
+		#print(seen)
+		step += 1
+	return -1

@@ -1,0 +1,15 @@
+class Solution:
+    def predictPartyVictory(self, senate: str) -> str:
+        queueR, queueD, numSenators = deque(), deque(), len(senate)
+        for idx in range(numSenators):
+            if senate[idx] == \'R\':
+                queueR.append(idx)
+            else:
+                queueD.append(idx)
+        while queueR and queueD:
+            rIdx, dIdx = queueR.popleft(), queueD.popleft()
+            if rIdx < dIdx:
+                queueR.append(rIdx + numSenators)
+            else:
+                queueD.append(dIdx + numSenators)
+        return \'Radiant\' if len(queueR) > len(queueD) else \'Dire\'

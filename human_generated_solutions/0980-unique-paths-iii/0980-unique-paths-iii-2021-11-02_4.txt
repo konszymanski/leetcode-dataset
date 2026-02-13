@@ -1,0 +1,22 @@
+def uniquePathsIII(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    start, cell = [0, 0], 0
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 1: start = [i, j]
+            if grid[i][j] == 0: cell += 1
+    dir = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+    def move_next(step, x, y):
+        ans = 0
+        for i, j in dir:
+            x_, y_ = x + i, y + j
+            if n > y_ >= 0 <= x_ < m:
+                if grid[x_][y_] == 0:
+                    grid[x_][y_] = -1 # move one step. set it to obstacle, preventing from re-visit this cell
+                    ans += move_next(step + 1, x_, y_)
+                    grid[x_][y_] = 0
+                if grid[x_][y_] == 2 and step == cell:
+                    ans += 1
+        return ans
+    return move_next(0, start[0], start[1])

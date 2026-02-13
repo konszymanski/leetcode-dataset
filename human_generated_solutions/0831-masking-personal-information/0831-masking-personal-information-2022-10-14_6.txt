@@ -1,0 +1,16 @@
+def maskPII(self, s: str) -> str:
+        def maskEmail(s):
+            s = s.lower()
+            name, domain = s.split(\'@\')
+            return \'\'.join([name[0],\'*\'*5,name[-1],\'@\',domain])
+        
+        def maskPhoneNumber(s):
+            nums = \'\'.join([str(c) for c in s if c not in {\'+\', \'-\', \'(\', \')\', \' \'}])
+            country_code_len = (len(nums)-10)
+            country_code = \'\'.join([\'+\', \'*\'*country_code_len, \'-\']) if country_code_len > 0 else \'\'
+            local_number = \'-\'.join([\'*\'*3, \'*\'*3, nums[-4:]])
+            return country_code + local_number
+            
+        maskPIIFunc = maskEmail if \'@\' in s else maskPhoneNumber
+        
+        return maskPIIFunc(s)

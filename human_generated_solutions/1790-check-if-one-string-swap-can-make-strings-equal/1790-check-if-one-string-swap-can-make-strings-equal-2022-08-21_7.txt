@@ -1,0 +1,39 @@
+class Solution:
+    def areAlmostEqual(self, s1: str, s2: str) -> bool:
+        string_one_dict = {}
+        string_two_dict = {}
+        not_equal_chars = 0 
+        
+        # put all values in a dict
+        for char in s1:
+            if char in string_one_dict:
+                string_one_dict[char] = string_one_dict[char] + 1
+            else:
+                string_one_dict[char] = 1
+        
+        for char in s2:
+            if char in string_two_dict:
+                string_two_dict[char] = string_two_dict[char] + 1
+            else:
+                string_two_dict[char] = 1
+                
+        # ensure the char is in both, if not in both dicts return False or 
+        # if it is both dicts but not the same amount return False
+        for char in s1:
+            if char in string_one_dict and char in string_two_dict:
+                if string_one_dict[char] != string_two_dict[char]:
+                    return False
+            else:
+                return False
+                
+        
+        # see if they are the same excpt for one swap
+        for char in range(0, len(s1)):
+            if s1[char] != s2[char]:
+                not_equal_chars = not_equal_chars + 1
+        
+        if not_equal_chars > 2:
+            return False
+        
+        # if they are the same except for one swap return True else return False
+        return True

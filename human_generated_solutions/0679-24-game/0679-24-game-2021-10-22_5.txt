@@ -1,0 +1,49 @@
+class Solution:
+    def powerset(self, iterable):
+        """ powerset([1, 2, 3]) -> [1] [2] [3] [1, 2] [1, 3] [2, 3] """
+        s = list(iterable)
+        sets = chain.from_iterable(combinations(s, r) for r in range(1, len(s)))
+        return [list(tup) for tup in sets]
+
+    def getComplement(self, cards, subset):
+        c1 = Counter(cards)
+        c2 = Counter(subset)
+        return list((c1 - c2).elements())
+
+    def getOperations(self, left, right):
+        ans = []
+        for n1 in left:
+            for n2 in right:
+                ans.append(f\'({n1} + {n2})\')
+                ans.append(f\'({n1} - {n2})\')
+                ans.append(f\'({n1} * {n2})\')
+                ans.append(f\'({n2} - {n1})\')
+                if n2 != \'0\':
+                    ans.append(f\'({n1} / {n2})\')
+                if n1 != \'0\':
+                    ans.append(f\'({n2} / {n1})\')
+        return ans
+
+    def getPossibleAnswers(self, cards):
+        if len(cards) == 1:
+            return cards
+        else:
+            subsets = list(self.powerset(cards))
+            subsets = subsets[:len(subsets) // 2]  # Avoid duplicates
+            ans = []
+            for subset in subsets:
+                left = self.getPossibleAnswers(subset)
+                right = self.getPossibleAnswers(self.getComplement(cards, subset))
+                ans += self.getOperations(left, right)
+            return ans
+
+    def judgePoint24(self, cards: list[int]) -> list[str]:
+        possible = self.getPossibleAnswers(cards)
+        ans = []
+        for expression in possible:
+            try:
+                if round(eval(expression), 3) == 24:
+                    ans.append(expression)
+            except ZeroDivisionError:
+                pass
+        return ans

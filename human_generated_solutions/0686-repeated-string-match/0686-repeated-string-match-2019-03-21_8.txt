@@ -1,0 +1,71 @@
+LARGE_PRIME = 10**9 + 7
+RADIX = 256
+
+
+class RabinKarp(object):
+    """An implementation of Las Vegas version of Rabin-Karp algorithm."""
+    
+    # Notations:
+    #   M: Pattern length.
+    #   R: Radix.
+    #   Q: Modulus.
+    #   RM: R^(M-1) % Q.
+    # 
+    # In this implementation, I always modulo Q to a large number.
+    # This is needless in Python, but helps us to move this code to
+    # another language that integer operations may overflow.
+    
+    def __init__(self, pattern: str):
+        M = len(pattern)  # Pattern length.
+        R = RADIX  # Radix.
+        Q = LARGE_PRIME  # Modulus.
+        RM = 1  # R^(M-1) % Q.
+        for __ in range(M - 1):
+            RM = (R * RM) % Q
+            
+        self._M, self._R, self._Q, self._RM = M, R, Q, RM
+        self._pat_hash = self._hash(pattern, M)
+        self._pattern = pattern
+    
+    def search(self, text: str) -> int:
+        M, R, Q, RM = self._M, self._R, self._Q, self._RM
+        
+        pat_hash, txt_hash = self._pat_hash, self._hash(text, M)
+        if pat_hash == txt_hash and self._check(text[:M]):
+            return 0
+        
+        for i in range(M, len(text)):
+            # Add Q to avoid negative numbers.
+            # Again, needless in Python, important in other languages.
+            txt_hash = (txt_hash + Q - RM * ord(text[i - M]) % Q) % Q
+            txt_hash = (R * txt_hash + ord(text[i])) % Q
+            if pat_hash == txt_hash and self._check(text[i - M + 1 : i + 1]):
+                return i - M + 1
+        return None
+        
+    def _hash(self, string, length):
+        R, Q = self._R, self._Q
+        
+        h = 0
+        for c in string[:length]:
+            h = (R * h + ord(c)) % Q
+        return h
+    
+    def _check(self, substring):
+        return substring == self._pattern
+
+class Solution:
+    def repeatedStringMatch(self, A: str, B: str) -> int:
+        div = len(B) / len(A)
+        times = int(div) + 1 if int(div) < div else int(div) # Ceiling.
+        
+        # Other kinds of ceiling:
+        #   times = (len(B) - 1) // len(A) + 1
+        #   times = -(-len(B) // len(A))
+        
+        rk = RabinKarp(B)
+        for i in (0, 1):
+            index = rk.search(A * (times + i))
+            if index is not None:
+                return times + i
+        return -1

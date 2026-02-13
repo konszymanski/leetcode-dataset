@@ -1,0 +1,22 @@
+class Solution:
+    def matrixScore(self, grid: List[List[int]]) -> int:
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def flip_row(row):
+            for i, val in enumerate(row):
+                row[i] = 0 if val else 1
+
+        def flip_col(c):
+            for r in range(rows):
+                grid[r][c] = 0 if grid[r][c] else 1
+
+        for row in grid:
+            if row[0] == 0:
+                flip_row(row)
+        
+        for c in range(cols):
+            if sum(grid[r][c] for r in range(rows)) < rows / 2:
+                flip_col(c)
+        
+        return sum(int("".join([str(val) for val in row]), 2) for row in grid)

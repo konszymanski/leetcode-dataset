@@ -1,0 +1,29 @@
+class Solution:
+    def catMouseGame(self, graph: List[List[int]]) -> int:
+        n = len(graph)
+        
+        @cache
+        def fn(i, m, c): 
+            """Return """
+            if i == 2*n: return 0 # tie 
+            if m == 0: return 1 # mouse wins
+            if m == c: return 2 # cat wins 
+            if i&1: # cat\'s turn 
+                tie = 0 
+                for cc in graph[c]: 
+                    if cc != 0: 
+                        x = fn(i+1, m, cc)
+                        if x == 2: return 2 
+                        if x == 0: tie = 1
+                if tie: return 0 
+                return 1
+            else: # mouse\'s turn 
+                tie = 0 
+                for mm in graph[m]: 
+                    x = fn(i+1, mm, c)
+                    if x == 1: return 1 
+                    if x == 0: tie = 1
+                if tie: return 0
+                return 2 
+        
+        return fn(0, 1, 2)

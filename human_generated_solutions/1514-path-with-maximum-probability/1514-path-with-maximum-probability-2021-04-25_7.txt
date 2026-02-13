@@ -1,0 +1,28 @@
+from collections import defaultdict, deque
+
+class Solution(object):
+    def maxProbability(self, n, edges, succProb, start, end):
+        g = defaultdict(list)
+
+        for i in range(len(edges)):
+            src, dst = edges[i][0], edges[i][1]
+            prob = succProb[i]
+            g[src].append((dst, prob))
+            g[dst].append((src, prob))
+
+        q = deque()
+        q.append((start, 1))
+        visited = defaultdict(int)
+
+        while q:
+            node, prob = q.popleft()
+            if visited[node] > prob:
+                continue
+            else:
+                visited[node] = prob
+
+            for adj, nextProb in g[node]:
+                if visited[adj] < prob * nextProb:
+                    q.append((adj, prob * nextProb))
+
+        return visited[end]

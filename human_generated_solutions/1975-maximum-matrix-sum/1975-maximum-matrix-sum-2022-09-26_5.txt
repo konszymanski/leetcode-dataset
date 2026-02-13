@@ -1,0 +1,14 @@
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        minPositiveNum, maxNegativeNum, dim, res, countNegative = math.inf, -math.inf, len(matrix), 0, 0
+        for row in range(dim):
+            for col in range(dim):
+                res += abs(matrix[row][col])
+                if matrix[row][col] <= 0:
+                    countNegative += 1
+                    maxNegativeNum = max(maxNegativeNum, matrix[row][col])
+                else:
+                    minPositiveNum = min(minPositiveNum, matrix[row][col])
+        if countNegative % 2 == 0:
+            maxNegativeNum = 0
+        return max(res + 2 * maxNegativeNum, res - 2 * minPositiveNum)

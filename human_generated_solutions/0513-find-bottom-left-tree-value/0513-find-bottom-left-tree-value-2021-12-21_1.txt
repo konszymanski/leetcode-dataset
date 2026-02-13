@@ -1,0 +1,17 @@
+def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+    self.last_left, self.last_row = 0, -1
+
+    def dfs(cur_node: Optional[TreeNode], cur_row: int):
+        if not cur_node:
+            return
+
+        if cur_row > self.last_row:
+            self.last_row = cur_row
+            self.last_left = cur_node.val
+
+        dfs(cur_node.left, cur_row + 1)
+        dfs(cur_node.right, cur_row + 1)
+
+    dfs(root, 0)
+
+    return self.last_left

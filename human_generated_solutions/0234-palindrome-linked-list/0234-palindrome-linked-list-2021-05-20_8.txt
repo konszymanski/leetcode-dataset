@@ -1,0 +1,45 @@
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+	
+	# Brute force. As we traverse the linked, we add the value of node into a python list then check whether the reverse is the same
+	# Given linked list: [1]->[2]->[1]->[2]
+	# Append to a python list res = [1,2,2,1]
+	# res[::-1] will reverse the list res[::-1] = [1,2,2,1]
+
+	# T: O(N)
+	# S: O(N)
+        res = []
+        
+        while head:
+            res.append(head.val)
+            head = head.next
+        return res == res[::-1]
+    
+    def isPalindrome_(self, head: ListNode) -> bool:
+	
+	# Optimal way. Go 2nd half of the array and reverse and compare with 1/2 half of the array.
+	# There are definitely better solutions in discussion forum. I honestly think this is the easiest way to read the code.
+	
+	# T: O(N)
+	# S: O(1)
+	
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            
+        prev = None
+        while slow:
+            temp = slow.next
+            slow.next = prev
+            prev = slow
+            slow = temp
+            
+        while prev:
+            if prev.val != head.val:
+                return False
+            prev= prev.next
+            head = head.next
+            
+        return True

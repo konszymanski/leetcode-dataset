@@ -1,0 +1,18 @@
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        tank = 0
+        shortage = 0
+        start = 0
+        
+        for indx in range(len(gas)):
+            tank += gas[indx]
+            if tank >= cost[indx]:
+                tank -= cost[indx]
+            else:
+                shortage += cost[indx] - tank
+                start = indx + 1
+                tank = 0
+        
+        if start == len(gas) or tank < shortage:
+            return -1
+        return start

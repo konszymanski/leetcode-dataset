@@ -1,0 +1,19 @@
+class Solution:
+    def maxEqualRowsAfterFlips(self, matrix: List[List[int]]) -> int:
+        counter = collections.Counter()
+        flipper = {1: 0, 0: 1}
+        
+        for row in matrix:
+		    # The occurrence of either a row or a row\'s inverted form should
+			# both increment the same count (since with the same columns
+			# flipped, one will complete with all zeroes, and one will complete with
+			# all ones). 
+			# 
+			# So, we normalize both row "forms" (inverted, uninverted) to whichever
+			# form starts with a 1 before we count it.
+            if row[0] == 0:
+                row = [flipper[col] for col in row]
+                
+            counter[tuple(row)] += 1
+            
+        return max(counter.values())

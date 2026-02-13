@@ -1,0 +1,13 @@
+python
+def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+	seen = [0 for i in range(len(rooms))]
+	seen[0] = 1
+	stack = [i for i in rooms[0]]
+	while stack:
+		r = stack.pop()
+		seen[r] = 1
+		for k in rooms[r]:
+			if seen[k] == 0:
+				stack.append(k)
+
+	return 0 not in seen

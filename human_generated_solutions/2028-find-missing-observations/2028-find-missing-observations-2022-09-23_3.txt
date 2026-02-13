@@ -1,0 +1,18 @@
+class Solution:
+    def missingRolls(self, rolls: List[int], mean: int, n: int) -> List[int]:
+        total = (len(rolls) + n) * mean
+        remain = total - sum(rolls)
+        if remain > n * 6 or remain < n:
+            return []
+        res = [1] * n
+        remain -= n
+		# i is used as index in the res
+        i = 0
+        while remain > 0:
+            while remain > 5:
+                res[i] += 5
+                remain -= 5
+                i += 1
+            res[i] += remain
+            return res
+        return res

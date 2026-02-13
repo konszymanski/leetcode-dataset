@@ -1,0 +1,22 @@
+def rand10(self):
+        """
+        :rtype: int
+        """
+        val = 1
+        grid = []
+        for i in range(7):
+            temp = []
+            for _ in range(7):
+                temp.append(val)
+                val+=1
+                if val==11:
+                    val = 1
+            grid.append(temp)
+
+        row = rand7()-1
+        col = rand7()-1
+
+        if row<=4 or (row==5 and col<=4):
+            return grid[row][col]
+
+        return self.rand10()

@@ -1,0 +1,25 @@
+def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+        start = locations[start]
+        finish = locations[finish]
+        locations.sort()
+        MOD = 10**9 + 7
+        
+        @functools.cache
+        def dp(loc, fuel):
+            if fuel == 0:
+                if loc == finish:
+                    return 1
+                return 0
+            
+            ans = 1 if loc == finish else 0
+
+            L = bisect_left(locations, loc - fuel)
+            R = bisect_right(locations, loc + fuel)
+            for i in range(L, R):
+                curr = locations[i]
+                if curr != loc:
+                    ans += dp(curr, fuel - abs(loc - curr))
+                    
+            return ans % MOD
+        
+        return dp(start, fuel)

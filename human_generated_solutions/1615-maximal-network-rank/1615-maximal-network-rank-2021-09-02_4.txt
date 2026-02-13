@@ -1,0 +1,27 @@
+from collections import defaultdict
+from itertools import combinations
+
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        
+        # Variables
+        rank = 0
+        indegree = defaultdict(lambda: set())
+        nodes = [i for i in range(n)]
+        
+        # Update indegree hashmap
+        for x,y in roads:
+            indegree[x].add(y)
+            indegree[y].add(x)
+            
+        # Try every pair of different cities and calculate its network rank.
+        # The network rank of two vertices is sum of their degrees discarding the common edge.
+        # For all combinations of nodes check network rank.
+        # If two nodes are connected then consider the edge between them only once,
+        # that is add -1 to sum of their indegrees else add 0.
+        for x,y in combinations(nodes, 2):
+            rank = max(rank, len(indegree[x]) + len(indegree[y])
+                       # check if there is a road connecting two different cities
+                       - (1 if (([x,y] in roads) or ([y,x] in roads)) else 0))
+            
+        return rank

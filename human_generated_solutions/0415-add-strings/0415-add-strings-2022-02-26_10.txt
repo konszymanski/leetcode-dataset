@@ -1,0 +1,11 @@
+# Runtime: 62 ms, faster than 50.73% of Python3 online submissions for Add Strings.
+# Memory Usage: 14.1 MB, less than 75.51% of Python3 online submissions for Add Strings.
+class Solution:
+    def addStrings(self, num1, num2):
+        return str(self.convert(num1)+self.convert(num2))
+
+    def convert(self, string):
+        result, digits = 0, {str(i):i for i in range(10)}
+        for i in string:
+            result = result*10 + digits[i]
+        return result

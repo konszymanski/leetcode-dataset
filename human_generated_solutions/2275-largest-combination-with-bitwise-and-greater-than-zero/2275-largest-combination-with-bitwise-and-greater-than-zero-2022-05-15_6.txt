@@ -1,0 +1,7 @@
+class Solution:
+    def largestCombination(self, cands: List[int]) -> int:
+        grps = [0] * 24
+        for c in cands:
+            for i, b in enumerate(bin(c)[2:][::-1]):
+				grps[i] += (b == \'1\')
+        return max(grps)

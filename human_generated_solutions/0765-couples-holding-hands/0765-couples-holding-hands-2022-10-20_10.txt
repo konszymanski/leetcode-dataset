@@ -1,0 +1,29 @@
+def minSwapsCouples(self, row: List[int]) -> int:
+    #beginning of each couple must happen at an even index
+    n = len(row)
+    def neighbor(curr):
+        for i in range(0, n, 2):
+            fix_left = curr[i]-1 if curr[i]%2 else curr[i]+1
+            if curr[i+1] != fix_left:
+                fix_right = curr[i+1]-1 if curr[i+1]%2 else curr[i+1]+1
+                break
+        else: #all couples are sitting together
+            return
+        
+        for j in range(i+2, n):
+            if curr[j] == fix_left:
+                curr[j], curr[i+1] = curr[i+1], curr[j]
+                return curr
+            if curr[j] == fix_right:
+                curr[j], curr[i] = curr[i], curr[j]
+                return curr
+    
+    c_node = row
+    depth = 0
+    while depth < n:
+        neigh = neighbor(c_node)
+        if not neigh: return depth
+        c_node = neigh
+        depth += 1
+    
+    return n

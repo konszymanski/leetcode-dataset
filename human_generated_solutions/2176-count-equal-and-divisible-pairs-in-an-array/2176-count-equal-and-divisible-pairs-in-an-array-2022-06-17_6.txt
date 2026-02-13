@@ -1,0 +1,17 @@
+class Solution:
+    def countPairs(self, nums: List[int], k: int) -> int:
+        seen=defaultdict(int)
+        pairs=[]
+        count=0
+        for i in range(len(nums)):
+            if nums[i] not in seen:
+                seen[nums[i]]=[]
+                seen[nums[i]].append(i)
+            else:
+                for j in seen[nums[i]]:
+                    pairs.append((i,j))
+                seen[nums[i]].append(i)
+        for (i,j) in pairs:
+            if (i*j)%k == 0:
+                count+=1
+        return count

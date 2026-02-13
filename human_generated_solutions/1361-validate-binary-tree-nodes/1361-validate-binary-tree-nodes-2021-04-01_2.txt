@@ -1,0 +1,21 @@
+class Solution:
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        uf = list(range(n))
+
+        def find_root(v):
+            while v != uf[v]:
+                uf[v] = uf[uf[v]]
+                v = uf[v]
+            return v
+        
+        for parent in range(n):
+            parent_root = find_root(parent)
+            children = [c for c in [leftChild[parent], rightChild[parent]] if c != -1]
+            for child in children:
+                child_root = find_root(child)
+                if parent_root == child_root or child_root != child:
+                    return False
+                uf[child_root] = parent_root
+            
+        components = [i for i in range(n) if i == find_root(i)]
+        return len(components) == 1

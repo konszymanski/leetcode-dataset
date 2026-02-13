@@ -1,0 +1,5 @@
+class Solution:
+    def searchInsert(self, N: List[int], t: int) -> int:
+    	for i,n in enumerate(N):
+    		if n >= t: return i
+    	return len(N)

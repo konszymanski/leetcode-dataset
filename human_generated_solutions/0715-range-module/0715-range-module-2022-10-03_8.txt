@@ -1,0 +1,56 @@
+class RangeModule:
+
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        if not self.ranges or (left <= self.ranges[0][0] and self.ranges[-1][-1] <= right):
+            self.ranges = [[left, right]]; return
+        
+        l, r = 0, len(self.ranges)-1
+        while l <= r:
+            L, mid = len(self.ranges), (l+r)//2
+            i, j = self.ranges[mid]
+            if j < left: l = mid+1; continue
+            if right < i: r = mid-1; continue
+			
+            right_offset = 0
+            while mid+right_offset+1 < L and self.ranges[mid+right_offset+1][0] <= right: right_offset += 1
+            left_offset = 0
+            while 0 <= mid-left_offset-1 and left <= self.ranges[mid-left_offset-1][1]: left_offset += 1
+            self.ranges = self.ranges[:mid-left_offset] + [[min(self.ranges[mid-left_offset][0], left), max(self.ranges[mid+right_offset][-1], right)]] + self.ranges[mid+right_offset+1:]
+            return
+        
+        self.ranges = self.ranges[:l] + [[left, right]] + self.ranges[l:]
+
+    def queryRange(self, left: int, right: int) -> bool:
+        l, r = 0, len(self.ranges)-1
+        while l <= r:
+            L, mid = len(self.ranges), (l+r)//2
+            i, j = self.ranges[mid]
+            if j < left: l = mid+1; continue
+            if right < i: r = mid-1; continue
+            if i <= left and right <= j: return True
+            return False
+        return False
+            
+    def removeRange(self, left: int, right: int) -> None:
+        l, r = 0, len(self.ranges)-1
+        while l <= r:
+            L, mid = len(self.ranges), (l+r)//2
+            i, j = self.ranges[mid]
+            if j < left: l = mid+1; continue
+            if right < i: r = mid-1; continue
+			
+            right_offset = 0
+            while mid+right_offset+1 < L and self.ranges[mid+right_offset+1][0] <= right: right_offset += 1
+            left_offset = 0
+            while 0 <= mid-left_offset-1 and left <= self.ranges[mid-left_offset-1][1]: left_offset += 1
+            
+            ranges_to_add = []
+            if self.ranges[mid-left_offset][0] < left: 
+                ranges_to_add.append([self.ranges[mid-left_offset][0], left])
+            if right < self.ranges[mid+right_offset][-1]: 
+                ranges_to_add.append([right, self.ranges[mid+right_offset][-1]])    
+            self.ranges = self.ranges[:mid-left_offset] + ranges_to_add + self.ranges[mid+right_offset+1:]
+            return

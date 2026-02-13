@@ -1,0 +1,17 @@
+class Solution:
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        def check(quantities: List[int], mid: int, n: int) -> bool:
+            store, i = 0, 0
+            while store < n and i < len(quantities):
+                store += (quantities[i] + mid - 1) // mid
+                i += 1
+            return store <= n and i == len(quantities)
+            
+        left, right, res = 1, max(quantities), -1
+        while left <= right:
+            mid = left + ((right - left) // 2)
+            if check(quantities, mid, n):
+                res, right = mid, mid - 1
+            else:
+                left = mid + 1
+        return res

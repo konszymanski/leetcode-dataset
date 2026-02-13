@@ -1,0 +1,43 @@
+from collections import defaultdict
+from typing import Dict, List, Tuple
+class TimeMap:
+
+    def __init__(self):
+       self.time_map: Dict[str,List[Tuple]] = defaultdict(list) 
+        
+
+    def get_value(self, key: str, timestamp: int):
+        arr = self.time_map[key]
+        low = 0
+        high = len(arr) - 1
+        while low <=high:
+            mid = (low + high)//2
+            if timestamp >= arr[mid][0] and timestamp < arr[mid+1][0]:
+                return arr[mid][1]
+            elif timestamp < arr[mid][0]:
+                    high = mid - 1
+            else:
+                low = mid + 1
+        return ""
+            
+    
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.time_map[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.time_map:
+            return ""
+        else:
+            if timestamp < self.time_map[key][0][0]:
+                return ""
+            elif timestamp >= self.time_map[key][-1][0]:
+                return self.time_map[key][-1][1]
+            else:
+                return self.get_value(key, timestamp)
+        
+
+
+# Your TimeMap object will be instantiated and called as such:
+# obj = TimeMap()
+# obj.set(key,value,timestamp)
+# param_2 = obj.get(key,timestamp)

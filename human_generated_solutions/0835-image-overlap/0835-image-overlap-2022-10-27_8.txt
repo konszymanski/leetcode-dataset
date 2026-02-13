@@ -1,0 +1,10 @@
+import numpy as np
+
+class Solution:
+    def largestOverlap(self, img1: List[List[int]], img2: List[List[int]]) -> int:
+        n = len(img1)
+        A = np.array(img1).astype(bool)
+        B = np.pad(img2,n-1,mode=\'constant\')
+        return max(
+            np.sum(B[x:x+n,y:y+n][A])
+            for x in range(2*n-1) for y in range(2*n-1))

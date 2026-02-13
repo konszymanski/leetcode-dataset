@@ -1,0 +1,32 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> \'Node\':
+        """
+              v
+        1   1   0   1
+        1   1   1   0
+        0   0   0   0
+        1   0   0   0
+        
+        - break them apart into 4 quad
+        - recursively construct on 4 quad
+        - merge the 4 together or leave it as it is
+        
+        """
+        def merge(a: Node, b: Node, c: Node , d: Node) -> Node:
+            root = Node(1, False, a, b, c, d)
+            if not a or not b or not c or not d:
+                return root
+            isAllLeaf = a.isLeaf==1 and b.isLeaf==1 and c.isLeaf==1 and d.isLeaf==1
+            isAllValSame = a.val == b.val == c.val == d.val
+            if isAllLeaf and isAllValSame:
+                return Node(a.val, 1)
+            return root
+       
+        if len(grid) == 1 and len(grid[0]) == 1:
+            return Node(grid[0][0], 1)
+        middle = len(grid) // 2
+        topLeft = self.construct([block[:middle] for block in grid[:middle]])
+        bottomLeft = self.construct([block[:middle] for block in grid[middle:]])
+        topRight = self.construct([block[middle:] for block in grid[:middle]])
+        bottomRight = self.construct([block[middle:] for block in grid[middle:]])
+        return merge(topLeft, topRight, bottomLeft, bottomRight)

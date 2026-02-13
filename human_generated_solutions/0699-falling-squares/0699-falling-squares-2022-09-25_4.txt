@@ -1,0 +1,66 @@
+class Segment:
+    def __init__(self, total, left_index, right_index):
+        self.total=total
+        self.left=None
+        self.right=None
+        self.left_index=left_index
+        self.right_index=right_index
+        self.lazy=0
+    
+    @staticmethod
+    def init(left, right):
+        if left==right:
+            return Segment(0, left, right)
+        mid=(left+right)//2
+        root=Segment(0, left, right)
+        root.left=Segment.init(left, mid)
+        root.right=Segment.init(mid+1, right)
+        return root
+
+    def update(self, left, right, val):
+        if self.lazy!=0:
+            self.total=max(self.total, self.lazy)
+            if self.left and self.right:
+                self.left.lazy=max(self.left.lazy, self.lazy)
+                self.right.lazy=max(self.right.lazy, self.lazy)
+            self.lazy=0
+        if self.left_index>right or self.right_index<left:
+            return
+        if self.left_index>=left and self.right_index<=right:
+            self.total=max(self.total, val)
+            if self.left and self.right:
+                self.left.lazy=val
+                self.right.lazy=val
+            return
+        self.left.update(left, right, val)
+        self.right.update(left, right, val)
+        self.total=max(self.total, self.left.total, self.right.total)
+        
+    def query(self, left, right):
+        if self.lazy!=0:
+            self.total=max(self.total, self.lazy)
+            if self.left and self.right:
+                self.left.lazy=max(self.left.lazy, self.lazy)
+                self.right.lazy=max(self.right.lazy, self.lazy)
+            self.lazy=0
+        if self.left_index>right or self.right_index<left:
+            return 0
+        if self.left_index>=left and self.right_index<=right:
+            return self.total
+        return max(self.left.query(left, right), self.right.query(left, right))
+    
+class Solution:
+    def fallingSquares(self, positions: List[List[int]]) -> List[int]:
+        coords = set()
+        for left, size in positions:
+            coords.add(left)
+            coords.add(left + size - 1)
+        index = {x: i for i, x in enumerate(sorted(coords))}
+        tree=Segment.init(0, len(index))
+        res=[0]
+        for i,j in positions:
+            left, right=index[i], index[i+j-1]
+            val=tree.query(left, right)+j
+            tree.update(left, right, val)
+            res.append(max(res[-1], val))
+        return res[1:]

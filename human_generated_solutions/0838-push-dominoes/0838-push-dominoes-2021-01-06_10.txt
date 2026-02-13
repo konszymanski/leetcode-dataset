@@ -1,0 +1,26 @@
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        s = "L" + dominoes + "R"
+
+        p, q = 0, 1
+        res = ""
+        
+        while q < len(s):
+            if s[q] != ".":
+                if s[p] == s[q]:
+                    res += s[p] * (q - p )
+                    
+                elif s[p] == \'R\' and s[q] == \'L\':
+                    m = (p + q) // 2
+                    if (p + q) % 2 == 0: 
+                        res += s[p] * (m - p)  + \'.\' +  s[q] * ( q - m - 1)
+                    else:
+                        res += s[p] * (m - p + 1) + s[q] * (q - m - 1)
+                else:
+                    res += s[p] + \'.\' * (q - p - 1)
+                
+                p = q 
+                
+            q += 1
+        
+        return res[1:]

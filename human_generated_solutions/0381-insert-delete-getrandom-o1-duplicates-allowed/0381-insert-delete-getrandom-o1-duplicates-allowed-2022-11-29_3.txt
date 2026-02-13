@@ -1,0 +1,29 @@
+from sortedcontainers import SortedList
+import random
+class RandomizedCollection:
+
+    def __init__(self):
+        self.arr=SortedList([])
+        self.dc=defaultdict(lambda:0)
+
+    def insert(self, val: int) -> bool:
+        self.arr.add(val)
+        self.dc[val]+=1
+        return self.dc[val]==1
+    def remove(self, val: int) -> bool:
+        if(self.dc[val]>0):
+            self.arr.discard(val)
+            self.dc[val]-=1
+            return True
+        return False
+        
+
+    def getRandom(self) -> int:
+        return random.choice(self.arr)
+
+
+# Your RandomizedCollection object will be instantiated and called as such:
+# obj = RandomizedCollection()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()

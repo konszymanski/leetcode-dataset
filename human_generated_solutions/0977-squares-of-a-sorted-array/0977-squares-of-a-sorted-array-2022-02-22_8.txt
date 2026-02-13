@@ -1,0 +1,15 @@
+# Runtime: 329 ms, faster than 46.92% of Python3 online submissions for Squares of a Sorted Array.
+# Memory Usage: 16.3 MB, less than 40.77% of Python3 online submissions for Squares of a Sorted Array.
+class Solution:
+    def sortedSquares(self, nums):
+        i, j, n = 0, len(nums)-1, len(nums)-1
+        result = [0 for _ in range(len(nums))]
+        while n>=0:
+            if abs(nums[i])>abs(nums[j]):
+                result[n] = nums[i]**2
+                i += 1
+            else:
+                result[n] = nums[j]**2
+                j -= 1
+            n -= 1
+        return result

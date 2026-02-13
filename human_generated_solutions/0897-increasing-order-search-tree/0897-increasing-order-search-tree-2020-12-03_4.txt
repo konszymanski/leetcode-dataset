@@ -1,0 +1,19 @@
+class Solution:
+    def increasingBST(self, root: TreeNode) -> TreeNode:
+        #store the inorder references of the nodes in a list
+        #as inorder traversal gives the increasing order of node values
+        ans = []
+        def inorder(node):
+            if node is None:
+                return 
+            inorder(node.left)
+            ans.append(node)
+            inorder(node.right)
+        inorder(root)
+        
+        for i in range(len(ans) - 1):
+            ans[i].left = None
+            ans[i].right = ans[i + 1]
+        ans[len(ans) - 1].left = None
+        ans[len(ans) - 1].right = None
+        return ans[0]

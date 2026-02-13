@@ -1,0 +1,25 @@
+class Solution:
+    def distributeCookies(self, cookies: List[int], k: int) -> int:
+        n=len(cookies)
+		#if the number of kids is equivalent to number of bags then just return the bag with max value
+        if n==k:
+            return max(cookies)
+		#initialize the set
+        l=[[0]*k]
+        division=set(tuple(i) for i in l)
+        
+		#calculate possible permutations for curr number of bags (i+1)
+        for i in range(n):
+            div=set()
+            for d in division:
+                for j in range(k):
+                    temp=list(d)
+                    temp[j]+=cookies[i]
+                    div.add(tuple(temp))
+                    
+			#we delete the previous set to get rid of previous permutations because we only need ith perm to calculate i+1th perm
+            del division
+            division=div
+                    
+        # print(division)
+        return min([max(t) for t in division])

@@ -1,0 +1,16 @@
+class Solution:
+    def numPermsDISequence(self, s: str) -> int:
+        myStore = [1]
+        
+        for index, val in enumerate(s):
+            if val == 0:
+                continue
+            temp = []
+            for i in range(index + 2):
+                if val == "I":
+                    curr = sum(myStore[i:])
+                else:
+                    curr = sum(myStore[:i])
+                temp.append(curr)
+            myStore = temp
+        return sum(myStore) % (10**9+7)

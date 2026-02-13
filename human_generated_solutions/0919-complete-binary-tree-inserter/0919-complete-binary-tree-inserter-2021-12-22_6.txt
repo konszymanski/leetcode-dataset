@@ -1,0 +1,40 @@
+class CBTInserter:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.root=root
+        self.arr=[]
+        q=[(root,1)]
+        while q:#Use BFS to get all nodes of same level
+            node,lvl=q.pop(0)
+            if not node:
+                continue
+            if lvl>len(self.arr):
+                self.arr.append([node])
+            else:
+                self.arr[lvl-1].append(node)
+            q.append((node.left,lvl+1))
+            q.append((node.right,lvl+1))
+                
+
+    def insert(self, val: int) -> int:
+        l=len(self.arr)
+        actualLastElLen=2**(l-1)
+        currentLastElLen=len(self.arr[-1])
+        required=actualLastElLen-currentLastElLen
+        t=TreeNode(val)
+        if required!=0:#Means last row has some space
+            searchForInd=currentLastElLen//2
+            if currentLastElLen%2==0:#Left CHild 
+                self.arr[-2][searchForInd].left=t
+            else:
+                self.arr[-2][searchForInd].right=t
+            self.arr[-1].append(t)
+            return self.arr[-2][searchForInd].val
+        else:#Last row is fully occupied
+            self.arr[-1][0].left=t
+            r=self.arr[-1][0].val
+            self.arr.append([t])
+            return r
+
+    def get_root(self) -> Optional[TreeNode]:
+        return self.root

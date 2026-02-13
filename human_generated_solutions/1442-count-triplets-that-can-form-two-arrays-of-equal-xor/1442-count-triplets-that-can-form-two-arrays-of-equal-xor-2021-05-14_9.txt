@@ -1,0 +1,14 @@
+class Solution:
+    def countTriplets(self, arr: List[int]) -> int:
+        m = defaultdict(list)
+        n = len(arr)
+        m[0].append(-1)
+        ans = 0
+        x = 0
+        for i in range(n):
+            x ^= arr[i]
+            if x in m:
+                for j in m[x]:
+                    ans += (i-j)-1
+            m[x].append(i)
+        return ans

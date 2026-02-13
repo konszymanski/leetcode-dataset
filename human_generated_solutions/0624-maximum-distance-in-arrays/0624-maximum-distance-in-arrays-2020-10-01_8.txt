@@ -1,0 +1,17 @@
+def maxDistance(self, arrays: List[List[int]]) -> int:
+	minidx = maxidx = 0
+
+	for i, val in enumerate(arrays):
+		if val[0] < arrays[minidx][0]: minidx = i
+		if val[-1] > arrays[maxidx][-1]: maxidx = i
+
+	if minidx != maxidx: return abs(arrays[maxidx][-1] - arrays[minidx][0])
+
+	# overlap, let\'s do another pass
+	twominidx = twomaxidx = (maxidx + 1) % len(arrays)
+	for i, val in enumerate(arrays):
+		if i == maxidx: continue
+		if val[0] < arrays[twominidx][0]: twominidx = i
+		if val[-1] > arrays[twomaxidx][-1]: twomaxidx = i
+
+	return max(abs(arrays[twomaxidx][-1] - arrays[minidx][0]), abs(arrays[maxidx][-1] - arrays[twominidx][0]))

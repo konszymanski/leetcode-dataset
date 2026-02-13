@@ -1,0 +1,26 @@
+from heapq import heappop, heappush, heappushpop
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        
+        self.k = k
+        self.heap = []
+        
+        # add current element into min heap, 
+        # keep heap size = k
+        for element in nums:
+            self.add(element)
+
+    def add(self, val: int) -> int:
+        
+        heap_top = 0
+        
+        # Always keep heap size = k
+        # Top element = kth largest element
+        if len( self.heap ) < self.k:
+            heappush( self.heap, val)
+        else:
+            heappushpop( self.heap, val)
+        
+        return self.heap[heap_top]

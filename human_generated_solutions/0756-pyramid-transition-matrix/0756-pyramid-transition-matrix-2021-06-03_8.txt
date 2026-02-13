@@ -1,0 +1,20 @@
+class Solution:
+    def pyramidTransition(self, bottom: str, allowed) -> bool:
+        dict_allowed = dict()
+        for s in allowed:
+            key = tuple(s[:2])
+            if key in dict_allowed:
+                dict_allowed[key].add(s[2])
+            else:
+                dict_allowed[key] = {s[2]}
+        row = [{c} for c in bottom]
+        while len(row) > 1:
+            new_row = [set() for _ in range(len(row) - 1)]
+            for i in range(len(row) - 1):
+                for tpl in product(row[i], row[i + 1]):
+                    if tpl in dict_allowed:
+                        new_row[i].update(dict_allowed[tpl])
+                if not new_row[i]:
+                    return False
+            row = new_row
+        return True

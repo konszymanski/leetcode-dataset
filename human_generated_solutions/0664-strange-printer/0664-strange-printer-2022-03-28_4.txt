@@ -1,0 +1,26 @@
+class Solution:
+    def strangePrinter(self, s: str) -> int:
+        \'\'\'
+        Time: O(n^3)
+        Space: O(n^2)
+        \'\'\'
+        n = len(s)
+        dp = [[float(\'inf\')] * n for _ in range(n)]
+        
+        
+        def helper(s, low, high):
+            if low > high:
+                return 0
+            if dp[low][high] != float(\'inf\'):
+                return dp[low][high]
+            
+            dp[low][high] = 1 + helper(s, low + 1, high)
+			#high is n-1, so here it has to be high + 1
+            for mid in range(low + 1, high + 1):
+                if s[low] == s[mid]:
+                    dp[low][high] = min(dp[low][high], (helper(s, low, mid-1) + helper(s, mid+1, high)))
+            return dp[low][high]
+        
+        res = helper(s, 0, n-1)
+        #print(dp)
+        return res

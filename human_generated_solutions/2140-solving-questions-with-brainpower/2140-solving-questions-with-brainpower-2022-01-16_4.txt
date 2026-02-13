@@ -1,0 +1,11 @@
+def mostPoints(self, questions: List[List[int]]) -> int:
+        n=len(questions)
+        l=[x[0] for x in questions]
+        maxi=0
+        for i in range(n-1,-1,-1):
+            if i+questions[i][1]+1>n-1:
+                maxi=max(l[i],maxi)
+            else:
+                maxi=max(l[i]+l[i+questions[i][1]+1],maxi)
+            l[i]=maxi
+        return l[0]

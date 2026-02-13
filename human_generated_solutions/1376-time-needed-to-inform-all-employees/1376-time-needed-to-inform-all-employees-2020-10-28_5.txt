@@ -1,0 +1,31 @@
+from collections import defaultdict
+
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        
+        # build a tree from data, mapping employee to subordinates
+        # dfs to find max sum path in tree
+        
+        # O(n) time and space
+        
+        # O(n) space to build tree
+        # O(n) space in recursion stack to dfs (in the case of unbalanced tree)
+        
+        # O(n) time to build tree
+        # O(n) time to dfs since we only visit each node once
+
+        tree = defaultdict(list)
+        
+        for i in range(len(manager)):
+            man, sub = manager[i], i
+            tree[man].append(sub)
+            
+        def dfs(node):
+            
+            # leaf
+            if not tree[node]:
+                return 0
+            
+            return informTime[node] + max(dfs(sub) for sub in tree[node])
+        
+        return dfs(headID)

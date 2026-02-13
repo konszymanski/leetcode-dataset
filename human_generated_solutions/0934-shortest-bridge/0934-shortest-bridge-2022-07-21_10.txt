@@ -1,0 +1,45 @@
+class Solution(object):
+    def shortestBridge(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)  
+        q = collections.deque()  
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        # DFS
+        def dfs(r, c):
+            grid[r][c] = 2
+            q.appendleft((r, c))
+            for dr, dc in dirs:
+                nr = r + dr
+                nc = c + dc
+                if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 1:
+                    dfs(nr, nc)
+
+        # get the first cell of value 1
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    startr, startc = r, c
+
+        
+        dfs(startr, startc)  # DFS
+        res = 0
+
+        # BFS to flip 0s
+        while q:
+            size = len(q)
+            for _ in range(size):
+                r, c = q.pop()
+                for dr, dc in dirs:
+                    nr = r + dr
+                    nc = c + dc
+                    if 0 <= nr < n and 0 <= nc < n:
+                        if not grid[nr][nc]:
+                            grid[nr][nc] = 3
+                            q.appendleft((nr, nc))
+                        elif grid[nr][nc] == 1:
+                            return res
+            res += 1

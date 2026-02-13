@@ -1,0 +1,28 @@
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        
+		# Construct the Monotonic decreasing queue
+        queue = collections.deque()
+        for i in range(k-1):
+		    # When queue[-1] < nums[i], pop queue[-1] to keep decreasing order
+			# Cannot use <= here, since it will fail when run against cases like [2,2,1,2], k=2
+            while queue and queue[-1] < nums[i]:
+                queue.pop()
+            queue.append(nums[i])
+        
+        res = []
+        for i in range(k-1, len(nums)):
+		    # Add the new element of the window 
+            while queue and queue[-1] < nums[i]:
+                queue.pop()
+            queue.append(nums[i])
+			
+			# Append the max value (queue[0]) to the result
+            res.append(queue[0])
+            
+			# Pop the old element of the window
+			# Pop only when queue[0] == nums[i-k+1], since it may already be popped 
+            if queue[0] == nums[i-k+1]:
+                queue.popleft()
+        
+        return res

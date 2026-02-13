@@ -1,0 +1,26 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+        n = len(nums)
+        breaker = i = j = 0
+        answer = maxKCount = minKCount = 0
+        
+        while i < n:
+            while breaker < n and minK <= nums[breaker] <= maxK:
+                breaker += 1
+            
+            while (minKCount == 0 or maxKCount == 0) and j < breaker:
+                minKCount += int(nums[j] == minK)
+                maxKCount += int(nums[j] == maxK)
+                j += 1
+            
+            if j == breaker and (minKCount == 0 or maxKCount == 0):
+                breaker += 1
+                i = j = breaker
+                maxKCount = minKCount = 0 
+            else:
+                answer += breaker - j + 1
+                minKCount -= int(nums[i] == minK)
+                maxKCount -= int(nums[i] == maxK)
+                i += 1
+        
+        return answer

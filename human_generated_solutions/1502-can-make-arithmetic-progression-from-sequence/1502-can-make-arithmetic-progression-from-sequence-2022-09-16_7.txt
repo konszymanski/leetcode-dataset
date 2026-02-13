@@ -1,0 +1,10 @@
+class Solution:
+    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
+        arr.sort()
+        st = set()
+        for i in range(len(arr)-1):
+            ast = arr[i+1] - arr[i]
+            st.add(ast)
+        if len(st) == 1:
+            return True
+        return False

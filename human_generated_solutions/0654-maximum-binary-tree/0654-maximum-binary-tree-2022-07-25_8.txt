@@ -1,0 +1,21 @@
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
+        # simple dfs problem
+        # Logic is first identify the max node , make it TreeNode
+        # slice the array to left and right
+        # apply the same process to left and right sub array recursively
+        if len(nums)==0:
+            return 
+        rootdata=max(nums)
+        root=TreeNode(rootdata)
+        for i in range(len(nums)):
+            if nums[i]==rootdata:
+                preindex=i
+                break
+        left=self.constructMaximumBinaryTree(nums[:preindex])
+        right=self.constructMaximumBinaryTree(nums[preindex+1:])
+        root.left=left
+        root.right=right
+        return root

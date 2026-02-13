@@ -1,0 +1,13 @@
+class Solution:
+    def numTeams(self, rating: List[int]) -> int:
+        from itertools import combinations
+        
+        comb = combinations(rating, 3)
+        count = 0
+        
+        for i in comb:
+            if ((i[0]>i[1] and i[1]>i[2]) or
+                (i[0]<i[1] and i[1]<i[2])):
+                
+                count+=1
+        return count

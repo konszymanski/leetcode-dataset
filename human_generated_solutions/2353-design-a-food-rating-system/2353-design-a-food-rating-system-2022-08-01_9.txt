@@ -1,0 +1,21 @@
+class FoodRatings:
+
+    def __init__(self, foods: List[str], cuisines: List[str], ratings: List[int]):
+        self.heaps = defaultdict(list)
+        self.f_to_c = defaultdict(str)
+        self.f_to_r = defaultdict(int)
+        for f, c, r in zip(foods, cuisines, ratings):
+            heappush(self.heaps[c], (-r, f))
+            self.f_to_c[f] = c
+            self.f_to_r[f] = r
+
+    def changeRating(self, food: str, newRating: int) -> None:
+        heap = self.heaps[self.f_to_c[food]]
+        heappush(heap, (-newRating, food))
+        self.f_to_r[food] = newRating
+
+    def highestRated(self, cuisine: str) -> str:
+        heap = self.heaps[cuisine]
+        while -heap[0][0] != self.f_to_r[heap[0][1]]:
+            heappop(heap)
+        return heap[0][1]

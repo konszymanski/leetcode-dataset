@@ -1,0 +1,24 @@
+class Solution:
+    def minimumDifference(self, nums: List[int]) -> int:
+        n = len(nums)//3
+        pq0 = [-x for x in nums[:n]]
+        pq1 = nums[-n:]
+        
+        heapify(pq0)
+        heapify(pq1)
+        
+        ans = -sum(pq0) - sum(pq1)
+        prefix = [0]
+        for i in range(n, 2*n): 
+            prefix.append(prefix[-1])
+            if nums[i] < -pq0[0]: 
+                prefix[-1] += nums[i] + pq0[0]
+                heapreplace(pq0, -nums[i])
+        extra = prefix[-1]
+        suffix = 0 
+        for i in reversed(range(n, 2*n)): 
+            if nums[i] > pq1[0]: 
+                suffix += pq1[0] - nums[i]
+                heapreplace(pq1, nums[i])
+            extra = min(extra, prefix[i-n] + suffix)
+        return ans + extra

@@ -1,0 +1,14 @@
+class Solution:
+    def checkStraightLine(self, P):
+        x0,y0 = P[0]
+        x1,y1 = P[1]
+        #
+        if x0==x1:
+            inline = lambda x,y: x==x0
+        else:
+            # y = m*x + b
+            m = ( y1 - y0 )/float( x1 - x0 )
+            b = y0 - m*x0
+            inline = lambda x,y: y == ( m*x + b )
+        #
+        return all( [ inline(x,y) for x,y in P[2:] ] )

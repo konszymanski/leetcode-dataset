@@ -1,0 +1,57 @@
+\'\'\'
+4 monotonic stacks, aggregate min/max
+O(n), O(n)
+\'\'\'
+class Solution:
+    def subArrayRanges(self, nums: List[int]) -> int:
+        n = len(nums)
+        next_smaller = [0] * n # index of
+        prev_smaller = [0] * n # index of
+        next_larger = [0] * n # index of
+        prev_larger = [0] * n # index of
+        
+        stack = [] # monotonic non-decreasing stack, index of, to find next smaller
+        stack2 = [] # monotonic increasing stack, index of, to find prev smaller
+        stack3 = [] # monotonic non-increasing stack, index of, to find next larger
+        stack4 = [] # monotonic decreasing stack, index of, to find prev larger
+        
+        # find next smaller
+        for i in range(n):
+            while stack and nums[stack[-1]] > nums[i]:
+                next_smaller[stack.pop()] = i
+            stack.append(i)
+        while stack:
+            next_smaller[stack.pop()] = n
+            
+        # find prev smaller
+        for i in reversed(range(n)):
+            while stack2 and nums[stack2[-1]] >= nums[i]:
+                prev_smaller[stack2.pop()] = i
+            stack2.append(i)
+        while stack2:
+            prev_smaller[stack2.pop()] = -1
+        
+        # find next larger
+        for i in range(n):
+            while stack3 and nums[stack3[-1]] < nums[i]:
+                next_larger[stack3.pop()] = i
+            stack3.append(i)
+        while stack3:
+            next_larger[stack3.pop()] = n
+        
+        # find prev larger
+        for i in reversed(range(n)):
+            while stack4 and nums[stack4[-1]] <= nums[i]:
+                prev_larger[stack4.pop()] = i
+            stack4.append(i)
+        while stack4:
+            prev_larger[stack4.pop()] = -1
+        
+        # aggregate(ranges) = aggregate(max - min) = aggregate(max) - aggregate(min)
+        aggregate_mins = aggregate_maxes = 0
+        for i in range(n):
+            # all subarrays where nums[i] is the min
+            aggregate_mins += nums[i] * (i - prev_smaller[i]) * (next_smaller[i] - i)
+            # all subarrays where nums[i] is the max
+            aggregate_maxes += nums[i] * (i - prev_larger[i]) * (next_larger[i] - i)
+        return aggregate_maxes - aggregate_mins

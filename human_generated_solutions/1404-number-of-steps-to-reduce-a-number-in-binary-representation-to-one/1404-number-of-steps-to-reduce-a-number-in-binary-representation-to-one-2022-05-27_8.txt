@@ -1,0 +1,15 @@
+class Solution:
+    def numSteps(self, s: str) -> int:
+        num = 0
+        p = 0
+        for i in range(len(s)-1,-1,-1):
+            num += int(s[i])*(2**p)
+            p += 1
+        moves = 0
+        while num > 1:
+            if  num % 2 == 0:
+                num = num >> 1
+            else:
+                num += 1
+            moves += 1
+        return moves

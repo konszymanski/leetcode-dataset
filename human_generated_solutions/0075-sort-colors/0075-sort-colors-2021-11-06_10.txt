@@ -1,0 +1,20 @@
+def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # start => place next to \'0\'s end or first \'1\' index, mid => place at unknown value from start (after \'1\' index) , end => unkown value from end (before 2)
+        # [00001111XXXXXXX22222]
+        start = mid = 0
+        end = len(nums) -1
+        while mid <= end:
+            if nums[mid] == 0:
+                nums[mid],nums[start] = nums[start],nums[mid]
+                mid+=1 # mid is always at unknown ie. X
+                start +=1 # start is always at last \'0\' index + 1 or first \'1\' index
+            elif nums[mid] == 2:
+                nums[mid],nums[end] = nums[end],nums[mid]
+                end -=1 # end is always at unknown ie. X
+            else:
+                mid +=1
+        return nums
+		# like if you find it useful

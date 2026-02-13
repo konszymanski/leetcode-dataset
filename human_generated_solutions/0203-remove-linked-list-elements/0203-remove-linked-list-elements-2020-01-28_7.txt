@@ -1,0 +1,18 @@
+class Solution(object):
+    def removeElements(self, head, val):
+        prev, current = None, head
+        while current:
+            if current.val == val:
+                if prev:
+                    # Remove the current node in the normal way.
+                    prev.next = current.next
+                    current = prev
+                else:
+                    # We are at the head, advance the head and keep prev as None.
+                    head = head.next
+            else:
+                # Advance the prev pointer.
+                prev = current
+            # Advance the current pointer.
+            current = current.next
+        return head

@@ -1,0 +1,16 @@
+class Solution:
+    def partitionLabels(self, S: str) -> List[int]:
+        # keep in dictionary the indexes of each letter:
+        my_dict = defaultdict(list)
+        for i, letter in enumerate(S):
+            my_dict[letter].append(i)
+        res = []
+        i = 0
+        # find maximum index for each letter until finished current partition:
+        max_ind = max(my_dict[S[0]])
+        while i < len(S):
+            max_ind = max(max_ind, max(my_dict[S[i]]))
+            if i == max_ind:
+                res.append(i+1 - sum(res))
+            i+=1
+        return res

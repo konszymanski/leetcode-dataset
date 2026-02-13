@@ -1,0 +1,17 @@
+class Solution:
+    def deleteAndEarn(self, nums: List[int]) -> int:
+        val = [0] * 10001
+        
+        m = 0
+        for i in nums:
+            m = max(m, i)
+            val[i] += i
+            
+        dp = [0] * (m+1)
+        dp[0] = 0
+        dp[1] = val[1]
+        
+        for i in range(2, m+1):
+            dp[i] = max(val[i] + dp[i-2], dp[i-1])
+            
+        return dp[m]

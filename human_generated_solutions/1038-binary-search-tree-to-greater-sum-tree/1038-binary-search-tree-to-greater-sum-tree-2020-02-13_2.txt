@@ -1,0 +1,26 @@
+class Solution:
+    
+    def helper( self, node: TreeNode):
+
+        if not node:
+            # empty node or empty tree
+            return None
+
+        else:
+            # DFS to next level with order:( right subtree, current node, left subtree)
+            self.helper( node.right )
+		
+			# update accumulation value
+            self.accumulation_sum += node.val
+            node.val = self.accumulation_sum
+
+            self.helper( node.left )
+
+            return node
+      
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        
+        # accumulation sum of nodes
+        self.accumulation_sum = 0
+                        
+        return self.helper( root )

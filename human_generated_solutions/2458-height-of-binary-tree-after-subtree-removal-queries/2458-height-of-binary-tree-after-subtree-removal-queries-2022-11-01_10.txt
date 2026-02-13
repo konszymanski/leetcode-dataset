@@ -1,0 +1,34 @@
+class Solution:
+    def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+        depths, heights = collections.defaultdict(int), collections.defaultdict(int)
+        def dfs(node, d) -> int:
+            if not node:
+                return -1
+            depths[node.val] = d
+            h = max(dfs(node.left, d+1), dfs(node.right, d+1)) + 1
+            heights[node.val] = h
+            return h
+        dfs(root, 0)
+        
+        cousins = collections.defaultdict(list)
+        for val, depth in depths.items():
+            if len(cousins[depth]) == 0:
+                cousins[depth].append((-1, -1))
+                cousins[depth].append((-1, -1))
+            if heights[val] > cousins[depth][0][0]:
+                cousins[depth][1] = cousins[depth][0]
+                cousins[depth][0] = (heights[val], val)
+            elif heights[val] > cousins[depth][1][0]:
+                cousins[depth][1] = (heights[val], val)
+        
+        ans = []
+        for val in queries:
+            depth = depths[val]
+            if cousins[depth][1][0] == -1:
+                ans.append(depth-1)
+            elif cousins[depth][0][1] == val:
+                ans.append(cousins[depth][1][0] + depth)
+            else:
+                ans.append(cousins[depth][0][0] + depth)
+            
+        return ans

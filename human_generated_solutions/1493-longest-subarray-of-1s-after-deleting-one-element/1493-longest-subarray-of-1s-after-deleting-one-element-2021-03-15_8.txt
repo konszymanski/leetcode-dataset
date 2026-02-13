@@ -1,0 +1,9 @@
+class Solution:
+    def longestSubarray(self, nums: List[int]) -> int:
+        ans = 0 
+        queue = deque([-1])
+        for i, x in enumerate(nums): 
+            if not x: queue.append(i)
+            if len(queue) > 2: queue.popleft()
+            ans = max(ans, i - queue[0] - 1)
+        return ans

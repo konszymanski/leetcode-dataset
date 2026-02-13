@@ -1,0 +1,14 @@
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        #
+        ## bfs iteration
+        res = 0
+        que = deque([(root,str(root.val))])
+        while que:
+            node,string = que.popleft()
+            if not (node.left or node.right): res += int(string)
+            if node.left:
+                que.append((node.left,string+str(node.left.val)))
+            if node.right:
+                que.append((node.right,string+str(node.right.val)))
+        return res

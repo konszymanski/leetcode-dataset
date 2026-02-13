@@ -1,0 +1,47 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
+        start_path = []
+        dest_path = []
+        res = []
+        
+        def dfs(root):
+            if not root or len(res) > 0:
+                return False, False
+            
+            left_has_start, left_has_dest = dfs(root.left)
+            right_has_start, right_has_dest = dfs(root.right)
+            
+            #update paths if they contain start/dest
+            if left_has_start or right_has_start:
+                start_path.append(\'U\')
+                
+            if left_has_dest:
+                dest_path.append(\'L\')
+                
+            if right_has_dest:
+                dest_path.append(\'R\')
+            
+            #standard "find LCA" logic
+            left = left_has_start or left_has_dest
+            right = right_has_start or right_has_dest
+            mid = True if root.val == startValue or root.val == destValue else False
+            
+            #if we\'ve hit the LCA, update res
+            if left + right + mid >= 2:
+                res.extend(start_path)
+                res.extend(reversed(dest_path)) #dest path will be in reverse order
+            
+            #return bools for whether or not we have the start or dest in this path
+            has_start = left_has_start or right_has_start or root.val == startValue
+            has_dest = left_has_dest or right_has_dest or root.val == destValue
+                
+            return has_start, has_dest
+        
+        dfs(root)
+        return "".join(res)

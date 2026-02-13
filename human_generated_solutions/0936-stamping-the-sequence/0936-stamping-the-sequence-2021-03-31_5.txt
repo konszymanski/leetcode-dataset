@@ -1,0 +1,88 @@
+def movesToStamp(self, stamp: str, target: str) -> List[int]:
+    stamp_len = len(stamp)
+    target_len = len(target)
+    curr_left_end = 0
+    ans = []
+
+    # Generate as many full matches as possible
+    while curr_left_end < target_len:
+        curr_left_end = target.find(stamp, curr_left_end)
+        if curr_left_end < 0:
+            break
+        ans.append(curr_left_end)
+        curr_left_end += stamp_len
+
+
+    full_match_count = len(ans)
+    # Last stamp must leave a full match if target is valid
+    if full_match_count == 0:
+        return []
+
+    # Finish stamping to the left of the first full match
+    # Starting target interval is [0: first_match_start]
+    # For each prefix of current target interval, match to longest suffix of stamp
+
+    curr_right_end = ans[0]  # Don\'t change this
+    while curr_right_end > 0:
+        # Stamp_len-1 since we know we don\'t have a full match
+        try_match_len = min(curr_right_end, stamp_len-1)
+        while try_match_len > 0:
+            if target[curr_right_end - try_match_len:curr_right_end] == stamp[:try_match_len]:
+                curr_right_end -= try_match_len
+                ans.append(curr_right_end)
+                break
+            try_match_len -= 1
+        # If we couldn\'t find any target suffixes matching a stamp prefix
+        if try_match_len == 0:
+            return []
+
+    # Finish stamping to the right of the last full match
+    # Starting target interval is [final_full_match + stamp_len : target_len]
+    # For each prefix of current target interval, match to longest suffix of stamp
+    curr_left_end = ans[full_match_count - 1] + stamp_len
+
+    while curr_left_end < target_len:
+        try_match_len = min(target_len - curr_left_end, stamp_len - 1)
+        while try_match_len > 0:
+            if target[curr_left_end:curr_left_end + try_match_len] == stamp[stamp_len - try_match_len:]:
+                curr_left_end += try_match_len
+                ans.append(curr_left_end - stamp_len)
+                break
+            try_match_len -= 1
+        # If we couldn\'t find any target prefix matching a stamp suffix
+        if try_match_len == 0:
+            return []
+
+    # Find partial matches strictly between existing full matches
+    # Now need to check both prefix-suffix match cases as above and additional
+    # case with matches into center of stamp
+
+    for full_match_index in range(full_match_count - 1):
+
+        left_endpoint, right_endpoint = ans[full_match_index] + stamp_len, ans[full_match_index + 1]
+
+        while left_endpoint < right_endpoint:
+            # Try to match full target interval into center of stamp
+            middle_match_start = stamp.find(target[left_endpoint:right_endpoint])
+            if middle_match_start >= 0:
+                ans.append(left_endpoint - middle_match_start)
+                break
+            try_match_len = min(right_endpoint - left_endpoint, stamp_len - 1)
+
+            while try_match_len > 0:
+                # Find matches to suffixes of stamp
+                if target[left_endpoint:left_endpoint + try_match_len] == stamp[stamp_len - try_match_len:]:
+                    left_endpoint += try_match_len
+                    ans.append(left_endpoint - stamp_len)
+                    break
+                # Find matches to prefixes of stamp
+                if target[right_endpoint - try_match_len:right_endpoint] == stamp[:try_match_len]:
+                    right_endpoint -= try_match_len
+                    ans.append(right_endpoint)
+                    break
+                try_match_len -= 1
+
+            if try_match_len == 0:
+                return []
+
+    return ans[::-1]

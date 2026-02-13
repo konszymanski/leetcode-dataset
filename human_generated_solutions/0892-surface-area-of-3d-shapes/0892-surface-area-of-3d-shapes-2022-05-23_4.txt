@@ -1,0 +1,99 @@
+class Solution:
+    def surfaceArea(self, grid: List[List[int]]) -> int:
+        """
+		Notes
+		============
+		
+        Calculations
+        ------------
+        
+        Top and Bottom Face:
+        If a positive value exists on the current cell, increment counter (only need to know if it exists, one cell face == 1)
+        
+        Change in Altitude:
+        For each cell, check difference between current position and surrounding
+            - Goal is to check diff below current position and in front of current position
+            - If at right edge, check below if possible
+            - If at bottom edge, check right if possible
+            - It not at right and bottom, check both right and bottom
+        
+            Search Pattern:
+            (i,j)->
+              |
+              v
+
+        Left Edge:
+            - If at left edge (jth index == 0), increment counter with face value
+        
+        Right Edge:
+            - If at right edge (jth index == (len(n) - 1)), increment counter with face value
+        
+        Top Edge:
+            - If at top edge (ith index == 0), increment counter with face value
+        
+        Bottom Edge:
+            - If at bottom edge (ith index == (len(n) - 1)), increment counter with face value
+        
+        
+        Combining All Calculations Into Single Cycle:
+
+        counter = 0
+        For i,j:
+            counter += topBotFace(i,j) # Gives 2 if face value > 0
+            counter += altitude(i,j) # Checks diff
+            counter += leftEdge(i,j)
+            counter += rightEdge(i,j)
+            counter += topEdge(i,j)
+            counter += bottomEdge(i,j)
+
+        return counter
+        """
+        surface_area = 0
+        n = len(grid)
+
+        for i in range(n):
+            for j in range(n):
+                bottom_edge = False
+                right_edge = False
+
+                # Top and Bottom Faces
+                if grid[i][j] > 0:
+                    surface_area += 2
+
+                # Left edge
+                if j == 0:
+                    surface_area += grid[i][j]
+                
+                # Right edge
+                if j == (n - 1):
+                    surface_area += grid[i][j]
+                    right_edge = True
+                
+                # Top Edge
+                if i == 0:
+                    surface_area += grid[i][j]
+                
+                # Bottom Edge
+                if i == (n - 1):
+                    surface_area += grid[i][j]
+                    bottom_edge = True
+                    
+                # Altitude
+                surface_area += self.altitude(i, j, grid, right_edge, bottom_edge)
+        
+        return surface_area
+
+    def altitude(self, i, j, grid, right, bot):
+        total_diff = 0
+
+        if not right and not bot:
+            total_diff += abs(grid[i][j] - grid[i][j + 1]) # Look forward
+            total_diff += abs(grid[i][j] - grid[i + 1][j]) # Look below
+        elif right and not bot:
+            total_diff += abs(grid[i][j] - grid[i + 1][j])
+        elif bot and not right:
+            total_diff += abs(grid[i][j] - grid[i][j + 1])
+        else:
+            total_diff += 0
+
+        return total_diff

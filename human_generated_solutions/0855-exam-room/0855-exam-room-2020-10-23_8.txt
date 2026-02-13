@@ -1,0 +1,52 @@
+class ExamRoom:
+
+    def __init__(self, N: int):
+        from sortedcontainers import SortedList
+        self.n = N
+        self.seats = SortedList([-1, N])
+        self.available = SortedList([(-self.n, 0)])
+
+    def seat(self) -> int:
+        _, seat = self.available.pop(0)
+        self.seats.add(seat)
+        l, r = self.find_surrounding_seats(seat)
+        self.add_seat_between(l, seat)
+        self.add_seat_between(seat, r)
+        return seat
+
+    def leave(self, p: int) -> None:
+        l, r = self.find_surrounding_seats(p)
+        self.remove_seat_between(l, p)
+        self.remove_seat_between(p, r)
+        self.add_seat_between(l, r)
+        self.seats.remove(p)
+    
+    def find_surrounding_seats(self, p) -> (int, int):
+        left = self.seats[self.seats.bisect_left(p) - 1]
+        right = self.seats[self.seats.bisect_right(p)]
+        return left, right
+    def add_seat_between(self, l, r):
+        distance, best_seat = self.get_best_seat(l, r)
+        if distance > 0:
+            self.available.add((-distance, best_seat))
+    
+    def remove_seat_between(self, l, r):
+        distance, best_seat = self.get_best_seat(l, r)
+        if distance > 0:
+            self.available.remove((-distance, best_seat))
+
+    def get_best_seat(self, l, r) -> (int, int):
+        if l == -1 and r == self.n:
+            s = 0
+            return self.n, 0
+        elif l == -1:
+            s = 0
+            return r - s, s
+        elif r == self.n:
+            s = self.n - 1
+            return s - l, s
+        elif l < r - 1:
+            s = (l + r) // 2
+            return min(r-s, s-l), s
+        else:
+            return -1, -1

@@ -1,0 +1,28 @@
+class Solution:
+    def minAreaRect(self, points: List[List[int]]) -> int:
+        d = dict()
+        points.sort()
+        for x, y in points:
+            if x not in d:
+                d[x] = set()
+            d[x].add(y)
+        area = float(\'inf\')
+        dKeys = list(d.keys())
+        isFind = False
+        for i in range(0, len(dKeys) - 1, 1):
+            for j in range(i + 1, len(dKeys), 1):
+                x1 = dKeys[i]
+                x2 = dKeys[j]
+                if x2 - x1 < area:
+                    y1 = d[x1]
+                    y2 = d[x2]
+                    yIntersect = y2.intersection(y1)
+                    if len(yIntersect) >= 2:
+                        yIntersect = list(yIntersect)
+                        yIntersect.sort()
+                        diff = float(\'inf\')
+                        for k in range(len(yIntersect) - 1):
+                            diff = min(diff, yIntersect[k+1] - yIntersect[k])
+                        area = min(area, diff * (x2 - x1))
+                        isFind = True
+        return area if isFind else 0

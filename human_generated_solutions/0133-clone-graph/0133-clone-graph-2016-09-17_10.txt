@@ -1,0 +1,10 @@
+class Solution:
+    def cloneGraph(self, node):
+        return self.dfs(node, {})
+        
+    def dfs(self, node, d):
+        if not node: return None
+        if node not in d:
+            d[node] = UndirectedGraphNode(node.label)
+            d[node].neighbors += [self.dfs(n, d) for n in node.neighbors]
+        return d[node]

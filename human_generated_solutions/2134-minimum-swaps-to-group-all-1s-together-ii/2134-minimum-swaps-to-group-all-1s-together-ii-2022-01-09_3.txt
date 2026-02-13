@@ -1,0 +1,11 @@
+def minSwaps(self, nums: List[int]) -> int:
+        win_width = sum(nums)
+        lo, mx, ones_in_win = -1, 0, 0
+        n = len(nums)
+        for hi in range(2 * n):
+            ones_in_win += nums[hi % n]
+            if hi - lo > win_width:
+                lo += 1
+                ones_in_win -= nums[lo % n]
+            mx = max(mx, ones_in_win)    
+        return win_width - mx

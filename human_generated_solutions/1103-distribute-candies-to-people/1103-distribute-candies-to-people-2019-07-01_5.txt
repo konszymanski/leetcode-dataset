@@ -1,0 +1,28 @@
+def distributeCandies(self, candies, num_people):
+        res = [0] * num_people
+		
+		# Find the smallest n
+        n = math.floor(math.sqrt(candies * 2))
+        if n * (n + 1) < candies * 2:
+            n += 1
+		
+		# How many rounds we need to loop through num_people
+        if n % num_people == 0:
+            rounds = n // num_people 
+        else:
+            rounds = n // num_people + 1
+		
+		# The last index to fill
+        last = int(n % num_people - 1)
+        edge = last
+        if edge < 0:
+            edge += num_people
+		
+        for i in range(edge):
+            res[i] = int((2*i + 2 + num_people * rounds - num_people) * rounds / 2
+            candies -= res[i]
+        for i in range(edge + 1, len(res)):
+            res[i] = int((2*i + 2 + num_people * (rounds - 1) - num_people) * (rounds - 1) / 2)
+            candies -= res[i]
+        res[last] = candies
+        return res

@@ -1,0 +1,23 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        
+        pre_sum = [0]
+        for num in nums:
+            pre_sum.append(pre_sum[-1] + num)
+
+        count = 0
+        for j in range(len(nums)):
+            start, end = 0, j
+            while start + 1 < end:
+                i = start + (end - start) // 2 
+                if (pre_sum[j + 1] - pre_sum[i]) * (j - i + 1) < k:
+                    end = i
+                else:
+                    start = i
+
+            if (pre_sum[j + 1] - pre_sum[start]) * (j - start + 1) < k:
+                count += j - start + 1
+            elif (pre_sum[j + 1] - pre_sum[end])  * (j - end + 1) < k:
+                count += j - end + 1
+
+        return count

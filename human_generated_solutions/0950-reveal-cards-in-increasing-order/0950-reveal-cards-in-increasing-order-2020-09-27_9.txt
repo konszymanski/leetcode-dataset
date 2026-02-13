@@ -1,0 +1,10 @@
+class Solution:
+    def deckRevealedIncreasing(self, deck: List[int]) -> List[int]:
+        deck.sort()
+        
+        res = [deck[-1]]
+        p = len(deck) - 2
+        while p > -1:
+            res = [deck[p], res[-1]] + res[:-1]
+            p -= 1
+        return res

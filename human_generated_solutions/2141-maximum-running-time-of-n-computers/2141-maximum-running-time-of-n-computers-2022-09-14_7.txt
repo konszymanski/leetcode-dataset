@@ -1,0 +1,59 @@
+def maxRunTime(self, N: int, batteries: List[int]) -> int:
+        
+        #some intuition:
+        # 1. u start by realising that max time a computer can last is sum(batteries)/N
+        #thats assuming batteries are used ideally -> which they are
+        #however sometimes there can be batteries which are too large so the average is higher than ans
+        # 2. max contribution by a battery is also <= sum(batteries)/N -> if it was more, maxRunTime would be higher
+        
+        #binarySearchApproach -> try values b/w 0 & sum(batteries)/N
+        #next step is to determine if that value is valid (if u understand point 2, its obvious)
+        def isValid(runTime):
+            target = N*runTime
+            curr = 0
+            for battery in batteries:
+                if battery > runTime:
+                    curr += runTime
+                else:
+                    curr += battery
+            return curr >= target
+        L = 0; R = sum(batteries)//N
+        while L < R:
+            M = (L+R+1)//2
+            if isValid(M):
+                L = M
+            else:
+                R = M-1
+        return L
+                    
+        #greedy Approach
+        #sort the batteries in ascending order
+        batteries.sort()
+        #intuitively it makes sense to use the largest N batteries first, since they last the longest
+        #the remaining will be summed into extra
+        extra = sum(batteries[:-N])
+        batteries = batteries[-N:]
+    
+        #if third battery has val 5, then to last 5 mins, we need 3*5 amount of energy from the first three batteries
+        #the batteries after 3rd one will be larger so they can last 5 mins
+        #but first 2 batteries most likely cant last 5 mins, so they use the extra for help
+        #if extra is large enough then we can move on the fourth battery
+        #however if its not large enough then max amount u can last is (used_energy + extra_energy)//(no_batteries_used)
+        used = 0
+        for i, x in enumerate(batteries):
+            used += x
+            if i+1 < N and used + extra < batteries[i+1]*(i+1):
+                return (used + extra)//(i+1)
+        
+        return (used + extra)//N
+        
+        
+        #Better greedy approach
+        #if max(batteries) > sum(batteries)/N, then that battery can be set aside for one computer the whole time
+        #if max(batteries) <= sum(batteries)/N, then all batteries will be used "ideally" (point 1)
+        Sum = sum(batteries)
+        batteries.sort()
+        for n in range(N, 0, -1):
+            if batteries[-1] <= Sum//n:
+                return Sum//n
+            else: Sum -= batteries.pop()

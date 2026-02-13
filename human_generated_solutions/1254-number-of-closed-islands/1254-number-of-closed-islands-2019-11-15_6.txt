@@ -1,0 +1,26 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        if not grid: return 0  
+        self.rows = len(grid)  
+        self.cols = len(grid[0])  
+          
+        def isOnEdge(r, c):  
+            return r == 0 or r == self.rows - 1 or c == 0 or c == self.cols - 1  
+        
+        def isValidDfs(grid, r, c):  
+            grid[r][c] = 1  
+            dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]  
+            EdgeDetected = isOnEdge(r, c)  
+            for i, j in dirs:  
+                x, y = r + i, c + j  
+                if 0 <= x < self.rows and 0 <= y < self.cols and grid[x][y] == 0:  
+                    if not isValidDfs(grid, x, y): EdgeDetected = True     
+            return not EdgeDetected  
+                  
+        cnt = 0  
+        for r in range(self.rows):  
+            for c in range(self.cols):  
+                if grid[r][c] == 0 and isValidDfs(grid, r, c):  
+                    cnt += 1  
+        
+        return cnt

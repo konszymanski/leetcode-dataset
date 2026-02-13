@@ -1,0 +1,33 @@
+def findMaximumXOR(self, nums: List[int]) -> int:
+	class Trie:
+		def __init__(self):
+			self.root = dict()
+		def insert(self, s):
+			c = self.root
+			for i in s:
+				if(i not in c):
+					c[i] = dict() 
+				c = c[i]
+		
+	t = Trie()
+	extra = \'\'.join([\'0\'] * 31)
+	for num in nums:
+		b = (extra + bin(num)[2:])[-31:]
+		t.insert(b)
+	ans = 0
+	for num in nums:
+		b = (extra + bin(num)[2:])[-31:]
+		c = t.root
+		temp = 0
+		for d in b:
+			if(d == "1" and "0" in c):
+				temp = 2*temp + 1
+				c = c["0"]
+			elif(d == "0" and "1" in c):
+				temp = 2*temp + 1
+				c = c["1"]
+			else:
+				c = c[d]
+				temp *= 2
+		ans = max(temp, ans)
+	return ans

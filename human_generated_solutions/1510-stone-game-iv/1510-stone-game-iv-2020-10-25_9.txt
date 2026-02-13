@@ -1,0 +1,10 @@
+def winnerSquareGame(self, n: int) -> bool:
+	squares = [i*i for i in range(int(n**0.5), 0, -1)]
+
+	@functools.lru_cache(None)
+	def alice_wins(stones=n, alice_plays=True):
+		if not stones: return not alice_plays
+		criterion = any if alice_plays else all
+		return criterion(alice_wins(stones - move, not alice_plays) for move in squares if stones >= move)
+
+	return alice_wins()

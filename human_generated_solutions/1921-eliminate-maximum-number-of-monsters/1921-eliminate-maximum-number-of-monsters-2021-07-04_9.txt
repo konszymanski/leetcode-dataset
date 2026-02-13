@@ -1,0 +1,18 @@
+class Solution:
+    def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
+        
+        quotients = []
+        
+        for i in range(len(dist)):
+			# we use ceiling rounding here to differentiate (dist,speed) pair of (1,1) and (5,4)
+			# (1,1) has only one chance while (5,4) has one more breathing time to kill
+            quotient = math.ceil(dist[i]/speed[i])
+            quotients.append(quotient)
+        
+        quotients.sort()
+        
+        for i in range(len(quotients)):
+            if quotients[i] == i:
+                return i
+        
+        return len(dist)

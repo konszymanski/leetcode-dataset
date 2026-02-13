@@ -1,0 +1,17 @@
+class Solution:
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        
+        tree = defaultdict(list)
+        for i, man in enumerate(manager):
+            tree[man].append(i)
+        
+        
+        res  = 0
+        stack = [(headID,informTime[headID])]
+        while stack:
+            node,cost = stack.pop(0)
+            res = max(res,cost)
+            for nei in tree[node]:
+                stack.append((nei,cost + informTime[nei]))
+        
+        return res

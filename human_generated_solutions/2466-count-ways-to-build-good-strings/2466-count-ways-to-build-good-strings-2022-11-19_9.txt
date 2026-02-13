@@ -1,0 +1,9 @@
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        dp = [0] * (high+1)
+        for i in range(high, -1, -1): 
+            if low <= i: dp[i] = 1
+            if i+zero <= high: dp[i] += dp[i+zero]
+            if i+one <= high: dp[i] += dp[i+one]
+            dp[i] %= 1_000_000_007
+        return dp[0]

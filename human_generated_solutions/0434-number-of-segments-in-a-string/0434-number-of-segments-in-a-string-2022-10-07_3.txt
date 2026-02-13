@@ -1,0 +1,5 @@
+class Solution:
+    def countSegments(self, s: str) -> int:
+        s = s.split(" ")
+        s = [ele for ele in s if ele.strip()]
+        return len(s)

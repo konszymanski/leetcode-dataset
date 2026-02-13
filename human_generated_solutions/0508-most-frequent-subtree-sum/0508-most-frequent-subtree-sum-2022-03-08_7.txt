@@ -1,0 +1,18 @@
+d = defaultdict(int)
+max_freq = 0
+def calc(node):
+	nonlocal max_freq
+	if node==None:
+		return 0
+	l = calc(node.left)
+	r = calc(node.right)
+	curr = node.val + l + r
+	d[curr]+=1
+	max_freq = max(d[curr], max_freq)
+	return curr
+total_sm = calc(root)
+ans = []
+for sm in d:
+	if d[sm]==max_freq:
+		ans.append(sm)
+return ans

@@ -1,0 +1,24 @@
+class Solution:
+    def catMouseGame(self, graph: List[List[int]]) -> int:
+        @functools.lru_cache(maxsize=None)
+        def move(mouse, cat, turn):
+            if turn >= len(graph)*2: return 0
+            if turn % 2:
+                ans = 2
+                for position in graph[mouse]:
+                    if position == cat: continue
+                    if position == 0: return 1
+                    result = move(position, cat, turn+1)
+                    if result == 1: return 1
+                    if result == 0: ans=0
+                return ans
+            else:
+                ans = 1
+                for position in graph[cat]:
+                    if position == 0: continue
+                    if position == mouse: return 2
+                    result = move(mouse, position, turn+1)
+                    if result == 2: return 2
+                    if result == 0: ans = 0
+                return ans
+        return move(1,2,1)

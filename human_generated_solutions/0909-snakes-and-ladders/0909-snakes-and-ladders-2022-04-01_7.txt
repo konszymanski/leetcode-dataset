@@ -1,0 +1,28 @@
+# BFS
+# time: O(n * n)
+# space: O(n * n)
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        n = len(board)
+        q = collections.deque([1])
+        moves = 0
+        
+        while q:
+            moves += 1
+            sameLevelCounts = len(q)
+            for _ in range(sameLevelCounts):
+                curr = q.popleft()
+                for nxt in range(curr + 1, curr + 7):
+                    r, c = self.label2RC(n, nxt)
+                    if board[r][c] > 0: # has snake or ladder
+                        nxt = board[r][c] # move to the new destination
+                    if nxt == n * n: # reach the end
+                        return moves
+                    if board[r][c] != 0: # not visited yet
+                        q.append(nxt)
+                        board[r][c] = 0 # mark as visited
+        return -1
+        
+    def label2RC(self, n, label):
+        r, c = divmod(label - 1, n)
+        return (n-1-r, c if r % 2 == 0 else n-1-c)

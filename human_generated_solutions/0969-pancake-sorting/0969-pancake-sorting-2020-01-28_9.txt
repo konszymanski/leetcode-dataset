@@ -1,0 +1,25 @@
+class Solution(object):                       # example [3,2,4,1]
+    def pancakeSort(self, A):
+        ans = []
+        t = sorted(A, reverse = True)         # [4,3,2,1] one can avoid this sorting and find the max in below loops , I prefer this as it does not affect the run time asymptotic
+        for i in range(len(t)):               # iteration 1, 2, 3, 4
+            cur = t[i]                        # 4, 3, 2, 1 get the max
+            index = -1
+            for j in range(len(A) -1):        # search for this max except in the last index as if its already in the last index no need to do anything for that
+                if A[j] == cur:
+                    index = j                 # 2, 1, 0, will break before reaching here as 1 is already sorted in the remaining list
+                    ans.append(index + 1)     # if max found then add both entries to result (one for the max index and another the last entry where max will go
+                    ans.append(len(A))        # ans [3,4], [3,4,2,3], [3,4,2,3,1,2]
+                
+                if index != -1:               # if max found
+                    p2 = A[index+1:]          # [1] ,[2], [1] get both partitioned list   
+                    p2.reverse()              # reverse just the second half as first half will be reversed two time so no point reversing it two times as it will be same
+                    p1 = A[:index]            #[3,2] , [1], []
+                    A = p2 + p1               #[1,3,2], [2,1], [1] then add second half first and second half after except the last index as we dont need it for the next iteration
+                    break
+                
+            if index == -1:                   # this case will come only if max item is already in the last position, then cut that part as we dont need that for the next iteration
+                A = A[:len(A)-1]
+        
+        
+        return ans                            # [3,4,2,3,1,2]

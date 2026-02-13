@@ -1,0 +1,57 @@
+class Solution:
+    def shortestBridge(self, grid: List[List[int]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        pos_incs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+                
+        def mark_2(i, j):
+            """Mark the island (of grid[i][j]) as 2s."""
+            grid[i][j] = 2
+            
+            for i_inc, j_inc in pos_incs:
+                ni, nj = i + i_inc, j + j_inc
+                if ni >= 0 and nj >= 0 and ni < rows and nj < cols and grid[ni][nj] == 1:
+                    mark_2(ni, nj)
+
+        # Mark the first island to 2s
+        marked = False
+        for i in range(rows):
+            if not marked:
+                for j in range(cols):
+                    if not marked and grid[i][j] == 1:
+                        mark_2(i, j)
+                        marked = True
+        
+        def expand(i, j, mark) -> bool:
+            """Expand the island (of grid[i][j]) with the given mark."""
+            for i_inc, j_inc in pos_incs:
+                ni, nj = i + i_inc, j + j_inc
+                if ni >= 0 and nj >= 0 and ni < rows and nj < cols:
+                    if grid[ni][nj] == 1:
+                        return True
+                    elif grid[ni][nj] == 0:
+                        grid[ni][nj] = mark
+
+            return False
+        
+        # Expland the first island as follows:
+        #
+        #  2    # mark = 2; island
+        #
+        #  3
+        # 323   # mark = 3; after expanding once
+        #  3
+        #
+        #  4
+        # 434
+        #43234  # mark = 4; after expanding twice
+        # 434
+        #  4  
+        mark = 2
+        while True:
+            for i in range(rows):
+                for j in range(cols):
+                    if grid[i][j] == mark and expand(i, j, mark + 1):
+                        return mark - 2
+            mark += 1
+                    
+        raise Exception(\'Impossible\')

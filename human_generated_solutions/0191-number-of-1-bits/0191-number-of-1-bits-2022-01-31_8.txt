@@ -1,0 +1,13 @@
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        count = 0
+        # while there are no more zeros left in our number (000000 == 0)
+        while n:
+			# & operator returns a binary number that has 1 in every position where both numbers contain a 1. If we use the
+			# & operator with our number and one, it will check if the the first digit is a 1 or a 0. 
+            if n & 1:
+				# if a one exists in the first digit of our current number, increment count
+                count += 1
+			# shift n to the right one bit to "iterate" over the number
+            n = n >> 1
+        return count

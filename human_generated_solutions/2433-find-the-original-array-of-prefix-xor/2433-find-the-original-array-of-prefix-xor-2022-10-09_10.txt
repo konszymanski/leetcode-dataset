@@ -1,0 +1,7 @@
+def findArray(self, pref: List[int]) -> List[int]:
+        res = []
+        n = 0
+        for pre in pref:
+            res.append(n^pre)
+            n = pre
+        return res

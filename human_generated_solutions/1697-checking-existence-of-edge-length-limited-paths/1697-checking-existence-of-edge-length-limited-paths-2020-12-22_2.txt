@@ -1,0 +1,7 @@
+def distanceLimitedPathsExist(self, n, E, Q):
+    s = \'\'.join(map(chr, range(n)))
+    *map(list.append, Q, count()),
+    for u, v, d, *j in sorted(Q + E, key=itemgetter(2)):
+        if j: Q[j[0]] = s[u] == s[v]
+        else: s = s.replace(s[u], s[v])
+    return Q

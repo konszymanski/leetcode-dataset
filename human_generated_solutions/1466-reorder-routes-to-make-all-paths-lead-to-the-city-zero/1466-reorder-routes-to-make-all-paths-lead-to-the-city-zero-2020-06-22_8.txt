@@ -1,0 +1,19 @@
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        def dfs(node):
+            nonlocal edgeCount
+            for x , direction in adjList[node]:
+                if x not in visited:
+                    visited.add(x)
+                    edgeCount += direction
+                    dfs(x)
+        adjList = defaultdict(list)
+        reverseList = defaultdict(list)
+        edgeCount = 0
+        for i , j in connections:
+            adjList[i].append((j , 1))
+            adjList[j].append((i , 0 ))
+        visited = set()
+        visited.add(0)        
+        dfs(0)
+        return edgeCount

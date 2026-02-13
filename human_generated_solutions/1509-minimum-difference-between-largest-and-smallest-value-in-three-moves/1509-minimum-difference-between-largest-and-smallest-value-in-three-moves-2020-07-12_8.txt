@@ -1,0 +1,35 @@
+from heapq import heappop, heappush, heapify 
+class Solution:
+    def minDifference(self, nums):
+        if len(nums) <= 4: return 0
+        
+        # Create a heap of the first 4 numbers in array
+        
+        # The biggest 4 numbers is the min heap
+        minHeap = nums[:4]
+        
+        # The smallest 4 numbers is the max heap
+        # Multiple by -1 to swap the value of numbers || minheap --> maxheap 
+        maxHeap  = [i *-1 for i in nums[:4]] 
+        
+        heapify(minHeap) 
+        heapify(maxHeap) 
+        
+        # Build the heaps
+        for i in nums[4:]:
+            if i >= minHeap[0]:
+                heappop(minHeap)
+                heappush(minHeap,i)
+            if i <= -1*maxHeap[0]:
+                heappop(maxHeap)
+                heappush(maxHeap, -1* i)
+                
+        # Convert back to a list
+        maxArr = sorted(minHeap)
+        minArr = sorted([i*-1 for i in maxHeap])
+        
+        # Try all four solutions
+        res = min(abs(maxArr[-4] - minArr[0]), abs(maxArr[-1] - minArr[3]), 
+                  abs(maxArr[-3] - minArr[1]), abs(maxArr[-2] - minArr[2]))
+        
+        return res

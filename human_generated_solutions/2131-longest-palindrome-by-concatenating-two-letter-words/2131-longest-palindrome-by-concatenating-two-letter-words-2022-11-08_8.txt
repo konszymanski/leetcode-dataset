@@ -1,0 +1,11 @@
+class Solution:
+	def longestPalindrome(self, words: List[str]) -> int:
+		ans, rev = 0, defaultdict(int)
+		for word in words:
+			if rev[word] > 0:
+				ans += 4
+				rev[word] -= 1
+			else:
+				rev[word[::-1]] += 1
+  
+	  return ans + (2 if any(k[0] == k[1] and v > 0 for k, v in rev.items()) else 0)

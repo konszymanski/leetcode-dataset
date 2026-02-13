@@ -1,0 +1,2 @@
+def checkAlmostEquivalent(self, word1: str, word2: str) -> bool:
+	return all(v <= 3 for v in ((Counter(list(word1)) - Counter(list(word2))) + (Counter(list(word2)) - Counter(list(word1)))).values())

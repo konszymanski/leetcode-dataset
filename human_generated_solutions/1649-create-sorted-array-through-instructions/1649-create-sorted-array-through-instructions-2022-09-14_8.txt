@@ -1,0 +1,18 @@
+from sortedcontainers import SortedList
+
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        modd=10**9+7
+        res=0
+        nums=SortedList()
+        for i in instructions:
+            p=nums.bisect_right(i)
+            q=nums.bisect_left(i)
+            
+            # print(q,len(nums)-p)
+            res+=min(q,len(nums)-p)
+            res%=modd
+            # bisect.insort(nums,i)
+            nums.add(i)
+            # nums.append(i)
+        return res

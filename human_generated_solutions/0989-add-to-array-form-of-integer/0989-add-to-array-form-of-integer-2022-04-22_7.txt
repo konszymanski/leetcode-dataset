@@ -1,0 +1,7 @@
+class Solution:
+    def addToArrayForm(self, num: List[int], k: int) -> List[int]:
+        n = ""
+        for i in num:
+            n+=str(i)
+        lista = int(n) + k
+        return list(str(lista))

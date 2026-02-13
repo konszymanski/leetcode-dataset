@@ -1,0 +1,30 @@
+class Solution:
+    def minCut(self, s: str) -> int:
+        n = len(s)
+        dp = [1] * n # start with 1 because a character can be a palindrome itself
+        palindrome = [[False] * n for _ in range(n)]
+        
+        # Step 1: Build the palindrome map
+        # to check whether substring from start - end is palindrome or not
+		# Intuition: substring from start -> end is palindrome if character[start] == character[end] and substring from start + 1 -> end - 1 is also palindrome
+        for start in reversed(range(n)):
+            for end in range(start,n):
+                if s[start] == s[end] and (end-start <= 2 or palindrome[start+1][end-1]):
+                    palindrome[start][end] = True
+        
+        # Step 2: intuition: find min number of palindromes can be made at index start
+        # if substring start -> end is a palindrome => substring starts at end+1 also palindrome
+        # => find all substrings start with `start` index (start, start -> start,n-1) and get the min number of palindroms can be made
+        # the final output is at i == 0
+        # The problem asks about min cut => only cuts between palindromes. i.e: have n palindromes => cuts = n-1
+        for start in reversed(range(n)):
+            res = float(\'inf\')
+            for end in range(start,n):
+                if palindrome[start][end]:
+                    if end < n-1:
+                        res = min(res, 1 + dp[end+1])
+                    else: # edge case: end of the string, i.e: "aaaaaa"
+                        res = 1
+            dp[start] = res
+            
+        return dp[0]-1

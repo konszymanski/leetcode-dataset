@@ -1,0 +1,23 @@
+class Solution:
+    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+        graph = defaultdict(list)
+        for vertex1, vertex2 in edges:
+            graph[vertex1].append(vertex2)
+            graph[vertex2].append(vertex1)
+        minDistance, secondMinDistance, queue = [math.inf] * (n + 1), [math.inf] * (n + 1), deque()
+        minDistance[1] = 0
+        queue.append((0, 1))
+        while queue:
+            cost, node = queue.popleft()
+            for neighbor in graph[node]:
+                redLights, newCost = cost // change, cost + time
+                if redLights % 2:
+                    newCost = (change * (1 + redLights)) + time
+                if minDistance[neighbor] > newCost:
+                    secondMinDistance[neighbor] = minDistance[neighbor]
+                    minDistance[neighbor] = newCost
+                    queue.append((newCost, neighbor))
+                elif minDistance[neighbor] < newCost and secondMinDistance[neighbor] > newCost:
+                    secondMinDistance[neighbor] = newCost
+                    queue.append((newCost, neighbor))
+        return secondMinDistance[n]

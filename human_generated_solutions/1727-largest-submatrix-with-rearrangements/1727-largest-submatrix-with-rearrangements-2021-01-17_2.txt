@@ -1,0 +1,44 @@
+class Solution:
+    def largestSubmatrix(self, matrix: List[List[int]]) -> int:
+        d = {}  # dictionary storing row number and corresponding list of the number of ones
+        m, n = len(matrix), len(matrix[0])
+        
+        for col in range(n):               # for each column
+            start = -1      # start is initialized to -1, when we will encounter streak ones  it will be initialized
+            
+            for row in range(m):
+                if matrix[row][col]:        # when the cell contains 1
+                    if start == -1:         # when the first one is encountered
+                        start = row         # set start to the row number 
+                else:                       # when the cell contains a 0
+                    if start!=-1:           # if there was a streak ones encountered before
+                        end = row
+                        for row_index in range(start, end):  
+                        # iterate over the beginning of the streak till the end
+						# for each row index in the streak assign the key to be row index and the corresponding length of streak starting from that point.
+                        
+                            if row_index not in d:     # if the row index is not present in the dictionary
+                                d[row_index] = []      # create an empty list for the row index
+                                
+                            d[row_index].append(end - row_index)    # append the length of the streak from the row index
+                            
+                    start = -1                        # re-initialize start to -1 as the streak is over
+    
+            if start!=-1:  # if the column has ended but the streak was present uptil the end
+			# repeat the same process we did above with an exception, end = m
+                end = m
+                for row_index in range(start, end):
+                    if row_index not in d:
+                        d[row_index] = []
+                    d[row_index].append(end - row_index)
+        
+		## finding the max area
+        area = 0                                   # initialize area to be 0
+        for key in d:                              # for each key -> row index
+            l = sorted(d[key], reverse = True)     # sort the list of streak lengths
+            ht = l[0]                              # initialize height with the max height
+            for i in range(len(l)):                # iterate over the list 
+                ht = min(ht, l[i])                 # maximum height possible
+                width = i + 1                      # width = i + 1
+                area = max(area, ht*width)        # area = height x width
+        return area

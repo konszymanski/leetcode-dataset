@@ -1,0 +1,12 @@
+class Solution(object):
+    def minFlips(self, a, b, c):
+        """
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: int
+        """
+        # check bitwise differences between a OR b and c
+        # add additional flips to take into account if 2-flips needed 
+        # (i.e. a and b are 1 at the bit index but c is 0)
+        return bin((a | b) ^ c).count(\'1\') + bin((a & b) & ~c).count(\'1\')

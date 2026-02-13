@@ -1,0 +1,30 @@
+class Solution:
+    def numMagicSquaresInside(self, grid: List[List[int]]) -> int:
+        def chk(lst):
+            t=[]
+            for i in lst:
+                t+=i
+            if sorted(t)!=[x for x in range(1,10)]:return False
+            ls=list(zip(*lst))
+            s=sum(lst[0])
+            su=0
+            su1=0
+            for i in range(3):
+                if sum(lst[i])!=s:return False
+                if sum(ls[i])!=s:return False
+                su+=lst[i][i]
+                su1+=lst[i][2-i]
+            if su!=s or su1!=s:return False
+            return True
+        count=0
+        r=len(grid)
+        c=len(grid[0])
+        for i in range(r-2):
+            for j in range(c-2):
+                lst=[]
+                lst.append(grid[i][j:j+3])
+                lst.append(grid[i+1][j:j+3])
+                lst.append(grid[i+2][j:j+3])
+                m=chk(lst)
+                if m:count+=1
+        return count

@@ -1,0 +1,6 @@
+def checkPerfectNumber(self, num: int) -> bool:
+        s=1
+        for i in range(2,int(sqrt(num))+1):
+            if num%i==0:
+                s+=i+num//i
+        return num==s if num>1 else False

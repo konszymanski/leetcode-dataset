@@ -1,0 +1,8 @@
+def isFeasible(self, weights, mid_weight, d):
+        cur_weight, days = 0, 1
+        for w in weights:
+            cur_weight += w
+            if cur_weight > mid_weight:
+                days += 1
+                cur_weight = w
+        return days <= d

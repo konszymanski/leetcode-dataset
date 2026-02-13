@@ -1,0 +1,22 @@
+class Solution:
+    def wordPattern(self, pattern: str, str: str) -> bool:
+        my_dict = {}
+        words = str.split()
+        
+        # pattern is not the same length as list of words:
+        if len(words) != len(pattern):
+            return False
+        
+        # keep in dictionary each letter in pattern with corresponding word:
+        for i, p in enumerate(pattern):
+            if my_dict.get(p):
+                # found a word that doesn\'t match previous letter in pattern:
+                if my_dict.get(p) != words[i]:
+                    return False
+            else:
+                # same letter in pattern for two different words:
+                if words[i] in my_dict.values():
+                    return False
+                my_dict[p] = words[i]
+                
+        return True

@@ -1,0 +1,26 @@
+class Solution:
+    def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        # worker function help us to swap node value on odd level
+        def worker(_left, _right, odd_level):
+            
+            # check current level nodes are non-leaf
+            if not (_left and _right):
+                return
+                
+            if odd_level:
+
+                # swap node value on odd level
+                _left.val, _right.val = _right.val, _left.val
+
+            # DFS to next level, and toggle boolean flag
+            worker(_left.left, _right.right, not odd_level)
+            worker(_left.right, _right.left, not odd_level)
+
+            return
+        
+        # --------------------------------------
+        
+        # We start our task on level 1
+        worker(root.left, root.right, True)
+        return root

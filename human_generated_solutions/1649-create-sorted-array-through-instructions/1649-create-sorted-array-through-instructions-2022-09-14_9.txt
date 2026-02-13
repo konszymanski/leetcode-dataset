@@ -1,0 +1,14 @@
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        
+        res=0
+        nums=[]
+        for i in instructions:
+            p=bisect.bisect_right(nums,i)
+            q=bisect.bisect_left(nums,i)
+            
+            # print(q,len(nums)-p)
+            res+=min(q,len(nums)-p)
+            bisect.insort(nums,i)
+            # nums.append(i)
+        return res

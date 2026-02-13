@@ -1,0 +1,14 @@
+def diStringMatch(self, s: str) -> List[int]:
+        n=len(s)
+        output=[]
+        small=0
+        largest=n
+        for i in s:
+            if i==\'I\':
+                output.append(small)
+                small=small+1    
+            else:
+                output.append(largest)
+                largest=largest-1 
+        output.append(small)
+        return output

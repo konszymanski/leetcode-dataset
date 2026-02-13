@@ -1,0 +1,42 @@
+class MaxHeapObj:
+    def __init__(self,val): self.val = val
+    def __lt__(self,other): return self.val > other.val
+    def __eq__(self,other): return self.val == other.val
+    def __str__(self): return str(self.val)
+class MinHeap(object):
+    def __init__(self): self.h = []
+    def heappush(self, x): heapq.heappush(self.h, x)
+    def heappop(self): return heapq.heappop(self.h)
+    def __getitem__(self, i): return self.h[i]
+    def __len__(self): return len(self.h)
+class MaxHeap(MinHeap):
+    def heappush(self, x): heapq.heappush(self.h, MaxHeapObj(x))
+    def heappop(self): return heapq.heappop(self.h).val
+    def __getitem__(self, i): return self.h[i].val
+class Solution:
+    def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
+        n=len(costs)
+        i=0
+        j=n-1
+        m=MinHeap()
+        while(i<=j and i<candidates):
+            m.heappush([costs[i],0])
+            i+=1
+        c=0
+        while(j>i and c<candidates):
+            m.heappush([costs[j],1])
+            c+=1
+            j-=1
+        ans=0
+        while(k):
+            x=m.heappop()
+            ans+=x[0]
+            if(i<=j):
+                if(x[1]==0):
+                    m.heappush([costs[i],0])
+                    i+=1
+                else:
+                    m.heappush([costs[j],1])
+                    j-=1
+            k-=1
+        return ans

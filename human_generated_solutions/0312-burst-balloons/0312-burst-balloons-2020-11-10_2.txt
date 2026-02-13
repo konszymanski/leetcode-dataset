@@ -1,0 +1,16 @@
+def dfs(nums):
+	if not nums:
+		return 0
+	if len(nums) == 1:
+		return nums[0]
+	score = 0
+	for i in range(len(nums)):
+		curr = nums[i]
+		if i - 1 >= 0:
+			curr *= nums[i - 1]
+		if i + 1 < len(nums):
+			curr *= nums[i + 1]
+		curr += dfs(nums[:i] + nums[i + 1:])
+		score = max(score, curr)
+	return score
+return dfs(nums)

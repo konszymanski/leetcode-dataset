@@ -1,0 +1,22 @@
+class Solution:
+    def latestDayToCross(self, m: int, n: int, cells: List[List[int]]) -> int:
+        A = [[0] * n for _ in range(m)]
+        for t, (i, j) in enumerate(cells): A[i-1][j-1] = t + 1
+            
+        def dfs(i, j, t):
+            if (not 0 <= i < m) or (not 0 <= j < n) or A[i][j] <= t: return False
+            self.seen.add((i, j))
+            if i == m - 1: return True
+            for x, y in [(i, j + 1), (i, j - 1), (i - 1, j), (i + 1, j)]:
+                if (x, y) not in self.seen and dfs(x, y, t): return True
+            return False
+
+        lo, hi = 0, n * m
+        while lo <= hi:
+            mid = (hi + lo) // 2
+            self.seen = set()
+            if any(dfs(0, j, mid) for j in range(n)):
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        return hi

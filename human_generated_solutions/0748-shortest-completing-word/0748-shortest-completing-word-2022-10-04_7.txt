@@ -1,0 +1,33 @@
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        data = {}
+        licensed = \'\'
+        out = []
+        for i in licensePlate:
+            if i.isalpha():
+                i = i.lower()
+                licensed += i
+                if i in data:
+                    data[i] += 1
+                else:
+                    data[i] = 1
+        for i in range(len(words)):
+            c = 0
+            for j in licensed: # strg = \'spst\'
+                if j in data:
+                    if words[i].count(j) >= data[j]:
+                        c += 1
+                        pass
+                    else:
+                        c = 0
+                        break
+                else:
+                    c = 0
+                    break
+            if c == len(licensed):
+                if out:
+                    if len(words[i]) < len(out[0]):
+                        out = [words[i]]
+                else:
+                    out.append(words[i])
+        return out[0]

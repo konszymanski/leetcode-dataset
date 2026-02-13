@@ -1,0 +1,9 @@
+class Solution:
+    def toGoatLatin(self, S: str) -> str:
+        vowel=\'aeiouAEIOU\'
+        sList=S.strip().split()
+        result = \'\'
+        for i, w in enumerate(sList):
+            if w[0] in vowel: result+=\' \' + w + \'ma\' + \'a\'*(i+1)
+            else:result +=\' \' + w[1:] + w[0] + \'ma\' + \'a\'*(i+1)
+        return \'\' if result == \'\' else result[1:]

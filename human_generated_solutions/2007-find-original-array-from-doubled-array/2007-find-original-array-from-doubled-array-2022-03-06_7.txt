@@ -1,0 +1,23 @@
+def findOriginalArray(self, changed: List[int]) -> List[int]:        
+	changed.sort()
+	result = []
+
+	# i is the smallest number
+	for i in range(len(changed)):
+		if changed[i] == -1: continue
+
+		# look ahead for i\'s corresponding doubled number
+		found = False
+		for j in range(i + 1, len(changed)):
+			# check if this is the doubled number
+			if changed[i] * 2 == changed[j]:
+				result.append(changed[i])
+				# mark the doubled number as used
+				changed[j] = -1
+				found = True
+				break
+
+		# didn\'t find a doubled number
+		if not found: return []
+		
+	return result

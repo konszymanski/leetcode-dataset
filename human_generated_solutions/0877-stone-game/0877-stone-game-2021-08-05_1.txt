@@ -1,0 +1,14 @@
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        @cache # annotation which caches the repeated recursive calls.No need to store in dp arrays
+        def recursion( start=0,end=len(piles)-1):
+            if start >= end:
+                return 0
+				
+            choice1 = piles[start] - recursion( start+1,end)
+            choice2 = piles[end] - recursion(start,end-1)
+      
+            return max( choice1, choice2 )
+        
+        result = recursion()
+        return result > 0

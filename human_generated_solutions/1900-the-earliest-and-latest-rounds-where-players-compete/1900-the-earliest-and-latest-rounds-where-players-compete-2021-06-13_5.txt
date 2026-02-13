@@ -1,0 +1,22 @@
+def earliestAndLatest(self, n: int, firstPlayer: int, secondPlayer: int) -> List[int]:
+        step, first, last, xs = 0, 0, 0, [firstPlayer, secondPlayer]
+        # mark firstPlayer and secondPlayer as \'!\', others as \'.\'
+        work = {\'!\'.join([ \'.\' * (y - x - 1) for x,y in zip([0] + xs, xs + [n+1]) ])}
+        while work:
+            step += 1
+            m, n = divmod(n, 2)
+            old, work = work, set()
+            for s in old:
+                # firstPlayer and secondPlayer competes?
+                if (\'!\',\'!\') in set(zip(s[:m], s[::-1])):
+                    if not first: first = step
+                    last = step
+                    continue
+                now = {s[m] if n else \'\'}
+                for x,y in zip(s[m-1::-1], s[m+n:]):
+                    if x == \'!\': now = { x + s for s in now }
+                    elif y == \'!\': now = { s + y for s in now }
+                    else: now = { x + s for s in now } | { s + y for s in now }
+                work |= now
+            n += m
+        return [first, last]

@@ -1,0 +1,33 @@
+class Solution:
+    def maxDistance(self, grid: List[List[int]]) -> int:
+        #get the fathest distance from land using bfs
+        ROW,COL = len(grid),len(grid[0])
+        
+        queue = []
+        visited = set()
+        
+        def addDistance(i,j):
+            if min(i,j) < 0 or j == COL or i == ROW or (i,j) in visited:
+                return
+
+            visited.add((i,j))
+            queue.append((i,j))
+                
+        for i in range(ROW):
+            for j in range(COL):
+                if grid[i][j] == 1:
+                    queue.append((i,j))
+                    visited.add((i,j))
+
+        distance = -1
+        while queue:
+            for i in range(len(queue)):
+                r,c = queue.pop(0)
+                
+                addDistance(r+1,c)
+                addDistance(r-1,c)
+                addDistance(r,c+1)
+                addDistance(r,c-1)
+            distance += 1
+        
+        return -1 if distance == 0 else distance

@@ -1,0 +1,7 @@
+class Solution:
+    def countHomogenous(self, s: str) -> int:
+        ans = ii = 0
+        for i in range(len(s)):
+            if s[ii] != s[i]: ii = i
+            ans += i - ii + 1
+        return ans % 1_000_000_007

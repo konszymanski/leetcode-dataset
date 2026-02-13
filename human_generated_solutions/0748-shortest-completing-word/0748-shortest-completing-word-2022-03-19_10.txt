@@ -1,0 +1,17 @@
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        #extract only characters from licensePlate
+        licensePlate = "".join(re.split("[^a-z]*", licensePlate.lower()))
+        #function to check each word according to licensePlate
+        def compare(word):
+            for char in licensePlate :
+                if not(licensePlate.count(char) <= word.count(char)):
+                    return False
+            return True    
+        #iterate compare functions on each word in words
+        founded_words = []
+        for word in words :
+            if compare(word):
+                founded_words.append(word)
+        #find the shoretes which occurs first
+        return min(founded_words, key=len)

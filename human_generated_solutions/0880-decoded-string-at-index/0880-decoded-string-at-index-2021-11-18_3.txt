@@ -1,0 +1,16 @@
+class Solution:
+    def decodeAtIndex(self, s: str, k: int) -> str:
+        lens = [0]
+        
+        for c in s:
+            if c.isalpha():
+                lens.append(lens[-1] + 1)
+            else:
+                lens.append(lens[-1] * int(c))
+                
+        for idx in range(len(s), 0, -1):
+            k %= lens[idx]
+            if k == 0 and s[idx - 1].isalpha():
+                return s[idx - 1]
+        
+        return

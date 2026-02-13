@@ -1,0 +1,24 @@
+class Solution:
+    def splitIntoFibonacci(self, num: str) -> List[int]:
+        ans = []
+        
+        def backtrack(num: str, ans: List[int], idx: int) -> bool:
+            if idx == len(num) and len(ans) >= 3:
+                return True
+            for i in range(idx, len(num)):
+                if num[idx] == \'0\' and i > idx:
+                    break
+                temp, sz = int(num[idx: i + 1]), len(ans)
+                if temp >= 1 << 31:
+                    break
+                if sz >= 2 and temp > ans[-1] + ans[-2]:
+                    break
+                if sz <= 1 or temp == ans[-1] + ans[-2]:
+                    ans.append(temp)
+                    if backtrack(num, ans, i + 1):
+                        return True
+                    ans.pop(-1)
+            return False
+        
+        backtrack(num, ans, 0)
+        return ans

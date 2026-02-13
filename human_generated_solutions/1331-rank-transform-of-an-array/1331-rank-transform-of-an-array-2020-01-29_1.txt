@@ -1,0 +1,22 @@
+class Solution:
+    def arrayRankTransform(self, arr: List[int]) -> List[int]:
+        
+        # keep unique elements of array in ascending order
+        elements_ascending = sorted(set(arr))
+        
+        # dictionary
+        # key   : number
+        # value : rank
+        num_rank_dict = dict()
+        
+
+        for index, num in enumerate(elements_ascending):
+            
+            # rank = index + 1
+            num_rank_dict[num] = (index+1)
+                
+        
+        # give each number with its corresponding rank
+        result = [ num_rank_dict[num] for num in arr ]
+        
+        return result

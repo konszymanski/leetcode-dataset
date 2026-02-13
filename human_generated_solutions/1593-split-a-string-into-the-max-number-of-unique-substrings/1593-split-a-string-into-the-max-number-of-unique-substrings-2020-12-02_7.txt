@@ -1,0 +1,17 @@
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        unique = set()
+        ans = 1
+        
+
+        def backtrack(curr):
+            nonlocal ans, unique
+            if not curr:
+                ans = max(len(unique), ans)         
+            for idx, val in enumerate(curr):
+                if curr[:idx+1] not in unique:
+                    unique.add(curr[:idx+1])
+                    backtrack(curr[idx+1:])
+                    unique.remove(curr[:idx+1])
+        backtrack(s)
+        return ans

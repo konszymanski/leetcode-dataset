@@ -1,0 +1,39 @@
+def slidingPuzzle(self, board: List[List[int]]) -> int:
+	# Define the function for any size
+	# @params: m, n are the size of the board, final is the final state of the board
+	# @return: least number of moves (or -1 if there\'s no result)
+	def sliding_puzzle_any_size(board, m, n, final):
+		def find_zero(board):
+			for i in range(n):
+				for j in range(m):
+					if board[i][j] == 0:
+						return i, j
+
+		moves_so_far = 0
+		curr_level = [board]
+		next_level = []
+		visited = set([str(board)])
+
+		while curr_level:
+			for board in curr_level:
+				i, j = find_zero(board)
+				if board == final:
+					return moves_so_far
+				neighbors = [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]
+				for neighbor in neighbors:
+					new_board = [row[:] for row in board]
+					row, col = neighbor
+					if row < 0 or row >= n or col < 0 or col >= m:
+						continue
+					new_board[row][col], new_board[i][j] = new_board[i][j], new_board[row][col]
+					if str(new_board) not in visited:
+						next_level.append(new_board)
+						visited.add(str(new_board))
+			curr_level = next_level
+			next_level = []
+			moves_so_far += 1
+		return -1
+
+	# Define the final state and pass it with m=3 n=2 as arguments to the function
+	final = [[1, 2, 3],[4, 5, 0]]
+	return sliding_puzzle_any_size(board, 3, 2, final)

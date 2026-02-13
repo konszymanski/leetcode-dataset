@@ -1,0 +1,40 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    def inorder(self,root,lst):
+        if root:
+            self.inorder(root.left,lst)
+            lst.append(root.val)
+            self.inorder(root.right,lst)
+        return lst
+    
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        if root is None:
+            return root     
+        
+        lst=self.inorder(root,[])
+        arr_dict={}
+        
+        for i in range(len(lst)):
+            arr_dict[lst[i]]=sum(lst[i:])
+            
+        def helper(root,lst):
+            if root.left is None and root.right is None:
+                if root.val not in lst:
+                    root.val=arr_dict[root.val]
+                    return
+            if root.val not in lst:
+                root.val=arr_dict[root.val]
+            if root.left:
+                helper(root.left,lst)
+            if root.right:
+                helper(root.right,lst)
+                
+        helper(root,[])
+        return root

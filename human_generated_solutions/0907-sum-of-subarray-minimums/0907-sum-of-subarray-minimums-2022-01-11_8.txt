@@ -1,0 +1,32 @@
+class Solution(object):
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        # for each element, get the first smaller value on the left and first smaller value on the right respectively
+        su = 0
+        n = len(arr)
+        left = [-1] * n
+        right = [n] * n
+        
+        stack = []
+        for i, num in enumerate(arr):
+            # maintain a non-decreasing stack
+            while stack and stack[-1][0] > num: # (i)
+                stack.pop()
+            if stack:
+                left[i] = stack[-1][1]
+            stack.append((num, i))
+        
+        stack = []
+        for i, num in zip(range(n-1, -1, -1), arr[::-1]):
+            # maintain an increasing stack
+            while stack and stack[-1][0] >= num:  # (ii)
+                stack.pop()
+            if stack:
+                right[i] = stack[-1][1]
+            stack.append((num, i))
+        for i, num in enumerate(arr):
+            su += num * (i-left[i]) * (right[i]-i)
+        return su % (10**9 + 7)

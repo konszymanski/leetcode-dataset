@@ -1,0 +1,10 @@
+def maxDepth(self, s: str) -> int:
+        stack = []
+        maxc = 0
+        for char in s:
+            if char == "(":
+                stack.append(char)
+            elif char == ")":
+                maxc = max(maxc, len(stack))
+                stack.pop()
+        return maxc

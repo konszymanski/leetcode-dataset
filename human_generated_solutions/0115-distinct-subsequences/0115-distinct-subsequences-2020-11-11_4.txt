@@ -1,0 +1,11 @@
+def dfs(s, t):
+	if not t:
+		return 1
+	if not s:
+		return 0
+	count = 0
+	for i in range(len(s)):
+		if s[i] == t[0]:
+			count += dfs(s[i + 1:], t[1:])
+	return count
+return dfs(s, t)

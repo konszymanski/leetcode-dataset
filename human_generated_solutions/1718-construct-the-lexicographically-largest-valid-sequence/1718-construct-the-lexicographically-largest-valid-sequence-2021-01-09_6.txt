@@ -1,0 +1,22 @@
+class Solution:
+    def constructDistancedSequence(self, n: int) -> List[int]:
+
+        def backtrack(i):
+            if i == N: return True
+            if ans[i]: return backtrack(i + 1)
+            for j in reversed(range(1, n + 1)):         # for the lexicographically largest 
+                if v[j]: continue                       # if visited
+                if j == 1:                              # 1 occurs once
+                    v[j], ans[i] = 1, j
+                    if backtrack(i + 1): return True
+                    v[j], ans[i] = 0, 0
+                elif i + j < N and ans[i + j] == 0:     # other numbers occur twice 
+                    v[j], ans[i], ans[i + j] = 1, j, j
+                    if backtrack(i + 1): return True
+                    v[j], ans[i], ans[i + j] = 0, 0, 0
+            return False
+
+        N = 2 * n - 1 
+        v, ans = [0] * (n + 1), [0] * N
+        backtrack(0)
+        return ans

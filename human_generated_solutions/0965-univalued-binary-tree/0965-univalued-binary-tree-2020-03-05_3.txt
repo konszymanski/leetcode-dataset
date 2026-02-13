@@ -1,0 +1,19 @@
+class Solution:
+    def isUnivalTree(self, root: TreeNode) -> bool:
+        
+        def helper( node:TreeNode, target):
+            
+            if not node:
+                return True
+				
+            else:
+                
+                if node.val != target:
+					
+					# Early rejection
+                    return False
+                
+                return helper( node.left, target) and helper( node.right, target )
+            
+        # ----------------------------------
+        return helper( root, root.val )

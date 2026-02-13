@@ -1,0 +1,7 @@
+def detectCycle(self, head):
+        hashT = {}
+        while head:
+            if head in hashT: return head
+            hashT[head] = 0
+            head = head.next
+        return None

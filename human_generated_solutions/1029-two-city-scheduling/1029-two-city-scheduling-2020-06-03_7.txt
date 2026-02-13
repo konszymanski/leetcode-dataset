@@ -1,0 +1,13 @@
+def twoCitySchedCost(self, costs: List[List[int]]) -> int:
+        res=[float(\'inf\')]
+        self.recurse(costs,0,0,res,len(costs)//2,len(costs)//2)
+        return res[0]
+        
+    def recurse(self,costs,index,currsum,res,m,n):
+        if index>=len(costs):
+            res[0]=min(res[0],currsum)
+            return
+        if m>0:
+            self.recurse(costs,index+1,currsum+costs[index][0],res,m-1,n)
+        if n>0:
+            self.recurse(costs,index+1,currsum+costs[index][1],res,m,n-1)

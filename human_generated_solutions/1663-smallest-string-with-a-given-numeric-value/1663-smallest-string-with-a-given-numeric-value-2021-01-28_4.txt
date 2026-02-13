@@ -1,0 +1,8 @@
+class Solution(object):
+    def getSmallestString(self, n, k):
+        k -= n
+        alpha = \'_bcdefghijklmnopqrstuvwxy_\'
+        ans = \'z\' * (k // 25)
+        if k % 25:
+            ans = alpha[k % 25] + ans
+        return \'a\' * (n - len(ans)) + ans

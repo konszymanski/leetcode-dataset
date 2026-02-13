@@ -1,0 +1,32 @@
+from collections import defaultdict
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        """
+        1. Find position of each character in the order
+        2. Count the occurences of each character that appears in the string and in the order, otherwise
+        we can add that character to remaining.
+        3. Iterate through all the characters in the position mapping and check if it also exists in the
+        counts, if it does add the number of times it occurs to the result.
+        4. Finally, we can just combine the remaining characters (it can appear anywhere, I just add it to
+        the end for convenience) with the result so far and return the final result.
+        """
+        
+        counts = defaultdict(int)
+        position = dict()
+        res = rem = ""
+        
+        for i, char in enumerate(order):
+            position[char] = i
+            
+        for i, char in enumerate(s):
+            if char in position:
+                counts[char]+=1
+                
+            else:
+                rem+=char
+            
+        for char in position:
+            if char in counts:
+                res+=(counts[char] * char)
+                
+        return res + rem

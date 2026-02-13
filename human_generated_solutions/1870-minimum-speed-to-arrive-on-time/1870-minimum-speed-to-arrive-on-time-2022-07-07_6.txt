@@ -1,0 +1,11 @@
+class Solution:
+    def minSpeedOnTime(self, A, h):
+        if len(A) - 1 >= h: return -1
+        l, r = 1, max(max(A), A[-1] * 100)
+        while l != r:
+            mid = (l + r) // 2
+            if h < sum(ceil(a / mid) for a in A[:-1]) + A[-1] / mid:
+                l = mid + 1
+            else:
+                r = mid
+        return l

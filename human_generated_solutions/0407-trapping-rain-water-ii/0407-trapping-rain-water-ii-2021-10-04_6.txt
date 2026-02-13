@@ -1,0 +1,56 @@
+# Solution Logic: MinHeap+BFS
+# 1. Start from the boundary elements
+# 2. Maintain a minheap of heights 
+# 3. Maintain a a set of visited elements
+# 4. push all outer boundary elements to the minheap
+# 5. while minheap is not empty:
+#     pop the element from minheap
+#     check all 4 neighbors 
+#             check if neoighbor is in bounds of the grid i.e isValid and check if it is not visited
+#             calculate if element height is greater than the neighbor
+#             if yes, add the diff to result and ADD THE NEIGHBOR WITH UPDATED HEIGHT EQUAL TO CURRENT ELEMENT HEIGHT TO MINHEAP
+#             else ADD THE NEIGHBOR TO MINHEAP with no change in its height
+#             mark the neighbor as visited by adding it to the visited set
+        
+# NOTE: few important points:
+# 1. why we use minheap: because we need to process low heights first as they will be able to make water flow out of the grid. if we start with max ones, then we might have wrong result coz the neighbors will be reached in incorrect order.
+# 2. why BFS: layer by layer exploration of neighbors helps get optimal answer
+
+
+import heapq
+class Solution:
+    def trapRainWater(self, h: List[List[int]]) -> int:
+            
+        q=[]
+        heapq.heapify(q)
+        visited=set()
+        
+        def isValid(m,n):
+            if 0<=m<r and 0<=n<c:
+                return True
+            return False
+        
+        r=len(h)
+        c=len(h[0])
+        
+        for i in range(r):
+            for j in range(c):
+                if i==0 or i==r-1 or j==0 or j==c-1:
+                    heapq.heappush(q,(h[i][j],i,j))
+                    visited.add((i,j))
+        res=0
+        while q:
+            cur=heapq.heappop(q)
+            
+            for d in [(-1,0),(1,0),(0,-1),(0,1)]:
+                new_i=cur[1]+d[0]
+                new_j = cur[2]+d[1]
+                if isValid(new_i, new_j) and (new_i, new_j) not in visited:
+                    h_inc=max(0,cur[0]-h[new_i][new_j])
+                    res+=h_inc
+                    if h_inc>0:
+                        heapq.heappush(q,(cur[0],new_i, new_j))
+                    else:
+                         heapq.heappush(q,(h[new_i][new_j],new_i, new_j))
+                    visited.add((new_i, new_j))
+        return res

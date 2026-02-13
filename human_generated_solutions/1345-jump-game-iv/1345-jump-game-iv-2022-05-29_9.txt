@@ -1,0 +1,24 @@
+class Solution:
+    def minJumps(self, arr: List[int]) -> int:
+        
+        jump_queue = deque([[0, 0]])
+        same_block_jump = defaultdict(list)
+        
+        for index in range(len(arr)):
+            same_block_jump[arr[index]].append(index)
+        
+        while jump_queue:
+            
+            jump_index, jump_count = jump_queue.popleft()
+        
+            if jump_index == len(arr) - 1:
+                return jump_count
+            
+            possible_jumps = [jump_index + 1, jump_index - 1, *same_block_jump[arr[jump_index]]]
+
+            for jump in possible_jumps:
+                if arr[jump] != \'0\' and 0 <= jump < len(arr):
+                    jump_queue.append([jump, jump_count + 1])
+                    
+            same_block_jump[arr[jump_index]] = []
+            arr[jump_index] = \'0\'

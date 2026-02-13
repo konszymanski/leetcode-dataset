@@ -1,0 +1,24 @@
+class Solution:
+    def _wordBreak(self, s, wordDict, start, cur, res):
+        # Base Case
+        if start == len(s) and cur:
+            res.append(\' \'.join(cur))
+            
+        for i in range(start, len(s)):
+            word = s[start: i+1]
+            
+            if word in wordDict:
+                
+                # Append the word since it is in the dictionary
+                cur.append(word)
+                
+                # Recursive Step
+                self._wordBreak(s, wordDict, i+1, cur, res)
+                
+                # Backtracking / Post-processing / Pop the word we appended
+                cur.pop()
+        
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        res = []
+        self._wordBreak(s, set(wordDict), 0, [], res)
+        return res

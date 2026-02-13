@@ -1,0 +1,56 @@
+from collections import deque
+class Solution(object):
+    def racecar(self, target):
+        """
+        :type target: int
+        :rtype: int
+        """
+        \'\'\'
+        # solving using bfs
+        since its bfs we are using a queue and initially in the queue 
+        moves, position, speed values are added in a tuple as(0,0,1)
+        \'\'\'
+        queue = deque([(0, 0, 1)])  # note its a list of tuples
+        visited = set()
+
+        # while the queue exists
+
+        while queue:
+
+            # pop the 1st element in the queue
+            moves, position, speed = queue.popleft()
+
+            # checking if the position is equal to the target
+            if position == target:
+                return moves  # since the shortest moves are only required
+
+            # check if the position and speed node are already visited simply continue
+            if (position, speed) in visited:
+                continue
+            else:
+                # if its not visited then add position,speed in the visited and add moves in deque
+                visited.add((position, speed))
+                \'\'\'
+                condition for  A
+                since we have made a new move we are adding 1
+                when accelerated position=position + speed
+                speed = speed*2 
+                \'\'\'
+                queue.append((moves + 1, position + speed, speed * 2))
+
+                \'\'\'
+                2 conditions where reverse is possible
+                one, when the position+speed is greater than the target and the speed is still positive
+                second, when the position+ speed is very less than the target and speed is negative ie car moving in the reverse direction only till it reaches -1 and below -1
+
+                \'\'\'
+                if (position + speed > target and speed > 0) or (position + speed < target and speed < 0):
+                    \'\'\'
+                    Condition for R
+					If speed is positive, speed=-1
+					else speed=1
+					and position stays the same so no alteration of position
+                    \'\'\'
+                    speed = -1 if speed > 0 else 1 
+                   
+                    queue.append((moves + 1, position, speed))

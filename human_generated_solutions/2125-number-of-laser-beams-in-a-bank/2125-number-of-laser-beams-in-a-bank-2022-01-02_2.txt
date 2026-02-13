@@ -1,0 +1,8 @@
+def numberOfBeams(self, bank: List[str]) -> int:
+        cnt = prev = 0
+        for devs in bank:
+            cur = devs.count(\'1\')
+            cnt += cur * prev
+            if cur > 0:
+                prev = cur
+        return cnt

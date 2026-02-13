@@ -1,0 +1,13 @@
+class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        ds=[]
+        self.ans=set()
+        self.solve(tiles,ds)
+        return len(self.ans)
+    def solve(self,tiles,ds):
+        for i in range(len(tiles)):
+            ds.append(tiles[i])
+            self.ans.add("".join(ds[:]))
+            self.solve(tiles[:i]+tiles[i+1:],ds)
+            ds.pop()
+        return

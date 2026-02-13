@@ -1,0 +1,40 @@
+class Solution:
+    def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
+        # Created a new method for no apparent reason
+        return self.small_sat(req_skills, people)
+    
+    
+    def small_sat(self, skills: List[str], people: List[List[str]]) -> List[int]:
+        # Contains a set with each person containing the skill in the skill
+        skill_list: List[Set[str]] = [set() for _ in skills]
+            
+        # Map w/ skill to index (to fill skill_list easier)
+        skill_map: Dict[str, int] = {skill: i for i, skill in enumerate(skills)}
+        
+        # Fills skill_list with index of skill containing person having skill
+        for i, person in enumerate(people):
+            for skill in person:
+                skill_list[skill_map[skill]].add(i)
+        
+        # Queue for bfs. Passing in skill_list and current chosen people
+        queue: List[Tuple[List[Set[str]], List[int]]] = []
+        queue.append((skill_list, []))
+        
+        while queue != []:
+            top_skill_set, top_people = queue.pop(0)
+            
+            # Picks skill w/ smallest number of people involved, and 
+            for person in list(min(top_skill_set, key=len)):
+                # Eliminates all skills that "person" has
+                new_skill_list = [skill for skill in top_skill_set 
+                                  if person not in skill]
+                
+                if new_skill_list == []:
+                    # If no more skills left, this is shortest group yet
+                    # Note: Because this is a BFS, this will always be shortest
+                    return top_people + [person]
+                else:
+                    # Add new_skill_list to queue
+                    queue.append((new_skill_list, top_people + [person]))
+                    
+        return []  # If no solution exists, return empty array

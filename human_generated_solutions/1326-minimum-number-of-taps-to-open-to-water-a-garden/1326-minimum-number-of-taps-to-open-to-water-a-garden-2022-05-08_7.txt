@@ -1,0 +1,20 @@
+class Solution:
+    def minTaps(self, n: int, ranges: List[int]) -> int:
+        
+        rightmosts = [0] * len(ranges)
+        for index, radius in enumerate(ranges):
+            left = max(0, index - radius)
+            rightmosts[left] = max(index + radius, rightmosts[left])
+            
+        res = 0
+        start = end = 0
+        
+		while end < n:
+            start, end = end, max(rightmosts[start: end + 1])
+            
+			if end == start:
+                return -1
+            
+			res += 1
+        
+		return res

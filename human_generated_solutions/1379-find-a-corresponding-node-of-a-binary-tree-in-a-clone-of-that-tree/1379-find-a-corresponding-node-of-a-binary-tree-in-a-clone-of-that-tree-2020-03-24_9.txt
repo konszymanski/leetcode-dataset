@@ -1,0 +1,10 @@
+class Solution:
+    def getTargetCopy(self, original, cloned, target):
+        parents, children = [cloned], list()
+        while parents:
+            for p in parents:
+                if p.val == target.val: return p
+                if p.left: children.append(p.left)
+                if p.right: children.append(p.right)
+            parents = children
+            children = list()

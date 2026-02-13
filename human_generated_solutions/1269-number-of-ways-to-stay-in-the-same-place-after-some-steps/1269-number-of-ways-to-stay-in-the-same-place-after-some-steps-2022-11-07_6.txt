@@ -1,0 +1,26 @@
+class Solution:
+    def numWays(self, steps: int, arrLen: int) -> int:
+        MOD = (10**9)+7
+        @cache
+        def dfs(steps,index):
+            if steps == 0 and index == 0:
+                return 1
+
+            if steps == 0:
+                return 0
+
+            goLeft = 0
+            goRight = 0
+            goStay = 0
+
+            if index > 0:
+                goLeft = dfs(steps-1,index-1)
+
+            if index < arrLen-1:
+                goRight = dfs(steps-1,index+1)
+
+            goStay = dfs(steps-1,index)
+
+            return goLeft+goStay+goRight
+
+        return dfs(steps,0) % MOD

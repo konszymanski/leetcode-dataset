@@ -1,0 +1,26 @@
+class Solution:
+    def beautifulArray(self, n: int) -> List[int]:
+        # We can partition the array into an odd half 
+        # and an even half. This is because the only way 
+        # 2 * nums[k] == nums[i] + nums[j] 
+        # is if nums[i] and nums[j] are the same parity.
+        
+        odds = [1, 3]
+        evens = [2, 4]
+        
+        def double(arr):
+            ans = []
+            for i in range(len(arr)):
+                ans.append(arr[i])
+                ans.append(arr[i] + len(arr) * 2)
+            return ans
+        
+        while len(odds) + len(evens) < n:
+            odds = double(odds)
+            evens = double(evens)
+        
+		# Deleting elements from an array doesn\'t change whether it\'s 
+		# still beautiful or not.
+        odds = [v for v in odds if v <= n]
+        evens = [v for v in evens if v <= n]
+        return odds + evens

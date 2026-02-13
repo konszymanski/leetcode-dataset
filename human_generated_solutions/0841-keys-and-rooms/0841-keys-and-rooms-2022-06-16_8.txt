@@ -1,0 +1,17 @@
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        stack=[]
+        stack=stack+rooms[0]
+        l=len(rooms)
+        visited=set()
+        visited.add(0)
+        while stack:
+            if l==len(visited):
+                return True
+            curr=stack.pop(0)
+            if curr not in visited:
+                visited.add(curr)
+                stack=stack+rooms[curr]
+        if len(visited)==l:
+            return True
+        return False

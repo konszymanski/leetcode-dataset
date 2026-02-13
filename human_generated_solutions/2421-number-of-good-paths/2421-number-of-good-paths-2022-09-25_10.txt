@@ -1,0 +1,61 @@
+class Solution:
+    def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+        
+        adj_list = defaultdict(list)
+        for i, j in edges:
+            adj_list[i].append(j)
+            adj_list[j].append(i)
+        
+        nodes = defaultdict(list)
+        for i, v in enumerate(vals):
+            nodes[v].append(i)
+        
+        uf = UnionFind(len(vals))
+        
+        ans = 0
+        for v in sorted(nodes.keys()):
+        
+            # Add nodes with value v
+            for i in nodes[v]:
+                for j in adj_list[i]:
+                    if vals[j] <= vals[i]:
+                        uf.union(i, j)
+            
+            # Count number of nodes with value v in its root
+            cnt = defaultdict(int)
+            for i in nodes[v]:
+                cnt[uf.find(i)] += 1
+            
+            # For each subtree that contains x nodes with value v,
+            # it has x + (x choose 2) = x + x * (x - 1) // 2 good paths.
+            for x in cnt.values():
+                ans += x + x * (x - 1) // 2
+        
+        return ans
+        
+class UnionFind:
+    """
+    Disjoint-set forest implemented by union-find with
+    1. path compression find()
+    2. weighted union()
+    Both find() and union() have an amortized O(a(n)) time complexity
+    """
+    def __init__(self, n: int) -> None:
+        self.parent = list(range(n))
+        self.size = [1] * n
+
+    def find(self, p: int) -> int:
+        """find root with path compression"""
+        if self.parent[p] != p:
+            self.parent[p] = self.find(self.parent[p])
+        return self.parent[p]
+
+    def union(self, p: int, q: int) -> None:
+        """weighted union: join small tree to large tree"""
+        root1 = self.find(p)
+        root2 = self.find(q)
+        if self.size[root1] >= self.size[root2]:
+            root1, root2 = root2, root1
+        # size of root1 is always smaller
+        self.parent[root1] = self.parent[root2]
+        self.size[root2] += self.size[root1]

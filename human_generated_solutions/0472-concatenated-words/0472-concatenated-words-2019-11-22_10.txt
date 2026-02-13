@@ -1,0 +1,20 @@
+class Solution:
+    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+        s = set(words)
+        
+        memo = {}
+        def isConcatenatedWord(w):
+            if w in memo: return memo[w]
+            
+            for i in range(1, len(w)):
+                if w[:i] not in s: continue
+                
+                r = w[i:]
+                if r in s or isConcatenatedWord(r):
+                    memo[w] = True
+                    return True
+                
+            memo[w] = False
+            return False
+        
+        return filter(isConcatenatedWord, words)

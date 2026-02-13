@@ -1,0 +1,24 @@
+class Solution:
+    def getHappyString(self, n: int, k: int) -> str:
+        res = []
+        
+        def solve(curr, n, k):
+            if len(res) == k:
+                return
+            
+            if len(curr) == n:
+                res.append(\'\'.join(curr))
+                return
+                        
+            for x in [\'a\', \'b\', \'c\']:    
+                if not curr or curr[-1] != x:
+                    curr.append(x)
+                    solve(curr, n, k)
+                    curr.pop()
+        
+        solve([], n, k)
+        
+        if len(res) < k:
+            return \'\'
+        
+        return res[-1]

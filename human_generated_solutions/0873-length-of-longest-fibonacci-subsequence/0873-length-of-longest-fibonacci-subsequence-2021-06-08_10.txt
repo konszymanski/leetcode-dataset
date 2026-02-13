@@ -1,0 +1,21 @@
+from bisect import bisect_left
+class Solution:
+    def lenLongestFibSubseq(self, arr) -> int:
+        max_len = 0
+        len_arr = len(arr)
+        for i in range(len_arr - 2):
+            for j in range(i + 1, len_arr - 1):
+                seq = [i, j]
+                while seq[-1] < len_arr - 1:
+                    sum_pair = arr[seq[-2]] + arr[seq[-1]]
+                    idx = bisect_left(arr, sum_pair, seq[-1] + 1)
+                    if idx < len_arr and arr[idx] == sum_pair:
+                        seq.append(idx)
+                    else:
+                        break
+                len_seq = len(seq)
+                if len_seq > 2 and len_seq > max_len:
+                    max_len = len_seq
+            if len_arr - i <= max_len:
+                break
+        return max_len

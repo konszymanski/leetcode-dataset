@@ -1,0 +1,51 @@
+\'\'\'
+w: tree traversal
+h: we use degree as an indicator, traverse from leaves to root
+    1) we use n * 26 matrix to store the number of label we have met at current node
+    2) leaves have degree of 1, we traverse these leaves first, process the results of leaves
+        to their parents, and decrease the degree of the parent by 1, if the parent degree is 1
+        we add it to the queue
+    3) repeat 2) until we hit root, which is always 0
+    
+\'\'\'
+
+import collections
+
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        tree = collections.defaultdict(set)
+        rec = [[0] * 26 for _ in range(n)]
+        
+        for node1, node2 in edges:
+            tree[node1].add(node2)
+            tree[node2].add(node1)
+            
+        degrees = {}
+        deque = collections.deque([])
+        for node in tree:
+            degrees[node] = len(tree[node])
+            if degrees[node] == 1:
+                deque.append(node)
+        
+        
+        while deque:
+            node = deque.popleft()
+            label = labels[node]
+            position = ord(label) - ord(\'a\') 
+            rec[node][position] += 1 # update number of each label at current node
+            if node != 0:
+                parent = tree[node].pop() # we only have one element at the node
+                degrees[parent] -= 1 # parenet degree decrease by 1
+                tree[parent].remove(node) # remove the child from the parent
+                for i in range(26):
+                    rec[parent][i] += rec[node][i] #update the number of label we meet for the parent\'s nodes
+                    
+                if degrees[parent] == 1: # now the parent becomes a leaf 
+                    deque.append(parent)
+        
+        res = [0] * n
+        for i in range(n):
+            position = ord(labels[i]) - ord(\'a\')
+            res[i] = rec[i][position]
+        
+        return res

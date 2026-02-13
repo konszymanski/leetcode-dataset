@@ -1,0 +1,11 @@
+from typing import List
+
+
+class Solution:
+    def escapeGhosts(self, ghosts: List[List[int]], target: List[int]) -> bool:
+        def get_distance(point) -> int:
+            return abs(target[0] - point[0]) + abs(target[1] - point[1])
+
+        distance = get_distance([0, 0])
+
+        return all(distance < get_distance(pt) for pt in ghosts)

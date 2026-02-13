@@ -1,0 +1,28 @@
+class Codec:
+    def serialize(self, root: TreeNode) -> str:
+        def encode(root):
+            return "" if not root else str(root.val) + "-" + encode(root.left)+encode(root.right)
+
+        return encode(root)
+        
+
+    def deserialize(self, data: str) -> TreeNode:
+        def insert(root, val):
+            if not root:
+                return TreeNode(val)
+
+            if val <= root.val:
+                root.left = insert(root.left,val)
+
+            else:
+                root.right = insert(root.right,val)
+
+            return root
+        
+        root = None
+        my_list = data.split("-")
+        my_list.pop(len(my_list)-1)
+        for item in my_list:
+            root = insert(root, int(item));
+
+        return root;

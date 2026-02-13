@@ -1,0 +1,22 @@
+class ComplexNumber:
+        def __init__(self, string):
+            real, imaginary = string.split(\'+\')
+            self.real = int(real)
+            self.imaginary = int(imaginary[:-1])
+            
+        def __mul__(self, other):
+            if type(other) is not ComplexNumber:
+                raise NotImplementedError
+            real = self.real*other.real+self.imaginary*other.imaginary*-1
+            imaginary = self.real*other.imaginary+self.imaginary*other.real
+            return ComplexNumber(f\'{real}+{imaginary}i\')
+			
+		__rmul__ = __mul__
+        
+        def __str__(self):
+            return f\'{self.real}+{self.imaginary}i\'
+            
+class Solution:
+                
+    def complexNumberMultiply(self, num1: str, num2: str) -> str:
+        return str(ComplexNumber(num1)*ComplexNumber(num2))

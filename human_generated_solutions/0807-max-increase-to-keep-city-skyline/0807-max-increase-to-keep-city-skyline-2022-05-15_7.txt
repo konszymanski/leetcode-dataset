@@ -1,0 +1,16 @@
+class Solution:
+    def maxIncreaseKeepingSkyline(self, grid: List[List[int]]) -> int:
+        def max_row(r):
+            return max(grid[r])
+
+        def max_col(c):
+            return max(grid[i][c] for i in range(len(grid)))
+
+        total_increase = 0
+
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                max_building_height = min(max_row(r),max_col(c))
+                total_increase += max_building_height - grid[r][c]
+                #grid[r][c] = max_building_height
+        return total_increase

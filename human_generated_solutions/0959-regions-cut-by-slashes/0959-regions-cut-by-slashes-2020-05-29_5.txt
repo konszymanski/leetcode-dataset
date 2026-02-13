@@ -1,0 +1,55 @@
+class Solution:
+    def regionsBySlashes(self, grid: List[str]) -> int:
+        N = len(grid)
+        num_regions = 0
+        parents = []
+        sizes = []
+        
+        def union(cell1, cell2):
+            nonlocal num_regions
+            root1 = find_root(cell1)
+            root2 = find_root(cell2)
+            
+            if root1 == root2:
+                return
+            
+            new_root, new_child = (root1, root2) if sizes[root1] > sizes[root2] else (root2, root1)
+            parents[new_child] = new_root
+            sizes[new_root] += sizes[new_child]
+            num_regions -= 1
+        
+        def find_root(cell):
+            if parents[cell] != cell:
+                parents[cell] = find_root(parents[cell])
+            
+            return parents[cell]
+        
+        for i, line in enumerate(grid):
+            for j, ch in enumerate(line):
+                new_left, new_right = len(parents), len(parents) + 1
+                parents.extend([new_left, new_right])
+                sizes.extend([1, 1])
+                # we may have to add +1 to the up cell in case the split happened via /
+                up = new_left - N*2 + (1 if i > 0 and grid[i-1][j] == \'/\' else 0)
+                # the cell to the left, always - 1
+                left = new_left - 1  
+                num_regions += 2
+                
+                if ch == \' \':
+                    union(new_left, new_right)
+                    if j > 0:
+                        union(new_left, left)
+                    if i > 0:
+                        union(new_left, up)
+                elif ch == \'/\':
+                    if j > 0:
+                        union(new_left, left)
+                    if i > 0:
+                        union(new_left, up)
+                elif ch == \'\\\\\':
+                    if j > 0:
+                        union(new_left, left)
+                    if i > 0:
+                        union(new_right, up)
+                
+        return num_regions

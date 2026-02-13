@@ -1,0 +1,10 @@
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        sorted_nums = []
+        res_reversed = []
+        for num in reversed(nums):
+            sorted_idx = bisect.bisect_left(sorted_nums, num)
+            res_reversed.append(sorted_idx)
+            bisect.insort(sorted_nums, num)
+        
+        return reversed(res_reversed)

@@ -1,0 +1,15 @@
+class Solution:
+    def minCost(self, nums: List[int], cost: List[int]) -> int:
+        
+        price = lambda x:sum(abs(n-x)*c for n,c in zip(nums,cost)) # <-- find the total cost of making array [x,x, ...,x]
+
+        left,right = min(nums),max(nums)                           # <-- binary search over [min(nums) <= x <= max(nums)]
+                                                                   #
+		#print([(x, price(x)) for x in range (min(nums),max(nums)+1)])     # <-- see reply to @Code_Hard17 comment below
+
+		while left < right:                                        #
+            mid = (left + right)//2                                # 
+            if price(mid) < price(mid+1): right = mid              # 
+            else: left = mid+1                                     #
+
+        return price(left)                                         # <--  return answer when left = right

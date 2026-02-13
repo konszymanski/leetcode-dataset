@@ -1,0 +1,23 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        ans=5000
+        start=0
+        end=len(nums)-1
+        if nums[0]<nums[end] or end==0:
+            return nums[0]
+        while start<=end:
+            mid=(start+end)//2
+            if mid>0 and mid<len(nums)-1:
+                if nums[mid]<nums[mid+1] and nums[mid]<nums[mid-1]:
+                    return nums[mid]
+            ans=min(nums[mid],ans)
+            if nums[start]==nums[end] and nums[start]==nums[mid]:
+                start+=1
+                end-=1
+                continue
+            if nums[end]<nums[mid]:
+                start=mid+1
+            else:
+                end=mid-1
+            
+         return ans

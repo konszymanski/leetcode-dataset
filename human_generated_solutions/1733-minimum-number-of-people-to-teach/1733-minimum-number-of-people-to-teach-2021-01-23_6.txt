@@ -1,0 +1,8 @@
+def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        lang = [0] + list(map(set, languages))
+        uncom = set()    # someone may need learn new language
+        for a, b in friendships:
+            if not (lang[a] & lang[b]):
+                uncom.add(a)
+                uncom.add(b)
+        return min(sum(i not in lang[p] for p in uncom) for i in range(1, n+1))

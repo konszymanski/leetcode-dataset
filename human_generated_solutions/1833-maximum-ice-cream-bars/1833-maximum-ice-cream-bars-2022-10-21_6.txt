@@ -1,0 +1,17 @@
+class Solution:
+    def maxIceCream(self, costs: List[int], coins: int) -> int:
+        heap = []
+        left = coins
+
+        for cost in costs:
+            if cost <= left:
+                heapq.heappush(heap, -cost)
+                left -= cost
+                continue
+
+            if heap and -heap[0] > cost:
+                left += -heapq.heappop(heap)
+                heapq.heappush(heap, -cost)
+                left -= cost
+        
+        return len(heap)

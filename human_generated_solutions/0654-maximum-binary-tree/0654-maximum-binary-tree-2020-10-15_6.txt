@@ -1,0 +1,5 @@
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        if not nums: return # boundary condition 
+        i = nums.index(max(nums))
+        return TreeNode(nums[i], left=self.constructMaximumBinaryTree(nums[:i]), right=self.constructMaximumBinaryTree(nums[i+1:]))

@@ -1,0 +1,6 @@
+class Solution:
+    def hasAlternatingBits(self, n: int) -> bool:
+        a=bin(n)[2:]
+        if "00" in a or ("11" in a):
+            return False
+        return True

@@ -1,0 +1,17 @@
+# O((upper-lower+1)*n)
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        nums = nums[::-1]
+        min_v = min(nums) if nums else 0
+        
+        import collections
+        record = collections.defaultdict(int)
+        
+        res = []
+        for n in nums:
+            cnt = 0
+            for target in range(min_v,n):
+                if target in record:
+                    cnt += record[target]
+            res.append(cnt)
+            record[n]+=1
+        return res[::-1]

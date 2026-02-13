@@ -1,0 +1,40 @@
+# Idea: 
+# For a query [p, q, limit]
+# we can connect all edges with a weight less than limit -> union nodes u_i, v_i if dis_i < limit
+# after previous step, simply check if p and q is connected  ---> get answer for this query
+
+# Optimization: 
+# we can sort the query in ASC by limit, so for query with larger limits, no need to connect small weight edges
+
+
+class Solution:
+    def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        # Dynamic union-find with path compression and union by rank
+        class UnionFind:
+		    pass
+        
+        edgeList.sort(key=lambda x:x[2])        # sort all edges by weight("distance")
+        for i in range(len(queries)):
+            queries[i].append(i)                # add original query index into query cuz we will sort it later
+                                                # we still need original index to store answers
+            
+        queries.sort(key=lambda x:x[2])         # sort the query in ASC by limit
+        uf = UnionFind()
+        start = 0                               # record start index of unvisited edge in edgeList
+        ans = [False] * len(queries)
+        
+        for u, v, limit, index in queries:
+            
+            for i in range(start, len(edgeList)):
+                a, b, weight = edgeList[i]
+                if weight < limit:
+                    uf.union(a, b)
+                else:                           # find an edge with weiight >= limit, stop here
+                    start = i                   # record current index, so we can resume more efficiently 
+                    break
+            
+            if u in uf.parents and v in uf.parents and uf.find(u) == uf.find(v):
+                ans[index] = True
+                
+        return ans

@@ -1,0 +1,25 @@
+class StreamChecker(object):
+    def __init__(self, words):
+        # By reversing every word in the dictionary, the problem of suffix matching is transformed into prefix matching.
+        self.trie, self.prefix = collections.defaultdict(collections.defaultdict), []
+        for word in words:
+            node = self.trie
+            for c in word[::-1]:
+                if c in node:
+                    node = node[c]
+                else:
+                    node[c] = collections.defaultdict()
+                    node = node[c]
+            node[\'$\'] = None
+
+    def query(self, letter):
+        self.prefix.insert(0, letter)  # Invert the character stream prefix, and then use the trie tree to match.
+        node = self.trie
+        for c in self.prefix:
+            if c in node:
+                node = node[c]
+            else:
+                return False
+            if \'$\' in node:
+                return True
+        return False

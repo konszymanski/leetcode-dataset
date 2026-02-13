@@ -1,0 +1,31 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+from collections import defaultdict
+
+class Solution:
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        
+        # from leaf to root algorithm
+        """
+An Efficient solution based on tree serialization and hashing. The idea is to serialize subtrees as strings and store the strings in hash table. Once we find a serialized tree (which is not a leaf) already existing in hash-table, we return true.
+Below The implementation of above idea.
+        """
+        self.pathCount=defaultdict(int)
+        self.res=[]
+        self.serialization(root)
+        return self.res
+        
+    def serialization(self, node):
+        if not node:
+            return \'*\'
+        path = str(node.val) + self.serialization(node.left) + self.serialization(node.right)
+        if self.pathCount[path] == 1:
+            self.res.append(node)
+        self.pathCount[path] += 1
+        
+        return path

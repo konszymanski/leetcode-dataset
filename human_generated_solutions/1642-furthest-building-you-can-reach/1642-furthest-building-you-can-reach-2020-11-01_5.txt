@@ -1,0 +1,20 @@
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        @lru_cache(None)
+        def helper(i,j,k): # i indexes heights, j is bricks, k is ladders
+            if i == len(heights) - 1:
+                return len(heights) - 1
+            else:
+                if heights[i+1] <= heights[i]: 
+                    return helper(i+1,j,k)
+                else:
+                    maxIndex = i
+                    if j >= heights[i+1]-heights[i]:
+                        maxIndex = max(maxIndex,helper(i+1,j-(heights[i+1]-heights[i]),k))# use bricks
+                    if maxIndex == len(heights) - 1:
+                        return maxIndex
+                    if k > 0:
+                        maxIndex = max(maxIndex,helper(i+1,j,k-1)) # use ladders
+                    return maxIndex
+        
+        return helper(0,bricks,ladders)

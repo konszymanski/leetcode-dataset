@@ -1,0 +1,30 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        
+        
+        res = []
+        
+        #SOLUTION: at each recursive step, we are passing in the remaining word and a temp array
+        def recurse(arr ,word):
+            #if we used up all the characters for every word, we are done
+            if not word:
+                res.append(arr)
+                return 
+            
+            #we loop from 1 to len(word) + 1 in order to splice correctly
+            for i in range(1, len(word) + 1):
+                
+                #for the string \'aabb\'
+                    #iteration 1: curr = a
+                    #iteration 2: curr = aa
+                    #iteration 3: curr = aab
+                    #iteration 4: curr = aabb
+                curr = word[:i]
+                
+                #if its a palindrome, add it to the array then pass in the remaining characters to work with
+                if curr ==curr[::-1]:
+                    recurse(arr + [curr], word[i:])
+                    
+        
+        recurse([], s)
+        return res

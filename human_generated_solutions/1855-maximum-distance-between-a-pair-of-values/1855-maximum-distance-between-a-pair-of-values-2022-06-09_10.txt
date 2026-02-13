@@ -1,0 +1,26 @@
+class Solution(object):
+    def maxDistance(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: int
+        """
+        def binarySearch(start, target):
+            l, r = start, len(nums2)-1
+            while l < r:
+                mid = l + (r-l+1)/2
+                if nums2[mid] < target:
+                    r = mid - 1
+                else:
+                    l = mid
+            
+            if nums2[r] >= target:
+                return r
+            else:
+                return -1
+        maxDistance = 0        
+        for i in range(len(nums1)):
+            j = binarySearch(i, nums1[i])
+            if j != -1:
+                maxDistance = max(maxDistance, j-i)
+        return maxDistance

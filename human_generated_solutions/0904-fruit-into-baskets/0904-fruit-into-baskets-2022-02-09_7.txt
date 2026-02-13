@@ -1,0 +1,12 @@
+def totalFruit(self, fruits: List[int]) -> int:
+        start = end = max_fruits = 0
+        seen = {}
+        for end in range (len(fruits)):
+            seen[fruits[end]] = end
+            if len(seen) > 2:
+                min_ind = min(seen.values())
+                start = min_ind + 1
+                del seen[fruits[min_ind]]
+            max_fruits = max(max_fruits,end - start +1)
+            
+        return max_fruits

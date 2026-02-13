@@ -1,0 +1,31 @@
+import bisect
+
+
+def bisect_find(a, x):
+    \'Locate the leftmost value exactly equal to x\'
+    i = bisect_left(a, x)
+    if i != len(a) and a[i] == x:
+        return i
+    raise ValueError
+	
+	
+class NumberContainers:
+
+    def __init__(self):
+        self.index_to_value = {}
+        self.value_to_indices = defaultdict(list)
+
+    def change(self, index: int, number: int) -> None:
+        if index in self.index_to_value:
+            old_number = self.index_to_value[index]
+            self.value_to_indices[old_number].pop(bisect_find(self.value_to_indices[old_number], index))
+            if len(self.value_to_indices[old_number]) == 0:
+                del self.value_to_indices[old_number]
+        
+        self.index_to_value[index] = number
+        bisect.insort(self.value_to_indices[number], index)
+
+    def find(self, number: int) -> int:
+        if number in self.value_to_indices:
+            return self.value_to_indices[number][0]
+        return -1

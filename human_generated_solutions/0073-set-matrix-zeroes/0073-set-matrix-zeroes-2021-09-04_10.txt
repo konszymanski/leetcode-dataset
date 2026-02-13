@@ -1,0 +1,44 @@
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        first_row = 0
+        first_col = 0
+        
+        m = len(matrix)
+        n = len(matrix[0])
+        for row_i in range(m):
+            for col_j in range(n):
+                if matrix[row_i][col_j] == 0:
+                    if row_i == 0:
+                        first_row = 1
+                    if col_j == 0:
+                        first_col = 1
+                    if row_i != 0 and col_j != 0:
+                        # mark col_j has a zero
+                        matrix[0][col_j] = 0
+                        # mark row_i has a zero
+                        matrix[row_i][0] = 0
+        
+        # set zero to rows         
+        for row_i in range(1, m):
+            if matrix[row_i][0] == 0:
+                for col_j in range(n):
+                    matrix[row_i][col_j] = 0
+                    
+        # set zero to columns         
+        for col_j in range(1, n):
+            if matrix[0][col_j] == 0:
+                for row_i in range(m):
+                    matrix[row_i][col_j] = 0
+
+        # set zero to first row
+        if first_row == 1:
+            for col_j in range(n):
+                matrix[0][col_j] = 0
+                
+        # set zero to first column
+        if first_col == 1:
+            for row_i in range(m):
+                matrix[row_i][0] = 0

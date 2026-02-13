@@ -1,0 +1,20 @@
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+        
+        rle = [s[0]]
+        
+        last_rle_ind = 1
+        last_rle_value = s[0]
+        
+        for i in range(1, len(s)):
+            if s[i] == last_rle_value and last_rle_ind < 2:
+                rle[-1] *= 2
+                last_rle_ind += 1
+
+            if s[i] != last_rle_value:
+                rle.append(s[i])
+                last_rle_ind = 1
+                last_rle_value = s[i]
+                
+        ans = \'\'.join(rle)
+        return ans

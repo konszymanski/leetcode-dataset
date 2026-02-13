@@ -1,0 +1,26 @@
+def strangePrinter(self, s: str) -> int:
+        #it doesnt matter how many of the same characters the printer prints
+        #because we just care about minimizing the number of turns
+        #consider characters to be in groups, [aa,bb,c,bb,a,cc]
+        #the first "a" group could have been written by itself, or it could have been written with second "a" group
+        #you combine c_group with a future group of same type, but then you must handle middle stuff additionally
+        #since you have to deal with middle stuff we need two pointers (left, right) to represent that quantity
+        
+        #this problem is basically same as 546 Remove Boxes
+        
+        #reduce "aaabba" to "aba"
+        s = "".join([key for key, group in groupby(s)])
+        @lru_cache(None)
+        def solve(left, right):
+            if left > right:
+                return 0
+            
+            ans = 1 + solve(left+1, right)
+            
+            for nex in range(left+1, right+1):
+                if s[nex] == s[left]:
+                    ans = min(ans, solve(left+1, nex-1) + solve(nex, right))
+                    
+            return ans
+        
+        return solve(0, len(s)-1)

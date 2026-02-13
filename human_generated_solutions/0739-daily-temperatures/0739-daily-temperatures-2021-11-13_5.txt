@@ -1,0 +1,27 @@
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        n = len(temperatures)  # Get the size of the temperatures array
+        answer = [0] * n  # Initialize the answer list with zeros
+        m_st = []  # Create a monotonic stack to store indices of next maximum temperatures
+
+        # Push the last index onto the stack
+        m_st.append(n - 1)
+
+        # Traverse the temperatures array from second last element to the first
+        for i in range(n - 2, -1, -1):
+            # Keep popping indices from the stack if the temperature at the index is less than or equal to the current temperature
+            while m_st and temperatures[m_st[-1]] <= temperatures[i]:
+                m_st.pop()
+
+            # If the stack is empty, there are no higher temperatures ahead
+            if not m_st:
+                # Place zero at the current index in the answer list
+                answer[i] = 0
+            else:
+                # Calculate the difference between the index at the top of the stack and the current index
+                answer[i] = m_st[-1] - i
+
+            # Push the current index onto the stack
+            m_st.append(i)
+
+        return answer  # Return the answer list

@@ -1,0 +1,11 @@
+class Solution(object):
+    def countSegments(self, s):
+        word=0
+        count=True
+        for i in range(0,len(s)):
+            if s[i]!=" " and count==True:
+                word+=1
+                count=False
+            if s[i]==" ":
+                count=True
+        return word

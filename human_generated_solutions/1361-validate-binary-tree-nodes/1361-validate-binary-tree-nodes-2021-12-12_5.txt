@@ -1,0 +1,53 @@
+class Solution:
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        
+        # Definition of NULL (i.e., empty node), given by description
+        NULL = -1
+        
+        # --------------------------------------------------------------
+        def find_root():
+            
+            children = set(leftChild) | set(rightChild)
+
+            # search for root node, root node is not a child node always.
+            for i in range(n):
+                if i not in children:
+                    return i
+            
+            return NULL
+        
+        # --------------------------------------------------------------
+        
+        root = find_root()
+        
+        if root == NULL:
+            # Reject, because root doesn\'t exist
+            return False
+        
+        
+        
+        # launch BFS to given graph
+        queue = deque([root])
+        visited = set()
+        
+        while queue:
+            
+            cur = queue.popleft()
+            
+            if cur in visited:
+                
+                # Reject, because there is a cycle
+                # Cycle is not allowed in binary tree
+                return False
+            
+            visited.add(cur)
+            
+            if leftChild[cur] != NULL:
+                queue.append( leftChild[cur] )
+                
+            if rightChild[cur] != NULL:
+                queue.append( rightChild[cur] )
+        
+        
+        # BFS in binary tree must visit n nodes exactly, without repetition.
+        return len(visited) == n

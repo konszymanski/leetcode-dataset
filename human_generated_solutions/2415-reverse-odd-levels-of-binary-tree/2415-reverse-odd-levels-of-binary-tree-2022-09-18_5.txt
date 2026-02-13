@@ -1,0 +1,35 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:  
+        def reverse(root, lvl):
+            if root:
+                q = []
+                q.append(root)
+                
+                while q:
+                    q_len = len(q)
+                    sublist = []
+                    if q_len>1: 
+                        for node in q:
+                            sublist.append(node.val) #collecting all the elements of current level
+                    
+                        if lvl%2 != 0: #lvl has the value of previous level
+                            for node, val in zip(q, sublist[::-1]): #reverse the order if current level is odd
+                                node.val = val
+                            
+                    while q_len>0:
+                        node = q.pop(0)
+                        if node.left:
+                            q.append(node.left)
+                        if node.right:
+                            q.append(node.right)
+                        q_len -= 1
+                    lvl += 1
+                        
+        reverse(root, 0)
+        return root

@@ -1,0 +1,16 @@
+class Solution(object):
+    def pancakeSort(self, A):
+        ans = []
+        end = len(A)
+        while end > 0:
+            maxi = max(A[:end])
+            max_index = A[:end].index(maxi)
+            if max_index+1 == end:
+                end -= 1
+            else:
+                ans.append(max_index+1)
+                A[:max_index+1] = A[:max_index+1][::-1]
+                ans.append(end)
+                A[:end] = A[:end][::-1]
+                end -= 1
+        return ans

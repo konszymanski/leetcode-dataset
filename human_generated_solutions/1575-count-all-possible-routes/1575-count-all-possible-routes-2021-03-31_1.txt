@@ -1,0 +1,85 @@
+def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+	MOD = 10 ** 9 + 7
+	start_loc = locations[start]
+	fin_loc = locations[finish]
+	if abs(start_loc - fin_loc) > fuel:
+		return 0
+	locations.sort()
+
+	to_remove = []
+	min_both, max_both = start_loc, fin_loc
+	if start_loc > fin_loc:
+		min_both, max_both = max_both, min_both
+
+	# Remove unreachable locations: pure unreachable, or impossible to visit and return to finish
+	for i, x in enumerate(locations):
+		if x == start_loc or x == fin_loc:
+			continue
+		if abs(x - start_loc) >= fuel or abs(x - fin_loc) >= fuel:
+			to_remove.append(i)
+		elif (abs(x-start_loc)+abs(x-fin_loc) > fuel) and (x < min_both or max_both < x):
+			to_remove.append(i)
+	for j in reversed(to_remove):
+		del locations[j]
+
+	# Deal with small input sizes 1-2
+	n = len(locations)
+	if n == 1:
+		return 1
+	if n == 2:
+		dist_between = locations[1]-locations[0]
+		if start_loc == fin_loc:
+			return 1 + (fuel // (2*dist_between))
+		return 1 + ((fuel-dist_between) // (2*dist_between))
+
+	start_ind = bisect.bisect_left(locations, start_loc)
+	finish_ind = bisect.bisect_left(locations, fin_loc)
+
+	dp_left = [[0] * (fuel+1) for _ in range(n)]
+	dp_right = [[0] * (fuel+1) for _ in range(n)]
+
+	ans = 1 if start_ind == finish_ind else 0
+
+	# Add initial step from starting point
+	if start_ind > 0:
+		if start_loc == locations[start_ind-1]+fuel:
+			ans += 1
+		else:
+			dp_left[start_ind-1][start_loc-locations[start_ind-1]] = 1
+	if start_ind < n-1:
+		if start_loc == locations[start_ind+1]-fuel:
+			ans += 1
+		else:
+			dp_right[start_ind + 1][locations[start_ind + 1] - start_loc] = 1
+
+	# Calculate minimum adjacent step size and distances from start
+	min_diff = locations[1]-locations[0]
+	last = locations[0] - min_diff
+	my_dist_from_start = []
+	for x in locations:
+		min_diff = min(min_diff, x-last)
+		last = x
+		my_dist_from_start.append(abs(x-start_loc))
+
+	# Start the DP
+
+	for fuel_rem in range(2*min_diff, fuel+1):
+
+		# If we are stepping left
+		for j in range(0, n - 1):
+			if fuel_rem >= my_dist_from_start[j]:
+				right_diff = locations[j + 1] - locations[j]
+				if right_diff < fuel_rem:
+					dp_left[j][fuel_rem] = (dp_right[j+1][fuel_rem-right_diff]
+											+ 2*dp_left[j+1][fuel_rem-right_diff]) % MOD
+
+		# If we are stepping right
+		for j in range(1, n):
+			if fuel_rem >= my_dist_from_start[j]:
+				left_diff = locations[j] - locations[j-1]
+				if left_diff < fuel_rem:
+					dp_right[j][fuel_rem] = (dp_left[j-1][fuel_rem-left_diff]
+											 + 2*dp_right[j-1][fuel_rem-left_diff]) % MOD
+
+	ans += sum(dp_left[finish_ind]) + sum(dp_right[finish_ind])
+	return ans % MOD

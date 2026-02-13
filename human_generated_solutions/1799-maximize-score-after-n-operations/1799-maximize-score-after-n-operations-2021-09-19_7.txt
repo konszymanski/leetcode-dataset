@@ -1,0 +1,40 @@
+class Solution:
+    def maxScore(self, nums: List[int]) -> int:
+        combs = []
+        for i in range(len(nums)-1):
+            for j in range(i+1, len(nums)):
+                gcd = math.gcd(nums[i], nums[j])
+                comb_id = (1<<i) | (1<<j)
+                combs.append([comb_id, gcd])
+                
+        ops = len(nums)//2       
+        self.ms = 0
+        graph = {}
+        for op in range(ops, 0, -1):
+            if op not in graph:
+                graph[op] = []
+            
+            if op == ops:
+                for comb in combs:
+                    curr_score = comb[1] * op
+                    self.ms = max(self.ms, curr_score)
+                    graph[op].append([comb[0], curr_score])
+            else:
+                for comb in combs:
+                    curr_score = 0
+                    new_comb_id = []
+                    comb_score = comb[1] * op
+                    for prev_comb in graph[op+1]:
+                        if prev_comb[0] & comb[0]:
+                            continue
+                        new_score = comb_score + prev_comb[1]  
+                        if new_score > curr_score:
+                            curr_score = new_score
+                            new_comb_id = [comb[0] | prev_comb[0]]
+                        elif new_score == curr_score:    
+                            new_comb_id.append(comb[0] | prev_comb[0])
+                    self.ms = max(self.ms, curr_score)
+                    for nci in new_comb_id:
+                        graph[op].append([nci, curr_score])
+             
+        return self.ms

@@ -1,0 +1,11 @@
+class Solution:
+    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:
+        i = maxdist = 0
+        n = len(nums1)
+        for j, number2 in enumerate(nums2):
+            while i < n and nums1[i] > number2:
+                i += 1
+            if i == n:
+                return maxdist
+            maxdist = max(maxdist, j - i)
+        return maxdist

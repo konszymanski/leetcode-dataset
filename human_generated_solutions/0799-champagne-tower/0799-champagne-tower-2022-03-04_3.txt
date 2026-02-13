@@ -1,0 +1,16 @@
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        def solve(val, r, g,dp):
+            if r==0 and g==0:
+                return val
+            if g<0 or g>r:
+                return 0
+            if (r,g) in dp:
+                return dp[(r,g)]
+            left = max((solve(val,r-1,g-1,dp)-1)/2,float(0))
+            right = max((solve(val,r-1,g,dp)-1)/2,float(0))
+            dp[(r,g)] = left+right
+            return dp[(r,g)]
+        
+        
+        return min(solve(poured,query_row,query_glass,{}),float(1))

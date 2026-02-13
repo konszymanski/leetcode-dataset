@@ -1,0 +1,17 @@
+class Solution:
+    # @param head, a ListNode
+    # @return a list node
+    def detectCycle(self, head):
+        try: ##\u5982\u679C\u6709\u5C3E\u90E8\uFF0C\u5FC5\u7136\u51FA\u9519\uFF0C\u8FDB\u5165except\u3002
+            Slow = head.next ## \u4FDD\u8BC1Slow\u548C Fast\u540C\u65F6\u79FB\u52A8
+            Fast = head.next.next
+            while Slow!=Fast: ## Fast\u4E00\u76F4\u662FSlow\u7684\u4E24\u500D\u901F\u5EA6\uFF0C\u8FD9\u70B9\u5F88\u5173\u952E\u3002
+                Slow = Slow.next
+                Fast = Fast.next.next
+        except:
+            return None       
+        Slow = head ##\u8BA9Slow\u4ECE\u5934\u5F00\u59CB\uFF0CFast\u4FDD\u6301\u4E0A\u4E00\u6B65\u7684\u4F4D\u7F6E
+        while Slow != Fast:
+            Slow = Slow.next
+            Fast = Fast.next
+        return Slow

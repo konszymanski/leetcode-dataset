@@ -1,0 +1,13 @@
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums = list(set(nums))
+        nums.sort()
+        ans = float(\'inf\')
+        left = 0
+        for i in range(len(nums)):
+            while left<i and nums[left]<nums[i] - n+1:
+                left+=1 
+            count = i - left +1 
+            ans = min(ans , n - count)
+        return ans

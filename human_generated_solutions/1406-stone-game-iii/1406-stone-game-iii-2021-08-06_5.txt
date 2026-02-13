@@ -1,0 +1,15 @@
+def stoneGameIII(self, stoneValue):
+    @functools.cache
+    def opt(i):
+		# Breaking Condition:
+        if i >= len(stoneValue):
+            return 0
+		# Recursive Step:
+        return max(sum(stoneValue[i:i + k]) - opt(i + k) for k in range(1, 4))
+	
+	# Compute the diffrence of scores between Alice and Bob and return the identity of the winner:
+	diff = opt(0)
+	if diff:
+        return "Alice" if diff > 0 else "Bob"
+    else:
+        return "Tie"

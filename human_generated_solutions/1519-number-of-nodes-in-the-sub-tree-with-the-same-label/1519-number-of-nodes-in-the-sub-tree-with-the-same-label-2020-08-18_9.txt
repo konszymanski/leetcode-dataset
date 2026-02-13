@@ -1,0 +1,48 @@
+class Solution:
+    def dfs(self, root, adj, labels, ans, dic, seen):
+        seen.add(root)
+        
+        for i in adj[root]:
+            if(i not in seen):
+                ans, temp = self.dfs(i, adj, labels, ans, {}, seen)
+
+                for i in temp:
+                    if(i in dic):
+                        dic[i] += temp[i]
+                    else:
+                        dic[i] = temp[i]
+        
+        if(labels[root] in dic):
+            dic[labels[root]] += 1
+        else:
+            dic[labels[root]] = 1
+        
+        ans[root] = dic[labels[root]]
+        return ans, dic
+        
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        ans = [1 for i in range(n)]
+        
+        adj = {}
+        
+        for i in range(len(edges)):
+            curr = edges[i]
+            
+            if(curr[0] in adj):
+                adj[curr[0]].append(curr[1])
+            else:
+                adj[curr[0]] = [curr[1]]
+                
+            if(curr[1] in adj):
+                adj[curr[1]].append(curr[0])
+            else:
+                adj[curr[1]] = [curr[0]]
+        	
+        for i in range(1,n):
+            if i not in adj:
+                adj[i] = []
+        
+        seen = set()
+        ans, dic = self.dfs(0, adj, labels, ans, {}, seen)
+            
+        return ans

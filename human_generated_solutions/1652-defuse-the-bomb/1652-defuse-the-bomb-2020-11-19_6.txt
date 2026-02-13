@@ -1,0 +1,6 @@
+def decrypt(self, num: List[int], k: int) -> List[int]:
+        n, w = len(num), abs(k)
+        sums = [sum(num[1:w+1])]*n                      # sums[i] is the sum of a window of size |k| after i
+        for i in range(1,n):
+            sums[i] = sums[i-1] + num[(i+w)%n] - num[i]
+        return sums if k>=0 else sums[~w:]+sums[:~w]    # if k is negative all we need to do is shift the sums to the right by |k|

@@ -1,0 +1,18 @@
+class Solution(object):
+    def maxAbsoluteSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        ans = 0
+        currentSumPos = 0
+        currentSumNeg = 0
+        for item in nums:
+			currentSumNeg +=item
+			currentSumPos +=item
+			if currentSumPos < 0:
+				currentSumPos = 0
+			elif currentSumNeg >0:
+				currentSumNeg = 0
+            ans = max(ans,currentSumPos,-currentSumNeg)    
+        return ans

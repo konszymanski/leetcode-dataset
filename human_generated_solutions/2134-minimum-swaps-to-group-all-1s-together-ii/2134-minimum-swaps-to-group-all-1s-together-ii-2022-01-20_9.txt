@@ -1,0 +1,29 @@
+class Solution:
+    def minSwaps(self, nums: List[int]) -> int:
+        if 0 not in nums: return 0
+        n=len(nums)
+        S=sum(nums)                 #S is length of expected consecutive ones
+        i,j=0,0
+        ans=sys.maxsize
+        ones=nums[0]
+		#The usual array part
+        while j+1<n:
+            if nums[j+1]==1:
+                ones+=1
+            j+=1
+            if j-i+1>=S:
+                if j-i+1>S: 
+                    if nums[i]==1: ones-=1
+                    i+=1
+                ans=min(S-ones,ans)
+		#Now the circular array part
+        while i<n:
+            if nums[(j+1)%n]==1:
+                ones+=1
+            j+=1
+            if j-i+1>=S:
+                if j-i+1>S: 
+                    if nums[i]==1: ones-=1
+                    i+=1
+                ans=min(S-ones,ans)
+        return ans

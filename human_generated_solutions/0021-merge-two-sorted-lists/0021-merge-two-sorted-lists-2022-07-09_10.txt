@@ -1,0 +1,35 @@
+class Solution(object):
+    def mergeTwoLists(self, list1, list2):
+        """
+        :type list1: Optional[ListNode]
+        :type list2: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # initiating empty linked list, notice if no arguments given to ListNode(), it starts a blank linked list with 0 value and next = None
+        merged_list = ListNode()
+        # referrencing the merged_list into res, so that we can book-keep the initiation pointer of linked list
+        res = merged_list
+        # we compare both linked list until one of them terminates
+        while list1 and list2:
+            
+            # comparing the values of linked lists at current pointers
+            if list1.val <= list2.val:
+                # if list1 value is lower or equal, we referrence the list1 as merged_list next pointer.
+                merged_list.next = list1
+                # we transverse through list1 by 1 step to check the next element, just like an array
+                list1 = list1.next
+            else:
+                # in else case, we referrence the list 2 as merged_list next pointer.
+                merged_list.next = list2
+                # transversing through list2 by 1 step to check the next element, like in if condition.
+                list2 = list2.next
+            # moving the merged_list to merged_list.next pointer, to add more elements subsequently.
+            merged_list = merged_list.next
+            
+        # since we did the above till one of the linked list ends, we referrence the next head of other linked list as next pointer to merged_list.
+        # Notice that we only need to do it once, because the linked list would transverse on itself, once given pointer.
+        if list1 or list2:
+            merged_list.next = list1 if list1 else list2
+            
+        # We\'re returning the next pointer of res, notice that our actual head of res and merged_list was initiation node of value 0 and it\'s next pointer is pointing to start of our merged linked list.
+        return res.next

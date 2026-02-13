@@ -1,0 +1,55 @@
+def sortItems(n, m, group, beforeItems):
+	# set each -1 as a new group with group_id gi
+	gi = max(group)
+	for i in range(n):
+		if group[i] < 0:
+			gi += 1
+			group[i] = gi
+
+	# topo sort elements in "nodes"
+	def topo(src, dst, nodes):
+		q = [i for i in nodes if not src[i]]
+		for x in q:
+			for y in dst[x]:
+				src[y].remove(x)
+				if not src[y]:
+					q.append(y)
+		return q if len(q) == len(nodes) else None
+
+	# build DAG on group ids
+	nodes = set(group)
+	src, dst = {i: set() for i in nodes}, collections.defaultdict(set)
+	for d in range(n):
+		for s in beforeItems[d]:
+			gd, gs = group[d], group[s]
+			if gd != gs:
+				src[gd].add(gs)
+				dst[gs].add(gd)
+
+	# topo sort group id
+	group_order = topo(src, dst, nodes)
+	if not group_order:
+		return []
+
+	# elements in each group
+	g2i = collections.defaultdict(list)
+	for i in range(n):
+		g2i[group[i]].append(i)
+
+	order = []
+	for gid in group_order:
+		# build DAG on elements in group[gid]
+		nodes = g2i[gid]
+		src, dst = {i: set() for i in nodes}, collections.defaultdict(set)
+		for d in nodes:
+			for s in beforeItems[d]:
+				if s in nodes:
+					src[d].add(s)
+					dst[s].add(d)
+
+		# topo sort elements in group[gid]
+		in_group_order = topo(src, dst, nodes)
+		if not in_group_order:
+			return []
+		order += in_group_order
+	return order

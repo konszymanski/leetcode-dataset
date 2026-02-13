@@ -1,0 +1,14 @@
+class Solution(object):
+    def maxLengthBetweenEqualCharacters(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        d = {}
+        for i, k in enumerate(s):
+            if k not in d:
+                d[k] = [i,i]
+            else:
+                d[k][1] = i
+                
+        return max([i[1] - i[0] - 1 for i in d.values()])

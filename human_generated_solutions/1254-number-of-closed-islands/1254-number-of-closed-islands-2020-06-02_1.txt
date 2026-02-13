@@ -1,0 +1,34 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        ## RC ##
+        ## APPROACH : DFS ##
+        ## LOGIC ##
+        ## 1. Find, Islands just like normal Leetcode 200. Number of Islands problem.
+        ## 2. While doing so, check if every land block, is not in the border.
+        ## 3. If it is in the border, mark that Island as Invalid island and after traversal donot include in the count
+        
+        def dfs( i, j, visited):
+            
+            if( (i,j) in visited ):
+                return
+            
+            if not self.inValidIsland and ( i== 0 or j == 0 or i == m-1 or j == n-1 ):
+                self.inValidIsland = True
+            
+            visited.add((i,j))
+            
+            for x,y in directions:
+                if 0 <= i+x < m and 0 <= j+y < n and grid[i+x][j+y] == 0:
+                    dfs( i+x, j+y, visited )
+        
+        if not grid: return 0
+        m, n = len(grid), len(grid[0])
+        count, visited = 0, set()
+        directions = [(0,1),(1,0),(0,-1),(-1,0)]
+        for i in range(m):
+            for j in range(n):
+                self.inValidIsland = False
+                if (i,j) not in visited and grid[i][j] == 0:
+                    dfs( i, j, visited )
+                    count = count + (1 if( not self.inValidIsland ) else 0)
+        return count

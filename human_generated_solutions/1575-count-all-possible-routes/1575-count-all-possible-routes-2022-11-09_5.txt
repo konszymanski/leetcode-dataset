@@ -1,0 +1,32 @@
+class Solution:
+    def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+        # start = initial index
+        # end = destination index     
+
+        MOD = (10**9)+7 
+        lenLocations = len(locations)
+
+        @cache
+        def dfs(index, fuel):
+            # If you have no more fuel and you\'re at destination:
+            # You cannot try another other routes, return 1 because you\'re at destination
+            if fuel == 0 and index == finish:
+                return 1
+
+            # If no more fuel and not at route:
+            # You cannot try another other routes, return 1 because you\'re not at destination
+            if fuel <= 0:
+                return 0
+            
+            # If your current index is destination index, you found an existing route
+            countWays = 1 if index == finish else 0
+
+            # Try every location index (dfs), but you cannot stay at your current index
+            for nextIndex in range(len(locations)):
+                if index != nextIndex:
+                    cost = abs(locations[index]-locations[nextIndex])
+                    countWays += dfs(nextIndex,fuel-cost)
+
+            return countWays
+
+        return dfs(start,fuel) % MOD

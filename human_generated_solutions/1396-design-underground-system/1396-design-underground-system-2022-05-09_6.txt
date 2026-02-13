@@ -1,0 +1,17 @@
+class UndergroundSystem:
+
+    def __init__(self):
+        self.id_to_startstation_and_time = {}
+        self.route_to_time_and_count = collections.defaultdict(lambda: [0, 0])
+                
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.id_to_startstation_and_time[id] = [stationName, t]
+
+    def checkOut(self, id: int, end_station: str, t: int) -> None:
+        start_station, start_time = self.id_to_startstation_and_time.pop(id)
+        self.route_to_time_and_count[(start_station, end_station)][0] += (t - start_time)
+        self.route_to_time_and_count[(start_station, end_station)][1] += 1
+            
+    def getAverageTime(self, start_station: str, end_station: str) -> float:
+        total_time, total_counts = self.route_to_time_and_count[(start_station, end_station)]
+        return total_time / total_counts

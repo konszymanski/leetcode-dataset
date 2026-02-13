@@ -1,0 +1,15 @@
+class Solution:
+    def groupThePeople(self, groupSizes: List[int]) -> List[List[int]]:
+          map = {}
+          finalGroup = []
+
+          for i, value in enumerate(groupSizes):
+              if value not in map:
+                  map[value] = []
+
+              map.get(value).append(i)
+              if len(map.get(value)) == value:
+                  finalGroup.append(map.get(value))
+                  map[value] = []
+
+          return finalGroup

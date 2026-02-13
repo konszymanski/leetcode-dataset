@@ -1,0 +1,17 @@
+class Solution:
+    def numberOfLines(self, widths: List[int], S: str) -> List[int]:
+        lines = width = 0
+        
+        for i in S:
+            x = widths[ord(i) - ord(\'a\')]
+            if width + x == 100:
+                lines += 1
+                width = 0
+            elif width + x > 100:
+                lines += 1
+                width = x
+            else:
+                width += x
+        if width != 0:
+            lines += 1
+        return [lines, width]

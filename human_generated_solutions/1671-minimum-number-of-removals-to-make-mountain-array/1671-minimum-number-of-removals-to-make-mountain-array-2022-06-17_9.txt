@@ -1,0 +1,25 @@
+class Solution:
+    def minimumMountainRemovals(self, nums: List[int]) -> int:
+        n = len(nums)
+        
+		# LIS
+        lis_count = [1] * n
+        for i in range(1, n):
+            for prev in reversed(range(i)):
+                if nums[prev] < nums[i]:
+                    lis_count[i] = max(lis_count[i], lis_count[prev] + 1)
+        
+		# LDS
+        lds_count = [1] * n
+        for i in reversed(range(1,n)):
+            for prev in range(i, n):
+                if nums[i] > nums[prev] and lds_count[prev] + 1 > lds_count[i]:
+                    lds_count[i] = lds_count[prev] + 1
+
+		# calc max bitonic subsequence len except only increasing or only decreasing cases
+        max_sum = 0
+        for i in range(n):
+            if lis_count[i] > 1 and lds_count[i] > 1:
+                max_sum = max(max_sum, lis_count[i] + lds_count[i] - 1)
+        
+        return n - max_sum

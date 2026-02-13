@@ -1,0 +1,29 @@
+class Solution:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        def helper(mid):
+            nonlocal n
+            Sum=mid
+            left=index             #no of elements to left of index in arr
+            right=n-index-1     #no of elements to right of index in arr
+            if left>=mid-1:
+                Sum+=(mid*(mid-1))//2
+                Sum+=left-(mid-1)
+            else:
+                Sum+=(mid*left-(left*(left+1))//2)
+            if right>=mid-1:
+                Sum+=(mid*(mid-1))//2
+                Sum+=right-(mid-1)
+            else:
+                Sum+=(mid*right-(right*(right+1))//2)
+            if Sum<=maxSum:
+                return True
+            return False
+        l=1
+        h=10**9
+        while l<h:
+            mid=l+(h-l+1)//2
+            if helper(mid):
+                l=mid
+            else:
+                h=mid-1
+        return l

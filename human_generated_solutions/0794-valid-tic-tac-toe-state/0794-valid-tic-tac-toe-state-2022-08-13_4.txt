@@ -1,0 +1,21 @@
+class Solution:
+    def validTicTacToe(self, board: List[str]) -> bool:        
+        main_diag = board[0][0] + board[1][1] + board[2][2]
+        second_diag = board[0][2] + board[1][1] + board[2][0]
+        
+        t_board = [\'\'.join(s) for s in zip(*board)]
+        items = [*board, *t_board, main_diag, second_diag]
+        
+        X_won = \'XXX\' in items
+        O_won = \'OOO\' in items
+        
+        X_count = sum(row.count(\'X\') for row in board)
+        O_count = sum(row.count(\'O\') for row in board)
+        diff = X_count - O_count
+        
+        if X_won:
+            return not O_won and diff == 1
+        elif O_won:
+            return diff == 0
+        else:
+            return 0 <= diff <= 1

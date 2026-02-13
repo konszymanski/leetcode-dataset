@@ -1,0 +1,53 @@
+class Solution:
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        leaves = []
+        trie_lambda = lambda: collections.defaultdict(trie_lambda)
+        trie = trie_lambda()
+        trie[\'*\'] = trie[\'**\'] = \'*\'
+        
+        for p in paths:
+            t = trie
+            for f in p:
+                parent, t = t, t[f]
+                t[\'*\'] = parent
+                t[\'**\'] = f
+        
+        def traverse(t):
+            if len(t) == 2:
+                leaves.append(t)
+            else:
+                for k, v in t.items():
+                    if k[0] != \'*\':
+                        traverse(v)
+        traverse(trie)
+        
+        leaf_ids = set(id(leaf) for leaf in leaves)
+        candidates = {id(leaf[\'*\']):leaf[\'*\'] for leaf in leaves}
+        
+        while candidates:
+            new = {}
+            dup = collections.defaultdict(list)
+            for cand in candidates.values():
+                if any(id(v) not in leaf_ids for k, v in cand.items() if k[0] != \'*\'):
+                    continue
+                dup[\',\'.join(sorted(cand.keys()))].append(cand)
+            for k, v in dup.items():
+                if len(v) > 1:
+                    for cand in v:
+                        f = cand[\'**\']
+                        parent = cand[\'*\']
+                        del parent[f]
+                        leaf_ids.add(id(parent[\'*\' + f]))
+                        new[id(parent)] = parent
+            candidates = new
+        path = []
+        ans = []
+        def dfs(t):
+            for f in t:
+                if f[0] != \'*\':
+                    path.append(f)
+                    ans.append(list(path))
+                    dfs(t[f])
+                    path.pop()
+        dfs(trie)
+        return ans

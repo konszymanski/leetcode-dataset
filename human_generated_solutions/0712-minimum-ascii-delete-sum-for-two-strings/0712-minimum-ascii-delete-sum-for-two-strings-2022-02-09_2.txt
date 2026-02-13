@@ -1,0 +1,24 @@
+class Solution:
+    def minimumDeleteSum(self, word1: str, word2: str) -> int:
+        m = len(word1)
+        n = len(word2)
+        
+        @cache
+        def dfs(i, j):
+            # if we have run out of characters in both strings
+            # return 0
+            if i == m and j == n:
+                return 0
+            
+            if i == m or j == n:
+                return sum([ord(c) for c in word1[i:]]) or sum([ord(c) for c in word2[j:]])
+            
+            if word1[i] == word2[j]:
+                # identical characters, pay no cost since no deletion
+                return dfs(i + 1, j + 1)
+            else:
+                # letters are different, try shifting both and see which 
+                # one is better and pay a cost of 1 for one deletion
+                return min(dfs(i+1, j) + ord(word1[i]), dfs(i, j+1)+ ord(word2[j])) 
+            
+        return dfs(0, 0)

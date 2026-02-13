@@ -1,0 +1,31 @@
+def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        
+        res_list = [""]*len(s)
+        adj_list = defaultdict(list)
+        
+		#create an adjaceny matrix based on the pairs
+        for u, v in pairs:
+            adj_list[u].append(v)
+            adj_list[v].append(u)
+            
+        seen = set()
+        
+        def dfs(node, connected_idx, connected_let):
+            seen.add(node)
+            connected_idx.append(node) #for each connected component maintain a list of the indexes
+            connected_let.append(s[node]) #and the letters
+            for node in adj_list[node]:
+                if node not in seen:
+                    dfs(node, connected_idx, connected_let)
+        
+        for i in range(len(s)):
+            if i not in seen:
+                connected_idx = []
+                connected_let = []
+                dfs(i, connected_idx, connected_let)
+                connected_idx.sort() #sort the indexes
+                connected_let.sort() #and the letters
+                for a, b in zip(connected_idx, connected_let):
+                    res_list[a] = b  #assign the sorted letters in that connected component to that index
+                    
+        return "".join(res_list)

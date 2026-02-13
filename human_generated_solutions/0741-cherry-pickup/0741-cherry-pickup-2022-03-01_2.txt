@@ -1,0 +1,37 @@
+import functools
+
+def cherryPickup(grid):
+    
+    last_index = len(grid)-1
+
+    @functools.lru_cache(125000)                # @lru_cache from functools automatically memoizes the function.
+    def get_cherry(r1, c1, c2):                 # Function will return max number of cherries picked, or -inf if there\'s no valid path.   
+
+        r2 = r1 + c1 - c2                       # Derive r2 from r1, c1, c2.
+
+                                                # Exception cases, return -inf:
+        if (r1>last_index or c1>last_index or       # person1 is out of bound
+            r2>last_index or c2>last_index or       # person2 is out of bound 
+            grid[r1][c1] == -1 or                   # person1 is on a cell with thorn
+            grid[r2][c2] == -1):                    # person2 is on a cell with thorn
+            return float(\'-inf\')
+                                                # Base case:
+        elif r1==last_index and c1==last_index:    # If the last cell is reached,
+            return grid[r1][c1]                    # return the value of the last cell.
+        
+        # Here, we reach a valid state and it\'s not the last cell ========================================================
+        # Perform computations on current state: 
+
+        cherries = grid[r1][c1]            # Location of person1, the value is either 0 or 1. Add it to the cherries count.
+
+        if c1 != c2:                       # If person2 is at a different location, add that cell value to the cherries count.
+            cherries += grid[r2][c2]
+                                                    # Next move have 4 options, find the max value and add to cherries count.
+        cherries += max(get_cherry(r1, c1+1, c2+1),     # person1 going right, person2 going right
+                        get_cherry(r1, c1+1, c2),       # person1 going right, person2 going down
+                        get_cherry(r1+1, c1, c2+1),     # person1 going down, person2 going right                            
+                        get_cherry(r1+1, c1, c2))       # person1 going down, person2 going down
+        return cherries
+
+    get_cherry.cache_clear()
+    return max(0, get_cherry(0, 0, 0))     # Start from cell (0,0).

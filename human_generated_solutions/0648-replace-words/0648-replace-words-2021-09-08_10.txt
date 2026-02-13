@@ -1,0 +1,9 @@
+def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        dictionary.sort(key=len)  #  sort dictonary by length of the words so the shortest one are first
+        t = sentence.split(" ")   # make a temporary list of sentence characters
+        for i in range(0, len(t)):
+            for j in dictionary:
+                if(t[i].startswith(j)):  # check if sentence word starts with dictonary word
+                    t[i] = j
+
+        return " ".join(t)

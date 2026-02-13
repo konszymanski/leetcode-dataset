@@ -1,0 +1,13 @@
+def getMaximumXor(self, nums: List[int], maximumBit: int) -> List[int]:
+	rxor = 0
+	for n in nums:
+		rxor ^= n
+
+	maxnum = (1 << maximumBit) - 1
+	results = []
+	while nums:
+		lw = (rxor & maxnum) ^ maxnum
+		results.append(lw)
+		rxor ^= nums.pop()
+
+	return results

@@ -1,0 +1,42 @@
+class Solution:
+    def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+        l=len(queries)
+        lk=len(wordlist)
+        l1=[]
+        lw=[]
+        l3=[\'a\',\'e\',\'i\',\'o\',\'u\']
+        l4=[]
+        for e in range(lk):
+            l6=len(wordlist[e])
+            s9=""
+            for c in range(l6):
+                if(wordlist[e][c].lower() not in l3):
+                    s9=s9+wordlist[e][c].lower()
+                else:
+                    s9=s9+\'@\'
+            l4.append(s9)   
+        for k in wordlist:
+            lw.append(k.lower())
+        for i in range(l):
+            if(queries[i] in wordlist):
+                l1.append(queries[i])
+            elif(queries[i].lower() in lw):
+                for t in range(lk):
+                    if(queries[i].lower()==lw[t]):
+                        l1.append(wordlist[t])
+                        break
+            else:
+                s19=""
+                l2=len(queries[i])
+                for g in range(l2):
+                    if(queries[i][g].lower() not in l3):
+                        s19=s19+queries[i][g].lower()
+                    else:
+                        s19=s19+\'@\'
+                for t1 in range(lk):
+                    if(s19==l4[t1]):
+                        l1.append(wordlist[t1])
+                        break
+                else:
+                    l1.append("")
+        return l1

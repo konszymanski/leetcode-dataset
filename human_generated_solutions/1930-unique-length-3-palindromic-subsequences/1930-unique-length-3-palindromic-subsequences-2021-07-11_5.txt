@@ -1,0 +1,3 @@
+class Solution:
+    def countPalindromicSubsequence(self, s):
+		 return sum(len(set(s[s.index(i)+1:s.rindex(i)])) for i in ascii_lowercase if i in s)

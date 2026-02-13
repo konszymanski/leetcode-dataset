@@ -1,0 +1,4 @@
+class Solution:
+    def xorGame(self, nums: List[int]) -> bool:
+        xor = list(accumulate(nums, operator.xor))[-1]
+        return xor == 0 or len(nums) % 2 == 0

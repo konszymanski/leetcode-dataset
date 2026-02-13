@@ -1,0 +1,10 @@
+class Solution:
+    def makeGood(self, s: str) -> str:
+        stack = []
+        f = lambda x,y: abs(ord(x)-ord(y)) == 32
+        for k in s:
+            if stack and f(stack[-1], k):
+                stack.pop()
+            else:
+                stack += k,
+        return "".join(stack)

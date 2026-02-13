@@ -1,0 +1,24 @@
+class Solution:
+    def numberOfBeams(self, bank: List[str]) -> int:
+        
+        get_laser_nodes = lambda row: row.count(\'1\')
+        total_beams  = 0
+        
+        # initialization on first row
+        prev = get_laser_nodes(bank[0])
+
+        # scan from second row in the bank
+        for _, row in enumerate(bank[1:]):
+            
+            cur = get_laser_nodes(row)
+            
+            if not cur:
+                # skip if current row has no laser nodes
+                continue
+            
+            # count the laser beams between two nearest effective laser rows
+            total_beams += prev * cur
+            
+            prev = cur
+            
+        return total_beams

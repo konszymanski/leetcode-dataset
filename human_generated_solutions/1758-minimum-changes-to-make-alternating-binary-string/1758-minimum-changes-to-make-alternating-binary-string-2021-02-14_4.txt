@@ -1,0 +1,15 @@
+# The final string should be either 010101.. or 101010... (depending on the length of string s)
+# Check the number of differences between given string s and the two final strings. 
+# Return the one with minimum differences 
+
+	def minOperations(self, s: str) -> int:
+		starting_with_01 = \'01\'
+		starting_with_10 = \'10\'
+		diff_with_01 = 0
+		diff_with_10 = 0
+		for i in range(len(s)):
+			if starting_with_01[i%2] != s[i]:
+				diff_with_01 += 1
+			if starting_with_10[i%2] != s[i]:
+				diff_with_10 += 1
+		return min(diff_with_01, diff_with_10)

@@ -1,0 +1,22 @@
+class Solution:
+    def parseBoolExpr(self, E: str) -> bool:
+        if E=="f": return False
+        if E=="t": return True
+        if E[0]=="!": return not self.parseBoolExpr(E[2:-1])
+        
+        X = []
+        sub = ""
+        openb = 0
+        for c in E[2:-1]:
+            if c == "(": openb += 1
+            if c == ")": openb -= 1
+            if c == "," and openb == 0: 
+                X.append(sub)
+                sub=""
+            else: sub += c
+        X.append(sub)
+    
+        X=[self.parseBoolExpr(x) for x in X]
+        
+        if E[0]==\'&\': return all(X)
+        if E[0]=="|": return any(X)

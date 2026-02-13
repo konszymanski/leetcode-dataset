@@ -1,0 +1,12 @@
+class Solution:
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        def dp(i,L):
+            if i == len(words): return 0
+            ans = 0
+            M = L
+            for l in words[i]:
+                if l not in M: return dp(i+1,L)
+                M = M.replace(l,"",1)
+                ans += score[ord(l) - 97]
+            return max(dp(i + 1, L), ans + dp(i + 1, M))
+        return dp(0, "".join(letters))

@@ -1,0 +1,29 @@
+def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        # 3. mainly use DFS with Cache
+        def path(s,e):
+            if (s,e) in self.cache:  #if in cache
+                return (self.cache[(s,e)])
+            if s == e:     # edge case
+                self.cache[(s,e)] = True
+                return True
+            else: 
+                if s in g:         #important :-
+                    for j in g[s]: # recursilvly call to all neighbours
+                        if path(j,e):
+                            self.cache[(s,e)] = True
+                            return True
+                self.cache[(s,e)] = False
+                
+        # 1. Graph making
+        g = defaultdict(set)
+        for i,v in prerequisites:
+            g[i].add(v)
+        # print(g)   
+        
+        
+        ans = []
+        self.cache = dict()    #heart of algo otherwise TLE
+        for s,e in queries:
+            ans.append(path(s,e))  # 2. is path than True else False
+        return ans

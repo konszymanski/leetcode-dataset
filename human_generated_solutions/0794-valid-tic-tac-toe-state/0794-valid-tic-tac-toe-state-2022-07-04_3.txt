@@ -1,0 +1,67 @@
+class Solution:
+    def validTicTacToe(self, board: List[str]) -> bool:
+        # count the number of x and o
+        xCount = oCount = 0
+        
+        # Easy state representation of valid win lines
+        # Indexes: 0,1,2 represent rows. 3,4,5 represent columns. 6,7 represent diagonals (6 - \\, 7 - /)
+        arr = [0]*8
+
+        # Check over the whole board
+        for i, row in enumerate(board):
+            for j, ch in enumerate(row):
+
+                # Check for X
+                # steps: 
+                # 1. increment xCount 
+                # 2. add 1 to the row
+                # 3. add 1 to the column
+                # 4. add 1 to the diagonals if coordinates lie on diagonals
+                if ch == \'X\': 
+                    xCount += 1
+                    
+                    arr[i] += 1
+                    arr[j+3] += 1
+                    
+                    # check left to right diagonal (\\)
+                    if i == j: arr[6] += 1
+                    # check right to left diagonal (/)
+                    if i == 2-j: arr[7] += 1
+
+                # Check for O
+                # steps: 
+                # 1. increment oCount 
+                # 2. subtract 1 from the row
+                # 3. subtract 1 from the column
+                # 4. subtract 1 from the diagonals if coordinates lie on diagonals
+                if ch == \'O\': 
+                    oCount += 1
+                    
+                    arr[i] -= 1
+                    arr[j+3] -= 1
+                    
+                    # check left to right diagonal (\\)
+                    if i == j: arr[6] -= 1
+                    # check right to left diagonal (/)
+                    if i == 2-j: arr[7] -= 1
+                        
+        # win conditions:
+        # if 3 exists in array: X wins
+        # if -3 exists: O wins
+        # For more visualization, try drawing this
+        xWin, oWin = 3 in arr, -3 in arr
+        
+        # Case 1: both are shown as winning (invalid state as X wins before O) eg: ["XXX","   ","OOO"]
+        if xWin and oWin: return False
+
+        # Case 2: X wins that indicates that the difference in count should be 1. As X plays before O
+        if xWin and xCount - oCount != 1 : return False
+        
+        # Case 3: O wins that indicates that the difference in count should be 0. As X plays before O
+        if oWin and xCount - oCount != 0 : return False
+        
+        # Case 4: both of them have to play alternate moves, hence difference can only be 1 or 0
+        if xCount - oCount not in (0,1): return False
+        
+        # If all cases pass, board is valid
+        return True

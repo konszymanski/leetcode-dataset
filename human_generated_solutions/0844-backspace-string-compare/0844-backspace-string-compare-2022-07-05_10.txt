@@ -1,0 +1,32 @@
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        
+        #reverse strings (easier to work with?) O(N)
+        s=s[::-1]
+        t=t[::-1]
+        
+        s=self.clean_string(s)
+        t=self.clean_string(t)
+        
+        return s == t
+        
+    
+    #Helper function, removes \'#\' and their linked-characters (backspace action)
+    def clean_string(self, s:str) -> str:
+        new_s=\'\'
+        s_repeat=0
+        t_repeat=0
+        
+        #traverse string and add characters to new string
+            #skips the add if the character is \'#\' or it\'s linked-characters (backspace action)
+        for i in range(len(s)):
+            if s[i] == \'#\':
+                s_repeat+=1
+            elif s_repeat>0:
+                s_repeat-=1
+            else:
+                new_s+=s[i]
+        return new_s
+    
+    #Time complexity: O(N+M)
+    #Space Complexity: O(N+M)
