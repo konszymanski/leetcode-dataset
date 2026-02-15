@@ -1,0 +1,42 @@
+# Topological Sort:
+class Node:
+    def __init__(self):
+        # how many edges inflow me
+        self.inDegree = 0
+        # the node outflow from me
+        self.outNode = []
+        
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = defaultdict(Node)
+        # count how many edges I have 
+        total = 0
+        # go through the prerequisites
+        for nxt, pre in prerequisites:
+            # outflow for the pre
+            graph[pre].outNode.append(nxt)
+            # inflow for the nxt
+            graph[nxt].inDegree += 1
+            total += 1
+        
+        # start with the node with inDegree == 0: I can take the course without limit
+        courses = collections.deque()
+        for ind, node in graph.items():
+            if node.inDegree == 0:
+                courses.append(ind)
+        
+        # begin to move the the next level: Similar to BFS
+        while courses:
+            course = courses.pop()
+            for nextCourse in graph[course].outNode:
+                graph[nextCourse].inDegree -= 1
+                total -= 1
+                
+                # check if the inDegree == 0?
+                if graph[nextCourse].inDegree == 0:
+                    courses.append(nextCourse)
+        
+        # final check:
+        if total == 0:
+            return True
+        return False

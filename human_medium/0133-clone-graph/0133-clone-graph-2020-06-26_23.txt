@@ -1,0 +1,12 @@
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        
+        def dfs(node): 
+            """Return deep-cloned graph."""
+            if node not in mp: 
+                cln = mp[node] = Node(node.val)
+                cln.neighbors = [dfs(nn) for nn in node.neighbors]
+            return mp[node]
+        
+        mp = {}
+        return node and dfs(node)

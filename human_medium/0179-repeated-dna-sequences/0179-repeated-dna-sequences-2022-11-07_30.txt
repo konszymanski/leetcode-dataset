@@ -1,0 +1,13 @@
+from collections import defaultdict
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        temp = defaultdict(int)
+        res = defaultdict(int)
+        n =len(s)
+        for i in range(n-10+1):
+            string = s[i:i+10]
+            if temp[string]!=0 and res[string]==0:
+                res[string]+=1
+            else:
+                temp[string]+=1
+        return list(res.keys())

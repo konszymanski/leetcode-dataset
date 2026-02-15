@@ -1,0 +1,83 @@
+class Solution(object):
+    def rob(self, nums):
+	### if our nums is empty/ there are no houses to rob, we are going to be broke so we return 0
+        if len(nums)==0: return 0
+		
+		
+	### if we have a house, we may as well rob it as we have nothing else better to do 
+	### so our max gain is the value of the only house
+        if len(nums)==1:
+			return nums[0]
+			
+			
+	### here we have 2 houses, since they are adjacent we cannot rob both
+	### so rob the most valuable house
+	### hence we return the max(nums[0],nums[1])
+	###                  max of house 1 , house 2
+        if len(nums)==2:
+			return max(nums)
+			
+			
+	### this is where it gets interesting
+	### we can treat each house as a point on a path
+	### house 1 is our first position on our path
+	### house 2 is our second position on our path and so on
+	### until our last position which is our last house
+	### we want to accumalate as much money as possible before we reach the end of the path
+	
+	### so we can create a array which stores the maximum amount
+	### of money we can make until a certian position in our path
+	### so lets create the path
+        path=[0]*len(nums)
+	### path = [pos 1, pos 2, ....... , last position]  
+	###      house 1,house 2, ...... , last house 
+	### all values are intialised to 0 becasue we dont know anything yet
+	
+	
+	
+	
+	### above we have already considered all the cases if nums is less than length 3
+	### so we can ignore those cases now
+	
+	### taking the same logic as above the max amount we can make if we only
+	### move up to pos 1 is house 1\'s value
+        path[0]=nums[0]
+	
+	### moving to position 2 the max we can make is the maximum from house 1 and house 2
+        path[1]=max(nums[0],nums[1])
+	##remember robbed house cant be adjacent
+    
+	
+	
+	
+	###consider we go to house 3 or positon 3
+	### what is out max gain?
+	### well we cant rob house 2 and house 3 because they are adjacent
+	### but we can rob house 3 and house 1
+	### however, we could still just rob house 2 and ignore house 3
+	### so the max amount we can make is:
+	### max( house2 ,  (house3+house1) )
+	### this translates to:
+	### max (path[1] , (path[0]+nums[2]) )  
+	
+	
+	
+	### now consider 4 houses
+	### again we cannot rob house 3 and house 4 becasue they are adjacent
+	### but we can rob:
+	### just house 3 (+ house 1) OR
+	### house 2 and  house 4
+	### these options make us the most money as it allows us 
+	### to progress the furthest down our path, robbing as many people as possible
+	
+	
+	### so our pattern is:
+	### houses[n] = max( houses[n-1] , houses[n-2]+nums[n])  OR
+	### path[n].  =.  max(path[n-1],  path[n-2]+nums[n])
+	
+	### we carry on the above proccess for the length of the path
+        for i in range(2,len(nums)):
+            arr[i]=max((nums[i]+arr[i-2]),arr[i-1])
+			
+	### the we retrun the final postion on our path to determine how to make the most moneyyyy
+        return arr[-1]

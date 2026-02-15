@@ -1,0 +1,20 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix = [[0] * n for _ in range(n)]
+
+        for val, (i, j) in enumerate(self._spiral_indexes(n), start=1):
+            matrix[i][j] = val
+
+        return matrix
+
+    @staticmethod
+    def _spiral_indexes(n: int):
+        for layer in range((n + 1) // 2):
+            for ptr in range(layer, n - layer):
+                yield layer, ptr
+            for ptr in range(layer + 1, n - layer):
+                yield ptr, n - layer - 1
+            for ptr in range(n - layer - 2, layer - 1, -1):
+                yield n - layer - 1, ptr
+            for ptr in range(n - layer - 2, layer, -1):
+                yield ptr, layer

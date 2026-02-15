@@ -1,0 +1,29 @@
+```python
+from typing import List
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # We use the Dutch National Flag algorithm to sort the array in one pass.
+        # low points to the boundary where 0s should be placed.
+        # high points to the boundary where 2s should be placed.
+        # curr is the current element we are inspecting.
+        low, curr, high = 0, 0, len(nums) - 1
+        
+        while curr <= high:
+            if nums[curr] == 0:
+                # If the current element is 0, swap it with the element at the low boundary.
+                nums[low], nums[curr] = nums[curr], nums[low]
+                low += 1
+                curr += 1
+            elif nums[curr] == 1:
+                # If the current element is 1, it's already in the correct relative section.
+                curr += 1
+            else: # nums[curr] == 2
+                # If the current element is 2, swap it with the element at the high boundary.
+                # We don't increment curr because the swapped element needs to be inspected.
+                nums[curr], nums[high] = nums[high], nums[curr]
+                high -= 1
+```

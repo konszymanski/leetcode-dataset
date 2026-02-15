@@ -1,0 +1,16 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        
+        wrds = set(wordDict)
+		mem = {}
+        
+        def helper(st):
+            if not st:
+                return True
+            if st in mem:
+                return mem[st]
+            res = any([helper(st[len(x):]) for x in wrds if st.startswith(x)])
+            mem[st] = res
+            return res
+        
+        return helper(s)

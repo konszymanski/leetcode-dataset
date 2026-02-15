@@ -1,0 +1,38 @@
+class Solution:
+    def __init__(self):
+        self.new_node_tracker = {}
+        
+    def get_new(self, node):
+		"""
+		If the new node has already been created, return it. Otherwise, create the new node
+		cache the new node, and return it
+		"""
+        if new_node := self.new_node_tracker.get(node.val, False):
+            return new_node
+        return self.new_node_tracker.setdefault(node.val, Node(node.val))
+    
+    def get_neighbor(self, node):
+		"""
+		If the neighbor has already been cloned, then get the new neighbor from the cache.
+		Otherwise, create a clone of the neighbor and its graph and return the cloned neighbor.
+		"""
+        if existing_neighbor := self.new_node_tracker.get(node.val, False):
+            return existing_neighbor
+        return self.cloneGraph(node)
+    
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+		# Special case for an empty graph
+        if node is None:
+            return
+        
+		# Special case for a graph with only one node
+        if not node.neighbors:
+            return Node(node.val)
+        
+        new_node = self.get_new(node)
+                
+        for neighbor in node.neighbors:
+            new_neighbor = self.get_neighbor(neighbor)
+            new_node.neighbors.append(new_neighbor)
+
+        return new_node

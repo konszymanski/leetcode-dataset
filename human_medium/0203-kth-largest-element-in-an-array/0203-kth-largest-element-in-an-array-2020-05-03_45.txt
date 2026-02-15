@@ -1,0 +1,36 @@
+import random
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        k = len(nums) - k
+        l, r = 0, len(nums) - 1
+        
+        while l < r:
+            pivot = self.rand_partition(nums, l, r)
+            if pivot == k:
+                break
+            if pivot < k:
+                l = pivot + 1
+            else:
+                r = pivot - 1
+
+        return nums[k]
+        
+    def partition(self, arr, start, end):
+        pivot = arr[end]
+        lo = i = start
+        
+        while i < end:
+            if arr[i] <= pivot:
+                arr[lo], arr[i] = arr[i], arr[lo]
+                lo += 1
+            i += 1
+        arr[lo], arr[end] = arr[end], arr[lo]
+        
+        return lo
+    
+    def rand_partition(self, arr, start, end):
+        pivot = random.randint(start, end)
+        arr[end], arr[pivot] = arr[pivot], arr[end]
+        return self.partition(arr, start, end)

@@ -1,0 +1,22 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        
+        intervals.sort(key = lambda x: x[0])
+        new_list = [intervals[0]]
+        
+        for win_i in range(1, len(intervals)):
+            # I just use a, b, c, and d to make it more readable. 
+            a = new_list[-1][0]
+            b = new_list[-1][1]
+            c = intervals[win_i][0]
+            d = intervals[win_i][1]
+            if b<c or d<a: #when there is no coverage
+                new_list.append([c,d])
+            elif a>=c and b<=d: #when cd contains ab
+                new_list[-1] = [c,d]                   
+            elif a<=c and b>=d: #when ab contains cd
+                pass         
+            else:
+                new_list[-1] = [a, d]        #when c falls between ab; since we sort the data first, a cannot fall between cd
+
+        return new_list

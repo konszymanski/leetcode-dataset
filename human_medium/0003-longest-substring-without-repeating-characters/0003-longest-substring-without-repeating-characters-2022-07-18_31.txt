@@ -1,0 +1,18 @@
+def lengthOfLongestSubstring(self, s: str) -> int:
+	visited = set()           # to store visited chars for fast lookups (in O(1) time)
+    l = 0                     # pointer to the beginning of the current substring 
+    max_len = 0               # to store current max legth of substring with non-repeating chars 
+    for i in range(len(s)):     
+		if s[i] in visited:              # if current char was seen before
+			if len(visited) > max_len:   # if length of current substring is a new maximum 
+				max_len = len(visited)   # update max_len
+                
+            r = l                        # r is the pointer to the end of current substring 
+            while s[r] != s[i]:          # find the position where the current char was seen before
+				r+=1
+            visited -= set(s[l:r])       # substract left part of substring from visited
+            l = r+1                      # and start a new substring
+        else:
+			visited.add(s[i])            # if not seen before add it to visited
+                
+    return max(max_len, len(visited))    # the last substring could be new maximum

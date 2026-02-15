@@ -1,0 +1,16 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or len(s) <= numRows:
+            return s
+        ans = [\'\']*numRows
+        index, step = 0, 1
+        for each in s:
+            ans[index] += each
+            #If the pointer reaches starting then increase by 1
+            if index == 0:
+                step = 1
+            #If the pointer reaches ending then decrease by 1
+            elif index == numRows-1:
+                step = -1
+            index += step
+        return \'\'.join(ans)

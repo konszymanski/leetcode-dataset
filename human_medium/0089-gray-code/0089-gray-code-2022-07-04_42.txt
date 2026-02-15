@@ -1,0 +1,23 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        def convert2bin(n):
+            if n == 0:
+                return 0
+            smallans = (convert2bin(n//2))
+            
+            return n % 2 + 10 * smallans
+        
+        result = []
+        for i in range(1<<n):
+            val = \'0\' + str(convert2bin(i))
+            res =  val[0]
+            
+            for j in range(1,len(val)):
+                if val[j] ==  val[j-1]:
+                    res = res + \'0\'
+                else:
+                    res = res + \'1\'
+                    
+            result.append(int(res,2))
+            
+        return result

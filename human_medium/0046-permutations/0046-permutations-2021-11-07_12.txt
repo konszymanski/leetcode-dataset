@@ -1,0 +1,19 @@
+class Solution:
+    def permute(self, nums: List[int]):
+        if len(nums) == 1: return [nums]
+        if len(nums) == 2: return [list(nums), list(nums)[::-1]]
+        
+        if type(nums) is not deque: nums = deque(nums)
+
+        result = deque()
+        for _ in range(len(nums)):
+            num = nums.popleft()  # fix first number
+
+            perm_results = self.permute(nums)
+            for perm in perm_results:
+                perm.append(num) # add the fixed number to all sub permutations
+            result += perm_results
+
+            nums.append(num) # return the fixed number into the end
+
+        return result

@@ -1,0 +1,22 @@
+class Solution:
+    def help(self, s):
+        num = 10 ** 26
+        for char in s:
+            num += 1 * 10 ** (ord(char) - 97)
+        return num
+        
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        dic = {self.help(strs[0]):0}
+        res = [[strs[0]]]
+
+        c = 1
+        for word in strs[1:]:
+            chars = self.help(word)
+            try:
+                res[dic[chars]].append(word)
+            except:
+                dic[chars] = c
+                c += 1
+                res.append([word])
+
+        return res

@@ -1,0 +1,24 @@
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        d = {}
+        self.pre(root,d,1)
+        lst = []
+        
+        
+        for i in range(1,len(d)+1):
+            if i % 2 == 1:
+                lst.append(d[i])
+            else:
+                l = list(d[i])
+                lst.append(l[::-1])
+            
+        return lst
+        
+    
+    def pre(self,t,d,l):
+        if not t:
+            return
+        
+        d.setdefault(l,[]).append(t.val)
+        self.pre(t.left,d,l+1)
+        self.pre(t.right,d,l+1)

@@ -1,0 +1,17 @@
+class Solution:
+    def maxProfit(self, p: List[int]) -> int:
+        n = len(p)-1
+        i = 0
+        buy = sell = pro = 0
+        while i < n:
+            while (i < n and p[i+1] <= p[i] ):
+                i += 1
+            
+            buy = p[i]
+            
+            while (i < n and p[i+1] > p[i] ):
+                i += 1
+            
+            sell = p[i]
+            pro += sell- buy
+        return pro

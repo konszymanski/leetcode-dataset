@@ -1,0 +1,19 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        return self.helper(s,{})
+    def helper(self, s, memo):
+        if not s: # We reached an answer here
+            return 1
+        if s[0] == "0":  # Any # with 0 at start of string is invalid, including 0 itself
+            return 0
+        if s in memo: # Retrieve from cache
+            return memo[s]
+        
+        res = 0
+        res += self.helper(s[1:], memo)
+        
+        if len(s) >= 2:
+            if int(s[0:2]) <= 26: # Check if the first 2 numbers are over 26. Then recursively call the function on the rest of the string
+                res += self.helper(s[2:], memo)
+        memo[s] = res
+        return memo[s]

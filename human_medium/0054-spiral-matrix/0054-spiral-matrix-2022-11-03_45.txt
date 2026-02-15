@@ -1,0 +1,25 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        res = []
+        if not matrix:
+            return res
+        m, n = len(matrix), len(matrix[0])
+        hashset = set()
+        
+        def dfs(i, j, order):
+            if i < 0 or i >= m or j < 0 or j >= n or (i,j) in hashset:
+                return
+            res.append(matrix[i][j])
+            hashset.add((i, j))
+            dirs = [[i, j+1], [i+1, j], [i, j-1], [i-1, j]]
+            k = order
+            while k < 4:
+                dfs(dirs[k][0], dirs[k][1], k)
+                k += 1
+            k = 0
+            while k < order:
+                dfs(dirs[k][0], dirs[k][1], k)
+                k += 1
+        
+        dfs(0, 0, 0)
+        return res

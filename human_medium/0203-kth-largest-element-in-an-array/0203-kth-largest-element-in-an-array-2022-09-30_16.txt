@@ -1,0 +1,7 @@
+class Solution:
+     def findKthLargest(self, nums: List[int], k: int) -> int:
+         # First Sort the given array
+         nums.sort()
+        
+         # The kth largest element is now the element at (length - k) index
+         return nums[len(nums) - k]

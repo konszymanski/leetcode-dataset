@@ -1,0 +1,80 @@
+class Solution:
+#DON\'T FORGET TO UPVOTE IF YOU LIKE MY EXPLANATION
+    """
+        points to note:
+1. Initiate the search from the cell that has the first letter or last letter            
+2. The concept is, if a cell matches a letter in the given word, search all the adjacent cells of that particular cell 
+3. so by chaining the neighbours of all cells that has a match through recursion, we return a chain of True values from all recursive calls, which in turn states that the word exists in the given matrix
+    """
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows=len(board)
+        cols=len(board[0])
+		#edge case 1
+        #return false if the board can\'t make up the word
+        #compare frequency of letters in the word to available letters on board
+        #If the frequency doesn\'t match, the word can not be formed, so return false
+		#This helps us to save time and exit early
+        #create a dict of board and word
+        
+        #word dict
+        word_dict={}
+		for char in word:
+			word_dict[char]=word_dict.get(char,0)+1
+        
+        #board dict
+        board_dict={}
+        for row in range(rows):
+            for col in range(cols):
+                cell=board[row][col]
+                board_dict[cell]=board_dict.get(cell,0)+1
+        
+        #check for availability of letters on board
+        for char,freq in word_dict.items():
+            if board_dict.get(char,0)<freq:
+                return False
+            
+        #edge case 2
+        #if the frequency of the ending letter is less than the starting letter,
+        #we can reverse the word before search inorder to find the word faster during recursive calls
+        if word_dict[word[0]]>word_dict[word[-1]]:
+            word=word[::-1]
+            
+        #define a method to start the search
+		#defining the method inside the exist saves us from the "self." curse and from extra arguments during recursive calls
+        def search(row,col,idx):
+			#when we are at the last recursive call on stack and idx crossed len(word)-1, which means we found the word
+            if idx==len(word):
+                return True
+			
+			#check for row and col extremities and compare letter to cell.
+            if row<0 or col<0 or row>=rows or col>=cols\\
+            or board[row][col]!=word[idx]:
+                return False
+				
+			#replace used cells to make sure we dont reuse them
+            temp=board[row][col]
+            board[row][col]="*"
+			#recursively search for the letter in all adjacent cells to the current cell
+            found=search(row-1,col,idx+1)\\
+                or search(row,col+1,idx+1)\\
+                or search(row+1,col,idx+1)\\
+                or search(row,col-1,idx+1)
+			#reassign the value to the cell after the completion of search 
+            board[row][col]=temp
+			#return whether we found the letter in any of the adjacent cells 
+            return found
+                
+        
+        #Now for every row start the search for the word
+        for row in range(rows):
+            for col in range(cols):
+                if search(row,col,0):
+                    return True
+					
+        return False
+	"""
+	I at first did a large implementation and later found this in the submissions window. I found it very useful, so I wanted to summarize whats happening and give you the best solution for the word search.
+	I dont know to whom this submission belongs to, so I couldn\'t give credit to them.
+	Feel free to post your suggestions to improve this much more
+	cheers. happy coding!
+	"""

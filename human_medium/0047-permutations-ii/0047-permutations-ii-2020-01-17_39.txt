@@ -1,0 +1,17 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        
+        def fn(lo=0):
+            """Return permutation of nums starting from index lo"""
+            if lo == len(nums)-1: yield nums #base condition 
+            else:
+                yield from fn(lo+1)
+                visited = set([nums[lo]])
+                for i in range(lo+1, len(nums)):
+                    if nums[i] in visited: continue #exclude duplicates
+                    else: visited.add(nums[i])
+                    nums[lo], nums[i] = nums[i], nums[lo] #swapping
+                    yield from fn(lo+1)
+                    nums[lo], nums[i] = nums[i], nums[lo] #swapping back 
+        
+        yield from fn()

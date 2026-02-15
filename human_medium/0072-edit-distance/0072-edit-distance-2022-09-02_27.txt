@@ -1,0 +1,14 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        @lru_cache
+        def lev(w1, w2):
+            l1, l2 = len(w1), len(w2)
+            if not l2:
+                return l1
+            elif not l1:
+                return l2
+            elif w1[0] == w2[0]:
+                return lev(w1[1:], w2[1:])
+            else:
+                return 1 + min(lev(w1[1:], w2[1:]), lev(w1, w2[1:]), lev(w1[1:], w2))        
+        return lev(word1, word2)

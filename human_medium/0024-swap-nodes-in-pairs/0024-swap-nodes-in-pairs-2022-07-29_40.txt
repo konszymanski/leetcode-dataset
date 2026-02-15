@@ -1,0 +1,31 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# 30ms 13,5MB
+# Use dummy to help us solve this question easiler
+class Solution(object):
+    def swapPairs(self, head):
+        # \u5148\u521B\u9020\u4E00\u4E2Adummy
+        dummy = ListNode(0)
+        # \u521B\u5EFA\u4E00\u4E2Aresult\u6307\u9488\u6307\u5411dummy\uFF0C\u7528\u4E8Ereturn\u7ED3\u679C
+        result = dummy
+        # \u8BA9dummy\u6307\u5411head
+        dummy.next = head
+        
+        # \u5224\u65ADhead\u4E2D\u662F\u5426\u8FD8\u5B58\u5728\u591A\u4E8E\u4E24\u4E2Aobject\uFF0C\u82E5\u5B58\u5728\u5219\u7EE7\u7EED\u66F4\u6362\u4F4D\u7F6E\uFF08\u4E24\u4E24\u4E00\u7EC4\uFF09
+        while dummy.next and dummy.next.next:
+            # \u521B\u5EFA\u4E24\u4E2A\u6307\u9488\u6307\u5411\u9700\u8981\u6362\u4F4D\u7F6E\u7684\u4E24\u4E2Aobject
+            first, second = dummy.next, dummy.next.next
+            # \u66F4\u6362\u4F4D\u7F6E\uFF0C \u4ECEdummy\u540E\u9762\u6307\u5411first\uFF0Cfirst\u540E\u9762\u6307\u5411second\uFF0Csecond\u6307\u5411third\u53D8\u4E3Adummy\u6307\u5411
+            # second\uFF0Csecond\u6307\u5411first\uFF0Cfirst\u6307\u5411third
+            first.next = second.next
+            second.next = first
+            dummy.next = second
+            # \u66F4\u6362dummy\u4F4D\u7F6E\uFF0C\u8BA9third\u6210\u4E3A\u65B0\u7684first\uFF0C\u4EE5\u6B64\u53CD\u590D
+            dummy = dummy.next.next
+        
+        # return\u7ED3\u679C\uFF0Cresult\u540E\u9762\u6307\u5411\u7684\u5C31\u662F\u6211\u4EEC\u60F3\u8981\u7684linkedlist
+        return result.next

@@ -1,0 +1,19 @@
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode], stop=None) -> Optional[TreeNode]:
+        def getMid(head, stop):
+            slow = fast = head
+            while fast is not stop and fast.next is not stop:
+                slow = slow.next
+                fast = fast.next.next
+                    
+            return slow
+        
+        if head is stop:
+            return None
+        
+        mid = getMid(head, stop)
+        tree_node = TreeNode(mid.val)
+        tree_node.left = self.sortedListToBST(head, mid)
+        tree_node.right = self.sortedListToBST(mid.next, stop)
+        
+        return tree_node

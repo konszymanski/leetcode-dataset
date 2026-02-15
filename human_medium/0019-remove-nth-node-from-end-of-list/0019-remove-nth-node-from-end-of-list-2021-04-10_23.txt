@@ -1,0 +1,48 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        # If the list is a single node (i.e., head.next == none), and we
+        # are asked to remove that node (i.e., n == 1), then return None.
+        if not head.next and n == 1:
+            return None
+
+        # For all other cases, we\'ll use two pointers: current and nth_from_end.
+		# We\'ll leave a gap between these two pointers equal to n. To achieve 
+		# this, we\'ll first advance `current` n times before we start advancing 
+		# `nth_from_end`. 
+        current = head
+        nth_from_end = head
+        count = 0
+        while count < n:
+            current = current.next
+            count += 1
+            
+        # If we\'ve advanced `current` so far forward that `current` is now
+		# None, then this implies that we are being asked to remove the first 
+		# node. To do this, we just reassign head to the next node.
+        if current is None:
+            head = head.next
+    
+        else:
+			# Otherwise, we advance both pointers until `current` reaches the 
+			# final node. 
+            while current.next is not None:
+                current = current.next
+                nth_from_end = nth_from_end.next
+                
+            # `nth_from_end.next` now points to the nth node from the end
+			# (i.e., the node that needs to be removed). To remove it, we 
+			# reassign `nth_from_end.next` to the following node.
+            nth_from_end.next = nth_from_end.next.next
+        
+        # Now that the appropriate node has been removed, return head.
+        return head

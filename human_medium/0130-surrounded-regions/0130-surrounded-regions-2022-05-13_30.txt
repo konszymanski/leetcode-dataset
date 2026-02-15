@@ -1,0 +1,26 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+		#step 2
+        def dfs(r, c) :
+            if board[r][c] == "O" and (r,c) not in s :
+                s.add((r,c))
+                if r-1 >= 0 : dfs(r-1, c)
+                if r+1 < len(board) : dfs(r+1, c)
+                if c-1 >= 0 : dfs(r, c-1)
+                if c+1 < len(board[0]) : dfs(r, c+1)
+        #step 1
+        s = set()
+        for i in range(len(board)) :
+            for j in range(len(board[0])) :
+                if i == 0 or j == 0 or i == len(board)-1 or j == len(board[0])-1 :
+                    if board[i][j] == "O" and (i, j) not in s :
+                        dfs(i, j)
+		#step 3
+        for i in range(1, len(board)-1) :
+            for j in range(1, len(board[0])-1) :
+                if board[i][j] == "O" and (i, j) not in s :
+                    board[i][j] = "X"
+        return board

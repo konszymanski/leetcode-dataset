@@ -1,0 +1,13 @@
+import re
+import collections
+from collections import Counter
+class Solution:
+        
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        m, K, res = collections.defaultdict(int), 10, []
+        for i in range(len(s)-K+1):
+            subStr = s[i:i+K]
+            m[subStr] += 1
+            if m[subStr] == 2:
+                res.append(subStr)
+        return res

@@ -1,0 +1,16 @@
+def minDistance(self, word1, word2):
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n+1) for _ in range(m+1)]
+    for i in reversed(range(m+1)):
+        for j in reversed(range(n+1)):
+            if i == m:
+                dp[i][j] = n - j
+            elif j == n:
+                dp[i][j] = m - i
+            else:
+                curr = 0 if word1[i] == word2[j] else 1
+                down = dp[i+1][j] + 1
+                right = dp[i][j+1] + 1
+                diag = dp[i+1][j+1] + curr
+                dp[i][j] = min(down, right, diag)
+    return dp[0][0]

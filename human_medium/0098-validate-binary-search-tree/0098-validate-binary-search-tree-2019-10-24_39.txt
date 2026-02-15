@@ -1,0 +1,7 @@
+def isValidBST(self, root,lower=(-1)*float(\'inf\'),higher=float(\'inf\')):
+        #standard dfs
+        if root:
+            if (not (lower<root.val<higher)):
+                return False
+            return self.isValidBST(root.left,lower,root.val) and self.isValidBST(root.right,root.val,higher)
+        return True

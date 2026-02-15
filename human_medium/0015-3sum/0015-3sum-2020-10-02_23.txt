@@ -1,0 +1,35 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        result=[]
+
+        if len(nums)<=2: return []
+
+        # \u6307\u9488\u78B0\u649E\u6CD5 left right \u76F8\u5411\u8FD0\u52A8
+        i=0
+        while i < len(nums)-2:
+            target = 0 - nums[i]
+            left = i+1
+            right = len(nums)-1
+            while left < right:
+                if nums[left]+nums[right]==target:
+                    result.append([nums[i],nums[left],nums[right]])
+                    while left < right and nums[left]==nums[left+1]: # \u5982\u679C\u76F8\u7B49\uFF0C\u5219\u5F80\u540E\u79FB\u52A8\uFF0C\u907F\u514D\u91CD\u590D\u7684
+                        left +=1
+                    while left < right and nums[right]==nums[right-1]:
+                        right -=1
+                    left +=1
+                    right -=1
+
+                elif nums[left]+nums[right] < target: # \u5C0F\u4E86\u5C31\u5F80\u53F3\u79FB\u52A8
+                    left +=1
+                else:                                  # \u5927\u4E86\u5C31\u5F80\u5DE6\u79FB\u52A8
+                    right -=1
+
+            while i < len(nums)-2:
+                if nums[i+1]==nums[i]:                  # \u5BF9\u4E8E\u7B2C\u4E00\u4E2A\u6570\uFF0C\u4E5F\u8981\u907F\u514D\u91CD\u590D
+                    i+=1
+                else:
+                    i+=1
+                    break
+        return result

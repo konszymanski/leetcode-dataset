@@ -1,0 +1,19 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        # push nums onto the stack
+        # if token is a + - * / pop the last two nums and perform operation and push back onto the stack
+        operations = {\'+\': operator.add, \'-\': operator.sub, \'*\': operator.mul, \'/\': operator.truediv}
+        
+        stack = []
+        output = tokens[0] #for edge case like tokens = [18]
+        
+        for element in tokens:
+            if element in operations: # element is + - * /
+                b = stack.pop()
+                a = stack.pop()
+                output = int(operations[element](a, b)) #for handling int div
+                stack.append(output)
+            else: #element is operand
+                stack.append(int(element))
+                
+        return output

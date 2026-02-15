@@ -1,0 +1,54 @@
+class TrieNode:
+    def __init__(self, c):
+        self.val = c
+        self.children = {}
+        self.isWord = False
+
+class WordDictionary:
+	#Time Complexity = branching factor ^ depth
+    #T=O(k*h), S=O(k*h)
+    #k=number of leaf nodes (number of words)
+    #h=max height or max len of word
+    #T=O(26^n) in worst case
+    def __init__(self):
+        self.node = TrieNode(None)
+
+    def addWord(self, word: str) -> None:
+        cur = self.node
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode(c)
+            cur = cur.children[c]
+        cur.isWord = True
+	
+	#copy the nodes from Trie to stack in iterative dfs
+	#check the length and flag of last node in stack to find result
+    def search(self, word: str) -> bool:
+        #iterative dfs
+        stack = []
+        #append current node (None) of Trie and index of word to search for
+        stack.append([self.node, 0])
+        #iterate until stack is empty
+        while stack:
+            #pop the top item on stack
+            cur, i = stack.pop()
+            #we have searched the whole word
+			#Trie starts at None. So, i==len(word) should be a valid check
+            if i == len(word):
+                #if current pointer on Trie points to a word (bool flag)
+                if cur.isWord:
+                    #early return Truthy because we found a match
+                    return True
+            #dot char should be treated as a wildcard
+            elif word[i] == ".":
+                #append all the TrieNodes at current level to the stack
+                for n in cur.children.values():
+                    #increment the index to search for next char in future iteration
+                    stack.append([n, i+1])
+            #current search char is in Trie 
+            elif word[i] in cur.children:
+                #get the matching TrieNode
+                n = cur.children[word[i]]
+                #append the matching TrieNode and increment the index to search for
+                stack.append([n, i+1])
+        return False

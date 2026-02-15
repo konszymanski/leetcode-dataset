@@ -1,0 +1,15 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        
+        if len(nums) == 1:
+            return True
+        
+        rightmost = 0
+        i = 0
+        while i < rightmost or (i == rightmost and nums[i] > 0):
+            rightmost = max(i + nums[i], rightmost)
+            if rightmost >= len(nums) - 1:
+                return True
+            i += 1
+        
+        return False

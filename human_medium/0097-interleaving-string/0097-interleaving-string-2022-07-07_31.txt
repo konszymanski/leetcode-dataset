@@ -1,0 +1,27 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        i1, i2, i3 = 0, 0, 0
+        length1, length2, length3 = len(s1), len(s2), len(s3)
+        dp = {}
+        
+        
+        def checkIsInter(i1, i2, i3):
+            if i1 == length1:
+                return s2[i2:] == s3[i3:]
+            if i2 == length2:
+                return s1[i1:] == s3[i3:]
+            if i3 >= length3:
+                return False
+            if (i1,i2) in dp:
+                return dp[(i1,i2)]
+            
+            
+            ans = False
+            if s1[i1] == s3[i3]:
+                ans = ans or checkIsInter(i1 + 1, i2, i3 + 1)
+            if s2[i2] == s3[i3]:
+                ans = ans or checkIsInter(i1,i2 + 1 ,i3 + 1)
+            dp[(i1,i2)] = ans
+            return ans
+            
+        return checkIsInter(i1, i2, i3)

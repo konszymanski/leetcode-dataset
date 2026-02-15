@@ -1,0 +1,32 @@
+def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        
+        #DFS Approach
+        
+        """
+        - Path should be from root to down towards leaf
+        - Return list of node values
+        - Backtracking + DFS
+        """
+        
+        res = []
+        
+        def dfs(node, array, sum_array):
+            if not node:
+                return
+            if (sum_array + node.val == targetSum) and (not node.left and not node.right):
+                array.append(node.val)
+                res.append(array.copy())
+                return
+                
+            
+
+            
+            dfs(node.left, array+[node.val], sum_array+node.val)
+            
+            dfs(node.right, array+[node.val], sum_array+node.val)
+            
+            
+        
+        dfs(root, [], 0)
+        
+        return res

@@ -1,0 +1,30 @@
+class Solution:
+    # Converts our sorted linked list to a sorted Python list
+    def linkedListToList(self, head: Optional[ListNode]) -> List[int]:
+        lis = list()
+        # append element to the Python list until we reach None
+        while head is not None:
+            lis.append(head.val)
+            head = head.next
+        # return the Python list
+        return lis
+    
+    # Constructs BST from our sorted Python list
+    def construct(self, lis: List[int], start: int, end: int) -> Optional[TreeNode]:
+        if start > end:
+            return None
+        mid = (start + end) // 2
+        # our root
+        head = TreeNode(lis[mid])
+        # recursive call to construct left subtree
+        head.left = self.construct(lis, start, mid - 1)
+        # recursive call to construct right subtree
+        head.right = self.construct(lis, mid + 1, end)
+        # return the root node
+        return head
+    
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        # Method call to make Python list out of the linked list
+        lis = self.linkedListToList(head)
+        # Returning root node after constructing the BST
+        return self.construct(lis, 0, len(lis) - 1)

@@ -1,0 +1,22 @@
+class Solution:
+    # dp botton-up
+    # time O(n^4)
+    """
+    dp[0] = [""]
+    dp[1] = ["()"]
+    dp[2] = ["(())", "()()"]
+    dp[3] = ["((()))","(()())","(())()","()(())","()()()"]
+    we can see the reuse of overlapping subsolution e.g. dp[3]:
+    ( + dp[0] + ) + dp[2] = ()(()) and ()()()
+    ( + dp[1] + ) + dp[1] = (())()
+    ( + dp[2] + ) + dp[0] = ((())) and (()())
+    """
+    def generateParenthesis(self, n: int) -> List[str]:
+        dp = [[] for _ in range(n+1)]
+        dp[0].append("")
+        
+        for i in range(1,n+1):
+            for j in range(i):
+                dp[i] += [ "(" + inS + ")" + outS for inS in dp[j] for outS in dp[i-j-1] ]
+        
+        return dp[n]

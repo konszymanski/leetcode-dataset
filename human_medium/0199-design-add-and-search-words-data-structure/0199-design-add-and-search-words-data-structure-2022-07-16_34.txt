@@ -1,0 +1,31 @@
+def __init__(self):
+	self.root = dict()
+	self.root[\'end\'] = 0
+def addWord(self, word: str) -> None:
+	c = self.root
+	for char in word:
+		if(char not in c):
+			c[char] = dict()
+			c[char][\'end\'] = 0
+		c = c[char]
+	c[\'end\'] = 1
+def search(self, word: str) -> bool:
+	c = self.root
+	l = len(word)
+	i = 0
+	return self.dfs(0, word, c, False)
+lru_cache(None)           
+def dfs(self, i, word, curr, flag):
+	if(i == len(word)):
+		return curr[\'end\']
+	if(word[i] != "."):
+		if(word[i] in curr):
+			return self.dfs(i+1, word, curr[word[i]], curr[\'end\'])
+		else:
+			return False
+	else:
+		temp = False
+		for child in curr:
+			if(child != \'end\'):
+				temp = temp or self.dfs(i+1, word, curr[child], curr[\'end\'])
+		return temp

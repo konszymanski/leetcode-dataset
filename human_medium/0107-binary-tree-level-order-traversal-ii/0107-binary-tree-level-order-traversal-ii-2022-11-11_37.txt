@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+//Please Upvote if You like the appraoch, Thanks !!
+class Solution {
+public:
+
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+         vector<vector<int>>result; //result vector to store the result;
+        if(root==NULL){
+            return  result;
+//if temp is NULL we will return the result vector;
+        }
+        queue<TreeNode*>q;//queue for the level order traversal;
+        q.push(root);
+        while(!q.empty()){
+            int n=q.size();
+            vector<int>temp; //temp vector to store the temproary vector;
+            for(int i=0;i<n;i++){
+                TreeNode *node=q.front();
+                q.pop();
+                temp.push_back(node->val);
+                if(node->left!=NULL){
+                    q.push(node->left);
+                }
+                if(node->right!=NULL){
+                    q.push(node->right);
+                }
+            }
+            result.push_back(temp);
+        }
+        reverse(result.begin(),result.end());
+        return result; //return the result array
+    }
+};

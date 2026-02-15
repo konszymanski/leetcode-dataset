@@ -1,0 +1,9 @@
+def canJump(self, nums: List[int]) -> bool:
+    if not nums:
+        return False
+    N = len(nums)
+    nearest_node = N-1
+    for i in range(N-2,-1,-1):
+        if nums[i]+i >= nearest_node:
+            nearest_node = i
+    return not nearest_node

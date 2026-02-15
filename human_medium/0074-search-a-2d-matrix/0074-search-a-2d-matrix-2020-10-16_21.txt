@@ -1,0 +1,25 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        # helper function for binary search:
+        def binarySearch(nums, target):
+            left,right = 0, len(nums)-1
+            while left <= right:
+                mid = (left+right) // 2
+                if nums[mid] == target:
+                    return True
+                if nums[mid] < target:
+                    left = mid+1
+                elif nums[mid] > target:
+                    right = mid-1
+            return False
+        
+        if len(matrix) == 0 or len(matrix[0]) == 0:
+            return False
+        row = 0
+        while row < len(matrix) and matrix[row][-1] < target:
+            row+=1
+        
+        if row >= len(matrix):
+            return False
+        
+        return binarySearch(matrix[row], target)

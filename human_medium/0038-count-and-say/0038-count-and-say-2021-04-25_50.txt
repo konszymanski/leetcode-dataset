@@ -1,0 +1,20 @@
+class Solution:
+    def say(self, ip):
+        op = ""
+        prev=ip[0]
+        strcnt = 1
+        nip=ip[1:]
+        for i in nip:
+            if i != prev:
+                op+=(str(strcnt)+prev)
+                strcnt=0
+            prev = i
+            strcnt+=1
+        op+=(str(strcnt)+prev)
+        return op
+            
+        
+    def countAndSay(self, n: int) -> str:
+        if n==1:
+            return "1"
+        return self.say(self.countAndSay(n-1))

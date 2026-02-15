@@ -1,0 +1,6 @@
+from itertools import product
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        count = Counter(nums)
+        flat = lambda arr: [e for row in arr for e in row]
+        return [flat(cnt) for cnt in product(*[[[k]*n for n in range(v+1)] for k,v in count.items()])]

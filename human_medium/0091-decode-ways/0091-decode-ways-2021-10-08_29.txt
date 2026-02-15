@@ -1,0 +1,12 @@
+def numDecodings(self, s):
+        n = len(s)
+        def countWays(i):
+            if i == n:
+                return 1
+            ways = 0
+            if 0 < int(s[i]) <= 9:
+                ways += countWays(i + 1)
+            if i < n - 1 and 10 <= int(A[i:i + 2]) <= 26:
+                ways += countWays(i + 2)
+            return ways
+        return countWays(0)

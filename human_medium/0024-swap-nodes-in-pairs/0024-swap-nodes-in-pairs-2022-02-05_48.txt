@@ -1,0 +1,22 @@
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+            temp = head
+
+            # There are no nodes in linked list
+            if temp is None:
+                return
+
+            # Traverse furthe only if there are at least two
+            # left
+            while(temp and temp.next):
+
+                # If both nodes are same,
+                # no need to swap data
+                if(temp.val != temp.next.val):
+
+                    # Swap data of node with its next node\'s data
+                    temp.val, temp.next.val = temp.next.val, temp.val
+
+                # Move temp by 2 to the next pair
+                temp = temp.next.next
+            return head

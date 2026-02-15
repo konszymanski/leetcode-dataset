@@ -1,0 +1,15 @@
+class Solution:
+    def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+        if not root : return None      #part1
+        def recursion(cur):
+            if cur.left:                   #part2
+                cur.left.next = cur.right
+
+            if cur.next and cur.left:     #part3
+                cur.right.next = cur.next.left
+
+            recursion(cur.left) if cur.left else None        #part4
+            recursion(cur.right) if cur.right else None
+        
+        recursion(root)
+        return root

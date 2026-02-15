@@ -1,0 +1,39 @@
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[List[int]]
+        :type newInterval: List[int]
+        :rtype: List[List[int]]
+        """
+        # each array in the list will be sorted (by start) to either the LHS or RHS of the newInterval
+        left, right = [], []
+        
+        # start, end of the newInterval
+        newIntervalStart, newIntervalEnd = newInterval[0], newInterval[1]
+        
+        # iterate through each array in the intervals List
+        for interval in intervals:
+            
+            # represents the start and end of each interval
+            intervalStart = interval[0] 
+            intervalEnd = interval[1]
+            
+            # if start of the interval is greater than the end of our newInterval, move the interval to RHS
+            # **make sure to add the [] around interval, so it is added as an array**
+            
+            if intervalStart > newIntervalEnd:
+                right += [interval]
+                
+            # if end of the interval is lesser than the start of our newInterval, mvoe the interval to LHS
+            # **make sure to add the [] around interval, so it is added as an array**
+            elif intervalEnd < newIntervalStart:
+                left += [interval]
+                
+            # neither condition satisfies, so we need to merge. by looking at example 2 we can tell that the newInterval becomes the
+            # [lowest start value in overlap, largest end value in overlap]
+            else:
+                newIntervalStart = min(newIntervalStart, intervalStart)
+                newIntervalEnd = max(newIntervalEnd, intervalEnd)
+        
+        # loop is done, now we just concatenate the result
+        return left + [[newIntervalStart, newIntervalEnd]] + right

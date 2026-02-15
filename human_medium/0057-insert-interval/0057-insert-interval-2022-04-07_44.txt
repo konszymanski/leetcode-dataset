@@ -1,0 +1,22 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        
+        op = []
+        
+        for i in range(len(intervals)):
+            #Case1: newInterval is smaller than element i
+            if newInterval[1] < intervals[i][0]:
+                #add newInterval to op and then the remaining elements as it is, then return
+                op.append(newInterval)
+                return op + intervals[i:]
+            #Case 2: newInterval is bigger than element i
+            elif newInterval[0] >intervals[i][1]:
+                #add element i to op and proceed as it may overlap the coming elements
+                op.append(intervals[i])
+            #Case 3: New interval and element i overlap. take min of [0] and max of [1]
+            else:
+                newInterval = [min(newInterval[0],intervals[i][0]) ,max(newInterval[1],intervals[i][1])]
+        #We have not added newInterval above, hence adding it here
+        op.append(newInterval)
+        
+        return op

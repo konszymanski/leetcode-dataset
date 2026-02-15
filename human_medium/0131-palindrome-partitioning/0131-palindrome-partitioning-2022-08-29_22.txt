@@ -1,0 +1,9 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        res=[]
+        self.cal(s,res,[])
+        return res
+    def cal(self, s, res, temp):
+        if not s: res+=temp,
+        for i in range(len(s)):
+            if s[:i+1]==s[:i+1][::-1]: self.cal(s[i+1:], res, temp+[s[:i+1]])

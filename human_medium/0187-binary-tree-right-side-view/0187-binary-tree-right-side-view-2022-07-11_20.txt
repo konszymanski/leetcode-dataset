@@ -1,0 +1,20 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        ans=[]
+        queue=[(root,1)]
+        level=2
+        while(len(queue)!=0):
+		    # Here instead of popping from 0th index (FIFO) we\'ll pop from end of queue to traverse the right nodes first
+			ans_ele=queue.pop()
+			# check for if node at current level already present in result view 
+            if len(ans)<ans_ele[1]: 
+                ans.append(ans_ele[0].val)
+            left_pt=ans_ele[0].left
+            right_pt=ans_ele[0].right
+            if left_pt:
+                queue.append((left_pt,ans_ele[1]+1))
+            if right_pt:
+                queue.append((right_pt,ans_ele[1]+1))
+        return ans

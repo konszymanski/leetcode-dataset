@@ -1,0 +1,23 @@
+def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+	memo = {}
+
+	def tree(s, e):
+		if e<s:
+			return [None]
+		if (s, e) in memo:
+			return memo[(s, e)]
+		elif s==e:
+			memo[(s, e)] = [TreeNode(s)]
+			return memo[(s, e)]
+		ans = []
+
+		for i in range(s, e+1):
+			left_subtree = tree(s, i-1)
+			right_subtree = tree(i+1, e)
+			for l in left_subtree:
+				for r in right_subtree:
+					ans.append(TreeNode(i, l, r))
+		memo[(s, e)] = ans
+		return memo[(s, e)]
+
+	return tree(1, n)

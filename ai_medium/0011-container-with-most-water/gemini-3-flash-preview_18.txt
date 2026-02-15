@@ -1,0 +1,31 @@
+```python
+from typing import List
+
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        left = 0
+        right = len(height) - 1
+        max_area = 0
+        
+        while left < right:
+            # Calculate the current area
+            # The width is the distance between the two pointers
+            # The height is limited by the shorter of the two lines
+            current_height = min(height[left], height[right])
+            current_area = current_height * (right - left)
+            
+            # Update the maximum area found so far
+            if current_area > max_area:
+                max_area = current_area
+            
+            # Move the pointer pointing to the shorter line
+            # This is because moving the taller line's pointer would only 
+            # decrease the width without potentially increasing the height limit.
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+                
+        return max_area
+
+```

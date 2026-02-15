@@ -1,0 +1,7 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        mid = len(nums) - (k % len(nums))
+        out = nums[mid:] + nums[:mid]
+        
+        nums.clear()
+        nums.extend(out)

@@ -1,0 +1,24 @@
+def myAtoi(self, s: str) -> int:
+        s = s.lstrip(\' \')
+        if not s:
+            return 0
+        valid = set([\'1\',\'2\',\'3\',\'4\',\'5\',\'6\',\'7\',\'8\',\'9\',\'0\'])
+        # print(len(s))
+        temp = \'\'
+        if s[0] in \'-+\':
+            temp += s[0]
+            s = s[1:]
+        for i in range(len(s)):
+            # print(i)
+            if s[i] not in valid:
+                s = s[:i]
+                break
+        if not s:return 0
+        if temp:
+            s = temp + s
+        s = int(s)
+        if s < -2147483648:
+            s = -2147483648
+        elif s > 2147483647:
+            s = 2147483647
+        return s

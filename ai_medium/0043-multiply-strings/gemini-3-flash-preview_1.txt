@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either number is "0", their product is "0"
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The maximum possible number of digits in the result is m + n
+        res = [0] * (m + n)
+        
+        # Iterate over num1 and num2 from right to left
+        for i in range(m - 1, -1, -1):
+            # Convert current character of num1 to integer
+            d1 = ord(num1[i]) - 48
+            for j in range(n - 1, -1, -1):
+                # Convert current character of num2 to integer
+                d2 = ord(num2[j]) - 48
+                
+                # Multiply the two digits and add to the current value at this position
+                # Position p2 is (i + j + 1) and carry position p1 is (i + j)
+                total = d1 * d2 + res[i + j + 1]
+                
+                # Store the last digit of the product in res[i + j + 1]
+                res[i + j + 1] = total % 10
+                # Add the carry to res[i + j]
+                res[i + j] += total // 10
+                
+        # Find the index of the first non-zero digit to skip leading zeros
+        idx = 0
+        while idx < len(res) and res[idx] == 0:
+            idx += 1
+            
+        # Convert the integer list into a string using chr() and ord('0') == 48
+        return "".join(chr(res[k] + 48) for k in range(idx, len(res)))
+```

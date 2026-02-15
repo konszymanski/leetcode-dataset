@@ -1,0 +1,24 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        self.preorder = preorder
+        self.inorder = inorder
+        self.inorder_value_to_index = {}
+        
+        for i, v in enumerate(inorder):
+            self.inorder_value_to_index[v] = i
+        
+        return self.divide_and_conquer(0, 0, len(preorder) - 1)
+    
+    def divide_and_conquer(self, preorder_i:int, left:int, right:int):
+        if left > right: return None
+        
+        root = TreeNode(self.preorder[preorder_i])
+        inorder_index = self.inorder_value_to_index[self.preorder[preorder_i]]
+        
+        root.left = self.divide_and_conquer(preorder_i + 1, left, inorder_index - 1)
+        
+        # take (inorder_index-left) + 1 interval after preorder index. We skip all left side elements
+        next_right_preorder_i = preorder_i + (inorder_index - left) + 1
+        root.right = self.divide_and_conquer(next_right_preorder_i, inorder_index + 1, right)
+        
+        return root

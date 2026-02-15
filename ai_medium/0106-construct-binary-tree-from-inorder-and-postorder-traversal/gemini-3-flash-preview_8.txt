@@ -1,0 +1,38 @@
+```python
+from typing import List, Optional
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        # Map values to their indices in the inorder traversal for O(1) lookups
+        idx_map = {val: i for i, val in enumerate(inorder)}
+        
+        def helper(in_start, in_end):
+            # Base case: if the inorder segment is empty, return None
+            if in_start > in_end:
+                return None
+            
+            # The root of the current subtree is always the last element in the postorder traversal.
+            # By popping from postorder, we access the roots in Root -> Right -> Left order.
+            root_val = postorder.pop()
+            root = TreeNode(root_val)
+            
+            # Find the position of the root value in the inorder traversal
+            idx = idx_map[root_val]
+            
+            # Recursively construct the subtrees.
+            # We must construct the right subtree first because we are popping elements 
+            # from the end of the postorder list (Root, then Right subtree roots, then Left).
+            root.right = helper(idx + 1, in_end)
+            root.left = helper(in_start, idx - 1)
+            
+            return root
+            
+        return helper(0, len(inorder) - 1)
+```

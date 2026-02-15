@@ -1,0 +1,14 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        wordDict = [str(i) for i in range(1, 27)]
+        dp = [0] * (len(s)+1) # add an extra space at the end to avoid the edge case.
+        dp[-1] = 1 # set the edge case: if `word` fit into `s_i`, but no any letter before it (i.e., `word` == `s_i`, so the index of the word before it is -1), we will use the last element in `dp` to handle this.
+        
+        for i in range(len(s)):
+            for word in wordDict:
+                if i-(len(word)-1) < 0: # if the word is longer than `s_i`, skip
+                    continue
+                if word == s[i-(len(word)-1):i+1]:  # if we can fit `word` into `s_i`
+                    dp[i]+=dp[i-len(word)]
+                        
+        return dp[-2] # return -2, instead of -1 (-1 to handle the edge case)

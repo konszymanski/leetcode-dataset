@@ -1,0 +1,65 @@
+\'\'\'
+- this approach uses recursion and iteration. helper is the recursive method
+
+
+Example 1: [1,2]
+
+i=0
+- helper([2]) returns [[2]]
+- add 1 before it [1,2]
+- add it to the result
+i=1
+- helper(1) returns [[1]]
+- add 2 before it [[2,1]]
+- add it to the result
+
+answer [[1,2],[2,1]]
+
+
+
+Example 2: [1,2,3]
+
+i=0
+- helper([2,3]) 
+- returns [[2,3],[3,2]] (check example 1)
+- add 1 before each item  - [[1,2,3],[1,3,2]]
+- add it to result
+
+
+i=1
+- helper([1,3])
+- returns [[1,3],[3,1]] (check example 1)
+- add 2 before each item  - [[2,1,3],[2,3,1]]
+- add it to result
+
+i=2
+- helper([1,2])
+- returns [[1,2],[2,1]] (check example 1)
+- add 3 before each item  - [[3,1,2],[3,2,1]]
+- add it to result
+
+answer= [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+\'\'\'
+
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        def helper(arr):
+            # if the list has one element, return it as a list of list
+            if len(arr)==1:
+                return [arr]
+            temp = []
+            visited = set()
+            #visited set is to make sure we dont construct the same list again
+            # ignore the current index, pass the remaining values to helper.
+            for i in range(len(arr)):
+                if arr[i] not in visited:
+                    visited.add(arr[i])
+                    res = helper(arr[:i]+arr[i+1:])
+                    # take the result and add the ignored value to the result
+                    for item in res:
+                        temp.append([arr[i]]+item)
+            return temp
+        
+        return helper(nums)

@@ -1,0 +1,10 @@
+# First we will set a start point as our goal that is the last index of the list
+goal=len(nums)-1
+# Now we will iterate over the nums list in reverse direction and check if the reach of a certain index is greater than goal then we update the goal
+for i in range(len(nums)-2,-1,-1):
+	if i+nums[i]>=goal:
+		goal=i
+# Finally we will check if the final destination that is our oth index is reached or not and return True accordingly
+if goal==0:
+	return True
+return False

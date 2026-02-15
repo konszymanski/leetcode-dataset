@@ -1,0 +1,17 @@
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        o2n = {} #old to new hashmap
+        
+        def clone(node):
+            if node in o2n:
+                return o2n[node]
+            
+            copy = Node(node.val)
+            o2n[node] = copy
+            
+            for neighbor in node.neighbors:
+                copy.neighbors.append(clone(neighbor))
+            
+            return copy
+        
+        return clone(node) if node else None

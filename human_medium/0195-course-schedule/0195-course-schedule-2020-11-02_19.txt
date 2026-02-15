@@ -1,0 +1,18 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        indegree = [0] * numCourses
+        outdegree = defaultdict(list)
+        for successor, prerequisite in prerequisites:
+            outdegree[prerequisite].append(successor)
+            indegree[successor] += 1
+        q = []
+        for i, node in enumerate(indegree):
+            if node == 0:
+                q.append(i)
+        while q:
+            node = q.pop()
+            for neighbor in outdegree[node]:
+                indegree[neighbor] -= 1
+                if indegree[neighbor] == 0:
+                    q.append(neighbor)
+        return sum(indegree) == 0

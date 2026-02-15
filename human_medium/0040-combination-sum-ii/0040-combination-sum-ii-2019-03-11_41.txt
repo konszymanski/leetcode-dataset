@@ -1,0 +1,25 @@
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        res = []
+        candidates.sort()
+        
+        self.helper(res, candidates, target, [])
+        
+        return res
+        
+    def helper(self, res, candidates, target, path):
+        if target == 0 and sorted(path) not in res:
+            res.append(sorted(path))
+            return
+        
+        if candidates and target > 0:
+            for index, val in enumerate(candidates):
+                if target >= val:
+                    self.helper(res, candidates[index+1:], target-val, path+[val])
+                else:
+                    break

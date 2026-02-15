@@ -1,0 +1,21 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        
+        def helper( node: \'Node\'):
+            
+            if node and node.left and node.right:
+                
+                # update next of left child        
+                node.left.next = node.right
+                
+                # update next of right child
+                if node.next:
+                    node.right.next = node.next.left
+            
+                helper( node.left )
+                helper( node.right )
+            
+            return node
+        # ----------------------------
+        
+        return helper( root )

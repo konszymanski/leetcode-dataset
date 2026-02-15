@@ -1,0 +1,11 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        def helper(prev):
+            if prev=="":return True
+            cur=prev
+            for word in wordDict:
+                if prev.startswith(word):
+                    i=len(word)
+                    if helper(prev[i:]):return True
+            return False
+        return helper(s)

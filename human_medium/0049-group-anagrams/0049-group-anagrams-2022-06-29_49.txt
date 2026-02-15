@@ -1,0 +1,9 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        sorted_tuples = [("".join(sorted(s)), s) for s in strs]
+        groups = defaultdict(list)
+        
+        for sorted_s, s in sorted_tuples:
+            groups[sorted_s].append(s)
+        
+        return groups.values()

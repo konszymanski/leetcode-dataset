@@ -1,0 +1,24 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        result = 0
+        # our "hashset" to keep track of characters weve seen
+        seen = set()
+
+        # pointer for the "start" of our sliding window
+        start = 0
+
+        for end in range(0, len(s)):
+            # keep moving start forward, as so long as
+            # this current character at end has been seen before
+            while (s[end] in seen):
+                seen.remove(s[start])
+                start += 1
+
+            # we can put this one here now, its safe
+            seen.add(s[end])
+
+            # now here, we are guaranteed to have a "window" with no repeaters
+            result = max(result, end - start + 1)
+        
+
+        return result

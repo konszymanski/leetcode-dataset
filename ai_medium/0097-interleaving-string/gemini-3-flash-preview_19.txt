@@ -1,0 +1,37 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        # If the total length of s1 and s2 does not match the length of s3,
+        # s3 cannot be an interleaving of s1 and s2.
+        if n1 + n2 != n3:
+            return False
+        
+        # We use a 1D DP array of size n2 + 1 to solve the problem in O(s2.length) additional space.
+        # dp[j] will store whether s3[:i+j] is an interleaving of s1[:i] and s2[:j].
+        dp = [False] * (n2 + 1)
+        
+        # Base case: both s1 and s2 are empty, and they interleave to form an empty s3.
+        dp[0] = True
+        
+        # Initialization: Handle the case where s1 is empty. 
+        # dp[j] will be true if the first j characters of s2 match the first j characters of s3.
+        for j in range(1, n2 + 1):
+            dp[j] = dp[j-1] and s2[j-1] == s3[j-1]
+            
+        # Iterate through the prefixes of s1 and s2 to fill the DP table.
+        for i in range(1, n1 + 1):
+            # Update dp[0] for the case where s2 is empty and only s1's prefix is used.
+            # dp[0] will be true if the first i characters of s1 match the first i characters of s3.
+            dp[0] = dp[0] and s1[i-1] == s3[i-1]
+            
+            for j in range(1, n2 + 1):
+                # The character s3[i+j-1] can be matched either with s1[i-1] or s2[j-1].
+                # If matched with s1[i-1], we check if s3[:i+j-1] was an interleaving of s1[:i-1] and s2[:j] (dp[j]).
+                # If matched with s2[j-1], we check if s3[:i+j-1] was an interleaving of s1[:i] and s2[:j-1] (dp[j-1]).
+                dp[j] = (dp[j] and s1[i-1] == s3[i+j-1]) or (dp[j-1] and s2[j-1] == s3[i+j-1])
+                
+        # The result is whether the full s1 and s2 interleave to form the full s3.
+        return dp[n2]
+
+```

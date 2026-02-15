@@ -1,0 +1,45 @@
+#vis: https://leetcode.com/problems/next-permutation/solution/
+
+#find the pivot item by iterating from the end to start of the nums array
+#pivot = last item that is in strictly increasing order (end to the start of array)
+#if pivot = 0, we hit an edge case that current permutation has max value
+#if pivot = 0, then we reverse the whole number and do an early return
+#assign left adjacent item to the pivot as the new pivot
+#find the value to the right of pivot which is min greater than pivot
+#swap pivot item and the next possible (min) higher value we found in last step
+#reverse the suffix subarray (from index (pivot+1) to the end of the list)
+class Solution:
+    #T=O(n), S=O(1)
+    def nextPermutation(self, nums: List[int]) -> None:
+        #init pointers
+        pivot = right = len(nums)-1
+        #find pivot item
+        #pivot = last increasing ordered element starting from the end of the array
+        while pivot > 0 and nums[pivot-1] >= nums[pivot]:
+            pivot -= 1
+        
+        #edge case
+        if pivot == 0:
+            nums.reverse()
+            return
+        
+        #reassign pivot to the left adjacent item of the pivot
+        pivot = pivot-1
+        #find the first number greater then nums[pivot] starting from end of the array
+        while nums[pivot] >= nums[right]:
+            right -= 1
+        
+        #Now pointers are pointing at two different positions
+        #pivot = first non-ascending number from end of array
+        #right = first number greater than nums[pivot]
+        #swap pivot and right indexed items
+        nums[pivot], nums[right] = nums[right], nums[pivot]
+        
+        #init pointers to (pivot+1) for the suffix and end of the array
+        left, right = pivot+1, len(nums)-1
+        #reverse the sequence strating from pivot to end
+        while left < right:
+            #swap the items and move the pointers
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1

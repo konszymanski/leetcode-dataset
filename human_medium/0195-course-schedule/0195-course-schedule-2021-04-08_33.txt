@@ -1,0 +1,23 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        WHITE, GREY, BLACK = 0, 1, 2
+        graph, colors = {}, {}
+        
+        for i in range(numCourses):
+            graph[i] = []
+            colors[i] = WHITE
+        for x,y in prerequisites:
+            graph[x].append(y)
+            
+        def dfs(node):
+            if colors[node] == BLACK: return True
+            if colors[node] == GREY: return False
+            colors[node] = GREY
+            for neighbor in graph[node]:
+                if not dfs(neighbor): return False
+            colors[node] = BLACK
+            return True
+        
+        for node in graph:
+            if not dfs(node): return False
+        return True

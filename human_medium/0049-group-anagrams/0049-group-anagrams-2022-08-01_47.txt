@@ -1,0 +1,17 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        if not strs:
+            return [[""]]
+        arr = defaultdict(list)
+        def orderer(s):#alphabetical arranger
+            t = [ i for i in s ]
+            t.sort()
+            d = ""
+            for i in t:
+                d += i
+            return d
+        for i in strs:
+            arr[ orderer(i) ].append(i)
+		#print(arr)
+        ans=[ arr[i] for i in arr ]
+        return ans

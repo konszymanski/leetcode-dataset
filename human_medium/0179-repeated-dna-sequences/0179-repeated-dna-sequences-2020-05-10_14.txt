@@ -1,0 +1,3 @@
+def findRepeatedDnaSequences(self, s: str) -> List[str]:
+	counter = collections.Counter(s[i:i+10] for i in range(len(s)-9))
+	return [s for s in counter if counter[s] > 1]

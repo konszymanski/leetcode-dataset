@@ -1,0 +1,14 @@
+class Solution:
+    
+    def __init__(self):
+        self.visited = {}
+        
+    def copyRandomList(self, head: \'Optional[Node]\') -> \'Optional[Node]\':
+        
+        if not head:
+            return None
+        clone = Node(head.val)
+        self.visited[head] = clone
+        clone.next = self.copyRandomList(head.next)
+        clone.random = self.visited.get(head.random, None)
+        return clone

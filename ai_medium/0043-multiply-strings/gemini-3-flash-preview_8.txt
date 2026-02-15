@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # Early return if either number is zero
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # Result array for product digits (max length is m + n)
+        res = [0] * (m + n)
+        
+        # Multiply digit by digit from right to left
+        for i in range(m - 1, -1, -1):
+            d1 = ord(num1[i]) - ord('0')
+            for j in range(n - 1, -1, -1):
+                d2 = ord(num2[j]) - ord('0')
+                
+                # Multiply digits and add to the current position
+                # The product of num1[i] and num2[j] contributes to index i + j + 1
+                total = d1 * d2 + res[i + j + 1]
+                
+                # Current position keeps the remainder of the sum
+                res[i + j + 1] = total % 10
+                # Carry is added to the next position (to the left)
+                res[i + j] += total // 10
+        
+        # Build the final string, skipping leading zeros
+        ans = []
+        for d in res:
+            if ans or d != 0:
+                ans.append(chr(d + ord('0')))
+        
+        # If the result is empty, return "0" (though handled by early return)
+        return "".join(ans) if ans else "0"
+
+```

@@ -1,0 +1,13 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        n = len(nums)
+        for i in range(n-1):
+            if nums[i] == 0: 
+                val = False
+                for j in range(i-1, -1, -1): # going backwards to check if we have any other position that can pass over that 0
+                    if nums[j] > i-j: 
+                        val = True 
+                        break
+                if not val: # if it\'s a zero on \'i\' position and we don\'t find a good position we can\'t pass
+                    return False
+        return True

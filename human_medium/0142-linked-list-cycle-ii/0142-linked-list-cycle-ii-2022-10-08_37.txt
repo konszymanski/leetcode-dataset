@@ -1,0 +1,9 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        hash_set = set()
+        while head:
+            current_hash = hash(head)
+            if current_hash in hash_set: return head
+            else: hash_set.add(current_hash)
+            head = head.next
+        return None

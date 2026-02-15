@@ -1,0 +1,32 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if not nums: return -1
+        
+        # Find pi : The index of the smallest element in the array
+        low , high = 0, len(nums) - 1
+        while low < high:
+            mid = (low + high) // 2
+            if nums[mid] > nums[high]:
+                low = mid + 1
+            else:
+                high = mid
+        pi, low, high = low, 0, len(nums) - 1
+        
+        # nums -> two sorted halves : [low, pi] & [pi, high]
+        # Define which sorted half does the target lie in 
+        if nums[pi] <= target and nums[high] >= target:
+            low = pi
+        else:
+            high = pi
+            
+        # Conventional BS for finding target in chosen sorted half
+        while low <= high:
+            mid = (low + high) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] > target:
+                high = mid - 1
+            else:
+                low = mid + 1
+        
+        return -1

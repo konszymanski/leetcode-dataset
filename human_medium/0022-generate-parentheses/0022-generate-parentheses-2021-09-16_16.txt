@@ -1,0 +1,13 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        combs, queue = [], deque([(0, 0, \'\')])
+        while queue:
+            L, R, comb = queue.pop()
+            if L == R == n:
+                combs.append(comb)
+                continue
+            if L < n:
+                queue.append((L+1, R, comb+\'(\'))
+            if R < L:
+                queue.append((L, R+1, comb+\')\'))
+        return combs

@@ -1,0 +1,19 @@
+class Solution:
+    def longestConsecutive(self, nums: list[int]) -> int:
+        mx, numSet = 0, set(nums)
+
+        while len(numSet) > mx:     # grab a number at random
+            n = numSet.pop()
+            l, r = n-1, n+1
+            
+            while l in numSet:      # find those to the left in the seq
+                numSet.remove(l)
+                l-= 1
+                
+            while r in numSet:      # find those to the right in the seq
+                numSet.remove(r)
+                r+= 1
+
+            mx = max(mx, r-l-1)     # see whether this seq is our winner
+ 
+        return mx                   # return the winner

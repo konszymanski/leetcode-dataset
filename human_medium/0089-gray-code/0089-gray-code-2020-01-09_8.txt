@@ -1,0 +1,11 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        res = [0]
+        bit = 1
+        while n > 0:
+            layer = res[::-1]
+            for i in layer:
+                res.append(i+bit)
+            bit += bit
+            n -= 1
+        return res

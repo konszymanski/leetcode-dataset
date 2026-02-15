@@ -1,0 +1,32 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        
+        # 0: unlearned, 1: learning, 2: learned
+        self.course_status = [0] * numCourses
+        
+        # Collect advanced course for base course
+        self.adv_dict = collections.defaultdict(set)
+        for a, b in prerequisites:
+            self.adv_dict[b].add(a)
+        
+        self.is_cycle = False
+        self.schedule = []
+        for course in range(numCourses):
+            self.dfs(course)
+            if self.is_cycle: break
+        
+        return [] if self.is_cycle else self.schedule[::-1]
+            
+    def dfs(self, course):
+        if self.course_status[course] == 1:
+            self.is_cycle = True
+            return
+        if self.is_cycle or self.course_status[course] == 2:
+            return
+        
+        self.course_status[course] = 1
+        for adv in self.adv_dict[course]:
+            self.dfs(adv)
+            if self.is_cycle: break
+        self.course_status[course] = 2
+        self.schedule.append(course)

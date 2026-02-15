@@ -1,0 +1,25 @@
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        edges = [[] for _ in range(numCourses)]
+        in_degree = [0]*numCourses
+        stack = []
+        for p,c in prerequisites:
+            edges[p].append(c)
+            in_degree[c]+=1
+        for i in range(numCourses):
+            if in_degree[i]==0:
+                stack.append(i)
+        cnt =0
+        while stack:
+            p = stack.pop()
+            cnt+=1
+            for to in edges[p]:
+                in_degree[to]-=1
+                if in_degree[to]==0:
+                    stack.append(to)
+        return cnt==numCourses

@@ -1,0 +1,32 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        results = []
+        candidates.sort()
+        
+        def backtrack(remain, start, path):
+            if remain == 0:
+                results.append(list(path))
+                return
+            
+            for i in range(start, len(candidates)):
+                # If the candidate is already larger than the remaining sum, 
+                # we can break early because candidates are sorted.
+                if candidates[i] > remain:
+                    break
+                
+                # Add the candidate to the path
+                path.append(candidates[i])
+                
+                # We stay at index 'i' because the same number can be used multiple times.
+                backtrack(remain - candidates[i], i, path)
+                
+                # Backtrack: remove the last added candidate to explore other options.
+                path.pop()
+        
+        backtrack(target, 0, [])
+        return results
+
+```

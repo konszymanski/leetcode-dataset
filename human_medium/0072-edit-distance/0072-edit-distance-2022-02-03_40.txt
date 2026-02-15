@@ -1,0 +1,33 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        # PD table stores: for given two words, the min edit distance of the two
+        self.dp_table = {} # 2d hash table
+        min_dist = self.LCS(word1, word2, 0)
+        return min_dist
+    
+    
+    # find LCS of word1 and word2
+    def LCS(self, word1, word2, op_count):
+        if word1 in self.dp_table:
+            if word2 in self.dp_table[word1]:
+                return self.dp_table[word1][word2] + op_count
+            
+        # base cases
+        if word1 == word2:
+            return op_count
+        if len(word1) == 0 or len(word2) == 0:
+            return max(len(word1), len(word2)) + op_count
+        
+        if word1[0] == word2[0]:
+            min_ops = self.LCS(word1[1:], word2[1:], op_count)
+        else:
+            min_ops1 = self.LCS(word1[1:], word2, op_count + 1) # remove
+            min_ops2 = self.LCS(word1, word2[1:], op_count + 1) # insert
+            min_ops3 = self.LCS(word1[1:], word2[1:], op_count + 1) # replace
+            min_ops = min(min_ops1, min_ops2, min_ops3)
+        
+        if word1 in self.dp_table:
+            self.dp_table[word1][word2] = min_ops - op_count
+        else:
+            self.dp_table[word1] = {word2 : min_ops - op_count}
+        return min_ops

@@ -1,0 +1,5 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode], right=None) -> None:
+        if not root: return right
+        root.left, root.right = None, self.flatten(root.left, self.flatten(root.right, right))
+        return root

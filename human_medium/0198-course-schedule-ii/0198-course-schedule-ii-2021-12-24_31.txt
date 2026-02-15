@@ -1,0 +1,22 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        cToP = {c: 0 for c in range(numCourses)} # Maps course to number of prerequisites
+        pToC = {p: [] for p in range(numCourses)} # Maps prerequisite to list of courses
+        for c, p in prerequisites:
+            cToP[c] += 1
+            pToC[p].append(c)
+        
+        # We should start with courses with no prerequisites and then continue (BFS)
+        coursesToTake = [c for c, pS in cToP.items() if not pS]
+        res = []
+        while coursesToTake:
+            res.extend(coursesToTake)
+            nextCoursesToTake = []
+            for p in coursesToTake:
+                for c in pToC[p]:
+                    cToP[c] -= 1
+                    if not cToP[c]:
+                        nextCoursesToTake.append(c)
+            coursesToTake = nextCoursesToTake
+        
+        return res if not any(cToP.values()) else [] # Return result if all courses have 0 prerequisites else return an empty list

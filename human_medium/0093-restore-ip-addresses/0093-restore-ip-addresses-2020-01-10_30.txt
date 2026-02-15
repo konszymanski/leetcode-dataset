@@ -1,0 +1,46 @@
+class Solution:
+    def valid(self, s):
+        t = int(s)
+        if len(s) > 1 and s[0] == \'0\':
+            return False
+        return 0 <= t and t <= 255
+    
+    dp = {}
+    
+    def helper(self, s, n):
+
+       # just a sub process that makes codes easy to read
+        def sub(s, i, res, n):
+            if len(s) <= i:
+                return 
+            t = s[-i:]
+            if self.valid(t):
+                left = self.helper(s[:-i], n-1)
+                for j in left:
+                    j += \'.\' + t
+                    res.append(j)
+					
+        if n == 1 :
+            if self.valid(s):
+                return [s]
+            else:
+                return []
+            
+        k = s+\'-\'+str(n)
+        
+        if k in self.dp:
+            return self.dp[k]
+        
+        res = []
+        
+        sub(s, 1, res, n)
+        sub(s, 2, res, n)
+        sub(s, 3, res, n)
+   
+        self.dp[k] = res
+        return res
+    
+        
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self.dp = {}
+        return self.helper(s, 4)

@@ -1,0 +1,19 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        row, col, res = len(grid), len(grid[0]), 0
+
+        def mark_island(x, y):
+            """
+            check whether current (x, y) is land or not. If it\'s land, mark everything on the island to 2
+            """
+            if 0 <= x < row and 0 <= y < col and grid[x][y] == \'1\':
+                grid[x][y] = \'2\'
+                for nxt_x, nxt_y in [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]:
+                    mark_island(nxt_x, nxt_y)
+
+        for i in range(row):
+            for j in range(col):
+                if grid[i][j] == \'1\':
+                    mark_island(i, j)
+                    res += 1
+        return res

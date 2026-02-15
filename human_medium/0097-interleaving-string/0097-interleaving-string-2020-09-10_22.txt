@@ -1,0 +1,24 @@
+class Solution:
+    def helper(self, string1, string2, string3, i, j):
+        k = i + j
+        if k == len(string3):
+            return True
+        
+        if i < len(string1) and string1[i] == string3[k]:
+            if self.helper(string1, string2, string3, i + 1, j):
+                return True
+            
+        if j < len(string2) and string2[j] == string3[k]:
+            return self.helper(string1, string2, string3, i, j + 1)
+        
+        return False
+            
+            
+    def isInterleave(self, string1: str, string2: str, string3: str) -> bool:
+        
+        if len(string1) + len(string2) != len(string3):
+            return False
+    
+        
+        i = j = 0
+        return self.helper(string1, string2, string3, i, j)

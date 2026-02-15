@@ -1,0 +1,18 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        #pre-processing 
+        palin = dict()
+        for k in range(len(s)):
+            for i, j in (k, k), (k, k+1):
+                while 0 <= i and j < len(s) and s[i] == s[j]: 
+                    palin.setdefault(i, []).append(j)
+                    i, j = i-1, j+1
+        
+        #dp 
+        @lru_cache(None)
+        def fn(i): 
+            """Return palindrome partitioning of s[i:]"""
+            if i == len(s): return [[]] 
+            return [[s[i:ii+1]] + y for ii in palin[i] for y in fn(ii+1)]
+        
+        return fn(0)

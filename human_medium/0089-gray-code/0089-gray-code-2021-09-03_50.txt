@@ -1,0 +1,14 @@
+def grayCode(self, n: int) -> List[int]:
+        if n==1:
+            return [0,1]
+        if n==2:
+            return [0,1,3,2]
+        base = [0,1,3,2]
+        for i in range(3,n+1):
+            multiplier = pow(2,i-1)
+            temp = []
+            for ele in base:
+                temp.append(ele+multiplier)
+            base = base+temp[::-1]
+            # print(temp)
+        return base

@@ -1,0 +1,20 @@
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        candidates = sorted(candidates)
+        result = []
+        def find(candids, sum_, cur_res, res):
+            if sum_ >= target:
+                if sum_ == target: 
+                    res.append(cur_res)
+                return
+            for i in range(len(candids)):
+                find(candids[i:], sum_+candids[i], cur_res + [candids[i]], res)
+                if sum_+candids[i]>=target:
+                    break
+        find(candidates, 0, [], result)
+        return result

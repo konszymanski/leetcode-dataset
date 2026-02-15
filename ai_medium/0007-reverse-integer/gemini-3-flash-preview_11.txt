@@ -1,0 +1,28 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Determine the sign of the input integer
+        sign = -1 if x < 0 else 1
+        
+        # Work with the absolute value for easier reversal
+        x = abs(x)
+        
+        # Reverse the digits using arithmetic
+        rev = 0
+        while x:
+            # Extract the last digit and add it to the reversed result
+            rev = rev * 10 + (x % 10)
+            # Remove the last digit from the number
+            x //= 10
+        
+        # Re-apply the original sign
+        rev *= sign
+        
+        # Check if the reversed integer is within the signed 32-bit integer range
+        # Signed 32-bit range: [-2^31, 2^31 - 1]
+        if rev < -2**31 or rev > 2**31 - 1:
+            return 0
+            
+        return rev
+
+```

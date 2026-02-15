@@ -1,0 +1,34 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        if len(s) == 0:
+            return []
+        
+        def isPalindrome(string):
+            li, ri = 0, len(string) - 1
+            while li < ri:
+                if string[li] != string[ri]:
+                    return False
+                li += 1
+                ri -= 1
+            return True
+        
+        cache = {}  
+        def helper(string):
+            if string in cache:
+                return cache[string]
+            
+            res = []
+            for i in range(len(string)):
+                if isPalindrome(string[:i+1]):
+                    if i == len(string)-1:
+                        res.append([string[:i+1]])
+                    else:
+                        subs = helper(string[i+1:])
+                        for sub in subs:
+                            res.append([string[:i+1]] + sub)
+
+            cache[string] = res
+            return res
+        
+        res = helper(s)
+        return res

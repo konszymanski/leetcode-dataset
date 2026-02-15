@@ -1,0 +1,24 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        def isNextValid(x, y, direction_x, direction_y, n, mat):
+            if x + direction_x < 0 or x + direction_x >= n:
+                return False
+            if y + direction_y < 0 or y + direction_y >= n:
+                return False
+            if mat[y + direction_y][x + direction_x] != 0:
+                return False
+            return True
+        
+        direction_x,  direction_y= 1, 0
+        curr_x, curr_y = 0, 0
+        count = 1
+        mat = [[0 for i in range(n)] for j in range(n)]
+        while count <= n**2:
+            mat[curr_y][curr_x] = count
+            if not isNextValid(curr_x, curr_y, direction_x, direction_y, n, mat):
+                direction_x, direction_y = -direction_y, direction_x
+            curr_x += direction_x
+            curr_y += direction_y
+            count += 1
+            
+        return mat

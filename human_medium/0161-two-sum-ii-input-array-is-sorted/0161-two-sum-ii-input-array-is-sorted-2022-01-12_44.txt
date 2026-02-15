@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int binarySearch(vector<int>& arr, int target, int beg, int end) {
+        while (beg <= end) {
+            int mid = (beg + end) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                beg = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return -1;
+    }
+    
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        vector<int> result(2);
+        int size = numbers.size();
+        for (int i = 0; i < size; i++) {
+            int complementIndex = binarySearch(numbers, target - numbers[i], i + 1, size - 1);
+            if (complementIndex != -1) {
+                result[0] = i + 1;
+                result[1] = complementIndex + 1;
+                break;
+            }
+        }
+        return result;
+    }
+};

@@ -1,0 +1,39 @@
+```python
+from typing import List
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        # A valid IP address has at most 12 digits (3*4) and at least 4 digits (1*4)
+        if len(s) > 12 or len(s) < 4:
+            return []
+
+        def backtrack(start_idx: int, path: List[str]):
+            # If we have 4 segments, check if we've used the entire string
+            if len(path) == 4:
+                if start_idx == len(s):
+                    res.append(".".join(path))
+                return
+
+            # Try segments of length 1, 2, and 3
+            for length in range(1, 4):
+                # Ensure we don't go out of bounds
+                if start_idx + length > len(s):
+                    break
+                
+                segment = s[start_idx:start_idx + length]
+                
+                # Check for leading zeros: segment cannot start with '0' unless it is exactly "0"
+                if len(segment) > 1 and segment[0] == '0':
+                    continue
+                
+                # Check if the segment is within the valid range [0, 255]
+                if int(segment) <= 255:
+                    path.append(segment)
+                    backtrack(start_idx + length, path)
+                    path.pop()
+
+        backtrack(0, [])
+        return res
+
+```

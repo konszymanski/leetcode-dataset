@@ -1,0 +1,65 @@
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        """
+        Given a string str with an integer within it, this program
+        extracts the part of the string containing the integer and
+        converts to an integer type.
+
+        :param str: input string
+        :type str: str
+        :return: integer converted from str, or 0 if conversion
+                 not possible
+        :rtype: int
+        """
+
+        """
+        Initialize:
+        - Strip leading spaces from string (str)
+        - Length of string after stripping (len_str)
+        """
+        str = str.lstrip()
+        len_str = len(str)
+
+        """
+        Base Case:
+        - Return quickly if string empty.
+        """
+        if len_str == 0:
+            return 0
+
+        """
+        Check for leading \'+\' or \'-\' and set multiplier.
+        """
+        k = 0
+        if str[k] == \'-\':
+            multiplier = -1
+            k += 1
+        elif str[k] == \'+\':
+            multiplier = 1
+            k += 1
+        else:
+            multiplier = 1
+
+        """
+        Extract digits from str and convert to integer
+        """
+        start_k = k
+        while k < len_str and str[k].isdigit():
+            k += 1
+        end_k = k
+        str_num = str[start_k:end_k]
+        if str_num:
+            num = int(str_num)
+        else:
+            return 0
+
+        """
+        Apply multiplier to integer. Adjust integer to within
+        allowable range.
+        """
+        num *= multiplier
+        if num > 2**31 - 1:
+            num = 2**31 - 1
+        elif num < -2**31:
+            num = -2**31
+        return num

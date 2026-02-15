@@ -1,0 +1,21 @@
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        seen = {}
+        dummy = temp = Node(-1)
+        
+        while head:
+            if seen.get(head, None):
+                temp.next = seen[head]
+            else:
+                temp.next = Node(head.val)
+                seen[head] = temp.next
+            temp = temp.next
+            if head.random:
+                if seen.get(head.random , None):
+                    temp.random = seen[head.random]
+                else:
+                    temp.random = Node(head.random.val)
+                    seen[head.random] = temp.random
+            head = head.next
+
+        return dummy.next

@@ -1,0 +1,23 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        num_set = set(nums)
+        
+        def fun(arr):
+            if len(arr) == 1:
+                return [list(arr)]
+            
+            elif len(arr) == 2:
+                arr = list(arr)
+                return [[arr[0], arr[1]], [arr[1], arr[0]]]
+            else:
+                res = []
+                arr_copy = arr.copy()
+                for elem in arr_copy:
+                    arr.remove(elem)
+                    for order in fun(arr):
+                        order.append(elem)
+                        res.append(order)
+                    arr.add(elem)
+                return res
+            
+        return fun(num_set)

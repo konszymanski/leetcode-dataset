@@ -1,0 +1,18 @@
+def BFS(self, root: Optional[TreeNode]) -> List[List[int]]:
+	queue = deque()
+	res = []
+
+	if root is None:
+		return res
+	queue.append(root)
+	while queue:
+		levelSize = len(queue)
+		for i in range(levelSize):
+			curNode = queue.popleft()
+			# Do Something Here
+			if curNode.left:
+				queue.append(curNode.left)
+			if curNode.right:
+				queue.append(curNode.right)
+		res.append(curLevel)
+	return res

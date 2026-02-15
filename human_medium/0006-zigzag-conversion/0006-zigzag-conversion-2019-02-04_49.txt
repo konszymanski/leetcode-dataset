@@ -1,0 +1,25 @@
+class Solution:
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        if numRows < 2:
+            return s
+        
+        conversion = [\'\']*numRows
+        i, x = 0, 1
+        
+        for char in s:
+            conversion[i] += char
+            
+            i += x
+            
+            if i == numRows - 1:
+                x = -1
+                
+            if not i:
+                x = 1
+        
+        return \'\'.join(conversion)

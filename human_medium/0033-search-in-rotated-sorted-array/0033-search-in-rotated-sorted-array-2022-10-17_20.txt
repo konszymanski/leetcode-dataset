@@ -1,0 +1,28 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        l=0
+        h=len(nums)-1
+        m=(l+h)>>1
+        while l<h:
+            if nums[m]>=nums[0]:
+                l=m+1
+            else:
+                h=m
+            m=(l+h)>>1
+        pivot=l# This is the pivot element i.e., starting index of sorted array before rotation
+        if nums[pivot]<=target and target<=nums[len(nums)-1]:
+            l=pivot # We are checking the target element in second half
+            h=len(nums)-1
+        else:
+            l=0 # We are checking the target element in first half
+            h=pivot-1
+        m=(l+h)>>1
+        while l<=h: 
+            if nums[m]==target:
+                return m
+            elif nums[m]<target:
+                l=m+1
+            else:
+                h=m-1
+            m=(l+h)>>1
+        return -1

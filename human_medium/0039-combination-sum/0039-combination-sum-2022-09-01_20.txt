@@ -1,0 +1,17 @@
+# There are two possibities of making a combination, i.e., to take an element or to not take an element.
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        final = []
+        def get_combinations(ind, target, arr, result):
+            if ind == len(arr):
+                if target == 0:
+                    final.append(result[:])
+                return
+            if arr[ind] <= target:
+                result.append(arr[ind])
+                get_combinations(ind, target-arr[ind], arr, result)  # to take the element
+                result.pop()
+            get_combinations(ind+1, target, arr, result)  # to not take the element
+        get_combinations(0, target, candidates, [])
+        return final

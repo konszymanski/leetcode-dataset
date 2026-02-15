@@ -1,0 +1,7 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        a=[]
+        for i in itertools.combinations([1,2,3,4,5,6,7,8,9],k):
+            if sum(i)==n:
+                a.append(list(i))
+        return a

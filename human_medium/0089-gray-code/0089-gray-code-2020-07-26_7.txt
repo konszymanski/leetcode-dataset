@@ -1,0 +1,29 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        if n == 0:
+            return [0]
+        
+        if n == 1:
+            return [0,1]
+        
+        res = []
+                
+        start = \'0\'*n
+        visited = set()
+        stk = [start]
+        
+        while stk:
+            node = stk.pop()
+            if node not in visited:
+                res.append(int(node,2))            
+                visited.add(node)
+            if len(visited) == 2**n:
+                break
+                
+            for i in range(n):
+                newCh = \'0\' if node[i] == \'1\' else \'1\' # change one bit at a time
+                newNode = node[:i] + newCh + node[i+1:]
+                
+                if newNode not in visited:
+                    stk.append(newNode)
+        return res

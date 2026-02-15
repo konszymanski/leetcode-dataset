@@ -1,0 +1,23 @@
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        if not root:
+            return root
+        myQueue = deque(([root]))
+        result = []
+        rightToLeft = True
+        while len(myQueue) > 0:
+            curLevel = deque()
+            curLength = len(myQueue)
+            for idx in range(curLength):
+                node = myQueue.popleft()
+                if rightToLeft:
+                    curLevel.append(node.val)
+                else:
+                    curLevel.appendleft(node.val)
+                if node.left:
+                    myQueue.append(node.left)
+                if node.right:
+                    myQueue.append(node.right)
+            result.append(curLevel)
+            rightToLeft ^= 1
+        return result

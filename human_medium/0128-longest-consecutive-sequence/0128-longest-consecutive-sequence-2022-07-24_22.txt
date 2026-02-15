@@ -1,0 +1,11 @@
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:  # Time: O(n) and Space: O(n)
+        numSet = set(nums)   # will contain all the numbers from the list only once
+        longest = 0
+        for n in nums:       # we will take each element one at a time and check
+            if n-1 not in numSet:   # if smaller consecutive number is present in the set or not, if it is means the LCS should not start from n
+                length = 0                      # when it\'s not set length to 0 to start counting the len of LCS
+                while n+length in numSet:       # while the larger consecutive number is present in the set the LCS len will keep on increasing
+                    length += 1
+                longest = max(length, longest)  # checking if the current length of LCS is the longest or the previous one is
+        return longest

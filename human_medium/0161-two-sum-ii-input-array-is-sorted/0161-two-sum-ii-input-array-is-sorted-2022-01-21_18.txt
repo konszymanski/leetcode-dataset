@@ -1,0 +1,18 @@
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        #Time: O(n)
+        #Space: O(1)
+        
+        left, right = 0, len(numbers) - 1
+        
+        while left < right:
+            currentSum = numbers[left] + numbers[right]
+            
+			#Move left to increase the current sum
+            if currentSum < target:
+                left += 1
+			#Move right to decrease the current sum
+            elif currentSum > target:
+                right -= 1
+            else:
+                return [left + 1, right + 1]

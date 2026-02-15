@@ -1,0 +1,45 @@
+class Solution:
+    def __init__(self):
+        self.visited = []
+        self.order = []
+        self.visited_order = set()
+        self.graph = {}
+        
+    def DFS(self,key):
+        self.visited[key] = True
+        result = False
+        for i in self.graph[key]:
+            if self.visited[i]:
+                return True
+            if i in self.visited_order:
+                continue
+            else:
+                result = self.DFS(i)
+        if not result:
+            self.visited_order.add(key)
+            self.visited[key] = False
+            self.order.append(key)
+        return result
+
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        if not prerequisites:
+            return list(range(numCourses))
+        for i in prerequisites:
+            if i[0] in self.graph:
+                self.graph[i[0]].append(i[1])
+            else:
+                self.graph[i[0]] = [i[1]]
+                
+        self.visited = [False]*numCourses
+        
+        for i in range(0,numCourses):
+            if i not in self.graph:
+                self.visited_order.add(i)
+                self.order.append(i)
+        
+        for i in self.graph:
+            if i not in self.visited_order:
+                self.DFS(i)
+        if True in self.visited:
+            return []
+        return self.order

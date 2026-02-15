@@ -1,0 +1,20 @@
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        front=ListNode()
+        back=ListNode()
+        f=front
+        b=back
+        curr=head
+        while(curr):
+            if curr.val < x:
+                f.next=ListNode(curr.val)
+                f=f.next
+                curr=curr.next
+            else:
+                b.next=ListNode(curr.val)
+                b=b.next
+                curr=curr.next
+                
+        f.next=back.next
+        b.next=None
+        return front.next

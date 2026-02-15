@@ -1,0 +1,21 @@
+def brute_force(self, nums): 
+        # Gives TLE as time complexity - exponential like x^n
+        def rec(nums, start, end):
+            if end >= len(nums) - 1: return True
+            elif start <= end:
+                while start <= end and start < len(nums):
+                    val = nums[start]
+                    end = max(end, start + val)
+                    start += 1
+                    if rec(nums, start, end): return True
+                return end >= len(nums) - 1
+        return rec(nums, 0, nums[0])
+                    
+    def optimized_greedy(self, nums):
+        max_reach = nums[0]
+        i = 0
+        while i <= max_reach and i < len(nums):
+            v = nums[i]
+            max_reach = max(max_reach, i + v)
+            i += 1
+        return max_reach >= len(nums) - 1

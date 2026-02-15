@@ -1,0 +1,38 @@
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        cmap = {i: [] for i in range(numCourses)}
+        ccount = {i: 0 for i in range(numCourses)}
+        
+        # build graph 
+        for c1, c2 in prerequisites:
+            cmap[c2].append(c1)
+            ccount[c1] += 1
+        
+        q = []
+        
+        for course, c in ccount.items():
+            if c == 0:
+                q.insert(0, course)
+        
+        seen = set()
+        
+        
+        while q:
+            curr = q.pop()
+            
+            if curr in seen:
+                return False
+            
+            seen.add(curr)
+            for each_p in cmap[curr]:
+                ccount[each_p] -= 1
+                if ccount[each_p] == 0:
+                    # if there are no more prereqs for this courses, then add to queue
+                    q.insert(0, each_p)
+            
+        return len(seen) == numCourses

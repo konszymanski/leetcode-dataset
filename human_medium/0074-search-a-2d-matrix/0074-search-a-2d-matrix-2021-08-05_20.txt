@@ -1,0 +1,23 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+
+        length = len(matrix)
+        
+        first_integers = [matrix[i][0] for i in range(0,length)]
+        last_integers = [matrix[i][-1] for i in range(0,length)]
+        
+        index = -1
+        
+        for i in range(0, len(first_integers)):
+            if target >= first_integers[i] and target <= last_integers[i]:
+                index = i
+                break
+        
+        if index == -1:
+            return False
+        
+        for element in matrix[i]:
+            if element == target:
+                return True
+            
+        return False

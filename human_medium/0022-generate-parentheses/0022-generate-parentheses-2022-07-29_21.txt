@@ -1,0 +1,14 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans=[]
+        def recurseMe(s,openLeft,closeLeft):
+            if openLeft==0 and closeLeft==0:
+                ans.append(s)
+                return 
+            if openLeft>0:
+                recurseMe(s+\'(\', openLeft-1, closeLeft)
+            if openLeft<closeLeft and closeLeft>0:
+                recurseMe(s+\')\', openLeft, closeLeft-1)
+                
+        recurseMe(\'(\',n-1,n)
+        return ans

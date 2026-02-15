@@ -1,0 +1,15 @@
+class Solution1:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        a=set()
+        def isVisited(curr,head,prev):
+            if curr in a:
+                return True
+            a.add(curr)
+        curr=head
+        prev=None
+        while curr!=None:
+            if isVisited(curr,head,prev):
+                return curr
+            prev=curr
+            curr=curr.next
+        return None

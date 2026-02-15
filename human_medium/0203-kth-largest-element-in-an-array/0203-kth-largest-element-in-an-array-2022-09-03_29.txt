@@ -1,0 +1,16 @@
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # Negating all numbers so that the nums min-heap provides the required
+        # maximum number
+        for i in range(len(nums)):
+            nums[i] *= -1
+        
+        heapify(nums)
+        ret_value = 0
+        while k>0:
+            # heappop gives the minimum number from the heap
+            # after negating it we\'re sure it is the max value and store it in ret_value
+            ret_value = -heappop(nums)
+            k -= 1
+        
+        return ret_value

@@ -1,0 +1,20 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        def get_paths(nums, target, path=[], idx=0):
+            if target == 0:
+                key = \'_\'.join([str(x) for x in sorted(path)])
+                if key not in self.mem:
+                    self.mem.add(key)                
+                    yield path
+            elif target < 0:
+                return 
+            else:
+                for i in range(idx, len(nums)):
+                    if (i==idx) or (nums[i]!=nums[i-1]):
+                        yield from get_paths(nums, target-nums[i], path+[nums[i]], i+1)
+                    
+        candidates = sorted(candidates)
+        self.mem, output = set([]), []
+        for path in get_paths(candidates, target):
+            output.append(path)
+        return output

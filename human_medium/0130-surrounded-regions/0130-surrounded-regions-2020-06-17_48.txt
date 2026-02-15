@@ -1,0 +1,26 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        def fillWithX(x , y):
+            if x < 0 or x >= row or y < 0 or y >= col:
+                return
+            if board[x][y] == "O":
+                board[x][y] = "-1"
+                fillWithX(x - 1 , y)
+                fillWithX(x + 1 , y)
+                fillWithX(x , y - 1)
+                fillWithX(x , y + 1)
+        if not board:
+            return []
+        row , col = len(board) , len(board[0])
+        for i in range(row):
+                fillWithX(i , 0)
+                fillWithX(i , col - 1)
+        for j in range(col):
+                fillWithX(0 , j)
+                fillWithX(row - 1 , j)
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] == "O":
+                    board[i][j] = "X"
+                elif board[i][j] == "-1":
+                    board[i][j] = "O"

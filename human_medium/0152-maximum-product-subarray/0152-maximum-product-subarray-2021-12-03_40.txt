@@ -1,0 +1,39 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        def maxSub(subnums):
+            if len(subnums) == 1:
+                return subnums[0]
+            total = 1
+            for num in subnums:
+                total *= num
+            if total > 0:
+                return total
+            l = r = 1
+            for num in subnums:
+                l *= num
+                if num < 0:
+                    break
+            for num in subnums[::-1]:
+                r *= num
+                if num < 0:
+                    break
+            return total / (max(l, r))
+        sub_arr_list = []
+        tmp = []
+        has_zero = False
+        for num in nums:
+            if num != 0:
+                tmp.append(num)
+            else:
+                has_zero = True
+                if tmp:
+                    sub_arr_list.append(tmp.copy())
+                    tmp = []
+        if tmp:
+            sub_arr_list.append(tmp)
+        result_list = []
+        for arr in sub_arr_list:
+            result_list.append(maxSub(arr))
+        if has_zero:
+            result_list.append(0)
+        return int(max(result_list))

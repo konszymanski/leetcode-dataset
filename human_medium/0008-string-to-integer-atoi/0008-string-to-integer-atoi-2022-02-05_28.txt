@@ -1,0 +1,20 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        s = s.lstrip()
+        
+        start = 0
+        stop = len(s)
+        
+        for i in range(len(s)):
+            if i == 0 and s[0] in [\'-\',\'+\']:
+                sign, start = s[0], 1
+            elif i == 0 and s[i].isnumeric():
+                sign, start = \'+\', 0
+            elif not s[i].isnumeric():
+                stop = i
+                break
+        
+        if start == stop:
+            return 0
+        
+        return int(min(max(float(sign + s[start:stop]), -2147483648), 2147483647))

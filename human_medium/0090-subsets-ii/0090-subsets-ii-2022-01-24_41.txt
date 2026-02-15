@@ -1,0 +1,18 @@
+def cascading(self, nums):
+        #sort the input numbers so that you treat duplicates differently
+        nums.sort() # sort nums in place; 
+        power_set = [[]] # starts with an empty list in it (representing an empty set)
+        
+        for i in range(len(nums)):
+            if i!=0 and nums[i]==nums[i-1]: # if seeing duplicates
+                # we want to extend the previous\' new_set only
+                # extending to the entire power_set will give us partial duplications similar to previous\' new_set
+                new_set = [subset+[nums[i]] for subset in new_set] 
+            else:
+                # if no duplicates, extends the power_set as usual
+                new_set = [subset+[nums[i]] for subset in power_set]
+            
+            # Concatentate to the power_set
+            power_set+=new_set
+        
+        return power_set

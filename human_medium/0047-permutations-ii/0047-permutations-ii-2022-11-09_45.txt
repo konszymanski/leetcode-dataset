@@ -1,0 +1,16 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        result = []
+
+        def dfs(nums, res, path):
+            if not nums and path not in res:
+                res.append(path.copy())
+
+            for ix in range(len(nums)):
+                path.append(nums[ix])
+                dfs(nums[:ix] + nums[ix + 1:], res, path)
+                path.pop()
+
+        dfs(nums, result, [])
+
+        return result

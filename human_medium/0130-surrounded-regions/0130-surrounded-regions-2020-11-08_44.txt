@@ -1,0 +1,61 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        M = len(board)
+        if M < 2:
+            return
+
+        N = len(board[0])
+        if N < 2:
+            return
+
+        def is_on_border(i, j):
+            return i == 0 or i == M-1 or j == 0 or j == N-1
+
+        def update_outline(inner_set, outline_set, i, j):
+            for ii, jj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                if (0 <= ii < M) and (0 <= jj < N) and (ii, jj) not in inner_set:
+                    outline_set.add((ii, jj))
+
+        # Create a component, or add to an existing one.
+		# Each component is (inner_set, outline_set, on_border)
+        def add_to_component(i, j, com=None):
+            if com is None:
+                com = [set(), set(), False]
+            else:
+                com[1].remove((i, j))
+            com[0].add((i, j))
+            update_outline(com[0], com[1], i, j)
+            com[2] = com[2] or is_on_border(i, j)
+            return com
+
+        # Each component is (inner_set, outline_set, on_border)
+        components = []
+        for i in range(M):
+            for j in range(N):
+                if board[i][j] != \'O\':
+                    continue
+                # Find the components that (i, j) belongs to
+                idxs = [idx for idx, c in enumerate(components) if (i, j) in c[1]]
+                if len(idxs) == 0:
+                    # Create a new component
+                    components.append(add_to_component(i, j))
+                elif len(idxs) == 1:
+                    # Add to an existing component
+                    add_to_component(i, j, components[idxs[0]])
+                else:
+                    # Merge two components
+                    components[idxs[0]][0].update(components[idxs[1]][0])
+                    components[idxs[0]][1].update(components[idxs[1]][1])
+                    components[idxs[0]][2] |= components[idxs[1]][2]
+                    del components[idxs[1]]
+                    # Add to the merged component
+                    add_to_component(i, j, components[idxs[0]])
+
+        # Replace surrounded components with \'X\'
+        for com in components:
+            if not com[2]:
+                for i, j in com[0]:
+                    board[i][j] = \'X\'

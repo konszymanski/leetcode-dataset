@@ -1,0 +1,16 @@
+def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+	results = []
+	candidates.sort(reverse=True)
+
+	def generate(remains=target, combination=[]):
+		if remains < 0: return
+		if not remains:
+			results.append(combination)
+			return
+		last_used = combination[-1] if combination else candidates[0]
+		for c in candidates:
+			if c > last_used: continue
+			generate(remains - c, combination + [c])
+
+	generate()
+	return results

@@ -1,0 +1,17 @@
+# Runtime: 28 ms, faster than 99.47%
+    # Memory Usage: 14.6 MB, less than 14.31%
+    #
+    # note:
+    #     * return list of permutations
+    #     * fix 1 position and use recursion to permute the others
+    #
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def helper(nums, path):
+            if not nums:
+                res.append(path)
+            else:
+                for i in range(len(nums)):
+                    helper(nums[:i] + nums[i + 1:], path + [nums[i]])
+        res = []
+        helper(nums, [])
+        return res

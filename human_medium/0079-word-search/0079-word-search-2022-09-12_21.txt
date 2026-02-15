@@ -1,0 +1,77 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        N, M, O = len(board), len(board[0]), len(word)
+        
+        if N * M < O:
+            return False
+        
+        # Exit early if word is one character.
+        if len(word) == 1:
+            return any(word in x for x in board)
+        
+        # Count the number of times word[0] and word[-1] are repeated at each end of the word.
+        try:
+            i = next(i for i in range(1,O) if word[i] != word[0])
+            j = O - next(j for j in range(O-2,-1,-1) if word[j] != word[-1]) - 1
+            if i > j:
+                word = word[::-1]
+        except:
+            pass
+        
+        def travel(i, j):
+            "Returns the valid squares adjacent to (i,j)"
+            return [
+                pos for pos in ((i+1, j), (i, j+1), (i-1, j), (i, j-1))
+                if 0 <= pos[0] < N and 0 <= pos[1] < M
+            ]
+        
+        letter_pairs = {*pairwise(word[1:])}
+        first_letter_pair = tuple(word[:2])
+        start = []
+        for i, j in product(range(N), range(M)):
+            a = board[i][j]
+            for r, c in travel(i, j):
+                t = (a, board[r][c])
+                if t == first_letter_pair and not (start and start[-1] == (i,j)):
+                    start.append( (i,j) )
+                if t in letter_pairs:
+                    letter_pairs.remove(t)
+        if letter_pairs:
+            return False
+        del letter_pairs, first_letter_pair
+        
+        end = O - 1                
+        
+        # Find the points at which we will be able to memoize results.
+        right_count = Counter(word[1:])
+        left_count = Counter(word[:1])
+        cache_pivots = [False] * O
+        for i in range(1, O-1):
+            c = word[i]
+            if right_count[c] == 1: del right_count[c]
+            else: right_count[c] -= 1
+            if not any(j for j in left_count if j in right_count):
+                cache_pivots[i] = True
+            left_count[c] += 1
+            
+        memo = set()
+        
+        def search( i, j, k ):
+            if k == end:
+                return True
+            if cache_pivots[k] and (i,j,k) in memo:
+                return False
+            
+            board[i][j] = "!"
+            a = word[k+1]
+            for r, c in travel(i, j):
+                if board[r][c] == a:
+                    if search(r, c, k+1): return True
+                    
+            board[i][j] = word[k]
+            if cache_pivots[k]:
+                memo.add((i,j,k))
+                
+            return False
+        
+        return any( search(i,j,0) for i,j in start )

@@ -1,0 +1,18 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        
+        d = {}
+        
+        
+        for s in strs:
+            
+            s_list = sorted(list(s)) #get sorted version of s
+            s_alph = "".join(s_list)
+            
+            
+            if s_alph in d:
+                d[s_alph].append(s)
+            else:
+                d[s_alph] = [s]
+                
+        return(list(d.values()))

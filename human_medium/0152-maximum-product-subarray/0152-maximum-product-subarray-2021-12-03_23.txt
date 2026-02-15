@@ -1,0 +1,7 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        maxi = mini = ans = nums[0]
+        for i in nums[1:]:
+            maxi, mini = max(i, i*maxi, i*mini), min(i, i*maxi, i*mini)
+            ans = max(ans, maxi)
+        return ans

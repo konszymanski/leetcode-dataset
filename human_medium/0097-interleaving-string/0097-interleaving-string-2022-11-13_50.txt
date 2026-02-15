@@ -1,0 +1,30 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        s1,s2,s3 = list(s1),list(s2),list(s3)
+        s3_len = len(s3)
+        found = [False]
+        dp = {}
+        def dfs(i,j,k):
+            #print((i,j,k),s1[j:],s2[k:],dp)
+            if (i,j,k) in dp:
+                return dp[(i,j,k)]
+            if i==len(s3):
+                #print("IN THE END",(i,j,k),s1[j:],s2[k:])
+                dp[(i,j,k)] = False
+                if not s1[j:] and not s2[k:]:
+                    found[0] = True
+                    dp[(i,j,k)] =  True
+                return dp[(i,j,k)]
+            if (j==len(s1) or k==len(s2)) and i!=len(s3):
+                dp[(i,j,k)] = False
+            
+            if j<len(s1) and s3[i]==s1[j:][0]:
+                dp[(i,j,k)] = dfs(i+1,j+1,k)
+            if k<len(s2) and s3[i]==s2[k:][0]:
+                dp[(i,j,k)] = dfs(i+1,j,k+1)
+            if j<len(s1) and k<len(s2) and s3[i]!=s1[j:][0] and s3[i]!=s2[k:][0]:
+                dp[(i,j,k)] = False
+            return dp[(i,j,k)]
+            #return False if (i,j,k) not in dp else dp[(i,j,k)]
+        dfs(0,0,0)
+        return found[0]

@@ -1,0 +1,24 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        l = ListNode()             # l is to point the last small node
+        l.next = head
+        rt = l                          # r is to point the previous node of current node 
+        r = ListNode()
+        r.next = head
+        flag = 0                     # this flag bit to identify if at least one large node has been detected
+        while r.next:
+            if r.next.val >= x:              # if large node then just move r
+                r = r.next
+                flag = 1
+            elif 0 == flag:                  # if no large node has appeared just move both
+                l = l.next
+                r = r.next
+            else:                                # if this is small node found and there is at least 1 large node found, move this small node right after l
+                temp1 = r.next
+                temp2 = l.next
+                if temp1.next: r.next = temp1.next
+                else: r.next = None
+                l.next = temp1
+                temp1.next = temp2
+                l = l.next
+        return rt.next

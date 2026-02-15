@@ -1,0 +1,47 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Constants for 32-bit signed integer limits
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+        
+        # Special case: overflow occurs when dividing the minimum possible
+        # 32-bit signed integer by -1.
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # Determine if the result will be negative by checking if signs differ
+        negative = (dividend < 0) != (divisor < 0)
+        
+        # Work with absolute values to simplify calculations
+        # Python's integers handle arbitrary precision, allowing us to store abs(MIN_INT)
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Binary search-like long division using bit shifting
+        # While the remaining dividend is greater than or equal to the divisor
+        while a >= b:
+            # Find the largest power of 2 such that (divisor * 2^k) <= remaining_dividend
+            temp_divisor, multiple = b, 1
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                multiple <<= 1
+            
+            # Subtract the largest found multiple from the dividend
+            # and add the power of 2 to the quotient
+            a -= temp_divisor
+            quotient += multiple
+            
+        # Apply the negative sign if signs of the original inputs were different
+        if negative:
+            quotient = -quotient
+            
+        # Ensure the final result is clamped within the 32-bit signed integer range
+        if quotient > MAX_INT:
+            return MAX_INT
+        if quotient < MIN_INT:
+            return MIN_INT
+            
+        return quotient
+
+```

@@ -1,0 +1,84 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    @cache
+    def getMinMaxNodeInTree(self, root):
+        if not root:
+            return None, None
+
+        l_max, l_min = self.getMinMaxNodeInTree(root.left)
+        r_max, r_min = self.getMinMaxNodeInTree(root.right)
+
+        mx = None
+        mn = None
+        if l_max and r_max:
+            if l_max.val > r_max.val:
+                mx = l_max
+            else:
+                mx = r_max
+        elif l_max:
+            mx = l_max
+        elif r_max:
+            mx = r_max
+
+
+        if l_min and r_min:
+            if l_min.val < r_min.val:
+                mn = l_min
+            else:
+                mn = r_min
+        elif l_min:
+            mn = l_min
+        elif r_min:
+            mn = r_min
+
+        mx = mx or root
+        mn = mn or root
+
+        if mx.val < root.val:
+            mx = root
+
+        if mn.val > root.val:
+            mn = root
+        
+        return mx, mn
+
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return
+        
+
+        l_max, _ = self.getMinMaxNodeInTree(root.left)
+        _, r_min = self.getMinMaxNodeInTree(root.right)
+
+        # print(r_min, l_max)
+        if r_min and l_max and r_min.val < l_max.val:
+            temp = r_min.val
+            r_min.val = l_max.val
+            l_max.val = temp
+            return
+
+        # print(l_max)
+        if l_max and l_max.val > root.val:
+            temp = l_max.val
+            l_max.val = root.val
+            root.val = temp
+            return
+
+        # print(r_min)
+        if r_min and r_min.val < root.val:
+            temp = r_min.val
+            r_min.val = root.val
+            root.val = temp 
+            return
+
+        self.recoverTree(root.left)
+        self.recoverTree(root.right)

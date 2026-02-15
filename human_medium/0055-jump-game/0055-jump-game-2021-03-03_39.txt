@@ -1,0 +1,22 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+		# index we want to reach
+		goal = len(nums) - 1
+		# our current index, we start at the beginning
+        cur = 0
+		# number of steps we can take from where we are
+        steps = nums[cur]
+        
+		# repeat until (a) we reach the goal, or (b) we are out of steps
+        while cur < goal and steps > 0:
+			# since we entered the loop, it\'s possible to take a step
+            cur += 1
+			
+			# our available steps decrease by one.
+			# we compare that to the number in our current index
+			# and choose the biggest one
+            steps = max(steps - 1, nums[cur])
+            
+		# since we are out of the loop, we either reached the end or
+		# we are out of steps.
+        return cur == goal

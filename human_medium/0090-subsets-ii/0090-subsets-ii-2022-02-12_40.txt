@@ -1,0 +1,16 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        mydic = {}
+        for item in set(nums):
+            mydic[item] = nums.count(item)
+        tmp = []
+        for key in mydic.keys():
+            tmp1 = [[key] * i for i in range(mydic[key]+1)]
+            tmp.append(tmp1)
+        output = self.combinelist(tmp)
+        return output
+    def combinelist(self, lists):
+        if len(lists) == 1:
+            return lists[0]
+        else:
+            return [item1 + item2 for item1 in lists[0] for item2 in self.combinelist(lists[1:])]

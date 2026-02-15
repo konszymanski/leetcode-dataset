@@ -1,0 +1,25 @@
+def convert(self, s: str, numRows: int) -> str:
+       #s="PAYPALISHIRING"
+        #numRows=3
+        res=[[] for x in range(numRows)]
+        k=numRows
+        trigger=True
+        i=0
+        for x in s:
+            res[i].append(x)
+            if trigger:
+                i+=1
+            else:
+                i-=1
+            if i>(numRows-1):
+                trigger=False
+                i-=2
+            elif i<0:
+                trigger=True
+                i+=2
+        ress=""
+        for x in res:
+            #print(x)
+            for y in x:
+                ress+=y
+        return ress

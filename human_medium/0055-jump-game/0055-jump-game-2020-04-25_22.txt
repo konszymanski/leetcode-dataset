@@ -1,0 +1,14 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        
+        start, destination = 0, len(nums)-1
+        frontier_backtrack_index = destination
+        
+        # backtracking from destination
+        for idx in reversed( range(0, destination) ):
+            
+            # update frontier_backtrack_indx
+            if idx + nums[idx] >= frontier_backtrack_index:
+                frontier_backtrack_index = idx
+        
+        return frontier_backtrack_index == start

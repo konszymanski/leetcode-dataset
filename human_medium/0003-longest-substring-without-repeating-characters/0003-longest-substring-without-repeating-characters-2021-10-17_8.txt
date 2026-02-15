@@ -1,0 +1,22 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        
+        string = s
+        
+        max_length = 0      # we set max_length to 0 because string may be empty.
+        seen_character = \'\' # a empty string to store the character that we have already seen.
+        
+        for letter in string:   # we are checking every letter/character in string...
+            if letter not in seen_character:
+                seen_character += letter      # if letter not in there then we add to it.
+                
+            else:
+                ## now if the letter is already in seen_character then we get the index of that letter by using seen_character.index() and then we slice the string from that index+1 to last, so that the the first seen letter will be removed.
+                # for example - \'abcabbd\'     # here after \'abc\' , again "a" was there so we get the index of first "a" and slice the string then be get string = "bc" .
+                seen_character = seen_character[seen_character.index(letter) + 1:] + letter
+                # and then we add the letter "a" to the last. so the string will become "bca"
+                
+            max_length = max(max_length, len(seen_character))   # here we use a function max() that everytime return the maximum value between two number. it sets max_length each time the loop runs.
+        return max_length     # finally return the maximum length.
+        
+    #by - Tony Stark

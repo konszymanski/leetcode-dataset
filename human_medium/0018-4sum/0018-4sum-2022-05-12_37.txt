@@ -1,0 +1,27 @@
+class Solution:
+    #The idea is to take four pointers. The first two pointers will move in the array from start to end while the rest two pointers will find the remaining sum using two pointers approach.
+    # let i,j,k,l are four pointers.. i goes from 0 to n-2, j goes from i+1 to n.. 
+    #Now the k and l pointers will try to find the remaining sum= target-(nums[i]+nums[j]) using two pointers approach in the array k=j+1 and l=n-1.
+    
+    
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()
+        n=len(nums)
+        res=set()
+        for i in range(n-1):
+            for j in range(i+1,n):
+                k,l=j+1,n-1
+                rem=target-(nums[i]+nums[j])
+                while k<l:
+                    val=nums[k]+nums[l]
+                    if rem==val:
+                        res.add((nums[i],nums[j],nums[k],nums[l]))
+                        k+=1
+                    elif rem>val:
+                        k+=1
+                    else:
+                        l-=1
+        finalres=[]
+        for t in res:
+            finalres.append(list(t))
+        return finalres

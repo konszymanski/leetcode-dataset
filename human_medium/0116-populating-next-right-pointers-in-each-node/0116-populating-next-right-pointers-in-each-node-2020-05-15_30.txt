@@ -1,0 +1,34 @@
+from collections import deque
+
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        # We will use the common queue pattern to do level order BFS.
+		# You could do this with lists as well, but the deque has better performance.
+		# Some links on the matter:
+		# https://stackoverflow.com/questions/23487307/python-deque-vs-list-performance-comparison
+		# https://wiki.python.org/moin/TimeComplexity
+		# O(N) time because we need to iterate over all levels/nodes in the tree.
+		# O(N) space because we need to keep track of all of the nodes in the queue.
+		
+		if not root:
+            return None
+		
+        q = deque()
+        q.append(root)
+        
+        while q:
+			# The trick here is to keep track of the previous node in each level
+			# and if it exists then we take its next pointer and point it to the current 
+			# dequed node.
+            prev_node = None # New level begins, reset the previous node pointer.
+            for _ in range(len(q)): # Loop over all nodes in the current level.
+                node = q.popleft()
+                if prev_node:
+                    prev_node.next = node # Update previous node\'s next pointer.
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+                prev_node = node # Update previous node reference.
+                
+        return root

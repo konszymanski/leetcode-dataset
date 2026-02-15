@@ -1,0 +1,33 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        
+        preq = {i:set() for i in range(numCourses)}
+        
+        for a,b in prerequisites:
+            preq[a].add(b)
+            
+        done = set()
+        
+        co = copy.deepcopy(preq)
+        for i,j in preq.items():
+            if j== set():
+                done.add(i)
+                del co[i]
+        
+        preq = copy.deepcopy(co)
+        
+        while preq:
+            c = False
+            
+            for i,j in preq.items():
+                if done.intersection(j)==j:
+                    done.add(i)
+                    c = True
+                    del co[i]
+                    
+            if not c:
+                return False
+            
+            preq = copy.deepcopy(co)
+            
+        return True

@@ -1,0 +1,26 @@
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        div = False
+        if n == 0:
+            return 1.0
+        elif n == 1:
+            return x
+        elif n < 0:
+            n = -n
+            div = True
+        ops = []
+        while n > 1:
+            if n % 2:
+                ops.append(False)
+                n -= 1
+            else:
+                ops.append(True)
+                n //= 2
+        ops = ops[::-1]
+        res = x
+        for op in ops:
+            if op:
+                res *= res
+            else:
+                res *= x
+        return 1 / res if div else res

@@ -1,0 +1,31 @@
+def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+    graph = collections.defaultdict(list)
+    in_degree_count = [0] * numCourses
+	
+	#build a directed graph and count the in-degree of each node
+    for course,prerequisite in prerequisites:
+        graph[prerequisite].append(course)
+        in_degree_count[course] += 1
+
+	#queue for running bfs
+    queue = collections.deque()
+	
+	#add all nodes with an indegree of 0 to our queue
+	#any node with an indegree of 0 has no prerequisites!
+    for i in range(numCourses):
+        if in_degree_count[i] == 0:
+            queue.append(i)
+
+    res = []
+    while queue:
+        current_course = queue.popleft()
+        res.append(current_course)
+        for next_course in graph[current_course]:
+            in_degree_count[next_course] -= 1
+			
+			#if the in_degree_count of a course is 0, then we have satisfied all the prerequisites for that course
+			#we can now take that course so we add it to our queue.
+            if in_degree_count[next_course] == 0:
+                queue.append(next_course)
+
+    return res if len(res) == numCourses else []

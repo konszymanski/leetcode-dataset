@@ -1,0 +1,39 @@
+def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        
+        # get the length of the original list
+        length = len(nums)
+        
+        # rotate variable keep nums of necessary rotation need to be done
+        # Ex: if k = 8 and length of array is 7 then after 7 the list will be 
+        # same as orginal and then just 1 more rotation so effectively just 1 rotation is necessary
+        rotate = k % length
+        
+        # this section of code is to invert the original list
+        i = 0
+        j = len(nums) - 1
+        
+        while i < j:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j -= 1
+            
+        # this sectin is to swap the 0 to rotate -1 elements
+        i = 0
+        j = rotate - 1
+        
+        while i < j:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j -= 1
+            
+        # this section is to swap the position of the remaining elements
+        i = rotate
+        j = length - 1
+        
+        while i < j:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j -= 1

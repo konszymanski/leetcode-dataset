@@ -1,0 +1,16 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        answer=[]
+        candidates.sort()
+        def back(arr,curr_sum,target,arr2,answer):
+            if curr_sum==target:
+                ans.append(arr2)
+            for i in range(len(arr)):
+                if i>0 and arr[i]==arr[i-1]: #for repeating numbers
+                    continue
+                if arr2 and arr2[-1]<=arr[i] or not arr2:
+                    if curr_sum+arr[i]>target:
+                        break
+                    back(arr[i+1:],curr_sum+arr[i],target,arr2+[arr[i]],answer)
+        back(candidates,0,target,[],answer)
+        return answer

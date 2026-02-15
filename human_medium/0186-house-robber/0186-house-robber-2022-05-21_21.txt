@@ -1,0 +1,13 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+	    # This iteration <i> is the money on current house
+		# prev2 is money in the previous house, prev1 is money in the house before prev2
+		# House location is like this: 
+		# prev1 => prev2 => i 
+        prev1, prev2 = 0, 0
+        for i in nums:
+			# we assign prev1 to prev2 because prev2 was the maximum money 
+			# robber can take before current house, and prev2 will be maximum of
+			# current + prev1 vs prev2 as I described above
+            prev1, prev2 = prev2, max(prev1+i, prev2)
+        return prev2

@@ -1,0 +1,20 @@
+def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+	# if len(intervals) == 0; return list with newInterval
+	if not intervals:
+		return [newInterval]
+	
+	# append newInterval and sort the list using first value in array
+	intervals.append(newInterval)
+	intervals.sort(key=lambda x: x[0])
+	
+	# add first interval (having the lowest first value)
+	res = [intervals[0]]
+
+	for i in range(1, len(intervals)):
+		# if intervals[first] <= res[last]
+		if intervals[i][0] <= res[-1][-1]:
+			res[-1][-1] = max(res[-1][-1], intervals[i][-1])
+		else:
+			res.append(intervals[i])
+
+	return res

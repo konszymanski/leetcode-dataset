@@ -1,0 +1,20 @@
+def sortedListToBST(self, head: ListNode) -> TreeNode:
+
+	def listify(node):
+		l = []
+		while node:
+			l.append(node.val)
+			node = node.next
+		return l
+
+	def bstify(lst, left, right):
+		if left >= right: return None
+		mid = (left + right) // 2
+		cur = TreeNode(lst[mid])
+		cur.left = bstify(lst, left, mid)
+		cur.right = bstify(lst, mid+1, right)
+		return cur
+
+	lst = listify(head)
+	bst = bstify(lst, 0, len(lst))
+	return bst

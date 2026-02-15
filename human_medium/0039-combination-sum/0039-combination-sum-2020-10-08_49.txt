@@ -1,0 +1,21 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        
+        res = []
+        
+        def getCombination(i,target,out):
+            if target<0:
+                return
+            elif i>=len(candidates) and target>0:
+                return
+            elif target == 0:
+                res.append(out)
+                return
+            
+            getCombination(i,target-candidates[i],out+[candidates[i]])
+            getCombination(i+1,target,out)
+			
+			
+        getCombination(0,target,[])
+        return res

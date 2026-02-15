@@ -1,0 +1,63 @@
+class SinglyLinkedNode:
+    def __init__(self, key=None, val=None):
+        self.key = key
+        self.val = val
+        self.next = None
+        
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        
+        self.size = 0
+        self.capacity = capacity
+        self.key_to_prev = {}
+        self.dummy = SinglyLinkedNode(0, 0)
+        self.tail = self.dummy
+    
+    def move_to_tail(self, key):
+        prev_node = self.key_to_prev[key]
+
+        if self.tail == prev_node.next:
+            return
+        
+        node = prev_node.next
+        next_node = node.next
+        prev_node.next = next_node
+        self.key_to_prev[next_node.key] = prev_node
+        
+        self.tail.next = node
+        self.key_to_prev[key] = self.tail
+
+        self.tail = node
+
+    def get(self, key):
+        if key not in self.key_to_prev:
+            return -1
+        
+        self.move_to_tail(key)
+
+        return self.tail.val
+
+    def put(self, key, value):
+        if key in self.key_to_prev:
+            prev_node = self.key_to_prev[key]
+            prev_node.next.val = value
+            self.move_to_tail(key)
+            return
+        
+        if self.size < self.capacity:
+            self.size += 1
+            node = SinglyLinkedNode(key, value)
+            self.tail.next = node
+            self.key_to_prev[key] = self.tail
+
+            self.tail = node
+            return
+
+        first = self.dummy.next
+        del self.key_to_prev[first.key]
+        
+        first.key = key
+        first.val = value
+        self.key_to_prev[key] = self.dummy
+        self.move_to_tail(key)

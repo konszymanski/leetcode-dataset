@@ -1,0 +1,49 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        # Base conditions should be straight forward
+        if not root:
+            return
+        
+        if not root.right and not root.left:
+            return
+        
+        # we will follow preorder -> first flatten left subtree, then right subtree
+        if root.left:
+            self.flatten(root.left)
+            
+            # Let\'s focus on the flattening logic with the smallest subtree i.e. 2
+            #                                                                  /.  \\
+            #                                                                 3.    4
+            # Step 1: create a temp node with root.right i.e.Node(4)
+            temp=root.right
+            # Step 2: Now move 3 to the right so the tree looks like  2
+            #                                                       /   \\
+            #                                                      3     3
+            root.right=root.left
+            # Step 3: Mark the left node as  2
+            #                                  \\
+            #                                    3
+            root.left=None
+            
+            # Step 4: Set root.right as curr i.e. curr=Node(3)
+            curr=root.right
+            # Step 5: While Node(3) has right children, keep going right.
+            #         In our case, Node(3) doesn\'t have any children nodes
+            while curr.right:
+                curr=curr.right
+            # Step 6: Once you have reached the leaf node on the right, attach the temp node
+            curr.right=temp
+			
+			# We repeat this for all the nodes in the left subtree before proceeding to the right subtree
+        
+        # Now we flatten the right subtree in the same way
+        self.flatten(root.right)

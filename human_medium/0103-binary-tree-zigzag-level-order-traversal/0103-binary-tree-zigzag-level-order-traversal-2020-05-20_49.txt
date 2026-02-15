@@ -1,0 +1,17 @@
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        ans = {}
+        queue = [(root, 0)]
+        while(queue):
+            root, level = queue.pop(0)
+            if root:
+                if level not in ans:
+                    ans[level] = [root.val]
+                else:
+                    if level&1:
+                        ans[level] = [root.val] + ans[level]
+                    else:
+                        ans[level] += [root.val]
+                queue.append((root.left, level+1))
+                queue.append((root.right, level+1))
+        return ans.values()

@@ -1,0 +1,22 @@
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        ans = []
+        if root: 
+            mp = {root: None}
+            stack = [(root, 0)]
+            while stack: 
+                node, val = stack.pop()
+                val += node.val 
+                if node.left: 
+                    mp[node.left] = node
+                    stack.append((node.left, val))
+                if node.right: 
+                    mp[node.right] = node 
+                    stack.append((node.right, val))
+                if not node.left and not node.right and val == targetSum: 
+                    path = []
+                    while node: 
+                        path.append(node.val)
+                        node = mp[node]
+                    ans.append(path[::-1])
+        return ans

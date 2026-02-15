@@ -1,0 +1,41 @@
+class BSTIterator:
+
+    def __init__(self, root: TreeNode):
+
+        self.root = root
+        self._stack_inorder = []
+
+        self.push_left_children( root )
+        
+    
+    def push_left_children(self, node: TreeNode):
+        
+        while node:
+            # push left child into stack
+            self._stack_inorder.append( node )
+
+            # update node as left child
+            node = node.left
+
+            
+            
+
+    def next(self) -> int:
+        """
+        @return the next smallest number
+        """
+
+        # pop next element with inorder
+        node =  self._stack_inorder.pop()
+
+        # keep inorder collection on right subtree of node
+        self.push_left_children( node.right )
+
+        return node.val
+        
+
+    def hasNext(self) -> bool:
+        """
+        @return whether we have a next smallest number
+        """
+        return len(self._stack_inorder) != 0

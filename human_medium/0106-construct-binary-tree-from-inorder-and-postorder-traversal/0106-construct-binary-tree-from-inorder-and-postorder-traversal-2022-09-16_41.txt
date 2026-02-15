@@ -1,0 +1,25 @@
+class Solution:
+    def buildTreeV1(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        "version-1"
+        if not inorder:
+            return
+        root_val = postorder.pop()
+        root = TreeNode(root_val)
+        idx = inorder.index(root_val)
+        root.left = self.buildTree(inorder[:idx], postorder[:idx])
+        root.right = self.buildTree(inorder[idx+1:], postorder[idx:])
+        return root
+    
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        map_inorder = {val:i for i, val in enumerate(inorder)}
+  
+        def builder(low, high):
+            if low > high:
+                return
+            root = TreeNode(postorder.pop())
+            mid = map_inorder[root.val]
+            root.right = builder(mid + 1, high)
+            root.left = builder(low, mid - 1)
+            return root
+   
+        return builder(0, len(inorder) - 1)

@@ -1,0 +1,41 @@
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        n = len(s)
+        i = 0
+        
+        # Step 1: Ignore leading whitespace
+        while i < n and s[i] == ' ':
+            i += 1
+        
+        if i == n:
+            return 0
+        
+        # Step 2: Determine sign
+        sign = 1
+        if s[i] == '+':
+            i += 1
+        elif s[i] == '-':
+            sign = -1
+            i += 1
+        
+        # Step 3: Read digits and convert
+        res = 0
+        while i < n and '0' <= s[i] <= '9':
+            res = res * 10 + (ord(s[i]) - ord('0'))
+            i += 1
+        
+        res *= sign
+        
+        # Step 4: Rounding to 32-bit signed integer range
+        INT_MIN = -2147483648
+        INT_MAX = 2147483647
+        
+        if res < INT_MIN:
+            return INT_MIN
+        if res > INT_MAX:
+            return INT_MAX
+            
+        return res
+
+```

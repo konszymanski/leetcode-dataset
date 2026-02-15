@@ -1,0 +1,23 @@
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        add = 0                                     # A variable to store the sum of the elements
+        ans = 0                                     # A variable to store the last positive sum value
+        cnt = 0                                     # A variable to store the count of negative numbers in the list
+        
+        maxNegative = -math.inf                     # A variable to store the max negative value in the list, initial value of -infinity
+        
+        for i in nums:                              # Traverse all the elements in the list
+            if i < 0:                               # If the ith element is negative
+                cnt += 1                            # Then, increase the count value of negative elements in the list
+                maxNegative = max(i, maxNegative)   # And update the value of \'maxNegative\'
+                
+            if add + i > 0:                         # If the summed value of \'add\' & the ith element is greater than 0
+                add += i                            # Then, add the ith element with \'add\' & and store it to \'add\'
+                
+            else:                                   # Else if the summed value is negative
+                add = 0                             # Then, reset the value of \'add\'
+                
+            ans = max(add, ans)                     # Update the value of \'ans\' with the max of \'add\' & \'ans\'
+        
+        # Check if all the values in the list are negative or not, if yes then return \'maxNegative\', else return \'ans\'
+        return maxNegative if cnt==len(nums) else ans

@@ -1,0 +1,19 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        operator_handler = {
+            "+": lambda a, b: a+b,
+            "-": lambda a, b: a-b,
+            "*": lambda a, b: a*b,
+            "/": lambda a, b: a//b if a/b >= 0 else math.ceil(a/b) # truncate towards 0, including negatives
+        }
+        
+        stack = []
+        for char in tokens:
+            if char in operator_handler:
+                b = stack.pop()
+                a = stack.pop()
+                stack.append(operator_handler[char](a, b))
+            else:
+                stack.append(int(char))
+        
+        return stack[0]

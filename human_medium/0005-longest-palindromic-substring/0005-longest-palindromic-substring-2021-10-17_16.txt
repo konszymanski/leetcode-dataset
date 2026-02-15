@@ -1,0 +1,21 @@
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        
+        #In this function l and r are the middle indecees, as palindrome is created from the middle, we expand from inner (middle) to outer
+		
+        def helper(l, r):
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                l -= 1; r += 1
+            return s[l+1:r] # l+1 because we take the previous sliceas when we exit the while loop it will no longer be palindromic
+
+        res = ""
+        for i in range(len(s)):
+            odd = helper(i, i) # odd case, like "aba"
+            even = helper(i, i+1) # even case, like "abba"
+            res=max(odd,res,even,key=lambda x: len(x)) #compare between odd,even and res according to the max length
+
+        return res

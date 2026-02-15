@@ -1,0 +1,13 @@
+# Runtime: 88 ms, faster than 56.24% of Python3 online submissions for Multiply Strings.
+# Memory Usage: 13.9 MB, less than 87.15% of Python3 online submissions for Multiply Strings.
+class Solution:
+    def multiply(self, num1, num2):
+        result, mult1 = 0, 1
+        digits = {str(i):i for i in range(10)}
+        for i in num1[::-1]:
+            mult2 = 1
+            for j in num2[::-1]:
+                result += digits[i]*digits[j]*mult1*mult2
+                mult2 *= 10
+            mult1 *= 10
+        return str(result)

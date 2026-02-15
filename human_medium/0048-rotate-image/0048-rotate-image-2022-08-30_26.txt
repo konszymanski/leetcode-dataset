@@ -1,0 +1,11 @@
+class Solution:
+    def rotate(self, mat: List[List[int]]) -> None:
+        n,m=len(mat),len(mat[0])
+        #first make the matrix its diagonal reflection
+        for i in range(n):
+            for j in range(i,m):
+                mat[j][i],mat[i][j]=mat[i][j],mat[j][i]
+        #first make the matrix its vertical reflection
+        for i in range(n):
+            for j in range(m//2):
+                mat[i][j],mat[i][m-1-j]=mat[i][m-1-j],mat[i][j]

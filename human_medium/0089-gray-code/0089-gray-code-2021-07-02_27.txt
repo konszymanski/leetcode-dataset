@@ -1,0 +1,4 @@
+def grayCode(self, n: int) -> List[int]:
+        if n == 1: return [0, 1]
+        gl, v = self.grayCode(n - 1), 2**(n-1)
+        return gl + [g + v for g in gl[::-1]]

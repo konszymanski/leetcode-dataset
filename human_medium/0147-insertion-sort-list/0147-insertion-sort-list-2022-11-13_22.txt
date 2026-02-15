@@ -1,0 +1,32 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSort(self, arr):
+        for i in range(1, len(arr)):
+    
+            key = arr[i]
+            j = i-1
+            while j >=0 and key < arr[j] :
+                    arr[j+1] = arr[j]
+                    j -= 1
+            arr[j+1] = key
+        return arr
+    
+    def list_to_linked_list(self, arr):
+        curr = dummy = ListNode(0)
+        for i in arr:
+            curr.next = ListNode(i)
+            curr = curr.next
+        return dummy.next
+
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        res = []
+        
+        while head: 
+            res.append(head.val)
+            head = head.next
+
+        return self.list_to_linked_list(self.insertionSort(res))

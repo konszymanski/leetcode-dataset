@@ -1,0 +1,41 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Define the limits for a 32-bit signed integer
+        INT_MIN, INT_MAX = -2**31, 2**31 - 1
+        
+        # Special case: overflow occurs when dividing the minimum integer by -1
+        if dividend == INT_MIN and divisor == -1:
+            return INT_MAX
+        
+        # Determine the sign of the quotient using XOR logic
+        # If one and only one of dividend or divisor is negative, the quotient is negative
+        negative = (dividend < 0) ^ (divisor < 0)
+        
+        # Work with the absolute values of the dividend and divisor
+        # Python's arbitrary precision integers automatically handle the case abs(-2**31)
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Perform division using bitwise shifts to represent powers of 2
+        # We find the largest (b * 2^i) that is less than or equal to 'a'
+        for i in range(31, -1, -1):
+            # Check if b * 2^i <= a using bit shifts
+            if (a >> i) >= b:
+                # Add 2^i to the quotient and subtract b * 2^i from a
+                quotient += (1 << i)
+                a -= (b << i)
+        
+        # Apply the negative sign if necessary
+        result = -quotient if negative else quotient
+        
+        # Return the result, ensuring it stays within the 32-bit signed integer range
+        # Note: the INT_MIN / -1 check already covers the only possible positive overflow case.
+        if result < INT_MIN:
+            return INT_MIN
+        if result > INT_MAX:
+            return INT_MAX
+            
+        return result
+
+```

@@ -1,0 +1,26 @@
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        res=[]
+        def getSubset(index,subset):
+            # if index exceeds the length of nums add it to result
+            if index==len(nums):
+                res.append(subset[::])
+                return
+            # else option1: add the current element to subset
+            subset.append(nums[index])    
+            # increase the index and call getSubset
+            getSubset(index+1,subset)
+            # option2: don\'t include the current element
+            subset.pop()
+            # move the pointer such that we are not including the duplicates
+            while index<len(nums)-1 and nums[index]==nums[index+1]:
+                index+=1
+            getSubset(index+1,subset)    
+        # sort the input array
+        nums.sort()
+        getSubset(0,[])  
+        return res

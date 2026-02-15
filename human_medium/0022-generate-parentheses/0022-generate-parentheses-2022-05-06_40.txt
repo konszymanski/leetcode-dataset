@@ -1,0 +1,29 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n == 0:
+            return 0
+        
+        index = 0
+        left_num = 0
+        right_num = 0
+        path = \'\'
+        res = []
+        self.dfs(index, left_num, right_num, n, path, res)
+        
+        return res
+    
+    def dfs(self, index, left_n, right_n, n, path, res):
+        if index == 2 * n:
+            res.append(path)
+            return
+            
+        if left_n < n:
+            path = path + \'(\'
+            self.dfs(index + 1, left_n + 1, right_n, n, path, res)
+            path = path[:-1]
+        if right_n < left_n:
+            path = path + \')\'
+            self.dfs(index + 1, left_n, right_n + 1, n, path, res)
+            path = path[:-1]
+        
+        return

@@ -1,0 +1,13 @@
+def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        # add values to a set to avoid duplicates
+        n, result = len(nums), set()
+        self.backtrack(0, nums, result, n)
+        return list(result)
+    
+    def backtrack(self, index, perm, result, n):
+		# cast list to tuple 
+        if index == n: result.add(tuple(perm))
+        for i in range(index, n):
+            perm[i], perm[index] = perm[index], perm[i]
+            self.backtrack(index + 1, perm, result, n)
+            perm[i], perm[index] = perm[index], perm[i]

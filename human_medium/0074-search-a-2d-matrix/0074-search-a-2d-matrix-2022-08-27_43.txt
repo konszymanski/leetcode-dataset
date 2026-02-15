@@ -1,0 +1,14 @@
+def biSearch(arr, target):
+
+        lo, mid, hi = 0, 0, n * len(arr) - 1
+        while lo <= hi:
+          mid = (lo + hi) // 2
+          
+          if target > arr[mid]:
+            lo = mid + 1
+          elif target < arr[mid]:
+            hi = mid - 1
+          else: # when the code finds the target
+            return True
+
+        return False # if the target is not found

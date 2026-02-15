@@ -1,0 +1,37 @@
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        if len(nums) < 4: return []
+        nums.sort()
+        res = []
+        i = 0
+        while i < len(nums) - 3:
+            # fix first number
+            x = nums[i]
+            j = i + 1
+            while j < len(nums) - 2:
+                # fix second number
+                y = nums[j]
+                # now its a 2 sum problem
+                l, r = j+1, len(nums) - 1
+                while l < r:
+                    s = x + y + nums[l] + nums[r]
+                    if s == target:
+                        # skip duplicates for l and r
+                        res.append([x,y,nums[l],nums[r]])
+                        l+=1
+                        while nums[l] == nums[l-1] and l < r: l+=1
+                        r-=1
+                        while nums[r] == nums[r+1] and l < r: r-=1
+                    if s < target:
+                        l+=1
+                    if s > target: 
+                        r-=1
+                # skip duplcates for j
+                j+=1
+                while nums[j] == nums[j-1] and j < len(nums)-2: j+=1
+            # skip duplicates for i
+            i+=1
+            while nums[i] == nums[i-1] and i < len(nums)-3: i+=1
+                
+
+        return res

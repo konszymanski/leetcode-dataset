@@ -1,0 +1,14 @@
+def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()  # this is the only reason why it is not O(1) in space
+        n = len(nums)
+        ans = set()
+        for a in range(n-3):
+            na = nums[a]
+            for b in range(a+1, n-2):
+                nab = na + nums[b]
+                for c in range(b+1, n-1):
+                    nabc = nab + nums[c]
+                    d = bisect_left(nums, target - nabc, c+1, n)  # instead of 4th loop
+                    if d < n and target - nabc == nums[d]:
+                        ans.add((nums[a], nums[b], nums[c], nums[d]))
+        return ans

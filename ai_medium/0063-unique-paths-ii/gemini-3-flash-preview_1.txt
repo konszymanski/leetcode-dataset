@@ -1,0 +1,29 @@
+```python
+from typing import List
+
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        if not obstacleGrid or obstacleGrid[0][0] == 1:
+            return 0
+        
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        # Use a 1D array to store the number of paths to each cell in the current row.
+        # This optimizes space from O(m*n) to O(n).
+        dp = [0] * n
+        dp[0] = 1
+        
+        for i in range(m):
+            for j in range(n):
+                # If the current cell is an obstacle, no paths can pass through it.
+                if obstacleGrid[i][j] == 1:
+                    dp[j] = 0
+                elif j > 0:
+                    # The number of paths to cell (i, j) is the sum of paths 
+                    # from the cell above (dp[j]) and the cell to the left (dp[j-1]).
+                    dp[j] += dp[j - 1]
+                # If j == 0 and grid[i][j] == 0, dp[0] remains its current value, 
+                # which represents the paths from the cell above.
+                    
+        return dp[n - 1]
+
+```

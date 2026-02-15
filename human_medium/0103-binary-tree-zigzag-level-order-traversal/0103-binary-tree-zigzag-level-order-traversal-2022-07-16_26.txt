@@ -1,0 +1,20 @@
+def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+	if(not root): return 
+	q = [root]
+	ans = [[root.val]]
+	p = 1
+	while(q):
+		l = len(q)
+		for _ in range(l):
+			t = q.pop(0)
+			if(t.left): 
+				q.append(t.left)
+			if(t.right): 
+				q.append(t.right)
+		temp = []
+		for i in (q[::-1] if(p) else q):
+			temp.append(i.val)
+		if(temp): 
+			ans.append(temp)
+		p = (p+1)%2
+	return ans

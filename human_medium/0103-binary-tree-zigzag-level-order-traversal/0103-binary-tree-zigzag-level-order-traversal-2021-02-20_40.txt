@@ -1,0 +1,25 @@
+class Solution:
+    
+    def processCurrent(self, node: TreeNode, res: List[List[int]], level: int):
+        if len(res) <= level:
+            newLevel = []
+            res.append(newLevel)
+        current_level = res[level]
+        if (level % 2 == 0):
+            current_level.append(node.val)
+        else:
+            current_level.insert(0, node.val)
+        
+    
+    def dfs(self, node: TreeNode, res: List[List[int]], level: int):
+        if (not node):
+            return
+        self.processCurrent(node, res, level)
+        self.dfs(node.left, res, level + 1)
+        self.dfs(node.right, res, level + 1)
+    
+    
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        res = []
+        self.dfs(root, res, 0)
+        return res

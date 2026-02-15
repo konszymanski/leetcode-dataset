@@ -1,0 +1,70 @@
+from collections import defaultdict
+from typing import Optional
+
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        """
+            w/o modifying the arrays; the soln in buildTree1 is O(n**2);
+
+            this solution is O(N)
+        """
+        inorderValIdxMap = defaultdict(int)
+        
+        for idx, val in enumerate(inorder):
+            inorderValIdxMap[val] = idx
+        
+        self.lastIdx = 1
+
+        def buildTreeHelper(inorderStart, inorderEnd):
+            if inorderStart > inorderEnd:
+                return None
+
+            root = TreeNode()
+            root.val = postorder[-self.lastIdx]
+            self.lastIdx += 1
+            inorderRootIdx = inorderValIdxMap.get(root.val, -1)
+
+            # post order is left right root (we are coming from back; so right comes first; therefore, in recurssion, we need to build the Right Subtree first)
+            root.right = buildTreeHelper(inorderRootIdx + 1, inorderEnd)
+            root.left = buildTreeHelper(inorderStart, inorderRootIdx - 1)
+
+            return root
+        
+        return buildTreeHelper(0, len(inorder) - 1)
+
+
+    def buildTree1(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        """
+        post order = L R ro
+        inorder = L ro R
+
+        if not postorder:
+            return None
+
+        root.val = postorder[-1]
+        inorderIdx = inorder.index(root.val)
+
+        postorderLen = len(postorder) - 1
+        n.left = bt(inorder[:inorderIdx], postorder[:inorderIdx])
+        n.right = bt(inorder[inorderIdx + 1: ], postorder[inorderIdx: postorderLen - inorderIdx])
+        """
+        if not postorder or not inorder:
+            return None
+        
+        root = TreeNode()
+        root.val = postorder.pop()
+        inorderIdx = inorder.index(root.val)
+
+        postorderLen = len(postorder) - 1
+        root.right = self.buildTree(inorder[inorderIdx + 1: ], postorder)
+        root.left = self.buildTree(inorder[:inorderIdx], postorder)
+    
+        return root

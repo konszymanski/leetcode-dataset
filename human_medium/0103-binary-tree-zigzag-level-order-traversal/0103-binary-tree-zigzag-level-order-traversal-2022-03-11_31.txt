@@ -1,0 +1,21 @@
+# Runtime: 28 ms, faster than 97.85% of Python3 online submissions for Binary Tree Zigzag Level Order Traversal.
+# Memory Usage: 14.2 MB, less than 40.07% of Python3 online submissions for Binary Tree Zigzag Level Order Traversal.
+class Solution:
+    def zigzagLevelOrder(self, root):
+        result, nodes, direction = [], [root], True
+        if root!=None:
+            while len(nodes)>0:
+                tempResult, childNodes = [], []
+                while len(nodes)>0:
+                    temp = nodes.pop()
+                    tempResult.append(temp.val)
+                    if direction:
+                        childNodes.append(temp.left)
+                        childNodes.append(temp.right)
+                    else:
+                        childNodes.append(temp.right)
+                        childNodes.append(temp.left)
+                result.append(tempResult)
+                nodes = [node for node in childNodes if node!=None]
+                direction = not direction
+        return result

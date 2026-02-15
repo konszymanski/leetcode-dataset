@@ -1,0 +1,16 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        f = 1
+        ans = 0
+        while n > 0:
+            f *= n
+            n -= 1
+        f = str(f)
+        i = len(f) - 1
+        while i >= 0:
+            if f[i] == \'0\':
+                ans += 1
+            else:
+                break
+            i -= 1
+        return ans

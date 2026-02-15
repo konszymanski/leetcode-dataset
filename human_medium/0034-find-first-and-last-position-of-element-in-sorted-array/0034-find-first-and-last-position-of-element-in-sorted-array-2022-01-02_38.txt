@@ -1,0 +1,28 @@
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        def findEdge(step):
+            L = len(nums)
+            l, r = 0, L-1
+            
+            while l <= r:
+                mid = (l + r) // 2
+                if nums[mid] == target:
+                    if (step == 1 and mid == L-1) or nums[mid + step] != target:
+                        return mid
+                    elif (step == -1 and mid == 0) or nums[mid + step] != target:
+                        return mid
+                    
+                    if step == 1:
+                        l = mid+1
+                    else:
+                        r = mid-1
+                elif nums[mid] < target:
+                    l = mid+1
+                else:
+                    r = mid-1
+            
+            return -1
+                    
+        
+        return [findEdge(-1), findEdge(1)]

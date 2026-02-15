@@ -1,0 +1,34 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Define the limits for a signed 32-bit integer
+        # INT_MAX = 2^31 - 1 = 2147483647
+        INT_MAX = 2147483647
+        
+        res = 0
+        # Determine the sign and work with the absolute value
+        sign = -1 if x < 0 else 1
+        x = abs(x)
+        
+        while x != 0:
+            # Extract the last digit
+            pop = x % 10
+            # Truncate the last digit from x
+            x //= 10
+            
+            # Check for potential overflow before updating the result.
+            # We check if res * 10 + pop > INT_MAX.
+            # To avoid storing a value larger than 32-bit, we re-arrange the check:
+            if res > INT_MAX // 10 or (res == INT_MAX // 10 and pop > 7):
+                # The digit check (pop > 7) is based on the last digit of 2147483647.
+                # If sign is negative, the valid range allows the last digit to be 8,
+                # however, there is no signed 32-bit integer that reversed would 
+                # equal 2147483648, so pop > 7 covers both cases for valid inputs.
+                return 0
+            
+            # Update the reversed integer
+            res = res * 10 + pop
+            
+        return sign * res
+
+```

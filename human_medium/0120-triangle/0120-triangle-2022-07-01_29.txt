@@ -1,0 +1,21 @@
+class Solution(object):
+    def minimumTotal(self, triangle):
+        """
+        :type triangle: List[List[int]]
+        :rtype: int
+                """
+        dp = {}
+        def solve(triangle,i = 0,j = 0):
+            if (i,j) in dp:
+                return dp[(i,j)]
+
+            if i == len(triangle)-1:
+                dp[(i,j)] = triangle[i][j]
+                return triangle[i][j]
+            left = solve(triangle, i+1, j)    
+            right = solve(triangle,i+1,j+1)
+            # print(right,left,(i,j))
+            dp[(i,j)] =  (triangle[i][j]+min(right,left))
+            return dp[(i,j)]
+
+        return solve(triangle, 0, 0)

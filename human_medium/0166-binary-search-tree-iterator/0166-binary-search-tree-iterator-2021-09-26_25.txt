@@ -1,0 +1,23 @@
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.nodes = [-1]
+        
+        def preorder(node):
+            if node:
+                
+                preorder(node.left)
+                self.nodes.append(node.val)
+                preorder(node.right)
+        preorder(root)
+       
+        
+        self.pointer = 0 
+        self.len = len(self.nodes)
+
+    def next(self) -> int:
+        self.pointer += 1
+        return self.nodes[self.pointer]
+
+    def hasNext(self) -> bool:
+        return self.pointer < self.len -1

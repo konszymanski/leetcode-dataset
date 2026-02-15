@@ -1,0 +1,21 @@
+def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        nodeps = set(range(numCourses))
+        depmap = collections.defaultdict(list)
+        depc = collections.Counter()
+        for c, dep in prerequisites:
+            if c in nodeps: nodeps.remove(c)
+            depmap[dep].append(c)
+            depc[c] += 1
+        
+        corder = []
+        nodeps = collections.deque(nodeps)
+        while nodeps:
+            node = nodeps.popleft()
+            corder.append(node)
+            for target in depmap[node]:
+                depc[target] -= 1
+                if not depc[target]: 
+                    nodeps.append(target)
+                    del depc[target]
+        
+        return corder if not depc else []

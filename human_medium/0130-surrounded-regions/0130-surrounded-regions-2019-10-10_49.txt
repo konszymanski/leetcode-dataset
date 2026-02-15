@@ -1,0 +1,40 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        if not board: return []
+        
+        self.ln = len(board)
+        self.m = len(board[0])
+        visit = [[0]*self.m for _ in range(self.ln)]
+        
+        result = []
+        for i in range(self.ln):
+            for j in range(self.m):
+                if board[i][j]==\'O\' and not visit[i][j]:
+                    currentnodes = []
+                    if not self.dfs(i, j, board, visit, currentnodes):
+                        result.extend(currentnodes)
+                        
+        for a,b in result:
+            board[a][b] = \'X\'
+        
+        return board
+        
+    
+    def dfs(self, i: int, j: int, board: [], visit:[], currentnodes:[]) -> bool:
+        if i==0 or j==0 or i==self.ln-1 or j==self.m-1:
+            return True
+        
+        visit[i][j] = 1
+        f=False
+        for x,y in [(i-1,j),(i,j-1),(i,j+1),(i+1,j)]:
+             if 0<=x<self.ln and 0<=y<self.m and board[x][y] ==\'O\' and not visit[x][y]:
+                if self.dfs(x, y, board, visit, currentnodes):
+                    f=True
+        if f: 
+            return True
+        else:
+            currentnodes.append((i,j))
+            return False

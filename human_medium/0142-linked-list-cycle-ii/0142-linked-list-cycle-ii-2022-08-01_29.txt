@@ -1,0 +1,17 @@
+def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        myDict={}
+        i=0
+        current=head
+        while current:
+            if current not in myDict:
+                myDict[current]=i
+                i+=1
+                current=current.next
+            
+            else:
+                return current
+        return None

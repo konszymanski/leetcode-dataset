@@ -1,0 +1,19 @@
+import math
+class Solution:
+    def trailingZeroes(self, n):
+        assert n >= 0, n
+        zeros = 0
+        q = n
+
+        while q:
+            q //= 5
+            zeros += q
+        # print(zeros)
+        return zeros
+
+
+
+
+n = 1808548329
+
+Solution().trailingZeroes(n)

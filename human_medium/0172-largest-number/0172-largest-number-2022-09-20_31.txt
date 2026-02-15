@@ -1,0 +1,35 @@
+from functools import cmp_to_key
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        if not any(nums):
+            return "0"
+        ln = len(nums)
+        def greatestCommonDivisor(n1, n2):
+            if n1 < n2:
+                tmp = n1
+                n1 = n2
+                n2 = tmp
+            while n1 % n2 > 0:
+                n1,n2 = n2, n1%n2
+            return n2
+        def leastCommonMultiple(n1, n2):
+            return n1 * n2 / greatestCommonDivisor(n1, n2)
+        def greater(s1, s2):
+            l1 = len(s1)
+            l2 = len(s2)
+            for i in range(leastCommonMultiple(l1, l2)):
+                c1 = s1[i % l1]
+                c2 = s2[i % l2]
+                if c1 < c2:
+                    return 1
+                
+                if c1 > c2:
+                    return -1
+            return 0
+        nums = list(map(str, nums))
+        nums = sorted(nums, key=cmp_to_key(greater))
+        return "".join(nums)

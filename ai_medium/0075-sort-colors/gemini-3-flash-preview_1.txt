@@ -1,0 +1,26 @@
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        low = 0
+        curr = 0
+        high = len(nums) - 1
+        
+        while curr <= high:
+            if nums[curr] == 0:
+                nums[low], nums[curr] = nums[low], nums[curr]
+                # Swap current element with the low pointer element
+                nums[low], nums[curr] = nums[curr], nums[low]
+                low += 1
+                curr += 1
+            elif nums[curr] == 2:
+                # Swap current element with the high pointer element
+                nums[curr], nums[high] = nums[high], nums[curr]
+                high -= 1
+            else:
+                # If nums[curr] == 1, just move to the next element
+                curr += 1
+
+```

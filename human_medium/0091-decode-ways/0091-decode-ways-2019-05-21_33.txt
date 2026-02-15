@@ -1,0 +1,13 @@
+def numDecodings(self, s: str) -> int:
+        count, store = 0, {}
+        def helper(s):
+            nonlocal count
+            if not s: count += 1
+            elif s[0] == "0": pass
+            elif s in store: count += store[s]
+            else:
+                helper(s[1:])
+                if len(s) >= 2 and int(s[:2]) < 27: helper(s[2:])
+                store[s] = count   
+        helper(s)
+        return count

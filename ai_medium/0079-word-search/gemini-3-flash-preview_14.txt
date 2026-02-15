@@ -1,0 +1,63 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        # Get grid dimensions
+        rows, cols = len(board), len(board[0])
+        
+        # Initial pruning: board must contain at least as many cells as the word length
+        if len(word) > rows * cols:
+            return False
+        
+        # Pruning: Frequency check
+        # Count character frequencies in the board
+        board_counts = Counter()
+        for r in range(rows):
+            for c in range(cols):
+                board_counts[board[r][c]] += 1
+        
+        # Check if the board contains enough of each character required by the word
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Pruning: Start search from the end if the starting character is more frequent than the ending character
+        # This reduces the number of initial search branches.
+        if board_counts[word[0]] > board_counts[word[-1]]:
+            word = word[::-1]
+
+        def dfs(r: int, c: int, i: int) -> bool:
+            # Base case: Successfully matched all characters in the word
+            if i == len(word):
+                return True
+            
+            # Check boundaries and character match
+            if (r < 0 or c < 0 or r >= rows or c >= cols or 
+                board[r][c] != word[i]):
+                return False
+            
+            # Temporarily mark the current cell as visited
+            temp = board[r][c]
+            board[r][c] = "#"
+            
+            # Recursively explore adjacent cells in four directions
+            found = (dfs(r + 1, c, i + 1) or 
+                     dfs(r - 1, c, i + 1) or 
+                     dfs(r, c + 1, i + 1) or 
+                     dfs(r, c - 1, i + 1))
+            
+            # Backtrack: restore the cell's original character
+            board[r][c] = temp
+            return found
+
+        # Start DFS from every cell that matches the first letter of the word
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0] and dfs(r, c, 0):
+                    return True
+        
+        return False
+```

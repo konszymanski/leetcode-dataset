@@ -1,0 +1,31 @@
+class Solution:
+    def copyRandomList(self, head: \'Optional[Node]\') -> \'Optional[Node]\':
+        
+        if not head: return None
+        # create copied nodes and add in bw curr and next
+        curr = head
+        while curr:     
+            copyNode = Node(curr.val, curr.next)
+            curr.next = copyNode
+            curr = curr.next.next
+        
+        # Iterate thru again and assign copied now
+        curr = head
+        while curr:
+            
+            if curr.random is not None:
+                copiedRandom = curr.random.next
+                curr.next.random = copiedRandom
+            
+            curr = curr.next.next
+        
+        # Create new DeepList copy
+        deepCopyHead = curr = head.next
+        while curr:
+            
+            if curr.next:
+                curr.next = curr.next.next
+            
+            curr = curr.next
+        
+        return deepCopyHead

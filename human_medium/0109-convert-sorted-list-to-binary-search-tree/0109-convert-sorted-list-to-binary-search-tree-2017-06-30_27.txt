@@ -1,0 +1,21 @@
+class Solution(object):
+    def sortedListToBST(self, head):
+        if not head: return None
+        nums=[]
+        while head:
+            nums.append(head.val)
+            head=head.next
+        l=0
+        r=len(nums)
+        m=(l+r)/2
+        root=TreeNode(nums[m])
+        stack=[(root,l,m,r)]
+        while stack:
+            node,l,m,r=stack.pop()
+            if r!=m+1:
+                node.right=TreeNode(nums[(m+r+1)/2])
+                stack.append((node.right,m+1,(m+r+1)/2,r))
+            if l!=m:
+                node.left=TreeNode(nums[(l+m)/2])
+                stack.append((node.left,l,(l+m)/2,m))
+        return root

@@ -1,0 +1,27 @@
+def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        # BFS: time: O(N)
+        # use boolean toleft to track zigzag direction
+        # use arr to store 
+        if root is None: return
+        arr, res = [root], []
+        toleft = True
+        
+        while arr:
+            size = len(arr)
+            curlist = []
+            if toleft:
+                for i in range(size):
+                    cur = arr.pop(0)
+                    curlist.append(cur.val)
+                    if cur.left: arr.append(cur.left)
+                    if cur.right: arr.append(cur.right)
+            else:
+                for i in range(size):
+                    cur = arr.pop(len(arr)-1)
+                    curlist.append(cur.val)
+                    if cur.right: arr = [cur.right] + arr
+                    if cur.left: arr = [cur.left] + arr
+                        
+            res.append(curlist)
+            toleft = not toleft
+        return res

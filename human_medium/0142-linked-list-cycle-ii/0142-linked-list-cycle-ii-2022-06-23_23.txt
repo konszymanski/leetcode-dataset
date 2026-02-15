@@ -1,0 +1,60 @@
+def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast: # there is a cycle
+                ptr = head
+                while ptr!=slow:
+                    ptr = ptr.next
+                    slow = slow.next
+                return ptr
+        return None
+
+        # fast/slow pointer
+        # O(n); O(1)
+
+        # given loop
+        # 1 -> 2 -> 3
+        #      |    |
+        #      5 <- 4
+
+        # 2 is goal node
+        # fast and slow meet at 5 (mannually traced)
+        # we realize (from 5 to 2) == (from 1 to 2) == 1
+        # bang! 
+        # if a new ptr starts from head,
+        # move ptr and slow at the same speed,
+        # and they meet at goal node, which is 2.
+
+        # what about general case?
+        # assume distance from head to goal node is = A (eg (1 -> 2) == 1)
+        # assume distance from goal to slow/fast meet is = B (eg (2 -> 3 -> 4 -> 5) == 3)
+        # assume cycle circumstance is = C (eg (2 -> 3 -> 4 -> 5 -> 2) == 4)
+
+        # when fast and slow meet
+        # slow moved distance = (A + B + n*C)
+        # n*C means slow moved in full circle n times before the meet
+        # fast moved distance = (A + B + m*C)
+        # m > n because fast is twice speed
+
+        # since fast is double the speed,
+        # distance moved by fast is twice as much than that by slow
+        # 2 * (A + B + n*C) = (A + B + m*C)
+        # simplify,
+        # A = (m-2n)*C - B
+
+        # m and n are arbitrary numbers, so we can treat (m-2n) as constant
+        # A = const*C - B
+        # bang!
+        # what does (const*C - B) represent?
+        # if B represents (2 -> 3 -> 4 -> 5), 
+        # and C represents (2 -> 3 -> 4 -> 5 -> 2)
+        # then (const*C - B) is really (5 -> 2), which == (1 -> 2).
+        # constant (m-2n) does not matter 
+        # because we don\'t care how many times slow/fast cycled the loop
+        # we only care the distance to goal node in this cycle.
+
+        # so you see the pattern now
+        # fast and slow are guaranteed to meet at some point D, and
+        # (point D to goal) is guaranteed to = (point A to gaol)

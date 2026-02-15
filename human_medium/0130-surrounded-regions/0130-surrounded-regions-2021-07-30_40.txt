@@ -1,0 +1,23 @@
+s = set()
+        def dfs(i,j):
+            if i<0 or i>=n or j<0 or j>=m or (i,j) in s or board[i][j]=="X":
+                return
+            s.add((i,j))
+            
+            dfs(i+1,j)
+            dfs(i-1,j)
+            dfs(i,j+1)
+            dfs(i,j-1)
+
+        n = len(board)
+        m = len(board[0])
+        
+        for i in range(n):
+            for j in range(m):
+                if i==0 or j==0 or i==n-1 or j==m-1:
+                    if (i,j) not in s:
+                        dfs(i,j)
+        for i in range(n):
+            for j in range(m):
+                  if board[i][j]=="O" and (i,j) not in s:
+                        board[i][j]="X"

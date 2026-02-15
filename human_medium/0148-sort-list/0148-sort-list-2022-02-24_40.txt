@@ -1,0 +1,22 @@
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return
+        
+        arr = []
+        
+        while head:
+            arr.append(head.val)
+            head = head.next
+        
+        arr.sort()
+        
+        prev = ListNode(arr[0])
+        dummy = prev
+        
+        for idx in range(1, len(arr)):
+            curr = ListNode(arr[idx])
+            prev.next = curr
+            prev = curr
+        
+        return dummy

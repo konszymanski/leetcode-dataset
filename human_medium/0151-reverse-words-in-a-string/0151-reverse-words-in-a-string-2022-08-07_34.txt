@@ -1,0 +1,32 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        t, res = "",[]
+        # add one space to end of s so that we can extract all words
+        s += " "
+        i = 0
+        while i < len(s):
+            ele = s[i]
+            if ele != " ":
+                # if the character is not a space, keep adding characters
+                t += ele
+                i += 1
+            else:
+                # being here means that we just got our first word stored in t
+                # store the word in a list - res
+                # empty the string t for storing further words
+                res.append(t)
+                t = ""
+                # if we have continued spaces after the first space then increment i
+                while i < len(s)-1 and s[i+1] == " ":
+                    i += 1
+                i+=1
+        # if first word in res is a space it would mean that we had many spaces at
+        # the start of the string s 
+        # eg -- "___hello world" -> when we encounter first space
+        # we go in else: of above loop and add one "" and then increment i for the
+        # remaining spaces; hence one space remains.
+        if res[0] == "":
+            res = res[1:]
+        
+        return " ".join(res[::-1])
+        # return the strings joined in reversed list res

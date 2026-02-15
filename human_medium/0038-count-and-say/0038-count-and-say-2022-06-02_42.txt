@@ -1,0 +1,20 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if (n==1):
+            return "1"
+        a=self.countAndSay(n-1)
+        r=""
+        k=0
+        p=""
+        for i in a:
+            if i==p:
+                k+=1
+            elif k!=0:
+                r+=str(k)+p
+                k=1
+                p=i
+            else:
+                k=1
+                p=i
+        r+=str(k)+p
+        return r

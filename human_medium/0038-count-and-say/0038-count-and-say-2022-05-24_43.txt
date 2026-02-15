@@ -1,0 +1,25 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n==1:
+            return "1"
+        def cs(n,s):
+            if n==0:
+                return s
+            else:
+                new_s = \'\'
+                index = 0 
+                while index<len(s):
+                    count = 0 #count of s[i] elements
+                    j = index
+                    while(j<len(s)):
+                        if s[j]==s[index]:
+                            count+=1
+                            j+=1
+                        else:
+                            break
+                    # get count+s[index] element string
+                    new_s+=str(count)+str(s[index])
+                    # moving the index to the next non-previous element 
+                    index=j
+                return cs(n-1, new_s)
+        return cs(n-1, \'1\')

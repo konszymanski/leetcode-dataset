@@ -1,0 +1,35 @@
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        auto iter = myMap.find(key);
+        if (iter == myMap.end()) return -1;
+
+        mylist.splice (mylist.begin(),mylist, iter->second);
+        return iter->second->second;
+    }
+    
+    void put(int key, int value) {
+        auto iter = myMap.find(key);
+        if (iter != myMap.end()) {
+            iter->second->second = value;       
+            mylist.splice (mylist.begin(),mylist, iter->second);
+        }
+        else {
+            mylist.insert(mylist.begin(),make_pair(key,value));
+            myMap[key] = mylist.begin();
+            if (myMap.size() > cap) {
+                myMap.erase(mylist.rbegin()->first);
+                mylist.pop_back();
+            }
+        }
+    }
+    
+private:
+    int cap;
+    list<pair<int,int>> mylist;
+    unordered_map<int,list<pair<int,int>>::iterator> myMap;
+};

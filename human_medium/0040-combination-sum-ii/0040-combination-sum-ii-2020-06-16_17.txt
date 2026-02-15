@@ -1,0 +1,19 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        self.res, self.target = [], target
+        self.dfs(candidates, [], 0)
+        return self.res
+    
+    def dfs(self, nums, current, start):
+        if sum(current) == self.target:
+            self.res.append(current)
+            return 
+        if sum(current) > self.target:
+            return
+        used = {}
+        for i in range(start, len(nums)):
+            if nums[i] in used:
+                continue
+            used[nums[i]] = True
+            self.dfs(nums, current + [nums[i]], i + 1)

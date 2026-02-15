@@ -1,0 +1,43 @@
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word: str) -> None:
+        curr = self.root
+        
+        for character in word:
+            index = ord(character) - ord(\'a\')
+            if not curr.next[index]:
+                curr.next[index] = TrieNode()
+            curr = curr.next[index]
+        
+        curr.isWord = True
+
+    def search(self, word: str) -> bool:
+        curr = self.root
+        
+        for character in word:
+            index = ord(character) - ord(\'a\')
+            if not curr.next[index]:
+                return False
+            curr = curr.next[index]
+        
+        return curr.isWord
+
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+        
+        for character in prefix:
+            index = ord(character) - ord(\'a\')
+            if not curr.next[index]:
+                return False
+            curr = curr.next[index]
+        
+        return True
+        
+class TrieNode:
+    
+    def __init__(self):
+        self.next = [None] * 26
+        self.isWord = False

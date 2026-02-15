@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int height = triangle.size();
+        
+        if(height==0) return 0;
+        if(height==1) return triangle[0][0];
+        
+        vector<int> dp[height];
+        dp[0].push_back(triangle[0][0]);
+        int width;
+        
+        for(int i=1;i<height;++i)
+        {
+            width = i+1; // ith row has i+1 elements
+            for(int j=0;j<width;++j)
+            {
+                if(j==0)
+                {
+                    //left side
+                    dp[i].push_back(dp[i-1][j] + triangle[i][j]);
+                }
+                else if(j==width-1)
+                {
+					//right side
+                    dp[i].push_back(dp[i-1][j-1] + triangle[i][j]);
+                }
+                else
+                {
+                    dp[i].push_back(min(dp[i-1][j-1] , dp[i-1][j]) + triangle[i][j]);
+                }
+            }
+        }
+
+        int min=INT_MAX;
+        for(auto x : dp[height-1])
+        {
+            if(x<min) min=x;
+        }
+        return min;
+        
+    }
+};

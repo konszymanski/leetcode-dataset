@@ -1,0 +1,18 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        out = []
+        l = len(candidates)
+        
+        
+        def combi(cand, targ, index):
+            if targ == 0:
+                out.append(cand)
+                return
+
+            if targ < 0: return
+            
+            for i in range(index, l):    
+                combi(cand+[candidates[i]], targ - candidates[i], i)
+        
+        combi([], target, 0)
+        return out

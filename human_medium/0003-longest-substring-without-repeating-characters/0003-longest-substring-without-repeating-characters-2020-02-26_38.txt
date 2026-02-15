@@ -1,0 +1,19 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        
+        if s is None:
+            return 0
+        uniqueSet = set()
+        j = 0
+        cur_max = 0
+        
+        for i in range(len(s)):
+		# the below while loop will remove all the elements from s[i] to s[k] where s[k] equals to s[j]
+		# example: abcdefc ---- remove [a,b, c] and the next s[ i] starts from d
+            while j < len(s) and s[j] not in uniqueSet:
+                uniqueSet.add(s[j])
+                j += 1
+            print(uniqueSet)
+            cur_max = max(cur_max, len(uniqueSet))
+            uniqueSet.remove(s[i])
+        return cur_max

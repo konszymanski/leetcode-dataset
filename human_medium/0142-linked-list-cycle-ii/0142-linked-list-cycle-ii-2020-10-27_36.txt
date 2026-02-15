@@ -1,0 +1,15 @@
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        lo = hi = head
+        while hi and hi.next:
+            lo = lo.next
+            hi = hi.next.next
+            if lo == hi:
+                break
+        else:
+            return None
+        lo = head
+        while lo != hi:
+            lo = lo.next
+            hi = hi.next
+        return lo

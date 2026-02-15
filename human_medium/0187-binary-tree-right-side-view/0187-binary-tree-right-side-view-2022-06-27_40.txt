@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func rightSideView(root *TreeNode) []int {
+    var res []int
+    
+    if root == nil {
+        return res
+    }
+    
+    var queue []*TreeNode
+    enqueue(&queue, root)
+    
+    for len(queue) > 0 {
+        queueSize := len(queue)
+        
+        var lastItem *TreeNode
+        
+        for i := 0; i < queueSize; i++ {
+            dequeuedItem := dequeue(&queue)
+            lastItem = dequeuedItem
+            
+            if dequeuedItem.Left != nil {
+                enqueue(&queue, dequeuedItem.Left)
+            }
+            
+            if dequeuedItem.Right != nil {
+                enqueue(&queue, dequeuedItem.Right)
+            }
+        }
+        
+        res = append(res, lastItem.Val)
+    }
+    
+    return res
+}
+
+func enqueue(queue *[]*TreeNode, item *TreeNode) {
+    if queue == nil {
+        panic("nil pointer")
+    }
+    
+    *queue = append(*queue, item)
+}
+
+func dequeue(queue *[]*TreeNode) *TreeNode {
+    if queue == nil {
+        panic("nil pointer")
+    }
+    
+    if len(*queue) == 0 {
+        panic("empty queue")
+    }
+    
+    dequeuedItem := (*queue)[0]
+    *queue = (*queue)[1:]
+    
+    return dequeuedItem
+}

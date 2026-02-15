@@ -1,0 +1,30 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Define constants for 32-bit signed integers
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+
+        # Handle the specific overflow case mentioned in the requirements
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+
+        # Determine the sign of the quotient
+        negative = (dividend < 0) ^ (divisor < 0)
+
+        # Use absolute values for calculation
+        a = abs(dividend)
+        b = abs(divisor)
+        quotient = 0
+
+        # Bitwise division: find the largest power of 2 such that (divisor * 2^i) <= dividend
+        for i in range(31, -1, -1):
+            if (a >> i) >= b:
+                quotient += (1 << i)
+                a -= (b << i)
+
+        # Apply sign and ensure the result is within the 32-bit signed integer range
+        res = -quotient if negative else quotient
+        return max(min(res, MAX_INT), MIN_INT)
+
+```

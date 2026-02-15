@@ -1,0 +1,37 @@
+def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        idea:
+            have initial sortedListPtr 
+            iterater thru head
+                insert in the current ptr in correct place of sortedList
+            
+        No extra space as Node is simply referenced rather than newly created
+
+        """
+        
+        def insertInSortedList(node, head):
+            """
+            sub problem:
+                - place given node in correct place of the sorted list head
+            """
+            cur = head.next
+            prev = head
+            while cur and cur.val < node.val:
+                prev = cur
+                cur = cur.next
+            prev.next = node
+            node.next = cur
+            
+            
+        ################ Start of the solution #############
+        sortedListHead = ListNode()
+        cur = head
+        
+        while cur:
+            # Important to save the next ptr here because insertInSortedList will modify cur.next
+            nextPos = cur.next
+            insertInSortedList(cur, sortedListHead)
+            # Reset the next position so our iteration works as usual
+            cur = nextPos
+            
+        return sortedListHead.next

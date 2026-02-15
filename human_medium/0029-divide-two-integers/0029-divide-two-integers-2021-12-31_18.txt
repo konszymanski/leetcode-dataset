@@ -1,0 +1,32 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+		# edge cases:
+        if divisor == 1:
+            return dividend if dividend > -2**31 else -2**31
+        if divisor == -1:
+            return -dividend if dividend > -2**31 else 2**31 - 1
+		# register the sign of the final result
+        positive = True if (dividend > 0 and divisor > 0) or (dividend < 0 and divisor < 0) else False
+        
+		dividend = abs(dividend)
+        divisor = abs(divisor)
+		
+		# easy cases:
+        if dividend < divisor:
+            return 0
+		
+		# the logic here is to find the highest power of two that is smaller than the dividend
+		# basically we are finding the binary form of the quotient
+        quotient = 1
+        l,r = divisor, divisor + divisor
+		# run the improvised "bitshift" operator
+        while r <= dividend:
+			l = r
+			# these two lines effectively "shift" both quotient and r by 1 bit to the left (or multiply by 2)
+            quotient += quotient
+            r += r
+		# we then use recursive method to sum all powers of 2 together
+		# eventually self.divide() will hit the case where dividend < divisor, which will return 0
+        quotient += self.divide(dividend - l,divisor)
+            
+        return quotient if positive else -quotient

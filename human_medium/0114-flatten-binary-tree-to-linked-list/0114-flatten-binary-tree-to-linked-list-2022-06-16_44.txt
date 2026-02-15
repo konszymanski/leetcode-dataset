@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def traverse(self, root):
+        if not root:
+            return
+        
+        if self.parent:
+            self.parent.left = root
+        self.parent = root
+        self.traverse(root.left)
+        self.traverse(root.right)
+        
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        self.parent = None
+        self.traverse(root)
+        node = root
+        while node:
+            node.right = node.left
+            node.left = None
+            node = node.right

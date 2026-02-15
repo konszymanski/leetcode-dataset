@@ -1,0 +1,28 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        ans = []
+        def is_valid(ip_list):
+            for i in ip_list:
+                if (len(i) > 1) and (i[0] == "0"):
+                    return False
+                if int(i) > 255:
+                    return False
+            return True
+        
+        def backtrack(curr,startIndex):
+            if is_valid(curr) == False:
+                return
+            if (len(curr) == 4) and (startIndex < len(s)):
+                return
+            if (len(curr) == 4) and (is_valid(curr)):
+                ans.append(".".join(curr))
+                return
+            else:
+                for i in range(startIndex, startIndex + 3):
+                    if i < len(s):
+                        curr = curr + [s[startIndex:i+1]]
+                        backtrack(curr, i+1)
+                        curr.pop()
+                return
+        backtrack([],0)
+        return ans

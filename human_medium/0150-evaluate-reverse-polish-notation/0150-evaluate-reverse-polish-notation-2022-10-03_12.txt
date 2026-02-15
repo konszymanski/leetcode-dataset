@@ -1,0 +1,20 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        ops = {
+            \'+\': lambda x,y: x+y,
+            \'-\': lambda x,y: x-y,
+            \'*\': lambda x,y: x*y,
+            \'/\': lambda x,y: math.ceil(x/y) if (x > 0) ^ (y > 0) else math.floor(x/y)
+        }
+        
+        for t in tokens:
+            if t not in ops:
+                stack.append(t)
+            else:
+                a = stack.pop()
+                b = stack.pop()
+                a, b = int(a), int(b)
+                stack.append(ops[t](b,a))
+        
+        return stack[0]

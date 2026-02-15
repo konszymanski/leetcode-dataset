@@ -1,0 +1,30 @@
+class Solution(object):
+    def recoverTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        def _dfsLR(node):
+            if not node:return False
+            if _dfsLR(node.left):return True
+            if not self._lr:self._lr=node
+            elif self._lr and self._lr.val>node.val:
+                self._invalidNd1=self._lr
+                return True
+            self._lr=node
+            return _dfsLR(node.right)
+          
+        def _dfsRL(node):
+            if not node:return False
+            if _dfsRL(node.right):return True
+            if not self._rl:self._rl=node
+            elif self._rl and self._rl.val<node.val:
+                self._invalidNd2=self._rl
+                return True
+            self._rl=node
+            return _dfsRL(node.left)
+                
+        self._lr,self._invalidNd1,self._rl,self._invalidNd2=None,None,None,None
+        _dfsLR(root)
+        _dfsRL(root)
+        self._invalidNd2.val,self._invalidNd1.val=self._invalidNd1.val,self._invalidNd2.val

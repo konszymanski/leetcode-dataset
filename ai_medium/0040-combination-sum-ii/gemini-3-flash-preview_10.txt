@@ -1,0 +1,31 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        results = []
+        
+        def backtrack(start: int, target: int, current_path: List[int]):
+            if target == 0:
+                results.append(list(current_path))
+                return
+            
+            for i in range(start, len(candidates)):
+                # Skip duplicate candidates to avoid duplicate combinations
+                if i > start and candidates[i] == candidates[i - 1]:
+                    continue
+                
+                # If the candidate exceeds the remaining target, no need to search further
+                if candidates[i] > target:
+                    break
+                
+                current_path.append(candidates[i])
+                # Move to the next index since each number can only be used once
+                backtrack(i + 1, target - candidates[i], current_path)
+                current_path.pop()
+        
+        backtrack(0, target, [])
+        return results
+
+```

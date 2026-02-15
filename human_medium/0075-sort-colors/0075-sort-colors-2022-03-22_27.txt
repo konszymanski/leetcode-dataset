@@ -1,0 +1,22 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        x = nums.count(0)
+        y = nums.count(1)
+        z = nums.count(2)
+        
+        
+        while z > 0:
+            nums.pop()
+            nums.insert(0,2)
+            z -= 1
+        while y > 0:
+            nums.pop()
+            nums.insert(0,1)
+            y -= 1
+        while x > 0:
+            nums.pop()
+            nums.insert(0,0)
+            x -= 1

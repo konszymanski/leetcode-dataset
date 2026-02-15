@@ -1,0 +1,24 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        NumIsls = 0
+        
+        if grid == []:
+            return 0
+        
+        #Island Sinkr Function
+        def sinkisl(i,j):
+            if ( i >= 0 and i < len(grid) and j >=0 and j < len(grid[0]) and grid[i][j] == \'1\'): #check boundary conditions
+                grid[i][j]=\'0\'
+                sinkisl(i+1,j)
+                sinkisl(i-1,j)
+                sinkisl(i,j+1)
+                sinkisl(i,j-1)
+        
+        #We have to visit every node
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == \'1\':
+                    NumIsls += 1
+                    sinkisl(i,j) #Once you find an island, sink it! So that you don\'t double count it further. 
+        
+        return(NumIsls)

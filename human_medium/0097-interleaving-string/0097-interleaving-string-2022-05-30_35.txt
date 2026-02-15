@@ -1,0 +1,33 @@
+# Top-down DP
+class Solution:
+    def isInterleave(self, s1, s2, s3):
+        if len(s3) != len(s1) + len(s2):
+            return False
+        @cache
+        # Tests if s3[i + j:] can be formed by interleaving s1[i:] and s2[j:], knowing that len(s3) == len(s1) + len(s2)
+        def dp(i, j):
+			if i == len(s1) and j == len(s2):
+                # s1[len(s1):], s2[len(s2):] and s3[len(s1) + len(s2):] are all empty strings
+				return True
+            if i == len(s1):
+                # s3[len(s1) + j:] can be formed by interleaving s1[len(s1):] (empty string) and s2[j:] if and only if s2[j:] and s3[len(s1) + j:] are the same
+                return s2[j:] == s3[i + j:]
+            if j == len(s2):
+                # s3[i + len(s2):] can be formed by interleaving s1[i:] and s2[len(s2):] (empty string) if and only if s1[i:] and s3[i + len(s2):] are the same
+                return s1[i:] == s3[i + j:]
+            if s1[i] != s3[i + j] and s2[j] != s3[i + j]:
+                # The first char in s3[i + j:] cannot be picked from either s1[i:] or s2[j:]. So it will be impossible to form s3[i + j:] by interleaving s1[i:] and s2[j:]
+				return False
+            if s1[i] == s3[i + j] and s2[j] == s3[i + j]:
+                # The first character from s3[i + j:] can be picked either from the start of s1[i:] or the start of s2[j:]
+				# Consequently, we can form s3[i + j:] by interleaving s1[i:] and s2[j:] if and only if we can form s3[i + 1 + j:] by interleaving s1[i + 1:] and s2[j:] OR we can form s3[i + j + 1:] by interleaving s[i:] and s2[j + 1:]
+				return dp(i + 1, j) or dp(i, j + 1)
+            if s1[i] == s3[i + j]:
+                # The first character from s3[i + j:] can be picked from (and only from) the start of s1[i:]
+				# Consequently, we can form s3[i + j:] by interleaving s1[i:] and s2[j:] if and only if we can form s3[i + 1 + j:] by interleaving s1[i + 1:] and s2[j:].
+				return dp(i + 1, j)
+            # Here we are in the case s1[i] != s3[i + j] and s2[j] == s3[i + j]
+			# The first character from s3[i + j:] can be picked from (and only from) the start of s2[j:]
+			# Consequently, we can form s3[i + j:] by interleaving s1[i:] and s2[j:] if and only if we can form s3[i + j + 1:] by interleaving s1[i:] and s2[j + 1:].
+			return dp(i, j + 1)
+        return dp(0, 0)

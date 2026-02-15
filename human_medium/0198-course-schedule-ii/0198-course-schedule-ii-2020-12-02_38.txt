@@ -1,0 +1,21 @@
+class Solution(object):
+    def findOrder(self, m, A):
+        # N[k] = [v...] :         courses "v..." that you MAY  take AFTER  completing course "k" (N from Next)
+        # P[k] = {v...} : Pending courses "v..." that you MUST take BEFORE completing course "k" (P from Previous)
+        N = defaultdict(list) 
+        P = defaultdict(set) 
+        for x,y in A:
+            N[y].append(x)
+            P[x].add(y)
+        #
+        B = [ x for x in range(m) if not P[x] ]
+        i = 0
+        while i<len(B):
+            y  = B[i]
+            i += 1
+            for x in N[y]:
+                P[x].remove(y)
+                if not P[x]:
+                    B.append(x)
+        #
+        return B if len(B)==m else []

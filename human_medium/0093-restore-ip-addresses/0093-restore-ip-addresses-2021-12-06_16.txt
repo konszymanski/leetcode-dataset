@@ -1,0 +1,55 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def isValid(segment):
+            # [2,5,5] -> True
+            # len(segment) <= 3 so this is O(1)
+            
+            if not segment:
+                return False
+            
+            num = \'\'.join(segment)
+            if (not num or 
+                int(num) > 255 or 
+                (len(num) > 1 and num[0] == \'0\')):
+                return False
+                
+            return True
+            
+            
+        def backtrack(i, stack, segment, result):
+            """
+            s[i] = char
+            stack = current ip = [[\'0\'],[\'0\']]
+            segment = current integer = [\'2\',\'5\']
+            """
+            
+            if len(stack) == 4 and i == len(s):
+                # [[\'0\'],[\'0\'],[\'0\'],[\'0\']] -> result = [\'0.0.0.0\']
+                builder = [\'\'.join(arr) for arr in stack]
+                result.append(\'.\'.join(builder))
+
+                return
+                        
+            if isValid(segment) and (len(stack) < 3 or i == len(s)):
+                # try to append the current segment
+                stack.append(segment)
+                backtrack(i, stack, [], result)
+                stack.pop()
+            
+            if len(segment) < 3 and i < len(s):
+                # try to add on to the current segment
+                segment.append(s[i])
+                if isValid(segment):
+                    backtrack(i + 1, stack, segment, result)
+                segment.pop()
+                        
+            return
+        
+        
+        if not s:
+            return []
+        
+        result = []
+        backtrack(0, [], [], result)
+        
+        return result

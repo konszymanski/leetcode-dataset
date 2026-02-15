@@ -1,0 +1,8 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        min_cache = [nums[0]]
+        max_cache = [nums[0]]
+        for i in range(1, len(nums)):
+            min_cache.append(min(min_cache[i - 1] * nums[i], nums[i], max_cache[i - 1] * nums[i]))           
+            max_cache.append(max(max_cache[i - 1] * nums[i], nums[i], min_cache[i - 1] * nums[i]))    
+        return max(min_cache + max_cache)

@@ -1,0 +1,58 @@
+from collections import deque
+
+len_multiple = 3
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cache = {}
+        self.capacity = capacity
+        self.access_record = deque()
+        self.t = 0
+        return
+		
+
+    def get(self, key: int) -> int:
+        try:
+            _, v = self.cache[key]
+            updated_tv = (self.t, v)
+            self.cache[key] = updated_tv
+            self.update_access_record(key)
+            self.t += 1
+            return v
+        except KeyError:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        self.update_access_record(key)
+        if key in self.cache:
+            pass
+        elif len(self.cache) == self.capacity:
+            self.evict_lru()
+        self.cache[key] = (self.t, value)
+        self.t += 1
+        return
+		
+    def update_access_record(self, k):
+        if len(self.access_record) >= len_multiple * self.capacity:
+            self.compress_access_record()
+        self.access_record.appendleft((self.t, k))
+        return
+
+    def compress_access_record(self):
+        new_access_record = deque()
+        encountered_keys = set()
+        while len(self.access_record) > 0 and len(encountered_keys) < self.capacity:
+            t, k = self.access_record.popleft()
+            if k not in encountered_keys and k in self.cache:
+                new_access_record.append((t, k))  # append right
+                encountered_keys.add(k)
+        self.access_record = new_access_record
+        return
+    
+    def evict_lru(self):
+        while True:
+            t, k = self.access_record.pop()
+            if t == self.cache[k][0]:
+                del self.cache[k]
+                return
+        return

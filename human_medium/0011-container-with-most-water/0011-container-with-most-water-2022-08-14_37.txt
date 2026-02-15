@@ -1,0 +1,16 @@
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        l, r, = 0, len(height)-1    # two pointers to left and right
+        area = 0                    # max area
+
+        # Repeat until the pointers left and right meet each other
+        while l < r:
+            minH = min(height[l], height[r]) # min-height
+            area = max(area, (r-l) * minH )  # area = distance * min-height
+            if height[l] < height[r]:
+                while height[l] <= minH and l < r:
+                    l += 1              # forward left pointer
+            else:
+                while height[r] <= minH and l < r:
+                    r -= 1              # backward right pointer
+        return area

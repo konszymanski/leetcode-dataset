@@ -1,0 +1,22 @@
+class Solution:
+    
+    def partition(self, s: str) -> List[List[str]]:
+        
+        n = len(s)
+        if n == 1: return  [[s]]
+        
+        def traverse(i,j, temp, ans): 
+            if i == n:
+                ans.append(temp.copy())
+            
+            for k in range(i , j):
+                if s[i:k + 1]  == s[i:k + 1][::-1]:
+                    temp.append(s[i:k +1])
+                    traverse(k + 1, j, temp, ans)
+                    temp.pop()
+        
+        ans = []
+        temp = []
+        traverse(0, n, temp, ans)
+        del temp
+        return ans

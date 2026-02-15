@@ -1,0 +1,21 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        up, left, right, down = 0, 0, n - 1, n - 1
+        res = [[0] * n for _ in range(n)]
+        k = 1
+        while k <= n * n:
+            for i in range(left, right + 1):
+                res[up][i] = k
+                k += 1
+            for i in range(up + 1, down + 1):
+                res[i][right] = k
+                k += 1
+            for i in range(right - 1, left, -1):
+                res[down][i] = k
+                k += 1
+            for i in range(down, up, -1):
+                res[i][left] = k
+                k += 1
+            up, left = up + 1, left + 1
+            right, down = right - 1, down - 1
+        return res

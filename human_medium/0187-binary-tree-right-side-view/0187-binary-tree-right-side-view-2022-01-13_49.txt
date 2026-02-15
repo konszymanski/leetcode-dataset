@@ -1,0 +1,28 @@
+class Solution(object):
+    def rightSideView(self, root):
+        if not root:
+            return root
+        curr=deque([])
+        q= deque([root,None])
+        ans=[]
+    
+        while True:
+            node=q.popleft()
+            if not node:
+                ans.append(curr[-1])
+                if len(q)<1:
+                    break
+                    # return ans
+                curr=deque([])
+                q.append(None)
+    
+                continue
+            
+            curr.append(node.val)
+            
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+
+        return ans

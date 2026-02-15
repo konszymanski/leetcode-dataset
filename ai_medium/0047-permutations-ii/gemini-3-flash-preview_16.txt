@@ -1,0 +1,36 @@
+```python
+from typing import List
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        used = [False] * len(nums)
+        
+        def backtrack(current_permutation):
+            if len(current_permutation) == len(nums):
+                res.append(list(current_permutation))
+                return
+            
+            for i in range(len(nums)):
+                # If the element is already used in the current path, skip it
+                if used[i]:
+                    continue
+                
+                # If the current element is the same as the previous one and 
+                # the previous one was not used in this path (meaning it was just 
+                # processed and discarded in the sibling branch), skip it to avoid duplicates
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                    continue
+                
+                used[i] = True
+                current_permutation.append(nums[i])
+                backtrack(current_permutation)
+                # Backtrack: remove the element and mark it as unused
+                current_permutation.pop()
+                used[i] = False
+                
+        backtrack([])
+        return res
+
+```

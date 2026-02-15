@@ -1,0 +1,31 @@
+class Solution:
+    
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        
+        # 1. treat edges cases / base cases
+        if not head:
+            return None
+        
+        prev = None
+        fast = slow = head
+        while fast and fast.next:
+            prev = slow
+            slow = slow.next
+            fast = fast.next.next
+        
+        if head == slow:
+            return TreeNode(head.val)
+        
+        
+        # 2. build the height-balanced BST recursively
+        if prev:
+            prev.next = None
+        follow = slow.next
+        slow.next = None
+        
+        root = TreeNode(slow.val)
+        root.left = self.sortedListToBST(head)
+        root.right = self.sortedListToBST(follow)
+        
+        # 3. return
+        return root

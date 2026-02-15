@@ -1,0 +1,17 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self.res = set()
+        self.helper(s, 4, [])
+        return self.res
+    def helper(self, s, n, path):
+        if len(s) > n * 3 or len(s) < n:
+            return
+        if s == "":
+            self.res.add(\'.\'.join(path))
+            return
+        if 0 <= int(s[0:1]) <= 255:
+            self.helper(s[1:], n - 1, path + [s[0:1]]) 
+        if 10 <= int(s[0:2]) <= 255 and int(s[0]) != 0: #2 digits should not start with 0
+            self.helper(s[2:], n - 1, path + [s[0:2]])
+        if 10 <= int(s[0:3]) <= 255 and int(s[0]) != 0: #3 digits should not start with 0
+            self.helper(s[3:], n - 1, path + [s[0:3]])

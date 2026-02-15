@@ -1,0 +1,25 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        m = len(word1)
+        n = len(word2)
+        
+        @cache
+        def dfs(i, j):
+            # if we have run out of characters in both strings
+            # return 0
+            if i == m and j == n:
+                return 0
+            
+            if i == m or j == n:
+                return m - i or n - j
+            
+            if word1[i] == word2[j]:
+                # identical characters, pay no cost since no edit
+                return dfs(i + 1, j + 1)
+            else:
+                # letters are different, try shifting both and see which 
+                # one is better and pay a cost of 1 for one edit
+                
+                return min(dfs(i+1, j), dfs(i, j+1), dfs(i+1, j+1)) + 1
+            
+        return dfs(0, 0)

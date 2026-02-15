@@ -1,0 +1,19 @@
+class Solution:
+	def minDistance(self, word1, word2):
+		memo = {}
+		return self.dp(word1, word2, len(word1) - 1, len(word2) - 1, memo)
+		
+	def dp(self, word1, word2, i1, i2, memo):
+		if i1 < 0: return i2 + 1
+		if i2 < 0: return i1 + 1
+		
+		if (i1, i2) in memo:
+			return memo[(i1, i2)]
+			
+		if word1[i1] == word2[i2]:
+			memo[(i1, i2)] = self.dp(word1, word2, i1 - 1, i2 - 1, memo)
+		else:
+			memo[(i1, i2)] = min(self.dp(word1, word2, i1 - 1, i2, memo), 
+								 self.dp(word1, word2, i1, i2 - 1, memo),
+								 self.dp(word1, word2, i1 - 1, i2 - 1, memo)) + 1
+		return memo[(i1, i2)]

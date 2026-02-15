@@ -1,0 +1,27 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        def get_next_position(row, col, grid):
+            for inc_row, inc_col in [(0,1), (1,0)]:
+                next_row, next_col = row + inc_row, col + inc_col
+                if 0 <= next_row < len(grid) and 0 <= next_col < len(grid[0]) and not grid[next_row][next_col]:
+                    yield next_row, next_col
+        
+        
+        def count_paths(row: int, col: int, grid: List[List[int]], seen: List[List[int]]) -> int:
+            if grid[row][col]:
+                return 0
+            
+            if seen[row][col]:
+                return seen[row][col]
+            
+            paths = 0
+            for next_row, next_col in get_next_position(row, col, grid):
+                paths += count_paths(next_row, next_col, grid, seen)
+                
+            seen[row][col] = paths
+            return paths
+        
+
+        seen = [[0] * len(obstacleGrid[0]) for _ in range(len(obstacleGrid))]
+        seen[-1][-1] = 1
+        return count_paths(0,0, obstacleGrid, seen)

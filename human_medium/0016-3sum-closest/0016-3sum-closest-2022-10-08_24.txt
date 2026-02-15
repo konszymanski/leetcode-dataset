@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int threeSumClosest(vector<int>& arr, int sum) {
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        int diff = INT_MAX;
+        int ans = 0;
+	    for(int i=0; i<n-2; i++)
+	    {
+	        int j = i+1;
+	        int k = n-1;
+	        while(j<k)
+	        {
+                int res = arr[i] + arr[j] + arr[k];
+                if(abs(res - sum) < diff){
+                   ans = res;
+                   diff = abs(sum - res);
+                }
+	            if(res < sum){
+	                j++;
+	            }
+	            else if(res >= sum){
+	                k--;
+	            }
+	        }
+	    }
+        
+	  return ans;
+    }
+};

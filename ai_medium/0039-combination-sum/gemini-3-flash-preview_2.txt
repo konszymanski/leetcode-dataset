@@ -1,0 +1,36 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        results = []
+        # Sorting candidates allows us to prune the search space later
+        candidates.sort()
+        
+        def backtrack(remain, start, path):
+            # Base case: if the remaining sum is zero, we've found a valid combination
+            if remain == 0:
+                results.append(list(path))
+                return
+            
+            # Iterate through the candidates starting from the current index
+            for i in range(start, len(candidates)):
+                # Since the candidates are sorted, if the current candidate exceeds
+                # the remaining sum, all subsequent candidates will also exceed it.
+                if candidates[i] > remain:
+                    break
+                
+                # Add the current candidate to our potential combination
+                path.append(candidates[i])
+                
+                # Recursively call backtrack with the reduced target.
+                # Use index 'i' to allow the same element to be chosen multiple times.
+                backtrack(remain - candidates[i], i, path)
+                
+                # Backtrack: remove the last added element before trying the next candidate
+                path.pop()
+                
+        backtrack(target, 0, [])
+        return results
+
+```

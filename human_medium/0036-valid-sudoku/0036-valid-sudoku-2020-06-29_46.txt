@@ -1,0 +1,26 @@
+class Solution(object):
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        seen = []
+        
+        for x in range(9):
+            for y in range(9):
+                if board[x][y] != ".":
+                    curr_val = board[x][y]
+                    if curr_val+" seen in row "+str(x) not in seen:
+                        seen.append(curr_val+" seen in row "+str(x))
+                    else:
+                        return False
+                    if curr_val+" seen in col "+str(y) not in seen:
+                        seen.append(curr_val+" seen in col "+str(y))
+                    else:
+                        return False
+                    if curr_val+" seen in box "+str(x/3)+"-"+str(y/3) not in seen:
+                        seen.append(curr_val+" seen in box "+str(x/3)+"-"+str(y/3))
+                    else:
+                        return False
+        #print(seen)
+        return True

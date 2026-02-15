@@ -1,0 +1,3 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        return reduce(lambda s, _: \'\'.join(str(sum(1 for _ in g))+k for k, g in groupby(s)), range(n-1), \'1\')

@@ -1,0 +1,14 @@
+```python
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagrams = defaultdict(list)
+        for s in strs:
+            # Sort the string and use it as a key for the dictionary
+            key = "".join(sorted(s))
+            anagrams[key].append(s)
+        # Return all the groups formed in the dictionary
+        return list(anagrams.values())
+```

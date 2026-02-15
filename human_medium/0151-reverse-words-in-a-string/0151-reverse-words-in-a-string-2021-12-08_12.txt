@@ -1,0 +1,25 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        all_words = []
+        word = ""
+        result = ""
+        
+        # Iterate the string to split words and append to list
+        for end in range(len(s)):
+            if s[end] != " ":
+                # S is non space character
+                if (end+1) >= len(s) or s[end+1] == " ":
+                    # Is word ending
+                    word += s[end]
+                    all_words.append(word)
+                    word = ""
+                    continue
+                word += s[end]
+
+        # Reverse the list and concat
+        for w_idx in range(len(all_words)-1, -1, -1):
+            result += all_words[w_idx]
+            if w_idx > 0:
+                result += " "
+        
+        return result

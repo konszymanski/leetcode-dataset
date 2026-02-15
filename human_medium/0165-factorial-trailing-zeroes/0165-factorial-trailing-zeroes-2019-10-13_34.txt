@@ -1,0 +1,4 @@
+class Solution(object):
+    def trailingZeroes(self, n):
+        if n == 0: return 0
+        return sum(int(n // math.pow(5, i)) for i in range(1, int(math.log(n, 5)) + 1))

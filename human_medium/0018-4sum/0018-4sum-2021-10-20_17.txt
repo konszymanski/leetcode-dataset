@@ -1,0 +1,18 @@
+# Has a problem though...
+class Solution:
+    def fourSum(self, nums, target):
+        found = set()
+        st = defaultdict(list)
+        for i in range(len(nums)-1):
+            for j in range(i+1,len(nums)):
+                sm = nums[i] + nums[j]
+                comp = target - sm
+                if comp in st:       # if complement found see if any indices [k,l] are unique
+                    for k, l in st[comp]:
+                        if i!=k and i!=l and j!=k and j!=l:  # unique indices?
+                            qrtet = [nums[i],nums[j],nums[k],nums[l]]
+                            qrtet.sort()
+                            found.add(tuple(qrtet))  # unique combination of values?
+                st[sm].append((i,j))
+            i+=1
+        return list(found)

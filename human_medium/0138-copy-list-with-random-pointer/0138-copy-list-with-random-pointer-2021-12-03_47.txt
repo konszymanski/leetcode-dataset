@@ -1,0 +1,14 @@
+def copyRandomList(self, head: \'Node\') -> \'Node\':
+        copy = node = Node(0)
+        i = head
+        while i:
+            node.next = Node(i.val,None,i.random)
+            node = node.next
+            i.random = node
+            i = i.next
+        node = copy
+        while node:
+            if node.random:
+                node.random = node.random.random
+            node = node.next
+        return copy.next

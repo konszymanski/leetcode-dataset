@@ -1,0 +1,15 @@
+class Solution:
+    def largestNumber(self, nums: list[int]) -> str:
+        nums = sorted([str(x) for x in nums],reverse=True) # sorting in reverse lexicographical order
+        for i in range(len(nums)): # normal bubble sort but the comparison is done on the basis of concatenated string
+            flag = False
+            for j in range(len(nums)-i-1):
+                if len(nums[j]) == len(nums[j+1]):
+                    continue
+                if int(nums[j]+nums[j+1]) < int(nums[j+1]+nums[j]):
+                    nums[j],nums[j+1]=nums[j+1],nums[j]
+                    flag = True
+            if not flag:
+                break
+        ans = str(int("".join(nums))) # to strip out all the extra zeroes on the left
+        return ans

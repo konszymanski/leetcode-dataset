@@ -1,0 +1,14 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = [] # To store the answer
+        
+        def nextStep(temp, remN, openN = 0):
+            if remN==0 and openN==0: # We have a valid completed string
+                res.append(temp)
+                return
+            
+            if remN>0: nextStep(temp+"(", remN-1, openN+1)
+            if openN>0: nextStep(temp+")", remN, openN-1)
+                    
+        nextStep("", n) # This will populate the result array
+        return res

@@ -1,0 +1,20 @@
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        i=0
+        j=len(height)-1
+        area=0
+        maxmArea=0
+        while i<j:
+			#when the left vertical line is smaller
+            if height[j]>height[i]:
+				#we take height of left vertical line into consideration
+                area=height[i]*(j-i)
+            else:
+				#else we will take height of right vertical line into consideration 
+                area=height[j]*(j-i)
+            maxmArea=max(maxmArea,area)
+            if height[i]>height[j]: 
+                j-=1
+            else: 
+                i+=1
+        return maxmArea

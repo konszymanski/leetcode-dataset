@@ -1,0 +1,21 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = {}
+        for u, v in prerequisites: 
+            graph.setdefault(v, []).append(u)
+        
+        def fn(x): 
+            """Return True if cycle is deteced."""
+            if visited[x]: return visited[x] == 1 
+            visited[x] = 1 
+            for xx in graph.get(x, []): 
+                if fn(xx): return True 
+            ans.append(x) # collect values 
+            visited[x] = 2 
+            return False 
+            
+        ans = []
+        visited = [0]*numCourses
+        for x in range(numCourses): 
+            if fn(x): return []
+        return ans[::-1]

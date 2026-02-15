@@ -1,0 +1,32 @@
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root: return []
+        
+        res = list()
+        
+        # add the root and the starting
+        # level to the queue to be processed
+        queue = deque([(root, 0)])
+        
+        while queue:
+            node, level = queue.popleft()
+            if node:
+                # this is just to avoid
+                # index out of bounds, i.e.
+                # append to the list if there\'s
+                # a level you haven\'t encountered yet
+                # if you have, just append to that level
+                if level == len(res):
+                    res.append([node.val])
+                else:
+                    res[level].append(node.val)
+                    
+                # add child nodes with level++ to
+                # the queue to be processed further
+                # we\'re checking for if node is None
+                # up top, so we can safely add both
+                # children here without any checks
+                queue.append([node.left, level+1])
+                queue.append([node.right, level+1])
+            
+        return res

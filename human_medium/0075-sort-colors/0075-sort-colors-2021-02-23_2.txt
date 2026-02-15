@@ -1,0 +1,19 @@
+class Solution:
+    def sortColors(self, a: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        runner = 0
+        left_partition = 0
+        right_partition = len(a) - 1
+        while runner <= right_partition:
+            if a[runner] == 0:
+                a[runner], a[left_partition] = a[left_partition], a[runner]
+                runner += 1
+                left_partition += 1
+            elif a[runner] == 1:
+                runner += 1
+            else:
+                a[runner], a[right_partition] = a[right_partition], a[runner]
+                right_partition -= 1
+        return a

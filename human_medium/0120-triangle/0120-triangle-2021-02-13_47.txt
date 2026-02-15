@@ -1,0 +1,7 @@
+class Solution:
+    def minimumTotal(self, l: List[List[int]]) -> int:
+        while len(l) >= 2:
+            r = l.pop()            
+            for i in range(len(r) - 1):
+                l[-1][i] += min(r[i], r[i + 1])
+        return min(l[0])

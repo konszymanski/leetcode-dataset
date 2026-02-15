@@ -1,0 +1,18 @@
+class Solution:
+    def pathSum(self, root: TreeNode, s: int) -> List[List[int]]:
+        if not root: return []
+        
+        ret = []
+        
+        def fn(node, l):
+            # print(node.val, l)
+            if not any([node.left, node.right]): # if it\'s leaf node
+                if sum(l) == s:
+                    ret.append(l)
+                return
+            
+            if node.left: fn(node.left, l+[node.left.val])
+            if node.right: fn(node.right, l+[node.right.val])
+            
+        fn(root, [root.val])
+        return ret

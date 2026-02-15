@@ -1,0 +1,20 @@
+from itertools import chain
+
+flatten = chain.from_iterable
+
+
+class Solution:
+    def convert(self, s: str, rows: int) -> str:
+        if rows == 1:
+            return s
+
+        output = [[] for _ in range(rows)]
+        n = rows + (rows - 2)
+
+        for i, c in enumerate(s):
+            if (r := i % n) >= rows:
+                r = n - r
+
+            output[r].append(c)
+
+        return \'\'.join(flatten(output))

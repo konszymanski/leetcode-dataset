@@ -1,0 +1,17 @@
+class Solution:
+    def uniquePathsWithObstacles(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        def dfs(arr, i,j,d,count):  # i need to return count (after updating) so my recursive function should return count
+            if i>=ROWS or j>= COLS:
+                return 0
+            if arr[i][j]==1:  #obstacle hence, return
+                return 0
+            if i==ROWS-1 and j==COLS-1:   #target reached, increase count by 1
+                count+=1
+                return count
+				# since we will be moving either down or right, we won\'t face any looping issue in this problem 
+            if (i,j) not in d:   #to avoid calculating previously visited paths again
+                count = dfs(arr,i+1,j,d,count)+dfs(arr, i,j+1,d,count)
+                d[(i,j)] = count
+            return d[(i,j)]
+        return dfs(grid, 0,0,{}, 0)

@@ -1,0 +1,34 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        def spacing(numRows: int, curRow: int) -> int:
+            """
+            Generator to get spacing for steps through input string.
+            curRow is 0-indexed row from the top
+            
+            Formula for the number of characters to jump on each row is:
+            2N-2 for the first and last rows, and
+            (2N-2-2C, 2N-(2N-2-2C)) for other rows
+            Where N - total number of rows, and C = current row, 0-Indexed
+            """
+            initial = 2 * numRows - 2
+            while curRow == 0 or curRow == numRows-1:
+                yield initial
+            while curRow != 0 and curRow != numRows-1:
+                yield initial - 2 * curRow
+                yield initial - (initial - 2 * curRow)
+
+        #Edge case, no conversion required
+        if numRows == 1:
+            return s
+
+        output = []
+
+        for row in range(0, numRows):
+            # Initalize new generator for this row
+            jump = spacing(numRows, row)
+            i = row    #starting position in string s is the 0-indexed row number.
+            while i < len(s):
+                output.append(s[i])
+                i += next(jump)
+
+        return \'\'.join(output)

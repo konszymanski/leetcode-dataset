@@ -1,0 +1,46 @@
+class Solution(object):
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+		
+		# uses  hashtable
+		# for detecting in cell
+        cell={}     
+		# for checking row and columns in each digits found in current digit
+        row={}
+        col={}
+        
+        for idxy, k in enumerate(board):
+            for idxx, x in enumerate(k):
+                
+                if x != \'.\':
+					# since row entries will be similar to column entries we use the one of them will suffice.
+                    if x in row :
+						# check if either column or row to be stored has already been stored
+						# if its stored we return False
+						# else we store it
+                        if not (idxy in row[x] or idxx in col[x]):
+                            row[x].append(idxy)
+                            col[x].append(idxx)
+                        else:
+                            return False
+                    else:
+                        row[x]=[idxy]
+                        col[x]=[idxx]
+                    
+					# similar to the above however for this we we use the division operator
+					# to index the 3 by 3 cell into a key and we store all its values in it
+					# if its similar to the number in the cell we return False
+					# else we store them
+                    if not (idxx//3,idxy//3) in cell:   
+                        cell[(idxx//3,idxy//3)]=[x]
+                    else:
+                        if x in cell[(idxx//3,idxy//3)]:
+                            return False
+                        else:
+                            cell[(idxx//3,idxy//3)].append(x)
+                
+        # when theres no problem we return True       
+        return True

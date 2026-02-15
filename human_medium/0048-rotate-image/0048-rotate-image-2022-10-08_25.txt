@@ -1,0 +1,2 @@
+def next(x,y):
+            return y, self.n-x-1

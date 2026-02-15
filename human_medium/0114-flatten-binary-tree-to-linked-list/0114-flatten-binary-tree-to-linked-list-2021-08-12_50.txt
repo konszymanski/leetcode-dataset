@@ -1,0 +1,10 @@
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        if not root: return
+        queue = deque([root.right, root.left])
+        while queue:
+            node = queue.pop()
+            if not node: continue
+            root.left, root.right = None, node
+            root = root.right
+            queue.append(node.right), queue.append(node.left)

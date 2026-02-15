@@ -1,0 +1,28 @@
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.stack = []
+        
+		#iterates until it finds the node with the lowest value, takes O(h) time and space
+        current = root
+        while current:
+            self.stack.append(current)
+            current = current.left
+          
+    def next(self) -> int:
+		#gets element with lowest value
+        lowest = self.stack.pop()
+        
+		#sucessor of a node A = node with value greater than node A.val, but lower than everyone else\'s value in the tree.
+		#finds "lowest" sucessor if it is not in the stack already
+        suc = None
+        if lowest.right:
+            suc = lowest.right
+        while suc:
+            self.stack.append(suc)
+            suc = suc.left
+
+        return lowest.val
+
+    def hasNext(self) -> bool:
+        return len(self.stack) > 0

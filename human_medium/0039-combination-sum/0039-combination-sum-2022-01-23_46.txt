@@ -1,0 +1,43 @@
+class Solution:
+    def backtrack(self, nums: List[int], target: int, ls: List[int], res: List[List[int]], offset: int) -> None:
+        """
+        index can only be the backtracking tree\'s last level\'s index as the smallest
+		i.e. 
+			[2,3,6,7]
+     index: [0,1,2,3]
+	 
+	 if we start from i = 1 in backtracking tree, then in the next level, the smallest index we can use is 1. (to avoid duplicates in result)
+        
+            2         3         6         7
+          (5)        (4)       (1)        (0)
+         2   3      3  6>4    6 > 1        \u221A
+        (3)  (2)    (1) x       x
+        3   3 > 2   3>1
+       (0)
+        \u221A     x      x
+        
+        [2,2,3], [7]
+        """
+        if target == 0:
+            res.append(list(ls))
+            return
+        
+        n = len(nums)
+        for i in range(offset, n):
+            if nums[i] > target:
+                return
+            
+            ls.append(nums[i])
+            self.backtrack(nums, target - nums[i], ls, res, i)
+            ls.pop()
+    
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        """
+        no clue of sorted
+        distinct
+        number can be chosen \u221E times in an answer
+        """
+        candidates.sort()
+        res = []
+        self.backtrack(candidates, target, [], res, 0)
+        return res

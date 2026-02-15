@@ -1,0 +1,18 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        n=len(nums)
+        low=0
+        high=n-1
+        while(low<=high):
+            mid=low+(high-low)//2
+            
+            #if mid value is higher than the high value that means minimum val is between mid and high
+            if nums[mid]>=nums[high]:
+                low=mid+1
+                
+            #if it is not between mid and high then it must be between low and mid
+            else:
+                high=mid
+                #we cannot do high=mid-1 as in case where mid is the minimum val so to keep it in range we do high=mid
+                
+        return nums[mid]

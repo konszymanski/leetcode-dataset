@@ -1,0 +1,55 @@
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        def binarySearch(start, end):
+            if start > end:
+                return -1
+            
+            mid = (start + end) // 2
+            
+            if target == nums[mid]:
+                return mid
+            
+            if target > nums[mid]:
+                return binarySearch(mid + 1, end)
+            else:
+                return binarySearch(start, mid - 1)
+            
+            return -1
+        
+        def leftmostBinarySearch(start, end, lastFound):
+            if start > end:
+                return lastFound
+            
+            mid = (start + end) // 2
+            
+            if target == nums[mid]:
+                return leftmostBinarySearch(start, mid - 1, mid)
+            else:
+                return leftmostBinarySearch(mid + 1, end, lastFound)
+            
+            return lastFound
+        
+        def rightmostBinarySearch(start, end, lastFound):
+            if start > end:
+                return lastFound
+            
+            mid = (start + end) // 2
+            
+            if target == nums[mid]:
+                return rightmostBinarySearch(mid + 1, end, mid)
+            else:
+                return rightmostBinarySearch(start, mid - 1, lastFound)
+            
+            return lastFound
+
+		# driver code
+        targetIndex = binarySearch(0, len(nums) - 1)
+        
+        if targetIndex == -1 or not nums:
+            return [-1, -1]
+        
+        leftMost = leftmostBinarySearch(0, targetIndex, targetIndex)
+        rightMost = rightmostBinarySearch(targetIndex + 1, len(nums) - 1, targetIndex)
+        
+        return [leftMost, rightMost]

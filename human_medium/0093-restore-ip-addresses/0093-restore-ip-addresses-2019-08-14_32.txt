@@ -1,0 +1,26 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def is_valid(segment):
+            num = int(segment)
+            return (num < 256 and segment[0] != \'0\') or len(segment) == 1
+        
+        def backtrack(start, rem):
+            """
+            need to create four segments
+            """
+            # terminating conditon
+            if rem == 0:
+                if start == len(s):
+                    output.append(\'.\'.join(segments))
+                return
+            # recursive case
+            for curr_pos in range(start, min(len(s), start+3)):
+                segment = s[start:curr_pos+1]
+                if is_valid(segment):
+                    segments.append(segment)
+                    backtrack(curr_pos+1, rem-1)
+                    segments.pop()
+        
+        segments, output = [], []
+        backtrack(0, 4)
+        return output

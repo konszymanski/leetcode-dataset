@@ -1,0 +1,30 @@
+class Solution(object):
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        # step1: start traversing from end
+        # step2: if nums[i] < nums[i+1] then 
+        #   again traverse from end whose value is slightly greater than nums[i] (suppose index j)
+        #   now swap nums[i] with nums[j]
+        # step3: reverse the sub-array from index i+1 to end of array i.e. nums[i+1:] 
+        
+        n=len(nums)
+          
+        i=n-2
+        while(i>=0 and nums[i]>=nums[i+1]):          # step2
+            i = i - 1
+  
+        if i>=0:
+            j=n-1
+            while(j>=0 and nums[j]<=nums[i]):
+                j = j-1
+  
+            nums[i], nums[j] = nums[j], nums[i]     # swap
+
+        nums[i+1:] = list(reversed(nums[i+1:]))     # step3
+        
+        print(nums)
+        
+        # Reference link: https://www.youtube.com/watch?v=LuLCLgMElus

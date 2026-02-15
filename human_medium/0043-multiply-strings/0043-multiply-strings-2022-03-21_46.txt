@@ -1,0 +1,5 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        def str_to_num (num_string):
+            return sum ([(ord (num_string[i]) - ord(\'0\')) * 10 ** (len(num_string) - i - 1) for i in range (len (num_string))])
+        return str (str_to_num (num1) * str_to_num (num2))

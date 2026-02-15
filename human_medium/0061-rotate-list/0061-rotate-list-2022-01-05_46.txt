@@ -1,0 +1,35 @@
+def rotated(head, k):
+	# base cases
+	if head is None or head.next is None or k <= 0:
+		return head
+	
+	# we want to leave a pointer at the last node - this will help connect the last node to head
+	last_node = head
+	
+	# we calculate the length, bc later it will help us determine how nodes we can traverse to land on the new tail and new head
+	list_length = 1
+	
+	while last_node.next is not None:
+		last_node = last_node.next
+		list_length += 1
+	
+	# creates the cycle
+	last_node.next = head
+	
+	# there will be cases where k(# of rotations) is greater than the length of the input linked list, this helps calculate the correct skip length
+	k %= list_length
+	skip_length = list_length - k
+	
+	# we create another pointer that will point at the new tail and point to the new head
+	last_node_of_rotated_list = head
+	
+	for _ in range(skip_length - 1):
+		last_node_of_rotated_list = last_node_of_rotated_list.next
+	
+	# Our traversal will land our pointer on the new tail of the rotated linked list, and it\'s also still pointing to the new head. So we can redefine head
+	head = last_node_of_rotated_list.next
+	
+	# then we define the next pointer of our new tail to none
+	last_node_of_rotated_list.next = None
+	
+	return head

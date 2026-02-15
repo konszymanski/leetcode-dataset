@@ -1,0 +1,21 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        end = self.quickSort(0, len(nums) - 1, nums, 1)
+		# We only need to go through until this index "end" in the second loop
+        _ = self.quickSort(0, end, nums, 0)
+    
+    def quickSort(self, start, end, nums, target):
+        left, right = start, end
+        while left <= right:
+            while left <= right and nums[left] <= target:
+                left += 1
+            while left <= right and nums[right] > target:
+                right -= 1
+            if left <= right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+        return right  # now right is the index of the last number that is smaller than target

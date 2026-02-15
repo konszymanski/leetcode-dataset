@@ -1,0 +1,30 @@
+def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        OPEN, CLOSE = 0, 1
+        events = []
+        
+        for start, end in intervals:
+            events.append((start, OPEN))
+            events.append((end, CLOSE))
+            
+        events.append((newInterval[0], OPEN))
+        events.append((newInterval[1], CLOSE))
+        
+        events.sort()
+        
+        window = [float("inf"), float("-inf")] # store start/end of current interval that is seen
+        depth = 0
+        ans = []
+        
+        for value, evenType in events:
+            if evenType is OPEN:
+                window[0] = min(window[0], value)
+                depth += 1
+            else:
+                window[1] = max(window[1], value)
+                depth -= 1
+            
+            if depth == 0:
+                ans.append((window[0], window[1]))
+                window = [float("inf"), float("-inf")]
+            
+        return ans

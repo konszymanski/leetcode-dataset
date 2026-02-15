@@ -1,0 +1,23 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        if head == None:
+            return None
+        if head.next == None:
+            return head
+        a = []
+        b = []
+        ptr = head
+        while(ptr != None):
+            if ptr.val < x:
+                a.append(ptr.val)
+                ptr = ptr.next
+            else:
+                b.append(ptr.val)
+                ptr = ptr.next
+        a = a + b
+        ptr = ListNode(a[0])
+        head = ptr
+        for i in range(1,len(a)):
+            ptr.next = ListNode(a[i])
+            ptr = ptr.next
+        return head

@@ -1,0 +1,23 @@
+class Solution(object):
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        for i in range(9):
+            tmp = \'\'.join(board[i])
+            tmp = tmp.replace(\'.\', \'\') ###remove specific value
+            if len(tmp) != len(set(tmp)):
+                return False
+        for i in range(9):
+            tmp = \'\'.join(board[j][i] for j in range(9))
+            tmp = tmp.replace(\'.\', \'\')
+            if len(tmp) != len(set(tmp)):
+                return False
+        for i in range(3):
+            for j in range(3):
+                tmp = \'\'.join(board[3*i+m][3*j+n] for m in range(3) for n in range(3)) ### great
+                tmp = tmp.replace(\'.\', \'\')
+                if len(tmp) != len(set(tmp)):
+                    return False
+        return True

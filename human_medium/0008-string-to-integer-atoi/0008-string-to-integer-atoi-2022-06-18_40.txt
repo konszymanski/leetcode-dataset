@@ -1,0 +1,10 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        chars = ["0","1","2","3","4","5","6","7","8","9"]        
+        s = s.strip()
+        if len(s) == 0: return 0
+        s = "+" + s if s[0] not in ("-","+") else s
+        for i,c in enumerate(s):
+            if i == 0: continue
+            if c not in chars: return min(max(pow(-2,31),int(s[:i])),pow(2,31)-1) if i>1 else 0
+        return min(max(pow(-2,31),int(s)),pow(2,31)-1) if len(s)>1 else 0

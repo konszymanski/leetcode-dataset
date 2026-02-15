@@ -1,0 +1,26 @@
+m = obstacleGrid
+        if not m or len(m) == 0 or m==[[]] or m[0][0] == 1:
+            return 0
+        res = []
+        count = 0
+        stack = [((0,0), m[0][0], [(0,0)])]
+        dirs = [(1,0), (0,1)] # only move down the tree
+        while stack:
+            print(stack)
+            coor, node, path = stack.pop()
+            x, y = coor
+            
+            if x == len(m)-1 and y == len(m[0])-1: # leaf - bottom right
+                count += 1
+                res.append(path)
+            
+            for dir in dirs:
+                newX, newY = x+dir[0], y+dir[1]
+                # check if within bounds:
+                if newX >= 0 and newX <= len(m)-1 and newY >= 0 and newY <= len(m[0])-1:
+                    # check if no obstacle:
+                    if m[newX][newY] != 1:
+                        # append to stack
+                        stack.append(((newX, newY), m[newX][newY], path+[(newX, newY)]))
+        # print(res)
+        return count

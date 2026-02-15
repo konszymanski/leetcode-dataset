@@ -1,0 +1,43 @@
+class Operator:
+    def __init__(self, left, right):
+        self.left= left
+        self.right = right
+    def evaluate(self):
+        pass
+    
+class Plus(Operator):
+    def evaluate(self):
+        return self.left + self.right
+    
+class Minus(Operator):
+    def evaluate(self):
+        return self.left - self.right
+    
+class Multi(Operator):
+    def evaluate(self):
+        return self.left * self.right
+    
+class Div(Operator):
+    def evaluate(self):
+        return int(self.left / self.right)
+    
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        
+        operators = {
+            "+": Plus,
+            "-": Minus,
+            "*": Multi,
+            "/": Div
+        }
+        
+        for token in tokens:
+            if token in operators:
+                right = stack.pop()
+                left = stack.pop()
+                res = operators[token](left, right).evaluate()
+                stack.append(res)
+            else:
+                stack.append(int(token))
+        return stack[0]

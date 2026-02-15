@@ -1,0 +1,36 @@
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        # Initialize dummy heads for the two partitions
+        less_head = ListNode(0)
+        greater_head = ListNode(0)
+        
+        # Pointers to the current last node in each partition
+        less = less_head
+        greater = greater_head
+        
+        # Iterate through the original linked list
+        curr = head
+        while curr:
+            if curr.val < x:
+                less.next = curr
+                less = less.next
+            else:
+                greater.next = curr
+                greater = greater.next
+            curr = curr.next
+        
+        # Terminate the greater partition to avoid cycles
+        greater.next = None
+        
+        # Connect the less partition to the greater partition
+        less.next = greater_head.next
+        
+        # The head of the modified list is the node after the less_head dummy
+        return less_head.next
+```

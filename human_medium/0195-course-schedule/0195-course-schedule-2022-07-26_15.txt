@@ -1,0 +1,52 @@
+class Solution:
+    def canFinish2(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        
+         # create adjacency list
+        graph = [[] for _ in range(numCourses)]
+        for a,b in prerequisites:
+            graph[a].append(b)
+            #graph[b].append(a)  # no, because graph is directional!
+        print(graph)              
+        for n in range(0,numCourses):
+            Q = deque(graph[n])
+            visited = set()
+            while Q:
+                m = Q.popleft()  # --> BFS
+                #m = Q.pop()     # --> DFS
+                if m==n:
+                    # we detected a loop
+                    return False
+                visited.add(m)  # this is just for optimization, not strictly needed
+                for neighbor in graph[m]:
+                    if neighbor not in visited:
+                        Q.append(neighbor)
+                
+        
+        return True
+    
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]):
+        graph=[[] for _ in range(numCourses)]
+        for a,b in prerequisites:
+            graph[a].append(b)
+        print(graph)
+        ans=[]
+        for n in range(0,numCourses):
+            Q=deque(graph[n])
+            print(Q)
+            visited=set()
+            temp=[]
+            temp.append(n)
+            while Q:
+                m=Q.popleft()
+                if m==n:
+                    return False
+                else:
+                    temp.append(m)
+                
+                for neighbor in graph[m]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        Q.append(neighbor)
+                ans=temp
+        print(ans)
+        return True

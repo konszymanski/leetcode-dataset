@@ -1,0 +1,18 @@
+from fractions import gcd
+
+
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        if not nums or k % len(nums) == 0:
+            return
+        
+        l = len(nums)        
+        for i in range(gcd(l, k)):
+            j = (i + k) % l
+            val = nums[j]
+            while j != i:
+                j = (j + k) % l
+                tmp = nums[j]
+                nums[j] = val
+                val = tmp
+            nums[(j + k) % l] = val

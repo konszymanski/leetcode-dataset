@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int helper(int m, int n, vector<vector<int>>& oG){
+        if(oG[m][n] == 1) return 0;
+        if(m == 0 and n == 0) return 1;
+        
+        int up = 0, left = 0;
+        if(m-1 >=0) up = helper(m-1, n, oG);
+        if(n-1 >=0) left = helper(m, n-1, oG);
+        
+        return up + left;
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& oG) {
+        int m = oG.size(), n = oG[0].size();
+        return helper(m-1, n-1, oG);   
+    }
+};

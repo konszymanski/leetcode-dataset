@@ -1,0 +1,18 @@
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if len(nums) == 1:
+            return [nums]
+        
+        permuteList = []
+        for i, num in enumerate(nums):
+            permuteSubList = self.permuteUnique(nums[0:i]+nums[i+1:])
+            for pSub in permuteSubList:
+                p = [num] + pSub
+                if p not in permuteList:
+                    permuteList.append(p)
+        
+        return permuteList

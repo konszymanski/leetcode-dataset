@@ -1,0 +1,22 @@
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_map = {}
+        left = 0
+        max_length = 0
+        
+        for right in range(len(s)):
+            char = s[right]
+            # If character is already in map and its index is within current window
+            if char in char_map and char_map[char] >= left:
+                # Shrink the window from the left
+                left = char_map[char] + 1
+            
+            # Update the last seen position of the character
+            char_map[char] = right
+            # Calculate and update max length
+            max_length = max(max_length, right - left + 1)
+            
+        return max_length
+
+```

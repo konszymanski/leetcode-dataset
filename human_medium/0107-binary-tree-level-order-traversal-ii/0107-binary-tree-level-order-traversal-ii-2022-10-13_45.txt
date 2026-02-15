@@ -1,0 +1,11 @@
+def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+	self.ans = [] # answer
+	def dfs(node,level): # node and level it is on
+		if node: # we only care if the node exists
+			if level >= len(self.ans): # if we need to add another level
+				self.ans.append([]) # add new one
+			self.ans[level].append(node.val) # add this to the corresponding level
+			dfs(node.left,level+1) # check left subtree
+			dfs(node.right,level+1) # check right subtree
+	dfs(root,0) # search tree
+	return self.ans[::-1] # reverse result

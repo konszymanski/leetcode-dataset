@@ -1,0 +1,13 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        N = len(s)
+        dp = [0,1,0]
+        cur, prev, p_prev = 0,1,2
+        for i in range(N - 1, -1, -1):
+            if s[i] != "0":
+                dp[cur] += dp[prev]
+            if "10" <= s[i:i+2] <= "26":
+                dp[cur] += dp[p_prev]
+            cur, prev, p_prev = p_prev, cur, prev
+            dp[cur] = 0
+        return dp[prev]

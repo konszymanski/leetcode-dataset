@@ -1,0 +1,29 @@
+class Solution:
+    """
+    [] (FFF)
+    [1]     (TFF)           [2]
+    [1,1]   (TTF)
+    [1,1,2] (TTT)
+    
+    """
+    
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums = sorted(nums) ### !!! must sort to get the same numbers close to each other[2,2,0,2] wont\'work. 
+        visited = [False]*len(nums)
+        res = []
+        def dfs(path):
+            print(path)
+            if len(path) == len(nums):
+                res.append(path)
+            else:
+                for i in range(len(nums)):
+                    print("i: ", i)
+                    if i > 0 and nums[i] == nums[i - 1] and visited[i-1]==False:
+                        continue
+                    if visited[i] == False:
+                        print("in visited")
+                        visited[i] = True
+                        dfs(path + [nums[i]])
+                        visited[i] = False
+        dfs([])
+        return res

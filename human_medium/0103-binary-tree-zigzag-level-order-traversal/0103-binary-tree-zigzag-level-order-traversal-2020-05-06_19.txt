@@ -1,0 +1,46 @@
+def zigzagLevelOrder(self, root):
+	"""
+	:type root: TreeNode
+	:rtype: List[List[int]]
+	"""
+	## get the parents of a given level
+	## we have then access to all the children of that level i.e. all the nodes in level+1
+	## add all of these children nodes to a list and add all their values to another list
+	## add this list to our result (reverse every second list)
+
+	if root is None:
+		return []
+
+	result = [[root.val]]
+	parents = [root]
+	children = []
+	childrenValues = []
+	reverse = True
+
+	while len(parents) > 0:
+		##go through all the parent nodes
+		for i in range(len(parents)):
+			##add its children and their values to childrenValues
+			if parents[i].left:
+				children.append(parents[i].left)
+				childrenValues.append(parents[i].left.val)
+			if parents[i].right:
+				children.append(parents[i].right)
+				childrenValues.append(parents[i].right.val)
+
+		##reverse the childrenValues
+		if reverse:
+			childrenValues = childrenValues[::-1]
+		#reverse the flag
+		reverse = not reverse
+		#if this level has any nodes (we don\'t want to be appending an empty list)
+		if len(childrenValues) > 0:
+			result.append(childrenValues)
+
+		#clear the old values
+		childrenValues = []
+		#very important, we set the parents of the next iteration to the children
+		parents = children
+		children = []
+
+	return result

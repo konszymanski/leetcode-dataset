@@ -1,0 +1,51 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: \'Node\' = None, right: \'Node\' = None, next: \'Node\' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        ## RC ##
+        ## APPROACH : RECURSION ##
+        ## LOGIC ##
+        ## If you keenly observe, every right nodes next pointer is LEFT child of its PARENT\'s NEXT NODE ##
+        
+		## TIME COMPLEXITY : O(N) ##
+		## SPACE COMPLEXITY : O(N) ##
+
+        def dfs(node):
+            if not node : return
+            if node.right and node.next:  
+                node.right.next = node.next.left    # remember its a complete binary tree, no need to check if node.next.left exists or not
+            if node.left:
+                node.left.next = node.right
+            dfs(node.left)
+            dfs(node.right)
+        dfs(root)
+    
+        ## APPROACH : ITERATIVE ##
+        ## TIME COMPLEXITY : O(N) ##
+		## SPACE COMPLEXITY : O(1) ##
+        ## LOGIC ##
+        ## 1. We can simply solve this problem using Level order traversal we know that ##
+        ## 2. We can use Queue to store nodes and traverse level wise, which takes O(N) space ##
+        ## 3. But can we use the next pointers to traverse in level order ? yes we can.
+        ## 4. Just start with leftmost node and use next pointer to traverse level wise.
+        ## 5. At level = k, build next pointers for level = k + 1, and repeat #4
+        
+        if not root:    return root
+        leftmost = root         # start with root (i.e in level 1 root is leftmost node)
+        while leftmost.left:    # indicates last level
+            head = leftmost     # start of new level
+            while head:
+                if head.right and head.next:
+                    head.right.next = head.next.left
+                if head.left:
+                    head.left.next = head.right              
+                head = head.next        # level order traversal using next pointers
+            leftmost = leftmost.left    # previous level completed, going to next level using leftmost node
+        return root

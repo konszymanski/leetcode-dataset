@@ -1,0 +1,48 @@
+"""
+Runtime O(n* n!)
+Spacetime O(n* n!)
+
+
+-- submission stats --
+Runtime: 28 ms, faster than 99.90% of Python3 online submissions for Permutations.
+Memory Usage: 12.9 MB, less than 100.00% of Python3 online submissions for Permutations.
+"""
+from collections import deque 
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        group_length = len(nums)
+        result = []
+        empty_set = []
+        
+        permutations = deque()
+        permutations.append(empty_set)
+        for num in nums:
+            
+            # iterate through permutations from left to right in a runtime 
+            # efficient way. Removing each previous permutation is valuable
+            # because it cleans up the pervious items from the last iteration, which
+            # will be invalid after the current interation works on them.
+            current_permutation_count = len(permutations)
+            for _ in range(current_permutation_count):
+                old_permutation = permutations.popleft()
+                
+                for i in range(len(old_permutation) + 1):
+                    item = list(old_permutation)
+                    item.insert(i, num)
+                    is_complete_permutation = len(item) == group_length
+                    
+                    if is_complete_permutation:
+                        # we\'re on the last round of of our insertions, nothing has
+                        # been added to results yet. We now have complete groups of
+                        # all the different orderings so we append them to the list 
+                        # for output.
+                        result.append(item)
+                    
+                    if not is_complete_permutation:
+                        # we\'re still building our list of permutations and the 
+                        # orderings are incomplete so far. So we append them to
+                        # the permutations deque to continue to be worked on.
+                        permutations.append(item)
+
+        return result

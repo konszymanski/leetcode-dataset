@@ -1,0 +1,20 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        # Check if it is possible to reach right bottom corner
+        if obstacleGrid[-1][-1] == 1:
+            return 0
+        # Dynamic Programming
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        dp = [[None] * n] * m
+        for x in range(m):
+            for y in range(n):
+                # Base case: start position has 1 solution
+                if x == 0 and y == 0:
+                    dp[x][y] = 1
+                else:
+                    # Check if left and top cell is within boundary and Check if it is around the obstable
+                    left = dp[x-1][y] if (x-1 >= 0 and obstacleGrid[x-1][y] != 1) else 0
+                    top = dp[x][y-1] if (y-1 >= 0 and obstacleGrid[x][y-1] != 1) else 0
+                    dp[x][y] = left + top
+        return dp[-1][-1]

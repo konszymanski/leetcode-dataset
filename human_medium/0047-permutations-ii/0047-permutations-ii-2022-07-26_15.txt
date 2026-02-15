@@ -1,0 +1,18 @@
+def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+	n = [len(nums)]
+	def solve(i, path):
+		if(i == n[0]):   
+			ans.add(path)
+			return
+		for j in range(n[0]):
+			if(j not in vis):
+				vis.add(j)
+				solve(i+1, path+(nums[j],))
+				vis.remove(j)
+		return
+	vis = set()    
+	ans = set()
+	path = tuple()  
+	# vis.add(0)
+	solve(0, path)
+	return ans

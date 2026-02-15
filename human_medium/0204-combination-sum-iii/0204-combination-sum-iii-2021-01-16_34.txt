@@ -1,0 +1,71 @@
+# Written By : Dhruv vavliya
+
+n=4
+k=2
+
+def comb(n,start,k,path,ans):
+    if len(path) == k:
+        ans.append(path)
+        return
+
+    for i in range(start,n+1):
+        comb(n,i+1,k,path+[i],ans)
+
+    return ans
+    
+print(comb(n,1,k,[],[]))
+
+
+
+
+candidates = [10,1,2,7,6,1,5]
+target = 8
+
+# one item take many times
+def combinational_sum(candidates,target,path,ans):
+    if target==0:
+        ans.append(path)
+
+    for i in range(len(candidates)):
+        if candidates[i] <= target:
+            combinational_sum(candidates[i:] ,target-candidates[i] ,path+[candidates[i]] ,ans)
+
+    return ans
+
+
+
+
+candidates = [10,1,2,7,6,1,5]
+target = 8
+
+
+
+# combination and also for one item at once
+def combination_sum(candidates,target,path,ans):
+    if target==0:
+        ans.append(path)
+
+    for i in range(len(candidates)):
+        if candidates[i] <= target:
+            if i!=0 and candidates[i] == candidates[i-1]:
+                continue
+            combination_sum(candidates[i+1:] ,target-candidates[i] ,path+[candidates[i]] ,ans)
+
+    return ans
+
+
+# combinational sum :- 3
+# k-sized and n-sumed all combnations
+def combinational_sum(candidates,k,target,path,ans):
+    if len(path) > k:
+        return
+    if target==0 and len(path)==k:
+        ans.append(path)
+
+    for i in range(len(candidates)):
+        if candidates[i] <= target:
+            combination_sum(candidates[i+1:],k ,target-candidates[i] ,path+[candidates[i]] ,ans)
+
+    return ans
+
+print(combination_sum(sorted(candidates),target,[],[]))

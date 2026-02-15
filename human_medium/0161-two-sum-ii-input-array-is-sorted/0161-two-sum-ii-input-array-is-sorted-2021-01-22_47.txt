@@ -1,0 +1,9 @@
+two pointer: l, r
+        if sum > target:
+                # r is large
+                r - 1
+        elif sum < target:
+                # l is small
+                l + 1
+        else:
+            return l, r

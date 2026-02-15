@@ -1,0 +1,18 @@
+def threeSumClosest(self, nums: List[int], k: int) -> int:
+        ans=float(\'inf\')
+        nums.sort()
+        a2=0
+        for i in range(len(nums)):
+            l=i+1
+            r=len(nums)-1
+            while l<r:
+                x=nums[i]+nums[l]+nums[r]
+                z=abs(k-x)
+                if z<ans:
+                    ans=z
+                    a2=x
+                if x<k:
+                    l+=1
+                else:
+                    r-=1
+        return a2

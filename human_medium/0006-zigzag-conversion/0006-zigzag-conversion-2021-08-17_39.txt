@@ -1,0 +1,17 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        from itertools import cycle
+
+        count_up = range(numRows)
+        count_down = range(numRows-2,0,-1)
+
+        cycler = [x for x in count_up]
+        for x in count_down:
+            cycler.append(x)
+
+        row_dict = {k:\'\' for k in range(numRows)}
+
+        for x,row in zip(s,cycle(cycler)):
+            row_dict[row] += x
+
+        return \'\'.join(x for x in row_dict.values())

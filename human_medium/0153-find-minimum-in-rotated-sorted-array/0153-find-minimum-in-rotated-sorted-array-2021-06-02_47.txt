@@ -1,0 +1,12 @@
+def findMin(self, nums: List[int]) -> int:
+        l,r = 0,len(nums)
+        ans = math.inf
+        while l<r:
+            mid = (l+r)//2
+            if nums[l]<nums[mid]: #l to mid is sorted
+                ans = min(ans, nums[l])
+                l = mid+1 #ditch the left half (l to mid)
+            else: #mid to r is sorted
+                ans = min(ans, nums[mid])
+                r = mid #ditch the right half (mid to r)
+        return ans

@@ -1,0 +1,23 @@
+# leetcode will even work without this but on other platforms you may need to import this to use heapq
+import heapq  
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+	
+		# to create heap
+        heap = []
+		
+		# to keep track of the current size of heap
+        size = 0
+		
+        for num in nums:
+            heapq.heappush(heap, num)
+            size += 1
+			
+			# whenever the size > k, pop the top element from heap
+            if size > k:
+                heapq.heappop(heap)
+				size -= 1
+        
+		# now the min heap is of size k, so the top element will be the kth largest element
+        return heapq.heappop(heap)

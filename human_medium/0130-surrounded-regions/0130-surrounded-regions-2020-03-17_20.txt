@@ -1,0 +1,16 @@
+def dfs(b,i,j):
+		if -1<i<len(b) and -1<j<len(b[0]) and b[i][j]=="O":
+			b[i][j]="A"
+			dfs(b,i+1,j);dfs(b,i-1,j);dfs(b,i,j+1);dfs(b,i,j-1) #checking all the four neighbours of the cell
+	
+	class Solution:
+		def solve(self, b: List[List[str]]) -> None:
+			if not b: return
+			y,x=len(b[0]),len(b)
+			for i in range(y):   #checking the borders
+				dfs(b,0,i);dfs(b,x-1,i)
+			for i in range(x):      #checking the borders
+				dfs(b,i,0);dfs(b,i,y-1)
+			for i in range(x):    #change all the \'O\' to \'X\' and  \'A\' to \'O\'
+				for j in range(y):
+					b[i][j]=("X","O")[b[i][j]=="A"]

@@ -1,0 +1,24 @@
+class Solution:
+    """
+    Time:   O(V)
+    Memory: O(height)
+    """
+
+    def isValidBST(self, root: TreeNode) -> bool:
+        return self._validate(root, min_val=-maxsize, max_val=maxsize)
+
+    @classmethod
+    def _validate(cls, root: TreeNode | None, min_val: int, max_val: int) -> bool:
+        if root is None:
+            return True
+
+        if not (min_val < root.val < max_val):
+            return False
+
+        if not cls._validate(root.left, min_val=min_val, max_val=root.val):
+            return False
+
+        if not cls._validate(root.right, min_val=root.val, max_val=max_val):
+            return False
+
+        return True

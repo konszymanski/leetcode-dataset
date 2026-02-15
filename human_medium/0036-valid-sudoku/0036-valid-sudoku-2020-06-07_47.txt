@@ -1,0 +1,23 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        seen = set()
+        for i in range(9):
+            for j in range(9):
+                val = board[i][j]
+                text_row = val + " found in row " + str(i)
+                text_column = val + " found in column " + str(j)
+                text_subbox = val + " found in subbox " + str(i // 3) + \'-\' + str(j // 3)
+                if val != ".":
+                    if (text_row not in seen):
+                        if (text_column not in seen):
+                            if (text_subbox not in seen):
+                                seen.add(text_row)
+                                seen.add(text_column)
+                                seen.add(text_subbox)
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+        return True

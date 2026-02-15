@@ -1,0 +1,23 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        
+        graph = {i:[] for i in range(numCourses)}
+        in_degree = {i: 0  for i in range(numCourses)}
+        for dest, prev in prerequisites:
+            graph[prev].append(dest)
+            in_degree[dest] += 1
+        course_chose, ans = 0, []
+        queue = collections.deque()
+        for node, value in in_degree.items():
+            if value == 0:
+                queue.append(node)
+        while queue:
+            curr_node = queue.popleft()
+            course_chose += 1
+            ans.append(curr_node)
+            for dest in graph[curr_node]:
+                in_degree[dest] -= 1
+                if in_degree[dest] == 0:
+                    queue.append(dest)
+        if course_chose != numCourses: return []
+        return ans

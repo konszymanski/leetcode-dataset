@@ -1,0 +1,23 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        dirs=[(0,1),(1,0),(0,-1),(-1,0)]
+        d=0
+        i=0
+        j=0
+        matrix=[[None]*n for _ in range(n)]
+        for v in range(n**2):
+            
+            matrix[i][j]=v+1
+            
+            for atpt in range(2):
+                x,y=dirs[d]
+                a,b=i+x,j+y
+
+                if a>=0 and a<n and b>=0 and b<n and matrix[a][b] is None:
+                    break
+                else:
+                    d=(d+1)%4
+                    
+            i,j=a,b
+            
+        return matrix

@@ -1,0 +1,57 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # if there\'s not any prerequisites then we can take all the courses in any order
+        if not prerequisites:
+            return [i for i in range(0, numCourses)]
+        
+        # setting up the adjacency list that will store the neighbors of each course
+        nextCourseDic = {i: [] for i in range(0, numCourses)}
+        
+        # counter that keeps track how many prereq courses each course still needs to take 
+        # prereqCountList[course] = # of prereq courses yet to be completed 
+        pendingPrereqCountList = [0] * numCourses
+        
+        # populating the adjacency list and prereqCounterList
+        # the format of the input is [course, prereq]
+        
+        for course, prereq in prerequisites:
+            nextCourseDic[prereq].append(course)
+            pendingPrereqCountList[course] += 1
+
+        # we need to know which courses don\'t have prereqs so we take those first
+        # the courses that don\'t have prereqs are those that don\'t have any pending prereqs, which are the indexes in 
+        # pendingPrereqCountList that have a value of 0
+        coursesWithoutPrereq = [course for course, prereqCount in enumerate(pendingPrereqCountList) if prereqCount == 0]
+        
+        # if there are no courses without prereqs then there\'s no valid starting point for us, eg theres a cycle in the graph
+        # this means all courses have prerequisites
+        # example: 
+            # in a two course plan that has a cycle:
+            # you cant take course 1 because it requires course 0 which requires course 1
+            # therefore you cannot take any of those courses 
+        if not coursesWithoutPrereq:
+            return []
+        
+        # enqueue the courses that don\'t have any prerequistes and their next courses
+        queue = deque([course, nextCourseDic.get(course)] for course in coursesWithoutPrereq)
+        
+        # ans will contain the topological sort of this graph
+        ans = []
+
+        # breadth first search, but only enqueue the neighbor if it has no pendingPrereqs which 
+		# which we keep track by remembering that course is nextCourse\'s prereq therefore all we do is 
+		
+		# pendingPrereqCountList[nextCourse] -= 1, 
+        
+		while queue:
+            course, nextCourses = queue.popleft()
+            ans.append(course)
+
+            while nextCourses:
+                nextCourse = nextCourses.pop(0)
+                pendingPrereqCountList[nextCourse] -= 1
+
+                if pendingPrereqCountList[nextCourse] == 0:
+                    queue.append([nextCourse, nextCourseDic[nextCourse]])
+
+        return ans if len(ans) == numCourses else []

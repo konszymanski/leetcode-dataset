@@ -1,0 +1,24 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        
+        def recors(values):
+            
+            if len(values) == 0:
+                return [None]
+            
+            res = []
+            for i in range(len(values)):
+                left_trees = recors(values[:i])
+                right_trees = recors(values[i+1:] if i+1 < len(values) else [])
+                
+                for rtree in right_trees:
+                    for ltree in left_trees:
+                        current_node = TreeNode(values[i])
+                        current_node.left = ltree
+                        current_node.right = rtree
+                        res.append(current_node)
+            
+            return res
+        
+        values = [i for i in range(1, n+1)]
+        return recors(values)

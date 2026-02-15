@@ -1,0 +1,23 @@
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+
+        last_sorted = head
+        it = last_sorted.next
+        temp = ListNode(val=-1, next=last_sorted)
+        
+        while it is not None:
+            if last_sorted.val <= it.val:
+                last_sorted = it
+                it = it.next
+            else:
+                nxt = it.next
+                prev = temp
+                while prev.next and prev.next.val <= it.val:
+                    prev = prev.next
+                    
+                it.next = prev.next
+                prev.next = it
+                last_sorted.next = nxt
+                it = last_sorted
+                
+        return temp.next

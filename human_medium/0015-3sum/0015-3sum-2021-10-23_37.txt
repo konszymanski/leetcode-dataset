@@ -1,0 +1,82 @@
+from itertools import combinations, takewhile, chain
+
+class Solution:
+    # input might contain many duplicates of the same number
+	# but for our triplets, we\'d only ever expect to see any specific
+	# number at most 2 times while still summing to zero, e.g. [2,2,-4]. 
+    MAX_DUPS = 2
+    
+    # can also use collections.Counter(), but I forgot that
+    # it existed.
+    def to_count_map(self, vals):
+        counts = {}
+        for x in vals:
+            counts[x] = counts.get(x, 0) + 1
+        return counts
+
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # generate a dict that keeps track of the number
+        # occurences of each number. with this info at hand, 
+        # we can process a sorted list of distinct numbers
+		# to simply our processing and refer back to the counts
+		# when we need them.
+        count_map = self.to_count_map(nums)
+        nums = sorted(set(nums))
+        
+        # exit if nums is empty, or if it contains only all positives/negatives.
+        # e.g. [0, 1, 2, 4] can\'t have any 3sum triplets == 0.
+        if len(nums) == 0: return []
+        elif nums[0] >= 0 and nums[-1] > 0: return []
+        elif nums[0] < 0 and nums[-1] <= 0: return []
+        
+        # split nums into positive and negatives.
+        # for positives we reverse the sorted list so that
+        # we don\'t have to traverse all the negatives
+		# before reaching the positives (minor optimisation).
+        negs = list(takewhile(lambda n: n < 0, nums))
+        pos = list(takewhile(lambda n: n > 0, nums[::-1]))
+        
+        result = []
+        
+        # generate all possible combination pairs for each 
+		# of our negative/positive number lists.  here we tackle
+		# the case where we have 2 negatives/positives
+		# (and ignore zeroes for now), which is
+		# the main reason why we split the nums.		
+        two_negs = combinations(negs, 2)
+        two_pos = combinations(pos, 2)
+        
+        # sum each combo, negate it, and check if
+        # if exists in the count map (O(n) lookup time)
+        for combo in chain(two_negs, two_pos):
+            if -sum(combo) in count_map:
+                result += [[combo[0], combo[1], -sum(combo)]]
+
+        if 0 in count_map:
+		    # here we tackle the [-n,0,n] cases e.g. [-2,0,2].
+            # use the smaller list out of pos/neg numbers so as
+            # to decrease the number of elements we iterate over
+            # (as each pos/neg must have an opposing neg/pos),
+            # i.e. in [-2, -1, 0, 1, 2, 3, 4, 5, 6], neg is faster to use.
+            smaller_list = negs if len(negs) < len(pos) else pos
+            for n in smaller_list:
+                if -n in count_map:
+                    result += [[-n, 0, n]]
+            
+            if count_map[0] >= 3:
+                result += [[0, 0, 0]]
+        
+		# here we tackle the [-n,-n,2n] "double" cases e.g. [-2,-2,4].
+        # filter the pos/neg lists to find all occurences of duplicate items.
+        # as our lists are sorted we can compare the doubled num to the min/max
+        # of our pos/negs to filter for numbers where the possibility of a solution
+        # actually exists e.g. [-8,-2,-1,0,2,4]. in this case there\'s no point
+		# processing -8, as our max positive number is < 16 
+        dup_negs = filter(lambda n: -(2*n) <= pos[0] and count_map[n] >= self.MAX_DUPS, negs)
+        dup_pos = filter(lambda n: -(2*n) >= negs[0] and count_map[n] >= self.MAX_DUPS, pos)
+
+        for n in chain(dup_negs, dup_pos):
+            if -(2 * n) in count_map:
+                result += [[n, n, -(2 * n)]]
+                       
+        return result

@@ -1,0 +1,27 @@
+```python
+from typing import List
+
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        # The furthest index we can reach at any point in time
+        reachable = 0
+        n = len(nums)
+        
+        for i, jump in enumerate(nums):
+            # If the current index is greater than the furthest index we can reach,
+            # it means we cannot reach this index or any index beyond it.
+            if i > reachable:
+                return False
+            
+            # Update the furthest index reachable from the current position
+            if i + jump > reachable:
+                reachable = i + jump
+            
+            # If the furthest index reachable is already the last index or beyond, return True
+            if reachable >= n - 1:
+                return True
+                
+        # If we finish the loop and haven't triggered the early exit or return False,
+        # it means the last index was reachable.
+        return True
+```

@@ -1,0 +1,21 @@
+class Solution:
+    def readAndCount(self, s: str) -> str:
+        result = ""
+        c = 1
+        for i in range(len(s)):
+            if i == len(s)-1:
+                result += f"{c}{s[i]}"
+            elif s[i+1] != s[i]:
+                result += f"{c}{s[i]}"
+                c = 1
+            else:
+                c += 1
+        return result
+    def countAndSay(self, n: int) -> str:
+        if n != 1:
+            say = self.countAndSay(n-1)
+            s = self.readAndCount(say)
+            return s
+        else:
+            say = "1"
+            return say

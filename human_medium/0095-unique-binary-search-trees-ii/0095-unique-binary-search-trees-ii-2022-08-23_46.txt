@@ -1,0 +1,8 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        def trees(first, last):
+            return [TreeNode(val = root, left = left, right = right)
+                   for root in range(first, last + 1)
+                   for left in trees(first, root - 1)
+                   for right in trees(root + 1, last)] or [None]
+        return trees(1, n)

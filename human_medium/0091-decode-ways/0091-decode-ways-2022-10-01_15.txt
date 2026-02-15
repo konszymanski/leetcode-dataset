@@ -1,0 +1,7 @@
+def numDecodings(self, s: str) -> int:
+  dp = [1, 0]
+  for i in range(len(s) - 1, -1, -1):
+    using_two = dp[1] if s[i:i+2] < "27" else 0
+    dp[1] = dp[0]
+    dp[0] = (dp[0] + using_two) if \'0\' != s[i] else 0
+  return dp[0]

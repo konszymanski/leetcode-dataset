@@ -1,0 +1,17 @@
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(float(\'inf\'))
+        dummy.next = None
+        lists = [dummy]
+        
+        while head:
+            for i in range(len(lists)):
+                if head.val < lists[i].val:
+                    lists.insert(i, head)
+                    break
+            head = head.next
+        
+        for i in range(len(lists) - 1):
+            lists[i].next = lists[i+1] if i != len(lists) - 2 else None
+        
+        return lists[0]

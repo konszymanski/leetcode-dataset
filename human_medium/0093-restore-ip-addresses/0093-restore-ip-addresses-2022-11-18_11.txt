@@ -1,0 +1,21 @@
+def restoreIpAddresses(self, s: str) -> List[str]:
+        def traverse(curr_str, i, dots):
+            if i == n and dots == 4:
+                res.append(curr_str[:-1])
+                return
+            elif i >= n or dots > 4:
+                return
+            
+            if s[i] == "0":
+                traverse(curr_str + "0.", i + 1, dots + 1)
+            else:
+                traverse(curr_str + s[i: i + 1 ] + ".", i + 1, dots + 1)
+                traverse(curr_str + s[i: i + 2 ] + ".", i + 2, dots + 1)
+                if int(s[i:i + 3]) <= 255:
+                    traverse(curr_str + s[i: i + 3] + ".", i + 3, dots + 1)
+        
+        n = len(s)
+        res = []
+        traverse("", 0, 0)
+        
+        return res

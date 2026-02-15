@@ -1,0 +1,11 @@
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        
+        @lru_cache(None)
+        def fn(n): 
+            """Return x**n when n >= 0"""
+            if n == 0: return 1
+            if n == 1: return x
+            return fn(n//2) * fn(n - n//2)
+        
+        return fn(n) if n >= 0 else 1/fn(-n)

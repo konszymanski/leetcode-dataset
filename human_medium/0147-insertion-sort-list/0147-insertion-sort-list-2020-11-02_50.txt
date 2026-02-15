@@ -1,0 +1,20 @@
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        if not head: return None
+        hi, hp = head.next, head
+        while hi:
+            lo, lp = head, None
+            while lo:
+                if lo == hi:
+                    hp, hi = hi, hi.next
+                    break
+                if lo.val >= hi.val:
+                    hp.next = hi.next
+                    if lp:
+                        lp.next = hi
+                    else:
+                        head = hi                        
+                    hi.next, hi = lo, hp.next
+                    break
+                lp, lo = lo, lo.next
+        return head

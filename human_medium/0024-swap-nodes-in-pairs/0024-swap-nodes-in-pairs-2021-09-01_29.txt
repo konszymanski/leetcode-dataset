@@ -1,0 +1,32 @@
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+	
+        temp = head
+		
+        if not head:  # Base Case: When head = []
+            return head
+			
+        if temp.next is None:  # Base Case: When head = [1]
+            return head
+			
+        # Eg:  1 -> 2 -> 3 -> 4
+        while temp is not None:
+            if temp == head:
+                store = temp.next  # 2
+                temp.next = temp.next.next  # 1 -> 3
+                store.next = temp  # 2 -> 1
+                head = store # head = 2
+				# 2 -> 1 -> 3 -> 4
+            else:
+                store = temp.next # 4
+                if temp.next: # If we don\'t use this condition then it will fail in case of three node i.e odd length of LL.
+                    temp.next = temp.next.next # 3 -> None
+                    store.next = temp  4 -> 3
+                    prev.next = store   # 2 -> 1 -> 4 -> 3
+					# result = 2 -> 1 -> 4 -> 3 
+                
+            prev = temp  # 1            
+            temp = temp.next # 3
+             # 2 -> 1 -> 3 -> 4
+            
+        return head

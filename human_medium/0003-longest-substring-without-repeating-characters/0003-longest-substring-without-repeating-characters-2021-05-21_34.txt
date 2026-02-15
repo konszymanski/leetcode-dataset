@@ -1,0 +1,33 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        
+        #Stopping immediately if string is empty
+        if len(s) == 0 :
+            return 0
+        
+        curr_str = ""
+        max_length = 0
+
+        for letter in s:
+            #Checks if letter is already in current string
+            if letter in curr_str:
+                
+                #Checks for a new maximum length
+                if len(curr_str) > max_length:
+                    max_length = len(curr_str)
+
+                #As a second character has been found, it\'s impossible to exist a string between those two that 
+                #would be bigger than the current one, therefore we will calculate a new starting point for the 
+                #current string, immediately after the previous time that this letter was found, for instance in 
+                #\'advdf\', it will remove everything up until the first \'d\' from the current string as soon as 
+                #the second \'d\' is found.
+                new_start = curr_str.find(letter) + 1
+                curr_str = curr_str[new_start:]
+
+            curr_str += letter
+        
+        #Checks to see if the last letter that was added was a new max length
+        if len(curr_str) > max_length:
+            max_length = len(curr_str)
+
+        return max_length

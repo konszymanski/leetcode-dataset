@@ -1,0 +1,22 @@
+class Solution:
+    def reverse(self, x: int) -> int:
+		#calculates the maximum 32-bit integer
+        max_32 = 2**31 - 1
+		
+        #if the initial integer is larger than 32-bit
+		#we check the absolute value since it reduces to one case
+        if abs(x) > max_32:
+            return 0
+
+        #if the integer is negative
+        if x < 0:
+            #convert to string -> reverse with [::-1] -> convert to -int
+            r_integer = -int(str(abs(x))[::-1])
+        else:
+            #string -> reverse -> int
+            r_integer = int(str(x)[::-1])
+
+        if abs(r_integer) > max_32:
+            return 0
+        else:
+            return r_integer

@@ -1,0 +1,28 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        if not root: return root
+		
+        queue = deque([root])
+        while queue:
+            size = len(queue)
+            
+            # iterate over all the nodes
+            # in the current level hence the
+            # following for loop rather than a
+            # continuous while loop.
+            for i in range(size):
+                node = queue.popleft()
+                
+                # if it\'s the last node in this level
+                # it\'s next pointer should point to None
+                # else, the next pointer would point to
+                # the first element in the queue since
+                # we\'re adding elements to the queue
+                # in the required order (left -> right)
+                if i == (size-1): node.next = None
+                else: node.next = queue[0]
+                
+                if node.left: queue.append(node.left)
+                if node.right: queue.append(node.right)
+        
+        return root

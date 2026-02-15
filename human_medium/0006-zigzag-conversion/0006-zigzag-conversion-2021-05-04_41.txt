@@ -1,0 +1,20 @@
+def convert(self, s: str, numRows: int) -> str:
+	if numRows==1:
+		return s
+
+	res = []
+	l = len(s)
+	d = (numRows-1)*2
+	pos = 0
+	while pos<numRows:
+		toggle = (pos!=0 and pos!=numRows-1)
+		diff = d if (pos==0 or pos==numRows-1) else d-(pos*2)
+		p = pos
+
+		while p<l:
+			res.append(s[p])
+			p+=diff
+			if toggle:
+				diff = d-diff
+		pos+=1
+	return "".join(res)

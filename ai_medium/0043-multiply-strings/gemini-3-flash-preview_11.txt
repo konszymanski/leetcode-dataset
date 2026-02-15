@@ -1,0 +1,34 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either input is "0", their product is "0"
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The product of two numbers with lengths m and n will have at most m + n digits
+        res = [0] * (m + n)
+        
+        # Calculate multiplication digit by digit
+        # Process from right to left to simplify index handling
+        for i in range(m - 1, -1, -1):
+            d1 = ord(num1[i]) - ord('0')
+            for j in range(n - 1, -1, -1):
+                d2 = ord(num2[j]) - ord('0')
+                # The product of num1[i] and num2[j] contributes to position i + j + 1
+                res[i + j + 1] += d1 * d2
+        
+        # Perform carry operations from right to left
+        for i in range(m + n - 1, 0, -1):
+            res[i - 1] += res[i] // 10
+            res[i] %= 10
+            
+        # Identify the starting position of the number in the array (skip leading zeros)
+        start = 0
+        while start < len(res) and res[start] == 0:
+            start += 1
+            
+        # Convert the result digits back to a string
+        # This handles the case where start < len(res) because num1, num2 != "0"
+        return "".join(chr(x + ord('0')) for x in res[start:])
+```

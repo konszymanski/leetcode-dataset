@@ -1,0 +1,25 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        if not root: return root
+        leftmost = root
+        while leftmost:
+            head = leftmost
+            leftmost = None
+            while head:
+                if head.left:
+                    leftmost = head.left if not leftmost else leftmost
+                    if head.right:
+                        head.left.next = head.right
+                    else:
+                        cur = head.next
+                        while cur and head.left.next is None:
+                            head.left.next = cur.left if cur.left else cur.right
+                            cur = cur.next
+                if head.right:
+                    leftmost = head.right if not leftmost else leftmost
+                    cur = head.next
+                    while cur and head.right.next is None:
+                        head.right.next = cur.left if cur.left else cur.right
+                        cur = cur.next
+                head = head.next     
+        return root

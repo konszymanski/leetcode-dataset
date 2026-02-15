@@ -1,0 +1,22 @@
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        output = []
+        row = []
+        if root:
+            queue = deque([{0:root}])
+            currentlevel = 0
+            while queue:
+                if currentlevel not in queue[0]:
+                    currentlevel += 1
+                    output.append(row)
+                    row = []
+                root = queue[0][currentlevel]
+                row.append(root.val)
+                if root.left:
+                    queue.append({currentlevel + 1: root.left})
+                if root.right:
+                    queue.append({currentlevel + 1: root.right})
+                del queue[0]
+            output.append(row)
+        output.reverse()
+        return output

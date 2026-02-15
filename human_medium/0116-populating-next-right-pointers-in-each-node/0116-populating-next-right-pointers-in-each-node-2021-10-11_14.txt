@@ -1,0 +1,17 @@
+def connect(self, root: \'Node\') -> \'Node\':
+        if not root:
+            return None
+        
+        if root.right:
+            # the easier connection
+            if root.left:
+                root.left.next = root.right
+            # the harder one between nodes of different parents
+            # we can do this because we already did the easier connection between the "parents"
+            if root.next:
+                root.right.next = root.next.left            
+            
+        root.left = self.connect(root.left)
+        root.right = self.connect(root.right)
+        
+        return root

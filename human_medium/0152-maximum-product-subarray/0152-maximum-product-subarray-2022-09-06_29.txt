@@ -1,0 +1,15 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int: 
+        l=[] #list for storing the product from left side and right side of nums
+        x=1 #initialised the product from left side
+        y=1 #initialised the product from right side
+        for i in range(0,len(nums)): #loop for all elements of nums
+            x=x*nums[i] #product from left side
+            y=y*nums[len(nums)-1-i] #product from right side
+            l.append(x) #storing product from left side
+            l.append(y) #storing product from right side
+            if x==0: # this need to be observed from test cases
+                x=1 #make x==1 if it is 0
+            if y==0:
+                y=1 ##make y==1 if it is 0
+        return max(l) #return maximum of products

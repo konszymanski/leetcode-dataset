@@ -1,0 +1,34 @@
+def get_nearest_sibling(node):
+    while node:
+        if node.left or node.right:
+            return node.left or node.right
+        node = node.next
+
+
+class Solution:
+    def connect(self, root: "Node") -> "Node":
+        if not root:
+            return root
+        
+        def foo(root, parent, frm):
+            if not root:    return
+
+            if frm==RIGHT:
+                node = get_nearest_sibling(parent.next)
+                root.next = node
+
+            else:
+                node = parent.right if parent.right else get_nearest_sibling(parent.next)
+                root.next = node
+                    
+            foo(root.right, root, frm=RIGHT)
+            foo(root.left, root, frm=LEFT)
+
+            
+        LEFT = 0
+        RIGHT = 1
+        
+        foo(root.right, root, frm=RIGHT)
+        foo(root.left, root, frm=LEFT)
+
+        return root

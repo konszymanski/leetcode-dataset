@@ -1,0 +1,9 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        s = set()
+        for num in nums:
+            for e in list(s):
+                s.add(tuple(list(e) + [num]))
+            s.add(tuple([num]))
+        
+        return list(s) + [[]]

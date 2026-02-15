@@ -1,0 +1,15 @@
+class Solution:
+    def combinationSum2(self, c: List[int], target: int) -> List[List[int]]:
+        res = []
+        c.sort()
+        def fun(p, re, cur):
+            if cur > target: return
+            if cur == target:
+                res.append(re)
+                return
+            for i in range(p, len(c)):
+                if i > p and c[i] == c[i-1]:
+                    continue
+                fun(i+1, re+[c[i]], cur+c[i])
+        fun(0, [], 0)
+        return res

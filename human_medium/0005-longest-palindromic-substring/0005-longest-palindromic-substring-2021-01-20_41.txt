@@ -1,0 +1,27 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        dp = [[False] * n  for _ in range(n)]
+        start = 0
+        end = 0
+        for i in range(n):
+            # base case 1
+            # every single letter is a palindrome
+            dp[i][i] = True
+            
+            # base 2
+            # for string of length of 2
+            # both of the letters should be the same
+            if i + 1 < n:
+                dp[i][i+1] = s[i]==s[i+1]
+                [start, end] = [i, i+1] if dp[i][i+1] else [start, end]
+            # now we have two base cases
+            # they can compose string of odd length and even length
+        for k in range(3, n+1):
+            j = k - 1
+            for i in range(n):
+                if i + j < n:
+                    dp[i][i+j] = dp[i+1][i+j-1] and s[i]==s[i+j]
+                    [start, end] = [i, i+j] if dp[i][i+j] else [start, end]
+
+        return s[start:end+1]

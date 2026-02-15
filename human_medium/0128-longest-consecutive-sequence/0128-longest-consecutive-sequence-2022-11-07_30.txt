@@ -1,0 +1,37 @@
+from collections import defaultdict
+class Solution(object):
+    def longestConsecutive(self, nums):
+        
+        d = defaultdict(lambda: -1)
+        s = set(nums)
+        parent = list(range(len(s)))
+        size = [1]*len(s)
+        def find(u):
+            if u == parent[u]:
+                return u
+            else:
+                parent[u] = find(parent[u])
+                return parent[u]
+        def union(a, b):
+            a = find(a)
+            b = find(b)
+
+            if a == b:
+                return
+            else:
+                if size[a] > size[b]:
+                    parent[b] = a
+                    size[a] += size[b]
+                else:
+                    parent[a] = b
+                    size[b] += size[a]
+        for i, num in enumerate(s):
+            d[num] = i
+        for i, num in enumerate(s):
+            if d[num - 1] >=0:
+                x = d[num - 1]
+                union(i,x)
+            if d[num + 1] >=0:
+                x = d[num + 1]
+                union(i,x)
+        return max(size) if size else 0

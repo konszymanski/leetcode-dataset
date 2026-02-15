@@ -1,0 +1,45 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        m = len(board)
+        n = len(board[0])
+        visited = [[False] * n for _ in range(m)]
+        
+        if len(word) >= 6:
+            possible_path = [[[False] * len(word) for _ in range(n)] for _ in range(m)]
+            early_possible = False
+            for d in range(len(word)-1,-1,-1):
+                for i in range(m):
+                    for j in range(n):
+                        if board[i][j] != word[d]:
+                            continue
+                        if d == len(word)-1:
+                            possible_path[i][j][d] = True
+                            continue
+                        for ni, nj in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+                            if (0 <= ni < m) and (0 <= nj < n) and possible_path[ni][nj][d+1]:
+                                possible_path[i][j][d] = True
+                                if d == 0:
+                                    early_possible = True
+                                break
+            if not early_possible:
+                return False
+        else:
+            possible_path = [[[board[i][j] == word[d] for d in range(len(word))] for j in range(n)] for i in range(m)]
+        
+        def dfs(i, j, p) -> bool:
+            if p == len(word) - 1:
+                return True
+            res = False
+            visited[i][j] = True
+            for ni, nj in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+                if (0 <= ni < m) and (0 <= nj < n) and not visited[ni][nj] and possible_path[ni][nj][p+1] and dfs(ni, nj, p+1):
+                    res = True
+                    break
+            visited[i][j] = False
+            return res
+
+        for i in range(m):
+            for j in range(n):
+                if possible_path[i][j][0] and dfs(i, j, 0):
+                    return True
+        return False

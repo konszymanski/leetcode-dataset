@@ -1,0 +1,17 @@
+class Solution:
+    def generate_res(self, open_count, close_count, cur_string, res):
+        if open_count == 0 and close_count == 0:
+            res.add(cur_string)
+            return
+        
+        if close_count > open_count:
+            self.generate_res(open_count, close_count-1, cur_string+")", res)
+        
+        if open_count > 0:
+            self.generate_res(open_count-1, close_count, cur_string+"(", res)
+            
+    
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = set()
+        self.generate_res(n, n, "", res)
+        return list(res)

@@ -1,0 +1,31 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:     
+        def chk(arr):
+            d = Counter(arr)
+            for k,v in d.items():
+                if v>1 and k!=\'.\':
+                    return False
+            return True
+        
+        #check for rows
+        for i in board:
+            if chk(i)==False:
+                return False
+            #print("row ok")
+        
+        #check for coloumns
+        for i in range(9):
+            temp =[]
+            for j in range(9):
+                temp.append(board[j][i])
+            if chk(temp)==False:
+                return False
+            #print("col ok")
+        
+        #check for 3x3 matrix
+        for i in range(0,9,3):
+            for j in range(0,9,3):
+                t = board[i][j:j+3] + board[i+1][j:j+3] + board[i+2][j:j+3]
+                if chk(t)==False:
+                    return False
+        return True

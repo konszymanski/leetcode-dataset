@@ -1,0 +1,34 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val, neighbors):
+        self.val = val
+        self.neighbors = neighbors
+"""
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        ## RC ##
+        ## APPROACH : HASHMAP - DFS ##
+        
+		## TIME COMPLEXITY : O(N) ##
+		## SPACE COMPLEXITY : O(N) ##
+
+        def dfs(node):
+            
+            # { old node : new clone node }
+            if(node in visited):
+                return visited[node]
+            
+            visited[node] = Node(node.val)
+            
+            for nei in node.neighbors:
+                visited[node].neighbors.append(dfs(nei))
+                
+            return visited[node]
+        
+        # simply return, no node 
+        if not node: return None
+        
+        visited = {}
+        clone_graph = dfs(node)
+        return clone_graph

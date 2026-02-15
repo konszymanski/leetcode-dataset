@@ -1,0 +1,42 @@
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+# Initial check if root is present         
+        if root is None:
+            return []
+        
+# Initialising the deque with root and result as empty array         
+        queue, result = collections.deque([root]), []
+        
+# reverse is a flag that indicates the direction. If True, then it will traverse from right to left.        
+        reverse = True
+             
+        while queue:
+# temp is a temporary queue used to hold the child nodes of all the nodes in queue. Once all the nodes in the queue are processed, the temp (list of child nodes) will become queue             
+            temp = collections.deque([])
+# Array of new_values that needs to be added to final result     
+            new_value = []
+    
+            for node in queue:
+# Since the order of left and right node is taken care in the next if-else loop, we can directly add the node.val to the list instead of reversing the list later.            
+                new_value.append(node.val)
+# Note the relative order of left and right append statements in if-else    
+                if reverse:
+                    if node.left: temp.appendleft(node.left)                        
+                    if node.right: temp.appendleft(node.right)
+                else:
+                    if node.right: temp.appendleft(node.right)
+                    if node.left: temp.appendleft(node.left)
+
+# As long as queue is not empty, the new_value list will not be empty and hence we can directly add the new_value array to the final result            
+            result.append(new_value)
+            
+# Updating the queue to the deque of child nodes        
+            queue = temp
+# Inverting the flag    
+            reverse = not reverse
+            
+        return result

@@ -1,0 +1,7 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        n, a = {}, defaultdict(list) # n[c]: False - check has begun for course c, True - check succeeded
+        def can(c):
+            for init in (True, False): n[c] = False if init else all(n[p] if p in n else can(p) for p in a[c] if p in a)
+            return n[c]
+        return any(a.update({c:a[c] + [p]}) for c, p in prerequisites) or all(can(c) for c in a)

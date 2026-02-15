@@ -1,0 +1,29 @@
+def maxArea(self, height: List[int]) -> int:
+        
+        //set two pointers at either end of array
+        left, right = 0, len(height)-1
+        
+        //initialise empty max array
+        area_max = 0
+        
+        //binary search iteration
+        while left < right:   
+            
+            //we know that the area is limited by the smallest of two heights so
+            if height[right] >= height[left]:
+                //area is the product of index distance by the height of shorter wall
+                area = (right-left) * height[left]
+                left = left+1 //encourage bias towards larger heights
+                
+                //if this value is largest so far, store it.
+                if area > area_top:
+                    area_top = area     
+                
+            else: //mirror case for if left height is larger
+                area = (right-left) * height[right]
+                right = right -1
+                
+                if area > area_top:
+                    area_top = area
+                    
+        return area_top //output our highest area value

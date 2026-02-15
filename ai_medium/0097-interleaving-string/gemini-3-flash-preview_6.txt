@@ -1,0 +1,33 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        if n1 + n2 != n3:
+            return False
+        
+        # dp[j] will store whether s3[:i+j] is an interleaving of s1[:i] and s2[:j].
+        # Using a 1D array of size n2 + 1 to achieve O(s2.length) additional space.
+        dp = [False] * (n2 + 1)
+        
+        for i in range(n1 + 1):
+            for j in range(n2 + 1):
+                if i == 0 and j == 0:
+                    # Base case: all strings are empty.
+                    dp[j] = True
+                elif i == 0:
+                    # Case where s1 is empty: s3[:j] must be equal to s2[:j].
+                    dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+                elif j == 0:
+                    # Case where s2 is empty: s3[:i] must be equal to s1[:i].
+                    # dp[j] (dp[0]) currently stores the result for dp[i-1][0].
+                    dp[j] = dp[j] and s1[i - 1] == s3[i - 1]
+                else:
+                    # Normal case: s3[i+j-1] can be formed by either s1[i-1] or s2[j-1].
+                    # dp[j] on the right-hand side represents dp[i-1][j].
+                    # dp[j-1] on the right-hand side represents dp[i][j-1] (already updated).
+                    dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or \
+                            (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+        
+        return dp[n2]
+
+```

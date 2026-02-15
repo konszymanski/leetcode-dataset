@@ -1,0 +1,18 @@
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # Use dynamic programming with a 1D array to save space.
+        # Initialize the array with 1s, representing the first row.
+        dp = [1] * n
+        
+        # Iterate through the rows starting from the second row (index 1).
+        for i in range(1, m):
+            # Update the DP array based on the values from the previous row
+            # and the element to the left (dp[j] = dp[j] + dp[j-1]).
+            for j in range(1, n):
+                dp[j] += dp[j - 1]
+                
+        # The result is the value at the last position of the DP array.
+        return dp[n - 1]
+
+```

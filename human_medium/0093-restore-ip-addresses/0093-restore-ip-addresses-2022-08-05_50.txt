@@ -1,0 +1,18 @@
+def restoreIpAddresses(self, s: str) -> List[str]:
+        self.res = list()
+        self.dfs(s, "", 0, 4)
+        return self.res
+        
+    def dfs(self, dec_space:str, path:str, start:int, times:int):
+        if times == 0:
+            if len(path) == len(dec_space) + 4:
+                self.res.append(path[:-1])
+            return
+        address = ""
+        for i in range(3):
+            if start + i < len(dec_space):
+                if address and address == \'0\':
+                    break
+                address += dec_space[start+i]
+                if int(address) <= 255:
+                    self.dfs(dec_space, path+address+\'.\', start+i+1, times-1)

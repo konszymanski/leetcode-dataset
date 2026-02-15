@@ -1,0 +1,17 @@
+class Solution:
+    def sortColors(self, nums) -> None:
+        """
+        This program uses a python defaultdict to sort the input array nums
+        in place.
+
+        :param nums: array of integers 0\'s, 1\'s, and 2\'s 
+        :type nums: list[int]
+        """
+        counts = defaultdict(int)
+        for num in nums:
+            counts[num] += 1
+        idx = 0
+        for k in range(3):
+            for m in range(counts[k]):
+                nums[idx] = k
+                idx += 1

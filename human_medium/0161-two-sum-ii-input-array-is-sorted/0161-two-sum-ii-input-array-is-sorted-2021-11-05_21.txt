@@ -1,0 +1,25 @@
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        
+        # hash map: O(n), O(n)
+        # two pointers: O(N), O(1)
+        # binary search: O(nlogn), O(1) 
+        
+        left_pointer, right_pointer = 0, len(nums) - 1     # setting left and right pointers 
+        
+		while left_pointer < right_pointer:    # while the right pointer remains on the right of the left
+            
+			if nums[left_pointer] + nums[right_pointer] == target:     # return indexes if corresponding num has been found
+                return left_pointer + 1, right_pointer + 1 
+            
+			else:     # check if sum is greater than or less than target
+                
+				if nums[left_pointer] + nums[right_pointer] > target:
+                    right_pointer -= 1     # if it is greater than, lowering the right pointer will lower the sum, as the num next to it is guaranteed to be smaller 
+                
+				else: 
+                    left_pointer += 1     # same concept as before, but this time making the sum larger
+        
+        # O(N) time, O(1) aux space
+        # O(N) worst case
+        # O(1) best case

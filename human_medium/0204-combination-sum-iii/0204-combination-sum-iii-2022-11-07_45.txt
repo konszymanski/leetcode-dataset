@@ -1,0 +1,19 @@
+class Solution:
+    def combinationSum3(self, k: int, target: int) -> List[List[int]]:
+        
+        ans = []
+        def help(i,n,s,tot):
+            if len(s)==k and tot==target:
+                ans.append(s.copy())
+                return
+            if i>n:    
+                return
+            
+            if len(s)>k:
+                return
+            if tot>target:
+                return
+            help(i+1,n,s+[i],tot+i)
+            help(i+1,n,s,tot)
+        help(1,9,[],0)
+        return ans

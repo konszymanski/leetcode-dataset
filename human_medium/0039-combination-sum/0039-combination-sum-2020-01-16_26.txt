@@ -1,0 +1,15 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        def fn(i, x): 
+            """Populate ans via backtracking."""
+            if x < 0: return 
+            if x == 0: return ans.append(stack.copy()) # update answer 
+            for ii in range(i, len(candidates)): 
+                stack.append(candidates[ii])
+                fn(ii, x-candidates[ii])
+                stack.pop()
+            
+        ans, stack = [], []
+        fn(0, target)
+        return ans

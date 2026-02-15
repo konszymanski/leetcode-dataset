@@ -1,0 +1,18 @@
+class Solution(object):
+    def merge(self, intervals):
+        i = 0 
+        while i < len(intervals):
+            j = i + 1
+            while j < len(intervals):
+                first = intervals[i][0]
+                second = intervals[i][1]
+                third = intervals[j][0]
+                fourth = intervals[j][1]
+                if (third <= second and third >= first) or (first >= third and first <= fourth):
+                    intervals.pop(j)
+                    intervals[i] = [min(first, third), max(second, fourth)]
+                    i = i -1
+                    break
+                j = j + 1
+            i = i + 1
+        return intervals

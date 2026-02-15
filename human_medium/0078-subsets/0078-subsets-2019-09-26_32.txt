@@ -1,0 +1,11 @@
+def subsets(self,nums):
+	if len(nums)==0:
+		return []
+	if len(nums)==1:
+		return [nums,[]]
+	res=[]
+	for i in range(len(nums)-1):
+		res+=([a+[nums[i]] for a in self.subsets(nums[i+1:])])
+	# include last element here
+	res+=[[nums[-1]],[]]
+	return res

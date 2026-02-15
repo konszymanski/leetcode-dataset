@@ -1,0 +1,31 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        dvd, dvs, i, = abs(dividend), abs(divisor), 0
+        neg = (divisor > 0) ^ (dividend > 0)
+        maxi = 2147483648
+        
+        if dvs == 0:
+            return None
+        elif dvd == 0:
+            return 0
+        elif dvs == 1:
+            return (-dvd if neg else dvd) if dvd < maxi else (-maxi if neg else maxi-1)
+        elif dvd == dvs:
+            return -1 if neg else 1
+        
+        i = self.stringDivide(dvd,dvs)
+            
+        return (-i if neg else i) if i < maxi else (-maxi if neg else maxi-1)
+    
+    def stringDivide(self, dividend: int, divisor: int) -> int:
+        fac = 0
+        curr = 0
+        if len(str(dividend)) >= len(str(divisor)):
+            for i in str(dividend):
+                curr = int(str(curr) + i)
+                mark = 0
+                while curr >= divisor:
+                    curr -= divisor
+                    mark += 1
+                fac = int(str(fac)+str(mark))
+        return fac

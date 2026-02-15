@@ -1,0 +1,33 @@
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # Purpose: Add two linkedin list nodes
+        # Method: Addition
+        # Intuition: Add val (l1 + l2 + pre. carry) , cal cur. carry, update val, check next node
+        
+        # init
+        dummy = ListNode()
+        cur = dummy
+        carry = 0
+        
+        # find
+        while l1 or l2 or carry:
+            
+            # cal val
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
+            value = v1 + v2 + carry
+            
+            # cal carry
+            carry = value // 10
+            
+            # update val
+            value = value % 10
+            
+            # check next node
+            cur.next = ListNode(value)
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        
+        # return l.l.
+        return dummy.next

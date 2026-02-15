@@ -1,0 +1,26 @@
+class Solution {
+    bool dfs(int node, vector<int> adj[], vector<int> &vis, vector<int> &dfsvis) {
+        vis[node] = dfsvis[node] = 1;
+        
+        for(int ad : adj[node]) {
+            if(!vis[ad]) {
+                if(dfs(ad, adj, vis, dfsvis)) return true;
+            }
+            else if(dfsvis[ad]) return true;
+        }
+        dfsvis[node] = 0;
+        return false;
+    }
+    
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> adj[numCourses];
+        for(auto p : prerequisites) adj[p[0]].push_back(p[1]);
+        
+        vector<int> vis(numCourses), dfsvis(numCourses);
+        for(int i=0; i<numCourses; i++) {
+            if(!vis[i]) if(dfs(i, adj, vis, dfsvis)) return false;
+        }
+        return true;
+    }
+};

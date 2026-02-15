@@ -1,0 +1,20 @@
+class Solution(object):
+    def grayCode(self, n):
+        """
+        :type n: int
+        :rtype: List[int]
+        """
+        num = pow(2, n)
+        res_str = ["0", "1"]
+        res = []
+        while len(res_str) < num:
+            res_str = res_str + res_str[::-1]
+            for i in range(len(res_str)):
+                if i < len(res_str) // 2:
+                    res_str[i] = "0" + res_str[i]
+                else:
+                    res_str[i] = "1" + res_str[i]
+        for num in res_str:
+            temp = "0b" + num
+            res.append(int(temp, 2))
+        return res

@@ -1,0 +1,11 @@
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        newhead = itr = head
+        positions = []        
+        while itr:
+            positions.append(itr)
+            itr = itr.next
+        if n == len(positions):
+            return newhead.next
+        positions[(-n)-1].next = positions[(-n)].next
+		return newhead

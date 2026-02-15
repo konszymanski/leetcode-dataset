@@ -1,0 +1,43 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        
+        # remove divisor sign
+        divisor_sign = -1 if divisor < 0 else 1
+        if divisor_sign == -1:
+            divisor = -divisor
+        
+        # remove dividend sign
+        dividend_sign = -1 if dividend < 0 else 1
+        if dividend_sign == -1:
+            dividend = -dividend
+        
+        # optimization
+        if divisor > dividend:
+            return 0
+        
+        if divisor == 1:
+            # optimization
+            quotient = dividend
+        else:
+            # implement division algorithm
+            remainder = 0
+            quotient = 0
+            for i in range(dividend.bit_length()-1, -1, -1):
+                remainder = remainder << 1
+                if dividend & (1 << i) != 0:
+                    remainder |= 1
+                if remainder >= divisor:
+                    remainder -= divisor
+                    quotient |= (1 << i) 
+        
+        # manage sign
+        if divisor_sign != dividend_sign:
+            quotient = -quotient
+            
+        # manage overflow
+        if quotient > 2147483647:
+            quotient = 2147483647
+        elif quotient < -2147483648:
+            quotient = -2147483648
+        
+        return quotient

@@ -1,0 +1,12 @@
+def insertionSortList(self, head: ListNode) -> ListNode:
+        n=head
+        if not head :
+            return 
+        while (n!=None):
+            temp=n.next
+            while temp :
+                if n.val>temp.val:
+                    n.val,temp.val=temp.val,n.val
+                temp=temp.next
+            n=n.next
+        return head

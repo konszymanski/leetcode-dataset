@@ -1,0 +1,32 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        if not head:
+            return None
+        small = None
+        large = None
+        current = head
+        while current:
+            if current.val < x:
+                if small:
+                    small.next = current
+                    small = current
+                else:
+                    small = current
+                    small_head = current
+            else:
+                if large:
+                    large.next = current
+                    large = current
+                else:
+                    large = current
+                    large_head = current
+            current = current.next
+        if small and large:
+            #if both partition exists, then connect the small to large and remove the last next from large
+            small.next = large_head
+            large.next = None
+            return small_head
+        elif small:
+            return small_head
+        else:
+            return large_head

@@ -1,0 +1,20 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        box_number = lambda r,c: 3*(r//3) + (c//3)
+        hash_map_box = collections.defaultdict(set)
+        hash_map_col = collections.defaultdict(set)
+        hash_map_row = collections.defaultdict(set)
+        
+        
+        for r in range(9):
+            for c, val in enumerate(board[r]):
+                if val==\'.\':
+                    continue
+                box_index = box_number(r,c)
+                if val in hash_map_box[box_index] or val in hash_map_row[r] or val in hash_map_col[c] :
+                    return False
+                
+                hash_map_row[r].add(val)
+                hash_map_col[c].add(val)
+                hash_map_box[box_index].add(val)
+        return True

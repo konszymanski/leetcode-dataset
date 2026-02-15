@@ -1,0 +1,24 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        if int(s) not in range(255255255256):
+            return []
+        
+        def valid(seg):
+            if not (1 <= len(seg) <= 3):
+                return False
+            num = int(seg)
+            return num in range(256) and str(num) == seg
+        
+        ans = []
+        for dot1 in range(1, 4):
+            o1 = s[0:dot1]
+            if valid(o1):
+                for dot2 in range(dot1+1, dot1+4):
+                    o2 = s[dot1:dot2]
+                    if valid(o2):
+                        for dot3 in range(dot2+1, dot2+4):
+                            o3 = s[dot2:dot3]
+                            o4 = s[dot3:]
+                            if valid(o3) and valid(o4):
+                                ans.append(".".join((o1,o2,o3,o4)))
+        return ans

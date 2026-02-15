@@ -1,0 +1,38 @@
+class Solution:
+    def swap(self, nums, idx1, idx2):
+        nums[idx1], nums[idx2] = nums[idx2], nums[idx1]
+        return nums
+    
+    def reverse(self, nums, begin, end):
+        while begin <= end:
+            nums[begin], nums[end] = nums[end], nums[begin]
+            begin += 1
+            end -= 1
+        return nums
+        
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        
+        if len(nums) == 1:
+            return
+        
+        if len(nums) == 2:
+            return self.swap(nums, 0, 1)
+        
+        dec = len(nums) - 2
+        while dec >= 0 and nums[dec] >= nums[dec+1]:
+            dec -= 1
+            
+        self.reverse(nums, dec+1, len(nums)-1)
+        if dec == -1:
+            return
+        
+        next_num = dec + 1
+        while next_num < len(nums) and nums[next_num] <= nums[dec]:
+            next_num += 1
+        
+        self.swap(nums, next_num, dec)
+        
+        return

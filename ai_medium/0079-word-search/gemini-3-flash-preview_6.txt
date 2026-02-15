@@ -1,0 +1,49 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        R = len(board)
+        C = len(board[0])
+        
+        if len(word) > R * C:
+            return False
+        
+        # Pruning: Frequency check
+        board_counts = Counter(char for row in board for char in row)
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Pruning: Search from the end if the prefix is more frequent than the suffix
+        if board_counts[word[0]] > board_counts[word[-1]]:
+            word = word[::-1]
+            
+        def backtrack(r, c, index):
+            if index == len(word):
+                return True
+            
+            if r < 0 or r >= R or c < 0 or c >= C or board[r][c] != word[index]:
+                return False
+            
+            temp = board[r][c]
+            board[r][c] = "#"  # Mark as visited
+            
+            res = (backtrack(r + 1, c, index + 1) or
+                   backtrack(r - 1, c, index + 1) or
+                   backtrack(r, c + 1, index + 1) or
+                   backtrack(r, c - 1, index + 1))
+            
+            board[r][c] = temp  # Backtrack
+            return res
+
+        for r in range(R):
+            for c in range(C):
+                if board[r][c] == word[0]:
+                    if backtrack(r, c, 0):
+                        return True
+        return False
+
+```

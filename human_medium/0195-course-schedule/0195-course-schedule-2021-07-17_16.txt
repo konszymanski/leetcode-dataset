@@ -1,0 +1,38 @@
+from collections import defaultdict
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        # construct graph
+        graph = defaultdict(list)
+        for x, y in prerequisites:
+            graph[x].append(y)
+        
+        # each node starts as white
+        node2color = {v: 0 for v in graph}  # 0: white, 1: grey, 2: black
+        
+        # dfs to look for back edges
+        for node in graph:
+            # we only start at white a white node
+            if node2color[node] != 0: continue
+            stack = [(0, node)]    # 0: entering, 1: exiting
+            while stack:
+                action, cur_node = stack.pop()
+                # if exiting current node, set to color to black
+                if action == 1:
+                    node2color[cur_node] = 2
+                # if entering current node, set to color to grey
+                else:
+                    node2color[cur_node] = 1
+					# push node into stack again such that next time it gets poped we\'ll be exiting/finishing it
+                    stack.append((1, cur_node))
+                    # check neighbors
+                    for n in graph[cur_node]:
+                        if n in node2color and node2color[n] == 1:
+                            return False
+                        elif n in node2color and node2color[n] == 0:
+                            stack.append((0, n))
+        return True

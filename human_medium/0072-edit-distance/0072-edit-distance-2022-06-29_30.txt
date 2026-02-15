@@ -1,0 +1,26 @@
+def edit_distance(s1,s2,m,n,dp):
+            if m==0 and n==0:
+                return 0
+            if m==0 or n==0:
+                return m or n
+            if dp[m][n]!=-1:
+                return dp[m][n]
+            if s1[0]!=s2[0]:
+                ##case when i am substituting
+                x1 =  1+edit_distance(s1[1:],s2[1:],m-1,n-1,dp)
+                ##case when i am deleting
+                x2 = 1+edit_distance(s1[1:],s2,m-1,n,dp)
+                ##case when i am inserting
+                x3 = 1+edit_distance(s1,s2[1:],m,n-1,dp)
+                ans =  min(x1,x2,x3)
+            else:
+                ans = edit_distance(s1[1:],s2[1:],m-1,n-1,dp)
+            dp[m][n] = ans
+            return ans
+
+        s1 = word1
+        s2 = word2
+        m=len(s1)
+        n=len(s2)
+        dp = [[-1 for j in range(n+1)] for i in range(m+1)]
+        return(edit_distance(s1,s2,m,n,dp))

@@ -1,0 +1,12 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stc=[]
+        for a in tokens:
+            if(a not in "+-*/"):
+                stc.append(a)
+            else:
+                b2=stc.pop()
+                b1=stc.pop()
+                x=int(eval(b1+a+b2))
+                stc.append(str(x))
+        return int(stc[0])

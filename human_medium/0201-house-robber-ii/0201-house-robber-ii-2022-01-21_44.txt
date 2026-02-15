@@ -1,0 +1,10 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def helper(nums,ssf):
+            if not nums:
+                return ssf
+            return max(helper(nums[1:],ssf),helper(nums[2:],ssf+nums[0]))
+        
+        #1. excluding first house
+        #2. excluding last house
+        return max(helper(nums[1:],0),helper(nums[:-1],0))

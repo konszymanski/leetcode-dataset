@@ -1,0 +1,36 @@
+class Solution:
+	## the problem needs to be broken down into managable bits, there\'s simply too many ways we can navigate the 3x3 grid
+	# but what if the grid were not 3x3 but 1x1 ? then the minimum path total will be the value in that grid
+	# and what if the grid were 1x2 ... then total = value in cell(0,1) + value in cell(0,0) because there is no other path for us to check
+	# and what if the grid were 2x1 ... then total = value in cell(0,1) + value in cell(0,0), because there is no other path for us to check
+	# and if the grid were 2x2 ... then total could be cell(00) + cell(01) + cell(11) or cell(00) + cell(10) + cell(11) there are two paths for us to check
+	# but wait a sec ... cell(00) is total value when grid size was 1x1
+	# (cell(00) + cell(01)) is our second question ie total for a grid 1x2
+	# and cell(00)+cell(10) is our third question i.e total for a grid 2x1
+	# so basically what i want to know is what is the minimum total value between my 1x2 grid and 2x1 grid and 
+	# and minimum total value of 1x2 is minimum total value of 1x1 grid + value of cell(01) and 2x1 is min(1x1grid) + value of cell(10) 
+	# to generalize this the value we should increment a grid by is to look at
+	# total min possible value so far above and to the left, if we arrived to this cell from above or from the left of the cell
+	# why above and left ? because the only way we are allowed is either right or down. 
+	# so the only way we can arrive to that cell is from above or from it\'s left
+	# so basically if were solve the problem what is the mini possible total for one cell then we can repeat it for all other cells by using the values from previous cells
+    def minPathSum(self, grid: List[List[int]],i=0,j=0) -> int:
+        for i,row in enumerate(grid):
+            for j,cell in enumerate(row):
+                if i== 0 and j== 0: # leave the first matrix-cell alone
+                    continue
+				# if there is nothing to the left side, i.e i am looking at a cell in the first column, only consider the cell above it
+                elif (i-1 >=0 and j==0): 
+                    grid[i][j] = cell + grid[i-1][j]
+				# similarily if there is nothing on top, i.e i am working on a cell in the first row, only consider the cell to it\'s left
+                elif (i==0 and j-1>=0):
+                    grid[i][j] = cell + grid[i][j-1]
+                else:
+					# increment my current cell value by minimum value between the cell above and cell to the left the current cell
+					# this works because at any point on a particular cell should have minimum total sum possible till that point.
+					# think of it as \'if i were given a grid of 1x1, the minimum possible total will be the value in that 1x1 cell, 
+					# if i were given a grid of 1x2 the minimum possible total will be the value in the first cell + value in second cell
+					# if i were given a grid of 2x1 then the minimum possible total will be the value of the first cell + value in second cell
+					# if i were given a grid of 2x2 then min possible total will be the minimum value between total of 1x2 grid and 2x1 grid + the value in the last grid .. and so on and so forth
+                    grid[i][j] = min(grid[i][j-1],grid[i-1][j]) + cell
+        return grid[-1][-1]

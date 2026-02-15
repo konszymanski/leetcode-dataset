@@ -1,0 +1,18 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        head=root
+        while head:
+            h1=None
+            prev=None
+            while head:
+                for node in [head.left,head.right]:
+                    if node:
+                        if prev:
+                            prev.next=node
+                            prev=prev.next
+                        else:
+                            h1=node
+                            prev=node
+                head=head.next
+            head=h1
+        return(root)

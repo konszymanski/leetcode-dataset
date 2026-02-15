@@ -1,0 +1,12 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        #empty dict to check occurences
+        dict = {}
+        #loop thru words in strs
+        for word in strs:
+            #sort the word(all anagrams will be the same sorted)
+            key = tuple(sorted(word))
+            #if key exists, get existing words (as a list), add word to it, if not, create it
+            dict[key]=dict.get(key, []) +[word]
+        #return the values (which comes out as a list anyway)
+        return dict.values()

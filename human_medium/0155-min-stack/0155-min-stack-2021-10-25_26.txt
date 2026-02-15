@@ -1,0 +1,29 @@
+def __init__(self):
+        # it is main stack
+        self.s1 = [] 
+        # only store mins
+        self.minStack = []
+
+    def push(self, val: int) -> None:
+        self.s1.append(val)
+        
+        # handle min
+        if len(self.minStack) == 0:
+            self.minStack.append(val)
+        else:
+            # compare val with top of minStack
+            if val <=self.minStack[-1]:
+                # need update min
+                self.minStack.append(val)
+
+    def pop(self) -> None:
+        if len(self.s1) > 0:
+            top1 = self.s1.pop()
+        if len(self.minStack) > 0 and top1 == self.minStack[-1]:
+            self.minStack.pop()
+        
+    def top(self) -> int:
+        return self.s1[-1]
+        
+    def getMin(self) -> int:
+        return self.minStack[-1]

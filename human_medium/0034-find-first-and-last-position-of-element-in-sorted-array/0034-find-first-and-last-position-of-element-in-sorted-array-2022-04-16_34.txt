@@ -1,0 +1,37 @@
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        out=[-1,-1]
+        
+        #using Binary search twice, first for lower limit and then for upper limit.
+        
+        l=0
+        h=len(nums)-1
+        # 1st Binary search loop to get lower limit
+        while l<=h:
+            m=l+(h-l)//2
+            
+            if nums[m]== target:
+                out[0]=m
+                h=m-1 
+            
+            elif nums[m] > target:
+                h=m-1
+            else:
+                l=m+1
+                
+        l=0
+        h=len(nums)-1
+        #2nd Binary Search Loop to get upper limit
+        while(l<=h):
+            m=l+(h-l)//2
+            
+            if nums[m] == target:
+                out[1]=m
+                l=m+1
+            
+            elif nums[m] > target:
+                h=m-1
+            else:
+                l=m+1
+        
+        return out

@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        orig = []
+        import random
+        def dfs_travel(root):
+            nonlocal orig
+            if root:
+                dfs_travel(root.left)
+                orig.append(root.val)
+                dfs_travel(root.right)
+        i = 0
+        def dfs_assign(root, nums):
+            nonlocal i
+            if root:
+                dfs_assign(root.left, nums)
+                root.val = nums[i]
+                i+=1
+                dfs_assign(root.right, nums)
+                
+        dfs_travel(root)
+        random.shuffle(orig)
+        orig = sorted(orig)
+        dfs_assign(root, orig)

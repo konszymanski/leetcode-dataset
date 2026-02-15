@@ -1,0 +1,36 @@
+# Runtime: 133 ms, faster than 99.96% of Python3 online submissions for 3Sum Closest.
+# Memory Usage: 14.3 MB, less than 12.36% of Python3 online submissions for 3Sum Closest.
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        max3, min3 = sum(nums[-3:]), sum(nums[:3])
+        if min3 >= target: return min3
+        elif max3 <= target: return max3
+        pivot, leng, ans = 0, len(nums), float(\'inf\')
+        
+        for pivot in range(leng-2):
+            delta = target - nums[pivot]
+            l, r = pivot+1, leng-1
+            if nums[l] + nums[l+1] == delta:
+                return nums[l] + nums[l+1] + nums[pivot]
+            elif nums[r] + nums[r-1] == delta:
+                 return nums[r] + nums[r-1] + nums[pivot]
+            elif nums[l] + nums[l+1] > delta:
+                if abs(target - ans) > abs(delta - nums[l] - nums[l+1]):
+                    ans = nums[l] + nums[l+1] + nums[pivot]
+                return ans
+            elif nums[r] + nums[r-1] < delta:
+                if abs(target - ans) > abs(delta - nums[r] - nums[r-1]):
+                    ans = nums[r] + nums[r-1] + nums[pivot]
+                continue
+            while l < r:
+                v = nums[l] + nums[r]
+                if abs(target - ans) > abs(delta - v):
+                    ans = v + nums[pivot]
+                if v > delta:
+                    r-=1
+                elif v < delta:
+                    l+=1
+                else:
+                    return ans
+        return ans

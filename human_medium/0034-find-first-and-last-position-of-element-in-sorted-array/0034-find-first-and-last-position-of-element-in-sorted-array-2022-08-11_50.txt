@@ -1,0 +1,31 @@
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        left = self.bsearch(True,target,nums)
+        right = self.bsearch(False,target,nums)
+        return [left, right]
+    
+    # leftbias[true/false] , if false res is rightbias
+    # leftbias means that we are looking for the left most index of the target
+    # rightbias means we are looking for the rightmost index of the 
+    # target
+    def bsearch(self,leftbias,target,nums):
+        left,right = 0, len(nums)-1
+        i = -1
+        while left<=right:
+            mid = (left+right)//2
+            if target > nums[mid]:
+                left = mid + 1
+            elif target < nums[mid]:
+                right = mid - 1
+            else:
+                i = mid
+                if leftbias:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+        return i

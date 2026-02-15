@@ -1,0 +1,61 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        row = len(board)
+        col = len(board[0])
+        
+        board_status = dict()
+        board_dict = dict()
+        
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] not in board_dict:
+                    board_dict[board[i][j]] = [(i, j)]
+                else:
+                    board_dict[board[i][j]].append((i, j))
+                    
+                board_status.update({(i, j): False})
+        
+        if word[0] in board_dict:
+            S = board_dict[word[0]]
+            pathStatus = self.callBackTrackFunc(S, word[1:], board_status, board)
+            # print(\'Explored pathstatus: \', pathStatus)
+            return pathStatus
+        else:
+            return False
+        
+    def callBackTrackFunc(self, S, word, board_status, board):
+        row = len(board)
+        col = len(board[0])
+        
+        if word:
+            pathStatus = True
+            for (i, j) in S:
+                newS = list()
+                board_status[(i, j)] = True
+                
+                if j+1 < col and board[i][j+1] == word[0] and board_status[(i, j+1)] == False:
+                    newS.append((i, j+1))
+
+                if i+1 < row and board[i+1][j] == word[0] and board_status[(i+1, j)] == False:
+                    newS.append((i+1, j))
+
+                if j-1 > -1 and board[i][j-1] == word[0] and board_status[(i, j-1)] == False:
+                    newS.append((i, j-1))
+
+                if i-1 > -1 and board[i-1][j] == word[0] and board_status[(i-1, j)] == False:
+                    newS.append((i-1, j))
+
+                # print(\'New Set for i, j ({0},{1}) is {2} \'.format(i, j, newS))
+                if newS:
+                    pathStatus = self.callBackTrackFunc(newS, word[1:], board_status, board)
+                    board_status[(i, j)] = pathStatus
+                    # print(\'Explored path at ({0},{1}) status: {2} \'.format(i, j, pathStatus))
+                    if pathStatus == True:
+                        return True
+                else:
+                    board_status[(i, j)] = False  
+                    pathStatus = False
+                    # print(\'Explored path at ({0},{1}) status: {2} \'.format(i, j, pathStatus))
+            return pathStatus
+        else:
+            return True

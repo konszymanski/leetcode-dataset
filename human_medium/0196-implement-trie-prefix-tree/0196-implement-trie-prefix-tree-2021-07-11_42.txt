@@ -1,0 +1,20 @@
+class Trie:
+
+    def __init__(self):
+        self.trie = {}
+        
+    def insert(self, word):
+        node = self.trie
+        for letter in word + "$":
+            node = node.setdefault(letter, {})
+        
+    def search(self, word, suffix="$"):
+        node = self.trie
+        for letter in word + suffix:
+            if letter not in node:
+                return False
+            node = node[letter]
+        return True
+
+    def startsWith(self, prefix):
+        return self.search(prefix, suffix="")

@@ -1,0 +1,20 @@
+def wordBreak(self, string, wordDict):
+	n = len(string)
+	dp = {}
+	def dfs(i):
+		if i in dp: return dp[i]
+		if i == n: return True
+		if i > n:
+			return False
+
+		for word in wordDict: # check if there is a match for any word form \'wordDict\' starting from index i of \'string\'
+			if i+ len(word) > n: continue
+			if word == string[i:i + len(word)]: # if yes then do the same from i + len(word) => next index from end of match
+				dp[i] = dfs(i + len(word))
+				if dp[i]: return True
+
+		dp[i] = False
+		return dp[i]
+
+	return dfs(0)
+	# like if you find it useful

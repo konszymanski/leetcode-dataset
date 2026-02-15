@@ -1,0 +1,23 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        pre_index, in_index = 0, 0
+        len_tree = len(preorder)
+        def pre_in(right_anc):
+            # build the tree which has the nearest right ancester right_anc
+            nonlocal preorder, inorder, pre_index, in_index, len_tree
+
+            # if the next inorder value is the right ancester, that means the subtree construction is done
+            if pre_index == len_tree or inorder[in_index] == right_anc:
+                return None
+            # consume a value in preorder as the root
+            root = TreeNode(preorder[pre_index])
+            pre_index += 1
+
+            # the left tree is the next tree with the right ancester as this node.
+            root.left = pre_in(root.val)
+            in_index += 1
+
+            # the right tree is the next tree with the right ancester as the right ancester of this node
+            root.right = pre_in(right_anc)
+            return root
+        return pre_in(None)

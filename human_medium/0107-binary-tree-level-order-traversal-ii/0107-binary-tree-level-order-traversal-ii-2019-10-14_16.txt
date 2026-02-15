@@ -1,0 +1,32 @@
+## BCR
+# Runtime: O(n)
+# Space time: O(n)
+from collections import deque
+
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        queue = deque()
+        traversal_output = []
+        
+        if not root:
+            return traversal_output
+        
+        queue.append(root)
+        
+        while queue:
+            level_size = len(queue)
+            level = []
+            
+            for _ in range(level_size):
+                item = queue.popleft()
+                level.append(item.val)
+                
+                if item.left:
+                    queue.append(item.left)
+                
+                if item.right:
+                    queue.append(item.right)
+    
+            traversal_output.append(level)
+                    
+        return reversed(traversal_output)

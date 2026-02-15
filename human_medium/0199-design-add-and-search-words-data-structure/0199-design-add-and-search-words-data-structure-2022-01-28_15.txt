@@ -1,0 +1,19 @@
+class WordDictionary:
+
+    def __init__(self):
+        self.dct = {}
+        
+    def addWord(self, word):
+        if len(word) in self.dct.keys():
+            self.dct[len(word)].append(word)
+        else:
+            self.dct[len(word)] = [word]
+        #print(self.dct)
+        
+    def search(self, word):
+        if len(word) in self.dct.keys():
+            r = re.compile(\'^\' + word + \'$\')
+            return len(list(filter(r.match, self.dct[len(word)])))>0
+			# or you can use this too:  return any(r.match(line) for line in self.dct[len(word)])
+        else:
+            return False

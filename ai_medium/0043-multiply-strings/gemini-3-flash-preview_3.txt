@@ -1,0 +1,38 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either number is "0", the product is "0"
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The result of num1 * num2 can have at most m + n digits
+        res = [0] * (m + n)
+        
+        # Perform digit-by-digit long multiplication from right to left
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                # Calculate the product of the current digits
+                mul = (ord(num1[i]) - ord('0')) * (ord(num2[j]) - ord('0'))
+                
+                # Identify positions in the result array
+                # p2 is the current digit position, p1 is the carry position to the left
+                p1, p2 = i + j, i + j + 1
+                
+                # Add the product to the value already at p2
+                total = mul + res[p2]
+                
+                # Update the digit at p2 with the last digit of the current sum
+                res[p2] = total % 10
+                # Add the carry to the digit at position p1
+                res[p1] += total // 10
+        
+        # The result array may contain leading zeros; determine where the number actually starts
+        start = 0
+        while start < len(res) and res[start] == 0:
+            start += 1
+            
+        # Map the digits starting from the first non-zero to their string representation
+        # and join them to return the final product as a string
+        return "".join(map(str, res[start:]))
+```

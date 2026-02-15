@@ -1,0 +1,16 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        n = len(s)
+        my_dict = {}
+        left = 0
+        right = 0
+        maxSub = 0
+        while n > right:
+            #if it contains in map, then increase the left pointer by one or maximum
+            if s[right] in my_dict:
+                left = max(my_dict[s[right]]+1,left)
+            #if it does not contains in map, then insert the character with there index
+            my_dict[s[right]] = right
+            maxSub = max(maxSub,right-left+1)
+            right += 1
+        return maxSub

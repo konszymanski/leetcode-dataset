@@ -1,0 +1,18 @@
+from collections import deque
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+        dict_ = {}
+        deq = deque([(root, 0)])
+        while deq:
+            node, depth = deq.popleft()
+            depth += 1
+            if node:
+                if depth in dict_:
+                    dict_[depth].append(node.val)
+                else:
+                    dict_[depth] = [node.val]
+                deq.append((node.left, depth))
+                deq.append((node.right, depth))
+        return [val for val in dict_.values()][::-1]

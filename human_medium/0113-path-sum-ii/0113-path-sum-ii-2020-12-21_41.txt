@@ -1,0 +1,13 @@
+def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+    self.output = []
+    self.dfs(root, remaining=sum, path=[])
+    return self.output
+
+def dfs(self, root, remaining, path):
+	if root:
+		if not root.left and not root.right and remaining == root.val: # check if one answer found
+            self.output.append(path + [root.val])
+		if root.left:
+            self.dfs(root.left, remaining - root.val, path + [root.val])
+        if root.right:
+            self.dfs(root.right, remaining - root.val, path + [root.val])

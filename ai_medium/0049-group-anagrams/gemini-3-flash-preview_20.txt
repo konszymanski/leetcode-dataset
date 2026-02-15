@@ -1,0 +1,19 @@
+```python
+from typing import List
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagram_map = {}
+        for s in strs:
+            # Sort the string to create a unique key for anagrams
+            key = "".join(sorted(s))
+            # Group strings by their sorted key
+            if key in anagram_map:
+                anagram_map[key].append(s)
+            else:
+                anagram_map[key] = [s]
+        
+        # Return the groups as a list of lists
+        return list(anagram_map.values())
+
+```

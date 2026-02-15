@@ -1,0 +1,29 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        #below are the two boundary cases
+        if head == None: return None
+        if head.next == None: return head
+        
+        #These are two lists dummy1 will contains nodes with values greater 
+        #than or equal to x
+        #dummy2 will contains nodes with values less than or equal to x
+        dummy1 = ListNode()
+        dummy2 = ListNode()
+        p1 = dummy1
+        p2 = dummy2
+        
+        while head != None:
+            if head.val >= x:
+                newNode = ListNode()
+                newNode.val = head.val
+                p1.next = newNode
+                p1 = p1.next
+            else:
+                newNode = ListNode()
+                newNode.val = head.val
+                p2.next = newNode
+                p2 = p2.next
+            head = head.next
+        #attach the two LLs and make sure to remove the dummy nodes.    
+        p2.next = dummy1.next
+        return dummy2.next

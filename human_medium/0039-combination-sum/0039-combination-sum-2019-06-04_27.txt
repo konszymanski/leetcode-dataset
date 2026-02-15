@@ -1,0 +1,7 @@
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        dp = [[] for i in range(target+1)]
+        for c in sorted(candidates):
+            for j in range(c, target+1):
+                dp[j] += ([l+[c] for l in dp[j-c]] + ([[c]] if j == c else []))
+        return dp[-1]

@@ -1,0 +1,13 @@
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(!n) return 1;                            // when n == 0, answer is always 1
+        if(x == 0 || x == 1 || n == 1) return x;    // if x == 0 or 1, or n is 1, answer = x
+        
+        if(n < 0) return 1/x * myPow(1/x, -(n+1));  // in case n is -ve (condn 3)
+        
+        
+        double half = myPow(x, n/2);               // we use x^n = x^(n/2) * x^(n/2)
+        return half * half * (n&1 ? x : 1);        // in case n is odd, n = n/2 + n/2 + 1
+    }
+};

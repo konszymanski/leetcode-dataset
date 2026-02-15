@@ -1,0 +1,28 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # low: place all 0s behind low
+        # high: place all 2s ahead of high
+        # index: used to traverse the list
+        low = 0
+        high = len(nums) - 1
+        index = 0
+        
+        while index <= high:
+            # 0 - we swap with value at low and increment index and low
+            # this ensures 0s are behind low
+            if nums[index] == 0:
+                nums[index], nums[low] = nums[low], nums[index]
+                index += 1
+                low += 1
+            # 2 - swap with value at high and decrement high
+            # this ensures 2s are ahead of high
+            # we dont increment index yet because after swap we could still have a 2 in that position
+            elif nums[index] == 2:
+                nums[index], nums[high] = nums[high], nums[index]
+                high -= 1
+            # 1 - just increment
+            else:
+                index += 1

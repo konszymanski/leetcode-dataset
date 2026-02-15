@@ -1,0 +1,44 @@
+def countAndSay(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+		#Base Case
+        if n == 1:
+            return "1"
+        
+		#Create our list of sayings. This will be updated on each iteration
+        sayings = ["1"] * n
+        
+        i = 1
+        while i < len(sayings):
+            sayings[i] = sayIt(sayings[i-1])  #call the helper function sayIt on the previous "said" number
+            i += 1
+	
+	    #we need saying[n-1] because of the recurrence relation!
+        return sayings[n-1]
+		
+            
+        
+def sayIt(number):
+    """Return the \'saying\' of a number"""
+    saying = \'\'
+    i = 0
+	count = 0
+    digit = number[i]  #start with the first digit and begin comparing
+    while i < len(number):
+		#if the digit we are on is the same as the digit at the start of the sequence, increase the counter and move to next digit
+        if number[i] == digit:
+            count += 1
+            i += 1
+        
+		#otherwise, we have reached the end of our same digit sequence, so update our saying with the count of the digits and the digit
+		else:
+            saying += str(count)
+            saying += digit
+            digit = number[i]
+            count = 0
+			
+    #add this line at the end because my while loop does not cover the last sequence. this can/should be optimized but i\'m lazy
+    saying += str(count) + str(digit) 
+    return saying

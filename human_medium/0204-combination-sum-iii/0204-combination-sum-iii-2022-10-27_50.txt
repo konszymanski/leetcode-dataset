@@ -1,0 +1,24 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        if k > n:   
+            return []
+        if n > 45:   
+            return []
+     
+        lst = range(1,10)
+
+        ans=[]
+
+        def solve(ind, ds, target):
+            if target == 0 and len(ds) == k: 
+                ans.append(ds[:])
+                return 
+
+            for i in range(ind,len(lst)):
+                if target < lst[i]:
+                    break
+                ds.append(lst[i])      
+                solve(i+1, ds, target-lst[i])   
+                ds.pop()        
+        solve(0,[],n)
+        return ans

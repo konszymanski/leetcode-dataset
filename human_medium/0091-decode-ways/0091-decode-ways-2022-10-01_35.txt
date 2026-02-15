@@ -1,0 +1,28 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        ans = 0
+        dp = {}
+        
+        def solve(s,x,i):
+            if x and x[0] == \'0\':
+                return 0
+            
+            if x and not (1 <= int(x) <= 26):
+                return 0
+            
+            if i >= len(s):
+                return 1
+            
+            if (x, i) in dp:
+                return dp[(x, i)]
+            
+            op1 = solve(s, s[i], i + 1)
+            op2 = 0
+            
+            if i + 1 < len(s): # if check because we dont want to have a case where there is only 1 character left, since its already taken care by op1
+                op2 = solve(s, s[i: i + 2], i + 2)
+            
+            dp[(x, i)] = op1 + op2
+            return dp[(x, i)]
+        
+        return solve(s, \'\', 0)

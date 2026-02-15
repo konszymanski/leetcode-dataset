@@ -1,0 +1,32 @@
+from random import uniform
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        k = len(nums) - k
+        # quick select
+        def quick_select(nums: List[int], k: int) -> int:
+            # base case
+            if len(nums) <= 1:
+                return nums[0]
+            # choose a random pivot
+            pivot = int(uniform(0, len(nums)))
+            # split into left and right
+            left, right = [], []
+            for i, e in enumerate(nums):
+                if i == pivot:
+                    continue
+                if e < nums[pivot]:
+                    left.append(e)
+                else:
+                    right.append(e)
+            # found it? we were lucky...
+            if len(left) == k:
+                return nums[pivot]
+            # keep exploring
+            if k < len(left):
+                return quick_select(left, k)
+            else:
+                return quick_select(right, k - len(left) - 1)
+
+        return quick_select(nums, k)

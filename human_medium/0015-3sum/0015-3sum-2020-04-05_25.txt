@@ -1,0 +1,55 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        zero_count = nums.count(0)
+        if zero_count >= 3:
+            res.append([0, 0, 0])
+            [nums.remove(0) for _ in range(0, zero_count - 1)]
+        
+        nums = sorted(nums)
+        pGroup, nGroup = [], []
+        for n in nums:
+            if n >= 0:
+                pGroup.append(n)
+            else:
+                nGroup.append(n)
+        nlen, plen = len(nGroup), len(pGroup)
+        pSet, nSet = set(pGroup), set(nGroup)
+        
+        if len(nGroup) >= 2:
+            previous_a = None
+            for i in range(nlen - 1):
+                a = nGroup[i]
+                previous_b = None
+                if previous_a == a:
+                    continue
+
+                for j in range(i + 1, nlen):
+                    b = nGroup[j]
+                    if previous_b == b:
+                        continue
+                    
+                    if -(a + b) in pSet:
+                        res.append([-(a + b), a, b])
+                    previous_b = b
+                previous_a = a
+                
+        if len(pGroup) >= 2:
+            previous_a = None
+            for i in range(plen - 1):
+                a = pGroup[i]
+                previous_b = None
+                if previous_a == a:
+                    continue
+
+                for j in range(i + 1, plen):
+                    b = pGroup[j]
+                    if previous_b == b:
+                        continue
+                        
+                    if -(a + b) in nSet:
+                        res.append([-(a + b), a, b])
+                    previous_b = b
+                previous_a = a
+   
+        return res

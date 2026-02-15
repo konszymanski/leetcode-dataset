@@ -1,0 +1,13 @@
+def recursive(self, inorder, postorder):
+        def rec(inorder):
+            # print(inorder, postorder)
+            if len(postorder):
+                value = postorder[-1]
+                node = TreeNode(value)
+                if value not in inorder: return None
+                pos = inorder.index(value)
+                postorder.pop()
+                node.right = rec(inorder[pos + 1:])
+                node.left = rec(inorder[0:pos])
+                return node
+        return rec(inorder)

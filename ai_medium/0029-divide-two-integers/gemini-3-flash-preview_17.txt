@@ -1,0 +1,43 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Constants for 32-bit integer boundaries
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+
+        # Handle overflow specific case
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # Determine the sign of the result
+        negative = (dividend < 0) != (divisor < 0)
+        
+        # Use absolute values for calculation
+        # Python handles arbitrary precision integers, so abs(MIN_INT) will not overflow
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Efficiently subtract divisor using powers of 2
+        while a >= b:
+            temp_divisor, multiple = b, 1
+            # Double the divisor and the multiple as long as it doesn't exceed the dividend
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                multiple <<= 1
+            
+            # Subtract the largest found multiple of the divisor
+            a -= temp_divisor
+            quotient += multiple
+        
+        # Apply the negative sign if necessary
+        result = -quotient if negative else quotient
+        
+        # Ensure the result stays within the 32-bit signed integer range
+        if result > MAX_INT:
+            return MAX_INT
+        if result < MIN_INT:
+            return MIN_INT
+            
+        return result
+
+```

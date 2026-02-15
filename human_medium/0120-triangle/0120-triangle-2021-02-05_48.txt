@@ -1,0 +1,11 @@
+def minimumTotal(self, triangle):
+        """
+        :type triangle: List[List[int]]
+        :rtype: int
+        """
+        for row in reversed(xrange(1,len(triangle))):
+            curr_row = triangle[row]
+            prev_row = triangle[row-1]
+            for i in xrange(len(prev_row)):
+                prev_row[i] += min(curr_row[i], curr_row[i+1])
+        return triangle[0][0]

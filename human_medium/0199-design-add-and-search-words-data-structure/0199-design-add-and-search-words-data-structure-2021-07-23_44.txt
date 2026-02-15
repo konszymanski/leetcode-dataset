@@ -1,0 +1,27 @@
+from collections import defaultdict
+class WordDictionary:
+
+    def __init__(self):
+        self.v=defaultdict(list)
+        
+    def addWord(self, word):
+        self.v[len(word)].append(word)
+        
+    def search(self, word):
+        if len(word) not in self.v:
+            return False
+        l=self.v[len(word)]
+        self.flag=False
+        for i in l:
+            if i[0]==word[0] or word[0]==\'.\':
+                self.find(word,1,i)
+                if self.flag:
+                    return True
+        return False
+		
+    def find(self,word,j,string):
+        if j==len(word):
+            self.flag=True
+            return
+        if string[j]==word[j] or word[j]==\'.\':
+            self.find(word,j+1,string)

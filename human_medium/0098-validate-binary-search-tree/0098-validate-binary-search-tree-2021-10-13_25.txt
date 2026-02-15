@@ -1,0 +1,22 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+
+    def inorderTraversal(self, root, inorder):
+        if root:
+            self.inorderTraversal(root.left, inorder)
+            inorder.append(root.val)
+            self.inorderTraversal(root.right, inorder)
+            
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        inorder = []
+        self.inorderTraversal(root, inorder)
+        """
+            Since inorder traversal of BST gives a sorted array so if inorder traversal of given BST is not sorted then it is not a valid BST.
+            To overcome duplicates we need to verify the length of inorder array and inorder hash set as BST can\'t have duplicates.
+        """
+        return inorder == sorted(inorder) and len(inorder) == len(set(inorder))

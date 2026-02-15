@@ -1,0 +1,8 @@
+import statistics
+class Solution:
+    def minMoves2(self, nums: List[int]) -> int:
+        ans= 0
+        median= statistics.median(nums)
+        for i in nums:
+            ans+= abs(i-median)
+        return int(ans)

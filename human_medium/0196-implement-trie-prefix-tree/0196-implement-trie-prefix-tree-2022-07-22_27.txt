@@ -1,0 +1,50 @@
+class Node:
+    def __init__(self):
+        self.children = {}
+
+class Trie:
+
+    def __init__(self):
+        self.tree = Node()
+    
+    def insert(self, word: str) -> None:
+        node = self.tree
+        for ind, char in enumerate(word):
+            if char in node.children:
+                if ind == len(word) - 1:
+                    if not node.children[char]:
+                        node.children[char] = Node()
+                    node.children[char].children[\'end\'] = True
+                else:
+                    node = node.children[char]
+            else:
+                for i in word[ind:]:
+                    node.children[i] = Node()
+                    node = node.children[i]
+                node.children[\'end\'] = True
+                break
+                
+    def search(self, word: str) -> bool:
+        node = self.tree
+        for ind, char in enumerate(word):
+            if char in node.children:
+                if ind == len(word) - 1:
+                    if \'end\' in node.children[char].children:
+                        return  True
+                    else:
+                        return False
+                node = node.children[char]
+            else:
+                return False
+        return True
+        
+    def startsWith(self, prefix: str) -> bool:
+        node = self.tree
+        for ind, char in enumerate(prefix):
+            if char in node.children:
+                if ind == len(prefix) - 1:
+                    return  True
+                node = node.children[char]
+            else:
+                return False
+        return True

@@ -1,0 +1,20 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        if n > 45: return []
+        
+        res = []
+        currDigits = []
+        
+        def solve(k, currSum, currDigits, i):
+            if k == 0 and currSum == n: 
+                res.append(currDigits[:])
+                return
+            if currSum > n or i == 10 or k == 0: return
+            
+            currDigits.append(i)
+            solve(k - 1, currSum + i, currDigits, i + 1)
+            currDigits.pop()
+            solve(k, currSum, currDigits, i + 1)
+                
+        solve(k, 0, currDigits, 1)
+        return res

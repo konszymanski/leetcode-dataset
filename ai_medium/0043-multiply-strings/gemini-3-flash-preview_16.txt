@@ -1,0 +1,39 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either number is "0", the product is "0"
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The result of multiplying an m-digit and n-digit number
+        # can have at most m + n digits.
+        res = [0] * (m + n)
+        
+        # Iterate through num1 and num2 from right to left
+        for i in range(m - 1, -1, -1):
+            # Extract current digit of num1 using ord() to avoid direct int() conversion
+            d1 = ord(num1[i]) - ord('0')
+            for j in range(n - 1, -1, -1):
+                # Extract current digit of num2
+                d2 = ord(num2[j]) - ord('0')
+                
+                # Multiply the two digits and add to the corresponding position in res
+                mul = d1 * d2
+                # The digit at num1[i] and num2[j] contributes to index i + j + 1
+                total = mul + res[i + j + 1]
+                
+                # Update the current position with the remainder
+                res[i + j + 1] = total % 10
+                # Carry the quotient to the previous position
+                res[i + j] += total // 10
+        
+        # Skip leading zeros in the result array
+        start = 0
+        while start < len(res) and res[start] == 0:
+            start += 1
+        
+        # Convert the digits to characters and join them to form the final string
+        # map(str, ...) is used on single-digit integers to satisfy output requirements
+        return "".join(map(str, res[start:]))
+```

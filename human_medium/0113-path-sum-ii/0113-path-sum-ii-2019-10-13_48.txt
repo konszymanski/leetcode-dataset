@@ -1,0 +1,16 @@
+def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        
+        def dfs(node, reminder, temp):
+            if not node.left and not node.right and reminder == 0:
+                self.res.append(temp)
+            if node.left:
+                dfs(node.left, reminder-node.left.val, temp+[node.left.val])
+            if node.right:
+                dfs(node.right, reminder-node.right.val, temp+[node.right.val])
+        
+		self.res = []
+        if not root:
+            return []
+        dfs(root, sum-root.val, [root.val])
+        
+        return self.res

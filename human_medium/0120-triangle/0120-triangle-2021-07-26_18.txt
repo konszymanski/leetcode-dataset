@@ -1,0 +1,87 @@
+######################################################
+
+#   Top - Down Approach
+
+#   Runtime: 56ms   -   87.68%
+#   Memory: 15MB  -   86.80%
+
+######################################################
+
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        """
+            The logic behind this solution is, given that at a pos j in a row i
+            we will go to either j pos in i + 1 row or j + 1 pos in i + 1 row.
+            We need to find the minSum we can get. If we follow the thought of 
+            choosing j or j + 1 in i + 1th for every ith row, we will leave other 
+            values of each row. But, there is a probability that a path starting with
+            a very large value can lead to min sum if there occurs a very small value
+            in that path. And by our normal approach we won\'t consider that path.
+
+            So, the correct approach is thinking backwards. i.e; at every jth pos of
+            a row from 1 to end or rows from given question we can get to that jth pos
+            either from jth pos or j - 1th pos of i - 1th row. By this approach we
+            consider every paths and if we observe, the last row will have all the min 
+            sums from first row to last row for every columns of last row and we can
+            simply find the min value of that last row.
+        """
+        
+        minSum = float(\'inf\')
+        
+        if len(triangle) == 1: return triangle[0][0]
+        
+        # i represents row, j represents col
+        for i in range(1, len(triangle)):
+            for j in range(len(triangle[i])):
+                # If j == 0 there is no chance for j - 1th index, since j - 1 means -1
+                # So we just add triangle[i - 1][j] to triangle[i][j]
+                if j == 0:
+                    triangle[i][j] += triangle[i - 1][j] 
+                # If j == len(triangle[i]) - 1 there is no chance for jth index, since
+                # it is triangle and number of cols of a row i < number of cols of a 
+                # row i - 1. So we just add triangle[i - 1][j - 1] to triangle[i][j]    
+                elif j == len(triangle[i]) - 1:
+                    triangle[i][j] += triangle[i - 1][j - 1] 
+                # For remaining cases we add to triangle[i][j] whichever of 
+                # triangle[i - 1][j] and triangle[i - 1][j - 1] is smaller 
+                else: triangle[i][j] += min(triangle[i - 1][j], triangle[i - 1][j - 1])
+                
+                # To avoid another loop to find min of last row, we can do here, by
+                # checking if i == len(traingle) - 1 which means last row and if yes
+                # updated that minSum var with min of minSum, triangle[i][j]
+                if i == len(triangle) - 1: 
+                    minSum = min(minSum, triangle[i][j])
+        
+        return minSum
+
+
+######################################################
+
+#   Bottom - Up Approach
+
+#   Runtime: 56ms   -   87.68%
+#   Memory: 15MB  -   86.80%
+
+######################################################
+
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        """
+            This logic is similar to above logic. But only difference is we are
+            going from last row to first row. The advantage with this logic is
+            there is no need for conditions like if j == 0, since at every row i
+            and col j, since we check from bottom to top there is guaranteed to exist
+            i + 1 row jth col and j + 1 th col. So we can directly do 
+            triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1]) for every
+            row -2 to top row.
+            Finally, since we go from bottom to top, we don\'t have to find minSum
+            specially. triangle[0][0] will have the answer
+        """
+
+        # i starts from last but one row and goes to 0th row
+        for i in range(len(triangle)-2,-1,-1):
+            # j starts from 0 and goes to len of that row
+            for j in range(len(triangle[i])):
+                triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1])
+                
+        return triangle[0][0]

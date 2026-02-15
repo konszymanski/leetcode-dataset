@@ -1,0 +1,60 @@
+class Node:
+    def __init__(self):
+        self.children=defaultdict(Node)
+        self.flag=False
+
+
+
+class Trie(object):
+
+    def __init__(self):
+        self.root=Node()
+        
+
+    def insert(self, word):
+        """
+        :type word: str
+        :rtype: None
+        """
+        root=self.root
+        for x in word:
+            root.children[x]
+            root=root.children[x]
+        
+        root.flag=True
+        
+        
+
+    def search(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+        root=self.root
+        
+        for x in word:
+            if x not in root.children:
+                return False
+            root=root.children[x]
+        
+        return root.flag==True
+
+    def startsWith(self, prefix):
+        """
+        :type prefix: str
+        :rtype: bool
+        """
+        root=self.root
+        for x in prefix:
+            if x not in root.children:
+                return False
+            root=root.children[x]
+        return True
+        
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)

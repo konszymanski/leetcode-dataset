@@ -1,0 +1,20 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # Purpose: group the anagrams (word with the same letters)
+        # Method: Dict
+        # Intuition: traverse str, sort word, add to dic (sort word -> word)
+        
+        dic = {}
+        
+        for word in strs:
+            
+            # Example: \'eat\' ==(sort)==> [\'a\',\'e\',\'t\'] ==(join)==> \'aet\'
+            word_sort = \'\'.join(sorted(word))
+            
+            if word_sort not in dic:
+                dic[word_sort] = [word]
+                
+            else:
+                dic[word_sort] += [word]
+                
+        return list(dic.values())

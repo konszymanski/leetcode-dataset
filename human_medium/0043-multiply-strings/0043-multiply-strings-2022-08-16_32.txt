@@ -1,0 +1,27 @@
+def multiply(self, num1: str, num2: str) -> str:
+        """
+		:type num1: string
+		:type num2: string
+		:rtype: string
+		"""
+        def to_int(s):
+            res = 0
+            mag = 1
+            while s:
+                c = s[-1]
+                s = s[:-1]
+                res += int(c)*mag
+                mag *= 10
+            return res
+          
+        res = 0
+        n1 = to_int(num1)
+        n2 = to_int(num2)
+        l1 = reversed(num1)
+        l2 = reversed(num2)
+        m1 = 1
+        m2 = 1
+        for j, b in enumerate(l2):
+            res += (int(b)*m2)*n1
+            m2 *= 10
+        return str(res)

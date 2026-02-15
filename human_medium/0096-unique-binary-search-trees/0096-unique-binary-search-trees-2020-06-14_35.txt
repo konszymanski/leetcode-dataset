@@ -1,0 +1,9 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        
+        @lru_cache(None)
+        def fn(n): 
+            if n <= 1: return 1 #boundary condition
+            return sum(fn(i)*fn(n-1-i) for i in range(n))
+        
+        return fn(n)

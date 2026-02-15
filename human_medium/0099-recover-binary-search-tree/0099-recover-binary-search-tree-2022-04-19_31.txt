@@ -1,0 +1,23 @@
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        
+        def inorder(root):
+            if not root:
+                return 
+            inorder(root.left)
+            ino.append(root.val)
+            inorder(root.right)
+        
+        
+        def rearr(root):
+            if not root:
+                return 
+            rearr(root.left)
+            root.val=ino.pop(0)
+            rearr(root.right)
+        
+        ino=[]
+        inorder(root)
+        ino.sort()
+        rearr(root)
+        return root

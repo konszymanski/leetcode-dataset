@@ -1,0 +1,11 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:  
+        ans = []
+        while True:
+            try: 
+                ans += matrix.pop(0) #take top row
+                ans += [i.pop() for i in matrix] #take right col
+                ans += matrix.pop()[::-1] #take bottom row,
+                ans += [i.pop(0) for i in matrix][::-1] #take left col
+            except IndexError: #when matrix is emptied mission is complete
+                return ans

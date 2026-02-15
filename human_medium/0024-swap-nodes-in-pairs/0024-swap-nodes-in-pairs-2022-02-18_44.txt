@@ -1,0 +1,23 @@
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        dummy.next = head
+        prev = dummy
+        curr = head
+        while curr and curr.next:
+            # saving some pointers
+            # nxtpair we need to do
+            nxtPair = curr.next.next
+            # second node is going to be in the front now
+            second = curr.next
+
+            # swap -> secondnext was supposed to point at nxtpair but now its pointing to curr
+            second.next = curr
+            curr.next = nxtPair
+            prev.next = second
+            
+            # update ptrs, move to the next swap
+            prev = curr
+            curr = nxtPair
+
+        return dummy.next

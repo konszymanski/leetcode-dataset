@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # 32-bit signed integer limits
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+        
+        # Handle the overflow case specifically as mentioned in the constraints
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # Determine the sign of the final quotient
+        negative = (dividend < 0) ^ (divisor < 0)
+        
+        # Use absolute values for calculation
+        a, b = abs(dividend), abs(divisor)
+        res = 0
+        
+        # Efficiently find the quotient using bit shifts (powers of 2)
+        while a >= b:
+            temp_divisor, count = b, 1
+            # Shift the divisor left until it's just below the current dividend
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                count <<= 1
+            
+            # Subtract the largest power-of-two multiple of divisor found
+            a -= temp_divisor
+            res += count
+            
+        # Apply the sign and ensure the result stays within 32-bit bounds
+        result = -res if negative else res
+        
+        return max(MIN_INT, min(MAX_INT, result))
+
+```

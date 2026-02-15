@@ -1,0 +1,35 @@
+def generateParenthesis(self, n: int) -> List[str]:
+	# Store the valid solutions we encounter
+	output = []
+        
+	def dfs(open_brackets=0, closed_brackets=0, s=\'\'):
+	    # If there are n opened and closed brackets
+	    if open_brackets == n and closed_brackets == n:
+	        # Append the valid solution to the output array
+	        output.append(curr)
+	        # Do not continue searching from this state
+	        return
+            
+        # If we can place an open bracket
+        if open_brackets < n:
+            # Add an open bracket
+            curr += \'(\'
+            # Explore states based on this one
+            dfs(open_brackets + 1, closed_brackets, curr)
+            # Backtrack by removing the open bracket we placed
+            curr = curr[:-1]
+                
+        # If we haven\'t closed all open brackets
+        if closed_brackets < open_brackets:
+            # Add a close bracket
+            curr += \')\'
+            # Explore states based on this one
+            dfs(open_brackets, closed_brackets + 1, curr)
+            # Backtrack by removing the closed bracket
+            curr = curr[:-1]
+
+    # Begin the depth-first search
+    dfs()
+        
+    # Return the array of valid solutions
+    return output

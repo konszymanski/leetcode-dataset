@@ -1,0 +1,14 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        output = [] # array to hold the differences of prices between the consecutive days
+        i = 0 # initialise 2 pointers; i and j
+        j = i + 1
+        while i < len(prices) - 1: # keep iterating til our pointers reach the last pair
+            output.append(prices[j] - prices[i])  # append each difference to the output array
+            i += 1  # increment our pointers
+            j +=1
+        profit = 0
+        for elem in output: # iterate thru the values we have gathered into our array
+            if elem > 0: # if each element is not negative
+                profit += elem  # add it to our existing profit
+        return profit  # finally we return our profit

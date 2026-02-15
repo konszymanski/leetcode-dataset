@@ -1,0 +1,24 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self.original = s
+        self.limit = 255
+        ips = []
+        self.conquer(s, ips, [])
+        return ips
+
+
+    def conquer(self, s, ips, ip):
+        if len(ip) > 4:
+            return
+
+        if len(ip) == 4:
+            ## checking if there s is empty but also if I have modified the presence of 0s
+            if len(s) == 0 and self.original == \'\'.join(ip):
+                ips.append(\'.\'.join(ip))
+            return
+
+        n = int(s[:1]) if s[:1] else 0
+        while s and n <= self.limit:
+            self.conquer(s[1:], ips, ip + [str(n)])
+            s = s[1:]
+            n = n*10 + int(s[:1]) if s[:1] else 0

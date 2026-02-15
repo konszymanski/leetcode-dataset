@@ -1,0 +1,29 @@
+def rob(self, nums: List[int]) -> int:
+
+        # Sanity check for an empty neighborhood 
+        if not nums: return 0
+
+        # Two base cases:
+        rob1 = 0  # start at the beginning, we have not robbed any houses
+        rob2 = nums[0]  # however, we could choose to rob the first house
+        
+        # Visit the remaining houses, after the first one
+        # NOTE: In the case of only one house, this `for` statement never runs and the best we could do is simply robbing the first house
+        for n in nums[1:]:
+            
+            # What\'s better:
+            #  1) Rob the previous house and skip the current one: `rob2`
+            #  2) Rob the current house and keep deciding: `rob1 + n`
+            # NOTE: On the first iteration, this simply compares the first two houses. Afterward, it is the recurrence relationship
+            local_best = max(rob2, rob1 + n)  
+            
+            # move up our robber and the value we\'ve seen so far
+			# NOTE: On the first iteration, this sets our "previous" house as the first one `nums[0]`. Afterward, it holds the running value of the recurrent relationship.
+            rob1 = rob2
+            
+            # what was the best, local robbery decision so far?
+            # NOTE: After the first iteration, this variable stores the max value of the recurrence relationship so far
+            rob2 = local_best
+
+        # return the max, total value we found after visiting all houses
+        return rob2

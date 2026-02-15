@@ -1,0 +1,20 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        
+        nums.sort()
+        def recur(index,asf):
+		
+            ans.append(asf)
+			
+            if index>=len(nums): #base case
+                return
+				
+            s=set()
+            for i in range(index,len(nums)):
+                if nums[i] not in s:
+                    s.add(nums[i])
+                    recur(i+1,asf+(nums[i],))
+		#main====================================			
+        ans=[]               
+        recur(0,tuple())
+        return ans

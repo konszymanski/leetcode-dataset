@@ -1,0 +1,15 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        for i, j in product(range(len(obstacleGrid)), range(len(obstacleGrid[0]))):  # you can split this into two for loops if you want
+            """
+            If obstacleGrid[i][j] is an obstacle, its number of paths is immediately 0.
+            Otherwise, the number of paths is:
+              - The number of paths to (x-1, y), if it exists;
+              - Plus the number of paths to (x, y-1), if it exists;
+              - Handling the starting point by setting it to 1
+            """
+            obstacleGrid[i][j] = 0 if obstacleGrid[i][j] else \\
+                                 (obstacleGrid[i-1][j] if i > 0 else 0) + \\
+                                 (obstacleGrid[i][j-1] if j > 0 else 0) + \\
+                                 (i == 0 and j == 0)                       
+        return obstacleGrid[-1][-1]

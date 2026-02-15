@@ -1,0 +1,25 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        results = []
+        candidates.sort()
+        
+        def backtrack(remain, start, path):
+            if remain == 0:
+                results.append(list(path))
+                return
+            
+            for i in range(start, len(candidates)):
+                if candidates[i] > remain:
+                    break
+                
+                path.append(candidates[i])
+                # We use 'i' as the next start index because we can reuse the current candidate
+                backtrack(remain - candidates[i], i, path)
+                path.pop()
+                
+        backtrack(target, 0, [])
+        return results
+```

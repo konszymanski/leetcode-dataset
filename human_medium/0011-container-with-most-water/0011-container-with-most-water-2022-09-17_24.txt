@@ -1,0 +1,13 @@
+def find_amount(height):
+    max_water_amount = float("-inf")
+    stack = [[-1, -1]]
+    for curr_indx in range(len(height)):
+        if height[curr_indx] > stack[-1][1]:
+            prev_indx, prev_height = stack.pop()
+             max_water_amount = max(max_water_amount, (curr_indx - prev_indx)*prev_height)
+            stack.append([curr_indx, height[curr_indx]])
+        else:
+            max_water_amount = max(max_water_amount, (curr_indx - stack[-1][0])*height[curr_indx])
+    return max_water_amount
+        
+return max(find_amount(height), find_amount(height[::-1]))

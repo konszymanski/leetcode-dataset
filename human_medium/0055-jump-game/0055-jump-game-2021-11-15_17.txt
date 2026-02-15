@@ -1,0 +1,6 @@
+def canJump(self, nums: List[int]) -> bool:
+	for idx in range(len(nums)-1):
+		if nums[idx] ==0: return False # if any prev element is zero => not possible
+		nums[idx+1] = max(nums[idx]-1,nums[idx+1])
+	return True # if you reached till end => possible (last element can be zero)
+	# like if you find it useful

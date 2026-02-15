@@ -1,0 +1,18 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        
+        q = deque([root])  # instantiate queue with first node val
+        right_most_vals = []  # output array
+        
+        while q:
+            for _ in range(len(q)):  # handles level order traversal
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            right_most_vals.append(node.val)
+            
+        return right_most_vals

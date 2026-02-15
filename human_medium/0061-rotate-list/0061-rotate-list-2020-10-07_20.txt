@@ -1,0 +1,19 @@
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if not head or not k: return head      # special cases
+        tail = cur = head
+        n = 0
+        while cur and cur.next:                # get size of linked list
+            cur = cur.next
+            n += 1
+        tail = cur                             # get the tail
+        n += 1                                 # adjust the size
+        k = k % n                              # take mod of k in case k > n
+        if not k: return head                  # if k is zero, no rotation
+        n = n-k-1                              # locate new head node
+        cur = head        
+        for _ in range(n): cur = cur.next
+        new_head = cur.next                    # get the new head
+        cur.next = None                        # delink tail
+        tail.next = head                       # connect tail to original head
+        return new_head

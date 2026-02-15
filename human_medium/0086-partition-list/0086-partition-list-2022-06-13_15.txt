@@ -1,0 +1,26 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        curr_head = head 
+        l1 = []
+        l2 = []
+        while curr_head:
+            if curr_head.val < x:
+                l1.append(curr_head.val)
+           
+            else:
+                l2.append(curr_head.val)
+            curr_head = curr_head.next
+        
+        p1 = head 
+        while l1:
+            p1.val = l1[0]
+            l1.remove(l1[0])
+            p1 = p1.next 
+      
+        p2 = p1
+        while l2:
+            p2.val = l2[0]
+            l2.remove(l2[0])
+            p2 = p2.next 
+        
+        return head

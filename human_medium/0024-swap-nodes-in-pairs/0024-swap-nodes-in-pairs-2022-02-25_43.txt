@@ -1,0 +1,29 @@
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Purpose: to swap every two nodes in linked list
+        # Method: two pointers
+        # Intuition: save p., reverse pair, move forward
+        
+        # init
+        dummy = ListNode(0, head)
+        pre = dummy
+        first = head
+        
+        # run 
+        while first and first.next:
+        
+            # save p.
+            second = first.next
+            next_first = second.next
+            
+            # reverse pair
+            second.next = first
+            first.next = next_first
+            pre.next = second
+            
+            # move forward
+            pre = first
+            first = next_first
+        
+        # return
+        return dummy.next

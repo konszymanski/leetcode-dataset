@@ -1,0 +1,20 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        queueSums = [([], 0)]
+        res = []
+        for i in range(len(candidates)):
+            newList = []
+            while queueSums:
+                curList, curSum = queueSums.pop(0)
+                mult = 1
+                newList.append((curList, curSum))
+                while curSum + (candidates[i]*mult) < target:
+                    newList.append((curList + [candidates[i]]*mult, curSum + (candidates[i]*mult)))
+                    mult += 1
+                if curSum + (candidates[i]*mult) == target:
+                    res.append(curList + [candidates[i]]*mult)    
+            
+            queueSums = newList
+        
+        
+        return res

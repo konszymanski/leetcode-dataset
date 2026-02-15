@@ -1,0 +1,19 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        ret = []
+        self.helper(ret, [], s)
+        return ret
+    
+    def helper(self, ret, curr, s):
+        if s == "":
+            ret.append(curr)
+        
+        for i in range(len(s)):
+            if self.isPalin(s[:i + 1]):
+                self.helper(ret, curr + [s[:i + 1]], s[i + 1:])
+        
+    def isPalin(self, s):
+        for i in range(len(s) // 2):
+            if s[i] != s[len(s) - 1 - i]:
+                return False
+        return True

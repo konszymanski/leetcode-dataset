@@ -1,0 +1,39 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        # Check if the combined length of s1 and s2 matches s3
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        if n1 + n2 != n3:
+            return False
+        
+        # Space optimization: ensure s2 is the shorter string
+        # This guarantees that additional memory used is O(min(len(s1), len(s2)))
+        if n1 < n2:
+            s1, s2 = s2, s1
+            n1, n2 = n2, n1
+            
+        # dp[j] will store whether s3[0...i+j-1] is an interleaving of s1[0...i-1] and s2[0...j-1]
+        dp = [False] * (n2 + 1)
+        
+        # Base case: empty strings s1, s2, and s3
+        dp[0] = True
+        
+        # Initialize dp array for s2 when s1 is empty (i = 0)
+        for j in range(1, n2 + 1):
+            dp[j] = dp[j-1] and s2[j-1] == s3[j-1]
+            
+        # Iterate through s1 characters
+        for i in range(1, n1 + 1):
+            # Update dp[0] for current row i (when s2 is empty, j = 0)
+            dp[0] = dp[0] and s1[i-1] == s3[i-1]
+            
+            # Iterate through s2 characters
+            for j in range(1, n2 + 1):
+                # Transition: 
+                # dp[j] (from i-1) indicates if s3[0...i+j-2] was interleaving with s1[0...i-2] and s2[0...j-1]
+                # dp[j-1] indicates if s3[0...i+j-2] was interleaving with s1[0...i-1] and s2[0...j-2]
+                dp[j] = (dp[j] and s1[i-1] == s3[i+j-1]) or (dp[j-1] and s2[j-1] == s3[i+j-1])
+                
+        return dp[n2]
+
+```

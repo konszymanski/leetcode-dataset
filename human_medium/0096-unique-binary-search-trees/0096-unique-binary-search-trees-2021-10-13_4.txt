@@ -1,0 +1,20 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        cache = {}  # to store results
+        
+        def dp(start: int, end: int) -> int:
+            if end <= start:  # this is an invalid subsequence of nodes
+                return 1      # return 1 because 1 will not affect the multiplication formula
+            elif (start, end) in cache.keys():
+                return cache[(start, end)]  # use saved result
+            result = 0
+            for i in range(end-start+1):          # let each node be the root node once
+				# now that the node start+i is the root node,
+				# left subtree: start ~ (start+i)-1,
+				# right subtree: (start+i)+1 ~ end
+                result += dp(start, start+i-1) \\  # distinct structures of the left subtree
+						* dp(start+i+1, end)      # distinct structures of the right subtree
+            cache[(start, end)] = result  # store the result
+            return result
+        
+        return dp(1, n)  # inclusive

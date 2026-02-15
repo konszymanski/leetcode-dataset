@@ -1,0 +1,28 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = [[] for _ in range(numCourses)]
+        for crs, pre in prerequisites:
+            graph[crs].append(pre)
+        
+        track = []
+        visited = [0] * numCourses
+        
+        def traverse(course):
+            if visited[course] == 1:
+                return True
+            if visited[course] == -1:
+                return False
+            
+            visited[course] = -1
+            if graph[course]:
+                for pre in graph[course]:
+                    if not traverse(pre):
+                        return False
+            visited[course] = 1
+            track.append(course)
+            return True
+                
+        for i in range(numCourses):
+            if not traverse(i):
+                return []
+        return track

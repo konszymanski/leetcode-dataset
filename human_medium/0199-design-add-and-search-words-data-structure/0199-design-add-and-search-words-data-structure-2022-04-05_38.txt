@@ -1,0 +1,32 @@
+class WordDictionary:
+
+    def __init__(self):
+        self.d = {}
+
+    def addWord(self, word: str) -> None:
+        p = self.d
+        for c in word:
+            if c not in p:
+                p[c] = {}
+            p = p[c]
+        
+        p[\'#\'] = {} 
+                
+
+    def search(self, word: str) -> bool:
+        def dfs(word, d, i):
+            if i == len(word):                
+                return \'#\' in d
+                                    
+            c = word[i]
+            res = False
+            
+            if c == \'.\':
+                for cc in d:                    
+                    res = res or dfs(word, d[cc], i+1)
+            elif c in d:                
+                res = dfs(word, d[c], i+1)
+                
+            return res 
+            
+        return dfs(word, self.d, 0)

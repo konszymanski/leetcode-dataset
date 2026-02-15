@@ -1,0 +1,26 @@
+# Recursive Solution
+# Time:  Worst Case: O(n*4^n)    Best Case: O(n*3^n)
+# Space: Worst Case: O(4^n)      Best Case: O(3^n)
+class Solution:
+    def __init__(self):
+        self.digitToCharacters = {                                              # Mapping of digits to a string containing its possible character values.
+            \'2\': \'abc\',                                                         # We use a string here instead of a list to be more efficient with memory. 
+            \'3\': \'def\',                                                         # We also initialize this map in __init__ since we are using a recursive solution.
+            \'4\': \'ghi\',
+            \'5\': \'jkl\',
+            \'6\': \'mno\',
+            \'7\': \'pqrs\',
+            \'8\': \'tuv\',
+            \'9\': \'wxyz\'
+        }
+        
+    def letterCombinations(self, digits: str) -> List[str]:
+        if len(digits) == 0: return []                                          # No possible character combinations.
+        if len(digits) == 1: return list(self.digitToCharacters[digits])        # Only combinations are from the string given by the single digit.
+        
+        combinations = []
+        for character in self.digitToCharacters[digits[0]]:                     # Loop of characters for first digit.
+            for subCombination in self.letterCombinations(digits[1:]):          # Recursive loop for possible combinations using next digit(s).
+                combinations.append(character + subCombination)                 # Add combination to list.
+        
+        return combinations                                                     # Return combinations for current and next digit(s).

@@ -1,0 +1,16 @@
+def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+	if not len(inorder) or not len(postorder):
+			return None
+
+		#get root
+		root_val = postorder.pop()
+		root_index = inorder.index(root_val)
+
+		#after popping the root, the last element that you have in postorder, is the root of the right subtree
+		#so deal with it first, unlike what you do for a preorder sequence.
+		right_subtree = self.buildTree(inorder[root_index+1:], postorder)
+		left_subtree = self.buildTree(inorder[:root_index], postorder)
+
+		root = TreeNode(root_val, left_subtree, right_subtree)
+
+		return root

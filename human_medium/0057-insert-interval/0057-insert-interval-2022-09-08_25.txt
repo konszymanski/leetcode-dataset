@@ -1,0 +1,21 @@
+class Solution:
+    def insert(self, interval: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        i=0
+        ans=[newInterval]
+        while i<len(interval):
+            n=len(ans)-1
+            if interval[i][0]<= ans[n][0] <=interval[i][1] or interval[i][0]<= ans[n][1] <=interval[i][1] or ans[n][0]<= interval[i][0] <=ans[n][1] or ans[n][0]<= interval[i][1] <=ans[n][1]:
+                new_int_st=min(ans[n][0],interval[i][0])
+                new_int_end=max(ans[n][1],interval[i][1])
+                ans.pop()
+                ans.append([new_int_st,new_int_end])
+            else:
+                # print(interval[i],ans[n])
+                if ans[n][0]>interval[i][0]:
+                    ans.insert(n,interval[i])
+                else:
+                    ans.append(interval[i])
+                # print(ans)
+            i+=1
+                    
+        return ans

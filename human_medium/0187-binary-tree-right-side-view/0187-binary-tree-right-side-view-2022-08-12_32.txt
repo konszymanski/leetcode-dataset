@@ -1,0 +1,20 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        hashmap = defaultdict(list)
+        
+        def dfs(node, height):
+            if not node:
+                return
+            
+            hashmap[height].append(node.val)
+            
+            dfs(node.left, height + 1)
+            dfs(node.right, height + 1)
+            
+        dfs(root, 0)
+        
+        for key in hashmap.keys():
+            res.append(hashmap[key][-1])
+            
+        return res

@@ -1,0 +1,19 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:  # Time: O(n) and Space: O(n)
+        intervals.sort(key=lambda i: i[0])  # sorting the intervals based on their first keys
+        output = [intervals[0]]             # since there will be least one interval, so we take the first interval as the resultant interval
+        
+        for start, end in intervals[1:]:    # we will iterate every interval using its start and ends values
+            lastEnd = output[-1][1]         # lastEnd will have the value of results last interval value
+            
+			if start <= lastEnd:          
+			    # if the start of new interval is less than the end of previous one 
+			    # means the current interval starts from in between the previous interval, 
+			    # so from both the overlapping intervals end we will select the maximum end value point as the ending of this newly joined interval
+                output[-1][1] = max(lastEnd, end) 
+				
+            else:                         
+			    # when it\'s not overlapping means there are two different intervals 
+                output.append([start, end])
+                
+        return output

@@ -1,0 +1,7 @@
+from itertools import chain, cycle
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        substrs = [[] for _ in range(numRows)]
+        for ch, i in zip(s, cycle(chain(range(numRows), range(numRows-2,0,-1)))):
+            substrs[i].append(ch)
+        return \'\'.join([\'\'.join(x) for x in substrs])

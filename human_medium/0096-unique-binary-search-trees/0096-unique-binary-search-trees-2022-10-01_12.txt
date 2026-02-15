@@ -1,0 +1,26 @@
+def numTrees(self, n: int) -> int:
+        
+        # create a cache to store number of tree from number of nodes available
+        # base case is for 0 and 1 number of trees will be 1
+        cache = [1] * (n + 1)
+        
+        # iterate from 2 to n + 1
+        for nodes in range(2, n + 1):
+            
+            # total to store number of trees that can be formed
+            total = 0
+            
+            # now check number of tree at left and right from 1 to number of current nodes
+            for root in range(1, nodes + 1):
+                
+                # at left number of node will be root - 1
+                # at right number of node will be number of current node - root node
+                left = root - 1
+                right = nodes - root
+                total += cache[left] * cache[right]
+                
+            # assign total to nodes in cache
+            cache[nodes] = total
+                
+        # return count at n in cache
+        return cache[n]

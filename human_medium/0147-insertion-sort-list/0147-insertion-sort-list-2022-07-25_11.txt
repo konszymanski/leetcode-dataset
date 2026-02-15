@@ -1,0 +1,35 @@
+def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+	def helper(head1,head): #finding the right place to insert the node
+		head.next = None # to avoid cyclic Linked list
+		if not head1: # for the first node
+			head1 = head
+			return head1
+		elif head1.val >= head.val: # if the incoming new node is smaller the previous head
+			temp = head
+			temp.next = head1
+			head1 = temp
+			return head1
+		else: # if the new node should go in between the Linked List
+			ptr = head1
+			while ptr.next:
+				if ptr.next.val < head.val:
+					ptr = ptr.next
+					continue
+				else:
+					temp = ptr.next
+					ptr.next = head
+					head.next = temp
+					return head1
+			ptr.next = head
+			return head1
+
+
+	head1 = None
+	while head:
+		temp = head.next
+		# as we break (head.next = None) in the helper function we 
+		#need to have pointer to the next
+
+		head1 = helper(head1,head)
+		head = temp
+	return head1

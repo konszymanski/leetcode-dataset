@@ -1,0 +1,21 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        if len(s) < 10:
+            return []
+        chars = {\'A\':1,\'C\': 2,\'G\': 3,\'T\': 4}
+        windowHash =  0
+        for i in range(10):
+            windowHash = windowHash + (chars[s[i]] * 10 ** i)
+        # windowHash. for example
+        # AAAAAGGTTT => maps to 4443311111 (the order is reversed)
+        seqs = set([windowHash])
+        res = set()
+        for i in range(1, len(s) - 9):
+            # remove from window
+            windowHash = windowHash // 10
+            # add to window
+            windowHash = windowHash + (chars[s[i+9]] * 10 ** 9)
+            if windowHash in seqs:
+                res.add(s[i:i+10])
+            seqs.add(windowHash)
+        return list(res)

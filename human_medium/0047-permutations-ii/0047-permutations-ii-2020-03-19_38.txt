@@ -1,0 +1,21 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        dic = {}
+		nums.sort()
+        for num in nums:
+            dic[num] = dic.get(num,0)+1
+        res = []
+        self.bt(nums, [], dic, res)
+        return res
+    
+    def bt(self, nums, tempList, dic , res):
+        if len(nums) == len(tempList):
+            res.append(tempList)
+            return
+        for i in range(len(nums)):
+            if i>0 and nums[i]==nums[i-1]:
+                continue
+            if dic[nums[i]]>0:
+                dic[nums[i]]-=1
+                self.bt(nums, tempList+[nums[i]], dic, res)
+                dic[nums[i]]+=1

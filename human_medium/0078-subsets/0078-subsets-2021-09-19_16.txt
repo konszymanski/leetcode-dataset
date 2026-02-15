@@ -1,0 +1,19 @@
+# Runtime: 32 ms, faster than 83.27%
+    # Memory Usage: 14.5 MB, less than 50.73%
+    #
+    # note:
+    #     * use a bitmap, each bit represent whethre an element in @nums appears
+    #       in a subset, e.g., for [1,2,3], 101 => [1,3]
+    #     * for @nums of length n, we need n bits, so the bitmap would be from 0
+    #       to 2**(n-1)
+    #     * then each bit in the bitmap is tested, if the bit is 1, the
+    #       corresponding element in @nums appears in the current subset
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        for bitmap in range(2**len(nums)): # O(2**n)
+            cur = []
+            for i in range(len(nums)):     # O(n)
+                if bitmap & 2**i:          # note it is 2**i
+                    cur.append(nums[i])
+            res.append(cur)
+        return res

@@ -1,0 +1,25 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        self.n = len(s)
+        self.s = s
+        
+        return self.explore(0)
+    
+    @cache
+    def explore(self, idx):
+        n = self.n
+        s = self.s
+
+        if idx == n:
+            return 1
+        
+        if idx > n or s[idx] == \'0\':
+            return 0
+        
+        a = self.explore(idx + 1)
+        b = 0
+        
+        if idx < n - 1 and s[idx] != \'0\' and s[idx:idx+2] <= \'26\':
+            b = self.explore(idx + 2) 
+            
+        return a + b

@@ -1,0 +1,18 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        is_negative = (dividend >= 0) ^ (divisor >= 0) #using XOR is more eligent
+        dividend, divisor = abs(dividend), abs(divisor)
+        
+        #special case -> no computation needed
+        if divisor == 1:
+            return -dividend if is_negative else min(dividend, 2**31-1)
+        
+        ans, head = 0, 30 #intilize answer & binary head (from max position)
+        while head >= 0:
+            test = divisor << head 
+            if test <= dividend: #test whether this number is large enough
+                dividend -= test
+                ans |= 1 << head #add 2^head to ans
+            else:
+                head -= 1 #move binary head backward
+        return -ans if is_negative else ans

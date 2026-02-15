@@ -1,0 +1,26 @@
+from collections import defaultdict
+
+class Solution:
+    
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        self.graph = defaultdict(list)
+        self.visiting = set()
+        self.visited = set()
+        for course, prereq in prerequisites:
+            self.graph[course].append(prereq)
+        for course in range(numCourses):
+            if self.dfs(course):
+                return False
+        return True
+
+    def dfs(self, course):
+        if course in self.visited:
+            return False
+        if course in self.visiting:
+            return True
+        self.visiting.add(course)
+        for dep in self.graph[course]:
+            if self.dfs(dep):
+                return False
+        self.visiting.remove(course)
+        self.visited.add(course)

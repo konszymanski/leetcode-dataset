@@ -1,0 +1,50 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        R, C = len(board), len(board[0])
+        
+        # Pruning: If the word is longer than the number of cells, it's impossible.
+        if len(word) > R * C:
+            return False
+        
+        # Pruning: Check if the grid has enough of each character required by the word.
+        board_counts = Counter(c for r in board for c in r)
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Pruning: Start searching from the end that has a rarer character to minimize branching.
+        if board_counts[word[0]] > board_counts[word[-1]]:
+            word = word[::-1]
+            
+        def dfs(r, c, k):
+            # Base case: entire word has been matched.
+            if k == len(word):
+                return True
+            
+            # Boundary check and character mismatch check.
+            if not (0 <= r < R and 0 <= c < C) or board[r][c] != word[k]:
+                return False
+            
+            # Mark the current cell as visited using a character not in the alphabet.
+            tmp, board[r][c] = board[r][c], "#"
+            
+            # Recursively explore adjacent neighbors. Python's 'or' operator short-circuits, 
+            # so the search stops as soon as a valid path is found.
+            res = (dfs(r + 1, c, k + 1) or 
+                   dfs(r - 1, c, k + 1) or 
+                   dfs(r, c + 1, k + 1) or 
+                   dfs(r, c - 1, k + 1))
+            
+            # Backtrack: Restore the original character to the cell.
+            board[r][c] = tmp
+            return res
+        
+        # Start DFS from every cell in the grid.
+        return any(dfs(r, c, 0) for r in range(R) for c in range(C))
+
+```

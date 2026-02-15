@@ -1,0 +1,18 @@
+op = []
+        for t in tokens:
+            if t not in "*-/+":
+                op.append(int(t))
+            else:
+                op2 = op.pop()
+                op1 = op.pop()
+                res = 0
+                if t == "+":
+                    res = op1 + op2
+                elif t == "-":
+                    res = op1 - op2
+                elif t == "*":
+                    res = op1 * op2     
+                else:
+                    res = int(op1 / op2)
+                op.append(res)
+        return op[0]

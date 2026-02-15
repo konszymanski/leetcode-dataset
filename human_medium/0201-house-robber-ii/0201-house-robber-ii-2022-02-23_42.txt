@@ -1,0 +1,24 @@
+def rob(self, nums: List[int]) -> int:
+
+	# If length of input is at most three, we cannot combine any houses (it\'s just a 
+	# triagle - so we will choose only the highest valuated vertex
+	if len(nums) < 4:
+		return max(nums)
+
+	# Now we split our solution into 2 cases:
+	# In the first one we include the first house in (and so we have to exclude the
+	# last one) and in the second case we exclude the first house
+	first_in = nums[:len(nums) - 1]
+	first_out = nums[1:]
+
+	# Now we are computing our solution using previously computed values 
+	# just using dynamic programming principle
+	# NOTE: We are starting at index 2 since we mustn\'t take 2 neighbouring houses
+	for i in range(2, len(first_in)):
+		first_in[i] += first_in[i-2] if i < 3 else max(first_in[i-2], first_in[i-3])
+		first_out[i] += first_out[i-2] if i < 3 else max(first_out[i-2], first_out[i-3])
+
+	# We return a maximum computed vlaue of both computed solutions
+	# NOTE: The solution is always stored in one of the last 2 positions of each list
+	# taking max value like that is only for simplicity of code
+	return max(max(first_in), max(first_out))

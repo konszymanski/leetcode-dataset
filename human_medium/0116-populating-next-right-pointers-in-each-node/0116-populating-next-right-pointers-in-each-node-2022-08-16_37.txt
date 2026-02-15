@@ -1,0 +1,25 @@
+class Solution:
+    def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+       
+	   if not root:return root
+        
+        queue = [root]
+        
+        while queue:
+            for _ in range(len(queue)):
+                curr = queue.pop(0)
+                
+				# Set current.next to the next element in queue
+                if queue:
+                    curr.next = queue[0]
+                
+                if curr.left:
+                    queue.append(curr.left)
+                
+                if curr.right:
+                    queue.append(curr.right)
+            
+			#End of Level 
+			curr.next = None
+        
+        return root

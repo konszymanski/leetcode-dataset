@@ -1,0 +1,23 @@
+class BSTIterator {
+    
+    Queue<TreeNode> q;
+    public BSTIterator(TreeNode root) {
+        q = new LinkedList();
+        populate(root);
+    }
+    
+    public int next() {
+        return q.poll().val;
+    }
+    
+    public boolean hasNext() {
+        return !q.isEmpty();
+    }
+    
+    private void populate(TreeNode root){
+        if(root == null)    return;
+        populate(root.left);
+        q.offer(root);
+        populate(root.right);
+    }
+}

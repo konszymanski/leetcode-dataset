@@ -1,0 +1,28 @@
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        curr = temp = head
+        nxt = None
+        prev = None
+        count = 0
+
+        # check if next count is equal to 2
+        while temp and count<2:
+            temp = temp.next
+            count += 1
+        if count < 2: 
+            return curr
+
+        # if 2 nodes then reverse
+        count = 0
+        while curr and count<2:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+            count += 1
+
+        # reverse next 2
+        if nxt :
+            head.next = self.swapPairs(nxt)
+
+        return prev

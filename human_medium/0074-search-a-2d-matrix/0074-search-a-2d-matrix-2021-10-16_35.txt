@@ -1,0 +1,2 @@
+# applying sum on list of lists to "flatten" it.
+return target in sum(matrix, [])

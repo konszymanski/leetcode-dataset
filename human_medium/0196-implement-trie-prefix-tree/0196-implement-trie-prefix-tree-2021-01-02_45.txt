@@ -1,0 +1,82 @@
+# reference : https://www.youtube.com/watch?v=giiaIofn31A&ab_channel=MichaelMuinos
+
+class TreeNode:
+    def __init__(self,val):
+        self.val  = val
+        self.subs = dict() # char -> Node
+        self.isword = False
+
+class Trie:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        # Dummy head
+        self.root = TreeNode(\'\\0\')
+        
+
+    def insert(self, word: str) -> None:
+        """
+        Inserts a word into the trie.
+        """
+        # current node to traverse
+        curr = self.root
+        
+        for char in word:
+            
+            # if not a children then create it
+            if char not in curr.subs:
+                curr.subs[char] = TreeNode(char)
+                
+            # traverse the pointer for next loop
+            curr = curr.subs[char]
+            
+        # IMPORTANT: Make sure to set isword true
+        curr.isword = True
+        
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the trie.
+        """
+        # Current pointer to traverse through
+        curr = self.root
+        
+        # Loop through each char in the word
+        for char in word:
+            
+            # If not a children then it doesnt exist!
+            if char not in curr.subs:
+                return False
+            
+            # Traverse
+            curr = curr.subs[char]
+            
+        # MAKE SURE to check if its a word
+        return curr.isword
+        
+
+    def startsWith(self, prefix: str) -> bool:
+        """
+        Returns if there is any word in the trie that starts with the given prefix.
+        """
+        
+        # Same Exact code as search()
+        # but at the end just return true
+        # Since no need for it to be a complete word
+        
+        curr = self.root
+        for char in prefix:
+            if char not in curr.subs:
+                return False
+            curr = curr.subs[char]
+        return True
+        
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)

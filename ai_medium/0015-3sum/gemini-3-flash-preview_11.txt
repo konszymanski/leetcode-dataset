@@ -1,0 +1,46 @@
+```python
+from typing import List
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # Sort the array to use the two-pointer approach efficiently
+        nums.sort()
+        n = len(nums)
+        res = []
+        
+        for i in range(n - 2):
+            # If the current number is positive, since the array is sorted, 
+            # no triplet starting with it can sum to zero.
+            if nums[i] > 0:
+                break
+            
+            # Skip duplicates for the first element of the triplet
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            
+            # Use two pointers to find the other two elements
+            l, r = i + 1, n - 1
+            while l < r:
+                s = nums[i] + nums[l] + nums[r]
+                
+                if s < 0:
+                    # Sum is too small, move the left pointer forward
+                    l += 1
+                elif s > 0:
+                    # Sum is too large, move the right pointer backward
+                    r -= 1
+                else:
+                    # Found a triplet
+                    res.append([nums[i], nums[l], nums[r]])
+                    
+                    # Move pointers forward and skip duplicate values to avoid duplicate triplets
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l] == nums[l - 1]:
+                        l += 1
+                    while l < r and nums[r] == nums[r + 1]:
+                        r -= 1
+                        
+        return res
+
+```

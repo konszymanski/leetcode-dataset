@@ -1,0 +1,17 @@
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy=ListNode()
+        prev=dummy
+        curr=head
+        arr=[] 
+        while curr is not None:
+            arr.append(curr.val)
+            curr=curr.next
+        arr2=sorted(arr)
+        
+        for i in arr2:
+            temp=ListNode()
+            temp.val=i
+            prev.next=temp
+            prev=prev.next
+        return dummy.next

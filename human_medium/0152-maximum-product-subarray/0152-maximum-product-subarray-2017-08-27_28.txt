@@ -1,0 +1,11 @@
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        minlist,maxlist = [nums[0]],[nums[0]]
+        for i in range(1,len(nums)):
+            minlist.append(min(nums[i],minlist[i-1]*nums[i],maxlist[i-1]*nums[i]))
+            maxlist.append(max(nums[i],minlist[i-1]*nums[i],maxlist[i-1]*nums[i]))
+        return max(maxlist)

@@ -1,0 +1,57 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows, cols = len(board), len(board[0])
+        visited = set()
+        
+        def dfsR(r,c,i):
+            """Recursive Solution"""
+            #base case: catches if length is 0 or larger
+            if i == len(word):
+                return True
+            #base case: out of bounds, already visited or no match
+            elif r>=rows or c>=cols or r<0 or c<0 or (r,c) in visited or word[i] != board[r][c]:
+                return False
+            #found grid point that matches ith letter
+            elif board[r][c] == word[i]:
+                print(board[r][c], (r,c))
+                visited.add((r,c))
+                ans = dfsR(r+1,c, i+1) or dfsR(r,c+1, i+1) or dfsR(r-1, c, i+1) or dfsR(r, c-1, i+1)
+                visited.remove((r,c)) #this is needed so that the algo can form the word from right to left, bc we start the search from left to right and mark visited we prevent ourselfs from going back, but after the stack returns without a match, we can safely unset visited so that the next iteration can move right to left, testcase: 
+                                                                                            #[  ["C","A","A"],
+                                                                                            #   ["A","A","A"],
+                                                                                            #   ["B","C","D"]]
+                                                                                            #   "AAB"
+                return ans
+        
+        
+        def dfsI(r,c,i):
+            """Iterative Solution"""
+            visited = set()#each stack needs a new visited list
+            # Create a stack for DFS
+            stack = []
+            # Push the current source node.
+            stack.append((r,c,i, visited))
+
+            while (len(stack)):
+                # Pop a vertex from stack
+                r,c,i, visited = stack[-1]
+                stack.pop()
+                #base case: catches if length is 0 or larger
+                if i == len(word):
+                    return True
+                #base case: out of bounds, already visited or no match
+                elif r>=rows or c>=cols or r<0 or c<0 or (r,c) in visited or word[i] != board[r][c]:
+                    continue
+                #found grid point that matches ith letter
+                elif board[r][c] == word[i]:
+                    #print(board[r][c], (r,c))
+                    visited.add((r,c))
+                    stack.append((r+1,c, i+1, visited.copy()))
+                    stack.append((r-1,c, i+1, visited.copy()))
+                    stack.append((r,c+1, i+1, visited.copy()))
+                    stack.append((r,c-1, i+1, visited.copy()))
+        
+
+        for r in range(rows):
+            for c in range(cols):
+                if dfsI(r,c,0): return True #need \'if\' clause, because if the first dfs() comes back false, we still need to wait for others possibly Ture

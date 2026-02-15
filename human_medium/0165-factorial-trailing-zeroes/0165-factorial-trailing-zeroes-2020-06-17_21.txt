@@ -1,0 +1,16 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        ## RC ##
+        ## APPROACH : GREEDY MATH ##
+        ## For each 5, we get one zero ( as we have ample of even numbers), so for each 25 we get 2 zeros, 125 => 3 zeros... so on ##
+        ## for 25, we would have added already that when temp = 5, so 25//25 = 1 and add that extra zero ##
+        
+		## TIME COMPLEXITY : O(LogN) ##
+		## SPACE COMPLEXITY : O(1) ##
+
+        temp = 5
+        ans = 0
+        while( temp <= n ):
+            ans += n// temp
+            temp = temp * 5
+        return ans

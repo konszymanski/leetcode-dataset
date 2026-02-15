@@ -1,0 +1,31 @@
+class Solution {
+//Please Upvote if you like the appraoch,Thanks!...
+public:
+    static bool mycompare(string x,string y){
+        string xy=x.append(y);
+        string yx=y.append(x);
+        if(xy>yx){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    string largestNumber(vector<int>& nums) {
+        vector<string>str;
+        for(auto ele:nums){
+            string temp=to_string(ele);
+            str.push_back(temp);
+        }
+        sort(str.begin(),str.end(),mycompare);
+        string ans="";
+        for(auto i:str){
+            ans+=i;
+        }
+        	while(ans[0]==\'0\'&&ans.size()>1){
+				ans.erase(ans.begin());
+			}
+			return ans;
+        
+    }
+};

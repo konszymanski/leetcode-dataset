@@ -1,0 +1,14 @@
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        stack=[]
+        while head:
+            stack.append(head)
+            head=head.next
+        stack.pop(len(stack)-n) #Delete the unwanted node
+        
+        out,prev=None,None
+        while stack:
+            out=stack.pop()
+            out.next=prev
+            prev=out
+        return out

@@ -1,0 +1,25 @@
+class Solution:
+  def levelOrderBottom(self,root):
+    if root is None: return []
+    if root.left is None and root.right is None:
+      return [[root.val]] 
+    
+    Q = deque([root,None]) 
+    res = deque()
+    nodeList = list()
+    while len(Q)>1: 
+      curr = Q.popleft()
+      if curr == None:
+        Q.append(None) 
+      else:
+        if curr.left:
+          Q.append(curr.left)
+        if curr.right:
+          Q.append(curr.right) 
+      if curr!=None:
+        nodeList.append(curr.val)
+      else:
+        res.appendleft(nodeList)
+        nodeList = []
+    if nodeList: res.appendleft(nodeList)
+    return res

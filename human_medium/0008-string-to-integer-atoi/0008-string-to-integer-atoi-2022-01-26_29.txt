@@ -1,0 +1,25 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        
+        acceptable = [\'1\',\'2\',\'3\',\'4\',\'5\',\'6\',\'7\',\'8\',\'9\',\'0\']
+        output = \'\'
+
+        #iterate throgh string, break when character not found
+        for idx,i in enumerate(s.lstrip()):
+            if idx == 0 and (i == \'-\' or i == \'+\'):
+                output +=i
+            elif i in acceptable:
+                output+=i
+            else:
+                #stop when a non-number is fond
+                break
+
+        #check for a number in the right range
+        if len(output) == 0 or output == \'+\' or output == \'-\':
+            return(0)
+        elif int(output) < -(2**31):
+            return(-2147483648)
+        elif int(output) > (2**31)-1:
+            return(2147483647)
+        else:
+            return(int(output))

@@ -1,0 +1,35 @@
+from collections import defaultdict
+from heapq import heappop, heappush
+
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        if rows == 1 and cols == 1:
+            return grid[0][0]
+        
+        distances = defaultdict(lambda: float(\'+inf\'))
+        distances[(0, 0)] = grid[0][0]
+        
+        heap = [(distances[(0,0)], (0, 0))] # node at 0,0 position
+        
+        while len(heap):
+            currDist, curr = heappop(heap)
+            i, j = curr
+            
+            if i == rows - 1 and j == cols - 1:
+                return currDist
+            
+            if j + 1 < cols: # right node
+                newDist = currDist + grid[i][j+1]
+                if newDist < distances[(i, j+1)]:
+                    distances[(i, j+1)] = newDist
+                    heappush(heap, (newDist, (i, j+1)))
+            
+            if i + 1 < rows: # down node
+                newDist = currDist + grid[i+1][j]
+                if newDist < distances[(i+1, j)]:
+                    distances[(i+1, j)] = newDist
+                    heappush(heap, (newDist, (i+1, j)))

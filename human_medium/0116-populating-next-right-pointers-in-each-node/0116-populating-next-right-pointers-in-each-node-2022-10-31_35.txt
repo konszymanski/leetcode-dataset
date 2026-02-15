@@ -1,0 +1,10 @@
+def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+	queue = collections.deque([(0,root)]) # queue for bfs starts with the root at height 0
+	while queue: # while there are nodes to search
+		(level, node) = queue.popleft() # get the next node
+		if node: # if the node exists
+			queue.append((level+1,node.left)) # add the left subnode
+			queue.append((level+1,node.right)) # add the right subnode
+			if queue[0][0] == level: # if the next node in the queue is on the same level
+				node.next = queue[0][1] # update our next pointer
+	return root # return the original root

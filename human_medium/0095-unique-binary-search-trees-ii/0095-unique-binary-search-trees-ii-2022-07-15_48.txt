@@ -1,0 +1,21 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        
+        # left included, right not included
+        def helper(left, right) -> List[Optional[TreeNode]]: 
+            if left == right - 1:
+                return [TreeNode(left)]
+            elif left > right - 1:
+                return [None]
+            else:
+                list_of_trees = []
+                for number in range(left, right):
+                    for left_node in helper(left, number):
+                        for right_node in helper(number + 1, right):
+                            root = TreeNode(number)
+                            root.left = left_node
+                            root.right = right_node  
+                            list_of_trees.append(root)
+                return list_of_trees
+        
+        return helper(1, n+1)

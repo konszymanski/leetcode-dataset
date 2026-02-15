@@ -1,0 +1,18 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        if not candidates:
+            return []
+        res = []
+        candidates.sort()
+        def helper(target, index, sub_list):
+            if target == 0:
+                res.append(sub_list)
+            if target < 0 or index >= len(candidates):
+                return
+            for i in range(index, len(candidates)):
+                #optimization
+                if target < candidates[i]:
+                    break
+                helper(target-candidates[i], i, sub_list+[candidates[i]])
+        helper(target, 0, [])
+        return res

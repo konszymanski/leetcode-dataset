@@ -1,0 +1,11 @@
+#first method: count them all in a for loop
+ rem = n%5
+ start = n - rem
+ count = 0        
+ while start>=0:
+     temp = start
+     while (temp > 0) and (temp%5==0):
+         count += 1
+         temp = temp/5
+     start -= 5
+	return count

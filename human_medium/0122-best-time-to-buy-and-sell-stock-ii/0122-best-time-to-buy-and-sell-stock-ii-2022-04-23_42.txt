@@ -1,0 +1,15 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        
+        
+        profit = 0 
+        
+        for i in range(1,len(prices)): 
+            
+            #if the price of the stock is greater than the previous day then profit is today\'s price minus yesterday\'s price..
+			#just add it to profit as multiple transactions are allowed
+            
+            if prices[i]>prices[i-1]:  
+                profit+= (prices[i]-prices[i-1]) 
+                
+        return profit

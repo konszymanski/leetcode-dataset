@@ -1,0 +1,34 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: \'Node\' = None, random: \'Node\' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+from collections import defaultdict
+
+class Solution:
+    
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        
+        # Make a dictionray to hold node in the list as keys,
+        # and their copies as values
+        node_map = defaultdict(lambda: None)
+        
+        # Fill node_map
+        curr = head
+        while curr:
+            node_map[curr] = Node(curr.val)
+            curr = curr.next
+        
+        # Update next and random pointer of the copied nodes
+        curr = head
+        while curr:
+            dup = node_map[curr]
+            dup.next = node_map[curr.next]
+            dup.random = node_map[curr.random]
+            curr = curr.next
+            
+        return node_map[head] # return the copied node corresponding to head

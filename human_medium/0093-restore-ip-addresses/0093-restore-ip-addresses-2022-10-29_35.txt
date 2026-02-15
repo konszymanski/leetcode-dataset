@@ -1,0 +1,16 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def valid(s):
+            return s and int(s) < 256 and not (len(s) > 1 and s[0] == \'0\')
+
+        def check(address, s):
+            if address.count(\'.\') == 3 and valid(s):
+                result.append(address + s)
+                return
+            for i in (1, 2, 3):
+                if valid(s[:i]):
+                    check(address + s[:i] + \'.\', s[i:])
+
+        result = []
+        check(\'\', s)
+        return result

@@ -1,0 +1,18 @@
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if not root: return None
+        left, right, prev = [root], [], None
+        while left or right:
+            node = left.pop() if left else right.pop()
+            if node.left:
+                left.append(node.left)
+            if node.right:
+                right.append(node.right)
+            if prev:
+                prev.left = None
+                prev.right = node
+            prev = node
+        return root

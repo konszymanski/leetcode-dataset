@@ -1,0 +1,37 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        #We use memoization and recursion in this solution. 
+        
+        #Corner case: if start index is 1 that means there is an obstacle at the start so,  no paths are possible. 
+        if obstacleGrid[0][0] == 1: return 0
+        
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        def findUniquePaths(m , n, memo):
+            if (m,n) in memo:
+                return memo[(m,n)]
+            #obstacleGrid[m][n] == 1 means this path is not possible.
+            if obstacleGrid[m][n] == 1:
+                memo[(m,n)] = 0
+                return 0
+            
+            #If we react the start index then return 1 
+            if m == 0 and n == 0:
+                return 1
+            
+            #If m==0 ie we only have a single column, we need to go through this column and check 
+            #if at any point there is an obstacle 
+            if m == 0:
+                memo[(m,n)] = findUniquePaths(m, n-1, memo)
+                
+            #If n==0 ie we only have a single row, we need to go through this row and check 
+            #if at any point there is an obstacle    
+            elif n == 0:
+                memo[(m,n)] = findUniquePaths(m-1, n, memo)
+                
+            #if m and n both are non zero then we call m, n-1 and m-1, n    
+            elif m!=0 and n!=0:
+                memo[(m,n)] = findUniquePaths(m, n-1, memo) + findUniquePaths(m-1, n, memo)
+            return memo[(m,n)]
+        
+        
+        return findUniquePaths(m-1, n-1, {})

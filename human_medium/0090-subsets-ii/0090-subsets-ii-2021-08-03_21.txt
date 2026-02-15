@@ -1,0 +1,11 @@
+class Solution:
+    def subsetsWithDup(self, nums):
+        def find(cur, nums):
+            result.append(cur)
+            for i in range(len(nums)):
+                if not i or nums[i] != nums[i-1]:
+                    find(cur + [nums[i]], nums[i+1:])
+        nums.sort()
+        result = []
+        find([], nums)
+        return result

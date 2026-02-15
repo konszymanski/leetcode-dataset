@@ -1,0 +1,21 @@
+def copyRandomList(self, head: \'Node\') -> \'Node\':
+        
+        if not head:
+            return None
+        
+        d = dict()
+        
+        def recurse(node):
+            
+            next_node = recurse(node.next) if node.next else None
+            
+            d[node] = Node(node.val, next_node, None)
+            
+            return d[node]
+        
+        new_head = recurse(head)
+        
+        for old, new in d.items():   
+            new.random = d[old.random] if old.random else None
+            
+        return new_head

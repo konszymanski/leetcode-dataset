@@ -1,0 +1,17 @@
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        #
+        stack,direction = [root],1
+        res = []
+        while stack:
+            temp,nodes = [],[]
+            for node in stack:
+                if node:
+                    nodes.append(node.val)
+                    temp.append(node.left)
+                    temp.append(node.right)
+            if nodes:
+                res.append(nodes[::direction])
+            stack = temp
+            direction *= -1
+        return res

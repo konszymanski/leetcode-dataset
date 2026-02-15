@@ -1,0 +1,39 @@
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        mid = self.getMid(head)
+        tail = mid.next
+        mid.next = None
+        left = self.sortList(head)
+        right = self.sortList(tail)
+        return self.merge(left, right)
+        
+    def merge(self, list1: ListNode, list2: ListNode) -> ListNode:
+        if not list1:
+            return list2
+        if not list2:
+            return list1
+        dummy = ListNode(-1)
+        head = dummy
+        while list1 and list2:
+            if list1.val >= list2.val:
+                head.next = list2
+                list2 = list2.next
+            else:
+                head.next = list1
+                list1 = list1.next
+            head = head.next
+        if not list1:
+            head.next = list2
+        if not list2:
+            head.next = list1
+        return dummy.next
+    def getMid(self, head:ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow

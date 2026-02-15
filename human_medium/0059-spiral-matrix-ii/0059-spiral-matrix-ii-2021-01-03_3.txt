@@ -1,0 +1,17 @@
+def generateMatrix(n):
+#n = 3 for example
+    result = []
+    current = n*n -1  # =  8, for n = 3  
+    #current will hold the value for inserting
+    result.append([current + 1]) # first case, Handling first element explicitly result = [[9]]
+    while current > 1:
+        result = list(zip(*result[::-1])) # will rotate the array
+        temp = len(result[0])
+        # temp will hold the length of the first element of the result i.e. len([9]) i.e. 1
+        # from temp we would know how many elements we have to push
+        
+        result.insert(0,list(range(current-temp+1,current+1)))
+        #inserting the values on the top of the array
+        
+        current = current -temp
+    return result

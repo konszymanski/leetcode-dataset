@@ -1,0 +1,12 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        nums = deque()
+        for token in tokens:
+            if token not in \'+-*/\':
+                nums.append(token)
+            else:
+                y, x = nums.pop(), nums.pop()
+                expression = f"{x} {token} {y}" if token != \'/\' else f"int({x} / {y})"
+                nums.append(eval(expression))
+                
+        return nums.pop()

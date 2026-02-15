@@ -1,0 +1,40 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        
+        # STRIP SPACES OF THE FRONT
+        s=s.lstrip()
+        
+        # IF STRING IS EMPTY 
+        # NO REASON TO DO WORK
+        if len(s) == 0:
+            return 0
+        
+        # COUNT THE SIGN PREFIXES
+        signs = 0
+        for idx in [0, min(1, len(s) - 1)]:
+            if s[idx] in "+-":
+                signs += 1
+        
+        # IF MULTISIGN
+        # NO REASON TO DO WORK
+        if signs > 1:
+            return 0
+        
+        # LOOP UNTIL NOT A NUMBER
+        # GET THE NUMBER OF DIGITS THAT EXIST AFTER THE SIGN BEFORE A NON-INT IS FOUND
+        last_index = 0
+        digits = 0
+        for idx in range(0 + signs, len(s)):
+
+            if s[idx] not in \'0123456789\':
+                break
+                
+            digits += 1
+            last_index = idx
+        
+        # IF NO DIGIT FOUND IN THE ZERO POSITION
+        if last_index == 0 and digits == 0:
+            return 0
+                
+        # RETURN THE NUMBER INBETWEEN THE CONTRAINTS
+        return max( -2**31, min(int(s[0:last_index + 1]), 2**31-1) )

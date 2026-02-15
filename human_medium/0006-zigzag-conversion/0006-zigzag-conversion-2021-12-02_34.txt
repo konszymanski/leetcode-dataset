@@ -1,0 +1,35 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        display = []
+        flag = True
+        count = numRows
+        while True:
+            if flag:
+                arr = [0] * numRows
+                for index in range(min(numRows, len(s))):
+                    arr[index] = s[index]
+                s = s[min(numRows, len(s)):]
+                flag = False
+                display.append(arr)
+                # print(display)
+            else:
+                while count != 2 and s != \'\':                
+                    arr = [0] * numRows
+                    arr[count-2] = s[0]
+                    display.append(arr)
+                    # print(display)
+                    s = s[1:]
+                    count-=1
+                count = numRows
+                flag = True
+            if s == \'\':
+                break
+        ans = ""
+        start = 0
+        while start != numRows:
+            for arr in display:
+                ans+= arr[start] if arr[start] != 0 else ""
+            start +=1
+        return ans

@@ -1,0 +1,15 @@
+def permute(self, nums: List[int]) -> List[List[int]]:
+	ans = []
+
+	def permutation(temp_num: list, index: int, n: int):
+		nonlocal ans
+		if index == n - 1:
+			ans.append(temp_num)
+
+		for j in range(index, n):
+			new_arr = list(temp_num)
+			new_arr[index], new_arr[j] = new_arr[j], new_arr[index]
+			permutation(new_arr, index + 1, n)
+
+	permutation(nums, 0, len(nums))
+	return ans

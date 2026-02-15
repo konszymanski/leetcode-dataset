@@ -1,0 +1,12 @@
+curr = head
+while curr is not None:
+	stack.append(curr)
+	curr = curr.next
+for i in range(n):
+	remove = stack.pop()
+if stack:
+	prev = stack.pop()
+	prev.next = remove.next
+else:
+	head = remove.next
+return head

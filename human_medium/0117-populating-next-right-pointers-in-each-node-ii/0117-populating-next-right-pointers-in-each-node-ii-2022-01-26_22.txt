@@ -1,0 +1,44 @@
+class Solution:
+    """
+    O(1) space solution.
+    
+    We want to traverse each level AND traverse each of the subtrees in the level.
+    - as we enter each level, we reset the first and prev pointers and find them again.
+    - for each subtree, we traverse the children, starting from the left to the right.
+    - for each child, if it\'s the first subtree in the level, we set the first pointer
+    - we set. this helps us figure out when to stop.
+    - for each child, we update the prev pointer as we go along, and if there is an existing prev, 
+      we set the next pointer of it.
+      
+    
+    
+    """
+    def connect(self, root: \'Node\') -> \'Node\':
+        first = root
+        while first:
+            # this is iterated for each level in the tree. 
+            
+            subtree = first
+            
+            first = None
+            prev = None
+            
+            # iterate for each subtree in the tree
+            while subtree:
+                
+                for child in [subtree.left, subtree.right]:
+                    if child:
+                        # must mean we are processing first child in this level
+                        if not first:
+                            first = child
+                            
+                        # past the first child
+                        if prev:
+                            prev.next = child
+
+                        prev = child
+
+                # move to next node in level
+                subtree = subtree.next
+                
+        return root

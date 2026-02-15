@@ -1,0 +1,17 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        
+        length1, length2, shift1, shift2 = len(num1), len(num2), 0, 0
+        ret = [0] * (length1 + length2)
+        
+        for a in range(length1 - 1, -1, -1):
+            for b in range(length2 - 1, -1, -1):
+                temp = (ord(num1[a]) - ord(\'0\')) * (ord(num2[b]) - ord(\'0\')) + ret[a + b + 1]  
+                ret[a + b + 1] = temp % 10
+                ret[a + b] += temp // 10   
+        
+        for i, c in enumerate(ret):
+            if c != 0:
+                return "".join(map(str, ret[i:]))
+        
+        return("0")

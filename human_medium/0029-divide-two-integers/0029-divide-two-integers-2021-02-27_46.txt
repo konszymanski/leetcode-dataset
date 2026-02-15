@@ -1,0 +1,25 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        negate = ((divisor<0)^(dividend<0))
+        divisor=abs(divisor)
+        dividend=abs(dividend)
+        if (dividend<divisor):
+            return(0)
+        total=0
+        (sdividend,sdivisor)=(str(dividend),str(divisor))
+        b = max(0,len(sdividend)-len(sdivisor)-2)
+        while (b>=0):
+            placeshifter = \'\'.join([\'0\' for _ in range(b)])
+            thisdigit=0
+            div_b = int(sdivisor+placeshifter)
+            while (dividend>=0):
+                dividend -= div_b
+                thisdigit+=1
+            dividend += div_b
+            thisdigit-=1
+            total += int(str(thisdigit)+placeshifter)
+            b-=1
+        if (negate):
+            return(int(\'-\'+str(total)))
+        else:
+            return(min(2147483647,total))

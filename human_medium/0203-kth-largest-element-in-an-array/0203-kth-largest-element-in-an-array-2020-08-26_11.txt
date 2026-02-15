@@ -1,0 +1,41 @@
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        
+        # Partition function for quick sort
+        # return the final position of "Pivot" in a decensing array
+        def partition (nums, start, end):
+            pivot = start
+            while True:
+                # if the current value is smaller than pivot, it is in the correct side
+                # we can move left to the next element, we have to also check we are not passing
+                # the left hand side pointer, start, which means all the elements are in the correct side.
+                while start < end and nums[end] <= nums[pivot]:
+                    end -=1
+                # do the opposite thing to the left hand side pointer, start    
+                while start < end and nums[start] >= nums[pivot]:
+                    start +=1
+                # if both left and right hand side have elements out of order,
+                # we replace them
+                if start < end:
+                    nums[start], nums[end] = nums[end], nums[start]
+                # otherwise, we say all the elements are in the correct side except for the pivot
+                # we will break the loop, and put the pivot to the correct position (exchange with right pointer). 
+                else:
+                    break
+            nums[end], nums[pivot] = nums[pivot],nums[end]
+            return end
+        
+        
+        # start from the most left number, if it is the kth largest number, print out the value
+        # otherwise, if it is the nth largest number (n < k), search the right hand side 
+        # if it is the nth largetst number (n>k), search the left hand side
+        def quicksort(nums, start, end):
+            p = partition(nums, start, end)
+            if p == k-1: 
+                return nums[p]
+            elif p < k-1:
+                return quicksort(nums, p+1, end)
+            else:
+                return quicksort(nums,start, p-1)                 
+        
+        return quicksort(nums, 0, len(nums)-1)

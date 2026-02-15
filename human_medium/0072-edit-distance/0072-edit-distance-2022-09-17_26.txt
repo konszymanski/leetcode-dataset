@@ -1,0 +1,20 @@
+@lru_cache(maxsize=None)
+    def minDistance(self, word1: str, word2: str) -> int:
+        if not word1:
+            return len(word2)
+        if not word2:
+            return len(word1)
+
+        # if the chars same on 2D grid, we just get the diagonal value from the 2D grid
+        if word1[0] == word2[0]:
+            return self.minDistance(word1[1:], word2[1:])
+		
+		# if the chars are different 
+        return 1 + min(
+            # previous row
+            self.minDistance(word1[1:], word2),
+            # previous column
+            self.minDistance(word1, word2[1:]),
+            # diagonal
+            self.minDistance(word1[1:], word2[1:]),
+        )

@@ -1,0 +1,25 @@
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return None
+        
+        q, res, num_of_level = [], [], 0
+        
+        q.append(root) # put the whole node into q      
+        
+        while q:            
+            current_node_values = [] # we will put numbers here: values of every level into this list
+            num_of_level = len(q)
+            
+            for _ in range(num_of_level):
+                temp = q.pop(0) # taking the first element from the list
+                current_node_values.append(temp.val) #adding the value of the node to the list with values of the current level
+                
+                if temp.left: # recursion
+                    q.append(temp.left)
+                if temp.right:
+                    q.append(temp.right)
+            
+            res.append(current_node_values) # the final list contains a few lists that contain values of every level
+            
+        return [el for el in res[::-1]] # returning the content of res in an opposite order

@@ -1,0 +1,27 @@
+```python
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        max_area = 0
+        left = 0
+        right = len(height) - 1
+        
+        while left < right:
+            # The width is the distance between the two pointers
+            width = right - left
+            # The height of the container is determined by the shorter of the two lines
+            h = min(height[left], height[right])
+            # Update the maximum area if the current one is larger
+            current_area = width * h
+            if current_area > max_area:
+                max_area = current_area
+            
+            # Move the pointer pointing to the shorter line inward
+            # because moving the taller line won't increase the area limit set by the shorter one
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+                
+        return max_area
+
+```

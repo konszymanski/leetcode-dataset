@@ -1,0 +1,32 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Constraints: signed 32-bit integer range [-2^31, 2^31 - 1]
+        # -2^31 = -2147483648
+        # 2^31 - 1 = 2147483647
+        
+        limit_low = -2147483648
+        limit_high = 2147483647
+        
+        res = 0
+        sign = 1 if x >= 0 else -1
+        x = abs(x)
+        
+        while x != 0:
+            # Extract the last digit
+            pop = x % 10
+            # Remove the last digit from x
+            x //= 10
+            # Update the reversed result
+            res = res * 10 + pop
+            
+        # Restore the sign
+        res *= sign
+        
+        # Check for overflow outside the signed 32-bit integer range
+        if res < limit_low or res > limit_high:
+            return 0
+            
+        return res
+
+```

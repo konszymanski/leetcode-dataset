@@ -1,0 +1,17 @@
+class Solution:
+    def reverse(self, x: int) -> int:
+        
+        bokuva = list(str(x))
+
+        if bokuva[0] == \'-\':
+            bokuva.remove(\'-\')
+            bokuva.reverse()
+            bokuva.insert(0, \'-\')
+        else:
+            bokuva.reverse()
+        bokuva2 = int(\'\'.join(bokuva))
+        if bokuva2 > 2 ** 31:
+            return 0
+        elif bokuva2 < -2 ** 31:
+            return 0
+        return int(\'\'.join(bokuva))

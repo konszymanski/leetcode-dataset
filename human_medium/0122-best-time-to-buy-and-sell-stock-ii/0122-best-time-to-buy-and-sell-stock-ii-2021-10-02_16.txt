@@ -1,0 +1,8 @@
+def maxProfit(prices):
+	prev = prices[0]
+	tot = 0
+	for i in prices[1:]:
+		if i > prev:
+			tot += i-prev
+		prev = i
+	return tot

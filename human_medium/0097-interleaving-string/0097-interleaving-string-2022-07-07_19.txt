@@ -1,0 +1,32 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        # Algorithm: Time = O(n); Space = O(n); n == len(s3)
+        # 1. Since s1 + s2 interleaved should be used to make s3, the sizes of s3 and the other combined should be same
+        # 2. There can be multiple possible combos, so this is a DP problem and we need to exhaust all possible cases and check if we can form s3
+        # 3. Write a recursive function that will use 3 indices for the 3 strings:
+        #    Base Case: This would be when all 3 indices reach their respective string end indices; if yes, then return True
+        #    Recrusive cases: 
+        #       Here we need to check two scenarios:
+        #       - s3[k] == s1[i] -> if this is true, then rec() with k+1 and i+1 while keeping j same
+        #       - s3[k] == s2[j] -> if this is true, then rec() with k+1 and j+1 while keeping i same
+        #       
+        #       If none of the above cases are true, then return false as we couldn\'t find a possible match. Hence, s3 cannot be formed from s1 + s2
+        # Of course since this is a DP problem, memoize for the complex cases to avoid repeated computation.
+
+        if len(s1) + len(s2) != len(s3):
+            return False
+
+        @cache
+        def rec(i, j, k):
+            if i == len(s1) and j == len(s2) and k == len(s3):
+                return True
+            op1 = op2 = False
+            if i < len(s1) and s3[k] == s1[i]:
+                op1 = rec(i+1, j, k+1)
+                if op1: return True
+            if j < len(s2) and s3[k] == s2[j]:
+                op2 = rec(i, j+1, k+1)
+            
+            return op1 or op2
+        
+        return rec(0, 0, 0)

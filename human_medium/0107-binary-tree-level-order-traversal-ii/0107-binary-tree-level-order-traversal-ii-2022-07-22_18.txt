@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+# O(n) || O(d) where d is the depth of the tree
+# Runtime: 53ms 51.97% || Memory: 14.2mb 82.69%
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return root
+
+        result = []
+        queue = deque([root])
+        while queue:
+            newLevel = []
+            for _ in range(len(queue)):
+                currNode = queue.popleft()
+                newLevel.append(currNode.val)
+                if currNode.left:
+                    queue.append(currNode.left)
+                if currNode.right:
+                    queue.append(currNode.right)
+
+            result.append(newLevel)
+
+
+        return result[::-1]

@@ -1,0 +1,21 @@
+class Solution:
+    
+    def generateParenthesis(self, n: int) -> List[str]:    
+        result = []
+        
+        def dfs(opening_num, closing_num, curr):
+            if (closing_num < opening_num or
+                opening_num < 0 or
+                closing_num < 0):
+                return
+            
+            if opening_num == closing_num == 0:
+                result.append(\'\'.join(curr))
+                return
+            
+            dfs(opening_num - 1, closing_num, curr + [\'(\'])
+            dfs(opening_num, closing_num - 1, curr + [\')\'])
+            
+        
+        dfs(n, n, [])
+        return result

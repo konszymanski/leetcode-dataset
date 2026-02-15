@@ -1,0 +1,46 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def go(self, head, k):
+        cur = head
+        for _ in range(k-1):
+            if not cur.next:
+                break
+            cur = cur.next
+        ret = cur.next
+        cur.next = None
+        return ret
+    def merge(self, l1, l2):
+        cur = buf = ListNode(-1) # will be gc, so it won\'t affect space complexity
+        while l1 or l2:
+            if (l1 and l2 and l1.val < l2.val) or not l2:
+                cur.next = l1
+                l1 = l1.next
+            else:
+                cur.next = l2
+                l2 = l2.next
+            cur = cur.next
+        return buf.next, cur
+    def sortList(self, head: ListNode) -> ListNode:
+        buf = ListNode(-1)
+        buf.next = head
+        k = 1
+        while True:
+            lastHead = buf
+            l1 = l2 = buf.next
+            while l1:
+                l2 = self.go(l1, k)
+                if not l2:
+                    break
+                tail = self.go(l2, k)
+                lastHead.next, lastHead = self.merge(l1, l2)
+                l1 = tail
+            lastHead.next = l1
+            if l1 == buf.next and not l2:
+                break
+            k *= 2
+        return buf.next

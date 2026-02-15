@@ -1,0 +1,14 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ans = []
+        
+        def recurse(ans, current_sum, current_combination, index):
+            if current_sum > target:
+                return
+            elif current_sum == target:
+                ans.append(current_combination)
+            else:
+                for i, candidate in enumerate(candidates[index:]):   
+                    recurse(ans, current_sum + candidate, current_combination + [candidate], index + i)
+        recurse(ans, 0, [], 0)
+        return ans

@@ -1,0 +1,34 @@
+def search(self, nums: List[int], target: int) -> int:
+        
+        l = 0
+        r = len(nums)-1
+        
+        while l < r:
+            mid = (l+r) // 2  # finding  the middle element
+			
+			# Checking if the middle element is the target
+            if nums[mid] == target:
+                return mid
+            
+			# checking if the left of middle element is the sorted sub-array
+            if nums[mid] >= nums[l]:
+			
+                if nums[l] <= target <= nums[mid]:
+                    r = mid
+                else:
+                    l = mid+1
+			
+			# else the right part of middle element will be the sorted subarray
+            else:
+			
+				# Checking if target belongs to the sorted subarray
+                if nums[mid] <= target <= nums[r]:
+                    l = mid
+                else:
+				
+					# else we will go to left part of array leaving middle too as arr[mid] != target
+                    r = mid-1
+        
+		
+		# Basic check to see if the left is the target element
+        return l if nums[l] == target else -1

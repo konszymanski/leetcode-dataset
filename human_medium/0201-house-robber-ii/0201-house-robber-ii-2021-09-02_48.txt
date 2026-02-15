@@ -1,0 +1,16 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) <= 3:
+            return max(nums)
+        
+        def max_profit(money):
+            dp = [0]*len(money)
+            for i in range(len(dp)):
+                prev = dp[i-1] if i > 0 else 0
+                prevprev = dp[i-2] if i > 1 else 0
+                dp[i] = max(prev, prevprev+money[i])
+            return dp[-1]
+            
+        plan1 = max_profit(nums[:-1])   # either rob houses 0 to n-1
+        plan2 = max_profit(nums[1:])    # or rob houses 1 to n
+        return max(plan1, plan2)

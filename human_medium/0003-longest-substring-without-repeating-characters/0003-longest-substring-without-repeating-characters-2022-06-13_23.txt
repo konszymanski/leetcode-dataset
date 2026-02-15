@@ -1,0 +1,20 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # O(n^3) brute force
+        n = len(s)
+        if n == 0: return 0
+        
+        best = 1
+        for i in range(n):
+            for j in range(i, n):
+                if self.is_unique_chars(s[i:j+1]):
+                    best = max(best, j-i+1)
+        return best
+                    
+                    
+    def is_unique_chars(self, substring: str) -> bool:
+        hashmap = {}
+        for c in substring:
+            if c in hashmap: return False
+            hashmap[c] = True
+        return True

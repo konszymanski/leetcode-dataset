@@ -1,0 +1,12 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        path = []
+        matrix_copy = matrix
+        while len(path) < len(matrix) * len(matrix[0]) : 
+            for n in matrix_copy[0]:
+                path.append(n)
+            if len(path) == len(matrix) * len(matrix[0]) : return path
+            matrix_copy = self.rotate_matrix(matrix_copy[1:])
+            
+    def rotate_matrix(self, m):
+        return [[m[j][i] for j in range(len(m))] for i in range(len(m[0])-1,-1,-1)]

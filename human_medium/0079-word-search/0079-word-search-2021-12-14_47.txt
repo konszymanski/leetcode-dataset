@@ -1,0 +1,31 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows = len(board) 
+        cols = len(board[0])
+        for x in range(rows):
+            for y in range(cols):
+                if board[x][y] == word[0]: #Find first occurance of same character
+                    found = self.search_aux(board, word[1:], x, y) #Check if current coordinate is the first character of word
+                    if found: return True
+        return False
+                    
+    def search_aux(self, board, word, x, y):
+        currLetter = board[x][y] #Get current character so we can update it as visited
+        board[x][y] = "-1" #Update grid to show nodes we\'ve already visited
+        found = False
+        if not word: #Once word is empty, we\'ve found the word
+            return True
+        if x + 1 < len(board) and board[x+1][y] == word[0]: #Check neighboring nodes to see if next character is there and make sure we\'re not out of bounds
+            found =  self.search_aux(board, word[1:], x + 1, y) #If next character is found, search for next characters by passing everything from i onward
+            if found: return found #If the word is empty, we\'ve found the word in the grid and return True
+        if y + 1 < len(board[0]) and board[x][y + 1] == word[0]:
+            found =  self.search_aux(board, word[1:], x, y + 1)
+            if found: return found
+        if x - 1 > -1 and board[x-1][y] == word[0]:
+            found =  self.search_aux(board, word[1:], x - 1, y)
+            if found: return found
+        if y - 1 > -1 and board[x][y-1] == word[0]:
+            found = self.search_aux(board, word[1:], x, y - 1)
+            if found: return found
+        board[x][y] = currLetter #Update the node to old character
+        return found

@@ -1,0 +1,15 @@
+def generateParenthesis(self, N):
+        answer, last_results = [], [(\'(\', 1, 0)]
+        while last_results:
+            new_results = []
+            for _ in range(len(last_results)):
+                (result, left, right) = last_results.pop()  # popping is not required, but it saves memory
+                if right == N and left == N:
+                    answer.append(result)
+                else:
+                    if left < N:
+                        new_results.append((result + \'(\', left+1, right))
+                    if right < left:
+                        new_results.append((result + \')\', left, right+1))
+            last_results = new_results
+        return answer

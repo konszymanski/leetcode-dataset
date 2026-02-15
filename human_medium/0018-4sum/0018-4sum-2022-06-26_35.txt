@@ -1,0 +1,35 @@
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        d0 = {}
+        for i, n in enumerate(nums):
+            if n not in d0:
+                d0[n] = 0
+            d0[n] += 1
+        
+        d1 = {}
+        d0_keys = list(d0.keys())
+        for ai, a in enumerate(d0_keys):
+            for b in d0_keys[ai:]:
+                s = a+b
+                if s not in d1:
+                    d1[s] = []
+                d1[s].append([a, b])
+                
+        result = set()
+        for k in d1:
+            rem = target - k
+            if rem not in d1:
+                continue
+            for a, b in d1[k]:
+                for c, d in d1[rem]:
+                    rnums = tuple(sorted([a, b, c, d]))
+                    rnums_d = {}
+                    for rn in rnums:
+                        if rn not in rnums_d:
+                            rnums_d[rn] = 0
+                        rnums_d[rn] += 1
+                    checks = [d0[nk] >= nv for nk, nv in rnums_d.items()]
+                    if all(checks):
+                        result.add(rnums)
+        result = [list(r) for r in result]
+        return result

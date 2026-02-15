@@ -1,0 +1,18 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        sets = [set() for i in range(9)]
+        for i in range(9):
+            curr_set = set()
+            if i % 3 == 0:
+                sub_boxes = [set() for k in range(3)]
+            for j in range(9):
+                sub = j//3
+                if board[i][j] != ".":
+                    if any((board[i][j] in curr_set,
+                            board[i][j] in sets[j],
+                            board[i][j] in sub_boxes[sub])):
+                        return False
+                    curr_set.add(board[i][j])
+                    sets[j].add(board[i][j])
+                    sub_boxes[sub].add(board[i][j])
+        return True

@@ -1,0 +1,15 @@
+def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+        if not root:
+            return None
+        cur  = root
+        confusing_next = root.left
+
+        while cur.left :
+            cur.left.next = cur.right
+            if cur.next:
+                cur.right.next = cur.next.left
+                cur = cur.next
+            else:
+                cur = confusing_next
+                confusing_next = cur.left
+        return root

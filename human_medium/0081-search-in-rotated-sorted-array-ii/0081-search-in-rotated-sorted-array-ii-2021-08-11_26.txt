@@ -1,0 +1,16 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        l, h = 0, len(nums)-1
+        while l <= h:
+            m = ((h-l)>>1)+l
+            if nums[m] == target:
+                return True
+            elif nums[m] > nums[l]: # left is ordered
+                if nums[l] <= target < nums[m]: h = m - 1
+                else: l = m + 1
+            elif nums[m] < nums[l]: # right is ordered
+                if nums[m] < target <= nums[h]: l = m + 1
+                else: h = m - 1
+            else: # cannot determine
+                l += 1
+        return False

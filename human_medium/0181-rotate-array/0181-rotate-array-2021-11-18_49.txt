@@ -1,0 +1,12 @@
+def rotate(self, nums: List[int], k: int) -> None:
+	def _rotate(nums: List[int], k: int, length: int):
+		if k == 0:
+			return nums
+
+		for i in range(length - 1, k - 1, -1):
+			nums[i], nums[i - k] = nums[i - k], nums[i]
+
+		if length % k != 0:
+			_rotate(nums, k - (length % k), k)
+
+	return _rotate(nums, k % len(nums), len(nums))

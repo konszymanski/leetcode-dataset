@@ -1,0 +1,19 @@
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # We use a 1D array to store the number of paths to each cell in the current row.
+        # Initialize with 1s because there is only one way to reach any cell in the first row.
+        dp = [1] * n
+        
+        # Iterate through each row starting from the second one (index 1).
+        for i in range(1, m):
+            # Iterate through each column starting from the second one (index 1).
+            for j in range(1, n):
+                # The number of ways to reach cell (i, j) is the sum of ways 
+                # to reach the cell above (dp[j]) and the cell to the left (dp[j-1]).
+                dp[j] += dp[j - 1]
+                
+        # The last element in the array stores the number of unique paths to the bottom-right corner.
+        return dp[-1]
+
+```

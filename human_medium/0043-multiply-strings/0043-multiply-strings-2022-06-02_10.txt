@@ -1,0 +1,11 @@
+class Solution:
+    @staticmethod
+    def str2int(s: str) -> int:
+        values = "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+        buffer = 0
+        for char in s:
+            buffer *= 10
+            buffer += values.index(char)
+        return buffer
+    def multiply(self, num1: str, num2: str) -> str:
+        return str(self.str2int(num1) * self.str2int(num2))

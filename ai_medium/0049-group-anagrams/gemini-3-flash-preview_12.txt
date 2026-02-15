@@ -1,0 +1,15 @@
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        groups = {}
+        for s in strs:
+            # Sort the characters of the string to use as a unique key for anagrams
+            key = "".join(sorted(s))
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(s)
+        
+        # Return the collected values as a list of lists
+        return list(groups.values())
+
+```

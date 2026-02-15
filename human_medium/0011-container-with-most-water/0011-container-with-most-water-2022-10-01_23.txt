@@ -1,0 +1,19 @@
+int maxArea(vector<int>& height) {
+	int start = 0;
+	int end = height.size() - 1;
+	int maxArea = 0;
+	while(start < end){
+		int currArea = end - start;
+		if(height[start] < height[end]){
+			currArea *= height[start++];
+		}
+		else{
+			currArea *= height[end--];
+		}
+		if(maxArea < currArea){
+			maxArea = currArea;
+		}
+	}
+
+	return maxArea;
+}

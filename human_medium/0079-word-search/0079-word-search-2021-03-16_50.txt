@@ -1,0 +1,39 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        self.board = board
+        self.n = len(board)
+        self.m = len(board[0])
+        self.word = word
+        poss = []
+        for i in range(self.n):
+            for j in range(self.m):
+                if self.solve([[i,j]], 0, set()):
+                    return True
+        return False
+
+    def is_there(self, l, i, j, vis):
+        ans = []
+        n, m = self.n, self.m
+        if i + 1 < n and (i+1, j) not in vis and self.board[i + 1][j] == l:
+            ans.append([i + 1, j])
+        if j + 1 < m and (i, j+ 1) not in vis and self.board[i][j + 1] == l:
+            ans.append([i, j + 1])
+        if i - 1 >= 0 and (i-1, j) not in vis and self.board[i - 1][j] == l:
+            ans.append([i - 1, j])
+        if j - 1 >= 0 and (i, j-1) not in vis and self.board[i][j - 1] == l:
+            ans.append([i, j - 1])
+        return ans
+
+    def solve(self, poss, k, vis):
+        for p in poss:
+            i, j = p
+            if self.board[i][j] == self.word[k]:
+                vis.add((i, j))
+                if k == len(self.word) - 1:
+                    return True
+                else:
+                    nxt = self.is_there(self.word[k + 1], i, j, vis)
+                    if self.solve(nxt, k + 1, vis):
+                        return True
+                vis.remove((i, j))
+        return False

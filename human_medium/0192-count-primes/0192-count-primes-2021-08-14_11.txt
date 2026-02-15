@@ -1,0 +1,12 @@
+# note that the prime < n
+    # corner cases: 1, 2, 3
+    def countPrimes(self, n: int) -> int:
+        count = 0
+        for i in range(2, n):   # O(n)
+            factors = 0
+            for j in range(2, floor(sqrt(i)) + 1): # O(sqrt(n))
+                if i % j == 0:
+                    factors += 1
+            if factors == 0:
+                count += 1
+        return count

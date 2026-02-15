@@ -1,0 +1,46 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        
+        def helper_binary_search( nums, start, end, target):
+            
+            while start <= end:
+            
+                mid = start + (end-start)//2
+
+                if nums[mid] == target:
+                    # base case:
+                    # hit
+                    return mid
+
+                # Divide-and-conquer
+                if nums[mid] < nums[end]:
+                    # right half keeps sorted in ascending order after rotation
+
+
+                    if nums[end] >= target > nums[mid]:
+                        # search target in right half
+                        start = mid+1
+
+                    else:
+                        # search target in left half
+                        end = mid-1
+
+                else:
+                    # left half keeps sorted in ascending order after rotation
+
+                    if nums[start] <= target < nums[mid]:
+                        # search target in left half
+                        end = mid-1
+
+                    else:
+                        # search target in right half
+                        start = mid+1
+
+
+            # base case:
+            # miss
+            # target does not exist in the list
+            return -1
+            
+            
+        return helper_binary_search(nums, 0, len(nums)-1, target)

@@ -1,0 +1,21 @@
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # init max sum, curr sum to the first element
+        curr_sum, max_sum = nums[0], nums[0]
+        
+        # iterate nums
+        for num in nums[1:]:
+            # for each num, we have 2 options:
+            # we can choose to add it to the cumulative sum,
+            # or start a new cumulative sum from the current num
+            
+            # if the current number is greater than current sum + current number, we\'ll reset the sum to curr number
+            if num > num + curr_sum:
+                curr_sum = num
+            else:
+                curr_sum += num
+            
+            # we\'ll update the max sum each time
+            max_sum = max(curr_sum, max_sum)
+        
+        return max_sum

@@ -1,0 +1,78 @@
+class Solution:
+    # Implemented in O(n^2) complexity
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        ascending_nums = []
+
+        # run from right to left
+        for i in reversed(range(n)):
+            val = nums[i]
+            
+            # insert into ascending nums
+            self.insert_in_order(ascending_nums, val)
+
+            # if there is a bigger element in seen then first biggest element
+            first_bigger_index = self.search_first_bigger(ascending_nums, val)
+
+            # if found a bigger element
+            if first_bigger_index != -1:
+                nums[i] = ascending_nums[first_bigger_index]
+                ascending_nums.pop(first_bigger_index)
+
+                # append the seen numbers in ascending order after swap
+                nums[i+1::] = ascending_nums
+                break
+
+
+        # if this condition meets. the array was in decreasing order
+        if len(ascending_nums) == len(nums):
+            nums[::] = reversed(nums)
+    
+    
+    # Note: If we really wanted. we could implement quick sort for in order sorting
+    
+    
+    def binary_search_index(self, ascending_nums: List[int], value: int) -> int:
+        left, right = 0, len(ascending_nums) - 1
+        while left <= right:
+            middle = left + (right - left)//2
+            current_value = ascending_nums[middle]
+            if current_value == value: return middle
+            if current_value > value:
+                right = middle - 1
+            else:
+                left = middle + 1
+                
+        return left
+    
+    def insert_in_order(self, ascending_nums: List[int], value: int) -> None:
+        insert_index = self.binary_search_index(ascending_nums, value)
+        ascending_nums.insert(insert_index, value)
+    
+    def search_first_bigger(self, ascending_nums: List[int], value: int) -> int:
+        n = len(ascending_nums)
+        left, right = 0, n-1
+        
+        while left <= right:
+            middle = left + (right - left) // 2
+            cur_value = ascending_nums[middle]
+            if cur_value == value:
+                # if end of array. no bigger element
+                if middle == n-1: return -1
+                
+                # if the next element is bigger
+                if ascending_nums[middle+1] > cur_value:
+                    return middle+1
+                # otherwise it\'s the same. continue searching
+                else:
+                    left = middle + 1
+                    
+            elif cur_value > value:
+                right = middle - 1
+            else:
+                left = middle + 1
+        
+        raise Exception("value doesn\'t exit in array", value, ascending_nums)

@@ -1,0 +1,44 @@
+class Solution:
+    
+    # -----------------------------------------------------
+    def dfs(self, s, partition, result):
+        
+        if not s:
+            
+            ## base case aka stop condition
+            # add into result when we meet a empty string
+            result.append( partition[::] )
+            return
+        
+        
+        ## general cases:
+        # scan each possible split index
+        
+        for i in range(1, len(s)+1):
+            
+            prefix, postfix = s[:i], s[i:]
+            
+            if self.is_palindrome( prefix ):
+                
+                # current prefix is palindrome, keep trying to make more partition in DFS
+                partition.append( prefix )
+                self.dfs(postfix, partition, result)
+                partition.pop()
+
+    # -----------------------------------------------------
+    
+    def is_palindrome(self, s):
+        
+        # helper function to chceck palindrome
+        return s == s[::-1]
+    
+    # -----------------------------------------------------
+    
+    def partition(self, s):
+
+        # record for solution
+        result = []
+
+        # make palindrome partition in DFS
+        self.dfs(s, [], result)
+        return result

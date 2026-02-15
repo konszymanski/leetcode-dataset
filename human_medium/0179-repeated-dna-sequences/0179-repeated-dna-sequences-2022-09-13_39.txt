@@ -1,0 +1,16 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        count = Counter()
+        current = \'\'
+        ans = []
+        
+        for ch in s:
+            current += ch
+            if len(current) > 10:
+                current = current[1:]
+            if len(current) == 10:
+                count[current] += 1
+                
+        return [key for key, val in count.items() if val >= 2]
+    # Time: O(n)
+    # Space: O(n)

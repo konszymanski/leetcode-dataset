@@ -1,0 +1,8 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        myDict=collections.Counter()
+        
+        for i in range(len(s)-9):
+            t=s[i:i+10]
+            myDict[t]+=1    
+        return [k for k,v in myDict.items() if v>1]

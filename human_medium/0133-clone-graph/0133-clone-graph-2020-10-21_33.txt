@@ -1,0 +1,19 @@
+def cloneGraph(self, node: Node) -> Node:
+        if not node:
+            return None
+
+        record_node = dict()
+        record_neighbor = dict()
+        qu = [node]
+        while qu:
+            curr = qu.pop()
+            if curr.val not in record_node:
+                record_node[curr.val] = Node(curr.val)
+                record_neighbor[curr.val] = curr.neighbors
+                qu.extend(curr.neighbors)
+
+        for n in record_node.keys():
+            for x in record_neighbor[n]:
+                record_node[n].neighbors.append(record_node[x.val])
+
+        return record_node[1]

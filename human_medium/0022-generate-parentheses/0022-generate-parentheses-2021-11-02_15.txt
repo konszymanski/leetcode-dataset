@@ -1,0 +1,25 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        
+        def dfs(curr, to_open, to_close):
+            
+            results=[]
+            # when this condition is True, we know that we generated all opening and closing parentheses
+            if 0 == to_open == to_close:
+                return [curr]
+            
+            # if there are parentheses to be opened
+            if to_open:
+                # update the current string with the opening parentheses
+                # decrease 1 from counter of parentheses that we still need to open
+                # increase 1 to the counter of parentheses that we still need to close
+                results.extend(dfs(curr+"(", to_open-1, to_close+1))
+            # if there are parentheses to be closed
+            if to_close:
+                # update the current string with the closing parentheses
+                # decrease 1 from counter of parentheses that we still need to close
+                results.extend(dfs(curr+")", to_open, to_close-1))
+            
+            return results
+        
+        return dfs(\'\', n, 0)

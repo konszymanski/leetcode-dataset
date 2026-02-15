@@ -1,0 +1,17 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+        if head.next == head or head.next == None:
+            return head.next
+        
+        curr = head
+        visited = set()
+        
+        while curr:
+            visited.add(curr)
+            print(curr)
+            if curr.next in visited:
+                return curr.next
+            curr = curr.next
+        print(visited)

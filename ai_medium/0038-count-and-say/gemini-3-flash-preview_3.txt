@@ -1,0 +1,27 @@
+```python
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n == 1:
+            return "1"
+        
+        curr = "1"
+        # Generate the sequence iteratively from 2 to n
+        for _ in range(2, n + 1):
+            next_val = []
+            i = 0
+            while i < len(curr):
+                count = 1
+                # Count consecutive identical characters
+                while i + 1 < len(curr) and curr[i] == curr[i + 1]:
+                    i += 1
+                    count += 1
+                # Append the count and the character itself
+                next_val.append(str(count))
+                next_val.append(curr[i])
+                i += 1
+            # Join the list to form the next string in the sequence
+            curr = "".join(next_val)
+            
+        return curr
+
+```

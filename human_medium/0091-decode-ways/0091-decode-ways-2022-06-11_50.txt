@@ -1,0 +1,14 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        curr, next = 1, 0
+
+        for i in reversed(range(len(s))):
+            prev = curr
+            
+            if s[i] == \'0\':
+                curr = 0
+            elif int(s[i:i + 2]) <= len(ascii_lowercase):
+                curr += next
+            next = prev
+        
+        return curr

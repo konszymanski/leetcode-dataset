@@ -1,0 +1,33 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        
+        def merge(left,right):
+            i = j = 0
+            ans = []
+            while i<len(left) and j<len(right):
+                mLeft = left[i]+right[j]
+                mRight = right[j]+left[i]
+                if mLeft > mRight:
+                    ans.append(left[i])
+                    i += 1
+                else:
+                    ans.append(right[j])
+                    j += 1
+            ans += left[i:]
+            ans += right[j:]
+            return ans    
+            
+        def mergeSort(arr):
+            if len(arr)<=1:
+                return arr 
+            mid = len(arr)//2
+            left = mergeSort(arr[:mid])
+            right = mergeSort(arr[mid:])
+            
+            return merge(left,right)
+        
+        for i in range(len(nums)):
+            nums[i] = str(nums[i])
+            
+        res = mergeSort(nums)
+        return str(int("".join(res)))

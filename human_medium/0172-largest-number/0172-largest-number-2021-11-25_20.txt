@@ -1,0 +1,30 @@
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        # This is a strange problem. convert the integers to strings and compare them (a+b or b+a) to use as a condition for sorting. So while sorting, change up your comparison style
+        def largest(a,b):
+            #print(a+b, b+a)
+            if a+b>=b+a:
+                return 0
+            else:
+                return 1
+            
+        def quicksort(l):
+            if not l or len(l) == 1:
+                return l
+            mid = l.pop()
+            greater_than = []
+            lesser_than = []
+            for i in l:
+                if largest(str(mid), str(i)):
+                    greater_than.append(i)
+                else:
+                    lesser_than.append(i)
+            # print(mid, greater_than, lesser_than)
+            # print(mid,i)
+            return quicksort(greater_than) + [mid] + quicksort(lesser_than)
+        
+        return str(int("".join(map(str, quicksort(nums)))))

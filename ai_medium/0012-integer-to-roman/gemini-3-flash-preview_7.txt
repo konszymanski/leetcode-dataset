@@ -1,0 +1,22 @@
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Define the values and their corresponding Roman numeral symbols,
+        # including the subtractive forms allowed for digits 4 and 9.
+        val_sym = [
+            (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),
+            (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),
+            (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')
+        ]
+        
+        result = ""
+        # Iterate through the list of value-symbol pairs from largest to smallest
+        for val, sym in val_sym:
+            # While the remaining number is greater than or equal to the current value,
+            # append the symbol and subtract its value.
+            while num >= val:
+                result += sym
+                num -= val
+                
+        return result
+```

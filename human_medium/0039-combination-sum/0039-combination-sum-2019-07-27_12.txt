@@ -1,0 +1,36 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        
+        def backtrack ( currSum, currList, mainList ):
+            
+
+            for i in range( len(mainList) ):
+                
+                # If we have found the target value then we don\'t have to iterate in the loop any further
+                # Optimization #2: Any sum we get after this will always be greater than or equal to the current sum. ( Since we initially sorted the list in Optimization #1  )
+                if currSum + mainList[i] == target:
+                    # Add the answer to the list
+                    solution.append( currList + [mainList[i]] )
+                    return
+                
+                # Since the current sum is already greater than target, no point iterating further. ( Optimization #2 )
+                if currSum + mainList[i] > target:
+                    return
+                
+                # current sum is still less than target, backtrack
+                else:
+                    # currSum = current sum from function parameter + current element
+                    # currList = current list from function parameter + list(current element)
+                    # mainList = mainList [ i ... len(candidates) ] ( slicing to avoid duplicates ) 
+                    backtrack( currSum + mainList[i], currList + [ mainList[i] ], mainList[i:] )
+            
+        
+		
+        solution = []
+        
+		# Call the backtrack function
+			# Optimization #1: sorting the list 
+		backtrack( 0, [], sorted( candidates ) )
+        
+        return solution

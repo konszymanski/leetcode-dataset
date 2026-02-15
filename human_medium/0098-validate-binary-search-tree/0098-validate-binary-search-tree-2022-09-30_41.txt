@@ -1,0 +1,37 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        \'\'\'
+        Input: [5,4,6,null,null,3,7] and valid ranges in parentheses ()
+        
+                    5 (\u221E,\u221E)
+                 /     \\
+         (\u221E,5) 4         6  (5,\u221E)
+                       /   \\
+                (5,6) 3       7 (6,\u221E)
+        \'\'\'
+        
+        def dfs(node, lo, hi):
+            
+            # If reached the end without any issues, Great!
+            if not node:
+                return True
+            
+            # If every the order is invalid, =(
+            if not lo < node.val < hi:
+                return False
+            
+            # How about the children?
+            left = dfs(node.left, lo, node.val)     # new hi is current node
+            right = dfs(node.right, node.val, hi)   # new lo is current node
+            
+            # All should be True
+            return left and right
+        
+        # Start the search on root node with infinity range on both ends
+        return dfs(root, float(\'-inf\'), float(\'inf\'))

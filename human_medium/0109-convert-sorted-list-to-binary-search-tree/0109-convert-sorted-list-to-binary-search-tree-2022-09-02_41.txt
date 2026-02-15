@@ -1,0 +1,25 @@
+def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        def length(node):
+            ans = 0
+            while node:
+                ans += 1
+                node = node.next
+            return ans
+        def ith(node, i):
+            while i:
+                i -= 1
+                node = node.next
+            return node
+        hlen = length(head)
+        if hlen == 0:
+            return None
+        if hlen == 1:
+            return TreeNode(head.val)
+        premid = ith(head, (hlen // 2) - 1)
+        mid = premid.next
+        premid.next = None
+        return TreeNode(
+            mid.val,
+            self.sortedListToBST(head),
+            self.sortedListToBST(mid.next)
+        )

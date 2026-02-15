@@ -1,0 +1,15 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        
+        
+        pos=dist=jumps=0
+        
+        for i in range(len(nums)-1):
+            
+            dist = max(dist,i+nums[i])
+            
+            if pos==i:
+                jumps+=1
+                pos = dist
+        
+        return jumps

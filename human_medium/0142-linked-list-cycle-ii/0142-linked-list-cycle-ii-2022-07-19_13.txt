@@ -1,0 +1,28 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow=fast=head
+        while fast!=None and fast.next!=None:
+            fast=fast.next.next
+            slow=slow.next
+            if fast==slow:
+                break
+        if fast==None or fast.next==None:
+            return None 
+        #once fast and slow meet 
+        #Let\'s assume when fast and slow meet the first time, slow walked k steps. Because fast walks two steps everytime slow walks one step, we know fast must have walked 2k steps. 
+        # 2k-k=k, this k is the cirles fast has walked within the cycle. 
+        #if we assume the distance from the point fast and slow met to the start of cycle is m:
+        # then we know the distance from head to the start of cycle is: k-m
+        #interestingly, if the pointers keep moving  k-m  steps from their met point, they will also arrive the start of cycle. 
+        #Because: walk k steps from first time meetpoint will arrive meetpoint again. walk k-m will arrive the start of circle.  
+        slow=head
+        while slow!=fast:
+            slow=slow.next
+            fast=fast.next
+        return slow

@@ -1,0 +1,30 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        ## RC ##
+        ## APPROACH : BINARY SEARCH ##
+        #   1. have to find rotation point
+        #   2. make mid = pivot element, start and end
+        #   3. IMP : If Pivot element is larger than the first element in the array, i.e. the part of array from the first element to the pivot one is non-rotated.
+        #   4. If the target is in that non-rotated part as well: go left: otherwise go right.
+        #   5. Pivot element is smaller than the first element of the array, i.e. the rotation index is somewhere between 0 and mid. That means that the part of array from the pivot element to the last one is non-rotated.
+        #   6. If target is in that non-rotated part as well: go right: else left.
+        
+        start, end = 0, len(nums)-1
+        
+        while(start <= end):
+            mid = start + (end - start) // 2                        # watch out
+            
+            if(target == nums[mid]): return mid
+            
+            if(nums[mid] >= nums[start]):                           # indicates non-rotated array
+                
+                if(target < nums[mid] and target >= nums[start]):   # check for target in non-rotated part
+                    end = mid -1
+                else:
+                    start = mid + 1
+            else:                                                   # indicates otated array
+                if(target <= nums[end] and target > nums[mid]):     # check for target in non-rotated part
+                    start = mid + 1
+                else:
+                    end = mid - 1
+        return -1

@@ -1,0 +1,34 @@
+class Solution:
+       def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix = [[0] * n for _ in range(n)]
+        matrix_size = n * n
+        up = left = value = 0
+        right = n - 1
+        down = n - 1
+        
+        while value != matrix_size:
+            
+            for col in range(left, right + 1):
+                value += 1
+                matrix[up][col] = value
+            
+            for row in range(up + 1, down + 1):
+                value += 1
+                matrix[row][right] = value
+                
+            if up != down:
+                for col in range(right - 1, left - 1, -1):
+                    value += 1
+                    matrix[down][col] = value
+            
+            if left != right:
+                for row in range(down - 1, up, -1):
+                    value += 1
+                    matrix[row][left] = value
+        
+            left += 1
+            right -= 1
+            up += 1
+            down -= 1
+
+        return matrix

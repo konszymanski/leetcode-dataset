@@ -1,0 +1,25 @@
+class Solution:
+    def threeSumClosest(self, A: List[int], target: int) -> int:
+        A = sorted(A)
+        smallestDiff = 10001
+        closestSum = 0
+        
+        for i in range(len(A)-2):
+            j = i + 1
+            k = len(A) - 1
+            
+            while j < k:
+                threeSum = A[i] + A[j] + A[k]
+                
+                if abs(threeSum - target) < smallestDiff:
+                    smallestDiff = abs(threeSum - target)
+                    closestSum = threeSum
+                    
+                if threeSum < target:
+                    j += 1
+                elif threeSum > target:
+                    k -= 1
+                else:
+                    return threeSum
+                
+        return closestSum

@@ -1,0 +1,19 @@
+class MinStack:
+
+    stackWithMinElements = collections.namedtuple("stackWithMinElements", ("element", "minimum"))
+    
+    def __init__(self):        
+        self.stack : List[self.stackWithMinElements] = []
+
+    def push(self, x: int) -> None:
+        self.stack.append(self.stackWithMinElements(
+                        x, min(x, self.getMin()) if len(self.stack)>0 else x))
+
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1].element
+
+    def getMin(self) -> int:
+        return self.stack[-1].minimum

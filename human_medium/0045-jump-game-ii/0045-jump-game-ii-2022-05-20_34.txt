@@ -1,0 +1,18 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        
+        if len(nums) == 1:
+            return 0
+        
+        rightmost = 0
+        running_end = 0
+        step = 0        
+        for i in range(len(nums)):
+            rightmost = max(rightmost, i + nums[i])
+            if i == running_end:
+                running_end = rightmost
+                step += 1
+            if running_end >= len(nums) - 1:
+                break
+        
+        return step

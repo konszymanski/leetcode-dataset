@@ -1,0 +1,19 @@
+class Solution:
+    def copyRandomList(self, head: \'Optional[Node]\') -> \'Optional[Node]\':
+        originalToCopy = { None: None }
+        
+        curr = head
+        while curr is not None:
+            originalToCopy[curr] = Node(curr.val)
+            curr = curr.next
+            
+        curr = head
+        while curr:
+            copy = originalToCopy[curr]
+            copy.next = originalToCopy[curr.next]
+            copy.random = originalToCopy[curr.random]
+            curr = curr.next
+            
+        return originalToCopy[head]
+    # Time: O(n)
+    # Space: O(n)

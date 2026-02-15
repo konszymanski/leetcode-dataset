@@ -1,0 +1,18 @@
+def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+	deg = [0] * numCourses
+	adj = defaultdict(list)
+	for i, j in prerequisites:
+		adj[j].append(i)
+		deg[i] += 1
+	q = []
+	for i in range(numCourses):
+		if(deg[i] == 0): q.append(i)
+	c = 0
+	while(q):
+		c += 1
+		node = q.pop(0)
+		for child in adj[node]:
+			deg[child] -= 1
+			if(deg[child] == 0):
+				q.append(child)
+	return c == numCourses

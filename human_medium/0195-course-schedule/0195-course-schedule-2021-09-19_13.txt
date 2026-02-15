@@ -1,0 +1,26 @@
+def canFinish(self, numCourses: int, pres: List[List[int]]) -> bool:
+        # make an adjacency map
+        preMap = {c:[] for c in range(numCourses)} # or use default dictionary
+        for course,pre in pres:
+            preMap[course].append(pre)
+        
+        visited = set()
+        ancestor = set()
+        def dfs(course):
+            ancestor.add(course)
+            visited.add(course)
+            for pre in preMap[course]:
+                if pre in ancestor: # ancestor include current course and its all parents
+                    return False
+                elif pre not in visited:
+                    if not dfs(pre): return False # False if atleast on pre req fails
+            ancestor.remove(course)
+            return True # True only if all pre req of current course is True
+        
+        # need to call all courses because there could be independent clusters that are not connected
+        for course in preMap.keys():
+            if course not in visited:
+                if not dfs(course) : return False
+        return True
+		
+		# like if you find it useful

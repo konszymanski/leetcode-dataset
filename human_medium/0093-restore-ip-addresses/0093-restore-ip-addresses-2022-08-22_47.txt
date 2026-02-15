@@ -1,0 +1,26 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        if len(s) > 12:
+            return []
+        
+        output = set()
+        
+        def backtrack(i, curr=[], dots_left=4):
+            if i >= len(s) and dots_left == 0:
+                if sum(len(x) for x in curr) == len(s):
+                    output.add(\'.\'.join(curr))
+                return 
+            
+            # Try all possible digits of length <= 3
+            for j in range(1, 4):
+                cand = s[i:i + j]
+                # Check if empty or invalid leading 0
+                if not cand or (len(cand) > 1 and cand[0] == \'0\'):
+                    break
+                if 0 <= int(cand) <= 255 and dots_left > 0:
+                    curr.append(cand)
+                    backtrack(i + j, curr, dots_left - 1)
+                    curr.pop()
+                    
+        backtrack(0)
+        return output

@@ -1,0 +1,27 @@
+```python
+from typing import List
+
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        if not obstacleGrid or not obstacleGrid[0]:
+            return 0
+        
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [0] * n
+        
+        # Base case: start position
+        dp[0] = 1 if obstacleGrid[0][0] == 0 else 0
+        
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    # If there's an obstacle, no paths reach this cell
+                    dp[j] = 0
+                elif j > 0:
+                    # Number of paths to current cell is the sum of paths from
+                    # the cell above (already in dp[j]) and the cell to the left (dp[j-1])
+                    dp[j] += dp[j - 1]
+                    
+        return dp[n - 1]
+
+```

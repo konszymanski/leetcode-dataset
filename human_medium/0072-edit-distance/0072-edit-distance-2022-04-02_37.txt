@@ -1,0 +1,49 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        \'\'\' Solution 1, dp with recursive --> TLE\'\'\'
+        
+        def dp(i, j):
+            if i == -1:
+                return j + 1
+            if j == -1:
+                return i + 1
+            if word1[i] == word2[j]:
+                return dp(i - 1, j - 1)
+            else:
+                return min(
+                    dp(i, j - 1) + 1,
+                    dp(i - 1, j) + 1,
+                    dp(i - 1, j - 1) + 1
+                )
+        
+        return dp(len(word1)-1, len(word2) - 1)
+    
+        
+        \'\'\' Solution 2, dp with recursive and memoization --> AC
+        We start from the end of both strings, there are 4 options:
+        1. if word1[i] == word2[j], then skip to i-1 and j-1
+        2 \u2013 4: replace, delete, insert
+        \'\'\'
+        memo = {} # to memorize if we have calculated dp(i, j) before
+        
+        def dp(i, j):
+            \'\'\' return the minimum edit distance between word1[0..i] and word2[0..j], i and j inclusive \'\'\'
+            if (i, j) in memo:
+                return memo[(i, j)]
+            # base case: 
+            # if there is no word in word1[0..i] and still have word in word2[0..j], 
+            # we just insert all the left 0..j characters, which is j + 1, similar for j == -1
+            if i == -1: return j + 1
+            if j == -1: return i + 1
+            if word1[i] == word2[j]:
+                memo[(i, j)] = dp(i - 1, j - 1) # skip if equal
+            else:
+                memo[(i, j)] = min(
+                    dp(i, j - 1) + 1, # insert, insert a char in word1[i] to match with word2[j], then j go to next one, distance + 1
+                    dp(i - 1, j) + 1, # delete, delete a char at word1[i], then i go to next one, distance + 1
+                    dp(i - 1, j - 1) + 1 # replace, replace word1[i] to match with word2[j], both i and j go to next one, distance + 1
+                )
+            return memo[(i, j)]
+        
+        # dp is bottom up, while recursion is top down
+        return dp(len(word1)-1, len(word2)-1)

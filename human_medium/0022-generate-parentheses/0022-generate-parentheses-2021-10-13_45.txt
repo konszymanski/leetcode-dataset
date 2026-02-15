@@ -1,0 +1,13 @@
+def generateParenthesis(self, n: int) -> List[str]:
+        # ()
+        # (()) ()()
+        # (()()) (())() ((())) ()()() ()(())
+        if n==1:
+            return ["()"]
+        else:
+            ans = []
+            L = self.generateParenthesis(n-1)
+            for par in L:
+                for i in range(1,n+1):
+                    ans.append( par[:i]+"()"+par[i:] )
+            return list(set(ans))

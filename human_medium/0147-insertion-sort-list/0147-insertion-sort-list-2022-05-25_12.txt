@@ -1,0 +1,73 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        return self.insertationSort(head)
+        # return self.insertationSortByList(head)
+    
+    
+    # Worse: O(n^2)
+    # bes O(N)
+    def insertationSort(self, node):
+        if not node or node.next is None:
+            return node
+        
+        dummyNode = ListNode(0, node)
+        prev, current = node, node.next
+
+
+        while current is not None:
+            if current.val >= prev.val:
+                prev, current = current, current.next
+                continue
+        
+            tmp = dummyNode
+
+            while current.val > tmp.next.val:
+                tmp = tmp.next
+
+            prev.next = current.next
+            current.next = tmp.next
+            tmp.next = current
+            current = prev.next
+            
+        return dummyNode.next
+    
+#     O(n^2) || O(n)
+    def insertationSortByList(self, node):
+        if not node or not node.next:
+            return node
+
+        stack = []
+
+        while node is not None:
+            stack.append(node.val)
+            node = node.next
+
+        sortedList =  self.insertationSortForList(stack)
+        dummyNode = ListNode(0)
+        tail = dummyNode
+
+        for i in sortedList:
+            tail.next = ListNode(i)
+            tail = tail.next
+
+        return dummyNode.next
+
+
+    def insertationSortForList(self, stack):
+        if not stack:
+            return
+
+        newList = [stack[0]]
+        for val in stack[1:]:
+            i = 0
+            while i <= len(newList)-1 and val > newList[i]:
+                i += 1
+            
+            newList.insert(i, val)
+
+        return newList

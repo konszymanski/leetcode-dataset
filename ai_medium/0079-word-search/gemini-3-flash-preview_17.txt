@@ -1,0 +1,58 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows, cols = len(board), len(board[0])
+        
+        # Basic check to see if word can possibly fit in the board
+        if len(word) > rows * cols:
+            return False
+        
+        # Pruning: Check if all characters in word exist in board with required frequencies
+        board_counts = Counter(char for row in board for char in row)
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Pruning: Start from the end of the word if the first character is more frequent than the last
+        if board_counts[word[-1]] < board_counts[word[0]]:
+            word = word[::-1]
+            
+        def dfs(r, c, k):
+            # If we've reached the end of the word, match is found
+            if k == len(word):
+                return True
+            
+            # Check boundaries and character match
+            if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[k]:
+                return False
+            
+            # Optimization: If this is the last character, we don't need to check neighbors
+            if k == len(word) - 1:
+                return True
+            
+            # Mark the current cell as visited
+            temp = board[r][c]
+            board[r][c] = '#'
+            
+            # Explore all four adjacent directions
+            found = (dfs(r + 1, c, k + 1) or
+                     dfs(r - 1, c, k + 1) or
+                     dfs(r, c + 1, k + 1) or
+                     dfs(r, c - 1, k + 1))
+            
+            # Backtrack: restore the original character
+            board[r][c] = temp
+            return found
+
+        # Try to start DFS from every cell that matches the first character of the word
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0]:
+                    if dfs(r, c, 0):
+                        return True
+        return False
+```

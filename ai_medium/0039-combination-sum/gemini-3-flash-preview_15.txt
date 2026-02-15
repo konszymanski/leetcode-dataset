@@ -1,0 +1,43 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        """
+        Solve the combination sum problem using backtracking.
+        We sort the candidates to enable early termination within the loop.
+        The 'start' index in the recursive backtrack function ensures we only 
+        pick elements in a non-decreasing order relative to their indices,
+        guaranteeing each combination is unique.
+        """
+        res = []
+        # Sort candidates to allow early break in the loop when candidate exceeds remain
+        candidates.sort()
+        
+        def backtrack(remain, start, path):
+            # If the target is met, add the current path to results
+            if remain == 0:
+                res.append(list(path))
+                return
+            
+            for i in range(start, len(candidates)):
+                # If current candidate exceeds the remaining target, further candidates 
+                # will also exceed it (since candidates are sorted).
+                if candidates[i] > remain:
+                    break
+                
+                # Choose the number
+                path.append(candidates[i])
+                
+                # Move forward. We pass 'i' as the start index because 
+                # we can reuse the same candidate multiple times.
+                backtrack(remain - candidates[i], i, path)
+                
+                # Backtrack: remove the number before checking the next candidate
+                path.pop()
+        
+        # Initialize backtracking with the full target and starting at index 0
+        backtrack(target, 0, [])
+        return res
+
+```

@@ -1,0 +1,17 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        def rec(cand, target, temp_list, res):
+            if target<0:
+                return
+            if target == 0:
+                temp_list.sort()
+                if temp_list not in res:
+                    res.append(temp_list)
+            for c in candidates:
+                new_ = temp_list[:]
+                new_.append(c)
+                rec(cand, target-c, new_, res)
+                
+        result = []
+        rec(candidates, target, [], result)
+        return result

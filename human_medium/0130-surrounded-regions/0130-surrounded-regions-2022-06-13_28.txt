@@ -1,0 +1,39 @@
+class Solution(object):
+    def solve(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        points=[[0,1],[0,-1],[1,0],[-1,0]]
+        m=len(board)
+        n=len(board[0])
+        stach_val=[]
+        
+        def bfs(x,y):
+            stach_val.append([x,y])
+            board[x][y]=-5
+            for dx,dy in points:
+                if 0<=x+dx<m and 0<=y+dy<n and board[x+dx][y+dy]=="O":
+                    bfs(x+dx,y+dy)
+                    
+        for i in range(m):
+            if board[i][0]=="O":
+                bfs(i,0)
+            if board[i][n-1]=="O":
+                bfs(i,n-1)
+                
+        for j in range(n):
+            if board[0][j]=="O":
+                bfs(0,j)
+            if board[m-1][j]=="O":
+                bfs(m-1,j)
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j]=="O":
+                    board[i][j]="X"
+                    
+        while stach_val:
+            i,j=stach_val.pop(0)
+            board[i][j]="O"
+        return board

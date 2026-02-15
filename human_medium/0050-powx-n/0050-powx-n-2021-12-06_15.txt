@@ -1,0 +1,16 @@
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        ans = 1
+        #Create temporary variable to store n 
+        N = n
+        #If it is negative, make it positive
+        if(N < 0): N = -N
+        #Iterate while it is greater than 0    
+        while(N > 0):
+            #If it is an odd number, multiply ans by x, decrease N by 1
+            if(N % 2 == 1): ans, N = ans*x, N-1
+            #If it is an even number, square x, divide N by 2
+            else: x, N = x*x, N/2
+        #If it was negative, invert it (since it is to a negative power)
+        if(n <0): ans = 1 / ans
+        return ans

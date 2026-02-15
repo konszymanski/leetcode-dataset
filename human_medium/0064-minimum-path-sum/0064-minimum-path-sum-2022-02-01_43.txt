@@ -1,0 +1,19 @@
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        def unique_paths(i,j,m,n,dp):
+            if i==0 and j==0:
+                return grid[i][j]
+            if i<0 or j<0:
+                return 100000000000000
+            if dp[i][j]!=-1:
+                return dp[i][j]
+            up=grid[i][j] + unique_paths(i-1,j,m,n,dp)
+            left=grid[i][j] + unique_paths(i,j-1,m,n,dp)
+
+            dp[i][j]=min(up,left)
+
+            return dp[i][j]
+        m = len(grid)
+        n = len(grid[0])
+        dp=[[-1 for i in range(n)] for j in range(m)] 
+        return unique_paths(m-1,n-1,m,n,dp)

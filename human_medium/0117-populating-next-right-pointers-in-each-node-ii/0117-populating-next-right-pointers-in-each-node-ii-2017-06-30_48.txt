@@ -1,0 +1,26 @@
+class Solution:
+    def connect(self, root):
+        if not root:return
+        if not root.right and not root.left:
+            root.next=None
+            return
+        queue=collections.deque([(root,1)])
+        dic=collections.defaultdict(list)
+        while queue:
+            node,level=queue.popleft()
+            if not node:
+                continue
+            dic[level].append(node)
+            if node.left:
+                queue.append((node.left,level+1))
+            if node.right:
+                queue.append((node.right,level+1))
+        for key,nodes in dic.items():
+            i=0
+            while i<len(nodes)-1:
+                nodes[i].next=nodes[i+1]
+                i+=1
+            nodes[i].next=None
+#61 / 61 test cases passed.
+#Status: Accepted
+#Runtime: 99 ms

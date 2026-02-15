@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int helpSteal(int index, vector<int>& nums){
+        if(index >= nums.size()) return 0;
+        
+        int lootAndHop = 0, hopAndLoot = 0;
+        lootAndHop = nums[index] + helpSteal(index+2, nums);
+        hopAndLoot = 0 + helpSteal(index+1, nums);
+        
+        return max(hopAndLoot, lootAndHop);
+    }
+    int rob(vector<int>& nums) {
+        return helpSteal(0, nums);
+    }
+};

@@ -1,0 +1,14 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        # zero comes form 2 x 5 = 10
+        # The point is to find how many pairs of (2, 5)
+        # Since the number of 2  >> the number of 5, we just need to find how many 5s
+        
+        zero_count = 0
+        divisor = 5
+        while divisor <= n :
+            # find how many number can be exactly divided by 5, 25, 125...
+            zero_count += n // divisor
+            divisor *= 5
+        return zero_count
+        # T.C.: O(logN)

@@ -1,0 +1,24 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+		# trivial case
+        if n <= 0:
+            return []
+			
+		# abstract what magic does and don\'t try to go down the recursion
+		# trying to figure out the solution. just assume magic does its job.
+		# assuming magic does what we aspect, the code below should
+		# be correct
+        def magic(left, right):
+            if left > right:
+                return [None]
+            result = []
+            for i in range(left, right + 1):
+                for l in magic(left, i - 1):
+                    for r in magic(i + 1, right):
+                        node = TreeNode(i)
+                        node.left = l
+                        node.right = r
+                        result.append(node)
+            return result if result else [None]
+        
+        return magic(1, n)

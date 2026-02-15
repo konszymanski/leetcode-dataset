@@ -1,0 +1,49 @@
+func searchRange(nums []int, target int) []int {
+    minIdx := binarySearch(nums, target, true)
+    
+    if minIdx != -1 {
+        maxIdx := binarySearch(nums, target, false)
+        
+        return []int{minIdx, maxIdx}
+    }
+    
+    return []int{-1, -1}
+}
+
+func binarySearch(nums []int, target int, isFindingMin bool) int {
+    res := -1
+    
+    left, right := 0, len(nums) - 1
+    
+    for left <= right {
+        mid := left + (right - left)/2
+        
+        if nums[mid] == target {
+            if res == -1 {
+                res = mid
+            } else {
+                if isFindingMin {
+                    if mid < res {
+                        res = mid
+                    }
+                } else {
+                    if mid > res {
+                        res = mid
+                    }
+                }
+            }
+            
+            if isFindingMin {
+                right = mid - 1
+            } else {
+                left = mid + 1
+            }
+        } else if nums[mid] > target {
+            right = mid - 1
+        } else {
+            left = mid + 1
+        }
+    }
+    
+    return res
+}

@@ -1,0 +1,12 @@
+class Solution:
+    def f(self,i,j):
+        if i==0 and j==0:
+            return 1
+        if i<0 or j<0:
+            return 0
+        else:
+            up=self.f(i-1,j)
+            left=self.f(i,j-1)
+            return left+up
+    def uniquePaths(self, m: int, n: int) -> int:
+        return self.f(m-1,n-1)

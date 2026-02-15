@@ -1,0 +1,10 @@
+def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+	ans = set()
+	nums.sort()
+	for i in range(2**len(nums)):
+		temp = []
+		for j in range(len(nums)):
+			if(i & (1<<j)):
+				temp.append(nums[j])
+		ans.add(tuple(temp))
+	return list(ans)

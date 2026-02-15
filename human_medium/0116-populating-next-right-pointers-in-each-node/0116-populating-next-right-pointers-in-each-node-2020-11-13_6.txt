@@ -1,0 +1,18 @@
+def connect(self, root: \'Node\') -> \'Node\':
+	if not root: return
+	
+	above, below = root, root.left
+	while below:
+		cur = below
+		while above:
+			if cur == above.left:
+				cur.next = above.right
+				above = above.next
+			else:
+				cur.next = above.left
+			cur = cur.next
+
+		above = below
+		below = below.left
+
+	return root

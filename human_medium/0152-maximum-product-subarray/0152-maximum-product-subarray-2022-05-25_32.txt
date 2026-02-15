@@ -1,0 +1,11 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        minn = nums[0] # keep min subarray (probably negative number) product b/c we don\'t know if there will be a negative number at the end
+        maxx = nums[0] # keep max subarray (for array of positive numbers, this will be the answer)
+        ret = maxx
+        for num in nums[1:]:
+            arr = [num, maxx * num, minn * num]
+            maxx = max(arr);
+            minn = min(arr);            
+            ret = max(maxx, ret)
+        return ret

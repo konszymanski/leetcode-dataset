@@ -1,0 +1,5 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        return target in sum(matrix, [])
+		# sum(matrix, []) is to combine all sub-lists in the list
+		# then check if target is in the combined list, if it is, return True, else, False

@@ -1,0 +1,29 @@
+class Solution:
+    """
+    We can slice and dice this way:
+    
+            
+    root.val - preorder lets us identify the root (preorder[0])
+    M - now find the root value in the inorder.  inorder.index(root.val)
+    M is also the length of the left tree due to the properties of inorder
+    
+    
+	So the indexes become:
+    
+                      0.    1:M+1.  M+1:
+    Preorder - visit- root, [left], [right]
+    In order - visit- [left], root, [right]
+                       0:M    M     M+1:
+                       
+    """
+    
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+        M = inorder.index(root.val)
+        root.left = self.buildTree(preorder[1:M+1], inorder[0:M])
+        root.right = self.buildTree(preorder[M+1:], inorder[M+1:])
+        
+        return root

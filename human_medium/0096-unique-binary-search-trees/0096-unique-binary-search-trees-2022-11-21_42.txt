@@ -1,0 +1,10 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        def get_next(lst):
+            for i in range(len(lst)-2, -1, -1):
+                lst[i] += lst[i+1]
+            return [lst[0]] + lst 
+        dp = [1]
+        for i in range(1, n):
+            dp = get_next(dp)
+        return sum(dp)

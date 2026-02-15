@@ -1,0 +1,23 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        i=0
+        j=len(matrix[0])-1
+        def startBinarySearch(i,j,arr):
+            low=0
+            high=len(arr)-1
+            while(low<=high):
+                mid=low+(high-low)//2
+                if arr[mid]==target:
+                    return True
+                elif arr[mid]<target:
+                    low=mid+1
+                else:
+                    high=mid-1
+            return False
+        while(i<len(matrix)):
+            if matrix[i][j]<target:
+                i+=1
+            elif matrix[i][j]>target:
+                return startBinarySearch(i,j,matrix[i])
+            else:
+                return True

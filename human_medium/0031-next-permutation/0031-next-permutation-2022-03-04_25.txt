@@ -1,0 +1,31 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        
+        n = len(nums)
+        
+        if n == 1: return 
+        elif n == 2: 
+            nums[0], nums[1] = nums[1], nums[0]
+            return 
+        
+        found = False
+        p = 0
+        for r in range(n-1, 0, -1):
+            if nums[r-1] < nums[r]:
+                p = r-1
+                found = True
+                break
+            
+        if not found: 
+            nums.sort()
+            return 
+        
+        for r in range(n-1, 0, -1):
+            if nums[r] > nums[p]:
+                nums[r], nums[p] = nums[p], nums[r]
+                break
+            
+        nums[p+1:] = list(sorted(nums[p+1:]))

@@ -1,0 +1,26 @@
+class Solution(object):
+    def generateMatrix(self, n):
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        DIRECTIONS_ROW = [0, 1, 0, -1]
+        DIRECTIONS_COL = [1, 0, -1, 0]       
+        direction, val, i, j = 0, 1, 0, 0
+        result = [[0 for _ in range(n)] for _ in range(n)]
+        while val <= n * n:
+            result[i][j] = val
+            i += DIRECTIONS_ROW[direction]
+            j += DIRECTIONS_COL[direction]
+            # Check to see if i, j is a valid index. If not, change directions
+            if self.is_invalid_index(result, i, j):
+                i -= DIRECTIONS_ROW[direction]
+                j -= DIRECTIONS_COL[direction]
+                direction = (direction + 1) % 4 # Change directions
+                i += DIRECTIONS_ROW[direction] # Now increment in correct dir
+                j += DIRECTIONS_COL[direction]
+            val += 1
+        return result
+            
+    def is_invalid_index(self, matrix, i, j):
+            return not (0 <= i < len(matrix) and 0 <= j < len(matrix)) or matrix[i][j] != 0

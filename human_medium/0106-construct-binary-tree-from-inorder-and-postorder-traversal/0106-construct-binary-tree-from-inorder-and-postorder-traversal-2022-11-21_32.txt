@@ -1,0 +1,15 @@
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        if not postorder: return None
+        if len(postorder) == 1: return TreeNode(postorder[0])
+        
+        root = TreeNode(postorder[-1])
+
+        i = inorder.index(root.val) # O(n)
+        left = inorder[:i]
+        right = inorder[i+1:]
+        
+        root.left = self.buildTree(left, postorder[:len(left)])
+        root.right = self.buildTree(right, postorder[len(left):-1])
+        
+        return root

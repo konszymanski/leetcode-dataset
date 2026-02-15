@@ -1,0 +1,16 @@
+from itertools import combinations
+class Solution:
+    def sorting(self, tup:tuple[int]) -> List[int]:
+        lst = list(tup)
+        return sorted(lst)
+
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        answer =[]
+        for i in range(len(nums) + 1):
+            comb = set(combinations(nums, i))
+            for k in comb:
+                k = self.sorting(k)
+                if k in answer:
+                    continue
+                answer.append(k)
+        return answer

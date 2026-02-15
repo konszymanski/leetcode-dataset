@@ -1,0 +1,11 @@
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+                f,b = 0, len(numbers)-1
+        while f<=b:
+            suum = numbers[f]+numbers[b]
+            if suum == target:
+                return [f+1, b+1]
+            if suum > target:
+                b -= 1
+            else:
+                f += 1

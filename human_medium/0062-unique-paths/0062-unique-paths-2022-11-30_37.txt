@@ -1,0 +1,15 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        def fact(n):
+            ans = 1
+            for i in range(2,n+1):
+                ans*=i
+            return ans
+        def P(n,r):
+                ans = 1
+                for i in range((n-r)+1, n+1):
+                    ans*=i
+                return ans
+        def C(n,r):
+            return P(n,r) // fact(r)
+        return C(n+m-2,n-1)

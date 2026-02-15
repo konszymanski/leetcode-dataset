@@ -1,0 +1,14 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        st=""
+        x=""
+        for i in s:
+            if i==" ":
+                if x!="":
+                    st=x+" "+st
+                x=""
+            else:
+                x+=i
+        if x!="":
+            st=x+" "+st
+        return st.strip()

@@ -1,0 +1,8 @@
+dp = [0] * len(nums) # memoization list
+        dp[-1] = 0 # start from the end and assign the last member 0 as we are already present without jump
+        for i in range(len(nums)-2, -1, -1):
+            if nums[i]:
+                dp[i] = min(dp[i+1:i+nums[i]+1]) + 1
+            else: # If the number is 0 then we assign the int max so that it is not considered in remaining calculations.
+                dp[i] = 2**31-1
+        return dp[0]

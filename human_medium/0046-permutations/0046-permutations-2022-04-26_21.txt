@@ -1,0 +1,12 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 1:
+            return [nums]
+            
+        permutations = []
+        
+        for permutation in self.permute(nums[1:]):
+            for i in range(0, 1 + len(permutation)):
+                permutations.append(permutation[:i] + [nums[0]] + permutation[i:])
+        
+        return permutations

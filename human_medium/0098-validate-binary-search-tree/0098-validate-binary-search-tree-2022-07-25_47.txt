@@ -1,0 +1,35 @@
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        
+        #Inorder Traversal 
+        stack = []
+        elements = []
+        
+        curr_node = root
+        
+        while stack or curr_node:
+            
+            if curr_node:
+                stack.append(curr_node)
+                curr_node = curr_node.left
+                
+            else:
+                
+                curr_node = stack.pop()
+                elements.append(curr_node.val)
+                
+                curr_node = curr_node.right
+         #Inorder Traversal
+        
+        elem = elements[:]
+        elem.sort()
+        
+        if (elem == elements):
+            #Also checking for duplicate elements
+            mySet = set(elements)
+            if len(elements) == len(mySet):
+                return True
+            else:
+                return False
+        else:
+            return False

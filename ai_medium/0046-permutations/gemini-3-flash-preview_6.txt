@@ -1,0 +1,19 @@
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(first=0):
+            if first == n:
+                output.append(nums[:])
+            for i in range(first, n):
+                # Swap the current element with the element at index 'first'
+                nums[first], nums[i] = nums[i], nums[first]
+                # Recursively generate permutations for the remaining elements
+                backtrack(first + 1)
+                # Backtrack: swap back to the original state
+                nums[first], nums[i] = nums[i], nums[first]
+
+        n = len(nums)
+        output = []
+        backtrack()
+        return output
+```

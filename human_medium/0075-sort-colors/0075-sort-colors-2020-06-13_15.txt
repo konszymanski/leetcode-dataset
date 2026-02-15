@@ -1,0 +1,39 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        ## RC ##
+        ## APPROACH : HASH OF INDEX NUMBER ##
+        ## LOGIC ## 
+        ## 1. Main three pointers, 
+        ##      a) ZeroPointer will make sure 0\'s stay at start 
+        ##      b) twoPointer will make sure 2\'s stay at end
+        ##      c) index will handle 1\'s. ( we increment index also, while incrementing zeroPointer because we will not have 1\'s before zeroPointers below position, so index pointer must always be equal or greater than zeroPointer )
+        zeroPtr = 0
+        twoPtr = len(nums) - 1
+        index = 0
+        
+        while( index <= twoPtr and zeroPtr < twoPtr ):                  # watchout
+            
+            if( nums[zeroPtr] == 0 ):
+                zeroPtr += 1
+                index += 1
+                continue
+                            
+            if( nums[twoPtr] == 2 ):
+                twoPtr -= 1
+                continue
+            
+            if( nums[index] == 2 ):
+                nums[index] , nums[twoPtr] = nums[twoPtr], nums[index]
+                continue
+                
+            if( nums[index] == 0 ):
+                nums[index] , nums[zeroPtr] = nums[zeroPtr], nums[index]
+                continue
+            
+            if( nums[index] == 1):
+                index += 1
+        
+        return nums

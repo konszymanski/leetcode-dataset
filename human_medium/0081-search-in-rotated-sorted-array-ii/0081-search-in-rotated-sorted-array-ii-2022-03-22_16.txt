@@ -1,0 +1,48 @@
+class Solution(object):
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: bool
+        """
+        
+        #Our Pointers
+        left, right = 0, len(nums) - 1
+        
+        #We\'re doing binary search so up until left <= right
+        while left <= right:
+            
+            #Our mid pointer
+            mid = (left + right) // 2
+            
+            #If we find the target return True
+            if nums[mid] == target:
+                return True
+            
+            #We could run into a situation where there are multiple of the same number, so we\'re going to have to
+            #iterate the right pointer until we find a different mid value
+            if nums[mid] == nums[right]:
+                right -= 1
+                
+            #We\'re going to be in the left side of the rotated array
+            elif nums[mid] > nums[right]:
+                
+                if target >= nums[left] and target > nums[mid]:
+                    left = mid + 1
+                elif target >= nums[left] and target < nums[mid]:
+                    right = mid - 1
+                elif target < nums[left]:
+                    left = mid + 1
+            
+            #We\'re in the right hand portion of the array
+            else:
+                if target <= nums[right] and target < nums[mid]:
+                    right = mid - 1
+                    
+                elif target <= nums[right] and target > nums[mid]:
+                    left = mid + 1
+                    
+                elif target > nums[right]:
+                    right = mid - 1
+                    
+        return False

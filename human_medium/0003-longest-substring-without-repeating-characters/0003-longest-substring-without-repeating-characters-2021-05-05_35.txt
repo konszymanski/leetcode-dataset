@@ -1,0 +1,28 @@
+from collections import defaultdict
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        d= defaultdict(list) #Creating a dictionary
+        start = max_ = 0 #making start and max initally 0
+        for i in range(len(s)): # Walking
+            if( s[i] in d and start<= d[s[i]] ):
+                # if already visited the character &&
+                #if start is less than the previous index of the
+                #repeating character
+                #PS: We are using the Window ,we cant make our start
+                #less than the end ,OFCOURSE!
+				
+                start = d[s[i]]+1
+                # Updating the value of the start
+                #because if the character is matching we have
+                #to shift our Window right.
+            else:
+                #if the char is not repeating then we are
+                #having the continuous Substring already.
+                #"USE PEN AND PAPER to understand better"
+                max_ = max(max_ , i-start+1)
+                # i-start+1 is used to fing the length of the 
+                # Window
+            #Storing / Updating the Index of each character
+            d[s[i]] = i
+        #returning the MAX_ value
+        return max_

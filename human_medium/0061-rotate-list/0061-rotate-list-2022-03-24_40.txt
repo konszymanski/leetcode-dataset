@@ -1,0 +1,36 @@
+class Solution:
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+       
+        # edge cases k=0 or empty list or list containes only one element
+        if k== 0 or not head or not head.next:
+            return head
+        
+        # find length of the linked list
+        dummy = head
+        length = 0
+        
+        while dummy:
+            length += 1
+            dummy = dummy.next
+        
+        # if k is greater than length. Let say length = 5, k = 16 => k = 16%5 = 1
+        k = k%length if k>=length else k
+        
+        # Each iteration of i, rotation of elements happens once towards right direction
+        for i in range(k):
+            
+            # create a dummy head.
+            dummy = head
+
+            temp = dummy.val
+            
+            # swapping the values
+            while dummy.next != None:
+                temp1 = dummy.next.val
+                dummy.next.val = temp
+                temp = temp1
+                dummy = dummy.next
+
+            head.val = temp1 
+
+        return head

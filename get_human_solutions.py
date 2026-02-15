@@ -3,8 +3,8 @@ import pandas as pd
 import os
 import re
 import time
-import json
 from datetime import datetime
+from pathlib import Path
 
 class LeetCodeVoteScraper:
     def __init__(self):
@@ -15,7 +15,7 @@ class LeetCodeVoteScraper:
             "Origin": "https://leetcode.com",
             "Referer": "https://leetcode.com/"
         }
-        self.output_dir = "human_generated_solutions"
+        self.output_dir = "human_medium"
         os.makedirs(self.output_dir, exist_ok=True)
         
         self.cutoff_date = datetime(2022, 11, 30, 23, 59, 59)
@@ -42,8 +42,7 @@ class LeetCodeVoteScraper:
                 return code
         return None
 
-    def run(self, title_slug, frontend_id, target_count=10):
-        problem_id_str = str(frontend_id).zfill(4)
+    def run(self, title_slug, problem_id_str, target_count):
         folder_name = f"{problem_id_str}-{title_slug}"
         task_dir = os.path.join(self.output_dir, folder_name)
 
@@ -171,6 +170,7 @@ class LeetCodeVoteScraper:
 
 if __name__ == "__main__":
     CSV_FILE = "leetcode_problems.csv"
+    PROMTPS_DIR = Path("prompts")
     
     if not os.path.exists(CSV_FILE):
         print(f"Błąd: Nie znaleziono pliku {CSV_FILE}")
@@ -184,31 +184,33 @@ if __name__ == "__main__":
         
         if "hasSolution" in df.columns:
             df = df[df["hasSolution"].astype(str).str.lower() == "true"]
-            
-        print(f"Załadowano {len(df)} zadań do przetworzenia.")
         
-        tasks_to_process = df
-        scraper = LeetCodeVoteScraper()
+        if "difficulty" in df.columns:
+            df = df[df["difficulty"].astype(str).str.lower() == "medium"]
+        
+        slugs = df['titleSlug'].to_list()[150:200]
+            
+        print(f"Załadowano {len(slugs)} zadań do przetworzenia.")
 
-        for index, row in tasks_to_process.iterrows():
+        for idx, file_name in enumerate(sorted(os.listdir(PROMTPS_DIR))):
+            slug = file_name[5:-4]
+            if slug not in slugs:
+                continue
+        
+            scraper = LeetCodeVoteScraper()
+
             try:
-                title_slug = row.get("titleSlug")
-                
-                q_id = row.get("frontendQuestionId")
-                if pd.isna(q_id): q_id = row.get("questionId", "0")
-                question_id = str(int(q_id)) if isinstance(q_id, (int, float)) else str(q_id)
-                
-                if title_slug:
-                    scraper.run(title_slug, question_id, target_count=10)
+                question_id = file_name[:4]
+                scraper.run(slug, question_id, target_count=50)
                 
                 time.sleep(1) 
 
             except Exception as e:
-                print(f"!!! Błąd krytyczny przy przetwarzaniu wiersza {index}: {e}")
-                scraper.failed_tasks.append(f"WIERSZ CSV {index} -> CRITICAL ERROR: {e}")
+                print(f"!!! Błąd krytyczny przy przetwarzaniu wiersza {question_id}: {e}")
+                scraper.failed_tasks.append(f"WIERSZ CSV {question_id} -> CRITICAL ERROR: {e}")
                 continue
-        
-        scraper.save_failed_report()
+            
+            scraper.save_failed_report()
                 
     except Exception as e:
         print(f"Krytyczny błąd programu: {e}")

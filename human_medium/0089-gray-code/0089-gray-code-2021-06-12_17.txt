@@ -1,0 +1,6 @@
+def grayCode(self, n: int) -> List[int]:
+        res = [0]
+        for i in range(0, n):
+            peak = 2 ** i
+            res += [peak ^ res[j] for j in range(peak - 1, -1, -1)]
+        return res

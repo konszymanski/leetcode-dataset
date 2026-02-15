@@ -1,0 +1,20 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+        heap = [(0, 0, 0)]
+        seen = set()
+        
+        while heap:
+            distance, i, j = heappop(heap)
+            if word1[i:] == word2[j:]:
+                return distance
+		
+            if ((i, j) not in seen):
+                seen.add((i, j))
+                if (i < m and j < n and word1[i] == word2[j]):
+                    heappush(heap, (distance, i+1, j+1))
+                else:
+                    for di, dj in (1,0), (0,1), (1,1):
+                        next_i, next_j = i+di, j+dj
+                        if (next_i <= m and next_j <= n):
+                            heappush(heap, (distance+1, next_i, next_j))

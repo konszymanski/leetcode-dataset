@@ -1,0 +1,56 @@
+class Solution:
+    def compare(self, a, b):
+        "Returns True if a >= b else False"
+        i, j = 0, 0
+        while i < len(a) and j < len(b):
+            if a[i] > b[j]:
+                return True
+            elif a[i] < b[j]:
+                return False
+            else:
+                i+=1
+                j+=1
+        if len(a) > len(b):
+            return self.compare(a[j:], b)
+        elif len(b) > len(a):
+            return self.compare(a, b[i:])
+        else:
+            return True
+        
+    def sorted_merged(self, front, back):
+        result = []
+        i, j = 0, 0
+        while i < len(front) and j < len(back):
+            if self.compare(front[i], back[j]):
+                result.append(front[i])
+                i+=1
+            else:
+                result.append(back[j])
+                j+=1
+        if j == len(back) and i != len(front):
+            result.extend(front[i:])
+        if i == len(front) and j != len(back):
+            result.extend(back[j:])
+        return result
+            
+    def merge_sort(self, nums):
+        if len(nums) == 1:
+            return nums
+        mid = len(nums)//2
+        front = self.merge_sort(nums[:mid])
+        back = self.merge_sort(nums[mid:])
+        merged_sorted = self.sorted_merged(front, back)
+        return merged_sorted
+        
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = [str(num) for num in nums]
+        nums = self.merge_sort(nums)
+        ans =  "".join(nums)
+        # if ans has all zeros in the string return "0"
+        flag = True
+        for char in ans:
+            if char != \'0\':
+                flag = False
+        if flag:
+            return "0"
+        return ans

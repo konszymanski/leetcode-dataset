@@ -1,0 +1,32 @@
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        # Iterative
+        if not root: return []
+        res = []
+        stack = [(root, [root.val], sum)]
+        while stack:
+            node, lst, sum = stack.pop()
+            if not node.left and not node.right and node.val == sum:
+                res.append(lst)
+            if node.left:
+                stack.append((node.left, lst+[node.left.val], sum-node.val))
+            if node.right:
+                stack.append((node.right, lst+[node.right.val], sum-node.val))   
+        return res     
+		
+		
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:      
+        # Recursive
+        if not root: return []
+        lst = [root.val]
+        return self.helper(root,lst, sum, [])
+    
+    def helper(self, node, lst, sum, res):
+        if not node.left and not node.right and node.val == sum:
+            res.append(lst)
+        if node.left:
+            self.helper(node.left, lst+[node.left.val], sum-node.val, res)
+        if node.right:
+            self.helper(node.right, lst+[node.right.val], sum-node.val, res)
+        return res

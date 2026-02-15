@@ -1,0 +1,39 @@
+def canFinish(self, n: int, pre: List[List[int]]) -> bool:
+        # We cannot finish if there is a cycle
+        # Verify the constraints with the interviewer:
+        # - Can we have courses unconnected to other courses?
+        # - Yes
+    
+        # Topological sort to check if there are cyclic
+        # Only take vertex if their indegree is 0
+        
+        # Create adjacency list
+        adjList = defaultdict(list)
+        
+        for x,y in pre:
+            adjList[y].append(x)
+        
+        # Create indegree list
+        indegreeList = [0]*n
+        for i in range(len(pre)):
+            indegreeList[pre[i][0]] += 1
+        
+        # start with a vertex with an indegree of 0
+        
+        # add all the vertex with an indegree of 0 into a stack
+        stack = []
+        for i in range(len(indegreeList)):
+            if indegreeList[i] == 0:
+                stack.append(i)
+        count = 0
+        
+        while len(stack):
+            cur = stack.pop()
+            count += 1
+            adjacent = adjList[cur]
+            for i in range(len(adjacent)):
+                nextVal = adjacent[i]
+                indegreeList[nextVal] -= 1
+                if indegreeList[nextVal] == 0:
+                    stack.append(nextVal)
+        return count == n

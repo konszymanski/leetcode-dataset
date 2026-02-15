@@ -1,0 +1,13 @@
+def multiply(self, num1: str, num2: str) -> str:
+        if num1 == \'0\' or num2 == \'0\': 
+            return "0"
+        
+        hash = {str(i):i for i in range(10)}
+        
+        carry = 0
+        val = 0
+        for i1, n1 in enumerate(num1[::-1]):
+            for i2, n2 in enumerate(num2[::-1]):
+                val += (10 ** i1) * hash[n1] * (10 ** i2) * hash[n2]
+                
+        return str(val)

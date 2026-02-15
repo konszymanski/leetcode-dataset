@@ -1,0 +1,35 @@
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+	
+"""
+1. Store the sum in the existing list l1
+2. If l2 is longer than l1 and l1 is exhausted, swap l1 and l2 references
+3. Continue storing the sum in the remaining l2 (new l1) nodes
+"""
+        sentinel = curr = ListNode()
+        carry = 0
+
+        while l1 or l2:
+            if not l1:   # l2 is longer than l1 and l1 is exhausted, swap references
+                l1, l2 = l2, l1   # ensures that l1 always points to the longer list, so no checks required for l1
+				
+            curr_sum = carry + l1.val
+            if l2:
+                curr_sum += l2.val
+				
+            l1.val, carry = curr_sum % 10, curr_sum // 10
+            curr.next = curr = l1   # first curr.next = l1 and then curr = l1
+			
+            l1 = l1.next 
+            if l2:
+                l2 = l2.next
+        
+        if carry:
+            curr.next = ListNode(carry)
+            
+        return sentinel.next

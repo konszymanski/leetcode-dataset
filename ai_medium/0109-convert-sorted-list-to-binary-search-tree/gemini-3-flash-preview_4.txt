@@ -1,0 +1,47 @@
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        # First, calculate the length of the sorted linked list
+        size = 0
+        curr = head
+        while curr:
+            size += 1
+            curr = curr.next
+        
+        # Pointer to keep track of the current list node during in-order building
+        self.head = head
+        
+        def convert(n: int) -> Optional[TreeNode]:
+            if n <= 0:
+                return None
+            
+            # Recursively build the left subtree
+            left = convert(n // 2)
+            
+            # Create the root node with the current list value
+            root = TreeNode(self.head.val)
+            root.left = left
+            
+            # Advance the list pointer to the next element
+            self.head = self.head.next
+            
+            # Recursively build the right subtree
+            root.right = convert(n - (n // 2) - 1)
+            
+            return root
+        
+        # The in-order construction naturally maps the sorted list into a height-balanced BST
+        return convert(size)
+
+```

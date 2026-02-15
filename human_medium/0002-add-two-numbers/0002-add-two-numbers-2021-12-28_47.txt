@@ -1,0 +1,20 @@
+class Solution:
+    BASE = 10
+    DEFAULT_VALUE = 0
+    DEFAULT_NEXT = None
+    
+    def addTwoNumbers(self, head1: Optional[ListNode], head2: Optional[ListNode]) -> Optional[ListNode]:
+        carry = 0
+        result_dummy_head = ListNode()       # Dummy node just for appending nodes later
+        curr1, curr2, curr_result = head1, head2, result_dummy_head
+        
+        while curr1 is not None or curr2 is not None or carry is not 0:
+            addition = carry + getattr(curr1, \'val\', self.DEFAULT_VALUE) + getattr(curr2, \'val\', self.DEFAULT_VALUE)
+            carry, result_value = divmod(addition, self.BASE)
+            curr_result.next = ListNode(result_value)
+            
+            curr1 = getattr(curr1, \'next\', self.DEFAULT_NEXT)
+            curr2 = getattr(curr2, \'next\', self.DEFAULT_NEXT)
+            curr_result = curr_result.next
+            
+        return result_dummy_head.next

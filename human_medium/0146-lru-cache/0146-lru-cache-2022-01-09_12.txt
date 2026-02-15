@@ -1,0 +1,28 @@
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cache = {}
+        self.capacity = capacity
+        self.items = 0
+        
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            val = self.cache[key] # get value of key  and delete the key - value
+            del self.cache[key]
+            self.cache[key] = val # Puts the key - value to end of cache
+            return self.cache[key]
+        
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:  
+            del self.cache[key]  # delete key
+            self.cache[key] = value #place the key - value pair in the end of cache
+            
+        elif self.items == self.capacity:
+            del self.cache[next(iter(self.cache))]  #delete the first key - value pair which is the LRU
+            self.cache[key] = value
+            
+        else:
+            self.cache[key] = value
+            self.items += 1

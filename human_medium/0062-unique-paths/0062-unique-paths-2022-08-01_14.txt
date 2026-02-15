@@ -1,0 +1,17 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        
+        @lru_cache(maxsize=None)
+        def dp_memo(r, c):
+			# base case - reached the end
+            if r == m-1 and c == n-1:
+                return 1
+            
+            ans = 0
+            for nr, nc in [(r+1, c), (r, c+1)]:
+				# if inbound
+                if 0 <= nr < m and 0 <= nc < n:
+                    ans += dp_memo(nr, nc)
+            return ans
+            
+        return dp_memo(0, 0)

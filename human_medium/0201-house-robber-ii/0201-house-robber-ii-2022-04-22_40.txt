@@ -1,0 +1,23 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        
+        prev_non_adj_house_p1 = prev_adj_house_p1 = 0
+        prev_non_adj_house_p2 = prev_adj_house_p2 = 0
+        plan1_max_robbed = plan2_max_robbed = 0
+        
+        # Two Plans to check max robbed amount
+        for house in range(len(nums)):
+            # plan 1 to exclude the last house , 0 - n - 1 
+            if house < len(nums) - 1:
+                plan1_max_robbed = max(nums[house] + prev_non_adj_house_p1, prev_adj_house_p1)
+                prev_non_adj_house_p1 = prev_adj_house_p1
+                prev_adj_house_p1 = plan1_max_robbed
+            # plan 2 to exclude the first house , 0 - n - 1 
+            if house > 0:
+                plan2_max_robbed = max(nums[house] + prev_non_adj_house_p2, prev_adj_house_p2)
+                prev_non_adj_house_p2 = prev_adj_house_p2
+                prev_adj_house_p2 = plan2_max_robbed
+                
+        return max(plan1_max_robbed, plan2_max_robbed)

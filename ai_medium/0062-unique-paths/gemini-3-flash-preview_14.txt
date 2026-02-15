@@ -1,0 +1,13 @@
+```python
+import math
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # The total number of moves is (m - 1) + (n - 1) = m + n - 2.
+        # Out of these moves, exactly (m - 1) must be downward moves.
+        # The number of unique paths is the number of ways to choose (m - 1) 
+        # downward positions in the sequence of (m + n - 2) moves.
+        # This is given by the combination formula: C(m + n - 2, m - 1).
+        return math.comb(m + n - 2, m - 1)
+
+```

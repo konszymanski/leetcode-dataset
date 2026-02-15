@@ -1,0 +1,13 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        # build a BST from [left...right]
+        def helper(left=1,right=n):
+            if left >= right:
+                return 1
+            ret = 0
+            for i in range(left,right+1):
+                l_tree = helper(left,i-1)
+                r_tree = helper(i+1,right)
+                ret += l_tree * r_tree
+            return ret
+        return helper()

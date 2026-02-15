@@ -1,0 +1,22 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        #If the array is sorted, there is no rotation
+        rotate = 1
+        
+        for i in range (len(nums)-1):
+		
+		#Checking whether full array is sorted or not
+            if nums[i] < nums [i+1]:
+                continue
+				
+		# When the array is not sorted, it will return the first small element		
+            elif nums[i] > nums [i+1] :
+                out = nums[i+1]
+                rotate = 2
+                break
+        #if the array is sorted, first element will be the smallest element   
+        if rotate == 1:
+            return nums[0]
+            
+        else:
+            return out

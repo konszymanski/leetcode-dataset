@@ -1,0 +1,18 @@
+class Solution:
+    
+    def __init__(self):
+        self.idx = 0
+    def fillResRecursively(self, matrix, i=0,j=0,flag=False):
+        if i < 0 or j < 0 or i >= len(matrix) or j >= len(matrix[0]) or matrix[i][j] != -1: return # validate edges and check if its already visited, if its already visited it wont be -1.
+        matrix[i][j] = self.idx + 1 # assign to counter, which is also an index ( +1 is cuz its zero indexed)
+        self.idx += 1 # increment index globally.
+        if flag == True: self.fillResRecursively(matrix, i - 1, j, True) # if we recieve an direction to go up, keep going up until you can.
+        self.fillResRecursively(matrix, i, j + 1) # go right until you can.
+        self.fillResRecursively(matrix, i + 1, j) # go down until you can.
+        self.fillResRecursively(matrix, i, j - 1) # go left 
+        self.fillResRecursively(matrix, i - 1, j, True) # go up and set flag to true to keep going all the way up.
+        
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix = [[-1 for i in range(n)] for j in range(n)] # decalre matrix with -1 initally of size n * n. -1 means it is unvisited.
+        self.fillResRecursively(matrix) # fill recursively.
+        return matrix

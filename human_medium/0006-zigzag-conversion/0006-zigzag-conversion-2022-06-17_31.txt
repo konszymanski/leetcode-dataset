@@ -1,0 +1,25 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        res = [""] * numRows
+        down = 1
+        pt = 0
+        
+        for c in s:
+            #print(pt)
+            res[pt] += c
+            if down and pt<len(res)-1:
+                pt +=1
+            elif down==0 and pt > 0:
+                pt -= 1
+            elif down and pt == len(res)-1:
+                down =0
+                pt -= 1
+            elif down==0 and pt==0:
+                down = 1
+                pt += 1
+        ans = ""     
+        for st in res:
+            ans += st
+            
+        #print(res)
+        return ans

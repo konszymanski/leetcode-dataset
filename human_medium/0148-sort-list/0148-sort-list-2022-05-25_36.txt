@@ -1,0 +1,77 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        return self.sortByMergeSort(head)
+        return self.SortListByList(head)
+    
+    def sortByMergeSort(self, node):
+        if not node or not node.next:
+            return node
+
+        middleNode = self.findMiddle(node)
+
+        left = self.sortByMergeSort(node)
+        right = self.sortByMergeSort(middleNode)
+
+        newNode =  self.merge(left, right)      
+
+
+        return newNode
+
+    def findMiddle(self, node):
+        fast, slow = node.next, node
+        while fast is not None and fast.next is not None:
+            fast = fast.next.next
+            slow = slow.next
+        middle = slow.next
+        slow.next = None
+    
+        return middle
+
+
+    
+    def merge(self, left, right):
+        if not left or not right:
+            return left or right
+
+        dummyNode = p = ListNode(0)  
+
+        while left is not None and right is not None:
+            if left.val < right.val:
+                p.next = left
+                left = left.next
+            else:
+                p.next = right
+                right = right.next
+            p = p.next
+
+        
+        p.next = left or right
+
+        return dummyNode.next
+    
+    
+    def SortListByList(self, node):
+        if not node or not node.next:
+            return node
+
+        stack = []
+
+        newNode = node
+        while newNode is not None:
+            stack.append(newNode.val)
+            newNode = newNode.next
+
+        dummyNode = ListNode()
+        tail = dummyNode
+        stack.sort()
+        realNodeInsert = node
+        for i in stack:
+            tail.next = ListNode(i)
+            tail = tail.next
+
+        return dummyNode.next

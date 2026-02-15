@@ -1,0 +1,39 @@
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head or not head.next or k == 0:
+            return head
+        
+        # Determine the length of the linked list and locate the tail node
+        n = 1
+        tail = head
+        while tail.next:
+            tail = tail.next
+            n += 1
+        
+        # Optimize k based on the list length
+        k = k % n
+        if k == 0:
+            return head
+        
+        # Link the tail to the head to create a circular linked list
+        tail.next = head
+        
+        # Find the new tail node, which is at position (n - k - 1) from the head
+        new_tail = head
+        for _ in range(n - k - 1):
+            new_tail = new_tail.next
+            
+        # The new head is the node following the new tail
+        new_head = new_tail.next
+        # Break the circular connection
+        new_tail.next = None
+        
+        return new_head
+```

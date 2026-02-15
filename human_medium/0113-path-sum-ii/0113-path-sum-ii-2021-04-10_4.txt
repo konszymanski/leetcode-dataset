@@ -1,0 +1,42 @@
+class Solution:
+    def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
+        
+        def dfs( node, cur_path, cur_target ):
+            
+            # base case
+            if not node:
+                # empty node or empty tree
+                return
+        
+            # general case
+            
+            # update current path
+            cur_path.append( node.val )
+            
+            # update current target
+            cur_target -= node.val
+            
+            if not node.left and not node.right and cur_target == 0:
+                
+                # current path is valid with wanted targetSum
+				# list is pass-by-reference in Python, so here we have to make a copy of list
+                answer.append( cur_path[::] )
+                
+                # undo selection and go back to previous level
+                cur_path.pop()
+                return
+            
+            # solve subproblem in DFS
+            dfs(node.left, cur_path, cur_target)
+            dfs(node.right, cur_path, cur_target)
+            
+            # undo selection and go back to previous level
+            cur_path.pop()
+            return
+        
+        #------------------------------------------
+        answer = []
+        
+        dfs(root, [], targetSum)
+        
+        return answer

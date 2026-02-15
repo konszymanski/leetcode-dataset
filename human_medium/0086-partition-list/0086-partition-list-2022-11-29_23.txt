@@ -1,0 +1,108 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        after = ListNode()
+        after_head = after 
+
+        before = ListNode()
+        before_head = before 
+
+        while head :
+            if head.val < x :
+                before.next = head 
+                before = before.next
+
+            else :
+                after.next = head 
+                after = after.next
+
+            head = head.next
+            
+        after.next = None
+        before.next = after_head.next 
+
+        return before_head.next 
+
+
+
+
+
+    #     class Solution(object):
+    # def partition(self, head, x):
+    #     """
+    #     :type head: ListNode
+    #     :type x: int
+    #     :rtype: ListNode
+    #     """
+
+    #     # before and after are the two pointers used to create two list
+    #     # before_head and after_head are used to save the heads of the two lists.
+    #     # All of these are initialized with the dummy nodes created.
+    #     before = before_head = ListNode(0)
+    #     after = after_head = ListNode(0)
+
+    #     while head:
+    #         # If the original list node is lesser than the given x,
+    #         # assign it to the before list.
+    #         if head.val < x:
+    #             before.next = head
+    #             before = before.next
+    #         else:
+    #             # If the original list node is greater or equal to the given x,
+    #             # assign it to the after list.
+    #             after.next = head
+    #             after = after.next
+
+    #         # move ahead in the original list
+    #         head = head.next
+
+    #     # Last node of "after" list would also be ending node of the reformed list
+    #     after.next = None
+    #     # Once all the nodes are correctly assigned to the two lists,
+    #     # combine them to form a single list which would be returned.
+    #     before.next = after_head.next
+
+    #     return before_head.next
+       
+
+ 
+
+
+
+
+
+
+
+        # if not head or not head.next:
+        #     return head
+
+        # arr = []
+        # res = []
+
+        # while head :
+        #     arr.append(head.val)
+        #     head = head.next 
+
+        # for i in range(len(arr)):
+        #     if arr[i] < x:
+        #         res.append(arr[i])
+        #         arr[i] =None
+
+        # for i in range(len(arr)):
+        #     if arr[i]is not  None:
+        #         res.append(arr[i])
+    
+        # for i in range(len(arr)):
+        #     res[i] = ListNode(res[i])
+
+        # for i in range(len(res)-1):
+        #     res[i].next = res[i+1]
+
+
+        # res[len(arr)-1].next = None
+
+        # return res[0]

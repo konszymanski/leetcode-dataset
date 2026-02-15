@@ -1,0 +1,52 @@
+def isvalid(s):
+            if s[0]==\'0\':
+                return False
+            return 0<=int(s)<=255
+        def helper(s,i,par,ans,res):
+            if len(s)==i or par==4:
+                if len(s)==i and par==4:
+                    res.append(ans[0:len(ans)-1])
+                return
+            helper(s,i+1,par+1,ans+s[i]+".",res)
+            if len(s)>=2+i and isvalid(s[i:i+2]):
+                helper(s,i+2,par+1,ans+s[i:i+2]+\'.\',res)
+            if len(s)>=3+i and isvalid(s[i:i+3]):
+                helper(s,i+3,par+1,ans+s[i:i+3]+\'.\',res)
+        z=[]   
+        helper(s,0,0,\'\',z)
+        return z
+#         if len(s)>12 or s.isnumeric()==False:
+#                 return []
+#         if len(s)==4:
+#             return [".".join(list(s))]
+#         f,d,t,che=1,2,3,0
+#         ans=[]
+#         def checker(s,f,d,t,ans,che):
+#             if t<len(s) and d<len(s)-1 and f<len(s)-2 and 0<=int(s[:f])<=255 and 0<=int(s[f:d])<=255 and 0<=int(s[d:t])<=255 and 0<=int(s[t:])<=255:
+#                 if len(s[:f])>1 and s[:f][0]=="0" and che!=0:
+#                     return
+#                 elif len(s[f:d])>1 and s[f:d][0]=="0" and che!=0:
+#                     return
+#                 elif len(s[d:t])>1 and s[d:t][0]=="0" and che!=0:
+#                     return 
+#                 elif len(s[t:])>1 and s[t:][0]=="0" and che!=0:
+#                     return
+#                 else:
+#                     ans.append(".".join([s[:f],s[f:d],s[d:t],s[t:]]))
+#             if t+1==len(s) and che==1:
+#                 return
+#             if t+1==len(s) and d+1==len(s)-1 and che==2:
+#                 return
+#             if t+1==len(s) and d+1==len(s)-1 and f+1==len(s)-2 and che==3:
+#                 return
+#             if t+1>=len(s):
+#                 return
+#             checker(s,f,d,t+1,ans,1)
+#             checker(s,f,d+1,t+1,ans,2)
+#             checker(s,f+1,d+1,t+1,ans,3)
+#         checker(s,f,d,t,ans,che)
+#         if len(ans)>0 and len(s[3:])>1 and s[3:][0]=="0":
+#             del ans[0]
+        
+#         # print(ans)
+#         return list(set(ans))

@@ -1,0 +1,51 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+		# check if the list is empty or if the list only contains one element.
+        if not head or not head.next:
+            return head
+		
+		# Finding the tail of the Linked List.
+		
+        tail = head
+        while tail.next!=None:
+            tail = tail.next
+            
+        def mergeSort(head,tail):
+			# if head is same as tail then our Linked List has only one element.
+            if head!=tail:
+				# now we need to find the middle most element.
+				# here we will not traverse till the end of the list but till we reach our tail element.
+				# This will help us when we go after the divided linked list.
+                fast, slow = head, head
+                while fast!=tail and fast.next!=tail:
+                    slow = slow.next
+                    fast = fast.next.next
+				# we will divide the linked list here in two parts, by making the next value of slow pointer as None.
+                temp = slow.next
+                slow.next = None
+                h1 = mergeSort(head,slow)       # Recurse on the first part of the Linked List.
+                h2 = mergeSort(temp,tail)       # Recurse on the second part of the Linked List.
+                dummy = ListNode()              # merge the two Linked Lists.
+                head = dummy
+                while h1 and h2:
+                    if h1.val>h2.val:
+                        head.next = h2
+                        h2 = h2.next
+                    else:
+                        head.next = h1
+                        h1 = h1.next
+                    head = head.next
+                if h1:
+                    head.next = h1
+                else:
+                    head.next = h2
+                return dummy.next         # return the reversed Linked List.
+            else:
+                return head               # return in case both the head and tail are the same. i.e. Size(LinkedList) == 0
+            
+        return mergeSort(head,tail)

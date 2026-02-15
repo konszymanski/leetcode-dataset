@@ -1,0 +1,29 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        
+        start = 0 
+        end = len(nums)-1
+        
+        ## edge cases 
+        ## 1. if list is rotated and reamins same
+        ## 2. len of list is 1
+        if nums[start] < nums[end] or end==0:
+            return nums[0]
+        
+        while start <= end:
+            mid = (start + end)//2
+            
+            ## if the mid-1, mid and mid+1 elements are in increasing order then
+            ## check if the nums[mid] > nums[end].
+            ## if true then problem is in the right-half of the list. Shift to right side
+            ## else left-half is having problem and shift to left-half
+            if (nums[mid-1] < nums[mid]) and (nums[mid] < nums[mid+1]):
+                if nums[mid] > nums[end]:
+                    start = mid+1
+                else:
+                    end = mid-1
+                    
+            ## if mid-1, mid and mid+1 elements are not in increasing order then
+            ## the smallest element is in 3 element only
+            else:
+                return min(nums[mid-1], nums[mid], nums[mid+1])

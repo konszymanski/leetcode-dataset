@@ -1,0 +1,9 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        d = Counter(nums)
+        res = [[]]
+        for num, cnt in d.items():
+            m = [[num]*i for i in range(cnt+1) ]
+            res = [ m_+res_ for m_ in m for res_ in res ]
+            # print(res)
+        return res

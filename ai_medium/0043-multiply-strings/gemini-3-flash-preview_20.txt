@@ -1,0 +1,35 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        # The maximum possible length of the product of two numbers 
+        # with lengths n and m is n + m.
+        res = [0] * (len(num1) + len(num2))
+        
+        # Reverse the strings to make indexing easier (position 0 is the least significant digit)
+        n1 = num1[::-1]
+        n2 = num2[::-1]
+        
+        for i in range(len(n1)):
+            for j in range(len(n2)):
+                # Multiply digits at current positions
+                digit1 = ord(n1[i]) - ord('0')
+                digit2 = ord(n2[j]) - ord('0')
+                product = digit1 * digit2
+                
+                # Update the result array at position i + j
+                res[i + j] += product
+                # Handle carry to the next position
+                res[i + j + 1] += res[i + j] // 10
+                res[i + j] %= 10
+        
+        # Remove trailing zeros resulting from the initial array size
+        while len(res) > 1 and res[-1] == 0:
+            res.pop()
+            
+        # Convert the integer array back to a string (reversing it back to correct order)
+        return "".join(map(str, res[::-1]))
+
+```

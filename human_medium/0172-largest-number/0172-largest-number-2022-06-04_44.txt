@@ -1,0 +1,7 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = [str(n) for n in nums]
+        fill = max(len(n) for n in nums)*2
+        return "".join(sorted(nums,
+                              key=lambda n: (n*fill)[:fill],
+                              reverse=True)).lstrip("0") or "0"

@@ -1,0 +1,53 @@
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        
+        def llen(node):
+            l = 0
+            while node:
+                l += 1
+                node = node.next
+            return l
+        
+        def skip(node, k):
+            \'\'\'skips up to k nodes from node and returns the beginning of
+               the second subsequence and the actual length of the first
+            \'\'\'
+            leftlen = 0
+            while leftlen < k and node:
+                node = node.next
+                leftlen += 1
+            return node, leftlen
+        
+        def merge(prev, right, lsize):
+            \'\'\'merges two lists with the size of the prev.next=lsize and 
+               right <= lsize, returns the last node in the merged list
+            \'\'\'
+            lleft = rleft = lsize
+            left = prev.next
+            cur = prev
+            while lleft or (rleft and right):
+                if lleft and (not rleft or not right or left.val < right.val):
+                    cur.next = left
+                    cur = cur.next
+                    left = left.next
+                    lleft -= 1
+                else:
+                    cur.next = right
+                    cur = cur.next
+                    right = right.next
+                    rleft -= 1
+            
+            cur.next = right
+            return cur
+        
+        size = llen(head)
+        skip_size = 1 # we start by merging lists of length one because they are sorted by default
+        dummy = ListNode(next=head)
+        while skip_size < size:
+            prev = dummy  # we start merging with the head node (dummy.next)
+            while prev.next:
+                nextr, leftlen = skip(prev.next, skip_size)
+                prev = merge(prev, nextr, leftlen)
+            skip_size *= 2
+        
+        return dummy.next

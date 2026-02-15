@@ -1,0 +1,23 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        DIRECTIONS = {\'up\': (-1, 0), \'right\': (0, 1), \'down\': (1, 0), \'left\': (0, -1)}
+        TRANSITIONS = {\'up\':\'right\', \'right\':\'down\', \'down\':\'left\', \'left\':\'up\'}
+        ans = [[None for j in range(n)] for i in range(n)]
+        currPos = (0, 0)
+        currDirection = \'right\'
+        for i in range(1, n**2 + 1):
+            r, c = currPos
+            ans[r][c] = i
+            move = DIRECTIONS[currDirection]
+            newRow = r+move[0]
+            newCol = c+move[1]
+            if 0 <= newRow < n and 0 <= newCol < n and not ans[newRow][newCol]:
+                currPos = (newRow, newCol)
+            else:
+                newDirection = TRANSITIONS[currDirection]
+                move = DIRECTIONS[newDirection]
+                newRow = r+move[0]
+                newCol = c+move[1]
+                currPos = (newRow, newCol)
+                currDirection = newDirection
+        return ans

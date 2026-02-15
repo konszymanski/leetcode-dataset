@@ -1,0 +1,24 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        hashmap = defaultdict()
+        for w in strs:
+            s = \'\'.join(sorted(w))
+            if s not in hashmap:
+                hashmap[s] = [w]
+            else:
+                hashmap[s].append(w)
+        
+        return hashmap.values()
+		
+1. iterate over each word in the list to find anagrams
+2. sort the word to get the key for the group of anagrams
+3. if the key doesnt exist assign it to the hashmap and append an original word inside the array
+   as a starting point in the group. ([\'aet\': [\'ate\'])
+4. if the key already exists it means we can append the anagram to the existing list in the hashmap
+5. we return hashmap.values() as it will give us two dimensional array with the groups of anagrams
+
+
+Time complexity: 0(n * (k logk))
+Because we iterate n times over the list of strings - 0(n) and with each iteration we sort anagram - 0(k logk) where k is the length of the string.
+
+Space complexity: 0(n)

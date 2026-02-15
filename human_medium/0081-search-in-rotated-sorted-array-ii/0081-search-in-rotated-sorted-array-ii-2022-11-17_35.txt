@@ -1,0 +1,33 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        l, r = 0, len(nums) - 1
+        
+        while l <= r:
+            
+            # Below is added to "Search in Rotated Sorted Array I" solution
+            ##############
+            while l+1 < len(nums) and nums[l] == nums[l+1]:
+                l += 1
+            
+            while r-1 >= 0 and nums[r] == nums[r-1]:
+                r -= 1
+            ##############
+            
+
+            mid = (l + r) // 2
+            if nums[mid] == target:
+                return True
+            # on the left slope
+            elif nums[mid] >= nums[l]:
+                if nums[l] <= target < nums[mid]:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+            # on the right slope
+            else:
+                if nums[mid] < target <= nums[r]:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+        
+        return False

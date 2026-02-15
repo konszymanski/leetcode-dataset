@@ -1,0 +1,24 @@
+class Solution:
+    def combinationSum(self, candidates, target: int):
+        def backtracking(elements, target):
+            # finish condition
+            if target == 0:
+                answer.append(elements[:])
+                return
+            # case for when the target is less than minimum elements
+            min_ele = elements[0] if elements else 0
+            if target < min_ele:
+                return
+            start = can_dict[elements[-1]] if elements else 0
+            # call recursively after append elements after start
+            for num in candidates[start:]:
+                elements.append(num)
+                backtracking(elements, target-num)
+                elements.pop()
+        # it is easy when we have sorted list
+        candidates = sorted(candidates)
+        answer = []
+        # dictionary which stores elements: its index for candidates
+        can_dict = {candidates[i]: i for i in range(len(candidates))}
+        backtracking([], target)
+        return answer

@@ -1,0 +1,14 @@
+def isValidBFS(root: TreeNode) -> bool:
+    if not root: return True
+    floor, ceiling = float("-inf"), float("inf")
+    queue= [(root, floor, ceiling)]
+    while queue:
+        current, f, c = queue.pop(0)
+        if not (current.val > f and current.val < c): return False
+        floor, ceiling = f, c
+        if current.left:
+            queue.append((current.left, floor, current.val))
+        if current.right:
+            queue.append((current.right, current.val, ceiling))
+
+    return True

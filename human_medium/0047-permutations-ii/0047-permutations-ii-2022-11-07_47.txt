@@ -1,0 +1,20 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:        
+        ans = []
+        nums = [str(x) for x in nums]
+        nlen = len(nums)
+        nums = sorted(nums)
+        def dfs(s,n):            
+            if len(s) == nlen:                
+                ans.append(s)
+                return            
+            last = \'\'
+            for i in range(len(n)):
+                if n[i] == last: # ignore duplicate
+                    continue
+                last = n[i]
+                t = s.copy()
+                t.append(last)
+                dfs(t,n[:i]+n[i+1:])  #delete used element and pass the new n to next level
+        dfs([],nums)
+        return ans

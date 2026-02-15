@@ -1,0 +1,31 @@
+class Solution:
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        if not s:
+            return True
+        
+        if not wordDict:
+            return False
+        
+        maxL = max([len(word) for word in wordDict])
+        index = 0
+        memo = {}
+        return self.dfs(s, wordDict, maxL, index, memo)
+    
+    def dfs(self, s, wordDict, maxL, index, memo):
+        if index == len(s):
+            return True
+        
+        if index in memo:
+            return memo[index]
+
+        memo[index] = False
+        for i in range(1, maxL + 1):
+            if index + i > len(s):
+                break
+            if s[index : index + i] in wordDict:
+                if self.dfs(s, wordDict, maxL, index + i, memo):
+                    memo[index] = True
+                    return True
+      
+        return False

@@ -1,0 +1,25 @@
+```python
+from typing import List
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        result = []
+        
+        def backtrack(current_string: str, open_count: int, close_count: int):
+            # If the current string has reached the maximum length (2 * n)
+            if len(current_string) == 2 * n:
+                result.append(current_string)
+                return
+            
+            # If we can still add an opening parenthesis
+            if open_count < n:
+                backtrack(current_string + "(", open_count + 1, close_count)
+            
+            # If we can add a closing parenthesis (must be fewer than opening ones)
+            if close_count < open_count:
+                backtrack(current_string + ")", open_count, close_count + 1)
+                
+        backtrack("", 0, 0)
+        return result
+
+```

@@ -1,0 +1,6 @@
+import functools, bisect
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        unfolded = functools.reduce(list.__add__, matrix, [])
+        pos = bisect.bisect_left(unfolded, target)
+        return pos < len(unfolded) and unfolded[pos] == target

@@ -1,0 +1,13 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        flag = [None]
+        for i in range(len(matrix)):
+            if target <= matrix[i][-1]:
+                flag = matrix[i]
+                break
+        
+        if flag[0] != None:
+            for j in range(len(flag)):
+                if target == flag[j]:
+                    return True
+        return False

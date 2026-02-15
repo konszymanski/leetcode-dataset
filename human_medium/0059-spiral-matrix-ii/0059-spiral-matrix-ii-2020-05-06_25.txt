@@ -1,0 +1,31 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix = [ [ None ] * n for i in range(n) ]
+        rt, rb = 0, n-1
+        cl, cr = 0, n-1
+        
+        count = 1
+        
+        while rt <= rb and cl <= cr:
+            for row in range(cl, cr+1):
+                matrix[rt][row] = count
+                count += 1
+                
+            for col in range(rt+1, rb+1):
+                matrix[col][cr] = count
+                count += 1
+            
+            for row in range(cr-1, cl-1, -1):
+                matrix[rb][row] = count
+                count += 1
+            
+            for col in range(rb-1, rt, -1):
+                matrix[col][cl] = count
+                count += 1
+                
+            rt += 1
+            rb -= 1
+            cl += 1
+            cr -= 1
+        
+        return matrix

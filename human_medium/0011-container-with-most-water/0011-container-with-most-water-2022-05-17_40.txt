@@ -1,0 +1,23 @@
+# Two Pointer Solution
+# Time:     O(n),   Iterate through list once.
+# Space:    O(1),   Constant space used.
+class Solution:
+    def maxArea(self, heights: List[int]) -> int:
+        leftPointer, rightPointer = 0, len(heights)-1                       # One pointer for each end of the list.
+        maxArea = 0
+        
+        def containerArea() -> int:                                         # Calculates the current container\'s area using the pointers.
+            length = rightPointer - leftPointer                             # Calculate length of container using the two pointers.
+            height = min(heights[leftPointer], heights[rightPointer])       # Gets the minimum height of the two indices.
+            
+            return length * height
+        
+        for _ in range(len(heights)-1):                                     # Iterate n-1 times (could also use while: leftPointer < rightPointer:).
+            maxArea = max(maxArea, containerArea())                         # Gets current max area found using two pointers.
+        
+            if heights[leftPointer] < heights[rightPointer]:                # Checks which pointer height is smaller.
+                leftPointer += 1                                            # Increase left pointer to next index in list.
+            else: 
+                rightPointer -= 1                                           # Decrease right pointer to next index in list.
+        
+        return maxArea                                                      # Return max area found.

@@ -1,0 +1,48 @@
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        first = second = prev = None
+        curr = root
+        
+        while curr:
+            if curr.left is None:
+                # Process the node
+                if prev and prev.val > curr.val:
+                    if not first:
+                        first = prev
+                    second = curr
+                prev = curr
+                curr = curr.right
+            else:
+                # Find the inorder predecessor
+                predecessor = curr.left
+                while predecessor.right and predecessor.right != curr:
+                    predecessor = predecessor.right
+                
+                if predecessor.right is None:
+                    # Create temporary thread
+                    predecessor.right = curr
+                    curr = curr.left
+                else:
+                    # Thread already exists, destroy it and process node
+                    predecessor.right = None
+                    if prev and prev.val > curr.val:
+                        if not first:
+                            first = prev
+                        second = curr
+                    prev = curr
+                    curr = curr.right
+        
+        if first and second:
+            first.val, second.val = second.val, first.val
+
+```

@@ -1,0 +1,29 @@
+class Solution(object):
+    def maxArea(self, height):
+        
+        ## initializing deque and other variables
+        height = collections.deque(height)
+        right = height.pop()
+        left = height.popleft()
+        area = (len(height) + 1) * min(left, right)
+        
+        while len(height) > 0:
+            
+            hLen = len(height)
+            
+            # checks with line is shorter and replaces it
+            # does not matter which is replaced in the case of ties
+            if left <= right:
+                left = height.popleft()
+                
+                # only updates the area when it is larger than previous
+                if area <= hLen * min(left, right):
+                    area = hLen * min(left, right)
+                    
+            elif right < left:
+                right = height.pop()
+                
+                if area <= hLen * min(left, right):
+                    area = hLen * min(left, right)       
+                    
+        return area

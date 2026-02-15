@@ -1,0 +1,21 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        a, b = len(word1), len(word2)
+        
+        D = [[
+                0 if j < b and i < a 
+                else a-i if j==b
+                else b-j 
+                for j in range(b+1)
+            ] 
+            for i in range(a+1)
+        ]
+        
+        for i in reversed(range(a)):
+            for j in reversed(range(b)):
+                if word1[i] == word2[j]:
+                    D[i][j] = D[i+1][j+1]
+                else:
+                    D[i][j] = min(D[i][j+1], D[i+1][j], D[i+1][j+1]) + 1
+        
+        return D[0][0]

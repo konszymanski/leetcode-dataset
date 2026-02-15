@@ -1,0 +1,6 @@
+def generateMatrix(self, n: int) -> List[List[int]]:
+        def spiral(start: int, i: int, j: int) -> List[List[int]]:
+            if i == 1 and j == 1: return [[start]]
+            next_spiral = spiral(start + i, j - 1, i)
+            return [list(range(start, start + i))] + [list(a) for a in zip(*next_spiral[::-1])]
+        return spiral(1, n, n)

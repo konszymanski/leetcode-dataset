@@ -1,0 +1,33 @@
+from typing import Optional
+
+
+class Trie:
+    def __init__(self, value: Optional[str] = None):
+        self.value = value
+        self.characters = {}
+        self.terminal = False
+
+    def insert(self, word: str) -> None:
+        if not word:
+            self.terminal = True
+            return
+        if word[0] in self.characters:
+            leaf = self.characters[word[0]]
+        else:
+            leaf = Trie(word[0])
+            self.characters[word[0]] = leaf
+        leaf.insert(word[1:])
+
+    def search(self, word: str) -> bool:
+        if not word:
+            return self.terminal
+        if word[0] not in self.characters:
+            return False
+        return self.characters[word[0]].search(word[1:])
+
+    def startsWith(self, prefix: str) -> bool:
+        if not prefix:
+            return True
+        if prefix[0] not in self.characters:
+            return False
+        return self.characters[prefix[0]].startsWith(prefix[1:])

@@ -1,0 +1,23 @@
+from typing import List
+from sortedcontainers import SortedDict
+
+
+class Solution:
+    def merge_sorted_map(self, intervals: List[List[int]]) -> List[List[int]]:
+        d = SortedDict()
+        for s, e in intervals:
+            # log(n) for insert -> n*log(n)
+            d[s] = d.get(s, 0) + 1
+            d[e] = d.get(e, 0) - 1
+
+        cnt = 0
+        s, e = 0, 0
+        res = []
+        for k, v in d.items():
+            if cnt == 0:
+                s = k
+            cnt += v
+            if cnt == 0:
+                res.append([s, k])
+
+        return res

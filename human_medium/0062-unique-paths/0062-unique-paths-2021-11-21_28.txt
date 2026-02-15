@@ -1,0 +1,20 @@
+# -------------- approach 1 : math | 99.38% of Python3 | 20 ms
+ 
+def uniquePaths(self, m: int, n: int) -> int:
+	r, c = m-1, n-1
+	import math
+	return math.factorial(r+c)//(math.factorial(r) * math.factorial(c))
+
+
+# - without math library
+def uniquePaths(self, m: int, n: int) -> int:
+	# - factorial func
+	def facto(n):
+		res = 1
+		while n > 1:
+			res *= n
+			n -= 1
+		return res
+
+	# main
+	return facto(r+c)//(facto(r) * facto(c))

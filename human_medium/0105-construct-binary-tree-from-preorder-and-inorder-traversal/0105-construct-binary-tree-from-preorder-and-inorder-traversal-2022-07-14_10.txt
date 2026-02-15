@@ -1,0 +1,14 @@
+class Solution:
+    def buildTree(self, preorder: list[int], inorder: list[int]) -> TreeNode:
+        if not preorder: return None                            # <- handle the base case.
+
+        root = TreeNode(preorder[0])                            # <- identify the root
+        idx = inorder.index(root.val)                           # <- determine index of the root in inorder
+   
+        leftIn, rightIn = inorder[:idx],  inorder[idx+1:]       # <- determine inorders  for the subtrees 
+        leftPr, rightPr = preorder[1:idx+1], preorder[idx+1:]   # <- determine preorders for the subtrees
+
+        root.left  = self.buildTree(leftPr,  leftIn )           # <- left and right recursive calls
+        root.right = self.buildTree(rightPr, rightIn)
+
+return root

@@ -1,0 +1,7 @@
+res = [\'1\']
+for _ in range(n - 1):
+	cur = []
+	for k, g in itertools.groupby(res):
+		cur.extend([str(len(tuple(g))), k])
+	res = cur
+return \'\'.join(res)

@@ -1,0 +1,13 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        seen  = set()
+        for i in range(9):
+            for j in range(9):
+                ele = board[i][j]
+                if(ele != \'.\'):
+                    if((i,ele) in seen or (ele,j) in seen or (i//3,j//3,ele) in seen):
+                        return False
+                    seen.add((i,ele))
+                    seen.add((ele,j))
+                    seen.add((i//3,j//3,ele))
+        return True

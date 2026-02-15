@@ -1,0 +1,19 @@
+def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+
+        side_view, level_nodes = [], [root] if root else []
+        while level_nodes:
+            # append to the solution the right-most node at that level
+            side_view.append(level_nodes[-1].val)
+            
+            # expand children of current nodes
+            new_level_nodes = []
+            for node in level_nodes:
+                if node.left:
+                    new_level_nodes.append(node.left)
+                
+                if node.right:
+                    new_level_nodes.append(node.right)
+            
+            level_nodes = new_level_nodes
+        
+        return side_view

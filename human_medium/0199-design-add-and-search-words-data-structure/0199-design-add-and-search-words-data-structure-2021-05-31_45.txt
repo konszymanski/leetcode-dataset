@@ -1,0 +1,17 @@
+class WordDictionary:
+    
+	def __init__(self):
+        self.words: DefaultDict[int, List[str]] = defaultdict(list)
+        
+    def addWord(self, word: str) -> None:
+        self.words[len(word)].append(word)    
+    
+    def search(self, word: str) -> bool:
+        for obj in self.words[len(word)]:
+            for idx, char in enumerate(obj):
+                if word[idx] != \'.\' and word[idx] != char:
+                    break
+            else:
+                return True
+        
+        return False

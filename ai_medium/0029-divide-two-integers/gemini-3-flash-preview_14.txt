@@ -1,0 +1,35 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Handle the special case where overflow occurs in a 32-bit environment
+        # Only dividend = -2^31 and divisor = -1 leads to a quotient of 2^31
+        if dividend == -2147483648 and divisor == -1:
+            return 2147483647
+        
+        # Determine the sign of the result
+        is_negative = (dividend < 0) != (divisor < 0)
+        
+        # Use absolute values for the calculation. Python handles integers of arbitrary size,
+        # so abs(-2^31) = 2147483648 is valid.
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Use bitwise long division: find the largest power of 2 (i) such that (b * 2^i) <= a
+        # This approach avoids multiplication, division, and the modulo operator.
+        for i in range(31, -1, -1):
+            # Check if (b << i) <= a using bitwise shift for efficiency and rule compliance.
+            # Using (a >> i) >= b is conceptually similar and prevents potential overflow 
+            # in non-arbitrary precision environments.
+            if (a >> i) >= b:
+                quotient += (1 << i)
+                a -= (b << i)
+        
+        # Apply the pre-calculated sign to the result
+        if is_negative:
+            quotient = -quotient
+            
+        # The problem requires the result to be clamped within the signed 32-bit range.
+        # Given the initial overflow check, this result is guaranteed to be in [−2^31, 2^31 − 1].
+        return quotient
+
+```

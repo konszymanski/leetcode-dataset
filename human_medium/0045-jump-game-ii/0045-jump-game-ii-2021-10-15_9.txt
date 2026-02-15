@@ -1,0 +1,32 @@
+def jump(self, nums: List[int]) -> int:
+
+	# Boundary case
+	n = len(nums)
+	if n == 1:
+		return 0
+
+	# Initialize variables
+	jumps = 1
+	ladder = nums[0]
+	steps = ladder
+	itr = 0
+
+	# Move over the current ladder
+	while steps >= 0:
+
+		# Terminal condition - reached end of nums
+		if itr == n - 1:
+			return jumps
+
+		# Update ladder endpoint if a longer one is found
+		ladder = max( itr + nums[itr], ladder )
+
+		# Current ladder has ended
+		if steps == 0:
+			steps = ladder - itr     # move to new ladder
+			jumps += 1               # and update jumps
+		
+		# Continue moving ahead
+		else:
+			steps -= 1
+			itr += 1

@@ -1,0 +1,23 @@
+class BSTIterator(object):
+    
+    # create an inorder traversal list and track current node with self.current+=1 while next is called
+    
+    def __init__(self, root):
+        self.current = 0
+        self.inorder_list = []
+        self.inorder(root)
+
+    def next(self):
+        result = self.inorder_list[self.current]
+        self.current+=1
+        return result
+
+    def hasNext(self):
+        return not(self.current==len(self.inorder_list))
+    
+    def inorder(self, root):
+        if not root:
+            return
+        self.inorder(root.left)
+        self.inorder_list.append(root.val)
+        self.inorder(root.right)

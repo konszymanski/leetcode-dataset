@@ -1,0 +1,29 @@
+class BSTIterator(object):
+    def __init__(self, root):
+        """
+        :type root: TreeNode
+        """
+        self.prev = None
+        def mutate(root):
+            if not root: return
+            mutate(root.right)
+            root.right = self.prev
+            self.prev = root
+            mutate(root.left)
+        mutate(root)
+        self.head = self.prev
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return bool(self.head)
+        
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        ans = self.head.val
+        self.head = self.head.right
+        return ans

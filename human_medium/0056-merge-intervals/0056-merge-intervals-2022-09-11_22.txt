@@ -1,0 +1,20 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        events = []
+        for start, end in intervals:
+            events.append((start, 1))
+            events.append((end, -1))
+        
+        events.sort(key = lambda x: (x[0], -x[1]))
+        state = 0
+        res = []
+        for position, event in events:
+            state += event
+            if event == 1 and state == 1:
+                start = position
+            elif event == -1 and state == 0:
+                end = position
+                res.append([start, end])
+        return res
+    # Time: O(n * log(n)) where n is the length of intervals
+    # Space: O(n) it\'s the space for the list res

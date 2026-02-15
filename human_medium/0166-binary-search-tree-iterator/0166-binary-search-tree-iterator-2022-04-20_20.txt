@@ -1,0 +1,45 @@
+from dataclasses import dataclass, field
+from typing import Optional, Iterator, Union
+
+
+NO_ITEM_LEFT = object()
+NOT_SURE = object()
+
+
+@dataclass
+class BSTIterator:
+    root: TreeNode
+
+    iter: Iterator[int] = field(init=False)
+    next_item: Union[int, object] = field(init=False, default=NOT_SURE)
+
+    def __post_init__(self):
+        self.itr = self._inorder_itr(self.root)
+
+    def next(self) -> int:
+        if self.next_item is not NOT_SURE:
+            output, self.next_item = self.next_item, NOT_SURE
+        else:
+            output = next(self.itr)  # given that, there is some next element
+
+        return output
+
+    def hasNext(self) -> bool:
+        if self.next_item is NO_ITEM_LEFT:
+            return False
+        elif self.next_item is not NOT_SURE:
+            return True
+
+        self.next_item = self._try_next()
+
+        return self.next_item is not NO_ITEM_LEFT  # or just call self.hasNext()
+
+    def _try_next(self) -> Union[int, object]:
+        return next(self.itr, NO_ITEM_LEFT)
+
+    @staticmethod
+    def _inorder_itr(rt: Optional[TreeNode]) -> Iterator[int]:
+        if rt is not None:
+            yield from BSTIterator._inorder_itr(rt.left)
+            yield rt.val
+            yield from BSTIterator._inorder_itr(rt.right)

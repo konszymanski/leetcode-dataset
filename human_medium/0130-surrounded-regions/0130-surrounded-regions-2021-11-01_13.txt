@@ -1,0 +1,79 @@
+class DisjointSet:
+    
+    def __init__(self, n):
+        self.n = n
+        self.id = [0]*n
+        for i in range(n):
+            self.id[i] = i
+            
+    def find(self, i:int) -> int:
+        while(i!=self.id[i]):
+            self.id[i] = self.id[self.id[i]]
+            i = self.id[i]
+        return i
+    
+    def union(self, p, q) -> bool:      
+        idp = self.find(p)
+        idq = self.find(q)
+        
+        if idp == idq:
+            return False
+
+        self.id[idp] = idq
+        return True
+        
+    def isConnected(self, p:int, q:int) -> bool:
+        idp = self.find(p)
+        idq = self.find(q)
+        
+        if idp == idq:
+            return True
+        return False
+        
+class Solution:
+    def getId(self, i:int, j:int, m:int, n:int) -> int:
+        return i*n+j
+    
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        m = len(board)
+        n = len(board[0])
+        
+        total = m*n
+        TOP = total
+        RIGHT = total+1
+        BOTTOM = total+2
+        LEFT = total+3
+        
+        ds = DisjointSet(total+4)
+        
+        for j in range(n):
+            if board[0][j] == "O":
+                ds.union(self.getId(0,j,m,n), TOP)
+            if board[m-1][j] == "O":
+                ds.union(self.getId(m-1,j,m,n), BOTTOM)
+            
+        for i in range(m):
+            if board[i][0] == "O":
+                ds.union(self.getId(i,0,m,n), LEFT)
+            if board[i][n-1] == "O":    
+                ds.union(self.getId(i,n-1,m,n), RIGHT)
+        
+        for i in range(m):
+            for j in range(n):
+                
+                for x, y in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
+                    newI = i+x
+                    newJ = j+y
+                    
+                    if 0<=newI<=m-1 and 0<=newJ<=n-1:
+                        if board[i][j] == board[newI][newJ] and board[i][j] == "O":
+                            ds.union(self.getId(i,j,m,n), self.getId(newI,newJ,m,n))
+             
+        for i in range(m):
+            for j in range(n):
+                identifier = self.getId(i,j,m,n)
+                if not any(ds.isConnected(identifier, side) for side in [LEFT, RIGHT, TOP, BOTTOM]):
+                    board[i][j] = \'X\'

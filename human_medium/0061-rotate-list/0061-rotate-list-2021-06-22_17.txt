@@ -1,0 +1,17 @@
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if head:
+            node = head
+            nodeList = []
+
+            while node:
+                nodeList.append(node)
+                node = node.next
+
+            if (rotation := k % len(nodeList)):
+                head = nodeList[-rotation]
+                nodeList[-1].next = nodeList[0]
+                tail = nodeList[-rotation-1]
+                tail.next = None
+
+        return head

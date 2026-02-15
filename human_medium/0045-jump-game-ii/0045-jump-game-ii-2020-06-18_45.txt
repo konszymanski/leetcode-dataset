@@ -1,0 +1,18 @@
+class Solution(object):
+    def jump(self, nums):
+        if len(nums) == 0 or len(nums) == 1:
+            return 0
+        bfs = collections.deque()
+        bfs.append([0,0])
+        end = 1
+        while len(bfs) != 0:
+            temp = bfs.popleft()
+            while nums[temp[0]] != 0 and end < len(nums) and temp[0] + nums[temp[0]] >= end:
+                if end == len(nums)-1:
+                    return temp[1]+1
+                bfs.append([end, temp[1]+1])
+                end += 1
+        """
+        :type nums: List[int]
+        :rtype: int
+        """

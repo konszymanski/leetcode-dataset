@@ -1,0 +1,42 @@
+class WordDictionary:
+    
+    class TrieNode:
+        def __init__(self):
+            self.children = {}
+            self.endOfWord = False
+
+    def __init__(self):
+        self.root = self.TrieNode()
+        
+
+    def addWord(self, word: str) -> None:
+        current = self.root
+        for w in word:
+            if w in current.children:
+                current = current.children[w]
+            else:
+                node = self.TrieNode()
+                current.children[w] = node
+                current = node
+        current.endOfWord = True
+        
+
+    def search(self, word: str) -> bool:
+        return self.searchRecursive(word, self.root, 0)
+    
+    def searchRecursive(self, word:str, root:TrieNode, index:int) -> bool:
+        if index==len(word):
+            return root.endOfWord
+        
+        current = root
+        status = False
+        
+        if word[index]!=\'.\' and word[index] not in current.children:
+            return False
+                
+        if word[index]!=\'.\':
+            return self.searchRecursive(word, current.children[word[index]], index+1)
+        else: 
+            for c in current.children:
+                status = status or self.searchRecursive(word, current.children[c], index+1)
+            return status

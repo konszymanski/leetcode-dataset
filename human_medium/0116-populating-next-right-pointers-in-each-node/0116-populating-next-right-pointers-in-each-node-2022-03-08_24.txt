@@ -1,0 +1,27 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: \'Node\' = None, right: \'Node\' = None, next: \'Node\' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+class Solution:
+    def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+        if root is None: return 
+        stack=[root]
+        while stack:
+            temp=[]
+            while stack:
+                t=stack.pop(0)
+                if t.left:# since its a complete tree if it has the left node for sure it will have the right as well 
+                    temp.append(t.left)
+                    temp.append(t.right)
+                if len(stack)==0:
+                    t.next=None
+                else:
+                    t.next=stack[0]
+            stack=temp
+        return root

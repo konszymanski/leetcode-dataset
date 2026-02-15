@@ -1,0 +1,33 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        # Check if the total length matches s3
+        n, m = len(s1), len(s2)
+        if n + m != len(s3):
+            return False
+        
+        # O(s2.length) additional space: use a 1D DP array of size m + 1
+        # dp[j] will represent whether s3[:i+j] can be formed by interleaving s1[:i] and s2[:j]
+        dp = [False] * (m + 1)
+        
+        for i in range(n + 1):
+            for j in range(m + 1):
+                if i == 0 and j == 0:
+                    # Base case: empty s1 and s2 can form an empty s3
+                    dp[j] = True
+                elif i == 0:
+                    # When s1 is empty, only s2 can contribute to s3
+                    dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+                elif j == 0:
+                    # When s2 is empty, only s1 can contribute to s3
+                    # dp[j] here currently stores the value for dp[i-1][j]
+                    dp[j] = dp[j] and s1[i - 1] == s3[i - 1]
+                else:
+                    # Generic case: current char of s3 matches current char of s1 OR current char of s2
+                    # dp[j] is dp[i-1][j] (top neighbor)
+                    # dp[j-1] is dp[i][j-1] (left neighbor, already updated in the current i-loop)
+                    dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+                    
+        return dp[m]
+
+```

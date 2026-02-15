@@ -1,0 +1,35 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def valid(s):
+            if len(s)<1 or len(s)>3:
+                return False
+            if int(s)>255:
+                return False
+            if int(s)!=0 and s[0]==\'0\':
+                return False
+            if int(s)==0 and len(s)>1:
+                return False
+            return True
+       
+        ans = []
+        for i in range(4):
+            
+            if not valid(s[:i]):
+                continue
+            
+            for j in range(i,i+4):
+                
+                if not valid(s[i:j]):
+                    continue
+                
+                for k in range(j,j+4):
+                    
+                    if not valid(s[j:k]):
+                        continue
+                    
+                    if not valid(s[k:]):
+                        continue
+    
+                    ans.append(s[:i]+"."+s[i:j]+"."+s[j:k]+"."+s[k:])
+                   
+        return ans

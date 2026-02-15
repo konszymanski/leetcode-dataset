@@ -1,0 +1,35 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        nums = [-1] * len(s)
+        # map AGCT to 0123 numeric values for hashing
+        for i in range(len(s)):
+            if s[i] == \'A\': nums[i] = 0
+            elif s[i] == \'G\': nums[i] = 1
+            elif s[i] == \'C\': nums[i] = 2
+            elif s[i] == \'T\': nums[i] = 3
+        
+        seen = set()
+        res = set()
+        
+        digitPos = 10
+        digitBase = 4
+        hiDigit = pow(digitBase, digitPos - 1)
+        
+        left, right = 0, 0
+        windowHash = 0
+        while (right < len(s)):
+            # expand right boundary by 1
+            windowHash = windowHash * digitBase + nums[right]
+            right += 1
+        
+            if (right - left >= digitPos):
+                if (windowHash in seen):
+                    res.add(s[left:right])
+                else:
+                    seen.add(windowHash)
+
+                # shrink left boundary by 1
+                windowHash = windowHash - nums[left] * hiDigit
+                left += 1
+        
+        return res

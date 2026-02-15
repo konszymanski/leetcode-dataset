@@ -1,0 +1,18 @@
+from functools import lru_cache
+
+class Solution:    
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        @lru_cache(None)
+        def solve(s, e):
+            if s > e:
+                return (None,)
+            
+            if s == e:
+                return (TreeNode(s),)
+            
+            return tuple(TreeNode(k, l, r)
+                         for k in range(s, e+1)
+                         for l in solve(s, k-1)
+                         for r in solve(k+1, e))
+        
+        return solve(1, n)

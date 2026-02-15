@@ -1,0 +1,19 @@
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        l=len(s)
+        if l==1:
+            return [[s]]
+        else:
+            dp=[[] for i in range(l)]
+            dp[0].append([s[0]])
+            for j in range(1,l):
+                for g in range(1,j+1):
+                    if s[g:j+1]==s[g:j+1][::-1]:
+                        dp[j].extend(p+[s[g:j+1]] for p in dp[g-1])
+                if s[0:j+1]==s[0:j+1][::-1]:
+                    dp[j].append([s[0:j+1]])
+            return dp[-1]

@@ -1,0 +1,12 @@
+class Solution:
+    def jump(self, nums):
+        n = len(nums)
+        can_reach, cur_end, jump = 0, 0, 0
+        
+        for i in range(n-1):
+            can_reach = max(can_reach, i+nums[i])
+            if i == cur_end:
+                jump += 1
+                cur_end = can_reach
+        
+        return jump

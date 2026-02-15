@@ -1,0 +1,6 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> Tuple[Tuple[int]]:
+        perms = {(nums[0],)}
+        for n in nums[1:]:
+            perms = {perm[:j] + (n,) + perm[j:] for perm in perms for j in range(len(perm) + 1)}
+        return perms

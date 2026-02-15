@@ -1,0 +1,18 @@
+class Solution:
+    def __init__(self):
+        self.vis = {}
+        
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        if not node:
+            return None
+        if node in self.vis:
+            return self.vis[node]
+        
+        new_node = Node(node.val)
+        self.vis[node] = new_node
+        new_node.neighbors = []
+        
+        for child in node.neighbors:
+            new_node.neighbors.append(self.cloneGraph(child))
+        
+        return new_node

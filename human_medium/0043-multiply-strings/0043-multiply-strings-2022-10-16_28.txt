@@ -1,0 +1,15 @@
+class Solution:
+    def multiply(self, n1: str, n2: str) -> str:
+        i=j=0
+        d=0
+        c=0
+        for i,f in enumerate(n1[::-1]):
+            for k,j in enumerate(n2[::-1]):
+                h=(ord(f)-ord(\'0\'))*(ord(j)-ord(\'0\')) 
+                if k!=len(n2)-1:
+                    c,e=divmod(h+c,10)
+                else:
+                    e=h+c
+                    c=0
+                d+=e*pow(10,i+k)
+        return str(d)

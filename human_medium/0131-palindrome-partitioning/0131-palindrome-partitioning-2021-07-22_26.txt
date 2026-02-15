@@ -1,0 +1,26 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        
+        res = []
+        
+        def isPalindrome(s):
+            return s == s[::-1]
+            
+        def backtrack(s,start,comb):
+            if start == len(s):
+                res.append(list(comb))
+                return
+            if start > len(s):
+                return
+            left = start
+            right = start + 1
+            while right <= len(s):
+                currWord = s[left:right]
+                if isPalindrome(currWord):
+                    comb.append(currWord)
+                    backtrack(s,right,comb)
+                    comb.pop()
+
+                right += 1
+        backtrack(s,0,[])
+        return res

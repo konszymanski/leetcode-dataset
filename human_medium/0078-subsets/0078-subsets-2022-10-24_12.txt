@@ -1,0 +1,18 @@
+def backtrack( parameter ):
+
+	# Base case handle, aka stop condition
+	if stop condition:
+		# save valid result if needed
+		return
+		
+	
+	# General cases handle:
+	for each possible next move/next selection:
+		
+		make a next move/ select a element
+	
+		backtrack( updated parameter )
+		
+		roll back / undo selection
+		
+	return

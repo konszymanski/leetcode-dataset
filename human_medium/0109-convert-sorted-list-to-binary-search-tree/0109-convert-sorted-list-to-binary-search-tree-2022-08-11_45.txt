@@ -1,0 +1,29 @@
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        
+        def recurse(head: Optional[ListNode]):
+            if not head:
+                return None
+            elif head.next is None:
+                return TreeNode(val=head.val)
+            else:
+                # Find middle
+                prev, current, hare = None, head, head.next
+                while hare is not None:
+                    prev = current
+                    hare = hare.next.next if hare.next else None
+                    current = current.next
+                    
+				# Rearrange pointers as needed
+                if prev:
+                    prev.next = None
+                else:
+                    head.next = None
+                left = head
+
+                right = current.next
+
+                return TreeNode(val=current.val, left=recurse(left), right=recurse(current.next))
+                
+        
+        return recurse(head)

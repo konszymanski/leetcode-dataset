@@ -1,0 +1,40 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        return self.rotated_search(nums, target, 0, len(nums)-1) != -1
+    
+    def rotated_search(self, nums, target, left, right):
+        if left > right:
+            return -1
+        
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid
+        
+        if nums[mid] > nums[left]:
+            # left half is sorted increasingly
+            if target < nums[mid] and target >= nums[left]:
+                return self.rotated_search(nums, target, left, mid-1)
+            else:
+                return self.rotated_search(nums, target, mid+1, right)
+        
+        elif nums[mid] < nums[left]:
+            # right half is sorted increasingly
+            if target > nums[mid] and target <= nums[right]:
+                return self.rotated_search(nums, target, mid+1, right)
+            else:
+                return self.rotated_search(nums, target, left, mid-1)
+        
+        else:
+            # either left or right half is repeats
+            if nums[mid] != nums[right]:
+                # then left half are all repeats of nums[mid], no need to check
+                return self.rotated_search(nums, target, mid+1, right)
+            else:
+                # have to check both halfs
+                res = self.rotated_search(nums, target, left, mid-1)
+                if res == -1:
+                    # not found in left half, keep searching on right half
+                    return self.rotated_search(nums, target, mid+1, right)
+                else:
+                    # already found in left half
+                    return res

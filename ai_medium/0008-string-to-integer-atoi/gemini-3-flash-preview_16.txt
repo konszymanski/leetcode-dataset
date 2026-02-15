@@ -1,0 +1,38 @@
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        # Step 1: Remove leading whitespace
+        s = s.lstrip()
+        if not s:
+            return 0
+        
+        # Step 2: Determine sign
+        sign = 1
+        idx = 0
+        if s[0] == '-':
+            sign = -1
+            idx = 1
+        elif s[0] == '+':
+            idx = 1
+            
+        # Step 3: Read digits until a non-digit character is encountered
+        res = 0
+        while idx < len(s) and s[idx].isdigit():
+            res = res * 10 + int(s[idx])
+            idx += 1
+            
+        # Apply the sign
+        res *= sign
+        
+        # Step 4: Rounding to stay within the 32-bit signed integer range
+        INT_MIN = -2147483648
+        INT_MAX = 2147483647
+        
+        if res < INT_MIN:
+            return INT_MIN
+        if res > INT_MAX:
+            return INT_MAX
+            
+        return res
+
+```

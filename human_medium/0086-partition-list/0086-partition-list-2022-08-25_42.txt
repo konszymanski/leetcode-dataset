@@ -1,0 +1,22 @@
+class Solution(object):
+    def partition(self, head, x):
+        """
+        :type head: ListNode
+        :type x: int
+        :rtype: ListNode
+        """
+        p1 = p1_head =  ListNode(-1)
+        p2 = p2_head = ListNode(-1)
+        p = head
+        while p:
+            if p.val <x:
+                p1.next = p
+                p1 = p1.next
+            elif p.val>=x:
+                p2.next = p
+                p2 = p2.next
+                
+            p = p.next
+        p2.next = None
+        p1.next = p2_head.next
+        return p1_head.next

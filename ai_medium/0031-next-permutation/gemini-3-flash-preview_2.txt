@@ -1,0 +1,34 @@
+```python
+from typing import List
+
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        if n <= 1:
+            return
+        
+        # 1. Find the first pair from the right where nums[i] < nums[i+1]
+        i = n - 2
+        while i >= 0 and nums[i] >= nums[i+1]:
+            i -= 1
+            
+        # 2. If such an index i is found, find the element just larger than nums[i]
+        # in the suffix to its right and swap them.
+        if i >= 0:
+            j = n - 1
+            while j > i and nums[j] <= nums[i]:
+                j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+            
+        # 3. Reverse the suffix starting from i + 1 to get the smallest possible
+        # lexicographical order for that suffix.
+        left, right = i + 1, n - 1
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+
+```

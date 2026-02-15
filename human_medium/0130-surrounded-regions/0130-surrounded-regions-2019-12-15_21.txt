@@ -1,0 +1,28 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        if not board or board is None:
+            return
+        
+        row, col = len(board), len(board[0])
+        queueBorder = collections.deque([])
+                
+        for i in range(row):
+            for j in range(col):
+                if (i ==  0 or i == row - 1 or j == 0 or j == col - 1) and board[i][j] == \'O\':
+                    board[i][j] = \'P\'
+                    queueBorder.append((i,j))
+                    
+        while queueBorder:
+            x, y = queueBorder.popleft()
+            for dx, dy in [(1,0), (0,1), (-1,0), (0,-1)]:
+                newX, newY = x + dx, y + dy
+                if 0 <= newX < row and 0 <= newY < col and board[newX][newY] == \'O\':
+                    board[newX][newY] = \'P\'
+                    queueBorder.append((newX, newY))
+        
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] == \'O\':
+                    board[i][j] = \'X\'
+                elif board[i][j] == \'P\':
+                    board[i][j] = \'O\'

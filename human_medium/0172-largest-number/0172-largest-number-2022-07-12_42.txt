@@ -1,0 +1,12 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = map(str,nums)
+        def comp(a,b):
+            if a+b>b+a:
+                # this means a need to go first 
+                return -1
+            else:
+                return 1
+            
+        nums = sorted(nums, key = cmp_to_key(comp))
+        return str(int(\'\'.join(nums)))

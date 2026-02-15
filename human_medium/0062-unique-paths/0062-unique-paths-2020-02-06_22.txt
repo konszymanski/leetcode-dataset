@@ -1,0 +1,12 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        def fact(a):
+            r = 1
+            for i in range(2,a+1):
+                r *= i
+            return r
+        
+        right = m-1     # the number of right move to reach the goal
+        down = n-1      # the number of down move to reach the goal
+        
+        return fact(right+down)//fact(right)//fact(down)

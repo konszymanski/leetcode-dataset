@@ -1,0 +1,10 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        dp = [set() for _ in range(target + 1)]
+        dp[0].add(())
+        for c in candidates:
+            for subtarget in range(target - c + 1):
+                # this ascending loop from 0 to target - c (inclusive) allows reuse of elements
+                dp[subtarget + c] |= {prev_list + (c,) for prev_list in dp[subtarget]}
+        return list(dp[-1])

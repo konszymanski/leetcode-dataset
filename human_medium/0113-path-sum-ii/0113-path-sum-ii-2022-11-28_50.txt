@@ -1,0 +1,18 @@
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        res=[]
+        def traverse(node,path,target):
+            if not node:
+                return
+            
+            if not node.left and not node.right:
+                if target==node.val:
+                    path.append(node.val)
+                    res.append(path)
+                return
+				
+            traverse(node.left,path+[node.val],target-node.val)
+            traverse(node.right,path+[node.val],target-node.val)
+			
+        traverse(root,[],targetSum)
+        return res;

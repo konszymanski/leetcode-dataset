@@ -1,0 +1,11 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        lookup, ans = set(), set()
+        for i in range(len(s) - 10 + 1):
+            current = s[i:i+10]
+            if current in lookup:
+                ans.add(current)
+            lookup.add(current)
+        return ans
+    # Time: O(n) where n is the length of string s. The slicing operations are O(1) because they only involve 10 characters
+    # Space: O(n)

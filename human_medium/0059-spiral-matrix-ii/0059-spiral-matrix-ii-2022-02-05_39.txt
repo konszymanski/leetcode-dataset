@@ -1,0 +1,31 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        res = []
+        for i in range(n):
+            res.append([0] * n)
+        curVal = 1
+        
+        def buildLayer(row: int, col: int, radius: int):
+            nonlocal curVal
+            for i in range(radius):
+                res[row][col + i] = curVal
+                curVal += 1
+            for i in range(1, radius):
+                res[row + i][col + radius - 1] = curVal
+                curVal += 1
+            for i in range(1, radius):
+                res[row+radius-1][col+radius-1-i] = curVal
+                curVal += 1
+            for i in range(1, radius - 1):
+                res[row+radius-1-i][col] = curVal
+                curVal += 1
+        
+        curRow = 0
+        curCol = 0
+        while n > 0:
+            buildLayer(curRow, curCol, n)
+            n -= 2
+            curRow += 1
+            curCol += 1
+        
+        return res

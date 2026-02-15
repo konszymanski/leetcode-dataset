@@ -1,0 +1,17 @@
+def rob(nums):
+    n = len(nums)
+	
+	def rob_rec(i, to_rob):
+		# Base case
+		if i == 0:
+			if to_rob:
+				return nums[i]
+			else:
+				return 0
+		# Recursive case
+		if to_rob:
+			return nums[i] + rob_rec(i - 1, False)
+		else:
+			return max(rob_rec(i - 1, False), rob_rec(i - 1, True))
+	
+	return max(rob_rec(n - 1, False), rob_rec(n - 1, True))

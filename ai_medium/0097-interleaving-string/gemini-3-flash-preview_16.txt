@@ -1,0 +1,33 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n, m = len(s1), len(s2)
+        # Length of s3 must be the sum of lengths of s1 and s2
+        if n + m != len(s3):
+            return False
+        
+        # Space-optimized DP table: only store the current row (O(m) space)
+        # dp[j] represents whether s3[:i+j] is an interleaving of s1[:i] and s2[:j]
+        dp = [False] * (m + 1)
+        
+        for i in range(n + 1):
+            for j in range(m + 1):
+                if i == 0 and j == 0:
+                    # Base case: empty strings match
+                    dp[j] = True
+                elif i == 0:
+                    # First row: s3[:j] can only be formed by s2[:j]
+                    dp[j] = dp[j-1] and s2[j-1] == s3[j-1]
+                elif j == 0:
+                    # First column: s3[:i] can only be formed by s1[:i]
+                    # Note: dp[j] here is already dp[i-1][0] from the previous iteration of the outer loop
+                    dp[j] = dp[j] and s1[i-1] == s3[i-1]
+                else:
+                    # dp[j] from previous iteration is dp[i-1][j]
+                    # dp[j-1] from current iteration is dp[i][j-1]
+                    # We can reach dp[i][j] either by using the i-th char from s1 or the j-th char from s2
+                    dp[j] = (dp[j] and s1[i-1] == s3[i+j-1]) or (dp[j-1] and s2[j-1] == s3[i+j-1])
+        
+        return dp[m]
+
+```

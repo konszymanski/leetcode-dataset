@@ -1,0 +1,20 @@
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # \'dp\' is used to store sub-problem results
+        dp={}
+        
+        def solve(i):
+            if i >= len(nums):
+                return 0
+            if i in dp:
+                return dp[i]    # memoization
+            else:
+                dp[i] = max(nums[i]+solve(i+2), solve(i+1))  
+            return dp[i]
+        
+        
+        return solve(0)

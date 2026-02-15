@@ -1,0 +1,26 @@
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        # add a root that points to head to simplify the case
+        # when nth == 1 (remove head element)
+        root = prev = nth = ListNode(next = head)
+        
+        # move nth look ahead pointer
+        while n >= 0 and nth:
+            nth = nth.next
+            n -= 1
+        
+        # we have less than n nodes in list
+        # do not remove any node
+        if n >= 0:
+            return head
+        
+        # when nth look ahead pointer will reach list end
+        # then the prev will be one pointer before the nth from the end
+        while nth:
+            prev, nth = prev.next, nth.next
+        
+        # remove next element, the nth before end
+        prev.next = prev.next.next
+        
+        # return head
+        return root.next

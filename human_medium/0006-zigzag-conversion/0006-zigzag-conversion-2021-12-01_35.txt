@@ -1,0 +1,19 @@
+// if the string is 1 letter or the numRows is 1, return the string unchanged
+	if len(s) <= 1 or numRows <= 1:
+		return s
+
+	// create a list with one item for each row
+	out = [""] * numRows
+	bounce = 0
+	up = False
+	for i, letter in enumerate(s):
+		out[bounce] += letter
+
+		// change the direction of the bouncing variable if it hits it\'s max
+		if i % (numRows-1) == 0:
+			up = not up
+		if up:
+			bounce += 1
+		else:
+			bounce -= 1
+	return("".join(out))

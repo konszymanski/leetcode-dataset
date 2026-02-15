@@ -1,0 +1,42 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Define the limits for a 32-bit signed integer
+        INT_MIN, INT_MAX = -2147483648, 2147483647
+        
+        # Handle the special case for overflow:
+        # -2^31 / -1 equals 2^31, which exceeds the 32-bit signed integer range [−2^31, 2^31 − 1]
+        if dividend == INT_MIN and divisor == -1:
+            return INT_MAX
+        
+        # Determine the sign of the quotient
+        # If the signs of dividend and divisor are different, the result is negative
+        negative = (dividend < 0) ^ (divisor < 0)
+        
+        # Work with absolute values for the calculation to simplify logic
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Use bit manipulation (exponential search) to speed up subtraction
+        # Subtract from 'a' the largest power of 'b' (b * 2^k) that is less than or equal to 'a'
+        while a >= b:
+            temp_divisor, multiple = b, 1
+            # Check if doubling the current divisor is still less than or equal to 'a'
+            # Note: Python handles arbitrary size integers, so (temp_divisor << 1) won't overflow
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                multiple <<= 1
+            
+            # Subtract the found largest power of divisor from 'a' and add the power to the quotient
+            a -= temp_divisor
+            quotient += multiple
+            
+        # Apply the previously determined sign to the quotient
+        result = -quotient if negative else quotient
+        
+        # The problem requires truncating toward zero, which is the default behavior of integer 
+        # result assignment above. We already handled the only possible overflow case (INT_MIN / -1).
+        # For all other cases, the result of 32-bit integer division will fall within 32-bit range.
+        return result
+
+```

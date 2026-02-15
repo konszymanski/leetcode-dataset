@@ -1,0 +1,14 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        self.res=[]
+        def combine(path,tar,idx):
+            if tar>-1:
+                if len(path)==k and tar==0:
+                    self.res.append(path)
+                    return
+                if len(path)==k and tar!=0:
+                    return
+                for i in range(idx,10):
+                    combine(path+[i],tar-i,i+1)
+        combine([],n,1)
+        return self.res

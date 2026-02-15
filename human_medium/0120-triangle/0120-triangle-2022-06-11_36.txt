@@ -1,0 +1,22 @@
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        DIRS = [(1, 0), (1, 1)]
+        memo = {}
+        
+        def dfs(pos, count):         
+            
+            if pos[0] == len(triangle):
+                return count
+            
+            if pos in memo:
+                return memo[pos] 
+            
+            output = float("inf")
+            for dr, dc in DIRS:
+                new_pos = (pos[0] + dr, pos[1] + dc)
+                output = min(dfs(new_pos, count + triangle[pos[0]][pos[1]]), output)
+            
+            memo[pos] = output
+            return memo[pos]
+        
+        return dfs((0, 0), 0)

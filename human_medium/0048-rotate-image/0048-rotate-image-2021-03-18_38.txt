@@ -1,0 +1,8 @@
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        m = matrix
+        n = len(m)
+        for i in range(n//2):
+            l = n-2*i-1
+            for j in range(l):
+                m[i][i+j],m[i+j][i+l],m[i+l][i+l-j],m[i+l-j][i] = m[i+l-j][i],m[i][i+j],m[i+j][i+l],m[i+l][i+l-j]

@@ -1,0 +1,38 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        res = 0
+        row = len(grid)
+        col = len(grid[0])
+        
+        visited = [[0 for x in range(col)] for y in range(row)]
+        
+        def perm(i, j):
+            # check if we\'re on a land because if yes, we need
+            # to further visit the neighbors so as to "visit"
+            # the whole island, early return if it\'s not a land
+            if i < 0 or i >= row or j < 0 or j >= col or grid[i][j] == "0":
+                return
+            
+            # mark the current cell as visisted
+            # if not visited, otherwise, just return
+            if visited[i][j]:
+                return
+            visited[i][j] = 1
+            
+            # returning just for the sake of it, you can
+            # simply invoke the functions here since we\'re
+            # only concerned with visiting an island and keeping
+            # track of all the lands ("1")s for subsequent runs
+            return perm(i-1, j) or perm(i+1, j) or perm(i, j-1) or perm(i, j+1)
+        
+        
+        for x in range(row):
+            for y in range(col):
+                # process every cell which has a 1 recursively
+                # and since we\'re also marking the visited cells
+                # we can safely ignore them here
+                if grid[x][y] == "1" and not visited[x][y]:
+                    perm(x, y)
+                    res += 1
+                    
+        return res

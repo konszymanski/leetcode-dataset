@@ -1,0 +1,28 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1 = len(s1)
+        n2 = len(s2)
+        n3 = len(s3)
+        memo = {}
+
+        if n1 + n2 != n3:
+            return False
+
+        def dp(i1, i2, i3):
+            if i1 >= n1:
+                return s2[i2:] == s3[i3:]
+            if i2 >= n2:
+                return s1[i1:] == s3[i3:] 
+
+            if (i1, i2, i3) in memo:
+                return memo[(i1, i2, i3)]
+
+            result = False
+            if s1[i1] == s3[i3]:
+                result |= dp(i1 + 1, i2, i3 + 1)
+            if s2[i2] == s3[i3]:
+                result |= dp(i1, i2 + 1, i3 + 1)
+            memo[(i1,i2,i3)] = result
+            return result
+        
+        return dp(0,0,0)

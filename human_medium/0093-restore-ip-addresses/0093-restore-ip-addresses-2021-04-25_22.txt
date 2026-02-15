@@ -1,0 +1,23 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def foo(i, path, c):
+            if i == len(s) or c == 4:
+                return [path[:-1]] * (len(s) == i and c == 4)
+
+            c += 1
+			# take one digit
+            tmp = foo(i + 1, path + s[i] + ".", c)
+
+            if i + 2 <= len(s) and s[i] != "0":
+				# take two digits
+                t = foo(i + 2, path + s[i : i + 2] + ".", c)
+                if t:    tmp.extend(t)
+
+            if i + 3 <= len(s) and s[i] != "0" and s[i : i + 3] < "256":
+				# take three digits
+                t = foo(i + 3, path + s[i : i + 3] + ".", c)
+                if t:    tmp.extend(t)
+
+            return tmp
+
+        return foo(0, "", 0)

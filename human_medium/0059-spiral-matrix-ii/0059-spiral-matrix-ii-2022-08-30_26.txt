@@ -1,0 +1,47 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        
+        # Building an empty n by n matrix
+        mat = []
+        for i in range(n):
+            t = []
+            for j in range(n):
+                t.append(None)
+            mat.append(t)
+            
+            
+        val = 1
+        row = 0
+        col = 0
+        d = {"Right": (0, 1), "Down": (1, 0), "Left": (0, -1), "Up": (-1, 0)}
+        curr_direction = "Right"
+
+        while val <= n*n:
+            mat[row][col] = val
+            val += 1
+            
+            # We increment the column and row index based on our current direction
+            row += d[curr_direction][0]
+            col += d[curr_direction][1]
+            
+            # If we get to any of the wall(edges) we have to undo our previous move and change direction.
+            if row < 0 or col < 0 or row == n or col == n or mat[row][col]:
+                
+                row -= d[curr_direction][0]
+                col -= d[curr_direction][1]
+                curr_direction = self.new_direction(curr_direction)
+                row += d[curr_direction][0]
+                col += d[curr_direction][1]
+ 
+                
+        return mat
+    
+    def new_direction(self, curr_direction):
+        if curr_direction == "Right":
+            return "Down"
+        elif curr_direction == "Down":
+            return "Left"
+        elif curr_direction == "Left":
+            return "Up"
+        else:
+            return "Right"

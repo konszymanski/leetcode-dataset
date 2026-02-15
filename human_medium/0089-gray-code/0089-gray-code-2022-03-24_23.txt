@@ -1,0 +1,10 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        arr = [0, 1]
+        power = 1
+        for _ in range(n-1):
+            arr = arr + [x+(2**power) for x in arr[::-1]]
+            power += 1
+        
+        
+        return arr

@@ -1,0 +1,16 @@
+tmp=x
+        out=[]
+        if x<0:
+            tmp=-1*x
+        if x==0:
+            return 0
+        while tmp>0:
+            rem=tmp%10
+            out.append(rem)
+            tmp=tmp/10
+        r=\'\'.join(map(str,out)).lstrip(\'0\')  # joining the array element as string and trimmming the leading zeros.
+        if abs(int(r))>(1<<31):  #to check whether the number is bigger than the int sixe by \'left shifting of bits\'
+            return 0
+        if x<0:
+            return  \'-\'+r
+        return r

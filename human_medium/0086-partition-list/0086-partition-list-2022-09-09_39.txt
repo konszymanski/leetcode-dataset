@@ -1,0 +1,24 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        if not head:       #base case
+            return None
+		#queue for better performance
+        q = collections.deque()
+        q2 = collections.deque()
+        while head:
+		   #store in separate queues and maintain order
+            if head.val<x:   
+                q.append(head.val)
+            else:
+                q2.append(head.val)
+            head = head.next
+        res = ListNode(0)
+        dummy = res
+		# populate the res linked list
+        while len(q)>0:
+            dummy.next = ListNode(q.popleft())
+            dummy = dummy.next
+        while len(q2)>0:
+            dummy.next = ListNode(q2.popleft())
+            dummy = dummy.next
+        return res.next

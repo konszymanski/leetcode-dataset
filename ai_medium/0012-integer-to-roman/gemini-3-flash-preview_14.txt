@@ -1,0 +1,29 @@
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Mapping of integer values to their Roman numeral symbols, including special subtractive cases
+        mapping = [
+            (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),
+            (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),
+            (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')
+        ]
+        
+        result = []
+        
+        # Iterate through the mapping and use divmod to find how many times 
+        # each symbol fits into the remaining value of 'num'
+        for value, symbol in mapping:
+            if num == 0:
+                break
+            
+            # count is the number of times 'symbol' appears, num is the remainder
+            count, num = divmod(num, value)
+            
+            # If count is greater than zero, add the symbol 'count' times to our result list
+            if count:
+                result.append(symbol * count)
+        
+        # Join the list into a single string to form the final Roman numeral
+        return "".join(result)
+
+```

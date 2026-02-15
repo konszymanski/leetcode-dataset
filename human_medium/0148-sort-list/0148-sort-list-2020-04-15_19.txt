@@ -1,0 +1,19 @@
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        if not head: return head
+        num_dict = collections.defaultdict(int)
+        tail = head
+        min_val, max_val = float(\'inf\'), -float(\'inf\')
+        while tail:
+            num_dict[tail.val] += 1
+            min_val = min(min_val, tail.val)
+            max_val = max(max_val, tail.val)
+            tail = tail.next
+        
+        tail = head = ListNode(0)
+        for num in range(min_val, max_val+1):
+            for _ in range(num_dict[num]):
+                tail.next = ListNode(num)
+                tail = tail.next
+        
+        return head.next

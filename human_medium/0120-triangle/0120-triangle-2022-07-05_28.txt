@@ -1,0 +1,6 @@
+def minimumTotal(self, triangle: List[List[int]]) -> int:
+	for rowIdx in range(len(triangle)-2, -1, -1):
+		for elementIdx, element in enumerate(triangle[rowIdx]):
+			paths = (triangle[rowIdx + 1][elementIdx], triangle[rowIdx + 1][elementIdx + 1])
+			triangle[rowIdx][elementIdx] += min(paths)
+	return triangle[0][0]

@@ -1,0 +1,19 @@
+def minDistance(self, word1: str, word2: str) -> int:
+
+	@lru_cache(None)
+	def min_dist(p1, p2):
+
+		if p1 == len(word1) or p2 == len(word2):
+			return len(word1) - p1 + len(word2) - p2
+
+		# no change required
+		if word1[p1] == word2[p2]:
+			return min_dist(p1 + 1, p2 + 1)
+
+		return 1 + min(
+			min_dist(p1, p2 + 1),      # insert character
+			min_dist(p1 + 1, p2),      # delete character
+			min_dist(p1 + 1, p2 + 1),  # replace character
+		)
+
+	return min_dist(0, 0)

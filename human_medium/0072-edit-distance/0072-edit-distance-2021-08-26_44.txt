@@ -1,0 +1,27 @@
+class Solution:
+    def minDistanceHelper(self,  word1, word2, one, two):
+        # # base cases
+        # end of both words
+        if one == len(word1) and two == len(word2):
+            return 0
+        # end of any word
+        if one == len(word1):
+            return len(word2) - two
+        if two == len(word2):
+            return len(word1) - one
+
+        # # operations required to convert word1 to word2
+        # no operation needed
+        if word1[one] == word2[two]:
+            return self.minDistanceHelper(word1, word2, one+1, two+1)
+
+        # insert -> insert word2[two] into word1
+        insert = self.minDistanceHelper(word1, word2, one, two+1)
+        # delete -> delete char at word1[one] (move to next char at word1)
+        delete = self.minDistanceHelper(word1, word2, one+1, two)
+        # replace -> replace word1[one] with word2[two]
+        replace = self.minDistanceHelper(word1, word2, one+1, two+1)
+        return 1 + min(insert, delete, replace)
+
+    def minDistance(self, word1, word2):
+        return self.minDistanceHelper(word1, word2, 0, 0)

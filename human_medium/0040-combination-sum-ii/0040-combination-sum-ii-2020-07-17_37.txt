@@ -1,0 +1,20 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        ans = []
+        self.dfs(candidates, target, 0, [], ans)
+        return ans
+    
+    def dfs(self, candidates, target, s, curr, ans):
+        if target == 0:
+            ans.append(curr.copy()) #hard copy
+            return
+        
+        for i in range(s, len(candidates)):
+            if candidates[i] > target:
+                break
+            if i > s and candidates[i] == candidates[i-1]: #remove duplicates
+                continue
+            curr.append(candidates[i])
+            self.dfs(candidates, target-candidates[i], i+1, curr, ans)
+            curr.pop()

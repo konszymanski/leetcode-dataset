@@ -1,0 +1,17 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        def unique_paths(i,j,m,n):
+            if i==0 and j==0:
+                return 1
+            if i<0 or j<0:
+                return 0
+
+            #up path
+            up=unique_paths(i-1,j,m,n)
+
+            #left path
+            left=unique_paths(i,j-1,m,n)
+
+            return up+left
+        
+        return unique_paths(m-1,n-1,m,n)

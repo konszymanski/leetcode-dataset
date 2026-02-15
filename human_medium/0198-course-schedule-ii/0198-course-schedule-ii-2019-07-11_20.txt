@@ -1,0 +1,33 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        from collections import defaultdict
+        
+        pre_to_cour = defaultdict(set)
+        for cour,pre in prerequisites:
+            pre_to_cour[pre].add(cour)
+        
+        def dfs(pre):
+            visited.add(pre)
+            
+            for cour in pre_to_cour[pre]:
+                if cour not in visited:
+                    dfs(cour)
+            
+            post[pre] = self.cnt
+            self.cnt +=1
+            res.append(pre)
+            
+        visited = set()
+        self.cnt = 0
+        post = [0]*numCourses
+        res = []
+        
+        for i in range(numCourses):
+            if i not in visited:
+                dfs(i)
+        
+        for cour,pre in prerequisites:
+            if post[pre]<post[cour]:
+                return []
+        
+        return res[::-1]

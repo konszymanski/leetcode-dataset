@@ -1,0 +1,14 @@
+from functools import lru_cache
+
+
+class Solution:
+    def generateTrees(self, n: int):
+        @lru_cache(None)
+        def gen(nums: tuple) -> list:
+            if len(nums) == 0: return [None]
+            trees = []
+            for i, n in enumerate(nums):
+                trees.extend(TreeNode(n, l, r) for l in gen(nums[:i]) for r in gen(nums[i + 1:]))
+            return trees
+
+        return gen(tuple(range(1, n + 1)))

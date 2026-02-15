@@ -1,0 +1,25 @@
+from functools import cache
+from itertools import product
+from typing import Optional
+
+
+class Solution:
+    def generateTrees(self, n: int) -> list[Optional[TreeNode]]:
+        @cache
+        def generate(start: int, end: int) -> list[Optional[TreeNode]]:
+            if start > end:
+                return [None]
+            elif start == end:  # "elif" not needed theoretically, just some runtime optimization
+                return [TreeNode(start)]
+
+            output = []
+
+            for val in range(start, end + 1):
+                ls, rs = generate(start, val - 1), generate(val + 1, end)
+
+                for l, r in product(ls, rs):
+                    output.append(TreeNode(val, left=l, right=r))
+
+            return output
+
+        return generate(1, n)

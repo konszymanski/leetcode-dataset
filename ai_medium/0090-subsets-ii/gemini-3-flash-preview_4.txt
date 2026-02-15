@@ -1,0 +1,28 @@
+```python
+from typing import List
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        # Sort the array to handle duplicates correctly
+        nums.sort()
+        res = []
+        
+        def backtrack(start: int, path: List[int]):
+            # Add a copy of the current subset to the result
+            res.append(list(path))
+            
+            for i in range(start, len(nums)):
+                # If the current element is the same as the previous one
+                # and it's not the first element in the current recursion level, skip it
+                if i > start and nums[i] == nums[i - 1]:
+                    continue
+                
+                # Include the current element and move to the next
+                path.append(nums[i])
+                backtrack(i + 1, path)
+                # Backtrack: remove the last element to explore other possibilities
+                path.pop()
+        
+        backtrack(0, [])
+        return res
+```

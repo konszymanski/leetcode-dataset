@@ -1,0 +1,21 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        
+        prev_1, current_1, prev_2, current_2 = 0, 0, 0, 0
+        
+        for i, house_1 in enumerate(nums[:-1]):
+            temp_1 = max(house_1 + prev_1, current_1)
+            prev_1 = current_1
+            current_1 = temp_1
+            
+            house_2 = nums[i + 1]
+            
+            temp_2 = max(house_2 + prev_2, current_2)
+            prev_2 = current_2
+            current_2 = temp_2
+        
+        return max(current_1, current_2)

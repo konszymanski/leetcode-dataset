@@ -1,0 +1,28 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        ## dfs solution
+        row = len(board)
+        col = len(board[0])
+        visited = set()
+        def dfs(board, x, y, visited):
+            if x<0 or y< 0 or x>= row or y >= col or (x,y) in visited or board[x][y] != \'O\':
+                return
+            visited.add((x,y))
+            board[x][y] = \'1\'
+            for i,j in [[1,0],[-1,0],[0,1],[0,-1]]:
+                dfs(board, x+i, y+j, visited)
+        # calling for 4 boundary 
+        for j in range(col):
+            dfs(board, row-1, j, visited)
+        for j in range(col):
+            dfs(board, 0, j, visited)
+        for j in range(row):
+            dfs(board, j, 0, visited)
+        for j in range(row):
+            dfs(board, j, col-1, visited)
+        for i in range(row):
+            for j in range(col):
+                if board[i][j] == \'O\':
+                    board[i][j] = \'X\'
+                elif board[i][j] == \'1\':
+                    board[i][j] = \'O\'

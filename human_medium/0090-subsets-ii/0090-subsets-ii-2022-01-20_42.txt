@@ -1,0 +1,18 @@
+from collections import Counter
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        counter = Counter(nums)
+        
+        subsets = [[]]
+        for num in counter:
+		    # using existing queue size to append to same queue, it\'s general bfs approach
+            size = len(subsets)
+            for partial_set in self.getSubsets(num, counter[num]):
+                for i in range(size):
+                    subsets.append(partial_set + subsets[i])
+        
+        return subsets
+    
+    def getSubsets(self, num, freq):
+        max_set = [num] * freq
+        return [max_set[i:] for i in range(0, len(max_set))]

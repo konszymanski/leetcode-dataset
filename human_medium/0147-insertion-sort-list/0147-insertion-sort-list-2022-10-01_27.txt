@@ -1,0 +1,21 @@
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        hashMaps=collections.defaultdict(list)#{}
+        node=head
+        while node:
+            hashMaps[node.val].append(node)
+            node=node.next
+        #print(hashMaps)
+        LIST=list(hashMaps.keys())
+        LIST.sort()
+        #LIST.append("None")
+        #hashMaps["None"]=None
+
+        #print(LIST)
+        OUT=[]
+        for val in LIST:
+            OUT.extend(hashMaps[val])
+        OUT.append(None)
+        for i,node in enumerate(OUT[:-1]):
+            node.next=OUT[i+1]
+        return OUT[0]

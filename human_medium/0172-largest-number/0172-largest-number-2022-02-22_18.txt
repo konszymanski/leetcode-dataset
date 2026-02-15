@@ -1,0 +1,7 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        for i, n in enumerate(nums):
+            nums[i] = str(n)
+
+        nums = sorted(nums, key = cmp_to_key(lambda n1, n2: -1 if n1 + n2 > n2 + n1 else 1))
+        return str(int("".join(nums)))

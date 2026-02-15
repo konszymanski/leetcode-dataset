@@ -1,0 +1,23 @@
+def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        start = end = head;
+
+        # end node will have a head start of n (to reach None earlier)
+        for i in range(n):
+            end = end.next
+
+        # when n = len(head)
+        if end == None: 
+            # delete 0th element, return all others
+            return start.next
+
+        else:
+            # perform traversal until None is reached
+            while end.next != None:
+                start = start.next
+                end = end.next  
+
+            # end is met, we know that start.next is the unwanted Node (nth from back)
+            # to delete it, skip 1 node
+            start.next = start.next.next
+			
+            return head

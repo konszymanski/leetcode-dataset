@@ -1,0 +1,46 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Define limits for a 32-bit signed integer environment
+        MAX_INT = 2147483647  # 2^31 - 1
+        MIN_INT = -2147483648 # -2^31
+
+        # Handle the special overflow case specified in the problem
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+
+        # Determine if the final quotient should be negative
+        is_negative = (dividend < 0) != (divisor < 0)
+
+        # Work with absolute values to simplify the division process
+        # Python's arbitrary-precision integers safely handle abs(-2**31) = 2147483648
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+
+        # Perform the division using bitwise shifts to subtract the largest 
+        # possible multiples of the divisor in each iteration
+        while a >= b:
+            temp_divisor = b
+            multiple = 1
+            # Double the divisor and the multiple as long as it does not exceed the remaining dividend
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                multiple <<= 1
+            
+            # Subtract the calculated multiple from the dividend and add the count to the result
+            a -= temp_divisor
+            quotient += multiple
+
+        # Apply the determined sign to the quotient
+        if is_negative:
+            quotient = -quotient
+
+        # Ensure the final result is clamped within the 32-bit signed integer range
+        if quotient > MAX_INT:
+            return MAX_INT
+        if quotient < MIN_INT:
+            return MIN_INT
+            
+        return quotient
+
+```

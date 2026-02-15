@@ -1,0 +1,16 @@
+class Solution:
+    def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
+        if not root:
+            return []
+        stack, res = [(root, [], 0)], []
+        while stack:
+            root, path, sums = stack.pop()
+            sums+=root.val
+            if root.left:
+                stack.append([root.left, path+[root.val], sums])
+            if root.right:
+                stack.append([root.right, path+[root.val], sums])
+                
+            if not root.left and not root.right and sums==targetSum:
+                res.append(path+[root.val])
+        return res

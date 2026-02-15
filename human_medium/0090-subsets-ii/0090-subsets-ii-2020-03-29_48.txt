@@ -1,0 +1,17 @@
+def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums_dict={}
+        for num in nums:
+            nums_dict[num] = nums_dict.get(num,0)+1
+        
+        results = [[]]
+        
+        for num in nums:
+            if nums_dict[num] > 0:
+                temp = [ current+[num] for current in results]
+                results.extend(temp)
+                nums_dict[num] -= 1
+                while nums_dict[num]>0:
+                    temp = [ temp_current+[num]  for temp_current in temp]
+                    results.extend(temp)
+                    nums_dict[num] -= 1
+        return results

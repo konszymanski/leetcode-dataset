@@ -1,0 +1,22 @@
+import copy 
+
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        def construct_tree(left = 1, right = n):
+            # base case 
+            if left == right: return [TreeNode(left)]
+            if left > right: return [None] 
+            # for each possible root node, recursively construct left and right subtreees
+            trees = []
+            for x in range(left, right + 1):
+                left_trees = construct_tree(left, x - 1)
+                right_trees = construct_tree(x + 1, right)
+                for left_tree in left_trees:
+                    for right_tree in right_trees:
+                        rt = TreeNode(x)
+                        rt.left = left_tree 
+                        rt.right = right_tree
+                        trees.append(rt)
+            return trees 
+
+        return construct_tree()

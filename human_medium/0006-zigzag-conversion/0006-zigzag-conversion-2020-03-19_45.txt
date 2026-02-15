@@ -1,0 +1,46 @@
+def convert(self, s: str, numRows: int) -> str:
+        direction=False
+        n=1
+        i=0
+        ans=""
+        if(s==""):
+            return("")
+        if(len(s)<3 or numRows==1 or len(s)<=numRows):
+            return(s)
+        while(n<numRows+1):
+            if(n==1):
+                skip=(numRows-n-1)*2 + 1
+                ans+=s[i]
+                i+=skip+1
+                if(i>=len(s)):
+                    i=n
+                    n+=1
+                    direction=False
+                   
+            elif(n>1 and n<numRows):
+                if(direction):
+                    direction=False
+                    skip=(n-1-1)*2 +1
+                    ans+=s[i]
+                    i+=skip+1
+                    if(i>=len(s)):
+                        i=n
+                        n+=1
+                        direction=False
+                else:
+                    direction=True
+                    skip=(numRows-n-1)*2 + 1
+                    ans+=s[i]
+                    i+=skip+1
+                    if(i>=len(s)):
+                        i=n
+                        n+=1
+                        direction=False
+            else:
+                skip=(n-1-1)*2 +1
+                ans+=s[i]
+                i+=skip+1
+                if(i>=len(s)):
+                    n+=1
+            
+        return(ans)

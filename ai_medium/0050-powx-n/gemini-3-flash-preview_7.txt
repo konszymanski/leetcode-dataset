@@ -1,0 +1,24 @@
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        # Binary Exponentiation (Exponentiation by Squaring)
+        # Handle the case where n is negative
+        if n < 0:
+            x = 1 / x
+            n = -n
+        
+        res = 1.0
+        current_product = x
+        
+        while n > 0:
+            # If n is odd, multiply the result by the current power of x
+            if n % 2 == 1:
+                res *= current_product
+            
+            # Square the current power of x and halve n
+            current_product *= current_product
+            n //= 2
+            
+        return res
+
+```

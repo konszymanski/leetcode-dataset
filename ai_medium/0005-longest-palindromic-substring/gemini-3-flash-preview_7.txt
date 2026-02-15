@@ -1,0 +1,43 @@
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        # Get the length of the string
+        n = len(s)
+        
+        # If the string is empty or has only one character, it is already a palindrome
+        if n < 2:
+            return s
+        
+        # Initialize variables to keep track of the longest palindrome found
+        # start is the beginning index of the longest palindrome
+        # max_len is its total length
+        start, max_len = 0, 1
+        
+        # Iterate through each character in the string, considering it as a center
+        for i in range(n):
+            # Case 1: Odd length palindromes (single character as center)
+            # Expand outwards from the character at index i
+            l, r = i - 1, i + 1
+            while l >= 0 and r < n and s[l] == s[r]:
+                # If the current expansion is longer than the previous max_len, update start and max_len
+                if r - l + 1 > max_len:
+                    start, max_len = l, r - l + 1
+                # Move pointers outwards
+                l -= 1
+                r += 1
+            
+            # Case 2: Even length palindromes (gap between i and i+1 as center)
+            # Expand outwards from between the characters at index i and i+1
+            l, r = i, i + 1
+            while l >= 0 and r < n and s[l] == s[r]:
+                # If the current expansion is longer than the previous max_len, update start and max_len
+                if r - l + 1 > max_len:
+                    start, max_len = l, r - l + 1
+                # Move pointers outwards
+                l -= 1
+                r += 1
+        
+        # Return the longest palindromic substring using slicing
+        return s[start : start + max_len]
+
+```

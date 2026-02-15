@@ -1,0 +1,28 @@
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # assign two pointers that initially point to the header
+        slow = head
+        fast = head
+        # get the `fast` pointer to move two steps at a time while the
+        # `slow` pointer, one step at a time. If `fast` makes it to the
+        # tail, there is no cycle in the list; Otherwise, the two pointers
+        # will meet at some point of the cycle.
+        while fast != None and fast.next != None:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        else:
+            return None
+        # move one of the pointers to the header
+        slow = head
+        # move both pointers one step at a time, and the point they meet
+        # is where the cycle begins.
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return fast

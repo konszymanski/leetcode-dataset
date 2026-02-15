@@ -1,0 +1,33 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        
+        @cache
+        def dp(ci, cj, ck):
+            
+            if ck == len(s3):
+                if len(s1) == ci and len(s2) == cj:
+                    return True
+                else:
+                    return False
+            
+            if ci == len(s1):
+                return s2[cj:] == s3[ck:]
+            
+            if cj == len(s2):
+                return s1[ci:] == s3[ck:]
+            
+            
+            if s3[ck] == s2[cj] and  s3[ck] == s1[ci]:
+                return dp(ci, cj+1, ck+1) or dp(ci+1, cj, ck+1)
+            
+            if s3[ck] == s2[cj]:
+                return dp(ci, cj+1, ck+1)
+            
+            
+            if s3[ck] == s1[ci]:
+                return dp(ci+1, cj, ck+1)
+                
+            return False
+        
+        
+        return dp(0, 0, 0)

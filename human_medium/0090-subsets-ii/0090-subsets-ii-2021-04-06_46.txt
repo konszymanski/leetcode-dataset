@@ -1,0 +1,24 @@
+class Solution:
+    def __init__(self):
+        self.ans = []
+        
+    def backtrack(self, nums, subset_size, next_num_idx, curr = []):
+        # base case
+        if len(curr) == subset_size:
+            self.ans.append(curr[:])
+        
+        for i in range(next_num_idx, len(nums)):
+            # do not pick the duplicate as the next num as the path was already explored with nums[i-1].
+            if i > next_num_idx and nums[i] == nums[i-1]:
+                continue
+                
+            curr.append(nums[i])
+            self.backtrack(nums, subset_size, i + 1, curr)
+            curr.pop()
+            
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        # sort the nums so that the duplicates are next to each other.
+        nums.sort()
+        for subset_size in range(0, len(nums) + 1):
+            self.backtrack(nums, subset_size, 0, [])
+        return self.ans

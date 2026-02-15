@@ -1,0 +1,17 @@
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        i = 0
+        tmp = None
+        rov = head
+        while rov:
+            if i == 0:
+                tmp = rov
+                rov = rov.next
+                i += 1
+            else:
+                i = 0
+                s = tmp.val
+                tmp.val = rov.val
+                rov.val = s
+                rov = rov.next
+        return head

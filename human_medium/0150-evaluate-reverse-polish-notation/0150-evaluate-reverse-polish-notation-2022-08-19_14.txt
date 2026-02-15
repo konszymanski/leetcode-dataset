@@ -1,0 +1,18 @@
+ops = {
+    \'+\' : operator.add,
+    \'-\' : operator.sub,
+    \'*\' : operator.mul,
+    \'/\' : operator.truediv
+}
+
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        for t in tokens:
+            if t == \'+\' or t == \'-\' or t == \'*\' or t == \'/\':
+                val2 = stack.pop()
+                val1 = stack.pop()
+                stack.append(int(ops[t](val1, val2)))
+            else:
+                stack.append(int(t))
+        return stack.pop()

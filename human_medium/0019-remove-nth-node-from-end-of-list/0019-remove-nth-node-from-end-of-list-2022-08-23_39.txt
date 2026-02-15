@@ -1,0 +1,22 @@
+def length(self,ll):
+    if ll is None:
+      return 0 
+    return 1+self.length(ll.next)
+  
+  def solve(self,ll,n,i=1):
+    if i==n:
+      
+      next = ll.next.next
+      ll.next = next
+      return 
+    
+    self.solve(ll.next,n,i+1)
+    
+  def remove(self,ll,n):
+    len = self.length(ll)
+    if n == len:
+      ll = ll.next 
+      return ll 
+    
+    self.solve(ll,len-n)
+    return ll

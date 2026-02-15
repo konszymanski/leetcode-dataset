@@ -1,0 +1,25 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        if not nums or len(nums) == 0:
+            return -1
+
+        low, high = 0, len(nums) - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+
+            if target == nums[mid]:
+                return mid
+
+            # Check the all cases where the target lies on the left side
+            if nums[low] <= target < nums[mid] or (nums[low] > nums[mid] and (target >= nums[low] or target < nums[mid])):
+                high = mid - 1
+            else: # otherwise
+                low = mid + 1
+
+        return -1

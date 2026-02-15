@@ -1,0 +1,2 @@
+mapping = { s1: s2 for s1, s2 in zip("23456789", "abc def ghi jkl mno pqrs tuv wxyz".split(" ")) }
+        return [ "".join(tup) for tup in product(*[mapping[ch] for ch in digits]) ] if digits else ""

@@ -1,0 +1,40 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        if "0" in [num1,num2]:
+            return "0"
+        hmap = {"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}
+        
+        res1 = 0
+        res2 = 0
+        
+		#convert num1 and num2 to integers
+		
+		# "123" ->res = res * 10 + digit, initially res  = 0
+		#res = 0*10 + 1 = 1
+		#res = 1*10 + 2 = 12
+		#res = 12*10 + 3 = 123
+		
+		#storing integer version of num1 to res1
+        for char in num1:
+            res1 = res1 * 10 + hmap[char]
+            
+		#storing integer version of num2 to res2
+        for char in num2:
+            res2 = res2 * 10 + hmap[char]
+            
+        hmap2 = {0:"0",1:"1",2:\'2\',3:\'3\',4:\'4\',5 : \'5\',6:\'6\',7:\'7\',8:\'8\',9:\'9\'}
+        
+        res = res1 * res2
+		#storing multiplication integer in res
+		
+		#extracting each digit and storing res in reverse order in ans list...
+        ans = []
+        while res > 0:
+            ans.append(hmap2[res%10])
+            res = res // 10
+        
+		#reversing ans to get number in correct order
+        ans.reverse()
+		
+		#converting list to string
+        return "".join(ans)

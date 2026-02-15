@@ -1,0 +1,11 @@
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        def build(a, b, c, postorder, inorder):
+            if a < 0 or b > c:
+                return
+            root = TreeNode(postorder[a])
+            x = inorder.index(postorder[a],b,c+1)
+            root.left = build(a - (c - (x+1) + 1)-1, b, x-1, postorder, inorder)
+            root.right = build(a-1, x+1, c, postorder, inorder)
+            return root
+        return build(len(postorder)-1, 0, len(inorder)-1, postorder, inorder)

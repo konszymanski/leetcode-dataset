@@ -1,0 +1,12 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        def makeNode(p, i, j):
+            if j-i < 1:
+                return None
+            p[0] += 1
+            return TreeNode(inorder[i]) if j-i == 1 else makeTree(p,i,j)
+        def makeTree(p,i,j):
+            v = preorder[p[0]]
+            k = inorder.index(v, i, j)
+            return TreeNode(v, makeNode(p, i, k), makeNode(p, k + 1, j))
+        return makeTree([0],0,len(inorder))

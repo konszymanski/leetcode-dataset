@@ -1,0 +1,16 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        # Binary Search
+        left, right = 0, len(nums) - 1
+        while left < right - 1:
+            middle = (left + right) // 2
+            # Middle is within the right part
+            if nums[middle] < nums[left]:
+                right = middle
+            # Middle is within the left rotated part
+            elif nums[middle] > nums[right]:
+                left = middle
+            # Middle is within the correct increasing order
+            else:
+                right = middle
+        return nums[left] if nums[left] < nums[right] else nums[right]

@@ -1,0 +1,22 @@
+class Solution(object):
+    def permuteUnique(self, nums):
+        nums.sort()
+        res = []
+        track = []
+        used = [False]*len(nums)
+        
+        def backtrack(start):
+            if len(track) == len(nums):
+                res.append(track[:])
+            for i in range(0,len(nums)):
+                if used[i]:
+                    continue
+                if i>0 and nums[i]==nums[i-1] and used[i-1] is False:
+                    continue
+                track.append(nums[i])
+                used[i] = True
+                backtrack(i+1)
+                track.pop()
+                used[i] = False
+        backtrack(0)
+        return res

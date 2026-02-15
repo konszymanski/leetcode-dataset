@@ -1,0 +1,18 @@
+def longestPalindrome(self, s: str) -> str:
+  pos = 0
+  best = 1
+  for middle in range(len(s)):
+    # Check the odd length palindromes and then the even length palindromes
+    for right in [middle, middle + 1]:
+      left = middle
+      while 0 <= left and right < len(s) and s[left] == s[right]:
+        left = left - 1
+        right = right + 1
+
+      # Do we have a better solution? Keep in mind that left and right are now either side
+      # of the palindrome, so to get the correct start and length, left must be moved back.        
+      length = right - left - 1
+      if length > best:
+        pos = left + 1
+        best = length
+  return s[pos:pos + best]

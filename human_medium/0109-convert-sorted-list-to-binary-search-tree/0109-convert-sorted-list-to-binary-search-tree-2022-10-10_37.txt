@@ -1,0 +1,55 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    # Solution 2 - converting a sorted linkedlist to BST
+    # Time O(n log n) | Space O(n) - considering recursion stack
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        if not head: return
+        if not head.next: return TreeNode(head.val)
+        
+        slow = fast = head
+        prev = None
+        while fast and fast.next:
+            prev = slow
+            slow, fast = slow.next, fast.next.next
+       
+        prev.next = None
+       
+        left = self.sortedListToBST(head)
+        right = self.sortedListToBST(slow.next)
+        
+        return TreeNode(slow.val, left, right)
+
+
+
+
+
+    # Solution 2 - converting a sorted array to BST
+    # Time O(n) | Space O(n)
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        data, node = [], head
+        while node:
+            data.append(node.val)
+            node = node.next
+        
+        def buildTree(start, end):
+            if start >= end: return
+            mid = (start + end) // 2
+
+            left = buildTree(start, mid)
+            right = buildTree(mid + 1, end)
+
+            return TreeNode(data[mid], left, right)
+        
+        return buildTree(0, len(data))

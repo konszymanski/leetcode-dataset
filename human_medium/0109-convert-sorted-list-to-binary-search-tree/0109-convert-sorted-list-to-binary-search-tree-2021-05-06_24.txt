@@ -1,0 +1,37 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        if not head:
+            return None
+        if not head.next:
+            return TreeNode(head.val)
+        
+        left_head = head
+        f = s = head
+        last = None
+        while f and f.next:
+            f = f.next.next
+            last = s
+            s = s.next
+        right_head = s.next
+        middle_head = s
+        
+        # cur the list in *half*
+        s.next = None
+        if last:
+            last.next = None
+
+        node = TreeNode(middle_head.val)
+        node.left = self.sortedListToBST(left_head)
+        node.right = self.sortedListToBST(right_head)
+        return node

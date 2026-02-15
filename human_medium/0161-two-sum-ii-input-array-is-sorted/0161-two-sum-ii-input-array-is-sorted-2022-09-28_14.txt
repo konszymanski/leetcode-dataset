@@ -1,0 +1,22 @@
+"""https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/"""
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        d={}
+        for i in range(len(numbers)):
+            diff=target-numbers[i]
+            if diff in d:
+                return [d[diff],i+1]
+            else:
+                d[numbers[i]]=i+1
+        return 
+        
+# SUBMISSION REPORT:-
+    # Runtime: 156 ms, faster than 80.41% of Python3 online submissions for Two Sum II - Input Array Is Sorted.
+    # Memory Usage: 15 MB, less than 40.90% of Python3 online submissions for Two Sum II - Input Array Is Sorted.
+    
+# EXPLANATION:-
+    # We will solve this using a hashmap
+    # We will iterate through the numbers array using the range function
+    # We will store the difference between the target and current element in diff variable
+    # We will check if diff is in d(our hasmap), if it is, we will return its index and the index of current element +1 (because indexing starts from zero)
+    # If it is not present, we will add the current element to the dictionary and its index as +1

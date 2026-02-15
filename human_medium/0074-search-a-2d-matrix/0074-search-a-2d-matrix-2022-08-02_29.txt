@@ -1,0 +1,10 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        m = len(matrix)       #number of rows
+        n = len(matrix[0])    #no of elements in each row
+        for i in range(m):
+            if target>=matrix[i][0] and target<=matrix[i][n-1]:      #checking if the target value lies between the first and last element of the row
+			   for j in range(n):          #traversing the row to find the target value
+                    if target == matrix[i][j]:
+                        return True
+        return False

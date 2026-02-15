@@ -1,0 +1,6 @@
+nums = [3,4,5,1,2]
+
+We will iterate over the array each element as i
+and return the value of i when nums[i - 1] > nums[i]
+If it was this easier it wouldn\'t be this easy. We need to do this in 
+nLogn and our solution is (N)

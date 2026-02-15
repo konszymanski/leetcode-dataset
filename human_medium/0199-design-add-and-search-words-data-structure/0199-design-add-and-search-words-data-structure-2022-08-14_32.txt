@@ -1,0 +1,66 @@
+from collections import deque
+
+class TrieNode(object):
+    def __init__(self):
+        self.children = {}
+        self.isEnd = False # TrieNode ending here is valid
+        self.maxLen = 0    # Maximum remaining length of the word i.e. max depth of children 
+
+class WordDictionary(object):
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word):
+        """
+        :type word: str
+        :rtype: None
+        """
+        node = self.root
+        for i, c in enumerate(word):
+            node.maxLen = max(node.maxLen, len(word)-i)
+            
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+            
+        node.isEnd = True
+        
+
+    def search(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+        #BFS
+        queue = deque([self.root])
+        idx = 0
+        reqLen = len(word)-1
+        remaining = 1
+		c = word[0]
+        
+        while queue:
+            node = queue.popleft()
+            
+			#Add viable children to queue
+            if c == ".":
+                for k in node.children:
+                    if node.children[k].maxLen >= reqLen:
+                        queue.append(node.children[k])
+            elif c in node.children and node.children[c].maxLen >= reqLen:
+                queue.append(node.children[c])
+			
+			#Move to next char if needed
+            remaining -= 1
+            if remaining <= 0:
+                remaining = len(queue)
+                idx += 1
+				c = word[idx]
+
+                reqLen -= 1
+                if idx == len(word):
+                    for node in queue:
+                        if node.isEnd:
+                            return True
+                    return False
+                
+        return False

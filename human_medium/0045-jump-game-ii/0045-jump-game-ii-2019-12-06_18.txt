@@ -1,0 +1,7 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        tmp = [i + v for i, v in enumerate(nums)]
+        left = right = res = 0
+        while right < len(nums)-1:
+            left, right, res = right, max(tmp[left:right+1]), res + 1
+        return res

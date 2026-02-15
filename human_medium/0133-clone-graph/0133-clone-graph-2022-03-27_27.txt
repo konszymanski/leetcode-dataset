@@ -1,0 +1,41 @@
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        # Special case for input [], i.e. the graph has no nodes
+        if node is None:
+            return 
+        
+        # Special case for the input [[]], i.e. there is a node with value 1 and no neighbors
+        if not node.neighbors:
+            return Node(node.val)
+        
+        # seen[key] holds new node with val == key
+        seen = {}
+        # stack holds existing nodes that have not yet been fully copied
+        stack = [node]
+        
+        while stack:
+            existing_node = stack.pop()
+            if existing_node.val in seen:
+                # Get the new node if it\'s already been created
+                new_node = seen[existing_node.val]
+            else: 
+                # Otherwise create the new node
+                new_node = Node(existing_node.val)
+            
+            for neighbor in existing_node.neighbors:
+                if neighbor.val not in seen:
+                    # If this neighbor has not yet been created, create it
+                    new_neighbor = Node(neighbor.val)
+                    # Then append the new neighbor into the new_nodes neighbors list
+                    new_node.neighbors.append(new_neighbor)
+                    # Then append the existing neighbor into the stack because it is not fully copied
+                    stack.append(neighbor)
+                    # Then save a link to the new neighbor so you don\'t create it multiple times
+                    seen[new_neighbor.val] = new_neighbor
+                else:
+                    # If the new neighbor has already been created, just append the new neighbor
+                    # into the new node\'s neighbors list
+                    new_node.neighbors.append(seen[neighbor.val])
+                
+        # Use the link to the copy of the root node as the return value        
+        return seen[node.val]

@@ -1,0 +1,29 @@
+from collections import deque
+class Solution:
+    def bfs(self,r,c,grid,vis):
+        n=len(grid)
+        m=len(grid[0])
+        vis[r][c]=1
+        qu=deque()
+        qu.append([r,c])
+        while len(qu)>0:
+            row,col=qu.popleft()
+            directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+            for dr,dc in directions:
+                nrow=row+dr
+                ncol=col+dc
+                if nrow<n and nrow>=0 and ncol>=0 and ncol<m and grid[nrow][ncol]=="1" and vis[nrow][ncol]==0:
+                    vis[nrow][ncol]=1
+                    qu.append([nrow,ncol])
+    
+    def numIslands(self, grid: List[List[str]]) -> int:
+        n=len(grid)
+        m=len(grid[0])
+        vis=[[0 for i in range(m)] for j in range(n)]
+        ans=0
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j]=="1" and vis[i][j]==0:
+                    ans+=1
+                    self.bfs(i,j,grid,vis)
+        return ans

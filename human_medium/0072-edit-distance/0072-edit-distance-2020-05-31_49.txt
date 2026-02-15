@@ -1,0 +1,41 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+		# handle simple cases where either or both of the inputs are empty strings
+        if not word1 and not word2:
+            return 0
+        elif not word1:
+            return len(word2)
+        elif not word2:
+            return len(word1)
+
+		# all we need to calculate the current row values are the values from the previous row
+		# the first row is initialized with numbers 0..len(word2) to cover insertions/deletions 
+		# before the first character (index of word2)
+        previous_row = list(range(len(word2) + 1))
+		
+		# enumerate over characters in the first word
+        for i1, c1 in enumerate(word1):
+			# in addition to the previous row, we also need to track the [i-1, j-1] value,
+			# which is the top left value in a matrix
+            top_left = i1
+			
+			# similar to the first row, we initialize the first value in the matrix row with
+			# the index in the first word to assume comparison from that index onward
+            previous_row[0] = i1
+			
+            for i2, c2 in enumerate(word2):
+				# if the characters match, we take the top left value as this will always be 
+				# the best operation
+                if c1 == c2:
+                    m = top_left
+                else:
+					# take the minimum of the [i-1, j-1] (replacement), [i-1, j] (insertion), 
+					# and [i, j-1] (deletion) values and add 1 for the operation
+                    m = min(previous_row[i2], previous_row[i2 + 1], top_left) + 1
+
+				# update the top left and previous row values
+                top_left = previous_row[i2+1]
+                previous_row[i2+1] = m
+
+		# return last value in row
+        return previous_row[-1]

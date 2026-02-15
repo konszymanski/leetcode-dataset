@@ -1,0 +1,32 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        ndict = {\'1\':1,
+                \'2\':2,
+                \'3\':3,
+                \'4\':4,
+                \'5\':5,
+                \'6\':6,
+                \'7\':7,
+                \'8\':8,
+                \'9\':9,
+                \'0\':0}
+        res1 = 0
+        res2 = 0 
+        for i in num1:
+            res1 = res1*10 + ndict[i]
+        for i in num2:
+            res2 = res2*10 + ndict[i]
+        res = res1 * res2
+        rem = res
+        if rem == 0: return \'0\' 
+        sres = \'\'
+        while res != 0:
+            for u,v in zip(ndict.keys() , ndict.values()):
+                d = res%10
+                if v == d :
+                    sres+=u
+                    break
+
+            res = res//10
+
+        return sres[::-1]

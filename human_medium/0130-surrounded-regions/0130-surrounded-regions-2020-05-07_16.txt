@@ -1,0 +1,30 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def borderErase(rid, cid):
+            if rid < 0 or cid < 0 or rid > len(board) -1 or cid > len(board[0]) -1 or board[rid][cid] in (\'X\', \'E\'):
+                return
+            # it must be \'O\'
+            board[rid][cid] = \'E\'
+            borderErase(rid-1, cid)
+            borderErase(rid+1, cid)
+            borderErase(rid, cid-1)
+            borderErase(rid, cid+1)
+            
+        # check the border "islands" first and mark them \'E\'
+        for rid, row in enumerate(board):
+            for cid, column in enumerate(row):
+                if rid == 0 or cid == 0 or rid == len(board) -1 or cid == len(board[0])-1:
+                    if board[rid][cid] == \'O\':
+                        borderErase(rid, cid)
+                        
+        # now change the capturable ones to \'X\' and change the uncapturable ones to \'O\'
+		# for the final output
+        for rid, row in enumerate(board):
+            for cid, column in enumerate(row):
+                if board[rid][cid] == \'O\':
+                    board[rid][cid] = \'X\'
+                if board[rid][cid] == \'E\':
+                    board[rid][cid] = \'O\'

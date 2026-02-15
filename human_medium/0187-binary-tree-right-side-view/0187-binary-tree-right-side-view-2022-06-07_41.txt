@@ -1,0 +1,24 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        
+        if not root:
+            return
+        
+        l = []
+        q = [root]
+        
+        while q:
+            l.append(q[-1].val)
+            l1 = []
+            
+            
+            for i in q:
+                if i.left:
+                    l1.append(i.left)
+                if i.right:
+                    l1.append(i.right)
+                    
+            q = l1
+            
+
+        return l

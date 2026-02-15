@@ -1,0 +1,15 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        queue = collections.deque([(n, [])])
+        results = []
+        
+        while queue:
+            remains, combination = queue.popleft()
+            if len(combination) == k: 
+                if not remains: results.append(combination)
+                else: continue
+            max_usable = min(remains, 9 if not combination else combination[-1] - 1)
+            for deduction in range(max_usable, 0, -1):
+                queue.append((remains - deduction, combination + [deduction]))
+        
+        return results

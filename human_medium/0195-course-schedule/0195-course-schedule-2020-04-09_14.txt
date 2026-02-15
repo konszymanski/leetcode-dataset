@@ -1,0 +1,27 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = { n: [] for n in range(numCourses) }
+        marks = { n: 0 for n in range(numCourses) }
+        
+        for course, prereq in prerequisites:
+            graph[prereq].append(course)
+        
+        for node in range(numCourses):
+            if marks[node] == 0: 
+                if not self.dfs(node, graph, marks):
+                    return False
+                
+        return True
+    
+    def dfs(self, node: int, graph: dict, marks: dict) -> bool:
+        marks[node] = 1
+        
+        for neighbor in graph[node]:
+            if marks[neighbor] == 0:
+                if not self.dfs(neighbor, graph, marks):
+                    return False
+            elif marks[neighbor] == 1:
+                return False
+
+        marks[node] = 2
+        return True

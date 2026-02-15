@@ -1,0 +1,50 @@
+class Solution:
+    
+    
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        trie = Trie()
+        for perm in self.permute(nums):
+            trie.insert(perm)
+        return self.get_all_words(trie.root, [], [])
+
+    
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 0:
+            return [[]]
+        res = []
+        for i, cur in enumerate(nums):
+            nums_without_cur = [num for j, num in enumerate(nums) if i != j]
+            for perm in self.permute(nums_without_cur):
+                res.append([cur] + perm)
+        return res
+
+
+    def get_all_words(self, root, word=[], res=[]):
+        if root.is_word:
+            res.append(word)
+        else: 
+            for child in root.children:
+                self.get_all_words(root.children[child], word+[child], res)
+
+        return res
+        
+
+        
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
+    
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode()
+        
+
+    def insert(self, word) -> None:
+        cur = self.root
+        for char in word:
+            if char not in cur.children:
+                cur.children[char] = TrieNode()
+            cur = cur.children[char]
+        cur.is_word = True

@@ -1,0 +1,11 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        ans=[]
+        nums.sort()
+        def recurse(ind,temp):
+            ans.append(temp.copy())
+            for i in range(ind,len(nums)):
+                if i!=ind and nums[i]==nums[i-1]: continue
+                recurse(i+1,temp+[nums[i]])
+        recurse(0,[])
+        return ans

@@ -1,0 +1,17 @@
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        node, prev = head, None # ...<-###<-prev, node->###->...
+        while node: 
+            if not prev or prev.val <= node.val: 
+                node.next, node, prev = prev, node.next, node #set new head of reversed list & move prev/node
+            else: 
+                temp = prev
+                while temp.next and temp.next.val > node.val: #locate where to insert node
+                    temp = temp.next
+                node.next, node, temp.next = temp.next, node.next, node #insert node after temp
+        
+        #reverse linked list 
+        node, prev = prev, None
+        while node:
+            node.next, node, prev = prev, node.next, node
+        return prev

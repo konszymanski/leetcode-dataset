@@ -1,0 +1,21 @@
+class Solution:
+    """
+    @param: numCourses: a total of n courses
+    @param: prerequisites: a list of prerequisite pairs
+    @return: true if can finish all courses or false
+    """
+    def canFinish(self, numCourses, prerequisites):
+        # write your code here
+        g = collections.defaultdict(list)
+        indegree = collections.defaultdict(int)
+        for a, b in prerequisites:
+            g[a].append(b)
+            indegree[b] += 1
+        stack = [course for course in range(numCourses) if indegree[course] == 0]
+        while stack:
+            course = stack.pop()
+            for nei in g[course]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    stack.append(nei)
+        return all(indegree[course] == 0 for course in indegree)

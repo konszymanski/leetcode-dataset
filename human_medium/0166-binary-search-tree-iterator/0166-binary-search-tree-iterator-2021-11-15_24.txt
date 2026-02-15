@@ -1,0 +1,22 @@
+from collections import deque
+
+
+class BSTIterator:
+    def __init__(self, root: Optional[TreeNode]):
+        self._tree_stack = deque()
+        self._tree_stack.append(root)
+        self._extend_stack_to_left()
+    
+    def _extend_stack_to_left(self):
+        while self._tree_stack[-1].left is not None:
+            self._tree_stack.append(self._tree_stack[-1].left)
+
+    def next(self) -> int:
+        node = self._tree_stack.pop()
+        if node.right is not None:
+            self._tree_stack.append(node.right)
+            self._extend_stack_to_left()
+        return node.val 
+
+    def hasNext(self) -> bool:
+        return len(self._tree_stack) > 0

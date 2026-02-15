@@ -1,0 +1,25 @@
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        l=[]
+        def trav(root):
+            if root:
+                trav(root.left)
+                l.append(root.val)
+                trav(root.right)
+        trav(root)
+        for i in range(len(l)):
+            for j in range((len(l)-1),i,-1):
+                if l[i]>l[j]:
+                    a=l[i]
+                    b=l[j]
+                    l[i]=b
+                    l[j]=a
+        def func(root):
+            if root:
+                func(root.left)
+                if root.val==a:
+                    root.val=b
+                elif root.val==b:
+                    root.val=a
+                func(root.right)
+        func(root)

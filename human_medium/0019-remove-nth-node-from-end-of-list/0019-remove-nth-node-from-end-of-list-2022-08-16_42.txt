@@ -1,0 +1,20 @@
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:  # Time: O(n) and Space: O(1)
+        left = right = head
+
+        # first iterate right n spaces away from left. So, now left & right are always n nodes apart
+        # So if n = 3, we iterate right 3 nodes ahead. So, now left & right are always 3 nodes apart
+        for _ in range(n):
+            right = right.next
+
+        # edge case when n = length - 1 => remove head, i.e. when head is the nth last element
+        if not right:
+            return head.next
+
+        # Next we iterate both nodes till right reaches the one before the last node (maintaining n distance between left & right)
+        while right.next:
+            right = right.next
+            left = left.next
+
+        left.next = left.next.next  # This removes the nth node i.e. when n=2: left(x,y) -> mid(y,z) -> right(z,NONE) ==> left(x,z) -> right(z,NONE)
+        return head

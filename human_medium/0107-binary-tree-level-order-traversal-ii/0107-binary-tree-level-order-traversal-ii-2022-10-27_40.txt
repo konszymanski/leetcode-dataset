@@ -1,0 +1,29 @@
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        
+        if not root:
+            return []
+        
+        result = []
+        
+        def bfs(level):
+            
+            if not level:
+                return result
+            
+            result.insert(0, [node.val for node in level])
+            
+            new_layer = []
+            q = deque(level)
+            
+            while q:
+                node = q.popleft()
+                
+                if node.left:
+                    new_layer.append(node.left)
+                if node.right:
+                    new_layer.append(node.right)
+            
+            return bfs(new_layer)
+        
+        return bfs([root])

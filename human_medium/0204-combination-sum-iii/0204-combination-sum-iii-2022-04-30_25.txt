@@ -1,0 +1,2 @@
+from itertools import combinations
+return [list(li) for li in combinations(range(1,10),k) if sum(list(li)) == n]

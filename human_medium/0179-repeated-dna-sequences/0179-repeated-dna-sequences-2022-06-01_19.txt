@@ -1,0 +1,11 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        dna = set()
+        rseq = set()
+        for i in range(len(s) - 10 + 1):
+            seq = s[i : i + 10]
+            if seq in dna:
+                rseq.add(seq)
+            else:
+                dna.add(seq)
+        return list(rseq)

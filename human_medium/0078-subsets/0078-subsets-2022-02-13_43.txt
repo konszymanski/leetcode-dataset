@@ -1,0 +1,9 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        def dfs(c,ns):
+            ans.append(c)
+            for idx,n in enumerate(ns):
+                dfs(c+[n],ns[idx+1:])
+        dfs([],nums)
+        return ans

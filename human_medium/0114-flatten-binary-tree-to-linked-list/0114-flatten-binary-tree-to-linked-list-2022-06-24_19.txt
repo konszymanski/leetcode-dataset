@@ -1,0 +1,17 @@
+class Solution:
+    \'\'\'
+        Pre-requisite = Morris Traversal
+        Note : Attaching right subtree to the rightmost node in left subtree, doesn\'t change preorder traversal
+    \'\'\'
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        curr = root
+        while curr:
+            if curr.left:
+                l = curr.left
+                while l.right:
+                    l = l.right
+                # attaching right subtree to right most node in left subtree
+                l.right = curr.right
+                curr.right = curr.left
+                curr.left = None
+            curr = curr.right

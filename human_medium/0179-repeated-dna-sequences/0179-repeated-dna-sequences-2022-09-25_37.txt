@@ -1,0 +1,5 @@
+def findRepeatedDnaSequences(self, s: str) -> List[str]:
+	repeat_dict = {}
+	for i in range(len(s) - 10 + 1):
+		repeat_dict[s[i:i + 10]] = repeat_dict.get(s[i:i + 10], 0) + 1
+	return [k for k, v in repeat_dict.items() if v > 1]

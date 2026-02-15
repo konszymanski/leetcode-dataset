@@ -1,0 +1,27 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        #row
+        for row in board:
+            d = Counter(row)
+            for k,v in d.items():
+                if k != \'.\' and v >1:
+                    return False
+        #col
+        for i in range(len(board)):
+            col = []
+            for j in range(len(board)):
+                col.append(board[j][i])
+            d = Counter(col)
+            for k,v in d.items():
+                if k != \'.\' and v >1:
+                    return False
+        
+        #square
+        for i in range(0,9,3):
+            for j in range(0,9,3):
+                s = [board[x][y] for x in range(i,i+3) for y in range(j,j+3)]
+                d = Counter(s)
+                for k,v in d.items():
+                    if k != \'.\' and v >1:
+                        return False
+        return True

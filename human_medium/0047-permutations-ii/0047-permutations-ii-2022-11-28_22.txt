@@ -1,0 +1,28 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        self.nums = nums
+        self.ans = []
+        self.generatePermutations(0)
+        return self.ans
+    
+    
+    def generatePermutations(self, i):
+        if i == len(self.nums):
+            self.ans.append(self.nums.copy())
+            return
+        
+        letterCount = [0]*21
+        for j in range(i, len(self.nums)):
+            ind = self.nums[j] + 10
+            
+            if letterCount[ind] == 0:
+                self.swap(i, j)
+                self.generatePermutations(i + 1)
+                self.swap(i, j)
+            
+            letterCount[ind] += 1
+        
+        
+        
+    def swap(self, a, b):
+        self.nums[a], self.nums[b] = self.nums[b], self.nums[a]

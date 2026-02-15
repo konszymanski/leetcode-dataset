@@ -1,0 +1,22 @@
+def partition(self, head: ListNode, x: int) -> ListNode:
+        left,prev=head,None
+        while(left and left.val<x):
+            prev=left
+            left=left.next
+        if not left:
+            return head
+        right=left
+        while(right):
+            if right.next and right.next.val<x:
+                if prev==None:
+                    head=prev=right.next
+                    right.next=right.next.next
+                    prev.next=left
+                else:
+                    prev.next=right.next
+                    right.next=right.next.next
+                    prev.next.next=left
+                    prev=prev.next
+            else:
+                    right=right.next
+        return head

@@ -1,0 +1,32 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+
+        sign = True
+        if dividend < 0:
+            dividend = 0 - dividend
+            sign = not sign
+        if divisor < 0:
+            divisor = 0 - divisor
+            sign = not sign
+
+        if divisor > dividend:
+            return 0
+        elif divisor == 1:
+            result = dividend
+        else:
+            cur_dividend = 0
+            result = 0
+            while cur_dividend + divisor <= dividend:
+                d = divisor
+                cnt = 1
+                while cur_dividend + d**cnt <= dividend:
+                    cnt += 1
+                cur_dividend += d**(cnt-1)
+                result += d**(cnt-2)
+
+        result = result if sign else 0 - result
+        if result > 2**31 - 1:
+            return 2**31 - 1
+        elif result < - 2**31:
+            return - 2**31
+        return result

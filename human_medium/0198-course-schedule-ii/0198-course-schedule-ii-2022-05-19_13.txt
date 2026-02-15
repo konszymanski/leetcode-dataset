@@ -1,0 +1,2 @@
+if len(res) == numCourses:
+	return res

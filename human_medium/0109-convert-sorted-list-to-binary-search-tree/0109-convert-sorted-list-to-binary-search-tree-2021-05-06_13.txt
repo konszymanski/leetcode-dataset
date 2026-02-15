@@ -1,0 +1,63 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        """
+        Given the head pointer to a sorted linked list (head),
+        this program converts the list to a balanced binary
+        search tree.
+
+        :param head: head pointer to a sorted linked list
+        :type head: ListNode
+        :return: root pointer to a binary search tree derived
+                 from the linked list
+        :rtype: TreeNode
+        """
+        
+        """
+        Base Case:
+        - If the list is empty, return quickly.
+        """
+        if not head:
+            return None
+        
+        """
+        Create Binary Search Tree from the Linked List:
+        - Use slow and fast pointers to find a middle node of
+          the linked list to be the root of the tree.
+        - Define the sublists to the left and right of the middle
+          node to be left_list and right_list, respectively.
+        - Maintain the pointer prev to immediately precede the
+          slow pointer. Use it to terminate left_list.
+        - Use recursion to create the left and right subtrees
+          of the root from left_list and right_list.
+        """
+        prev = None
+        slow = head
+        fast = head.next
+        while fast:
+            prev = slow
+            slow = slow.next
+            fast = fast.next
+            if fast:
+                fast = fast.next
+        root = TreeNode(slow.val)
+        if slow == head:
+            left_list = None
+        else:
+            left_list = head
+            prev.next = None
+        root.left = self.sortedListToBST(left_list)
+        root.right = self.sortedListToBST(slow.next)
+        return root

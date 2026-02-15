@@ -1,0 +1,15 @@
+class Solution(object):
+    def threeSum(self, nums):
+        dp = {nk:k for k,nk in enumerate(nums)} # pre-cache k
+        n = len(nums)
+        
+        res = set() 
+        for i in range(n): # O(nxn) anyway while or foreach
+            for j in range(i+1, n):
+				compl = 0 - sum([nums[i],nums[j]]) # two sum like
+				if compl in dp: # hash map for faster last number index search
+					k = dp[compl]
+					if i != k and j != k: # by problem constraints
+						sum3 = nums[i],nums[j],nums[k]
+						res.add(tuple(sorted(sum3)))        
+        return res

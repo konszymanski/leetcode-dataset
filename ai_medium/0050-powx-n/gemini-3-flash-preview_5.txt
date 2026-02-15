@@ -1,0 +1,22 @@
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        # Handle the case where the exponent is negative
+        if n < 0:
+            x = 1 / x
+            n = -n
+        
+        # Binary exponentiation (Exponentiation by squaring)
+        res = 1.0
+        while n:
+            # If current exponent is odd, multiply the result by the current power of x
+            if n % 2:
+                res *= x
+            # Square the current power of x
+            x *= x
+            # Divide the exponent by 2 (integer division)
+            n //= 2
+            
+        return res
+
+```

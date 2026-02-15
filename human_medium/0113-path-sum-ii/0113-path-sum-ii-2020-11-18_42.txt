@@ -1,0 +1,32 @@
+def find_path_sum(root,arr, total):
+            
+            if not root:
+                return
+            
+            val = root.val
+            
+            arr.append(val)
+            
+            total -= root.val
+            
+            if not root.left and not root.right:
+                
+                if total == 0:
+                    ans.append(arr[::])
+                
+                arr.pop()                            
+                return
+                    
+            if root.left:
+                find_path_sum(root.left, arr,total)
+            
+            if root.right:
+                find_path_sum(root.right, arr,total)
+            
+            arr.pop()
+            
+        ans = []
+        
+        find_path_sum(root,[],sum)
+        
+        return ans

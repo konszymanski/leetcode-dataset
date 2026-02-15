@@ -1,0 +1,19 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        
+        #Do not return anything, modify root in-place instead.
+   
+        head=root
+        while(head):
+            flattened_left=self.flatten(head.left)
+            actual_right=head.right
+            if(flattened_left==None):
+                head=actual_right
+            else:
+                head.left=None
+                head.right=flattened_left
+                while(head.right):
+                    head=head.right
+                head.right=actual_right
+                head=head.right
+        return root

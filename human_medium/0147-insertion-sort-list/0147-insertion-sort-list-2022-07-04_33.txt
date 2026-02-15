@@ -1,0 +1,33 @@
+class Solution(object):
+    def insertionSortList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        def _insert(lst, i):
+            for j in range(i, 0, -1):
+                if lst[j - 1] <= lst[j]:
+                    return
+                else:
+                    lst[j - 1], lst[j] = lst[j], lst[j - 1]
+                    j -= 1
+
+        curr = head
+        lst = []
+        while curr is not None:
+            lst.append(curr.val)
+            curr = curr.next
+        for i in range(0, len(lst)):
+            _insert(lst, i)
+        def _insert(lst, i):
+            for j in range(i, 0, -1):
+                if lst[j - 1] <= lst[j]:
+                    return
+                else:
+                    lst[j - 1], lst[j] = lst[j], lst[j - 1]
+                    j -= 1
+        cur = dummy = ListNode()
+        for i in range(0, len(lst)):
+            cur.next = ListNode(lst[i])
+            cur = cur.next
+        return dummy.next

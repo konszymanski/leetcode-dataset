@@ -1,0 +1,9 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        result.append([])
+        for num in nums: #we need to iterate over all input values
+            for i in range(len(result)): #this is the current level. Add the newest element to all nodes in the current level
+                cur = result[i]
+                result.append(cur + [num])
+        return result

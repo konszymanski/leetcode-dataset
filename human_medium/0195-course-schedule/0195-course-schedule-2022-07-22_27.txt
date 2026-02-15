@@ -1,0 +1,29 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:  # Time: O(Nodes(V) + Edges(prerequisites)) and Space: O(V + E)
+	
+        preMap = {i: [] for i in range(numCourses)}  # init hashmap for storing course as a key for prerequisite as values 
+        for crs, pre in prerequisites:  
+            preMap[crs].append(pre)
+        visitSet = set()           # use it to find if there exists a cycle in the graph, if a crs pre is already in the set loop exits 
+
+        def dfs(crs):
+            if crs in visitSet:    # it states there is a cycle 
+                return False
+            
+            if preMap[crs] == []:  # no further courses based on this course and already learned the prerequisite courses, so we can finally learn it now 
+                return True
+
+            visitSet.add(crs)
+            for pre in preMap[crs]:# values at key 
+                if not dfs(pre):   # when dfs returns True, if loop will exit 
+                    return False
+
+            visitSet.remove(crs)  # we will remove the course after studying its prerequisites and itself
+            preMap[crs] = []      # indicates we studied all the prerequisites required for the course crs 
+            return True
+
+        for crs in range(numCourses):  # we will check for each course at a time
+            if not dfs(crs):           # when dfs returns true it will become false and will return true
+                return False
+				
+        return True

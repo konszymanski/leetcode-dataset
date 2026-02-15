@@ -1,0 +1,16 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        def rec(curr_par, curr_open, remain_open, remain_close):
+            if len(curr_par) == 2 * n:
+                res.append(curr_par)
+                return
+            
+            if remain_open > 0:
+                rec(curr_par + \'(\', curr_open + 1, remain_open - 1, remain_close)
+            
+            if remain_close > 0 and curr_open > 0:
+                rec(curr_par + \')\', curr_open - 1, remain_open, remain_close - 1)
+        
+        res = []
+        rec(\'\', 0, n, n)
+        return res

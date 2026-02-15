@@ -1,0 +1,15 @@
+def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Recursive method
+        """
+        prev=None
+        def preorder(root):
+            nonlocal prev
+            if root==None:
+                return
+            preorder(root.right)
+            preorder(root.left)
+            root.right=prev
+            root.left=None
+            prev=root
+        preorder(root)

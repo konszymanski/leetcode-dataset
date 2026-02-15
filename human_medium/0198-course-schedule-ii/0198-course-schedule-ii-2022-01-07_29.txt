@@ -1,0 +1,32 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # init DAG: Course pre -> Course
+        d = defaultdict(list)
+        # indegree list: there are # courses as pre-requisites for takign Course A 
+        indeg = [0] * numCourses
+        # c: course;  p: pre for course
+        for c, p in prerequisites:
+            d[p].append(c)
+            # p -> c will increase the indegree of c
+            indeg[c] += 1
+            
+        # BFS queue: enque all the 0 indegree courses
+        q = deque([i for i, x in enumerate(indeg) if x == 0])
+        
+        # milestone check, good habit
+        # print(q)
+        
+        # learning path
+        ans = []
+        while q:
+            cur = q.popleft()
+            # add it to our learning path
+            ans.append(cur)
+            # apply BFS to cur can yield the affected courses, decrease their indegree by 1
+            for c in d[cur]:
+                indeg[c] -= 1
+                # if the indegree reach 0, enque
+                if indeg[c] == 0:
+                    q.append(c)
+        
+        return ans if len(ans) == numCourses else []

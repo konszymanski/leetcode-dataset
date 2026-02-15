@@ -1,0 +1,51 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        
+        # Gets length of list in O(n) time
+        def length(l):
+            n = 0
+            while l:
+                n += 1
+                l = l.next
+            return n
+        
+        # We want to know which list is longer so we can iterate modify the longer list
+        # so that in the worst case we will only have to create 1 node.
+        if length(l1) >= length(l2):
+            longList = l1
+            shortList = l2
+        else:
+            longList = l2
+            shortList = l1
+        
+        root = longList
+        q = 0
+        while longList:
+            # The variable below "last" will only be used after the loop in case
+            # we have a carry (q != 0)
+            last = longList
+            
+            
+            longListVal = longList.val
+            shortListVal = shortList.val if shortList else 0
+            q, r = divmod(longListVal + shortListVal + q, 10)
+            
+            # Modify the longList and move pointer
+            longList.val = r
+            longList = longList.next
+            
+            # If shortList is none, do not move pointer.
+            if shortList: 
+                shortList = shortList.next
+        
+        # We only create a node if the carry/quotient q != 0
+        if q:
+            last.next = ListNode(q)
+        
+        # Now we can return the root of the longList
+        return root

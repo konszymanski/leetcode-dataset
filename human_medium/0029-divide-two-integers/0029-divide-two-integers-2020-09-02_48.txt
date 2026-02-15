@@ -1,0 +1,18 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        out = 0
+        absdividend = abs(dividend)
+        absdivisor = abs(divisor)
+        if absdividend >= absdivisor:
+            if absdivisor == 1:
+                out = absdividend
+            else:
+                while absdividend >= absdivisor:
+                    absdividend -= absdivisor
+                    out += 1
+        else:
+            out = 0
+        if (dividend < 0 and divisor > 0) or (dividend > 0 and divisor < 0):
+            return -out
+        else:
+            return out

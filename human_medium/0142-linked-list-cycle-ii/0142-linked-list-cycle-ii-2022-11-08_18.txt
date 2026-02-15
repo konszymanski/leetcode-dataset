@@ -1,0 +1,16 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        curr,ans=head,None
+        while curr!=None:
+            if curr.val>=1000001:
+                ans=curr
+                break
+            curr.val+=10000000
+            curr=curr.next
+        temp=head
+        while temp!=None:
+            if temp.val>=1000001:
+                temp.val-=10000000
+            else:
+                break
+        return ans

@@ -1,0 +1,27 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        
+        M , N = len(word1), len(word2)
+        
+        memo = {}
+        
+        def dfs(i,j):
+            
+            if i >= M and j < N: return N-j
+            if i < M and j >= N: return M-i
+            if i >= M and j >= N: return 0
+            
+            state = (i,j)
+            
+            if state in memo: return memo[state]
+            
+            memo[state] = float(\'inf\')
+            
+            if word1[i] == word2[j]:
+                memo[state] = dfs(i+1,j+1)
+            else:
+                memo[state] = 1 + min(dfs(i+1, j), dfs(i,j+1), dfs(i+1,j+1))
+            
+            return memo[state]
+        
+        return dfs(0,0)

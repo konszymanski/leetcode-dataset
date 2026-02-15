@@ -1,0 +1,28 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        ## RC ##
+        ## APPOACH : RECURSIVE ##
+        
+		## TIME COMPLEXITY : O(N^2) ##  (can be optimized by storing inorder {element : index} in a hashmap and pass index in recursive call instead of passing entire array )
+		## SPACE COMPLEXITY : O(N) ##
+
+        def helper(preorder, inorder):
+            
+            if(len(preorder) == 0 ): return None
+            
+            root = TreeNode(preorder[0])
+            rootIndex = inorder.index(preorder[0])
+            
+            leftInorder = inorder[ : rootIndex]
+            rightInorder = inorder[rootIndex + 1 : ]
+            
+            leftPreorder = preorder[1 : rootIndex + 1]
+            rightPreorder = preorder[rootIndex + 1 : ]
+            
+            root.left = helper(leftPreorder, leftInorder)
+            root.right = helper(rightPreorder, rightInorder)
+            
+            return root
+        
+        if(len(preorder) == 0 or len(inorder) == 0): return None   
+        return helper(preorder, inorder)

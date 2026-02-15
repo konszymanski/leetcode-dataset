@@ -1,0 +1,29 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        len0    = len(s)
+        numRows = numRows if numRows<len0 else len0
+        #
+        if (not s) or numRows==1:
+            return s
+        #
+        result = []
+		# cycle: Length of each Zig-Zag Cycle
+        cycle = 2*numRows - 2 # numRows + numRows - 2
+        for r in range(numRows):
+            # (r: row-index in 2-D display)
+			# i: Zig-Zag cycle index
+			i = 0
+			# j1: s[j] index with Contribution from each Vertical Line
+            j1 = i*cycle + r 
+			# j2: s[j] index with Contribution from each Diagonal
+            j2 = (i+1)*cycle - r # i*cycle + (cycle-1) - (r-1)
+            while j1 < len0:
+                result.append( s[j1] )
+                if 0<r<(numRows-1):
+                    if not j2<len0:
+                        break
+                    result.append( s[j2] )
+                i += 1
+                j1 = i*cycle + r
+                j2 = (i+1)*cycle - r
+        return \'\'.join(result)

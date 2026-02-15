@@ -1,0 +1,46 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+		# If head is NONE, we return pos = -1 (as mentioned in description of question)
+        if not head:
+            pos = -1
+            return
+		
+		# Initialising the slow and fast pointers, our turtle and hare
+        slow = head
+        fast = head
+		
+		
+		# PART-1 OF ALGORITHM
+		
+		# running a while loop until fast is not NONE and fast.next exists, in cyclic graph, this condition would always be possible
+        while fast and fast.next:
+			
+			# like I mentioned, slow moves by 1 step at a time, fast by 2 at a time
+            slow = slow.next
+            fast = fast.next.next
+            # print(f"slow pointer: {slow}, fast pointer: {fast}")
+			
+			# breaking point when they meet
+            if slow == fast:
+                break
+				
+		# checking if the loop ended because the graph was not cyclic
+        if not fast or not fast.next:
+            pos = -1
+            return
+			
+		# PART-2 of ALGORITHM
+		
+		# resetting the slow to head, notice that the fast pointer is still at the intersected position
+        slow = head
+		
+		# running a while loop till slow and fast intersect again
+        while fast != slow:
+		
+			# moving both by 1 step at a time
+            slow = slow.next
+            fast = fast.next
+		
+		# returning the intersected position node, hence our solution.
+		# Voila!
+        return slow

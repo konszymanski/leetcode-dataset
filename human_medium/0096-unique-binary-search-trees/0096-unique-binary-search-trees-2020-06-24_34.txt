@@ -1,0 +1,8 @@
+def numTrees_v0_recursion(self, n: int) -> int:
+        
+        @functools.lru_cache(maxsize=None)
+        def helper( lo, hi ):
+            if lo == hi: return 1
+            return sum( helper(lo, iRoot) * helper(iRoot+1, hi) for iRoot in range(lo, hi) )
+        
+        return helper(0, n)

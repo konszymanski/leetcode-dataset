@@ -1,0 +1,15 @@
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        
+        res = self.helper(x, abs(n))
+        
+        return float(res) if n >= 0 else 1 / res
+
+    def helper(self, base, exponent):
+        
+        if exponent == 0:
+            return 1
+        elif exponent % 2 == 0:
+            return self.helper(base * base, exponent // 2)
+        else:
+            return base * self.helper(base * base, exponent // 2)

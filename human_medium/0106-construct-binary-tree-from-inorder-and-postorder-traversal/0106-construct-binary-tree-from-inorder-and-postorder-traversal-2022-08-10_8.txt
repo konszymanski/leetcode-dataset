@@ -1,0 +1,16 @@
+#For problem 105
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+	#return if  list is empty, you can also say if one of them is empty suck as (if not preorder):return None
+        if not preorder or not inorder:return None
+#root at first position of preorder
+        root=TreeNode(preorder[0])
+
+# we only need to use its index in inorder
+        mid_node=inorder.index(root.val)
+  #since left of inorder, right of inorder are correspond to left,right of subtree 
+  #start from 1 because index 0 is the root
+        root.left=self.buildTree(preorder[1:1+mid_node],inorder[:mid_node])
+        root.right=self.buildTree(preorder[mid_node+1:],inorder[mid_node+1:])
+        
+        return root

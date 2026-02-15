@@ -1,0 +1,18 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if not preorder or not inorder: return
+        # keep in memory the index positions of the elements of the tree
+        memory = {e: i for i, e in enumerate(inorder)}
+        state = {\'index\':0}
+        def build(l, r):
+            if r < l: return None
+            node = TreeNode(preorder[state[\'index\']])
+            i = memory[node.val]
+            # increment the global index
+            state[\'index\'] += 1
+            # make sure to include all the nodes to the left of the root
+            node.left = build(l,i-1)
+            # include in the search space all the nodes to the right
+            node.right = build(i+1, r)
+            return node
+        return build(l=0, r=len(preorder)-1)

@@ -1,0 +1,71 @@
+class Node:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev, self.next = None, None
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.left, self.right = Node(-1,-1), Node(-1,-1)
+        self.left.next, self.right.prev = self.right, self.left
+
+    def remove(self, node):
+        
+        # This is primary reason why we have chosen a doubly linked list, as if we have
+        # address of node to be deleted, DLL provided ability to get it\'s prev node as well
+        # The adress of each key\'s node is stored as val in dict
+        
+        prev, nxt = node.prev, node.next
+        prev.next, nxt.prev = nxt, prev
+    
+    def insert(self, node):
+        # Insertion always happens at the front, so that we have sorted order of fre usage
+        # For O(1) insertion, we need to have address of end node stored somewhere, hence
+        # we maintain right dummy pointer, whose prev will give us that. So while inserting
+        # We point end\'s next to this new node, node\'s next to right, and right\'s prev to node
+        
+        prev = self.right.prev
+        prev.next = node
+        node.prev = prev
+        node.next = self.right
+        self.right.prev = node
+    
+    def get(self, key: int) -> int:
+        
+        # Check if key is in dict. If yes, get the node address from dict, extract value
+        # This value needs to be returned. But we also need to relocate this node in list
+        # Since it has now become Most recently used, so delete it from here, and insert it
+        # Return the value extracted
+        
+        if key in self.cache:
+            node = self.cache[key]
+            self.remove(node)
+            self.insert(node)
+            return node.val
+        else:
+            return -1
+        
+
+    def put(self, key: int, value: int) -> None:
+        
+        # 2 Cases, either key is new, or it was already there(so needs to be updated)
+        # If it was there, remove it first. Simply updating that node won\'t help, coz we
+        # also have to relocate it, as it is most recently used now
+        # Now create a new node with key and value provided by user, and insert it
+        # Check if capacity is exceeded, if yes, remove lru node. How to get lru node?
+        # The dummy pointer left helps with that. Its next always points to lru node, which
+        # will help us delete it in O(1) time. Now after deleting lru from here, also remember
+        # to delete entry corresp. to this key in dict as well. That\'s why we also have key
+        # attr in Node, so we know which key to delete from dict in case of overflow
+        
+        if key in self.cache:
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+        
+        if len(self.cache)>self.capacity:
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]

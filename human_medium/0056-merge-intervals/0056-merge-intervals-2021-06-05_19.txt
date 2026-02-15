@@ -1,0 +1,21 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort()
+        res_arr=[intervals[0]]
+        for i in range(1,len(intervals)):
+            curr=len(res_arr)-1
+            start=intervals[i][0]
+            end=intervals[i][1]
+            res_start=res_arr[curr][0]
+            res_end=res_arr[curr][1]
+            res_start,res_end=res_arr[curr]
+            if(start<=res_end):
+                res_arr.pop()
+                new_start=min(start,res_start)
+                new_end=max(end,res_end)
+                res_arr.append([new_start,new_end])
+                curr=curr+1
+            else:
+                res_arr.append([start,end])
+                curr=curr+1
+        return res_arr

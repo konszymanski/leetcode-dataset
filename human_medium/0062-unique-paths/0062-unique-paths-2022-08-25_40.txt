@@ -1,0 +1,10 @@
+def uniquePaths(self, m: int, n: int) -> int:
+        
+	def traverse(row, col):
+		if row == 0 and col == 0: return 1
+
+		if row < 0 or col < 0: return 0
+
+		return traverse(row - 1, col) + traverse(row, col - 1)
+
+	return traverse(m - 1, n - 1)

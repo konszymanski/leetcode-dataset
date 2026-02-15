@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        # 102 \u9898 \u7684\u53D8\u5F62\u9898
+        # \u6309\u7167 102 \u7528 BFS \u7684\u601D\u8DEF\u505A\uFF0C\u5224\u65AD\u4E00\u4E0B\u5947\u5076\uFF0Ctemp \u653E\u5165 result \u7684\u65F6\u5019 \u5076\u6570\u6B21\u53CD\u8FC7\u6765\u653E
+        # python \u5224\u65AD\u5947\u5076\u6027\u7684\u65F6\u5019\uFF0C\u6309\u4F4D\u4E0E\u8FD0\u7B97 x&1 \u597D\u50CF\u5E76\u6CA1\u6709\u6BD4 x%2==1 \u5FEB\uFF0C\u4F30\u8BA1\u662F\u5728\u673A\u5668\u7801\u4E0A\u4F18\u5316\u8FC7\u53D6\u4F59\u6570\u7684\u8FD0\u7B97\uFF1F
+        
+        if not root:return None
+        from collections import deque
+        q = deque([root])
+        result = []
+        odd = True
+        
+        while q:
+            l = len(q)
+            temp=[]
+            for _ in range(l): #\u5BF9\u4E8E tree \u7684\u6BCF\u4E00\u5C42\uFF0C\u62FF\u5230 node.val \u653E\u5165 deque\uFF0C\u7136\u540E\u628A left\uFF0Cright \u4F9D\u6B21\u653E\u5165 q \u4E2D
+                node = q.popleft()
+                temp.append(node.val)
+                if node.left: q.append(node.left)
+                if node.right: q.append(node.right)
+            # \u5982\u679C\u5947\u6570\uFF0C\u6B63\u5411\u63D2\u5165\uFF0C\u5982\u679C\u5076\u6570\uFF0C\u53CD\u5411\u63D2\u5165                    
+            if odd:result.append(temp)
+            else: result.append(temp[::-1])
+            odd = not odd
+            
+        return result

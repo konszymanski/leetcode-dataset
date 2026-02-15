@@ -1,0 +1,33 @@
+```python
+from typing import List
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        low, high = 0, len(nums) - 1
+        
+        while low <= high:
+            mid = (low + high) // 2
+            
+            # Check if mid is the target
+            if nums[mid] == target:
+                return True
+            
+            # Handle the case where we can't determine which side is sorted due to duplicates
+            if nums[low] == nums[mid]:
+                low += 1
+            # Check if the left half is sorted
+            elif nums[low] < nums[mid]:
+                if nums[low] <= target < nums[mid]:
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            # Otherwise, the right half must be sorted
+            else:
+                if nums[mid] < target <= nums[high]:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+                    
+        return False
+
+```

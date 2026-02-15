@@ -1,0 +1,21 @@
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        
+        left = dummy
+        right = head
+        
+		# take right node to nth-1 position from start
+        while n>0:
+            right = right.next
+            n -= 1
+         
+		# take left from start and right from nth-1 and their distance is n
+        while right:
+            left = left.next
+            right = right.next
+			
+         # right{which is null} and left{which is at nth from right} have distance n
+        left.next = left.next.next
+        
+        return dummy.next

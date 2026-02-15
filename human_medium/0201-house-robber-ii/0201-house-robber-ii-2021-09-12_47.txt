@@ -1,0 +1,55 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        
+        # If array is empty
+        if not len(nums):
+            return 0
+        
+        # If array has no more than three elements,
+        # as it is a circular array we can only select
+        # one of the three elements.
+        if len(nums) <= 3:
+            return max(nums)
+        
+        # For all other cases, i.e., no. of elements are more
+        # than three
+        
+        # Init
+        n = len(nums)
+        
+        # Function to solve the subproblem
+        def maxAmountRobbed(arr: List) -> int:
+            
+            # If array is empty
+            if not len(arr):
+                return 0
+
+            # If array has only two elements
+            if len(arr) <= 2:
+                return max(arr)
+        
+            # For all other cases
+            m = len(arr)
+            t = dict()
+            
+            # When only first element is scanned
+            t[0] = arr[0]
+            
+            # When first two elements are scanned
+            t[1] = max(arr[0], arr[1])
+            
+            # Scanning from second elements onwards
+            for i in range(2,m):
+                t[i] = max(arr[i] + t[i-2], t[i-1])
+            
+            return t[m-1]
+        
+        # IF we take 0th value we have to consider next possible
+        # values are upto n-1, as 0 and n are connected
+        v1 = maxAmountRobbed(nums[0:n-1])
+        
+        # IF we take 1th value we have to consider next possible
+        # values up to n, as 0 and n are connected
+        v2 = maxAmountRobbed(nums[1:n])
+         
+        return max(v1,v2)

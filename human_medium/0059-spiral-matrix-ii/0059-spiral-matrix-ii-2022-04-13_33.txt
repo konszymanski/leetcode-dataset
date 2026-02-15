@@ -1,0 +1,50 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        left = top = 0 
+        right = bottom = n
+        
+        num = 1
+        
+        mat = [[0]*n for _ in range(n)]
+        
+        while left < right and top < bottom:
+            
+            # move from left to right on top row
+            for i in range(left, right):
+                mat[top][i] = num
+                num += 1
+            # print(mat)
+            
+            top += 1
+            
+            # if we just have to fill one row
+            if top == bottom:
+                break
+             
+            # move from top to bottom for right col
+            for i in range(top, bottom):
+                mat[i][right - 1] = num
+                num += 1
+            # print(mat)
+            right -= 1
+            
+            # if we just have to fill one column
+            if left == right:
+                break
+            
+            # move from right to left for bottom row
+            for i in reversed(range(left, right)):
+                mat[bottom - 1][i] = num
+                num += 1
+                
+            bottom -= 1
+            
+            # move from top to bottom for left col
+            for i in reversed(range(top, bottom)):
+                mat[i][left] = num
+                num += 1
+                
+            left += 1
+            
+            
+        return mat

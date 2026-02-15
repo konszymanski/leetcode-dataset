@@ -1,0 +1,41 @@
+```python
+from typing import List
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        used = [False] * len(nums)
+        
+        def backtrack(path):
+            if len(path) == len(nums):
+                res.append(list(path))
+                return
+            
+            for i in range(len(nums)):
+                # If the current element has already been used in this permutation, skip it.
+                if used[i]:
+                    continue
+                
+                # If the current element is the same as the previous one, and the previous 
+                # one hasn't been used yet in this path, skip it to avoid duplicates.
+                # This ensures that for a set of duplicate numbers, they are only 
+                # processed in one specific relative order.
+                if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                    continue
+                
+                # Choose the element
+                used[i] = True
+                path.append(nums[i])
+                
+                # Explore further
+                backtrack(path)
+                
+                # Backtrack: unchoose the element
+                path.pop()
+                used[i] = False
+        
+        backtrack([])
+        return res
+
+```

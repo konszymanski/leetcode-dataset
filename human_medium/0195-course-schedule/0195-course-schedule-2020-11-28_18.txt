@@ -1,0 +1,51 @@
+def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # edge cases:
+        if not prerequisites: # if no courses to take --> then you can take all courses 
+            return True
+        
+        # first: Build the di-graph k:v where k has an outgoing edge to v
+        from collections import defaultdict
+        d = defaultdict(list)
+        nodes = set()
+        # prerequisites = [c, prereq]
+        for c, pre in prerequisites: #k:v = course: prereq
+            d[pre].append(c) # di-graph
+            nodes.add(pre)
+            nodes.add(c)
+        
+        # sceond: build the in_degree dict k:v where k is a node and v is the num of in-degree edges
+        in_deg = {}
+        for c, pre in prerequisites:
+            if c in in_deg:
+                in_deg[c] += 1
+            else:
+                in_deg[c] = 1
+        
+        # third: figure out independent nodes (zero indegree nodes)
+        s = set()
+        for c, pre in prerequisites:
+            if c not in in_deg:
+                s.add(c)
+            if pre not in in_deg:
+                s.add(pre)
+        
+        # fouth: have those indep nodes in a stack:
+        stack = list(s)
+        # fifth: run your DFS baby :)
+        res = []
+        visited = set()
+        while stack:
+            node = stack.pop()
+            res.append(node)
+            visited.add(node)
+            
+            for nei in d[node]:
+                if nei not in visited:
+                    in_deg[nei] -= 1 # cut ties to the node we just appended to res
+                    if in_deg[nei] == 0: # if we find a new indep node -> push it to stack
+                        stack.append(nei)
+        
+        if len(res) == len(nodes):
+            return True
+        else:
+            return False # no topological sort

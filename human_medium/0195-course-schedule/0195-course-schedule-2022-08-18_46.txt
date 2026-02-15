@@ -1,0 +1,21 @@
+def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+	pre_dict = {}  # store the number of prerequisite course
+	edge_dict = {}  # store the edge
+	for i in range(numCourses):
+		pre_dict[i] = 0
+		edge_dict[i] = []
+	for course, pre_course in prerequisites:
+		pre_dict[course] += 1
+		edge_dict[pre_course] += [course]
+
+	my_que = deque([])
+	for i,v in pre_dict.items():
+		if v == 0:
+			my_que.append(i)
+	while my_que:
+		pre_course = my_que.popleft()
+		for course in edge_dict[pre_course]:
+			pre_dict[course] -= 1
+			if pre_dict[course] == 0 and course not in my_que:
+				my_que.append(course)
+	return not any(pre_dict.values())

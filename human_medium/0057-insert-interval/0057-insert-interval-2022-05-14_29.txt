@@ -1,0 +1,21 @@
+def insertInterval(intervals, newInterval):
+	res = []
+	
+	for i in range(len(intervals)):
+		currStart, currEnd = intervals[i][0], intervals[i][1]
+		newStart, newEnd = newInterval[0], newInterval[1]
+		
+		# Case 1
+		if newEnd < currStart:
+			res.append(newInterval)
+			return res + intervals[i:] # Add remaining list
+		# Case 2
+		elif newStart > currEnd:
+		res.append(intervals[i]) # We only know intervals[i] position 
+		# Case 3
+		else:
+			newInterval = [min(currStart, newStart), max(currEnd, newEnd) ]
+	
+	# We reach this means newInterval is updated and merged and needs to be added
+	res.append(newInterval)
+	return res

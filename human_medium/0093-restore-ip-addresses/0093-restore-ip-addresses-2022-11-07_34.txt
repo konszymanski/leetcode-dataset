@@ -1,0 +1,22 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self.ln = len(s)
+        output=[]
+        for x in range(1, self.ln-2):
+            for y in range(x+1, self.ln-1):
+                for z in range(y+1, self.ln):
+                    d1=int(s[0:x])
+                    d2=int(s[x:y])
+                    d3=int(s[y:z])
+                    d4=int(s[z:self.ln])
+                    ip = self.verify(d1, d2, d3, d4)
+                    if ip:
+                        output.append(ip)
+        return output
+
+
+    def verify(self, d1, d2, d3, d4):
+        if d1<256 and d2<256 and d3<256 and d4<256:
+            d1,d2,d3,d4 = str(d1), str(d2), str(d3), str(d4)
+            if self.ln == len(d1) + len(d2) + len(d3) + len(d4): 
+                return \'.\'.join([d1, d2, d3, d4])

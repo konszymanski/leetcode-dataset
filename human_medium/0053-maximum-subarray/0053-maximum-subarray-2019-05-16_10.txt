@@ -1,0 +1,4 @@
+from itertools import accumulate
+
+def maxSubArray(self, nums: List[int]) -> int:
+    return max(accumulate(nums, lambda x, y: max(y, x+y) ))

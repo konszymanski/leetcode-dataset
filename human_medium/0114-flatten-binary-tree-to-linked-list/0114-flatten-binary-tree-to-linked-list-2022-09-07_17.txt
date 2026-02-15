@@ -1,0 +1,19 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:           
+        def solve(node):
+            left_sub, right_sub = node.left, node.right
+            node.left = node.right = None
+            tail = node
+
+            if left_sub:
+                node.right = left_sub
+                tail = solve(left_sub)
+            
+            if right_sub:
+                tail.right = right_sub
+                tail = solve(right_sub)
+            
+            return tail
+        
+        if root:
+            solve(root)

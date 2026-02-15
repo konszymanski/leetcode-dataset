@@ -1,0 +1,71 @@
+######################################################
+
+#   Brute Force Approach
+
+#   Time Limit Exceeded
+#   17 / 21 Passed
+
+######################################################
+
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        """
+            Logic is to check whether a number is prime or not for every number
+            in the range 2 to n and if yes, increment count
+        """
+        
+        count = 0
+        
+        for i in range(2, n):
+            p = 0
+            for j in range(2, (i // 2) + 1):
+                
+                if i % j == 0:
+                    p = 1
+                    break
+                    
+            if p == 0: count += 1
+        
+        return count
+
+######################################################
+
+#   Sieve of Eratosthenes Approach
+
+#   Runtime: 1140ms   -   87.04%
+#   Memory: 52.7MB  -   96.78%
+
+######################################################
+
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        """
+            Logic is starting with 2 we cross of off all the multiples of that num
+            as not primes since if a number numi is a multiple of number numj which 
+            is not 1, then it is not a prime number. At last we count how many elements
+            have True as value and return that count
+        """
+        
+        # Since 2 is the first prime and in the given question they asked count of
+        # primes < n. So we return 0 if n <= 2.
+        if n <= 2: return 0
+        
+        # boolean array to keep track of primes
+        isPrime = [True] * n
+        # Since 0 and 1 are not primes
+        isPrime[0] = isPrime[1] = False
+        
+        # Why we loop only till int(sqrt(n)) + 1 is since in the inner loop we are
+        # checking all multiples starting from square of that num, numbers which are
+        # not prime from int(sqrt(n)) + 1 will already be covered and only primes are
+        # remained from int(sqrt(n)) + 1 to n
+        for i in range(2, int(sqrt(n)) + 1):
+            if isPrime[i]:
+                # Why we start at i * i, but not i * 2 is, at every index i, multiples
+                # of i - 1, i - 2 and so on already noted (i - 1) * i, (i - 2) * i 
+                # and so on. So they are already visited and therefore no need to again
+                # loop through them. So we start at i * i
+                for j in range(i * i, n, i):
+                    isPrime[j] = False
+        
+        return sum(isPrime)

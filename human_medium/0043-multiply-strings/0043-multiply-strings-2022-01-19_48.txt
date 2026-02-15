@@ -1,0 +1,22 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        def intmaker(num): # converting string to integer
+            exp = 1
+            res=0
+            for i in num[::-1]:
+                res+=(ord(i)-48)*exp
+                exp*=10
+            return res
+        num1 = intmaker(num1)        
+        num2 = intmaker(num2)
+        
+        def strmaker(num):  # converting integer to string
+            res=""
+            while(num):
+                i = (num%10)
+                res+=chr(i+48)
+                num//=10
+            return res[::-1]
+        if num1*num2 == 0:
+            return "0"
+        return((strmaker(num1*num2)))

@@ -1,0 +1,32 @@
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if not s or len(s) < 1:
+            return ""
+        
+        start, end = 0, 0
+        
+        def expandAroundCenter(left: int, right: int) -> int:
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            # Length of the palindrome is (right - 1) - (left + 1) + 1
+            return right - left - 1
+
+        for i in range(len(s)):
+            # Check for odd length palindromes (center is i)
+            len1 = expandAroundCenter(i, i)
+            # Check for even length palindromes (center is between i and i+1)
+            len2 = expandAroundCenter(i, i + 1)
+            
+            max_len = max(len1, len2)
+            if max_len > end - start + 1:
+                # Calculate new start and end indices
+                # If max_len is 3 and i is 1, start = 1 - (3-1)//2 = 0, end = 1 + 3//2 = 2
+                # If max_len is 2 and i is 1, start = 1 - (2-1)//2 = 1, end = 1 + 2//2 = 2
+                start = i - (max_len - 1) // 2
+                end = i + max_len // 2
+                
+        return s[start : end + 1]
+
+```

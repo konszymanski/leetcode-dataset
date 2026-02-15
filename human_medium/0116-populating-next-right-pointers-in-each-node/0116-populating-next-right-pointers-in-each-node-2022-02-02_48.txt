@@ -1,0 +1,16 @@
+def connect(self, root):
+
+        ends = [None] * 12
+
+        def con(node, level):
+            if node:
+                node.next = ends[level]
+                ends[level] = node
+
+                if node.right:
+                    con(node.right, level + 1)
+                    con(node.left, level + 1)
+
+        con(root, 0)
+        
+        return root

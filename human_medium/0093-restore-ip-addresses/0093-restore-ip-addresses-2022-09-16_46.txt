@@ -1,0 +1,29 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        ans = []
+        segments = [0] * 4
+        def dfs(segid, segStart):
+            if segid == 4:
+                if segStart == len(s):
+                    ipAddr = \'.\'.join(seg for seg in segments)
+                    ans.append(ipAddr)
+                return
+            
+            if segStart == len(s):
+                return
+            
+            if s[segStart] == \'0\':
+                segments[segid] = \'0\'
+                dfs(segid + 1, segStart + 1)
+            
+            addr = \'\'
+            for segEnd in range(segStart, len(s)):
+                addr = addr + s[segEnd]
+                if 0 < int(addr) < 256:
+                    segments[segid] = addr
+                    dfs(segid + 1, segEnd + 1)
+                else:
+                    break
+            
+        dfs(0, 0)
+        return ans

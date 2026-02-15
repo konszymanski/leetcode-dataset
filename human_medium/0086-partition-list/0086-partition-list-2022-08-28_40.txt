@@ -1,0 +1,32 @@
+class Solution:
+  
+  def partition(self,head,x):
+    if not head or (not head.next) or (x< -100):
+      return head
+    
+    front=rear=None 
+    front_next,rear_next= front,rear
+    curr = head 
+    while curr:
+      if curr.val < x: 
+        if not front:
+          front = ListNode(curr.val)
+          front_next = front 
+        else:
+          node = ListNode(curr.val)
+          front_next.next = node 
+          front_next=node
+      else:
+        if not rear:
+          rear = ListNode(curr.val) 
+          rear_next = rear 
+        else:
+          node = ListNode(curr.val)
+          rear_next.next = node 
+          rear_next= node 
+      curr = curr.next
+      
+    if not front:
+      return rear 
+    front_next.next = rear
+    return front

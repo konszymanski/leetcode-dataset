@@ -1,0 +1,26 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        # to keep track of the last visited node  
+        self.last_node = None
+        self.traverse_and_flatten(root)
+        
+        
+    def traverse_and_flatten(self, root):
+        if not root:
+            return None
+        
+        # traversing through the tree from the right most node
+        
+        self.traverse_and_flatten(root.right)
+        self.traverse_and_flatten(root.left)
+        
+        
+        # assigning the last visited node to root.right
+        root.right = self.last_node
+        root.left = None
+        
+        # keeping track of last flattened node
+        self.last_node = root

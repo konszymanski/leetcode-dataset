@@ -1,0 +1,43 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        if not board:
+            return
+        
+        m = len(board)
+        n = len(board[0])
+        
+        # retunrs true if (i, j) represents a valid grid index
+        def is_valid(i, j):
+            return 0 <= i < m and 0 <= j < n
+        
+        # a typical flood-fill algorithm for a grid
+        def flood(i, j):
+            board[i][j] = \'V\'
+			
+			# recurse on adjacent cells
+            for a, b in ((i-1,j), (i+1,j), (i,j-1), (i,j+1)):
+                if is_valid(a, b) and board[a][b] == \'O\':
+                    flood(a, b)
+        
+        # returns a sequence of coordinates on the boundary
+        def boundary():
+			# first and last columns of the grid
+            for i in range(m):
+                yield (i, 0)
+                yield (i, n-1)
+            
+			# first and last rows of the grid, but excluding the cells 
+			# covered in the for loop above
+            for j in range(1, n-1):
+                yield (0, j)
+                yield (m-1, j)
+        
+        # flood-fill with \'V\' on the boundary cells containing \'O\'
+        for i, j in boundary():
+            if board[i][j] == \'O\':
+                flood(i, j)
+        
+        # change V -> O and convert everything else to X
+        for i in range(m):
+            for j in range(n):
+                board[i][j] = \'O\' if board[i][j] == \'V\' else \'X\'

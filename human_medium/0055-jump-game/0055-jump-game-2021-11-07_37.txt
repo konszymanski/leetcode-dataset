@@ -1,0 +1,8 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        c, maxi = 0,0
+        for r,x in enumerate(nums):
+            maxi = max(maxi, x + r) 
+            if r == c:
+                c = maxi
+        return c+1>=len(nums)

@@ -1,0 +1,23 @@
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums)==0:return 0
+        Max = nums[0]
+        negtive = 0
+        positive = 0
+        for x in nums:
+            if x<0:
+                negtive,positive = positive*x,negtive*x
+                if negtive==0:negtive=x
+            elif x>0:
+                negtive,positive = negtive*x,positive*x
+                if positive ==0:positive=x
+            else:
+                Max = max(Max,0)
+                negtive,positive = 0,0
+            if negtive<0:Max=max(Max,negtive)
+            if positive>0:Max=max(Max,positive)
+        return Max

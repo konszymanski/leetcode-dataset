@@ -1,0 +1,19 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+		#first, we split s to get only words, split() will handle extra space
+		#ex : s = "a good   example" becomes s = ["a", "good", "example"]
+        s = s.split()  
+		#we then create a new list to put words in the right order (the opposite order of initial s)
+        ans = []
+		#starting from the last word whose index is len(s)-1
+        i=len(s)-1
+        while i>=0: #we will apply this code until i reaches 0 aka the first word of s
+            ans.append(s[i]) #each word is appended, as we started with the last, the last becomes the first
+            i-=1 #i has to decrease from 1 to work with the previous word
+		#once we do have our list ans with words in the expected order 
+		#ex : ans = ["example", "good", "a"]
+		#we have to join them to create a unique string
+		#if we just use "".join(ans), we\'ll get "examplegooda" so don\'t forget to put a space between the two "
+        ans =" ".join(ans)
+		#we just have to return this answer
+        return ans

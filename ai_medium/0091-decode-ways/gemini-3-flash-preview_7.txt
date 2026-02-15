@@ -1,0 +1,33 @@
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        # Check for empty string or if the string starts with '0'
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        # dp[i] will store the number of ways to decode the prefix s[:i]
+        dp = [0] * (n + 1)
+        
+        # Base cases
+        dp[0] = 1  # Base case for empty prefix to build up transitions
+        dp[1] = 1  # We already know s[0] is not '0'
+        
+        for i in range(2, n + 1):
+            # Check if decoding the last digit as a single-digit code is valid
+            # The last digit of the prefix s[:i] is at s[i-1]
+            if s[i-1] != '0':
+                dp[i] += dp[i-1]
+            
+            # Check if decoding the last two digits as a two-digit code is valid
+            # The last two digits of the prefix s[:i] are at s[i-2:i]
+            # Convert the two-character string to an integer
+            two_digit = int(s[i-2:i])
+            # A valid two-digit code must be between 10 and 26 inclusive
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i-2]
+        
+        # The result is the number of ways to decode the entire string
+        return dp[n]
+
+```

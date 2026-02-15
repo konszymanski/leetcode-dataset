@@ -1,0 +1,10 @@
+def convert(self, s: str, numRows: int) -> str:
+        arr = [[] for _ in range(numRows)]
+        c = 0
+        for i in cycle(chain(range(0,numRows),range(numRows-2,0,-1))):
+            if c == len(s):
+                break
+            arr[i].append(s[c])
+            c += 1
+
+        return "".join(["".join(ent) for ent in arr])

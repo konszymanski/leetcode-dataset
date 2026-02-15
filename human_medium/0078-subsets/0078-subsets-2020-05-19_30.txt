@@ -1,0 +1,12 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        
+        def find_subsets(nums, answer={}, i=0, picked=()):
+            answer[picked] = True
+            if i < len(nums):
+                find_subsets(nums, answer, i+1, picked + (nums[i],))    # pick
+                find_subsets(nums, answer, i+1, picked)                 # no pick
+        
+        answer = dict()
+        find_subsets(nums, answer=answer)
+        return answer.keys()

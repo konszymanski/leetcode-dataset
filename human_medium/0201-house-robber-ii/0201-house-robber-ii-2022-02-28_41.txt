@@ -1,0 +1,46 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        
+        #First, we just check to see if nums is only of length 1
+        #If so, return nums[0]
+        if len(nums) == 1:
+            return nums[0]
+        
+        #Second, we just check to see if nums is only of length 2
+        #If so, return max of nums
+        if len(nums) == 2:
+            return max(nums[0], nums[1])
+        
+        
+        #This is a function that will run house robber for you
+        def rob(nums):
+            #First, we just check to see if nums is only of length 1
+            #If so, return nums[0]
+            if len(nums) == 1:
+                return nums[0]
+            
+            #Second, we just check to see if nums is only of length 2
+            #If so, return max of nums
+            if len(nums) == 2:
+                return max(nums[0], nums[1])
+            
+            #dp Index: index of house up to this point, we\'re going to rob
+            #dp Value: total sum of the max we can rob from these houses given the conditions
+            dp = [0] * len(nums)
+            
+            #Seeding dp
+            dp[0] = nums[0]
+            dp[1] = max(nums[1], nums[0])
+            
+            #Iterate over the remaining houses
+            for i in range(2, len(dp)):
+                #Just our standard house robber recursive relationship
+                dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
+                
+            #Return the max total value
+            return dp[-1]
+        
+        #Since we\'re given the condition taht the houses are arranged in a circle, we need to take this into consideration
+        #To do that we just look at nums from 1 to len(nums) and 0 to len(nums) - 1 because that is basically
+        #The condition you need so that the first and last indices are next to each other
+        return max(rob(nums[1:]), rob(nums[:-1]))

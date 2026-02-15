@@ -1,0 +1,25 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        # Idea: Dynamic Programming
+        # From the left of the list, start traversing the list and calculate the minimum number of steps required to reach each element. 
+		# We use dynamic programming by adding 1 to sum of the steps required to reach the element in the previous step.
+
+        # Initialize minimum steps to reach the i-th index to be i steps
+		# This situation occurs when the jump value at each index is 1
+		# (i.e. require the absolute maximum number of steps to traverse the list)
+        dp = [i for i in range(len(nums))]
+        
+        # Initialize starting index
+        idx = 0
+        
+        # Do until we reach the end of the list
+        while idx < len(nums):
+            jumps = nums[idx]  # Number of jumps we can make at this index
+
+            for i in range(idx, min(len(nums), idx+jumps+1)):
+                # The minimum of (current steps required + 1) or the existing step at the i-th index
+                dp[i] = min(dp[idx] + 1, dp[i])
+            idx += 1
+        
+        # Return the number steps to reach the last element
+        return dp[-1]

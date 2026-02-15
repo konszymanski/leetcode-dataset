@@ -1,0 +1,9 @@
+def jump(self, nums: List[int]) -> int:
+        furthest = cur_end = jumps = 0
+        n = len(nums)
+        for i in range(n-1):
+            furthest = max(furthest, i + nums[i])
+            if cur_end == i:
+                jumps += 1                
+                cur_end = furthest                
+        return jumps

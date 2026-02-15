@@ -1,0 +1,22 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        def multi(num1, num2):
+            if len(num1) == 1 and len(num2) == 1:
+                maptable = {str(i):i for i in range(10)}
+                return maptable[num1]*maptable[num2]
+
+            ret = 0
+            for i,j in enumerate(num1[::-1]):
+                ret += multi(num2, j)*10**i
+
+            return ret
+        
+        multi_ret = ""
+        ret = multi(num1, num2)
+        if ret == 0: return "0"
+        maptable2 = {i:str(i) for i in range(10)}
+        while ret != 0:
+            ret, rest = divmod(ret, 10)
+            multi_ret += maptable2[rest]
+            
+        return multi_ret[::-1]

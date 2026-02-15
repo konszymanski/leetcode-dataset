@@ -1,0 +1,10 @@
+class Solution:
+    
+    answer = {0:1}
+
+    def numTrees(self, n: int) -> int:
+        if n in self.answer:
+            return self.answer[n]
+        else:
+            self.answer[n] = self.numTrees(n-1) * 2 * (2 * n - 1) // (n + 1)
+        return self.answer[n]

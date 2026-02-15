@@ -1,0 +1,12 @@
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        par = {} # Store {visiting node:corresponding new node}
+        def dfs(x):
+            if not x: return #For case empty Graph
+            new_obj = Node(x.val) # Create the new copy and update the HashMap
+            par.update({x:new_obj})
+            for i in x.neighbors:
+                j = par[i] if i in par else dfs(i) #Use created node from HM or create new one
+                new_obj.neighbors.append(j)
+            return new_obj
+        return dfs(node)

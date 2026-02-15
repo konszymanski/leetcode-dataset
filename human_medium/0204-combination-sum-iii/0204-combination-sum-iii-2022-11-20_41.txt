@@ -1,0 +1,57 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        candidate = []
+        res = []
+        def df(i):
+			\'\'\'
+			If the candidate array is of len k,
+			\'\'\'
+            if len(candidate) >= k:
+				\'\'\'
+				we check if sum of candidate array equals n
+				\'\'\'
+                if sum(candidate) == n:
+					\'\'\'
+					If the candidate array is of length k and their integers add to n,
+					we append it to the res array.
+					\'\'\'
+                    res.append(candidate.copy())
+                return
+			\'\'\'
+			Since we only care about integers between 1 and 9, 
+			we will add a condition to check if the new integer
+			we are about to try, i, is within that range.
+			\'\'\'
+            if i <= 9:
+                \'\'\'
+				If i is within that range, we will append it to our candidate
+				array in order to create new combinations with i.
+				\'\'\'
+				
+				
+				\'\'\'
+				We include the current integer by appending it to the candidate array
+				\'\'\'
+				candidate.append(i)
+                \'\'\'
+				We call df with i + 1 as parameters to check for new combinations
+				that include i
+				\'\'\'
+				df(i + 1) 
+				
+				
+				
+				\'\'\'
+				We not include the current integer by popping it.
+				\'\'\'
+                candidate.pop()
+				\'\'\'
+				We call df(i+1) to produce new combinations without the current integer
+				\'\'\'
+                df(i + 1)
+        
+		\'\'\'
+		We call df(1) since we want to try combnations starting with 1
+		\'\'\'
+		df(1)
+        return res

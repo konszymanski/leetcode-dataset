@@ -1,0 +1,19 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        nums=list(map(str,nums))
+        nums=sorted(nums)
+        nums=nums[::-1]
+        res=[str(nums[0])]
+        for n in nums[1:]:                
+            if res[-1]+str(n)<str(n)+res[-1]:
+                j=len(res)-1
+                while j>0 and str(n)+res[j-1]>res[j-1]+str(n):
+                    j-=1
+                
+                res.insert(j,str(n))
+            else:
+                res.append(str(n))
+        ans="".join(res)
+        if int(ans)==0:
+            return \'0\'
+        return "".join(res)

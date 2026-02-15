@@ -1,0 +1,35 @@
+from math import inf
+
+
+class Solution:
+    def nextPermutation(self, nums: list[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+
+        # Get the length of nums
+        n = len(nums)
+
+        # 1. Find the pivot
+        pivot = -1
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                pivot = i
+                break
+
+        # 2. If there is a pivot
+        if pivot >= 0:
+
+            # Find the larger value at the right sequence that is cloest to the pivot
+            nextToPivot = None
+
+            # Start searching from the right
+            for i in range(n - 1, pivot, -1):
+                if nums[pivot] < nums[i] < (nums[nextToPivot] if nextToPivot else inf):
+                    nextToPivot = i
+
+            # Swap the two values
+            nums[pivot], nums[nextToPivot] = nums[nextToPivot], nums[pivot]
+
+        # 3. Reverse the right sequence
+        nums[pivot + 1 :] = reversed(nums[pivot + 1 :])

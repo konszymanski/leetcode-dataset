@@ -1,0 +1,7 @@
+def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+    def helper(start, end):
+        return [TreeNode(val=root_val, left=left_node, right=right_node)
+            for root_val in range(start, end)
+            for left_node in helper(start, root_val) or [None]
+            for right_node in helper(root_val + 1, end) or [None]]
+    return helper(1, n + 1)

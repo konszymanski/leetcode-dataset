@@ -1,0 +1,17 @@
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        d = {}
+        
+        def foo(root):
+            if not root:
+                return
+            
+            if root in d:
+                return d[root]
+            
+            n = d[root] = Node(root.val)
+            n.next = foo(root.next)
+            n.random = foo(root.random)
+            return n
+            
+        return foo(head)

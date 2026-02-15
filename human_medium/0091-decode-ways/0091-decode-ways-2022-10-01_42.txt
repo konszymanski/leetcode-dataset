@@ -1,0 +1,16 @@
+from functools import lru_cache
+class Solution:
+    @lru_cache(maxsize=None)
+    def numDecodings(self, s: str) -> int:
+        if s and s[0] == \'0\':              # Can\'t decode 0.*
+            return 0
+        if len(s) < 2:                     # Single character; done decoding
+            return 1
+        a = self.numDecodings(s[1:])       # Can always now decode by taking first char
+        if len(s) >= 2 and s[:2] <= \'27\':
+            b = self.numDecodings(s[2:])   # Can decode by taking first two chars
+        else:
+            b = 0
+        if a != 0 and b != 0:
+            return a + b                   # Can decode by taking first char or first two chars
+        return max(a, b)                   # Only one of above is possible

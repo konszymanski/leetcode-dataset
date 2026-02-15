@@ -1,0 +1,9 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        splitted = s.split(" ")
+		
+		# make a new list without space words
+        without_space = list(filter(lambda x: x != "",splitted))
+		
+        without_space.reverse()
+        return " ".join(without_space)

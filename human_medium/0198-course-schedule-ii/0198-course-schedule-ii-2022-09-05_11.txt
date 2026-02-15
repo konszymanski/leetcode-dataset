@@ -1,0 +1,26 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        visited = {} # 0 not visited; -1 currently being visited; 1 finished
+        graph = {} # key: the course number; value: prerequisite(s) of that course
+        res = []
+        for i in range(numCourses):
+            graph[i], visited[i] = [], 0 # initialize all courses\' prerequisites as empty; initialize all courses as 0, not visited status
+        for pair in prerequisites:
+            graph[pair[0]].append(pair[1]) # fill in the prerequisites of each course
+        for j in range(numCourses):
+            if not self.dfs(j, visited, graph, res): # if False, there must be a cycle; terminate by returning an empty list
+                return []
+        return res
+        
+    def dfs(self, course, visited, graph, res):
+        if visited[course] == 1: # this course had been successfully added into the res
+            return True
+        if visited[course] == -1: # this course had not been added into the res, but visited again; there is a cycle!
+            return False
+        visited[course] = -1 # set the current course as currently being visited
+        for pre in graph[course]: 
+            if not self.dfs(pre, visited, graph, res):
+                return False # if there is a cycle detected at any point, terminate!
+        res.append(course) # no cycle found, dfs finished, good to add the course into the res
+        visited[course] = 1 # this course finished
+        return True

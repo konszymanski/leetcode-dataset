@@ -1,0 +1,17 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def helper(nums: List[int]) -> int:
+            prev_sum1, prev_sum2 = 0, 0
+            res = 0
+
+            for i in nums:
+                res = max(prev_sum1 + i, prev_sum2)
+                prev_sum1 = prev_sum2
+                prev_sum2 = res
+
+            return res
+        
+        if len(nums) == 1:
+            return nums[0]
+        
+        return max(helper(nums[1:]), helper(nums[:-1]))

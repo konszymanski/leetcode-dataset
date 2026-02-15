@@ -1,0 +1,56 @@
+import math
+
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Remember sign and make everything positive
+		# The algorithm could be adjusted to account for negative numbers, 
+		# but it becomes unnecessarily complicated 
+		# compared to saving negative and reapplying it later.
+        neg = (dividend < 0) ^ (divisor < 0)
+        dividend = abs(dividend)
+        divisor = abs(divisor)
+
+        # Binary long division
+        # Just like decimal long division
+        #
+        # Shift divisor left until just before it is greater than the dividend
+        # Get number of times divisor fits into the dividend
+        #       Binary lends itself to this because this number is always 1
+        # Shift that number left the same number of times as the divisor was shifted left
+        #       and add it to the result (initialized as 0)
+        # Subtract the shifted divisor from the dividend
+        # Repeat until
+        #       Integer division: until dividend_prime is less than divisor (i.e. truncate)
+        result = 0
+        a = dividend
+        b = divisor
+        while a >= b:
+            # Needed shift amount for highest bits at some position
+            d = int(math.log2(a)) - int(math.log2(b))
+			
+            # Align highest bits (b is always less than a <==> while condition, so never need to shift right)
+            b_prime = b << d
+            # But make sure that divisor (b_prime) is less than dividend (a)
+            if b_prime > a:
+                # In binary, guaranteed b_prime <= a if shift right once
+                b_prime = b_prime >> 1
+                d -= 1
+        
+            # Add shifted 1 (binary can only ever fit 1 of b_prime into a using above criteria)
+            result += 1 << d
+        
+            # Long division: decrement dividend
+            a -= b_prime
+        
+        # Reset its sign    
+        if neg:
+            result = 0 - result
+        
+        # Account for storage limits
+		# With division of two integers,
+		# overflow can only happen on -2**31 / -1
+		# and underflow cannot happen.
+        result = max(-2**31, result)
+        result = min(result, 2**31 -1)
+
+        return result

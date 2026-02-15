@@ -1,0 +1,15 @@
+class Solution:
+    def combinationSum3(self, k, n):
+        A = []
+        def explore(B,s):
+            if len(B)==k:
+                if s==n:
+                    A.append(list(B))
+                return
+            x = B[-1] if B else 0
+            for i in range(x+1,10):
+                B.append(i)
+                explore(B,s+i)
+                B.pop()
+        explore([],0)
+        return A

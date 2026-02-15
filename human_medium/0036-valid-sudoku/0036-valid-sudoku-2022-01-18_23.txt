@@ -1,0 +1,53 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        ROWS = COLS = 9 
+        
+        def _validRow(board):
+            """
+                O(n^2)
+            """
+            for i in range(ROWS):
+                if not _validLine(board[i]):
+                    print("1")
+                    return False
+            return True
+        
+        def _validCol(board):
+            """
+                O(n^2)
+            """
+            for i in range(COLS):
+                line = [board[row][i] for row in range(ROWS)]
+                if not _validLine(line):
+                    print("2")
+                    return False
+            return True
+        
+        def _validLine(line):
+            """
+                O(n^1)
+            """
+            line_set = set()
+            for unit in line:
+                if unit != ".":
+                    if unit in line_set:
+                        return False
+                    else:
+                        line_set.add(unit)
+            return True
+        
+        def _validSquare(board):
+            """
+                O(n^2)
+            """
+            for row in [3, 6, 9]:
+                for col in [3, 6, 9]:
+                    line = []
+                    for i in range(row - 3, row):
+                        for j in range(col - 3, col):
+                            line.append(board[i][j])
+                    if not _validLine(line):
+                        return False
+            return True
+            
+        return _validRow(board) and _validCol(board) and _validSquare(board)

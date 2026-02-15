@@ -1,0 +1,29 @@
+class BSTIterator:
+    
+    s = []
+
+    def __init__(self, root: TreeNode):
+        self.pushLeft(root)
+        
+    def pushLeft(self,t):
+        if t:
+            self.s.append(t)
+            self.pushLeft(t.left)
+            
+
+    def next(self) -> int:
+        """
+        @return the next smallest number
+        """
+        x = self.s.pop()
+        
+        self.pushLeft(x.right)
+        
+        return x.val
+        
+
+    def hasNext(self) -> bool:
+        if len(self.s) > 0:
+            return True
+        
+        return False

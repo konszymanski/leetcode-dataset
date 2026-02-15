@@ -1,0 +1,45 @@
+class Solution:
+    def __init__(self):
+        self.directions = [[-1, 0], # UP
+                           [0, 1], # RIGHT
+                           [1, 0], # DOWN
+                           [0, -1] # LEFT
+                          ];
+        
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        visited = set();
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] == word[0]:
+                    foundWord = self.traverseBoard(board, word, row, col, len(board), len(board[0]), 0, visited);
+                    if foundWord:
+                        return True;
+        return False;
+    
+    def traverseBoard(self, board, word, curRow, curCol, totalRows, totalCols, currentIdx, visited):
+        isOutbound = curRow < 0 or curCol < 0 or curRow >= totalRows or curCol >= totalCols or currentIdx >= len(word);
+        if isOutbound:
+            return False;
+        
+        isMatchingLetter = board[curRow][curCol] == word[currentIdx];       
+        if isMatchingLetter == False:
+            return False;
+        
+        if (curRow, curCol) in visited:
+            return False;
+        
+        if currentIdx == len(word) - 1:
+            return True;
+        
+        visited.add((curRow, curCol));
+        
+        for direction in self.directions:
+            nextRow = curRow + direction[0];
+            nextCol = curCol + direction[1];
+            foundWord = self.traverseBoard(board, word, nextRow, nextCol, totalRows, totalCols, currentIdx + 1, visited);
+            
+            if foundWord:
+                return True;
+            
+        visited.remove((curRow, curCol));
+        return False;

@@ -1,0 +1,82 @@
+# Runtime: 144 ms	Memory: 17.8 MB
+import heapq
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        
+		# Skip the two helper functions and read them last to help understand the problem better (chk_down, chk_right)
+        def chk_down(v,r,c):
+		
+			# Create placeholder value and position 
+            v1,r1,c1 = None,None,None
+			
+			# Checking to make sure a point below exists and that its not in visited nodes
+            if r < end_r and (r+1,c) not in visited:
+				
+				# Updating value adding current value to below value ||| v1 = v+v1
+				# Updating position (r,c) -> (r+1,c)
+                v1,r1,c1 = grid[r+1][c] + v, r+1, c
+				
+				# Adding new point in visited set
+                visited.add((r1,c1))
+				
+				# Adding new position and new value to heapq (paths)
+                heapq.heappush(min_heap,(v1,r1,c1))
+            
+			# Checking if at the end of grid
+			if r1 == end_r and c1 == end_c:
+                
+				# Stores result
+				res.append(v1)
+                
+				# Breaks the while loop
+				return True
+				
+			# Keeps while loop going	
+			else:
+                return False
+        
+		# Direct mirror of the above but checking to the right instead of below
+        def chk_right(v,r,c):
+            v1,r1,c1 = None,None,None
+            if c < end_c and (r,c+1) not in visited:
+                right_v = grid[r][c+1]
+                v1,r1,c1 = right_v + v, r, c+1
+                visited.add((r1,c1))
+                heapq.heappush(min_heap,(v1,r1,c1))
+            if r1 == end_r and c1 == end_c:
+                res.append(v1)
+                return True
+            else:
+                return False
+        
+        # Result ||| this result will only ever be of length 0 or 1
+        res = []
+        
+		# v = current value | r = current row | c = current column
+        v,r,c = grid[0][0], 0, 0
+        
+        # The final row and the final column
+        end_r, end_c = len(grid) - 1, len(grid[0]) - 1
+        
+        # Check for a grid of length 1 ||| edge case
+        if end_r == r and end_c == c: return v
+        
+        # Create a min heap ||| min_heap is the posssible paths
+        min_heap = [(v,r,c)]
+        heapq.heapify(min_heap)
+        
+        # A set of visited points on the graph | r = row | c = column
+        visited = set((0,0))
+        
+        while True:
+			
+			# Step 1
+            v,r,c = heapq.heappop(min_heap)
+			
+			# Step 2
+			if chk_right(v,r,c):
+                return res[0]  
+            
+			# Step 3
+			if chk_down(v,r,c):
+                return res[0]

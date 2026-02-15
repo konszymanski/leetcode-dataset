@@ -1,0 +1,30 @@
+```python
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        # Base case
+        res = "1"
+        
+        # Iteratively generate each element from 2nd to nth
+        for _ in range(n - 1):
+            temp = []
+            i = 0
+            while i < len(res):
+                count = 1
+                # Move forward while consecutive characters are the same
+                while i + 1 < len(res) and res[i] == res[i + 1]:
+                    count += 1
+                    i += 1
+                
+                # Append the count of the character followed by the character itself
+                temp.append(str(count))
+                temp.append(res[i])
+                
+                # Move to the start of the next group of identical characters
+                i += 1
+            
+            # Combine the results into a single string for the next iteration
+            res = "".join(temp)
+            
+        return res
+
+```

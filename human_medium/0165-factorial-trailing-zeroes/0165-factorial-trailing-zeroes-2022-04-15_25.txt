@@ -1,0 +1,12 @@
+import math
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        b = math.factorial(n) #function 
+        a = list(str(b)) #move into list
+        ans = 0 #create an empty int variable
+        for i in reversed(list(a)): #classic loop but reversed. Steps starts backawrds
+            if i == \'0\':
+                ans += 1
+            else:
+                break
+        return ans #easy? yes. slow? yes. works? yes.

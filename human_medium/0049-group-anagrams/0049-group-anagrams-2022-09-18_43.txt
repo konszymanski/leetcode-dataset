@@ -1,0 +1,9 @@
+def groupAnagrams(strs):
+    hm = dict()
+    for word in strs:
+        temp = \'\'.join(sorted(word))
+        if temp in hm:
+            hm[temp] += [word]
+        else:
+            hm[temp] = [word]
+    return hm.values()

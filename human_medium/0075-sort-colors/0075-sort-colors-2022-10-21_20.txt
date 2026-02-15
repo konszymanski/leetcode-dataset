@@ -1,0 +1,20 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        # use bucket sort to sort in place
+        # range of values is [0 - 2]
+        # get counts of colors
+        # iterate counts and modfy each element
+        # in place by counts using a pointer to increment
+        # time O(n) space O(1)
+
+        counts = [0] * 3
+        for n in nums:
+            counts[n] += 1
+
+        
+
+        p = 0
+        for n in range(len(counts)):
+            for c in range(counts[n]):
+                nums[p] = n
+                p += 1

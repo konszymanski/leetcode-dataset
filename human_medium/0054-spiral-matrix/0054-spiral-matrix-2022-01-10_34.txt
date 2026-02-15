@@ -1,0 +1,43 @@
+class Solution(object):
+    
+    # helper function removes any empty lists in the given matrix
+    # ex: turns [[], [], []] into []
+    def nested(self, matrix):
+        temp = []
+        for i in matrix:
+            if i != []: temp.append(i)
+        return temp
+    
+    def spiralOrder(self, matrix):
+        #create result list
+        res = []
+        # create a copy so the solution is non-destructive
+        copy = matrix[:]
+        # while loop that continues until all elements of matrix are added to result
+        while copy != []:
+            # first for loop add elements of top row to result
+            for i in copy[0]:
+                res.append(i)
+            # removes the now-empty first row
+            copy.pop(0)
+            # second for loop adds elements in the right-most column to result
+            for row in range(len(copy)):
+                res.append(copy[row][-1])
+                copy[row].pop(-1)
+            # removes all now-empty rows
+            copy = self.nested(copy)
+            # extra check if all lists are empty 
+            if copy == []: break
+            # third for loop adds elements in bottom-most row to result backwards
+            for j in range(len(copy[-1])-1, -1, -1):
+                res.append(copy[-1][j])
+            # removes the now-empty bottom row
+            copy.pop(-1)
+            # fourth for loop adds elements from left-most column to result
+            for row2 in range(len(copy)-1, -1, -1):
+                res.append(copy[row2][0])
+                copy[row2].pop(0)
+            # removes all now-empty rows
+            copy = self.nested(copy)
+        # return result
+        return res

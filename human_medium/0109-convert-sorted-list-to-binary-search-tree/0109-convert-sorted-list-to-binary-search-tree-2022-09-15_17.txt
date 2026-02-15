@@ -1,0 +1,26 @@
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        
+        def findMiddle(newHead):
+            slow = fast = newHead
+            prev = None
+            while(fast and fast.next):
+                prev = slow
+                slow = slow.next
+                fast = fast.next.next
+            if(prev):
+                prev.next = None
+            return(slow)
+        
+        def helperFunction(newHead):        
+            middle = findMiddle(newHead)
+            root = TreeNode(val = middle.val)
+            if(newHead != middle):
+                root.left = helperFunction(newHead)
+            if(middle.next):
+                root.right = helperFunction(middle.next)
+            return(root)
+        
+        if(head):
+            return(helperFunction(head))
+        return(None)

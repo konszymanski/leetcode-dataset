@@ -1,0 +1,17 @@
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        L = []
+        while (head != None):
+            L.append(head.val)
+            head = head.next
+			
+        def createBST(L):
+            if not L:
+                return None
+            else:
+                mid = len(L) // 2
+                root = TreeNode(L[mid])
+                root.left, root.right = createBST(L[:mid]), createBST(L[mid+1:])
+            return root
+        return createBST(L)
+#32/32 test cases passed.

@@ -1,0 +1,33 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        if dividend < 0 or divisor < 0:
+			 #Setting Negative Flag To true if any of the number is negative.
+            Negative_Flag = True
+        else:
+            Negative_Flag = False
+        
+        quotient  = 0 #Initializing Quotient
+		
+		#Making negative number positive
+        dividend = abs(dividend)
+        divisor = abs(divisor)
+		
+		#Calculating Max and Min Limit
+        maxLimit = (2**31)-1
+        minLimit = -(2**31)
+
+        for i in range(31, -1, -1):
+            if (divisor << i) <= dividend: # checking if divisor multiplied by 2**i is <= dividend
+                dividend -= (divisor << i) #subtracting divisor << i from dividend
+                quotient += 1 << i # adding 2 power i to the quotient
+
+		 # and finally checking if the output should be negative
+        if Negative_Flag:
+            quotient = -abs(quotient)
+
+        if quotient >= maxLimit:
+            return maxLimit
+        elif quotient <= minLimit:
+            return minLimit
+        else:
+            return quotient

@@ -1,0 +1,30 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]: #O(N*2^N) #O(N)
+        candidates.sort() #sort the list first to make sure we won\'t run into duplicated combination
+        
+        res = []
+        
+        def backTrack(index, curr):
+            nonlocal target
+            
+            if index == len(candidates): #if we reach the end of the candidates array we would stop
+                if sum(curr) == target: #add the combination to the result list if sum == target
+                    res.append(curr)
+                return
+            
+            if sum(curr) > target: #if the current combination sum is larger than target, we stop the recursion tree to optimize performance
+                return
+            
+            #here, we are present with 2 choices. Either we can choose to include the number of index ith
+            
+            backTrack(index + 1, curr + [candidates[index]]) 
+            
+            # or we skip it all together by using a while loop
+            while index + 1 < len(candidates) and candidates[index] == candidates[index + 1]:
+                index += 1
+            
+            backTrack(index + 1, curr)
+        
+        backTrack(0, [])
+        
+        return res

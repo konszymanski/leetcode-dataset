@@ -1,0 +1,24 @@
+def flatten(self, root: TreeNode) -> None:
+        if not root: return None
+        if root and (not root.left and not root.right):
+            return (root, root) # returning head and tail the same
+        
+        if root and not root.left:
+            right_head, right_tail = self.flatten(root.right)
+            return (root, right_tail)
+        
+        elif root and not root.right:
+            root.right = root.left
+            root.left = None
+            right_head, right_tail = self.flatten(root.right)
+            return (root, right_tail)
+        
+        left_head, left_tail = self.flatten(root.left)
+        right_head, right_tail = self.flatten(root.right)
+        
+        # need to create connections
+        left_tail.right = right_head
+        root.right = left_head
+        root.left = None
+        
+        return (root, right_tail)

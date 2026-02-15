@@ -1,0 +1,32 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        if not s:
+            return 0
+        #s = s.strip()
+        first_number_tag = False
+        neg_tag = False
+        sign_tag = False
+        number = 0
+        for i in s:
+            if i in [\'1\',\'2\',\'3\',\'4\', \'5\', \'6\', \'7\', \'8\', \'9\', \'0\']: #check if the string is a number
+                number = number*10 + int(i)
+                first_number_tag = True #from now on, we cannot have space, signs
+            elif i in [\'-\', \'+\', \' \'] and not sign_tag and not first_number_tag: #we can have signs and spaces only if we havent seen any numbers or sign yet
+                if i in \'+\':
+                    sign_tag = True
+                elif i == \'-\':
+                    sign_tag = True
+                    neg_tag = True    
+            elif first_number_tag: #as soon as the sequence of numbers ends in anything except a number, we break the for loop
+                break
+            else:
+                return 0
+        
+        if neg_tag:
+            number = -number
+        
+        if number<-2**31:
+            return -2**31
+        elif number>2**31-1:
+            return 2**31-1
+        return number

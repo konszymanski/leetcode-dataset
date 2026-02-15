@@ -1,0 +1,21 @@
+from collections import deque, defaultdict
+
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root: return []
+        
+        level_to_nodes = defaultdict(list)
+        
+        # Queue saves node, level
+        bfs_queue = deque([(root, 1)])
+        
+        while bfs_queue:
+            node, level = bfs_queue.popleft()
+            level_to_nodes[level].append(node.val)
+            
+            if node.left:
+                bfs_queue.append((node.left, level + 1))
+            if node.right:
+                bfs_queue.append((node.right, level + 1))
+            
+        return level_to_nodes.values()

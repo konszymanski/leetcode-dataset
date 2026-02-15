@@ -1,0 +1,44 @@
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        # BFS
+        # https://leetcode-cn.com/problems/alien-dictionary/solution/python3-tuo-bu-pai-xu-by-bbqq-2/
+        neighborNodes = collections.defaultdict(list)
+        queue = collections.deque([])
+        result = collections.deque([])
+
+        #\u521D\u59CB\u5316\u5165\u5EA6\u8868
+        str = "".join(words)
+        inDegree = dict.fromkeys(set(str), 0)
+
+        #\u6BCF\u4E24\u4E2A\u4E92\u76F8\u6BD4, \u66F4\u65B0 neighborNode, \u548C \u5165\u5EA6\u8868 
+        for i in range(len(words)-1):
+            w1=words[i]
+            w2=words[i+1]
+            minlen = min(len(w1),len(w2))
+            for j in range(minlen):
+                if w1[j] == w2[j]:
+                    if j == minlen-1 and len(w1) > len(w2): # \u5982\u679C\u4E24\u4E2A\u5B57\u7B26\u4E32\u5B8C\u5168\u76F8\u540C\uFF0C\u4F46\u662F\u7B2C\u4E00\u4E2A\u6BD4\u7B2C\u4E8C\u4E2A\u957F\uFF0C
+                         return ""                          # \u5219\u8BA4\u4E3A\u662F\u4E0D\u5408\u6CD5\u7684\uFF0C\u8FD4\u56DE\u7A7A
+                    else:
+                        pass
+                else:                                       # \u5426\u5219\u53EA\u6709\u7B2C\u4E00\u4E2A\u4E0D\u540C\u7684\u5B57\u6BCD\u95F4\u6709 topo order
+                    neighborNodes[w1[j]].append(w2[j])
+                    inDegree[w2[j]]+=1
+                    break
+
+        # \u628A\u5165\u5EA6\u4E3A0\u7684\u5B57\u5E55\u653E\u5165 queue \u4E2D
+        for key in inDegree:
+            if inDegree[key] == 0: queue.append(key)
+
+        # \u6BCF\u6B21\u5F39\u51FA\u4E00\u4E2A\u5B57\u6BCD\uFF0C\u4E4B\u540E\u7684node\u5165\u5EA6-1    
+        while queue:
+            node = queue.pop()
+            result.append(node)
+            for next_node in neighborNodes[node]:
+                inDegree[next_node]-=1
+                if inDegree[next_node]==0: queue.append(next_node)
+        
+        if len(result) != len(inDegree): 
+            return ""
+        else:
+            return "".join(result)

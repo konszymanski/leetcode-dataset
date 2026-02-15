@@ -1,0 +1,41 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        #Handle the special case where dictionary is empty
+		if not wordDict:
+            return False
+		
+		#Turn list into set to make the checking existence process faster
+        check = set(wordDict)
+		
+		#Use map to apply len() function to dictionary and return the max length
+        longest = max(map(len, wordDict))
+		
+		#Create a list to record T/F at each index with default value False
+        res = [False]*len(s)
+		
+		#Check the first letter manually
+        res[0] = (s[0] in check)
+		
+		#Loop over the rest string
+        for i in range(1,len(s)):
+			
+			#We look back at most the length of the longest word in dictionary
+            for j in range(min(i,longest)+1):
+                left = i - j
+				
+				#If we haven\'t reached the beginning of the string
+                if left > 0:
+                    temp = (s[left:i+1] in check) and (res[left-1])
+                    if temp:
+					
+							#If case a) shows up, there is no need to check back. 
+							#We record True and go to the next index
+                           res[i] = True
+                           break
+						   
+				#If we reach the beginning of the string
+                elif left == 0:
+                           temp = (s[left:i+1] in check)
+                           res[i] = temp
+        
+        return res[-1]

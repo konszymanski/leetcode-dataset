@@ -1,0 +1,38 @@
+class Solution(object):
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        row_dic = {}
+        col_dic = {}
+        block_dic = {}
+        #one_pass
+        for row in range(9):
+            for col in range(9):
+                x = board[row][col]
+                if (x.isdigit()):
+                    num = int(x)
+
+                    block_index = (row//3, col//3)
+                    if block_index in block_dic:
+                        if num in block_dic[block_index]:
+                            return False
+                        block_dic[block_index].append(num)
+                    else:
+                        block_dic[block_index] = [num]
+                    
+                    if row in row_dic:
+                        if num in row_dic[row]:
+                            return False
+                        row_dic[row].append(num)
+                    else:
+                        row_dic[row] = [num]
+                    
+                    if col in col_dic:
+                        if num in col_dic[col]:
+                            return False
+                        col_dic[col].append(num)
+                    else:
+                        col_dic[col] = [num]
+        return True

@@ -1,0 +1,29 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        \'\'\'
+        make a single circle, then recursively call the algorithm itself on the remaining matrix elements.
+        \'\'\'
+        
+        num_rows = len(matrix)
+        num_cols = len(matrix[0])
+        
+        if num_cols==1:
+            return [row[0] for row in matrix]
+        
+        if num_rows==0:
+            return []
+        
+        if num_rows==1:
+            return matrix[0]
+        
+        if num_rows==2:
+            return matrix[0] + matrix[1][::-1]
+        
+        seq = matrix[0]  # go to top right
+        seq += [matrix[i][-1] for i in range(1,num_rows-1)]  # go to bottom right
+        seq += matrix[-1][::-1]  # go to bottom left
+        seq += [matrix[i][0] for i in range(1,num_rows-1)[::-1]]  # go to top left
+        if num_cols>2:
+            seq += self.spiralOrder( [row[1:-1] for row in matrix[1:-1]] )
+            
+        return seq

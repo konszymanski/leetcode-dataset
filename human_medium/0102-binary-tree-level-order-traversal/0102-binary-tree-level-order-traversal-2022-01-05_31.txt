@@ -1,0 +1,23 @@
+from queue import Queue
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        
+        if not root:
+            return []
+        
+        output = []
+        q = Queue()
+        q.put(root)
+        
+        while not q.empty():
+            count = q.qsize()
+            temp = []
+            for i in range(count):
+                u = q.get()
+                temp.append(u.val)
+            
+                if(u.left): q.put(u.left)
+                if(u.right): q.put(u.right)
+            output.append(temp)
+        
+        return output

@@ -1,0 +1,9 @@
+class Solution:
+    def maxProfit(self, p: List[int]) -> int:
+        i=0
+        sum=0
+        while(i<len(p)-1):
+            if(p[i]<p[i+1]):
+                sum+=p[i+1]-p[i]
+            i+=1
+        return max(sum,0) #if profit becomes negative

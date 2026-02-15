@@ -1,0 +1,16 @@
+class Solution(object):
+    def jump(self, nums):
+        cur,step,l = 0, 0, len(nums)
+        while cur<l-1:
+            # if next jump can reach the final position, return step+1
+            if cur+nums[cur]+1>=l:
+                return step+1
+            scope = nums[cur+1:cur+nums[cur]+1]
+            maxNextIdx = 0
+            # find the optimal jump within the scope
+            for i in range(len(scope)):
+                if i+scope[i]>maxNextIdx+scope[maxNextIdx]:
+                    maxNextIdx = i
+            cur+=maxNextIdx+1
+            step+=1
+        return step

@@ -1,0 +1,3 @@
+class Solution(object):
+    def isValidBST(self, root, minm = float("-inf"), maxm = float("inf")):
+            return (not root) or (minm <root.val<maxm and (self.isValidBST(root.left, minm, root.val)) and (self.isValidBST(root.right, root.val, maxm)))

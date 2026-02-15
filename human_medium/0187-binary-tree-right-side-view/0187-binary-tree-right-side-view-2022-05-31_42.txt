@@ -1,0 +1,15 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        levels = []
+
+        def dfs(node,level):
+            if not node: return 
+
+            if level>len(levels): levels.append(-1)
+            levels[level-1]=node.val
+
+            dfs(node.left,level+1)
+            dfs(node.right, level+1)
+
+        dfs(root, 1)
+        return levels

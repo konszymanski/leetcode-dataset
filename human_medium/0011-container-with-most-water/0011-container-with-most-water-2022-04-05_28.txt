@@ -1,0 +1,24 @@
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+		 # start pointer
+	    start_pointer = 0
+		
+		# End pointer
+        end_pointer = len(height) - 1
+		
+		# Area variable to store max area
+        area = 0
+		
+        while start_pointer < end_pointer:
+			# Finding minimum height 
+            breadth = min(height[start_pointer], height[end_pointer])
+			# Calculating length 
+            length = end_pointer - start_pointer
+			# Storing maximum area till now
+            area = max(area, (breadth*length))
+			
+            if(height[start_pointer] < height[end_pointer]):
+			   start_pointer+=1
+            else:
+                end_pointer-=1
+        return area

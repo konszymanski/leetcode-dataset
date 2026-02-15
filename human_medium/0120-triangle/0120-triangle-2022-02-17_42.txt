@@ -1,0 +1,8 @@
+from functools import cache
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        @cache
+        def dfs(i, j):
+            if i == len(triangle)-1: return triangle[i][j]           # base case
+            return triangle[i][j] + min(dfs(i+1, j), dfs(i+1, j+1))  # minimize left or right
+        return dfs(0, 0)

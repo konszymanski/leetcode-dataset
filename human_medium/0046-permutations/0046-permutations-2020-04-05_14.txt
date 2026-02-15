@@ -1,0 +1,26 @@
+class Solution:
+    
+    def permutehelper(self, nums, arr , answers):
+
+        if len(nums) == 0:                      # If we have completed a permutation, add it to the answers list.
+            answers.append(list(arr))           # We use list(arr) because Python objects are passed by reference and changing arr will have an affect on answers.
+
+        for i in range(0 , len(nums)):
+            element = nums[i]                   # Get the i\'th element, which goes in the list arr
+            arr.append(element)
+            self.permutehelper(nums[:i] + nums[i+1:], arr, answers)                # Now permute with arr and every other number in nums except the i\'th element (nums[:i] + nums[i+1:])
+            arr.pop()                           # Pop the last element we added so that we can add the next element to arr.
+        
+
+        
+    
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 0:
+            return answers
+        
+        arr = list()
+        answers = list()
+
+        self.permutehelper(nums, arr, answers)
+        
+        return answers

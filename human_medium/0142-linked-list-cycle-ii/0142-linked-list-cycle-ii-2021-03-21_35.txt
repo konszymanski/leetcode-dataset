@@ -1,0 +1,9 @@
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        hashset=set()  # a set to store the visited nodes
+        while head:
+            if head in hashset:  #if node is already visited then we are back agin at start.
+                return head
+            hashset.add(head)  
+            head=head.next
+        return None  #loop ends no cycle found

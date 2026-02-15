@@ -1,0 +1,37 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        char_list = list(s.lstrip())
+        # If the string was all whitespace or empty then we have no work to do
+        if len(char_list) == 0:
+            return 0
+        # Store the sign if it was present
+        sign = char_list[0] if char_list[0] in [\'-\',\'+\'] else \'\'
+        # Skip over the sign if its present
+        lbound = 1 if sign != \'\' else 0
+        # Assume that we wil have integers to the end of the string
+        rbound = len(char_list)
+        # Set limits
+        min_output = -2 ** 31
+        max_output = (2 ** 31) -1
+        for i in range(lbound, len(char_list)):
+            # Assume we can cast the value to an int
+            try:
+                int(char_list[i])
+            # If we get an error it must not have been an int
+            # Adjust the right boundary to be used with string slicing
+            # Remember that slice is exclsuve of the high value
+            except ValueError:
+                rbound = i
+                break
+        # If we had no int values return zero
+        # Otherwise convert the array to an int
+        # If we have a negative sign then convert to negative
+        # Otherwise just leave the value
+        result = 0 if lbound == rbound else int(\'\'.join(char_list[lbound:rbound])) * -1 if sign == \'-\' else int(\'\'.join(char_list[lbound:rbound]))
+        # Check against limits
+        if result < min_output:
+            return min_output
+        elif result > max_output:
+            return max_output
+        else:
+            return result

@@ -1,0 +1,5 @@
+def permute(self, nums: List[int]) -> List[List[int]]:
+	if nums == []:
+		return [[]]
+	else:
+		return [[x] + perm for x in nums for perm in self.permute([num for num in nums if num != x])]

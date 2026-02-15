@@ -1,0 +1,17 @@
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix:
+            return False
+        return self.search(matrix, 0, len(matrix)-1, 0, len(matrix[0])-1, target)
+    
+    def search(self, matrix, top, down, left, right, target):
+        if top > down or left > right:
+            return False
+        if top == down and left == right:
+            return True if matrix[top][left] == target else False
+        rowMid, colMid = top + (down-top)//2, left + (right-left)//2
+        if matrix[rowMid][colMid] == target:
+            return True
+        elif matrix[rowMid][colMid] > target:
+            return self.search(matrix, rowMid, rowMid, left, colMid-1, target) or self.search(matrix, top, rowMid-1, left, right, target)
+        return self.search(matrix, rowMid, rowMid, colMid+1, right, target) or self.search(matrix, rowMid+1, down, left, right, target)

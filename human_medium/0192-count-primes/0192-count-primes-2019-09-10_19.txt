@@ -1,0 +1,7 @@
+# Eratosthenes\'s Sieve
+    def countPrimes(self, n: int) -> int:
+        Primes = [0,0]+[1]*(n-2)
+        for i in range(2,n//2+1):
+            for j in range(i*2,n,i):
+                Primes[j] = 0
+        return sum(Primes)

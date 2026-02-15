@@ -1,0 +1,15 @@
+class Solution:
+    def subsetsWithDup(self, A):
+        #
+        key = lambda Q,x: tuple(sorted( list(Q) + [x] ))
+        #
+        B   = set()
+        #
+        for x in A:
+            B |= { key(Q,x) for Q in B }
+            B |= { (x,) }
+        return  list(map(list,B)) + [[]]
+
+# PS. return list(B) + [[]] is also accepted by LeetCode, although...
+#     technically this output doesn\'t have the correct data type
+#     (entries are tuples instead of arrays).

@@ -1,0 +1,71 @@
+# Time complexity: O(3^(m*n)) - O(n) For the initial matrix traversal,
+# then O(3^(m*n)) if all paths match the input like in test 4.
+# Space complexity: O(m*n) - The number of calls in the call stack is
+# limited to the size of the matrix.
+#
+# Runtime: 3703 ms Beats 90.10%
+# Memory: 14 MB Beats 50.84%
+#
+# We can improve runtime even better considering that the tests are
+# designed to lead to high recursion when starting from one end or the
+# other, if we check which end will lead to more recursion and start
+# from the other, we can have a 20x performance gain.
+#
+# Runtime: 47 ms Beats 99.48%
+# Memory: 14 MB Beats 50.84%
+class Backtrack:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        NUM_ROWS, NUM_COLS = len(board), len(board[0])
+        # Count character frequencies in the board and word.
+        word_dict = Counter(word)
+        board_dict = Counter(chain.from_iterable(board))
+        # If we don\'t have enough characters in the board, we can return
+        # false immediately.
+        if any(count > board_dict[char] for char, count in word_dict.items()):
+            return False
+        # The LeetCode test cases seem designed to lead to very deep
+        # recursion and high O complexity when starting from one end
+        # or the other of the word, if we check which end will lead to
+        # more recursion, and choose to start from the other, we can
+        # optimize the code.
+        if word_dict[word[0]] > word_dict[word[-1]]:
+            word = word[::-1]
+        # Define a recursive function that explores the board, using DFS
+        # from a starting point trying to match the input word.
+        def matchesSuffix(r: int, c: int, pos: int) -> bool:
+            # Base case, we have constructed the word.
+            if pos == len(word) - 1:
+                return True
+            dirs = ((0, 1), (1, 0), (0, -1), (-1, 0))
+            # Explore the 4 available directions.
+            for y, x in dirs:
+                i, j = y + r, x + c
+                if (
+                    0 <= i < NUM_ROWS
+                    and 0 <= j < NUM_COLS
+                    and board[i][j] == word[pos + 1]
+                ):
+                    # Save the current value to backtrack.
+                    tmp = board[i][j]
+                    board[i][j] = "."
+                    if matchesSuffix(i, j, pos + 1):
+                        return True
+                    # Backtrack
+                    board[i][j] = tmp
+            # If none of the directions returned a result.
+            return False
+
+        for r in range(NUM_ROWS):
+            for c in range(NUM_COLS):
+                if board[r][c] == word[0]:
+                    # Save the current value to backtrack.
+                    tmp = board[r][c]
+                    board[r][c] = "."
+                    # If we can construct the word from this position,
+                    # return True immediately.
+                    if matchesSuffix(r, c, 0):
+                        return True
+                    # Backtrack
+                    board[r][c] = tmp
+        # If we could not construct the word from any position
+        return False

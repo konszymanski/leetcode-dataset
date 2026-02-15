@@ -1,0 +1,15 @@
+def detectCycleSet(head: Optional[ListNode]) -> Optional[ListNode]:
+	# Create a set where we store all nodes we already visited.
+	seen_nodes = set()
+	
+	# Walk through the linked list and check if the current node
+	# has already been visited. If so return that node, if not add
+	# the current node to the set and move to the next node.
+	while head:
+		if head in seen_nodes:
+			return head
+		seen_nodes.add(head)
+		head = head.next
+
+	# If we exited the loop head is none and there is no cycle.
+	return

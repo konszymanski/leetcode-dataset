@@ -1,0 +1,20 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        ans = []
+        if len(s) > 10:
+            # s consists of one nucleotide
+            if len(set(s)) == 1:
+                ans.append(s[:10])
+                return ans
+            # s consists of multiple nucleotides
+            else:
+                seq_store = set()
+                for ii in range(len(s)-10+1):
+                    seq = s[ii:ii+10]
+                    if seq not in ans and seq in seq_store: # compare `seq` with sequence in `seq_store`
+                        ans.append(seq)
+                    if seq not in seq_store:
+                        seq_store.add(seq)
+        elif len(s) <= 10:
+            ans = []
+        return ans

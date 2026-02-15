@@ -1,0 +1,20 @@
+import itertools
+class Solution:
+    
+    def convert(self, s: str, numRows: int) -> str:
+        def loop(x):
+            # Generator for the pattern 0, 1, 2, ... n, n-1, n-2 ... 1, 0, 1, 2, ...
+            # Chain connects two iterators together, Cycle cycles between the elements.
+			# The second range parameters explained:
+			# x-2 - We want to start at the number 1 less than what the first range ended on.
+			# 0 - We want to go until 0, since the first range will start at 0
+			# -1 - We want it to go backwards starting at the large number down to the small number. 
+            return itertools.cycle(itertools.chain(range(x), range(x-2, 0, -1)))
+        
+        rows = [[] for i in range(numRows)]
+        # Connect each character to its row using zip. (Note in py2 you\'ll need izip)
+        for row, char in zip(loop(numRows), s):
+            rows[row].append(char)
+        
+        # Chain all the rows together and join them into a string.
+        return \'\'.join(itertools.chain(*rows))

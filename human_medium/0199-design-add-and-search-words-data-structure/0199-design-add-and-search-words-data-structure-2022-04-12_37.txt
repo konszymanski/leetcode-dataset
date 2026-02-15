@@ -1,0 +1,35 @@
+class WordDictionary:
+    def __init__(self):
+        # $ sign shows what is the max depth for the node
+        self.root = {\'$\':0}
+
+    def addWord(self, word: str) -> None:
+        node = self.root
+        for ind, char in enumerate(word):
+            if char not in node:
+                node[char] = {\'$\': 0}
+            # update the max length for current node
+            node[\'$\'] = max(node[\'$\'], len(word)-ind)
+            node = node[char]
+        # shows that this is a word, it is possible that there can be a word whose prefix is this word
+        node[\'#\'] = True
+
+    def search(self, word: str) -> bool:
+        def check(node, path):
+            # check if max length of current node is less than path
+            if node[\'$\'] < len(path):
+                return False
+            for ind, char in enumerate(path):
+                if char == \'.\':
+                    for key in node:
+                        if key not in (\'#\', \'$\') and check(node[key], path[ind+1:]):
+                            return True
+                    return False
+                # if the char is not "." and not in node
+                if char not in node:
+                    return False
+                node = node[char]
+
+            return \'#\' in node
+        
+        return check(self.root, word)

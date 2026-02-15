@@ -1,0 +1,23 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+	    # Determine sign and make everything positive
+        is_neg = (dividend < 0) ^ (divisor < 0)
+        dividend = abs(dividend)
+        divisor = abs(divisor)
+		# Get to the highest binary digit
+        multi = 1
+        while divisor < dividend:
+            divisor <<= 1
+            multi <<= 1
+		# Long division in binary
+        ans = 0
+        while multi >= 1:
+            while multi >= 1 and divisor > dividend:
+                divisor >>= 1
+                multi >>= 1
+            ans += multi
+            dividend -= divisor
+		# Handle signs and overflow
+        ans = -ans if is_neg else ans
+        ans = ans if -1<<31 <= ans < (1<<31)-1 else (1<<31)-1
+        return ans

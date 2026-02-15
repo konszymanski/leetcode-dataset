@@ -1,0 +1,41 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        # The number of nodes in the tree is in the range [0, 2000]
+        if not root:
+            return []
+        
+        # Flatten tree into sequence of levels. 
+        levels = []
+        sequencer = collections.deque()
+        
+        # Initially root node exist. Add to sequencer
+        sequencer.append(root)
+        
+        # while job exist
+        while sequencer:
+            # capture number of nodes in current level
+            nos = len(sequencer)
+            buffer = []
+            
+            for _ in range(nos):
+                node = sequencer.popleft()
+                buffer.append(node.val)
+                
+                if node.left:
+                    sequencer.append(node.left)
+                    
+                if node.right:
+                    sequencer.append(node.right)
+                    
+            # By the end of loop. All nodes from current level are popped out from sequencer 
+            # and held in buffer
+            levels.append(buffer)
+        
+        # No more nodes in sequencer. Job done!
+        return levels

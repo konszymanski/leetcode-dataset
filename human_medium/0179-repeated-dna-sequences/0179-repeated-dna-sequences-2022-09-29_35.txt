@@ -1,0 +1,17 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        bin2 = {\'A\': 0, \'C\': 1, \'G\': 2, \'T\': 3}
+        n = len(s)
+        if n <= 10:
+            return []
+        ans = []
+        x = 0
+        for ch in s[:9]:
+            x = (x << 2) | bin2[ch]
+        cnt = defaultdict(int)
+        for i in range(n - 9):
+            x = ((x << 2) | bin2[s[i + 9]]) & 1048575
+            cnt[x] += 1
+            if cnt[x] == 2:
+                ans.append(s[i : i + 10])
+        return ans

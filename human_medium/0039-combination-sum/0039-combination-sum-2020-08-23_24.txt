@@ -1,0 +1,29 @@
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        res = []
+        
+        def dfs(t, start, combo): #(1)
+            if t == 0:
+                res.append(combo)
+            elif t < 0:
+                return
+            else:
+                for i in range(start, len(candidates)):
+                    cand = candidates[i]
+                    dfs(t - cand, i, [cand] + combo) #(2)
+        
+        dfs(target, 0, []) #(3)
+        
+        return res
+    
+    #(1) We use DFS to explore all paths (a generic technique for combination and permutation problems)
+    #(2) We do:
+        # t = t - cand because we want to keep track of the sum
+        # start = i because we want to avoid duplicates (think of this as limiting the next part of the path to using only the current candidate and after instead of the whole candidates list); you might think we\'d use start = i + 1 but this would mean we wouldn\'t be able to choose the same number an unlimited amount of times.
+        # combo = [cand] + combo because we\'re building the path
+    #(3) Fill up res with all possible unique combinations (aka paths)

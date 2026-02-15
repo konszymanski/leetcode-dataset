@@ -1,0 +1,14 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []                       # if root is None
+        self.d = {}                         # used to store right most element of each level
+        self.trav(root, 0)                  # function calling
+        ans = [self.d[i] for i in range(max(self.d)+1)]    # preparing the answer in proper order
+        return ans                          # return the answer
+    
+    def trav(self, root, l):
+        if root:
+            self.d[l]=root.val              # updating the value with right most element.
+            self.trav(root.left, l+1)       # left traversal
+            self.trav(root.right, l+1)      # right traversal

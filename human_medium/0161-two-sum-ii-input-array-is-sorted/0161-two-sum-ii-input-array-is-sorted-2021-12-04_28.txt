@@ -1,0 +1,12 @@
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        N = len(numbers)
+        lookup = {}
+        
+        for i in range(N):
+            other_num = target - numbers[i]
+			
+            if other_num not in lookup:
+                lookup[numbers[i]] = i
+            else:
+                return [lookup[other_num]+1,i+1]

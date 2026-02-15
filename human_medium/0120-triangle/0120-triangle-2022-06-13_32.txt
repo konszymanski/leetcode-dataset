@@ -1,0 +1,11 @@
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        i = len(triangle)-2 #second last row
+        while i >=0 :
+            j = 0
+            while j <= i:
+                triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1]) 
+				#updating (n-1)th row based on mininum value from nth row
+                j += 1
+            i -= 1
+        return triangle[0][0]

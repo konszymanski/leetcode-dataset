@@ -1,0 +1,10 @@
+class Solution:
+    def spiralOrder(self, matrix):
+        l = []
+        while len(matrix) > 0:
+            l += matrix.pop(0)
+            x = []
+            for row in [u for u in reversed([list(v) for v in list(zip(*matrix))])]:
+                x += [row]
+            matrix = x
+        return l

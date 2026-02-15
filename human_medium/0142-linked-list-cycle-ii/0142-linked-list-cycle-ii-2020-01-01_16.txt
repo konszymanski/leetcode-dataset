@@ -1,0 +1,10 @@
+if not head:
+	return None
+set_nodes = set()
+node = head
+while node.next:
+	if node in set_nodes:
+		return node
+	set_nodes.add(node)
+	node = node.next
+return None

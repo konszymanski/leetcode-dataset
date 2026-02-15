@@ -1,0 +1,25 @@
+class Solution:
+    
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+
+      unique_candidates = list(set(candidates))
+      candidates_dict = {}
+      for i in candidates:
+        if i not in candidates_dict:
+          candidates_dict[i]=1
+        else:
+          candidates_dict[i]+=1
+
+
+      solutions = []
+      def sub_comb(container, ind):
+
+        if ind >= len(unique_candidates) or sum(container)>= target:
+          if sum(container)==target: solutions.append(container)
+          return
+        
+        for i in range(candidates_dict[unique_candidates[ind]]+1):
+          sub_comb(container+ [unique_candidates[ind]]*i, ind+1)
+        
+      sub_comb([], 0)
+      return solutions

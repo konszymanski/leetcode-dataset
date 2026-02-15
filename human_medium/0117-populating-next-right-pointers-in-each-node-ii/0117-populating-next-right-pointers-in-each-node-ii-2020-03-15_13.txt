@@ -1,0 +1,17 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        if not root: return
+        par, child_root = root, Node()
+        child = child_root
+        
+        while child and par:
+            if par.left:
+                child.next = par.left
+                child = child.next
+            if par.right:
+                child.next = par.right
+                child = child.next
+            par = par.next            
+            
+        self.connect(child_root.next)
+        return root

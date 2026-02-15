@@ -1,0 +1,23 @@
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        key = {
+            \'2\':[\'a\',\'b\',\'c\'],
+            \'3\':[\'d\',\'e\',\'f\'],
+            \'4\':[\'g\',\'h\',\'i\'],
+            \'5\':[\'j\',\'k\',\'l\'],
+            \'6\':[\'m\',\'n\',\'o\'],
+            \'7\':[\'p\',\'q\',\'r\',\'s\'],
+            \'8\':[\'t\',\'u\',\'v\'],
+            \'9\':[\'w\',\'x\',\'y\',\'z\']
+        }
+        ans = []
+        for i in digits:
+            if len(ans)==0:
+                ans.extend(key[i])
+            else:
+                L = []
+                for k in ans:
+                    for j in key[i]:
+                        L.append(k+j)
+                ans=L
+        return ans

@@ -1,0 +1,4 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = sorted(nums, key=functools.cmp_to_key(lambda n1, n2: 1 if str(n1) + str(n2) < str(n2) + str(n1) else -1))
+        return "".join(map(str,nums)) if sum(nums) != 0 else "0"

@@ -1,0 +1,30 @@
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        # If there's only one row or the string is too short to zigzag, return the string itself
+        if numRows == 1 or numRows >= len(s):
+            return s
+        
+        # Initialize each row as an empty string
+        rows = [""] * numRows
+        curr_row = 0
+        step = 1  # This will determine if we are moving down (+1) or up (-1)
+        
+        for char in s:
+            # Append the current character to the appropriate row
+            rows[curr_row] += char
+            
+            # If we reach the top row, we must start moving down
+            if curr_row == 0:
+                step = 1
+            # If we reach the bottom row, we must start moving up
+            elif curr_row == numRows - 1:
+                step = -1
+            
+            # Update the current row based on the direction
+            curr_row += step
+            
+        # Combine all rows to get the final converted string
+        return "".join(rows)
+
+```

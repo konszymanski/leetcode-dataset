@@ -1,0 +1,21 @@
+class Solution(object):
+    def levelOrder(self, root):
+        result = []
+        
+        if root is None:
+            return result
+        
+        buf = [root]
+        while len(buf):
+            nodes = []
+            lavel = []
+            while len(buf):
+                cur = buf.pop(0)
+                lavel.append(cur.val)
+                if (cur.left):
+                    nodes.append(cur.left)
+                if (cur.right):
+                    nodes.append(cur.right)
+            result.append(lavel)
+            buf = nodes
+        return result

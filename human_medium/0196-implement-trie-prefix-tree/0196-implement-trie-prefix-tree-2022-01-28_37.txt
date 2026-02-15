@@ -1,0 +1,37 @@
+class TrieNode:
+    EOF = ";"
+
+    def __init__(self, char: str = ""):
+        self.char = char
+        self.children = dict()
+
+        
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode()
+        
+
+    def insert(self, word: str) -> None:
+        n = self.root
+        for c in word:
+            if (cn := n.children.get(c)) is None: 
+                cn = n.children[c] = TrieNode(c)
+            n = cn
+        n.children[TrieNode.EOF] = TrieNode(TrieNode.EOF)
+
+
+    def dfs(self, target: str, n: \'TrieNode\', indice=0, need_eof=True) -> bool:
+        if indice == len(target):
+            return TrieNode.EOF in n.children or not need_eof
+        if cn := n.children.get(target[indice]):
+            return self.dfs(target, cn, indice + 1, need_eof)
+        return False
+
+        
+    def search(self, word: str) -> bool:
+        return self.dfs(word, self.root)
+
+    
+    def startsWith(self, prefix: str) -> bool:
+        return self.dfs(prefix, self.root, need_eof=False)

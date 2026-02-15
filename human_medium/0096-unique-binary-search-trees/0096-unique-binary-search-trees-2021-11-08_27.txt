@@ -1,0 +1,23 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+		# memoization array
+        val = [None for i in range(n)]
+        def helper(n):
+			# if problem is already solved, reuse the answer arrived
+            if val[n-1]:
+                return val[n-1]
+            if n<=2:
+                val[n-1]=n
+                return n
+            series = list(range(1,n+1))
+            sum=0
+			# iterate for each possibility, divide into left and right subtree, multiply the answer
+            for i,num in enumerate(series):
+                root=series[i]
+                right=series[i+1:] if i+1<len(series) else [\'n\']
+                left=series[:i] if i-1>=0 else [\'n\']
+                temp=helper(len(left))*helper(len(right))
+                sum+=temp
+                val[n-1]=sum
+            return sum
+        return helper(n)

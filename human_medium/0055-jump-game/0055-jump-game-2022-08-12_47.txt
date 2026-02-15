@@ -1,0 +1,12 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        last_ptr = len(nums) - 1
+        
+        for i in range(len(nums)-2, -1, -1):
+			# Maintain the last valid position
+            if( i + nums[i] >= last_ptr):
+                last_ptr = i
+        
+        if last_ptr == 0:
+            return True
+        return False

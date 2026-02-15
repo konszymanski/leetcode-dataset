@@ -1,0 +1,41 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        
+        p = head
+        
+        # less & greater are the two pointers used to create two list
+        # tail_less and tail_greater are used to save the heads of the two lists.
+        # All of these are initialized with the dummy nodes created.
+        
+        less = ListNode()
+        tail_less = less
+        greater = ListNode()
+        tail_greater = greater
+        
+        # iterate through list
+        while p:
+            
+            # If the original list node is lesser than the given x,
+            # assign it to the less list.
+            if p.val < x:
+                tail_less.next = p
+                tail_less = tail_less.next
+                p = p.next
+                tail_less.next = None
+            
+            # If the original list node is greater or equal to the given x,
+            # assign it to the greater list.
+            else:
+                tail_greater.next = p
+                tail_greater = tail_greater.next
+                p = p.next
+                tail_greater.next = None
+          
+
+        # Once all the nodes are correctly assigned to the two lists,
+        # combine them to form a single list which would be returned.
+        tail_less.next = greater.next
+        
+        ans_head = less.next
+        
+        return ans_head

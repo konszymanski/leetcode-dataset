@@ -1,0 +1,14 @@
+# Runtime: 81 ms, faster than 19.61% of Python3 online submissions for Validate Binary Search Tree.
+# Memory Usage: 16.6 MB, less than 37.03% of Python3 online submissions for Validate Binary Search Tree.
+class Solution:
+    def isValidBST(self, root):
+        minVal, maxVal = -2**31-1, 2**31
+        return self.checkBST(root, minVal, maxVal)
+    
+    def checkBST(self, node, minVal, maxVal):
+        if node==None:
+            return True
+        elif minVal<node.val<maxVal:
+            return self.checkBST(node.left, minVal, node.val) and self.checkBST(node.right, node.val, maxVal)
+        else:
+            return False

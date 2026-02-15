@@ -1,0 +1,35 @@
+from collections import deque, defaultdict
+
+# create a graph node for topological sorting.
+class GNode:
+    def __init__(self):
+        self.inDegree = 0
+        self.outNodes = []
+        
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # instantiate a graph
+        graph = defaultdict(GNode)
+        totalEdges = 0
+        
+        # populate the graph and count the total number of edges.
+        for nextCourse, prevCourse in prerequisites:
+            graph[nextCourse].inDegree += 1
+            graph[prevCourse].outNodes.append(nextCourse)
+            totalEdges += 1
+            
+        # initialize the queue with courses that do not have any prerequisites     
+        queue = deque([course for course in graph if graph[course].inDegree==0])
+        
+        # start topologically sorting the graph and removing the edges one by one
+        while queue:
+            node = queue.popleft()
+            for nextCourse in graph[node].outNodes:
+                graph[nextCourse].inDegree -= 1
+                totalEdges -= 1
+                
+                if graph[nextCourse].inDegree == 0:
+                    queue.append(nextCourse)
+        
+        #if all the edges have been removed, then it means that it is possible to finish all the courses.
+        return totalEdges == 0

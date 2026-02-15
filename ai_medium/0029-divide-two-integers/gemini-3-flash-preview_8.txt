@@ -1,0 +1,38 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Standard constants for 32-bit signed integer limits
+        INT_MIN, INT_MAX = -2147483648, 2147483647
+        
+        # Handle the special case for overflow
+        if dividend == INT_MIN and divisor == -1:
+            return INT_MAX
+        
+        # Determine the sign of the quotient
+        negative = (dividend < 0) != (divisor < 0)
+        
+        # Use absolute values to perform division via bit shifts and subtraction
+        # Python handles arbitrary precision integers, so we can work with 2^31 directly
+        a, b = abs(dividend), abs(divisor)
+        quotient = 0
+        
+        # Efficient division approach (binary division)
+        # Instead of subtracting divisor one by one (O(N)), 
+        # subtract multiples of divisor (divisor * 2^k) (O(log^2 N))
+        while a >= b:
+            temp_divisor, multiple = b, 1
+            # Find the largest multiple of the divisor that can be subtracted from current a
+            while a >= (temp_divisor << 1):
+                temp_divisor <<= 1
+                multiple <<= 1
+            
+            # Reduce dividend by the found multiple and increase quotient
+            a -= temp_divisor
+            quotient += multiple
+            
+        # Apply the determined sign to the quotient
+        result = -quotient if negative else quotient
+        
+        # Return the resulting integer division quotient
+        return result
+```

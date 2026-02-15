@@ -1,0 +1,19 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+
+        def recursive(node: TreeNode, depth: Optional[int] = 0) -> None:
+            if len(right_side_values) > depth:
+                right_side_values[depth] = node.val
+            else:
+                right_side_values.append(node.val)
+
+            depth += 1
+            if node.left: recursive(node.left, depth)
+            if node.right: recursive(node.right, depth)
+
+
+        right_side_values = []
+
+        if root: recursive(root)
+        
+        return right_side_values

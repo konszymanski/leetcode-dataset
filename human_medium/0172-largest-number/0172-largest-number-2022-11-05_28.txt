@@ -1,0 +1,31 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        def mergesort(arr):
+            def merge_lists(a1, a2):
+                res = []
+                l, r = 0, 0
+                while l < len(a1) and r < len(a2):
+                    if a1[l]+a2[r] >= a2[r]+a1[l]:
+                        res.append(a1[l])
+                        l += 1
+                    else:
+                        res.append(a2[r])
+                        r += 1
+                if l < len(a1):
+                    res += a1[l:]
+                if r < len(a2):
+                    res += a2[r:]
+                return res
+            
+            if len(arr) == 1:
+                return arr
+            
+            mid = len(arr)//2
+            l1, l2 = mergesort(arr[:mid]), mergesort(arr[mid:])
+            return merge_lists(l1, l2)
+
+        if not nums:
+            return \'0\'
+
+        res = mergesort([str(x) for x in nums])
+        return \'0\' if res[0] == \'0\' else \'\'.join(res)

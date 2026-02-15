@@ -1,0 +1,15 @@
+def backTracking(res, curr_path, start):
+	if len(curr_path) == 4 and start == len(s):
+		if ".".join(curr_path) not in res:
+			res.append(".".join(curr_path))
+		return
+
+	for i in range(1, 4):
+		sub_string = "".join(s[start : start + i])
+		if sub_string and 0 <= int(sub_string) <= 255 and len(str(int(sub_string))) == len(sub_string):
+			if len(curr_path) < 4 and start < len(s):
+				backTracking(res, curr_path + [sub_string], start + i)
+
+	return res
+
+return backTracking([], [], 0)

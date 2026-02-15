@@ -1,0 +1,15 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        five=0
+        two=0
+        num=n
+        
+        while num>0:
+            num=num//5
+            five+=num
+            
+        while n>0:
+            n=n//2
+            two=two+n
+        
+        return min(two,five)

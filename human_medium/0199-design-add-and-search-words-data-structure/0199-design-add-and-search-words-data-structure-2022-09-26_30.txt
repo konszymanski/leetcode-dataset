@@ -1,0 +1,49 @@
+class TrieNode:
+    def __init__(self):
+        self.children={}
+        self.endWord=False
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root=TrieNode()
+        self.max_worl_len=0
+        
+    def addWord(self, word: str) -> None:
+        n=0
+        cur=self.root
+        for w in word:
+            if w not in cur.children:
+                cur.children[w]=TrieNode()
+            cur=cur.children[w]
+            n+=1
+        cur.endWord=True
+        self.max_worl_len=max(self.max_worl_len,n)
+    
+        
+
+    def search(self, word: str) -> bool:
+        if len(word)>self.max_worl_len:
+            return False
+        
+        def recurse(word,c_trie):
+            for ind,w in enumerate(word):
+                if w not in c_trie.children:
+                    if w==\'.\':
+                        for new_c in c_trie.children:
+                            if recurse(word[ind+1:],c_trie.children[new_c]):
+                                return True
+                    return False
+                c_trie=c_trie.children[w]
+            return c_trie.endWord
+    
+        cur=self.root
+        val=recurse(word,cur)
+        return val
+                
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)

@@ -1,0 +1,22 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        output = []
+        n = len(strs)
+        lookup = []
+        for i in range(n):
+            curr_op = []
+            
+            if strs[i] not in lookup:
+                curr_op.append(strs[i])
+                curr_count = Counter(strs[i])
+                lookup.append(strs[i])
+                
+                for j in range(i+1, n):
+                    if Counter(strs[j]) == curr_count:
+                        if strs[j] not in lookup or strs[j] in curr_op:
+                            curr_op.append(strs[j])
+                            lookup.append(strs[j])
+                            
+                output.append(curr_op)
+        
+        return output

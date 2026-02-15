@@ -1,0 +1,8 @@
+class Solution:
+    def searchMatrix(self, m: List[List[int]], t: int) -> bool:
+        for i in range(len(m)):
+            if t<=m[i][-1]:
+                if t in m[i]:
+                    return True
+                break
+        return False

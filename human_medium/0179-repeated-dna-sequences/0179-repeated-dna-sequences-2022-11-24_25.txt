@@ -1,0 +1,10 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> list[str]:
+        if len(s) < 10: return []
+        hd, w = {"A": 0, "C": 1, "G": 2, "T": 3}, 10
+        h = sum([hd[s[i]] * 4 ** (w - i - 1) for i in range(w)])  # hash
+        met, res = set[int]({h}), set[str]()  # met hash; res: repeated strs
+        while w < len(s):
+            h, w = h * 4 - hd[s[w - 10]] * 4**10 + hd[s[w]], w + 1
+            res.add(s[w - 10 : w]) if h in met else met.add(h)
+        return list(res)

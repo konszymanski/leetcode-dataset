@@ -1,0 +1,18 @@
+def rotateRight(self, head: ListNode, k: int) -> ListNode:
+
+	def sub(prev, cur, llen):
+		nonlocal k, head
+		if cur.next:
+			sub(cur, cur.next, llen+1)  # go one level deep
+		else:                           # arrive at the tail, ready to rotate
+			k = k % llen                # avoid unnecessary work
+		if k > 0:                       # get back from deeper level, rotate at this level if still has rotation works left
+			k -= 1
+			cur.next, prev.next, head = head, None, cur
+
+	if not head or not head.next or k == 0:
+		return head
+
+	sub(head, head.next, 2)
+
+	return head

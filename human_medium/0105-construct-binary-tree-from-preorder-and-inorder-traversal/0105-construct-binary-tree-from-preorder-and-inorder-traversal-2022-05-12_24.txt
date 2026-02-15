@@ -1,0 +1,36 @@
+def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder: return None
+        
+        result = TreeNode(preorder[0])
+        stack = [result]
+        
+        p = 1 # Preorder list pointer
+        i = 0 # Inorder list pointer
+        
+        while True:
+            # Iterate through all left nodes and add them to the stack
+            # until meet the last (bottom) node
+            while stack[-1].val != inorder[i]:
+                curr = TreeNode(preorder[p])
+                stack[-1].left = curr
+                stack.append(curr)
+                p += 1
+
+            # Quit the loop if all elemens are processed
+            if p == len(preorder):
+                break                
+                
+            # Pop nodes from the stack until meet the node with the right child
+            while stack and stack[-1].val == inorder[i]:
+                last = stack.pop()
+                i += 1
+            
+            # Create the right node
+            curr = TreeNode(preorder[p])
+            last.right = curr
+            stack.append(curr)
+            
+            # Move the list pointer to the first left node
+            p += 1            
+        
+        return result

@@ -1,0 +1,41 @@
+from collections import defaultdict
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.hashTrie = defaultdict(dict)
+        self.endChar = "*"
+        
+
+    def addWord(self, word: str) -> None:
+        """
+        Adds a word into the data structure.
+        """
+        root = self.hashTrie[len(word)]
+        for c in word:
+            if c not in root:
+                root[c] = {}
+            root = root[c]
+        root[self.endChar] = True
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the data structure. A word could contain the dot character \'.\' to represent any one letter.
+        """
+        root = self.hashTrie[len(word)]
+        return self.dfs(0, word, root)
+    def dfs(self, index, word, trie):
+        for i in range(index, len(word)):
+            c = word[i]
+            if c in trie:
+                trie = trie[c]
+            elif c == ".":
+                ans = False
+                for choice in trie:
+                    if choice != self.endChar:
+                        ans |= self.dfs(i + 1, word, trie[choice])
+                return ans
+            else:
+                return False
+        return True if self.endChar in trie else False

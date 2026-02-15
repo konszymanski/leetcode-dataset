@@ -1,0 +1,6 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+
+        s = k % len(nums)
+        
+        nums[:] = nums[-s:] + nums[:-s]

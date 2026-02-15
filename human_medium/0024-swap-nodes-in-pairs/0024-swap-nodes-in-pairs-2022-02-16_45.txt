@@ -1,0 +1,32 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        
+        node = head
+        head_updated = False
+        while node is not None:
+            # set the head in the first iteration as we need to return the new head.
+            if not head_updated: 
+                if node.next:
+                    head = node.next 
+                    head_updated = True
+            # swap the 2 nodes as below
+            if node.next:
+                temp = node.next.next
+                node.next.next,node.next = node, temp
+            # next we have to ensure, after next swap we are pointing to correct node
+            # in 1->2->3->4, after above step it becomes 2->1->3->4
+            # we should make sure 1->4 and not 1->3
+			# 3 and 4 will be swapped in next step 4->3
+            temp = node.next
+            if node.next and node.next.next:
+                node.next = node.next.next
+            node = temp
+        return head

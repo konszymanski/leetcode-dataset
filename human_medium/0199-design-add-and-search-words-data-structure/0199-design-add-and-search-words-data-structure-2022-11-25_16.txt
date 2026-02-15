@@ -1,0 +1,29 @@
+class WordDictionary(object):
+    def __init__(self):
+        self.word_dict = collections.defaultdict(set)
+        
+
+    def addWord(self, word):
+        # add to the bucket with same length
+        if word:
+            self.word_dict[len(word)].add(word)
+
+    def search(self, word):
+        # Edge Case
+        if not word:
+            return False
+        
+        # if \'.\' not in word given
+        if \'.\' not in word:
+            return word in self.word_dict[len(word)]
+        
+        # if \'.\' in word then compare the structure for each word in set with given word
+        for v in self.word_dict[len(word)]:
+            # match xx.xx.x with yyyyyyy
+            for i, ch in enumerate(word):
+                if ch != v[i]:
+                    if ch != \'.\':
+                        break
+            else:
+                return True
+        return False

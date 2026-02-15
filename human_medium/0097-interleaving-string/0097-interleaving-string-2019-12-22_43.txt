@@ -1,0 +1,16 @@
+from collections import defaultdict
+class Solution:
+    
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        memo = defaultdict()
+        memo.default_factory = lambda : -1
+        
+        def recurse(i,j,k):
+            if i == len(s1): return s3[k:] == s2[j:]
+            if j == len(s2): return s3[k:] == s1[i:]
+            if memo[(i,j)] != -1: return memo[(i,j)]
+            memo[(i,j)] = ( s1[i]==s3[k] and recurse(i+1,j,k+1) ) or \\
+                          ( s2[j]==s3[k] and recurse(i,j+1,k+1) ) 
+            return memo[(i,j)]
+    
+        return recurse(0,0,0)

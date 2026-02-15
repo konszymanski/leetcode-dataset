@@ -1,0 +1,24 @@
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        
+        # without "The Sieve of Erothostanes"
+        from collections import deque
+        
+        if n<=2 : return 0
+        
+        sqrtn = int(sqrt(n))+1
+        primes = deque()
+        primes.append(2)
+        
+        for i in range(3,n):
+            isPrime = True
+            for p in primes :
+                if sqrtn<=p : 
+                    break
+                if i%p==0 :
+                    isPrime = False
+                    break
+            if isPrime : primes.append(i)
+        #print(primes)
+                
+        return len(primes)

@@ -1,0 +1,23 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        
+        if len(nums) <= 3:
+            return max(nums)
+        
+        rob1 = nums[0:-1]
+        rob2 = nums[1:]
+        
+        rob1 = self.robPartial(nums[:-1])
+        rob2 = self.robPartial(nums[1:])
+        
+        return max(rob1,rob2)
+        
+    
+    
+    def robPartial(self,rob):
+        
+        rob[1] = max(rob[0],rob[1])
+        for i in range(2,len(rob)):
+            rob[i] = max(rob[i-1],rob[i-2]+rob[i])
+        
+        return rob[-1]

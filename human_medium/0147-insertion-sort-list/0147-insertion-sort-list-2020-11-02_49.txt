@@ -1,0 +1,17 @@
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        if not head: return head
+        e = head # end of sorted portion
+        n = e.next # next node to sort
+        while n: # if next node exists
+            s = head
+            p = None
+            while s != n: #scan from head to thru e (n is e.next)
+                if s.val <= n.val: p, s = s, s.next
+                else:
+                    if p: p.next, n.next, e.next = n, s, n.next
+                    else:   head, n.next, e.next = n, s, n.next
+                    break
+            if s==n: e = e.next # if didn\'t break
+            n = e.next
+        return head

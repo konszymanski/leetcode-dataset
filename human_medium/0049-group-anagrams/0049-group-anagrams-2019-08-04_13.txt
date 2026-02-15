@@ -1,0 +1,13 @@
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        d = {}
+        for word in strs:
+            count = [0] * 26
+            for ch in word:
+                count[ord(ch) - ord(\'a\')] += 1
+            d[tuple(count)] = d.get(tuple(count), []) + [word]
+        return list(d.values())

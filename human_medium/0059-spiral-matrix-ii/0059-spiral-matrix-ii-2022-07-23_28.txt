@@ -1,0 +1,42 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        result = [[None]*n for _ in range(n)]
+        
+        rowStart, rowEnd, colStart, colEnd = 0, n-1, 0, n-1
+        count = 1
+        
+        while rowStart < n and rowEnd >=0 and colStart < n and colEnd >=0:
+            
+            j = colStart
+            while j <= colEnd:
+                result[rowStart][j] = count
+                count+=1
+                j+=1
+                
+            rowStart+=1
+            
+            i = rowStart
+            while i<= rowEnd:
+                result[i][colEnd] = count
+                count+=1
+                i+=1
+            
+            colEnd-=1
+            
+            j = colEnd
+            while j >= colStart:
+                result[rowEnd][j] = count
+                count+=1
+                j-=1
+            
+            rowEnd-=1
+            
+            i = rowEnd
+            while i >= rowStart:
+                result[i][colStart] = count
+                count+=1
+                i-=1
+            
+            colStart+=1
+        
+        return result

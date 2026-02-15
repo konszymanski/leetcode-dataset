@@ -1,0 +1,12 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        
+        exponent_of_5 = 0
+        
+        while n > 4 :
+            
+            quotient = n // 5
+            
+            exponent_of_5, n =  exponent_of_5+quotient, quotient
+        
+        return exponent_of_5

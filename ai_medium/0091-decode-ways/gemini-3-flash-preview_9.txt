@@ -1,0 +1,28 @@
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        dp = [0] * (n + 1)
+        
+        # Base cases
+        dp[0] = 1  # Base case for empty string
+        dp[1] = 1  # Initial string starting with non-zero digit has 1 way
+        
+        for i in range(2, n + 1):
+            # Check for a single-digit decoding
+            # If the current digit is not '0', it can be decoded as a character
+            if s[i-1] != '0':
+                dp[i] += dp[i-1]
+            
+            # Check for a two-digit decoding
+            # If the two-digit substring is between "10" and "26"
+            two_digit = int(s[i-2:i])
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i-2]
+                
+        return dp[n]
+
+```

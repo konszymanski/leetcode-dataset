@@ -1,0 +1,55 @@
+######################################################
+
+#   Runtime: 196ms   -   67.47%
+#   Memory: 16.2MB  -   90.60%
+
+######################################################
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # If list has only one node, return head
+        if head.next == None: return head
+        # Pointer to the start of list
+        front = head
+
+        while head.next != None:
+            # At each iteration, values from beginning of list to head will be in
+            # sorted order. So, if head.next val is > head.val, head.next is already
+            # in correct position. So, we simply go to next iteration by moving 
+            # head to next.
+            if head.val < head.next.val:
+                head = head.next
+                continue
+            # Since we need to insert head.next node in correct position we need
+            # a prev node to point to prev node of node between which we have to
+            # insert head.next.
+            # curr node will point to node that will be right of the head.next node
+            # after head.next is sorted 
+            prev = None
+            curr = front
+            # Moving pointers while curr node value is < head.next value
+            while curr.val < head.next.val:
+                prev = curr
+                curr = curr.next
+            # Storing a temp pointer to head.next to avoid any possiblities of cycle  
+            temp = head.next
+            # Changing head\'s next to pointer to head.next.next
+            head.next = head.next.next
+            # if prev is None, that means head.next is the first node of list from
+            # front to head.next nodes. So we pointer temp.next to front and change
+            # front to point to temp
+            if prev == None:
+                temp.next = front
+                front = temp
+            # else, we insert it in the middle of prev and curr, by pointing
+            # prev.next to temp and temp.next to curr
+            else:
+                prev.next = temp
+                temp.next = curr
+        
+        return front

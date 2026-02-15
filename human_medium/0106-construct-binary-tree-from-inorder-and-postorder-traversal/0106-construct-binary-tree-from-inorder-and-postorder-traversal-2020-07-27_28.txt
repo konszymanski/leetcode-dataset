@@ -1,0 +1,17 @@
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        n = len(inorder)
+        root = buildUtil(inorder, postorder, 0, n-1)
+        return root
+
+
+def buildUtil(In, post, strt, end):
+    if strt > end:
+        return None
+    newNode = TreeNode(post.pop())
+    if strt == end:
+        return newNode
+    index = In.index(newNode.val)
+    newNode.right = buildUtil(In, post, index+1, end)
+    newNode.left = buildUtil(In, post, strt, index-1)
+    return newNode

@@ -1,0 +1,16 @@
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        heap=[(grid[0][0],0,0)]
+        heapify(heap)
+        visited=set((0,0))
+        while heap:
+            sum,x,y=heappop(heap)
+            if x==len(grid)-1 and y==len(grid[0])-1:
+                return sum
+            for d in [[1,0],[0,1]]:
+                newX=x+d[0]
+                newY=y+d[1]
+                tup=(newX,newY)
+                if newX < len(grid) and newY < len(grid[0]) and  tup not in visited: 
+                    heappush(heap,(sum+grid[newX][newY],newX,newY))
+                    visited.add(tup)

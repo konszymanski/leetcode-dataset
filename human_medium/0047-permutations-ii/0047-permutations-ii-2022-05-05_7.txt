@@ -1,0 +1,25 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+
+        results = []
+    
+        def backtrack(pointer):
+            if pointer == len(nums):
+                results.append(nums[:])
+                return
+            
+            seen = set() #generate an empty set eveytime the backtrack function is called
+            for i in range(pointer, len(nums)):
+			
+                if nums[i] not in seen: #do below > if nums[i] is not already in the seen
+				
+                    seen.add(nums[i]) #add nums[i] to the seen so if there is a duplicate, if condition can catch it
+                    
+                    nums[i], nums[pointer] = nums[pointer], nums[i]
+                    
+                    backtrack(pointer+1)
+                    
+                    nums[i], nums[pointer] = nums[pointer], nums[i]
+                    
+        backtrack(0)
+        return results

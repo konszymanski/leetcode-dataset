@@ -1,0 +1,24 @@
+class Solution(object):
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        
+        ##dp recursion + memoization
+        memo={}
+        def rec_dp(curr_pos):
+            if curr_pos>=len(nums)-1:
+                return 0
+            if curr_pos in memo:
+                return memo[curr_pos]
+            
+            ##else we are at curr_pos and need to try all possible jumps
+            temp=float("inf")
+            for i in range(1,nums[curr_pos]+1):
+                temp=min(temp, 1+rec_dp(curr_pos+i))
+            
+            memo[curr_pos]=temp
+            return temp
+        
+        return rec_dp(0)

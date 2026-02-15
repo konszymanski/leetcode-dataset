@@ -1,0 +1,15 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        dict = {}
+        for word in strs:
+            count = [0] * 26
+            for char in word:
+                count[ord(char) - ord(\'a\')] += 1
+            if tuple(count) in dict:
+                dict[tuple(count)].extend([word])
+            else:
+                dict[tuple(count)] = [word]
+        result = []
+        for key, values in dict.items():
+            result.append(values)
+        return result

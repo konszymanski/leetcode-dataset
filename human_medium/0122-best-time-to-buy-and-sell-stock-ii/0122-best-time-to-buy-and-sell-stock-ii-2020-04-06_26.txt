@@ -1,0 +1,33 @@
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        def f(prices, l, pos, memo):
+            
+            if (l, pos) in memo: return memo[(l, pos)]
+            
+            if pos >= len(prices):
+                memo[(l, pos)] = 0
+                return 0
+            
+            if(l&1 ==0):   # For these day buy the stock
+                pick = prices[pos]*(-1) + f(prices, l+1, pos+1, memo)
+                skip = f(prices, l, pos+1, memo)
+            
+            else:          # For these day sell the stock
+                
+                if( prices[pos] > prices[pos-1] ):  # the price of selling day must be greater the price of buying day. 
+                    pick = prices[pos]*(1) + f(prices, l+1, pos+1, memo)
+                    skip = f(prices, l, pos+1, memo)
+                else:
+                    skip = f(prices, l, pos+1, memo)
+                    memo[(l, pos)] = skip
+                    return memo[(l, pos)]
+            memo[(l, pos)] = max(skip, pick)
+            return memo[(l, pos)]
+                    
+                
+        ans = f(prices, 0, 0, {})
+        return ans if ans > 0 else 0

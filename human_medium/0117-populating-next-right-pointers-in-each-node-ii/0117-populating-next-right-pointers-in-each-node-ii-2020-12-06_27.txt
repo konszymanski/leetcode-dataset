@@ -1,0 +1,12 @@
+def connect(self, root: \'Node\') -> \'Node\':
+	toprow = root
+	while toprow:
+		start = cur = Node()
+		top = toprow
+		while top:
+			for child in [top.left, top.right]:
+				cur.next = child
+				if cur.next: cur = cur.next
+			top = top.next
+		toprow = start.next
+	return root

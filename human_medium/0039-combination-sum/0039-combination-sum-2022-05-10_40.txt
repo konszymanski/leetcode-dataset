@@ -1,0 +1,14 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        
+        def rec(cur_summ, cur_numbers, cur_index):
+            if cur_summ == target:
+                res.append(cur_numbers)
+            elif cur_summ < target:
+                for i in range(cur_index, len(candidates)):
+                    rec(cur_summ + candidates[i], cur_numbers + [candidates[i]], i)
+        
+        rec(0, [], 0)
+        
+        return res

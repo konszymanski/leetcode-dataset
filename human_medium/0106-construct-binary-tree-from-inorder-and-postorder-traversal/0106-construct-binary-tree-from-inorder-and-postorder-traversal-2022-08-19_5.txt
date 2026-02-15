@@ -1,0 +1,13 @@
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        inorder_map = {val:i for i, val in enumerate(inorder)}
+        
+        def dfs(start, end):
+            if start > end: return None
+            root = TreeNode(postorder.pop())
+            root_index = inorder_map[root.val]
+            root.right = dfs(root_index+1, end)  # have to put right before left because postorder.pop will return the right node first
+            root.left = dfs(start, root_index-1)
+            return root
+        
+        return dfs(0, len(inorder)-1)

@@ -1,0 +1,7 @@
+def rob(self, nums: List[int]) -> int:
+    dp1 = [0, 0]
+    dp2 = [-nums[0] if len(nums) > 1 else 0, 0]
+    for i, n in enumerate(nums):
+        dp1.append(max(dp1[i+1], n + dp1[i]))
+        dp2.append(max(dp2[i+1], n + dp2[i]))
+    return max(dp1[-2], dp2[-1])

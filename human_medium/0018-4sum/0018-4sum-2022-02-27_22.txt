@@ -1,0 +1,61 @@
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        
+        # We need atleast 4 numbers for an answer, return an empty result
+        # if the arr is less than 4 nums
+        if len(nums) < 4:
+            return []
+        
+        # Result that we will return
+        res = []
+        
+        # In order to break down this problem into 3sum then 2sum we need these values to be sorted
+        # this will become obvious when you are finding a 3sum for each index since part of the algorithm
+        # invloves shifting the pointer based on what the total sum we currently have is
+        nums.sort()
+        
+        for i in range(len(nums) - 3):
+            print(i)
+        
+        # Iterate through the entire array except for the last 3 because we need in total 4 numbers
+        # for a quadruplet, so if we have the array [-3,-1,0,2,4,5] once we get to 0 [-3,-1,(0),2,4,5]
+        # We cannot find any more quadruplets since our array is sorted, if this confuses you, you can just
+        # Iterate the entire array, you\'ll end up with the same result
+        for i in range(len(nums) - 3):
+            
+            # This is a defensive if statement since the questions says "unique quadruplets" we need to skip dupes
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            
+            # Here we need to track a temporary target so we can break the question down to 3sum
+            temp_tar = target - nums[i]
+            for n in range(i + 1, len(nums)):
+                
+                # This is a defensive if statement aswell, the concept is the same as the above except for the 3sum
+                if n > i + 1 and nums[n] == nums[n - 1]:
+                    continue
+                
+                # We need to keep a left and right pointer now, this should be obvious if you have solved 3sum
+                # left is the current position + 1 right is the end of the arr
+                left = n + 1
+                right = len(nums) - 1
+                while left < right:
+                    three_sum = nums[n] + nums[left] + nums[right]
+                    
+                    # Here we have the 3sum algorithm, if we are at the target we need to add the result
+                    # and move our left pointer to continue searching for more pairs
+                    # we need the while loop to skip any possible duplicates because
+                    # remeber the question says "unique quadruplets"
+                    #
+                    # The reason we sort the array in 3sum & 4sum is because we can find the target by incrementing our                     # sum (moving the left pointer) or decrementing our sum(moving the right pointer)
+                    if three_sum > temp_tar:
+                        right -= 1
+                    elif three_sum < temp_tar:
+                        left += 1
+                    else:
+                        res.append([nums[i], nums[n], nums[left], nums[right]])
+                        left += 1
+                        while nums[left] == nums[left - 1] and left < right:
+                            left += 1
+                        
+        return res

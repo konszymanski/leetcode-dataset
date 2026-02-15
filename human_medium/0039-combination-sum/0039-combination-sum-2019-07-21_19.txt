@@ -1,0 +1,7 @@
+def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        dp = [[] for _ in range(target + 1)]
+        dp[0] = [[]]
+        for candidate in candidates:
+            for i in range(candidate, len(dp)): 
+                dp[i].extend(comb + [candidate] for comb in dp[i - candidate])
+        return dp[-1]

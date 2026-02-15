@@ -1,0 +1,14 @@
+class Solution:
+
+    def combinationSum(self, candidates: [int], target: int) -> [[int]]:
+        answer = []
+
+        universe = [([], 0)]
+        for n in candidates:
+            for (ls, v) in universe:
+                if v + n == target:
+                    answer.append(ls + [n])
+                elif v + n < target:
+                    universe.append((ls + [n], v + n))
+
+        return answer

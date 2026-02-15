@@ -1,0 +1,21 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        in_pt =0
+        hole = 0
+        min_diff= float(\'inf\')
+        min_diff_i =0
+        #Finding infection pt and hole
+        for i in range(len(nums)-1,0,-1):
+            if nums[i-1]<nums[i]:
+                in_pt= i
+                hole = i-1
+                break
+        # swapping hole with next biggest number to it\'s right
+        for j in range(in_pt,len(nums)):
+            if nums[j]-nums[hole] > 0:
+                min_diff = min(min_diff,nums[j]-nums[hole])
+                min_diff_i = j
+        nums[hole],nums[min_diff_i] = nums[min_diff_i],nums[hole]
+        #sorting number to the right of hole
+        nums[in_pt:] = sorted(nums[in_pt:])
+        return(nums)

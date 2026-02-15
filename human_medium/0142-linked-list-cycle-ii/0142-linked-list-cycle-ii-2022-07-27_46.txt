@@ -1,0 +1,10 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:   
+        d = set()
+        while head:
+            if head not in d:
+                d.add(head)
+                head = head.next
+            else:
+                return head
+        return None

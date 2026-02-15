@@ -1,0 +1,21 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        if len(s) < 4 or len(s) > 12:
+            return res
+        def is_valid(t):
+            return t and 0 <= int(t) <= 255 and str(int(t)) == t
+        for i in range(1, 4):
+            a = s[:i]
+            if not is_valid(a):
+                continue
+            for j in range(i, i + 4):
+                b = s[i:j]
+                if not is_valid(b):
+                    continue
+                for k in range(j, j + 4):
+                    c = s[j:k]
+                    d = s[k:]
+                    if is_valid(c) and is_valid(d):
+                        res.append(\'.\'.join([a,b,c,d]))
+        return res

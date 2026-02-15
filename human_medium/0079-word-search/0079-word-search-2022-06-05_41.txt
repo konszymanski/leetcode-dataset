@@ -1,0 +1,27 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        
+        def dfs(i, j, pos):
+            char = board[i][j]
+            if char == word[pos]:
+                if pos == n - 1:
+                    return True
+                board[i][j] = \'~\'
+                for r, c in (i+1, j), (i-1, j), (i, j+1), (i, j-1):
+                    if 0 <= r < rows and 0 <= c < cols:
+                        if dfs(r, c, pos+1):
+                            return True
+                board[i][j] = char
+            return False
+
+        rows, cols = len(board), len(board[0])
+        idx, n = 0, len(word)
+        if n > rows * cols:
+            return False
+        if not set(word).issubset(set(sum(board, []))):
+            return False
+        for r in range(rows):
+            for c in range(cols):
+                if dfs(r, c, idx):
+                    return True
+        return False

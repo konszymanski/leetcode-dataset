@@ -1,0 +1,8 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        first_prev = second_prev = 0
+
+        for i in nums:
+            second_prev, first_prev = first_prev, max(second_prev + i, first_prev)
+
+        return first_prev

@@ -1,0 +1,21 @@
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Define the values and their corresponding Roman symbols in descending order
+        # including the subtractive forms (IV, IX, XL, XC, CD, CM).
+        values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+        
+        result = ""
+        
+        # Iterate through the mapping of values and symbols
+        for i in range(len(values)):
+            # While the number is greater than or equal to the current Roman numeral value,
+            # append the symbol to the result and subtract the value from the number.
+            while num >= values[i]:
+                result += symbols[i]
+                num -= values[i]
+                
+        return result
+
+```

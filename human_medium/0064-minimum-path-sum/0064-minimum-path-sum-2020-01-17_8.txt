@@ -1,0 +1,50 @@
+def minPathSum(self, grid: List[List[int]]) -> int:
+        row =  len(grid)
+        column = len(grid[0])
+        
+        # Craft graphs
+        heap = []
+        sum = defaultdict(list)
+        cost = defaultdict(list)
+        graph = defaultdict(list)
+        seen = defaultdict(list)
+        for r in range (0, row):
+            for c in range (0, column):
+                sum[r,c] = float(\'inf\')
+                cost[r,c].append(grid[r][c])
+                # check right
+                if c < column - 1:
+                    graph[r,c].append([r,c+1])
+                # check down
+                if r < row - 1:
+                    graph[r,c].append([r+1,c])
+  
+        # Setup for start and end
+        min_node = (0,0)
+        end_node = ((row-1),(column-1))   
+        sum[(min_node)] = cost.get(min_node)[0]
+        seen[(min_node)] = True
+        
+        while len(seen) > 0:
+            # check attached nodes
+            if graph.get(min_node):
+                # Visit next mini-value node and relax it\'s edge
+                for node in graph.get(min_node):
+                    n = tuple(node)
+                    visit_cost = cost.get(n)[0] + (sum.get(min_node))
+                    # Check if relaxing has reduced the cost
+                    if visit_cost < sum.get(n):
+                        # Update the cost for each updated node
+                        sum[(n)] = visit_cost
+                        # Add to head future nodes to visit
+                        heappush(heap, (visit_cost, n))
+                        seen[(n)] = True
+
+            seen.pop(min_node)
+
+            # Check Next Cost Optimized with a heap
+            if len(heap) > 0:
+                next_min_node = heappop(heap)[1]
+                min_node = next_min_node
+
+        return sum.get(end_node)

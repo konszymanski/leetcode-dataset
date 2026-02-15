@@ -1,0 +1,25 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        if n == 1:
+            return [0, 1]
+        output = [0]
+        
+        def alterTwoBits(lowBitNr):
+            if lowBitNr < 0:
+                return
+            alterTwoBits(lowBitNr - 2)
+            output.append(output[-1] ^ (1 << lowBitNr))
+            alterTwoBits(lowBitNr - 2)
+            output.append(output[-1] ^ (1 << (lowBitNr + 1)))
+            alterTwoBits(lowBitNr - 2)
+            output.append(output[-1] ^ (1 << lowBitNr))
+            alterTwoBits(lowBitNr - 2)
+            
+        if n % 2 == 0:
+            alterTwoBits(n - 2)
+        else:
+            alterTwoBits(n - 3)
+            output.append(output[-1] ^ (1 << (n-1)))
+            alterTwoBits(n - 3)
+        
+        return output

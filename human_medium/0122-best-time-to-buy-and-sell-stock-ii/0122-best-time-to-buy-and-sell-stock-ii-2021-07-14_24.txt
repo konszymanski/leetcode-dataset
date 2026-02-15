@@ -1,0 +1,1 @@
+return sum(max(0, p - q) for p, q in zip(prices[1:], prices))

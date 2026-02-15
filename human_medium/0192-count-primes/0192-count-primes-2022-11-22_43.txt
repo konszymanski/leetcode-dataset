@@ -1,0 +1,20 @@
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        count=0
+        if n<2:
+            return 0
+        else:
+            for i in range(2,n):
+                if self.isPrime(i):
+                    count=count+1
+        return count
+    
+    def isPrime(self,n):
+        if n==2:
+            return True
+        elif n>2:
+            for i in range(2,int(n**0.5)+1):
+                if n%i==0:
+                    return False
+            else:
+                return True

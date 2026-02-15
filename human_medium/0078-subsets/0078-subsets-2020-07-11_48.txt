@@ -1,0 +1,19 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        powerset = [[]]
+        bit = 0
+        end = 0
+		
+        # end = 1111... num 1s = size of list
+        for i in range(len(nums)): 
+			end |= (1 << i)
+			
+        # essentially bit 0 to bit 1111...=end contains all permutations
+        # if you treat 1 as selection from nums, and 0 as ommission
+        # ex: bit 000 = [], 001 = [3],.... 101 = [1,3]... etc - all perms will be covered
+		
+        while (bit & end) != end:
+            bit += 1
+            s = [nums[i] for i in range(len(nums)) if (bit & (1<<i))]
+            powerset.append(s)
+        return powerset

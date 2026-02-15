@@ -1,0 +1,54 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Constraints: -2^31 <= dividend, divisor <= 2^31 - 1
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+        
+        # The only case where overflow can occur in 32-bit signed integer division:
+        # (-2147483648) / (-1) = 2147483648, which exceeds MAX_INT (2147483647)
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # Determine the sign of the quotient
+        negative = (dividend < 0) != (divisor < 0)
+        
+        # Work with absolute values to simplify calculations
+        a, b = abs(dividend), abs(divisor)
+        
+        # res will store the absolute value of the quotient
+        res = 0
+        
+        # Initialize temp_divisor and multiple
+        # temp_divisor will represent divisor * 2^k
+        # multiple will represent 2^k
+        temp_divisor, multiple = b, 1
+        
+        # Find the largest power of 2 such that (divisor * 2^k) <= dividend
+        # Using binary long division logic for efficiency O(log N)
+        while a >= (temp_divisor << 1):
+            temp_divisor <<= 1
+            multiple <<= 1
+        
+        # Subtract from the dividend using binary decomposition
+        # We start with the largest multiple found and shift down
+        while multiple > 0:
+            if a >= temp_divisor:
+                a -= temp_divisor
+                res += multiple
+            # Shift right to check the next power of 2
+            temp_divisor >>= 1
+            multiple >>= 1
+        
+        # Apply the determined sign to the absolute result
+        final_res = -res if negative else res
+        
+        # Clamp the result within the 32-bit signed integer range
+        if final_res > MAX_INT:
+            return MAX_INT
+        if final_res < MIN_INT:
+            return MIN_INT
+            
+        return final_res
+
+```

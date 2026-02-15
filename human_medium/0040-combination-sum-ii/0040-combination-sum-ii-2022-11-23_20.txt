@@ -1,0 +1,21 @@
+class Solution:
+    def findCombinations(self,index,arr,target,ans,ds):
+        if target == 0:
+            ans.append([ele for ele in ds])
+            return
+        
+        for i in range(index,len(arr)):
+            if i > index and arr[i] == arr[i-1]:
+                continue
+            if arr[i] > target:
+                break
+            ds.append(arr[i])
+            self.findCombinations(i+1,arr,target-arr[i],ans,ds)
+            ds.pop()
+        
+        
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        ans = []
+        self.findCombinations(0,candidates,target,ans,[])
+        return ans

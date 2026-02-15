@@ -1,0 +1,9 @@
+def subsets(self, nums: List[int]) -> List[List[int]]:
+
+        subsets = [[]]
+
+        for num in nums:
+            for i in range(len(subsets)):
+                currentSubset = subsets[i]
+                subsets.append(currentSubset + [num])
+        return subsets

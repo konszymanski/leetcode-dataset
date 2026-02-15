@@ -1,0 +1,11 @@
+class Solution:
+    def findMin(self, arr: List[int]) -> int:
+        low,high=0,len(arr)-1
+        if arr[low]<=arr[high]:return arr[low]
+        while low<=high:
+            if low==high:return low
+            mid=(low+high)//2
+            if mid<high and arr[mid+1]<arr[mid]:return arr[mid+1]
+            if mid>low and arr[mid]<arr[mid-1]:return arr[mid]
+            if arr[mid]<arr[high]:high=mid-1
+            else:low=mid+1

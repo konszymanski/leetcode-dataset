@@ -1,0 +1,22 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        a=[] #-- to store the result
+        def fun(a,s,f,l): #-- the function which will be recursively called
+            
+            # print(a,s,f,l) #-- uncomment this to view how the algo works
+            
+            if f==0: #-- when to stop the recursion
+                if l==0: #-- if ends are joined properly
+                    a.append(s)
+                    return
+                while l!=0: #-- joining the ends properly
+                    s+=")"
+                    l+=-1
+                a.append(s)
+                return
+            fun(a,s+"(",f-1,l) #-- 1st kind of recursion where we add a new start
+            if f!=l: #-- condition for ending a start
+                fun(a,s+")",f,l-1) #-- 2nd kind of recursion where we end already started
+            return
+        fun(a,"",n,n) #-- START backtracking
+        return a #-- Return Answer

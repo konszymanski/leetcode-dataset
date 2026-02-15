@@ -1,0 +1,14 @@
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        rows, cols = len(grid), len(grid[0])  # Get rows and cols
+        directions = [[-1, 0], [0, -1]]       # [top direction, left direction]
+        for row in range(len(grid)):          # Loop over the 2D array
+            for col in range(len(grid[0])):
+                tempList = []                 # Define empty list to save the available directions
+                for direction in directions:  # Loop on the available directions
+                    dRow, dCol = direction[0], direction[1]  # Get the direction row and col indices
+                    if 0 <= row + dRow <= rows - 1 and 0 <= col + dCol <= cols - 1: tempList.append(grid[row + dRow][col + dCol])  # Check the bounries and save the grid value to the tempList
+
+                if len(tempList) == 1: grid[row][col] += tempList[0]  # if it\'s only 1 item that means only one grid can reach to the current grid item so we sum the value of the current and the the temp list item
+                elif len(tempList) == 2: grid[row][col] += min(tempList) # if they are 2 items that means there are two grids that can reach to the current grid so we calucalte the minimun between them.
+        return grid[-1][-1]

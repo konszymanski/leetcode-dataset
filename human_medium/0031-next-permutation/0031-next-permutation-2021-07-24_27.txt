@@ -1,0 +1,30 @@
+class Solution:
+    def reverse(self,arr,begin,end): #For reversing the descending order to ascending order
+        while begin < end:
+            arr[begin],arr[end] = arr[end],arr[begin]
+            begin +=1
+            end-=1
+        return arr
+    
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        
+        
+        if (n:=len(nums)) <=2:             #....(1)
+            return self.reverse(nums,0,n-1)
+        
+        ptr = n - 2  #....(2)
+        while ptr>=0 and nums[ptr] >= nums[ptr+1]:
+            ptr-=1
+            
+        if ptr == -1:  # ... (4)
+            return self.reverse(nums,0,n-1)
+        
+        for i in range(n-1,ptr,-1):     #.....(3)
+            if nums[ptr] < nums[i]:
+                nums[ptr],nums[i] = nums[i],nums[ptr]
+                break
+                
+        return self.reverse(nums,ptr+1,n-1)

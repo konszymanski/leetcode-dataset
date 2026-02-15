@@ -1,0 +1,45 @@
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        result = [-1, -1]
+        if not nums:
+            return result
+        
+        self.binary_search(nums, target, 0, len(nums) - 1, result)
+        return result
+        
+    
+    def binary_search(self, nums: List[int], target: int, start_index:int, end_index:int, result: [int, int]):
+        if start_index > end_index:
+            return
+        
+        middle_index = int((start_index + end_index) / 2)
+        current_value = nums[middle_index]
+        
+        if current_value == target:
+            self.update_result(middle_index, result)
+            
+            # Left search binary
+            self.binary_search(nums, target, start_index, middle_index - 1, result)
+            
+            # Right binary search
+            self.binary_search(nums, target, middle_index + 1, end_index, result)
+            
+            return
+        
+        if current_value > target:
+            # Left search binary
+            self.binary_search(nums, target, start_index, middle_index - 1, result)
+            
+        else:
+            # Right binary search
+            self.binary_search(nums, target, middle_index + 1, end_index, result)
+        
+    
+    def update_result(self, index: int, result: [int, int]):
+        if result[0] == -1:
+            result[0] = index
+        if result[1] == -1:
+            result[1] = index
+            
+        result[0] = min(result[0], index)
+        result[1] = max(result[1], index)

@@ -1,0 +1,31 @@
+class Node:
+    def __init__(self, data=None, next=None):
+        self.data = data
+        self.next = next
+
+class MinStack:
+
+    def __init__(self):
+        self.head = Node()
+        
+    def push(self, val: int) -> None:
+        node = Node(val, self.head.next)
+        self.head.next = node
+
+    def pop(self) -> None:
+        if self.head.next:
+            self.head.next = self.head.next.next
+
+    def top(self):
+        if self.head.next:
+            return int(self.head.next.data)
+        else: 
+            return None
+
+    def getMin(self) -> int:
+        min = float(\'inf\')
+        t = self.head
+        while t.next:
+            t = t.next
+            if t.data < min: min = t.data
+        return min

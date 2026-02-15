@@ -1,0 +1,49 @@
+class Node:
+    def __init__(self, val=0, next=None, prev=None, k=None):
+        self.val = val
+        self.next = next
+        self.prev = prev
+        self.k = k
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.head, self.tail = Node(), Node()
+        self.head.next, self.tail.prev = self.tail, self.head
+        self.map = dict()
+
+    def get(self, key: int) -> int:
+        if key in self.map:
+            self.updatePrior(self.map[key])
+            return self.map[key].val
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.map:
+            # update value
+            self.map[key].val = value
+            # update priority
+            self.updatePrior(self.map[key])
+        elif self.cap:
+            self.cap -= 1
+            # create node
+            node = Node(value, self.head.next, self.head)
+            self.map[key] = node
+            node.k = key
+            # insert
+            node.prev, node.next = self.head, self.head.next
+            self.head.next.prev = self.head.next  = node
+        else:
+            # remove key
+            del self.map[self.tail.prev.k]
+            # insert new key and value
+            self.map[key] = self.tail.prev
+            self.tail.prev.k, self.tail.prev.val = key, value
+            # update priority
+            self.updatePrior(self.tail.prev)
+    
+    def updatePrior(self, target):
+        target.prev.next, target.next.prev = target.next, target.prev
+        target.prev, target.next = self.head, self.head.next
+        self.head.next.prev = self.head.next = target

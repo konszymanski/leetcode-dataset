@@ -1,0 +1,27 @@
+class Solution:
+    def wordBreak(self, s, A): # -> bool:
+        A    = set(A)
+        lens = sorted(map(len,A))
+        #
+        L = len(s)
+        #
+        memo = set()
+        def dfs(i):
+            # A) Previous Failed Attempt
+            if i in memo:
+                return False
+            # B) Full Match (Triggers chained exits)
+            if i==L:
+                return True
+            # C) Proper Search
+            for x in lens:
+                # 1) Length Exceeded
+                if (x+i) > L:
+                    break
+                # 2) Find Match
+                if s[i:i+x] in A and dfs(i+x):
+                        return True
+            # 3) Register Failed Attempt
+            memo.add(i)
+            return False
+        return dfs(0)

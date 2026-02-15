@@ -1,0 +1,16 @@
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        
+        if head is None or head.next is None:
+            return head
+        else:
+            # Swap the 2 nodes
+            temp = head 
+            head = head.next
+            temp.next = head.next
+            head.next = temp
+            
+            # call function recursively for next nodes
+            temp.next = self.swapPairs(temp.next)
+        
+        return head

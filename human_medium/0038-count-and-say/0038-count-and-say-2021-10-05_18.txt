@@ -1,0 +1,24 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        curr_string = "1"
+        for iteration in range(2, n+1):
+            prev_char = curr_string[0]
+            count = 0
+            
+            new_string = ""
+            
+            for curr_char in curr_string:
+                if curr_char == prev_char:
+                    count += 1
+                else:
+                    new_string += str(count)
+                    new_string += prev_char
+                    prev_char = curr_char
+                    count = 1
+                    prev_char = curr_char
+					
+            new_string += str(count)
+            new_string += prev_char
+            curr_string = new_string
+
+        return curr_string

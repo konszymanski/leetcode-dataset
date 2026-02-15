@@ -1,0 +1,17 @@
+def reverse(self, x: int) -> int:
+        positive = x > 0
+        limits = [214748364, 7 if positive else 8]  # 2**31 // 10 == (2**31 - 1) // 10 == 214748364
+
+        x = abs(x)
+        rev = 0
+
+        while x != 0:
+            pop = x % 10
+            x //= 10
+
+            if rev > limits[0] or (rev == limits[0] and pop > limits[1]):
+                return 0
+
+            rev = rev * 10 + pop
+
+        return rev if positive else -rev

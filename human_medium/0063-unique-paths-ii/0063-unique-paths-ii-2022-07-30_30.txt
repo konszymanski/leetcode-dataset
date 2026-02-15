@@ -1,0 +1,28 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        if obstacleGrid[-1][-1]==1 or  obstacleGrid[0][0]==1: # if last corner(right) or first corner(left)
+            return 0
+        
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j]==1:
+                    continue
+                elif i==0 and j==0: # for the first corner
+                    obstacleGrid[0][0]=-1
+                elif i==0 and obstacleGrid[i][j-1]!=1 and obstacleGrid[i][j-1]!=0: #intialize the first row
+                    obstacleGrid[0][j]=-1
+                elif j==0 and obstacleGrid[i-1][j]!=1 and obstacleGrid[i-1][j]!=0: #intialize the first column
+                    obstacleGrid[i][0]=-1
+					
+                elif obstacleGrid[i][j-1]==1 and obstacleGrid[i-1][j]==1: # if both left and upper element is 1 (troxic)
+                    obstacleGrid[i][j]=0
+                elif obstacleGrid[i-1][j]==1: #  if left element is 1 (troxic)
+                    obstacleGrid[i][j]=obstacleGrid[i][j-1]
+                elif obstacleGrid[i][j-1]==1: #  if upper element is 1 (troxic)
+                    obstacleGrid[i][j]=obstacleGrid[i-1][j]
+					
+                else: #  if both left and upper element is are not troxic (not 1)
+                    obstacleGrid[i][j]=obstacleGrid[i-1][j]+obstacleGrid[i][j-1]
+        return -obstacleGrid[-1][-1]

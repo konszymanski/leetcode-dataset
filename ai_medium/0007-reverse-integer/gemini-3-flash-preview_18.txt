@@ -1,0 +1,43 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Define the limits for a signed 32-bit integer
+        MIN_INT = -2**31
+        MAX_INT = 2**31 - 1
+        
+        # Determine the sign and work with the absolute value
+        sign = -1 if x < 0 else 1
+        x_abs = abs(x)
+        
+        res = 0
+        while x_abs != 0:
+            # Extract the last digit
+            pop = x_abs % 10
+            x_abs //= 10
+            
+            # Check for overflow before performing the multiplication
+            # Since the environment assumes no 64-bit storage, we simulate the logic:
+            # If sign is positive, check against MAX_INT
+            if sign == 1:
+                if res > (MAX_INT - pop) // 10:
+                    return 0
+            # If sign is negative, check against MIN_INT
+            else:
+                # Use absolute values for the comparison
+                if res > (abs(MIN_INT) - pop) // 10:
+                    # Note: abs(MIN_INT) is 2147483648, which exceeds MAX_INT
+                    # This handles the specific case of -2147483648
+                    if not (res == 214748364 and pop == 8):
+                        return 0
+            
+            res = res * 10 + pop
+            
+        res *= sign
+        
+        # Final boundary check (standard Python safety)
+        if res < MIN_INT or res > MAX_INT:
+            return 0
+            
+        return res
+
+```

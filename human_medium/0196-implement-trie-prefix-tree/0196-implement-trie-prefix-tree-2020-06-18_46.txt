@@ -1,0 +1,56 @@
+## RC ##
+## APPROACH : DATA STRUCTURE CREATION ##
+## LOGIC : CHAIN OF HASHMAPS ##
+## Similar to Leetcode: 1268. Search Suggestions System ##
+## NEW METHOD SEARCH SUBSTRING INTRODUCED ##
+
+## TIME COMPLEXITY: addWord: O(L), search: O(L) ## L = len(word)
+## SPACE COMPLEXITY : O(N*L) ##
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.endOfWord = False
+        
+class Trie:
+    def __init__(self):
+        self.rootNode = TrieNode()
+        
+    # Inserts a word into the trie.
+    def insert(self, word: str) -> None:
+        currNode = self.rootNode
+        for idx, ch in enumerate(word):                     
+            if( ch not in currNode.children ):
+                currNode.children[ch] = TrieNode()          
+            currNode = currNode.children[ch]        # currnode.children[ch]
+        currNode.endOfWord = True
+    
+    # Returns if the word is in the trie.
+    def search(self, word: str) -> bool:
+        currNode = self.rootNode                    
+        for ch in word:
+            if(ch not in currNode.children):
+                return False
+            currNode = currNode.children[ch]
+        return currNode.endOfWord
+    
+    # Returns if there is any word in the trie that starts with the given prefix.
+    def startsWith(self, prefix: str) -> bool:
+        currNode = self.rootNode                            
+        for ch in prefix:
+            if(ch not in currNode.children):
+                return False
+            currNode = currNode.children[ch]
+        return True
+    
+	# can solve 1268. Search Suggestions System
+    # Given a string cat, ( cattle is in trie already), this function returns, how many prefix characters it matches
+    def searchSubstring(self, word: str) -> int:
+        currNode = self.rootNode
+        for i, ch in enumerate(word):
+            if(ch not in currNode.children):
+                return False
+            currNode = currNode.children[ch]
+            if( currNode.endOfWord ):
+                return i + 1
+        return -1

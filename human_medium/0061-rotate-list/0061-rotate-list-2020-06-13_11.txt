@@ -1,0 +1,27 @@
+class Solution:
+    def rotateRight(self, head: \'ListNode\', k: \'int\') -> \'ListNode\':
+        
+        ## RC ##
+        ## APPROACH  : LINKED LIST ##
+        ## 1. Find first length of the linkedlist.
+        ## 2. when you found that next node is null while doing 1, make it a circular linked list, connecting it to head
+        ## 3. Now move n - k positions forward and break the circle.
+        ## 4. step 3 can be reduced to (n-k) % (n - 1)
+        
+        if not head or not head.next:
+            return head
+        
+        old_tail = head
+        n = 1
+        while old_tail.next:
+            old_tail = old_tail.next
+            n += 1
+        old_tail.next = head
+        
+        new_tail = head
+        for i in range(n - k % n - 1):
+            new_tail = new_tail.next
+        new_head = new_tail.next
+        
+        new_tail.next = None
+        return new_head

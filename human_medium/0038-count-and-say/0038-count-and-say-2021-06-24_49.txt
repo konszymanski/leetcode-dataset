@@ -1,0 +1,21 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n==1:
+            return "1"
+        
+        somestr = Solution().countAndSay(n-1)
+        if somestr == "1":
+            return "11"
+        
+        res = \'\'
+        count = 1
+        for i in range(1,len(somestr)):
+            if somestr[i] == somestr[i-1]:
+                count += 1
+            else:
+                res += str(count)+somestr[i-1]
+                count = 1
+            if i == len(somestr)-1:
+                res += str(count)+somestr[i]
+      
+        return res

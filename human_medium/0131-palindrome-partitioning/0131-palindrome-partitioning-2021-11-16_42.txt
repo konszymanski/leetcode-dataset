@@ -1,0 +1,29 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        recorder = [[] for _ in range(len(s))]
+        output = []
+        
+        def palindrome_finder(array):
+            left = array[0]
+            right = array[-1]
+            while left>=0 and right<len(s) and s[left]==s[right]:
+                recorder[left].append(right)
+                left -= 1
+                right += 1
+                
+        def partition_finder(index ,recorder, output, path):
+            for i in recorder[index]:
+                new_path = path+[s[index:i+1]]
+                if i==len(s)-1:
+                    output.append(new_path)
+                else:
+                    partition_finder(i+1, recorder, output, new_path)
+        
+        for i in range(len(s)):
+            palindrome_finder([i])
+            if i!=0 and s[i-1]==s[i]:
+                palindrome_finder([i-1, i])
+                
+        output = []
+        partition_finder(0, recorder, output, [])
+        return output

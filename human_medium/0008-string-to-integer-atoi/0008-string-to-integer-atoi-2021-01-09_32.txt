@@ -1,0 +1,40 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        # pointer denoting current index of traversal
+        i = 0
+        
+        # ignoring whitespaces
+        while i < len(s) and s[i] == \' \':
+            i += 1
+        # if string consists of only whitespaces
+        if i == len(s):
+            return 0
+        
+        # value to be returned
+        num = 0
+        # 1 if num is nonnegative, -1 if num is negative
+        sign = 1
+        
+        # checking for a sign (+/-) character
+        if s[i] == \'-\':
+            sign = -1
+            i += 1
+        elif s[i] == \'+\':
+            i += 1
+            
+        # handling numeric characters until we see a non-numeric character
+        while i < len(s) and s[i].isdigit():
+            num *= 10
+            num += ord(s[i]) - ord(\'0\')
+            i += 1
+        
+        # if we need to make num negative 
+        num *= sign
+        
+        # handling out-of-range values
+        if num >= 2 ** 31:
+            num = 2 ** 31 - 1
+        elif num < -(2 ** 31):
+            num = -(2 ** 31)
+
+        return num

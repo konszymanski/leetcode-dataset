@@ -1,0 +1,42 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#create queue , FIFO and start pushing the list based on the R->L and L->R format
+# go through 
+#used deque because popleft in deque is o(1) unlike list where its o(n) 
+#source https://wiki.python.org/moin/TimeComplexity
+
+from collections import deque
+
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        queue = deque()
+        if root:
+            queue.append(root)
+        pattern = "L->R"
+        sub_list = []
+        final_list = []
+        while len(queue)>0:
+            size_of_queue = len(queue)
+            sub_list = []
+            for node_on_same_level in range(size_of_queue):
+                node_popped = queue.popleft()
+                if node_popped:
+                    sub_list.append(node_popped.val)
+                    if node_popped.left:
+                        queue.append(node_popped.left)
+                    if node_popped.right:
+                        queue.append(node_popped.right)
+                
+            if pattern== "R->L":
+                sub_list = sub_list[::-1]
+                pattern = "L->R" 
+            elif pattern== "L->R":
+                pattern = "R->L" 
+                
+            final_list.append(sub_list)
+        return final_list

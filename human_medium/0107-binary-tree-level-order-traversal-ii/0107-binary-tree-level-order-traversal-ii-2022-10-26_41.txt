@@ -1,0 +1,21 @@
+def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        dict = {}
+        if root is None:
+            return []
+        d = self.traverse(root, dict, 0)
+        list = []
+        for i in range(len(d.keys())-1,-1,-1):
+            list.append(d[i])
+        return list
+    
+    def traverse(self, root, d, l):
+        if root is None:
+            return
+        if l not in d.keys():
+            d[l] = []
+            d[l].append(root.val)
+        else:
+            d[l].append(root.val)
+        self.traverse(root.left, d, l+1)
+        self.traverse(root.right, d, l+1)
+        return d

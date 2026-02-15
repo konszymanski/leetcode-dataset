@@ -1,0 +1,41 @@
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Define the values and their corresponding Roman symbols in descending order.
+        # Include subtractive forms (4, 9, 40, 90, 400, 900) as per the rules.
+        val_to_sym = [
+            (1000, "M"),
+            (900, "CM"),
+            (500, "D"),
+            (400, "CD"),
+            (100, "C"),
+            (90, "XC"),
+            (50, "L"),
+            (40, "XL"),
+            (10, "X"),
+            (9, "IX"),
+            (5, "V"),
+            (4, "IV"),
+            (1, "I")
+        ]
+        
+        roman_numeral = []
+        
+        # Iterate through the symbol-value mapping.
+        for value, symbol in val_to_sym:
+            # If the number is 0, we have completed the conversion.
+            if num == 0:
+                break
+            
+            # Determine how many times the current symbol can fit into the number.
+            count = num // value
+            if count > 0:
+                # Append the symbol 'count' times to the result list.
+                roman_numeral.append(symbol * count)
+                # Reduce num by the total value represented by those symbols.
+                num %= value
+                
+        # Join the list into a single string and return it.
+        return "".join(roman_numeral)
+
+```

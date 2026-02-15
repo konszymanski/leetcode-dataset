@@ -1,0 +1,21 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+
+        queue = deque([0])
+        wordDict = set(wordDict) # T.C: O(M) S.C: O(M*L)
+        seen = set()
+        while len(queue) != 0:
+            
+            for _ in range(len(queue)): # T.C: O(N) S.C: O(N)
+                
+                index = queue.popleft()
+                if index == len(s):
+                    return True
+                
+                for i in range(index, len(s)+1): # T.C O(n^2) for loop and slice. S.C: O(N)
+                    check = s[index: i]
+                    if check in wordDict and index+len(check) not in seen: # O(1)
+                        queue.append(index+len(check))
+                        seen.add(index+len(check))
+        
+        return False

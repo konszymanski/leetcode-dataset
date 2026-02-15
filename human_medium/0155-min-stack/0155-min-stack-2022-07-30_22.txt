@@ -1,0 +1,36 @@
+class MinStack:   ########### TC=O(1) and SC=O(1)
+
+    def __init__(self):
+        self.stack=[]
+        self.mini=10000000
+        
+    def push(self, val: int) -> None:
+        
+        if len(self.stack)==0:
+            self.stack.append(val)
+            self.mini=val
+            
+        else:
+            if val>=self.mini:
+                self.stack.append(val)
+            else:
+                self.stack.append((2*val)-self.mini)
+                self.mini=val
+        
+
+    def pop(self) -> None:
+        if self.stack[-1]>=self.mini:
+            self.stack.pop()
+        else:
+            self.mini=(2*self.mini)-self.stack[-1]
+            self.stack.pop()
+                
+    def top(self) -> int:
+        if self.stack[-1]>=self.mini:
+            return self.stack[-1]
+        else:
+            return self.mini
+        
+
+    def getMin(self) -> int:
+            return self.mini

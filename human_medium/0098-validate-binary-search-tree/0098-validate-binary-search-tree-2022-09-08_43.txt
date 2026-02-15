@@ -1,0 +1,22 @@
+from sys import maxsize as M
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        
+        min_val, max_val = -M-1, M
+        
+        def isValid(root,min_val,max_val):
+            
+            #A null node satisfies the BST properties
+            if root==None:
+                return True
+            
+            \'\'\'If current node\'s value is more than or equal to the max possible value
+               or less than or equal to min possible value, it violates BST property\'\'\'
+            if root.val>=max_val or root.val<=min_val:
+                return False
+            
+            #Both left and right subtrees must satisfy BST condition
+            return isValid(root.left,min_val,root.val) and isValid(root.right,root.val,max_val)
+        
+        return isValid(root,min_val,max_val)

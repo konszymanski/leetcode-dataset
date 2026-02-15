@@ -1,0 +1,20 @@
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        
+        dummy = ListNode()
+        dummy.next = head
+        
+        def dfs(node):
+            if node:
+                c = dfs(node.next)
+                
+                if c == n:
+                    node.next = node.next.next
+                
+                return c + 1
+            else:
+                return 0
+        
+        dfs(dummy)
+        
+        return dummy.next

@@ -1,0 +1,16 @@
+def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        
+	# - helper
+	def recurse(start, s, combo):
+		if s == n and len(combo) == k:
+			res.append(combo)
+
+		for i in range(start, 10): # fixed endIndx (1 thru 9)
+			if s+i <= n and len(combo) <= k:
+				newCombo = combo + [i]
+				recurse(i+1, s+i, newCombo)
+		return res
+
+	# - main
+	res = []
+	return recurse(1, 0, []) # start, sum, combo (sum always = 0)

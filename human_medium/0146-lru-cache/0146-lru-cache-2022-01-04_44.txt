@@ -1,0 +1,77 @@
+class Node: # DLL = Doubly linked list, (int, int, Node, Node)
+    def __init__(self, key, value, prev = None, next = None):
+        self.key = key
+        self.value = value
+        self.prev = prev
+        self.next = next
+        
+    def __str__(self):
+        return str(self.__class__) + ": " + str(self.__dict__)
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity_remaining = capacity
+        self.map = {}
+        self.first = self.last = None
+
+    def get(self, key: int) -> int:
+        if key in self.map:
+            to_retrieve = self.map[key]
+            self.move_to_front(to_retrieve)
+            return to_retrieve.value
+        return -1
+                    
+    def put(self, key: int, value: int) -> None:
+        node_to_move = None
+        if key in self.map:
+            node_to_move = to_replace = self.map[key]
+            to_replace.value = value
+        else:
+            self.evict_if_full()
+            node_to_move = inserted_node = self.map[key] = Node(key, value)
+            self.capacity_remaining -= 1
+        self.move_to_front(node_to_move)
+            
+    def connect_two_nodes(self, first: Node, second: Node) -> None:
+        if first:
+            first.next = second
+        if second:
+            second.prev = first
+            
+    def move_to_front(self, node_to_move: Node = None) -> None:
+        if node_to_move != self.first:
+            self.connect_two_nodes(node_to_move.prev, node_to_move.next)
+            if node_to_move is self.last:
+                self.advance_last()
+            self.connect_two_nodes(None, node_to_move)
+            self.connect_two_nodes(node_to_move, self.first)
+            self.first = node_to_move
+            if not self.last: # encountered if empty, or capacity is only 1
+                self.last = node_to_move
+    
+    def evict_if_full(self):
+        if self.capacity_remaining == 0:  
+            del self.map[self.last.key]
+            if self.first is not self.last:
+                self.advance_last()
+            else: # encountered if empty, or capacity is only 1
+                self.first = self.last = None
+            self.capacity_remaining += 1
+    
+    def advance_last(self):
+        self.last = self.last.prev
+        self.last.next = None
+    
+#     def print_f_to_l(self):
+#         curr = self.first
+#         while curr:
+#             print(\'f \', curr)
+#             curr = curr.next
+#         print()
+
+#     def print_l_to_f(self):
+#         curr = self.last
+#         while curr:
+#             print(\'l \', curr)
+#             curr = curr.prev
+#         print()

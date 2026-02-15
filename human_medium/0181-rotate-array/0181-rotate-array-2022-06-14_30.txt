@@ -1,0 +1,5 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        dummy = list(nums)
+        for i in range(0, len(nums)):
+            nums[ (i + k) % len(nums)] = dummy[i]

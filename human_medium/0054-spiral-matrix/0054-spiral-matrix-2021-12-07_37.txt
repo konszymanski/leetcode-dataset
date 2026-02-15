@@ -1,0 +1,38 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        def in_range(i, j):
+            return 0 <= i < R and 0 <= j < C and matrix[i][j] != \'x\'
+        
+        R, C = len(matrix), len(matrix[0])
+        res = []
+        curr_i, curr_j, curr_dir = 0, 0, \'R\'
+        
+        while len(res) < R * C:
+            res.append(matrix[curr_i][curr_j])
+            matrix[curr_i][curr_j] = \'x\'
+            if curr_dir == \'R\':
+                if in_range(curr_i, curr_j + 1):
+                    curr_j += 1
+                else:
+                    curr_i += 1
+                    curr_dir = \'D\'
+            elif curr_dir == \'D\':
+                if in_range(curr_i + 1, curr_j):
+                    curr_i += 1
+                else:
+                    curr_j -= 1
+                    curr_dir = \'L\'
+            elif curr_dir == \'L\':
+                if in_range(curr_i, curr_j - 1):
+                    curr_j -= 1
+                else:
+                    curr_i -= 1
+                    curr_dir = \'U\'
+            else:
+                if in_range(curr_i - 1, curr_j):
+                    curr_i -= 1
+                else:
+                    curr_j += 1
+                    curr_dir = \'R\'
+        
+        return res

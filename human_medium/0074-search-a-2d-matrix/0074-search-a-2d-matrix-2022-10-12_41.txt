@@ -1,0 +1,21 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        l,r=0,len(matrix)
+        while l<r:
+            m=(l+r)//2
+            if matrix[m][0]>target:
+                r=m
+            else:
+                l=m+1
+        i=l-1
+        if i==-1:
+            return False
+        l,r=0,len(matrix[i])
+        while l<r:
+            m=(l+r)//2
+            if matrix[i][m]>=target:
+                r=m
+            else:
+                l=m+1
+        j=l
+        return target in matrix[i][j:j+1]

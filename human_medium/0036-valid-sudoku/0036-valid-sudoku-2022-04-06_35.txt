@@ -1,0 +1,1 @@
+def hasDuplicate(nums): return len(set(nums)) != len(nums)

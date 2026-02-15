@@ -1,0 +1,52 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows, cols = len(board), len(board[0])
+        
+        # Search pruning: Quick frequency check
+        board_counts = Counter()
+        for r in range(rows):
+            for c in range(cols):
+                board_counts[board[r][c]] += 1
+        
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Search pruning: Start from the side of the word with fewer occurrences in the board
+        if board_counts[word[0]] > board_counts[word[-1]]:
+            word = word[::-1]
+
+        def dfs(r, c, i):
+            if i == len(word):
+                return True
+            
+            if r < 0 or c < 0 or r >= rows or c >= cols or board[r][c] != word[i]:
+                return False
+            
+            # Mark the cell as visited using a character that won't match any letter
+            temp = board[r][c]
+            board[r][c] = '#'
+            
+            # Explore all 4 adjacent directions
+            found = (dfs(r + 1, c, i + 1) or 
+                     dfs(r - 1, c, i + 1) or 
+                     dfs(r, c + 1, i + 1) or 
+                     dfs(r, c - 1, i + 1))
+            
+            # Backtrack: restore the cell's original value
+            board[r][c] = temp
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0]:
+                    if dfs(r, c, 0):
+                        return True
+                        
+        return False
+```

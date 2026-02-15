@@ -1,0 +1,25 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        N = len(prices)
+        
+        if N == 1:
+            return 0
+        
+        
+        
+        stock_on_hand = min(prices[0], prices[1])
+        gains = 0
+        
+        for i in range(1, N):
+            curr_stock = prices[i]
+            
+            
+            if curr_stock < stock_on_hand:
+                stock_on_hand = curr_stock
+            
+            elif curr_stock > stock_on_hand:
+                gains += (curr_stock - stock_on_hand)
+                stock_on_hand = curr_stock
+                
+                
+        return gains

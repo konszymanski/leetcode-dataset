@@ -1,0 +1,32 @@
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+		# handle edge cases when we get nothing or there is only 1 element
+        if not head or not head.next:
+            return head
+
+        sorted_head = head
+        node = head.next
+        sorted_head.next = None  # detach sorted from the rest
+        while node:
+            next_node = node.next
+            
+            if node.val < sorted_head.val:
+                # put node before head sorted_head
+                node.next = sorted_head
+                sorted_head = node
+            else:
+                insert_after_node = sorted_head
+                while (next_sorted_node := insert_after_node.next):
+                    if next_sorted_node.val > node.val:
+                        # put node after insert_after_node before next_sorted_node
+                        insert_after_node.next, node.next = node, next_sorted_node
+                        break                
+                    insert_after_node = next_sorted_node
+                else:
+				    # put node at the end
+                    insert_after_node.next = node                    
+                    node.next = None                             
+            
+            node = next_node
+                        
+        return sorted_head

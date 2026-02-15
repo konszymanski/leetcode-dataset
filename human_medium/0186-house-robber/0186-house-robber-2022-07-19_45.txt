@@ -1,0 +1,47 @@
+class Solution(object):
+    def rob(self, nums):
+
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Condition: as long as there is no adjacent houses
+
+        # there is 2 positions to start from: 1st position and 2nd position (0th and 1st index)
+       
+        # Each subproblem involves:
+            # two possible combinations to either rob the house 3 blocks/houses away (current+3)
+            # or to rob the house 2 blocks/houses away (current+2)
+
+            # Note: it won\'t make sense to rob 4 blocks/houses away, because that would be inefficient 
+					  # when we can rob the one which is 2 blocks/houses away first 
+							# before moving to the one which is 4 blocks/houses away
+               
+        # i is the current index
+        def minMax(self, i, cache={}):  
+            
+            # Base Case 1, if a house 2 blocks/houses away can be rob from the current house 
+				# but the house 3 blocks/houses away can\'t be rob...
+                # the recursive call will still be happen because i+2 is a valid index, although i+3 is not a valid index
+				# therefore, this base case will return 0 for any calls with i+3 as the inputted index. 
+            if i >= len(nums):
+                return 0
+            
+            # Base Case 2, if we are near the end of the array where there are no more houses that can be rob...
+				# Not even the house 2 blocks away or 3 blocks away (cause it doesn\'t exist). 
+            if i + 2 >= len(nums):
+                return nums[i]
+            
+            # If we haven\'t reach the base case, then we can check the cache for efficiency 
+				# this will allow us to avoid this recursive call --> ( max(minMax(self, i+2), minMax(self, i+3)) )
+            if i in cache:
+                return cache[i]
+            # If the cache doesn\'t have it,
+				# then we can add the next best-rob-combination\'s value ( max(minMax(self, i+2), minMax(self, i+3)) )
+				# to the current house\'s rob value ( nums[i] )
+            else:
+                cache[i] = nums[i] + max(minMax(self, i+2), minMax(self, i+3))
+                return cache[i]      
+        
+        # the two positions to start from: 0th and 1st index
+        return max(minMax(self, 0), minMax(self, 1))

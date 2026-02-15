@@ -1,0 +1,26 @@
+class MinStack:
+
+    def __init__(self):
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        if not self.stack:
+            self.stack.append((val,val))  # storing tuple of current value , min of curr and prev value of stack
+        else:
+            self.stack.append((val, min(val,self.stack[-1][1]))) # min of prev value & curr
+
+    def pop(self) -> None:
+        if self.stack:
+            self.stack.pop()
+
+    def top(self) -> int:
+        if self.stack:
+            return self.stack[-1][0]   # curr value at 1st index of tuple
+        else:
+            return None
+
+
+    def getMin(self) -> int:
+        if not self.stack:
+            return None
+        return self.stack[-1][1]   # min value at 2nd index of tuple

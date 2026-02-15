@@ -1,0 +1,28 @@
+class Solution:
+  def findMin(self, nums: List[int]) -> int:
+  """This is a standard solution, nothing much special, 
+  But I want to highlight one thing, 
+  this problem kinda similar to that of the find peak element, with the difference being 
+  there we are actually comparing mid with mid + 1 element.. but here code almost remains same, 
+  but instead of mid + 1 element, we compare mid with \'right\' element. 
+  
+  Reason being peak element is a local phenomenon, where as finding the minimum/max element
+  is a global phenomenon. Hence comparing with right instead of mid + 1 is reasonable, 
+  Can we not be able to do the problem by comparing with mid + 1, ofcourse we can.. this is just the another way
+  which is concise in nature.
+  
+  PS: Don\'t worry if you get stuck, I also did get stuck in which approach to use, 
+  whether it left < right or left <= right ?? shall I follow the template presented in the binary search template or not ? 
+  I was trying to stick to the template very rigidly, I think that is where I did the mistake... instead what I think better is 
+  grasp the high level picture and implement the code in the way that you feel comfortable explaining and writing is better...
+  with time it will get refined.. All the best !!
+  """
+    left, right = 0, len(nums) - 1
+    while left <= right:
+      mid = (left + right)//2
+      if left == right:
+        return nums[left]
+      elif nums[mid] > nums[right]:
+        left = mid + 1
+      else:
+        right = mid

@@ -1,0 +1,30 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        candidates.sort()
+        
+        def backtrack(remain, curr, start):
+            if remain == 0:
+                res.append(list(curr))
+                return
+            
+            for i in range(start, len(candidates)):
+                # If the candidate exceeds the remaining target, no point in checking further elements
+                # because candidates are sorted.
+                if candidates[i] > remain:
+                    break
+                
+                # Choose the number
+                curr.append(candidates[i])
+                # Recurse with the same index i since we can reuse the same number
+                backtrack(remain - candidates[i], curr, i)
+                # Backtrack: remove the number to explore other possibilities
+                curr.pop()
+        
+        backtrack(target, [], 0)
+        return res
+
+```

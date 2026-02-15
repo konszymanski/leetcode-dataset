@@ -1,0 +1,24 @@
+class Solution:
+    def connect(self, root: \'Optional[Node]\') -> \'Optional[Node]\':
+        parent = root
+        nextChild = root.left if root else None
+
+        # traverse the tree parent and next child that will be 
+        # required once right side nodes are covered and we come back to this state
+        while parent and nextChild:
+            parent.left.next = parent.right
+            
+            # if parent has right side node
+            rightSideNode = parent.next
+            if rightSideNode:
+                parent.right.next = rightSideNode.left
+
+            # next parent will be next right side node
+            parent = rightSideNode
+
+            # if there is no next right side node, go downward (next left child)
+            if parent == None:
+                parent = nextChild
+                nextChild = parent.left
+                
+        return root

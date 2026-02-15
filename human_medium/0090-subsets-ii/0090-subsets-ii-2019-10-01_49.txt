@@ -1,0 +1,27 @@
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        nums.sort()
+        res = [[]]
+        last = None
+        counter = 0
+        for i in range(len(nums)):
+            if nums[i] == last:
+                counter += 1
+            else:
+                counter = 0
+            new_res = res[:]
+            for lst in new_res:
+                if last == nums[i]:
+                    if len(lst) >= counter and lst[-counter] != last:
+                        continue
+                    if len(lst) < counter:
+                        continue
+                new_lst = lst[:]
+                new_lst.append(nums[i])
+                res.append(new_lst)
+            last = nums[i]
+        return res

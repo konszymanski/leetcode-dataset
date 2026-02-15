@@ -1,0 +1,11 @@
+@cache
+        def backtrack(curr_sum):
+            if curr_sum>target:
+                return 0
+            if curr_sum==target:
+                return 1
+            res =0
+            for i in range(len(nums)):
+                res+=backtrack(curr_sum+nums[i])
+            return res
+        return backtrack(0)

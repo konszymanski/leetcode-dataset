@@ -1,0 +1,17 @@
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if len(digits) == 0:
+            return []
+         res = []
+        dt = {\'2\':\'abc\',\'3\':\'def\',\'4\':\'ghi\',\'5\':\'jkl\',\'6\':\'mno\',\'7\':\'pqrs\',\'8\':\'tuv\',\'9\':\'wxyz\'
+        }
+        def helper(index,string):
+            if index==len(digits):
+                res.append(string)
+                return True
+            for ele in (dt[digits[index]]):
+                string+=ele
+                helper(index+1,string)
+                string = string[:-1]
+        helper(0,"")
+        return res

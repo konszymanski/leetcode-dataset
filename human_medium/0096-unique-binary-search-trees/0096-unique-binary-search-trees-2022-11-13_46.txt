@@ -1,0 +1,6 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        @lru_cache(20)
+        def helper(n):
+            return sum(helper(i) * helper(n - 1 - i) for i in range(n)) if n else 1
+        return helper(n)

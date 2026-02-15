@@ -1,0 +1,17 @@
+class Solution:
+    def gcHelper(self, n: int) -> List[int]:
+        if n == 1:
+            return [\'0\',\'1\']
+        temp = self.gcHelper(n-1)
+        l = len(temp)
+        res = []
+        for i in range(l):
+            s = temp[i]
+            res.append(\'0\'+s)
+        for i in range(l-1,-1,-1):
+            s = temp[i]
+            res.append(\'1\'+s)
+        return res
+    def grayCode(self,n):
+        res = self.gcHelper(n)
+        return [int(i,2) for i in res]

@@ -1,0 +1,31 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        """
+        Use BFS for backtracking
+        """
+        ans = []
+        queue = deque()
+        for idx, candidate in enumerate(candidates):
+			"""
+			param1: index of the last added number(to avoid checking duplicated elements)
+			param2: current sum
+			param3: array of candidates
+			"""
+            queue.append((idx, candidate, [candidate]))    
+			
+        n = len(candidates)
+        while queue:
+            idx, cur_sum, arr = queue.popleft()
+            if cur_sum == target:
+                ans.append(arr)
+                continue
+            for i in range(idx, n):  # we start from the last added candidate\'s index to avoid adding previous candidate
+                candidate = candidates[i]
+                new_sum = cur_sum + candidate
+                new_arr = arr.copy()
+                new_arr.append(candidate)
+                if new_sum == target:
+                    ans.append(new_arr)
+                elif new_sum < target:
+                    queue.append((i, new_sum, new_arr))
+        return ans

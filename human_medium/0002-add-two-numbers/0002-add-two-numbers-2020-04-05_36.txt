@@ -1,0 +1,31 @@
+class ListNode:
+    def __init__(self, x, next_node=None):
+        self.val = x
+        self.next = next_node
+
+
+class Solution:
+    def addTwoNumbers(self, first: ListNode, second: ListNode) -> ListNode:
+        second = ListNode(None, second)
+        result = first = ListNode(None, first)
+        to_add = 0
+
+        while first.next is not None and second.next is not None:
+            first, second = first.next, second.next
+			to_add, first.val = divmod(first.val + second.val + to_add, 10)
+
+        # if there are any elements left in the second list
+        # then add them to the first list
+        if second.next is not None:
+            first.next = second.next
+
+        # compute sums to remaining elements
+        while first.next is not None:
+            first = first.next
+            to_add, first.val = divmod(first.val + to_add, 10)
+
+        # create a new node for remainder if it is not empty
+        if to_add:
+            first.next = ListNode(to_add)
+
+        return result.next

@@ -1,0 +1,34 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+       
+        def hasCycle(currCourse):
+			\'\'\'Cycle found\'\'\'
+            if visited[currCourse] == -1:
+                return True
+            
+            if visited[currCourse] == 1:
+                return False
+            
+            \'\'\'-1 to mark node not completely visited \'\'\'
+            visited[currCourse] = -1
+            
+            for neighborCourse in graph[currCourse]:
+                if hasCycle(neighborCourse):
+                    return True
+            \'\'\'1 to mark node completely visited\'\'\'
+            visited[currCourse] = 1
+            return False
+        
+        
+        \'\'\'create a directed graph\'\'\'
+        graph = collections.defaultdict(list)
+        for u,v in prerequisites:
+            graph[u].append(v)
+            
+        visited = collections.defaultdict(int)
+        
+        for i in range(numCourses):
+            if hasCycle(i):
+                return False
+        
+        return True

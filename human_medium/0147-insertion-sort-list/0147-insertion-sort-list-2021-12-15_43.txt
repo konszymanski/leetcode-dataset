@@ -1,0 +1,25 @@
+#Runtime: 2977 ms, faster than 5.10% of Python3 online submissions for Insertion Sort List.
+#Memory Usage: 16.3 MB, less than 89.80% of Python3 online submissions for Insertion Sort List.
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+	    #use a fake head to simplify the process of inserting elements at the start of the list
+        fakeHead, fakeHead.next = ListNode(-5001), head
+        prev, new = fakeHead, head
+       
+        #while there is something remaining to be sorted
+        while new:
+            #find place to put unsorted node \'new\'
+            curr = fakeHead
+            while curr.next and curr != prev and curr.next != new and new.val >= curr.next.val:
+                curr = curr.next
+           
+            #insert node \'new\'
+            curr.next, new.next, prev.next, new, prev = new if curr.next != new else curr.next, curr.next if curr.next != new else new.next, prev.next.next if curr.next != new else prev.next, new.next, prev if curr.next != new else new
+           
+        #return the original head (not the fake one)
+        return fakeHead.next

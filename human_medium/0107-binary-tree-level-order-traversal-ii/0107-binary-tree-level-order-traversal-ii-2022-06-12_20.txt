@@ -1,0 +1,24 @@
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        
+        if not root:
+            return 
+        
+        lst = []
+        q = [root]
+        
+        while q:
+            val = []
+            nodes = []
+            for i in q:
+                val.append(i.val)
+                if i.left:
+                    nodes.append(i.left)
+                    
+                if i.right:
+                    nodes.append(i.right)
+                    
+            lst.append(val)
+            q = nodes
+            
+        return lst[::-1]

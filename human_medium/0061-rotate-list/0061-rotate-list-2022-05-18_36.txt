@@ -1,0 +1,61 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    
+    # PATTERN: IN-PLACE REVERSAL OF A LINKED LIST
+    # Intuition:  The nodes in the list are already linked, and hence the rotation basically means
+        # - To close the linked list into the ring.
+        # - To break the ring after the new tail and just in front of the new head.
+
+    # Q: "Where is the new head?"
+    # A: In the position \'n - k\', where \'n\' is a number of nodes in the list. The new tail is just before, in the position \'n - k - 1\'.
+    
+    # Q: "We were assuming that \'k < n\'. What about the case of \'k >= n\'?"
+    # A: \'k\' could be rewritten as a sum: \'k = (k // n) * n + k % n\', where the first term doesn\'t result in any rotation. Hence one could simply replace k by k % n to always have number of rotation places smaller than n.
+
+    # Algorithm: The algorithm is quite straightforward :
+
+        # 1) Find the old tail and connect it with the head old_tail.next = head to close the ring. Compute the length of the list n at the same time.
+        # 2) Find the new tail, which is (n - (k % n) - 1)th node from the head and the new head, which is (n - (k % n))th node.
+        # 3) Break the ring new_tail.next = None and return new_head.
+        
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        
+        # Base case scenarios: (i) LinkedList has 0 nodes (ii) LinkedList has only 1 node (iii) rotations is less than 0 (invalid rotation as we can only move to the right) or equal to 0 (so LinkedList stays the same)
+        if (head is None) or (head.next is None) or (k <= 0):
+            return head
+        
+        # 1. Find the original tail and connect it with the head \'old_tail.next = head\' to close the ring. Compute the length of the list n at the same time.
+        list_length = 1
+        original_tail = head
+        
+        while (original_tail.next != None):
+            original_tail = original_tail.next
+            list_length += 1
+            
+        original_tail.next = head  # connect tail of LinkedList to the head to close the ring
+        
+        # 2. Find the new head, which is (list_length - (k % list_length))th node from the original head, and the new tail, which is (list_length - (k % list_length) - 1)th node from the original head.
+        
+        k %= list_length  # no need to do rotations more than list length, so we take modulus (i.e. k = k % list_length)
+        skip_length = list_length - k
+        new_tail = head
+        
+        for i in range(skip_length - 1):
+            new_tail = new_tail.next
+            
+        new_head = new_tail.next  # we iterated through LinkedList to find new_tail (at (list_length - (k % list_length) - 1)th node from the original head) and so our new_head will be the next node from this node (at (list_length - (k % list_length))th node from the original head)
+        
+        # break the ring between our new head and new tail
+        new_tail.next = None
+        
+        # as this is a singly linked list, we don\'t need to manually make the previous of our new_head be equal to None, just pointing the next of new_tail to None will break the ring
+        
+        return new_head
+    
+    # Time Complexity: The time complexity of our algorithm will be O(N), where \u2018N\u2019 is the total number of nodes in the LinkedList.
+
+    # Space Complexity: We only used constant space, therefore, the space complexity of our algorithm is O(1).

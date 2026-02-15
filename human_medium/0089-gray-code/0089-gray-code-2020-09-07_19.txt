@@ -1,0 +1,29 @@
+class Solution:
+    
+    def bitdiff(self, a: int, b: int, n: int) -> int:
+        count = 0
+        for i in range(n):
+            if (a >> i) & 1 != (b >> i) & 1:
+                count += 1
+        return count
+    
+    def backtrack(self, n: int, history: Set[int], result: List[int]) -> bool:
+        if 1 << n == len(result):
+            return self.bitdiff(result[0], result[-1], n) == 1
+        else:
+            prev = result[-1]
+            for i in range(n):
+                candidate = prev ^ (1 << i)
+                if candidate not in history:
+                    history.add(candidate)
+                    result.append(candidate)
+                    if self.backtrack(n, history, result):
+                        return True
+                    history.remove(candidate)
+                    result.pop()
+        return False
+    
+    def grayCode(self, n: int) -> List[int]:
+        code = [0]
+        self.backtrack(n, {0}, code)
+        return code

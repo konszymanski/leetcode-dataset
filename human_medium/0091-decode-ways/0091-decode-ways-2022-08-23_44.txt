@@ -1,0 +1,75 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        # solution with all possible approach
+        # please see a solution in given order in order to get full understanding 
+        # All solution are optimized from its above solution
+        
+        ## recursion only
+        ## this will throw TLE
+        # def func(s):
+        #     if (len(s) == 1 and s[0] != \'0\') or (len(s) == 0):
+        #         return 1
+        #     elif s[0] == \'0\':  
+        #         # as there is no decode for leading zero string i.e. \'06\',\'0\'
+        #         return 0
+        #     if int(s[:2]) <= 26: 
+        #         # we can consider all decoding from 1 to 26
+        #         return func(s[1:]) + func(s[2:])                                
+        #     else:   
+        #         # as first 2 charactor will be greater than 26 we will only consider one char. for decoding
+        #         return func(s[1:])       
+        # return func(s)
+    
+    
+        ## recursion + memoization/cache(using dictionary)
+        # def func(s):
+        #     if (len(s) == 1 and s[0] != \'0\') or (len(s) == 0):
+        #         return 1
+        #     elif s[0] == \'0\':
+        #         return 0
+        #     elif s in dp:
+        #         return dp[s]
+        #     if int(s[:2]) <= 26:
+        #         dp[s] = func(s[1:]) + func(s[2:])
+        #         return dp[s]                
+        #     else:
+        #         dp[s] = func(s[1:])
+        #         return dp[s]
+        # dp = {}        
+        # return func(s)
+        
+        
+        # ## recursion + memoization/cache(using list)
+        # def func(s,idx):
+        #     if (len(s) == 1 and s[0] != \'0\') or (len(s) == 0):
+        #         return 1
+        #     elif s[0] == \'0\':
+        #         return 0
+        #     elif dp[idx] != -1:
+        #         return dp[idx]
+        #     if int(s[:2]) <= 26:
+        #         dp[idx] = func(s[1:],idx+1) + func(s[2:],idx+2)
+        #         return dp[idx]                
+        #     else:
+        #         dp[idx] = func(s[1:],idx+1)
+        #         return dp[idx]
+        # dp = [-1 for i in range(len(s))]       
+        # return func(s,0)
+        
+        
+        ## recursion + memoization/cache(using list) with only one function parameter
+        def func(idx):
+            if (idx == len(s)-1 and s[idx] != \'0\') or (idx == len(s)):
+                return 1
+            elif s[idx] == \'0\':
+                return 0
+            elif dp[idx] != -1:
+                return dp[idx]
+            if int(s[idx:idx+2]) <= 26:
+                dp[idx] = func(idx+1) + func(idx+2)
+                return dp[idx]                
+            else:
+                dp[idx] = func(idx+1)
+                return dp[idx]
+        dp = [-1 for i in range(len(s))]       
+        return func(0)

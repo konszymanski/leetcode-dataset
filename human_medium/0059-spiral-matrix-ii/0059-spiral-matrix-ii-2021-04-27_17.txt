@@ -1,0 +1,46 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        
+        dp = [[0]*n for _ in range(n)]
+        
+        row_min, row_max = 0, n-1
+        col_min, col_max = 0, n-1
+        
+        k = 1
+        
+        while k < n*n+1:
+            i, j = row_min, col_min  #go left to right on first row
+            while j <= col_max:
+                dp[i][j] = k
+                j += 1
+                k += 1
+            row_min += 1
+            if row_min > row_max: break
+            
+            
+            i, j = row_min, col_max # go top to down on last column
+            while i <= row_max:
+                dp[i][j] = k
+                i += 1
+                k += 1
+            col_max -= 1
+            if col_min>col_max: break
+            
+            
+            i, j = row_max, col_max  # go right to left on bottom row
+            while j >= col_min:
+                dp[i][j] = k
+                j -= 1 
+                k += 1
+            row_max -= 1
+            if row_min>row_max: break
+            
+            i, j = row_max, col_min  #go bottom to top on first column
+            while i >= row_min:
+                dp[i][j] = k
+                i -= 1    
+                k += 1
+            col_min += 1
+            if col_min > col_max: break
+                
+        return dp

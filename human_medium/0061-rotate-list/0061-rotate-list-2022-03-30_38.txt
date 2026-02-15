@@ -1,0 +1,27 @@
+class Solution:
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head:
+            return None
+        curr = head
+        c = 1
+        while curr.next:
+            curr = curr.next
+            c += 1
+        # at the end of while loop curr will point to the end of LL
+        
+        # Check for the condition if number of rotations
+        # are zero or mulptiple of length
+        if k == 0 or k % c == 0:
+            return head
+        temp = head
+        no_of_rot = (c - k) % c
+        
+        # tak temp pointer where we have to break the link
+        # after that we have to do some pointer manipulation(dry run will help)
+        while no_of_rot-1:
+            temp = temp.next
+            no_of_rot -= 1
+        res = temp.next
+        temp.next = None
+        curr.next = head
+        return res

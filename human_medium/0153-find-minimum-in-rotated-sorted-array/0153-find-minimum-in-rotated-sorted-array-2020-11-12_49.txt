@@ -1,0 +1,10 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        pivot=None
+        for n in range(len(nums)-1):
+            if nums[n]>nums[n+1]:
+                pivot=n+1
+                break
+        if pivot:
+            nums=nums[pivot:]+nums[:pivot]
+        return nums[0]

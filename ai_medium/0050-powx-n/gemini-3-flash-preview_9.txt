@@ -1,0 +1,23 @@
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        # Handle the case where n is negative by taking the reciprocal of x
+        # and making n positive.
+        if n < 0:
+            x = 1 / x
+            n = -n
+        
+        # Initialize result to 1.0.
+        res = 1.0
+        # Use the binary exponentiation (exponentiation by squaring) algorithm.
+        while n:
+            # If n is odd, multiply the current result by x.
+            if n % 2:
+                res *= x
+            # Square the base x and divide n by 2 (integer division).
+            x *= x
+            n //= 2
+        
+        return res
+
+```

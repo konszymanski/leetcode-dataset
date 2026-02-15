@@ -1,0 +1,9 @@
+def canJump(self, nums: List[int]) -> bool:
+        reachable = 0
+        for i, n in enumerate(nums):
+            # if the currentindex i is greater than the max reachable index return false
+            if i > reachable: return False
+            # set the new reachable index to the max between the current reachable index
+            # and the current index plus the current number of jumps (nums[i])
+            reachable =  max(reachable, i + n)
+        return True

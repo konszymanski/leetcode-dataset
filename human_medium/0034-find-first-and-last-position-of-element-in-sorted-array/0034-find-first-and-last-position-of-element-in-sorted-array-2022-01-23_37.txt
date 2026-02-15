@@ -1,0 +1,11 @@
+def searchRange(nums, target):
+    first = -1
+    last = -1
+    if not nums:
+        return [first,last]
+    try:
+        first = nums.index(target)
+        last = len(nums) - nums[::-1].index(target) - 1
+        return [first,last], revnums
+    except:
+        return [first,last]

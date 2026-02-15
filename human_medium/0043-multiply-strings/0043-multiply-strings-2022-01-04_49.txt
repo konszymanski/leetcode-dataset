@@ -1,0 +1,13 @@
+def multiply(self, num1: str, num2: str) -> str:
+        if not num1 or not num2:
+            return "0"
+        zero = ord("0")
+        n1= ord(num1[0])-zero
+        n2= ord(num2[0])-zero
+        for i in range(1,len(num1)):
+            n1*=10
+            n1+=ord(num1[i]) - zero
+        for i in range(1,len(num2)):
+            n2*=10
+            n2+=ord(num2[i]) - zero
+        return str(n1*n2)

@@ -1,0 +1,34 @@
+class WordDictionary:
+
+    def __init__(self):
+        self.root = Node()
+
+    def addWord(self, word: str) -> None:
+        node = self.root
+        
+        for char in word:
+            if char not in node.children:
+                node.children[char] = Node()
+            node = node.children[char]
+        node.isWord = True
+
+    def search(self, word: str) -> bool:
+        return self.recurse(word, self.root)
+    
+    
+    def recurse(self, word, node):
+        for i in range(len(word)):
+            if word[i] == ".":
+                # wildcard
+                for j in node.children:
+                    newword = j + word[i+1:] if i+1 < len(word) else j
+                    val = self.recurse(newword, node)
+                    if val:
+                        return True
+                return False
+            else:
+                # letter
+                if word[i] not in node.children:
+                    return False
+                node = node.children[word[i]]
+        return node.isWord

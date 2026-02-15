@@ -1,0 +1,17 @@
+#TIME COMPLEXITY - O(N*N-1) (N-->number of unique elements)
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        hset=set()
+        self.dfs(nums,[],hset)
+        return hset
+    def dfs(self,nums,ds,hset):
+        if nums==[]:
+            hset.add(tuple(ds[:]))
+        for i in range(len(nums)):
+            if i>0 and nums[i]==nums[i-1]:
+                continue
+            else:
+                ds.append(nums[i])
+                self.dfs(nums[:i]+nums[i+1:],ds,hset)
+                ds.pop()
+        return

@@ -1,0 +1,31 @@
+python []
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> set[tuple[int]]:
+        p = set()
+        p.add(tuple(nums))
+        np = nums
+        is_next_perm = True
+        while is_next_perm:
+            found = False
+            # Next Permutations algorithm
+            for i in range(len(np) - 2, -1, -1):
+                if np[i] < np[i+1]:
+                    found = True
+                    break
+            if found:
+                for j in range(len(np) - 1, i, -1):
+                    if np[j] > np[i]:
+                        np[i], np[j] = np[j], np[i]
+                        l, r = i + 1, len(np) - 1
+                        while l < r:
+                            np[l], np[r] = np[r], np[l]
+                            l += 1
+                            r -= 1
+                        break
+            else:
+                np = np[::-1]
+            if tuple(np) not in p:
+                p.add(tuple(np))
+            else:
+                is_next_perm = False
+        return p

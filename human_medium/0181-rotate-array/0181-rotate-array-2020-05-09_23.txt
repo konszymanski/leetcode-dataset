@@ -1,0 +1,16 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+		n = len(nums)
+        k = k%n                                       # rotating n steps is the same as not rotating
+        index_start = 0                               # store each cycle\'s starting index
+        index_to_do = index_start + k                 # the index of next element to be updated
+        num_to_do = nums[index_start]                 # the number to be put into next element
+		for _ in range(n):                            # we will visit each element only once, time O(n)
+            if index_to_do != index_start:            # no cycle detected
+				num_to_do, nums[index_to_do] = nums[index_to_do], num_to_do  # update the element
+                index_to_do = (index_to_do + k) % n   # update the index
+            else:                                     # cycle is detected, finish the current cycle and enter the new cycle
+                nums[index_to_do] = num_to_do         # update the current cycle\'s first element
+                index_start = (index_start + 1) % n   # new cycle\'s start index
+                index_to_do = (index_start + k) % n   # Last two lines follows the same idea as before the for loop
+                num_to_do = nums[index_start]

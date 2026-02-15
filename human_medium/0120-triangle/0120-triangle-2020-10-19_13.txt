@@ -1,0 +1,15 @@
+#T is the Triangle data structure.
+#Parse from 2nd row.
+#Handle first and last column distinctly.
+#Handle rest of the columns from 1 to r-1
+#Keep updating T as you progress downwards.
+#Pythonic enough?
+#Thanks
+
+def minimumTotal(self, T: List[List[int]]) -> int:           
+        for r in range(1,len(T)):            
+            T[r][0]+=T[r-1][0]
+            T[r][r]+=T[r-1][r-1]
+            for c in range(1,r):
+                T[r][c]+=min(T[r-1][c],T[r-1][c-1])
+        return min(T[-1])

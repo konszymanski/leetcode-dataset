@@ -1,0 +1,57 @@
+def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        #edge case: head is none or only 1 node, just return
+        if not head or not head.next: return head
+        
+        \'\'\'
+            1. go to the last element and count how many elements are there, set it as N
+            2. the list will rotate k%N times
+               If k == 0, after modding it with length of the list, just return head
+            3. go to N-k%N item and set it to mid
+        \'\'\'
+        #1.
+        N = 1
+        last = head        
+        while last.next:
+            last = last.next
+            N += 1
+        #2
+        k %= N
+        if k == 0: return head
+        
+        #3
+        midPos = N - k
+        mid = head
+        while midPos > 1:
+            mid = mid.next
+            midPos -= 1
+        
+        \'\'\'
+            1->2->3->4->5->NULL, k = 2
+                  ^
+                 mid
+                     ^
+            1. dummy = mid.next which is 4
+                  
+            last = 5 -> NULL
+            mid = 3 -> 4 -> 5      
+            dummy = 4 -> 5 -> NULL 
+            head = 1 -> 2 -> 3 -> 4 ->5 -> NULL
+            
+            2. 
+            last.next = head
+            this makes dummy become
+            4 -> 5 -> 1 -> 2 -> 3 -> loop to 4
+                                ^
+                            remember this is our head?
+            3. 
+            mid.next = None
+            this will break the loop
+            and make the list to the correct list
+            dummy = 4 -> 5 -> 1 -> 2 -> 3 -> None
+        \'\'\'
+        
+        dummy = mid.next
+        last.next = head
+        mid.next = None
+        
+        return dummy

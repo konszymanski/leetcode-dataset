@@ -1,0 +1,47 @@
+from collections import defaultdict
+
+class TrieNode:
+    def __init__(self):
+        self.edges = {}
+        self.isWord = False
+
+class WordDictionary:
+
+    def __init__(self):
+        self.head = TrieNode()
+        self.max_length = 0
+    def addWord(self, word: str) -> None:
+        curr = self.head
+        i = 0
+        for c in word:
+            #check if c is in edges, if yes, move to it,
+            if c not in curr.edges:
+                curr.edges[c] = TrieNode()
+            curr = curr.edges[c]
+            i += 1
+        #now mark isWord to True
+        curr.isWord = True
+        self.max_length = max(self.max_length, i)
+    def search(self, word: str) -> bool:
+
+        def dfs(j, head):
+            curr = head
+            
+            for i in range(j, len(word)):
+                c = word[i]
+                if c == ".":
+                    # if ., iterate over all edges and make a recusrive call
+                    for v in curr.edges.values():
+                        if dfs(i + 1, v):
+                            return True
+                    return False
+                else:
+                    if c not in curr.edges:
+                        return False
+                    curr = curr.edges[c]
+            return curr.isWord
+        
+        if len(word) > self.max_length:
+            return False
+
+        return dfs(0, self.head)

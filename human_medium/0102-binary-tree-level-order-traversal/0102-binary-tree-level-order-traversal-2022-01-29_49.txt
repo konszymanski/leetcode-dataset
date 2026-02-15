@@ -1,0 +1,9 @@
+from collections import defaultdict
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode], result=None, level=0) -> List[List[int]]:
+        if not root: return root
+        if result is None: result = defaultdict(list)
+        result[level].append(root.val)
+        self.levelOrder(root.left, result, level+1)
+        self.levelOrder(root.right, result, level+1)
+        return result.values()

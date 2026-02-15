@@ -1,0 +1,18 @@
+def maxProduct(self, nums: List[int]) -> int:
+        max_upto_i=nums[0]
+        min_upto_i=nums[0]
+        total_max=nums[0]
+        
+        for num in nums[1:]:
+            if num >= 0:
+                max_upto_i = max(max_upto_i*num, num)
+                min_upto_i = min(min_upto_i*num, num)
+                
+            else:
+                temp_max = max(min_upto_i*num, num)
+                min_upto_i = min(max_upto_i*num, num)
+                max_upto_i = temp_max
+                
+            total_max = max(max_upto_i, total_max)
+            
+        return(total_max)

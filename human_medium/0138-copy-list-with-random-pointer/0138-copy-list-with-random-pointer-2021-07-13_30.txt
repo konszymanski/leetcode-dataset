@@ -1,0 +1,10 @@
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        d = dict()
+        def dfs(node):
+            if not node: return None
+            if node not in d:
+                d[node] = Node(node.val)
+                d[node].next, d[node].random = dfs(node.next), dfs(node.random)
+            return d[node]
+        return dfs(head)

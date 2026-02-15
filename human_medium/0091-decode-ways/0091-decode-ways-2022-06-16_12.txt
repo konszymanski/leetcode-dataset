@@ -1,0 +1,20 @@
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        dp = {}
+        length = len(s) - 1
+        
+        def getResult(index):
+            if index > length:
+                return 1
+            if s[index] == \'0\':
+                return 0
+            if index in dp:
+                return dp[index]
+            singleLetter = getResult(index+1)
+            word = 0
+            if index < length and int(s[index] + s[index+1])<=26:
+                word = getResult(index+2)
+            dp[index] = singleLetter + word
+            return dp[index]
+        
+        return getResult(0)

@@ -1,0 +1,43 @@
+```python
+from typing import List
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        n = len(s)
+        # An IP address has between 4 and 12 digits (inclusive)
+        if n < 4 or n > 12:
+            return []
+        
+        res = []
+        
+        def is_valid(seg: str) -> bool:
+            # Check for leading zeros: a segment can only start with '0' if it is just "0"
+            if len(seg) > 1 and seg[0] == '0':
+                return False
+            # Check if the segment integer value is within the range [0, 255]
+            # Since the string consists of digits, int(seg) will always be non-negative
+            return int(seg) <= 255
+        
+        # We need to partition the string s into exactly 4 segments (s1, s2, s3, s4).
+        # i, j, k, l are the lengths of these segments.
+        # Each length must be between 1 and 3 (inclusive).
+        for i in range(1, 4):
+            for j in range(1, 4):
+                for k in range(1, 4):
+                    l = n - i - j - k
+                    # Check if the length of the fourth segment is valid
+                    if 1 <= l <= 3:
+                        # Extract the four segments based on the chosen lengths
+                        s1 = s[:i]
+                        s2 = s[i : i+j]
+                        s3 = s[i+j : i+j+k]
+                        s4 = s[i+j+k:]
+                        
+                        # Verify all segments meet the IP address criteria
+                        if is_valid(s1) and is_valid(s2) and is_valid(s3) and is_valid(s4):
+                            # Construct the IP address string and add to the result list
+                            res.append(f"{s1}.{s2}.{s3}.{s4}")
+                            
+        return res
+
+```

@@ -1,0 +1,4 @@
+class Solution(object):
+    def convert(self, s, numRows):
+        i=(range(numRows)+range(numRows-2,0,-1))*(len(s)/numRows+1)
+        return ''.join([x for (_,_,x) in sorted(zip(i,range(len(s)),s))])

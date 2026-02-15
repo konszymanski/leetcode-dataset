@@ -1,0 +1,10 @@
+RomanNumbers = (1000,900,500,400,100,90,50,40,10,9,5,4,1)
+        RomanToInt = ("M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I")
+        RomanNum = ""
+        while num != 0:
+            for i, integer in enumerate(RomanNumbers):
+                if num >= integer:
+                    num -= integer
+                    RomanNum += RomanToInt[i]
+					break
+        return RomanNum

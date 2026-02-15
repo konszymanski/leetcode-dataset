@@ -1,0 +1,7 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        @cache
+        def dfs(i):
+            if i == len(s): return True
+            return any(s[i: i + len(word)] == word and dfs(i + len(word)) for word in wordDict)
+        return dfs(0)

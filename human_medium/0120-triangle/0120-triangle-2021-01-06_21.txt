@@ -1,0 +1,30 @@
+\'\'\'
+w: DP
+h: from bottom to top, at each level (except the last row), we know:
+    1) there is smaller triangle
+    2) for this triangle, the path is min(left edge, right edge) + vertex.val
+       we do this from bottom to update min path for each vertex
+    3) base: at the lowest level (last row), min path = vertex.val
+Time complexity: O(N), N is total element in the triangle
+Space complexity: O(R), R is lenght of triagle[-1], this is largest array we maintain
+\'\'\'
+
+
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        if len(triangle) == 1:
+            return triangle[0][0]
+        dist = triangle[-1]
+        triangle = triangle[::-1]
+        m = 1
+        while len(dist) > 1:
+            n = len(dist)
+            # we note that higher level has one less vertex than lower level
+            # this bring the convience to calcuate the short path from left and right:
+            #   we traverse the pair at lower level, get the min of each pair and 
+            #   add it to the value of vertex at current level
+            # do this until we reach the top (bottom in this case since we flip the big triangle up-down)
+            dist = [min(dist[i], dist[i+1])+triangle[m][i] for i in range(n-1)]
+            m += 1
+
+        return dist[0]

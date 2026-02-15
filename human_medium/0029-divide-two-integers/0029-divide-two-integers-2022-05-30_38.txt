@@ -1,0 +1,49 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # XOR on signs of inputs
+        neg_result = (dividend > 0) != (divisor > 0)
+        
+        dividend = abs(dividend)
+        divisor = abs(divisor)
+        
+		# short circuit if divisor is 1 to save time
+        if divisor == 1:
+            if neg_result:
+                return -dividend if dividend < 2**31 else -2**31
+            else:
+                return dividend if dividend < 2**31 - 1 else 2**31 - 1
+            
+        # create list of (exponents, value)
+        exponents = []
+        exp_divisor = divisor
+        prev_exp_divisor = exp_divisor
+
+        largest_quotient = 0
+        while exp_divisor <= dividend:
+            if largest_quotient == 0:
+                largest_quotient = 1
+            else:
+                # move updating of largest_quotient using for loop
+                # to after it is confirmed that exp_divisor <= dividend
+                # to save compute time
+                acc = 0
+                for _ in range(prev_exp_divisor):
+                    acc += largest_quotient
+                largest_quotient = acc
+                
+            exponents.append((largest_quotient, exp_divisor))
+            
+            prev_exp_divisor = exp_divisor
+            exp_divisor = exp_divisor**2
+         
+        quotient = 0
+        for i in range(len(exponents)-1, -1, -1):
+            largest_quotient, exp_divisor = exponents[i]
+            while dividend >= exp_divisor:
+                dividend -= exp_divisor
+                quotient += largest_quotient
+            
+        if neg_result:
+            return -quotient
+        else:
+            return quotient

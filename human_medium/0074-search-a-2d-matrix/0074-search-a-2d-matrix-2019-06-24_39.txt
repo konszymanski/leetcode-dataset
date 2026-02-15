@@ -1,0 +1,28 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        \'\'\'
+        Approach:
+        Notice that if you read row by row, 
+        the numbers are non-decreasing, i.e. sorted
+        So this is just a binary search.  we need to keep track on indices correctly
+        i.e. convert 1D index to 2D index
+        \'\'\'
+        M = len(matrix)
+        if M == 0 : return False
+        N = len(matrix[0])
+        mat_size = M * N
+        begin = 0 
+        end = mat_size - 1
+
+        while begin <= end:
+            mid = int((begin + end) / 2)
+            row, col = divmod(mid, N)  # KEY: convert 1D index to 2D indices
+            if matrix[row][col] == target:
+                return True
+            if matrix[row][col] > target:
+                # go left
+                end = mid - 1
+            else:
+                # go right
+                begin = mid + 1
+        return False

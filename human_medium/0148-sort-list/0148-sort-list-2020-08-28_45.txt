@@ -1,0 +1,101 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    \'\'\'
+    # This crude solution also worked but see the "in place" solution first
+    def sortList(self, head: ListNode) -> ListNode:
+        
+        a = []
+        
+        while head:
+            a.append(head.val)
+            head = head.next
+        
+        a.sort()
+        
+        start = head = None
+        while len(a):
+            v = a.pop(0)
+            if head:
+                head.next = ListNode(v)
+                head = head.next
+            else:
+                start = ListNode(v)
+                head = start
+            
+        head = start
+        
+        return head
+    \'\'\'
+    
+    def sortList(self, head: ListNode) -> ListNode:
+        
+        # Return if head is null or if there is only a single node
+        if head == None or head.next == None:
+            return head
+        else: 
+            
+            # Essenstial pointers for alternating list
+            l1_start = l1 = None
+            l2_start = l2 = None
+            
+            flag = 1 # Flag to alternate the list
+            while head:
+                if flag:
+                    if l1_start:
+                        l1.next = head
+                        l1 = l1.next
+                    else:
+                        l1_start = head
+                        l1 = l1_start
+                    flag = 0
+                else:
+                    if l2_start:
+                        l2.next = head
+                        l2 = l2.next
+                    else:
+                        l2_start = head
+                        l2 = l2_start
+                    flag = 1
+                
+                # Cut the previous link and move ahead
+                prev = head
+                head = head.next
+                prev.next = None
+                
+            # Reccursion
+            l1 = self.sortList(l1_start)
+            l2 = self.sortList(l2_start)
+            
+            # Merge lists
+            start = head = None
+            
+            while l1 and l2:
+                
+                if l1.val < l2.val:
+                    if start:
+                        head.next = l1
+                        head = head.next
+                    else:
+                        start = l1
+                        head = start
+                    l1 = l1.next
+                else:
+                    if start:
+                        head.next = l2
+                        head = head.next
+                    else:
+                        start = l2
+                        head = start
+                    l2 = l2.next
+            
+            # Join the remaining nodes
+            if l1:
+                head.next = l1
+            else:
+                head.next = l2
+            
+        return start

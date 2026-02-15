@@ -1,0 +1,31 @@
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        
+        # Method 1 : list slicing
+        k = k % len(nums)
+        if len(nums) > 1 and k > 0:
+            nums[:] = nums[-k:] + nums[:-k]
+        
+        # Method 2 : list replacing
+        k = k % len(nums)
+        if len(nums) > 1 and  k > 0:
+            nums[:k], nums[k:] = nums[-k:], nums[:-k]
+            
+        # Method 3 : index assigning
+        k = k % len(nums)
+        tmp = nums[-k:]
+        for index in range(len(nums)-1, k-1, -1):
+            nums[index] = nums[index-k]
+        for index, value in enumerate(tmp):
+            nums[index] = value
+
+        # Method 4 : reversed method
+        k = k % len(nums)
+        if len(nums) > 1 and  k > 0:
+            nums[:] = reversed(nums)
+            nums[:k], nums[k:] = reversed(nums[:k]), reversed(nums[k:])

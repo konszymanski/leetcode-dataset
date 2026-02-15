@@ -1,0 +1,22 @@
+def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        
+        slow = fast = head
+        flag = False
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            
+            if slow == fast:
+                flag = True
+                break
+        
+        if not flag:
+            return
+        
+        fast = head        
+        while not slow == fast:
+            slow = slow.next
+            fast = fast.next
+                    
+        return slow

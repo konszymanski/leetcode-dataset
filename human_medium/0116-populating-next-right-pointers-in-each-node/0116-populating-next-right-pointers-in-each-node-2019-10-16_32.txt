@@ -1,0 +1,18 @@
+from collections import deque
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        
+        if not root:
+            return root
+        
+        Queue = deque([root])
+        while Queue:
+            current = Queue.popleft()
+            if current.left:
+                current.left.next = current.right
+                if current.next:
+                    current.right.next = current.next.left
+                Queue.append(current.left)
+                Queue.append(current.right)
+        
+        return root

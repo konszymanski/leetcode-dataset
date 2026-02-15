@@ -1,0 +1,7 @@
+def canJump(self, nums: List[int]) -> bool:
+        temp = 1
+        for i in nums:
+            if temp == 0:
+                return 0
+            temp = max(temp - 1, i)
+        return 1

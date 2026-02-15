@@ -1,0 +1,19 @@
+ans = []
+def fun(op, close, n, s):
+	if op == close and op == n:    // Base case when opening brackets = closing brackets  = n
+		ans.append(s)
+		return
+
+	if op > n or close > op:     //Invalid cases so return
+		return
+
+	fun(op + 1, close, n, s + \'(\')      // op + 1 when we add an opening bracket
+	fun(op, close + 1, n, s + \')\')     // close + 1 when we add a closing bracket
+
+
+op = 0
+close = 0
+s = ""
+fun(op, close, n, s)
+        
+return ans

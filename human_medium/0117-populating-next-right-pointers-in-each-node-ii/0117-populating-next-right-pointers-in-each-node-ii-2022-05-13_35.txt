@@ -1,0 +1,20 @@
+class Solution:
+
+    def connect(self, root: \'Node\') -> \'Node\':
+        
+        self.rights = {}
+    
+        self.iter(root)
+        return root
+    
+    def iter(self, node, lvl = 0):
+        
+        if not node:
+            return None
+        else:
+            node.next = self.rights.get(lvl, None)
+            self.rights[lvl] = node
+            self.iter(node.right, lvl+1)
+            self.iter(node.left, lvl+1)
+            
+            return None

@@ -1,0 +1,24 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        output=[]
+        def backtracking(cur):
+            if len(cur)==len(nums):
+                output.append(cur)
+            for i in range(len(nums)):
+                if i not in cur:
+                    backtracking(cur+[i])
+        backtracking([])
+        hash_map={}
+        for index,item in enumerate(nums):
+            hash_map[index]=item
+        for i in range(len(output)):
+            for j in range(len(nums)):
+                output[i][j]=hash_map[output[i][j]]
+        ##remove duplicates
+        set1=set([])
+        for k in output:
+            set1.add(tuple(k))
+        result=[]
+        for k in list(set1):
+            result.append(list(k))
+        return result

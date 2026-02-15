@@ -1,0 +1,16 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        ns = ""
+        ans = {}
+        for i in range(0, len(s)-9):
+            ns += s[i:i+10]
+            if ns not in ans:
+                ans[ns] = 1
+            else:
+                ans[ns] += 1
+            ns = ""
+        res = []
+        for i in ans:
+            if ans[i] > 1:
+                res.append(i)
+        return res

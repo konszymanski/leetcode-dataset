@@ -1,0 +1,14 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        
+        left = 0
+        res = 0
+        charSet = set() # taking set to have unique values.
+        
+        for right in range(len(s)):
+            while s[right] in charSet: # if we are getting duplication character then we have to update our set.
+                charSet.remove(s[left])
+                left+=1
+            charSet.add(s[right]) # once duplicate value is removed we are going to add right most element to the set
+            res = max(res,right-left+1) # at this stage we are sure that we dont have any duplicate , so lets update the res variable now. 
+        return res

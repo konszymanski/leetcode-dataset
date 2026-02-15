@@ -1,0 +1,25 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start = 0
+        end = len(nums)-1
+        
+        # Define pivot, the upper bound of the smaller sorted sublist
+        pivot = nums[-1]+1
+        
+        # True if target is in s1, not s2 (see above)
+        first = target < pivot
+        
+        while True:
+            middle = (start+end)//2
+            if nums[middle] == target:
+                return middle
+            
+			# Check for binary search, with condition to ensure middle is in the same sublist as pivot
+            if (nums[middle] > target) == ((nums[middle] < pivot) == first):
+                end = middle-1
+            else:
+                start = middle+1
+            
+            # No more elements to consider, so target not found
+            if end < start:
+                return -1

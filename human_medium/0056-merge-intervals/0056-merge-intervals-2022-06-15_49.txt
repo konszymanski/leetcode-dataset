@@ -1,0 +1,12 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort() #making sure the first number is sorted
+        counter = 0 #using this as pointer
+        for i in range (len(intervals)-1):
+            if intervals[counter][1] >= intervals[counter+1][0]: # [[a,b],[c,d]] comparing b and c. If c is more or equal to b, then there is overlap
+                comb = [intervals[counter][0], max(intervals[counter+1][1], intervals[counter][1])] #[[a,b],[c,d]] --> [[a, max(b,d)]]
+                intervals.remove(intervals[counter])
+                intervals[counter] = comb #adding back the combined list
+            else:
+                counter +=1 #else, move on to next item
+        return intervals

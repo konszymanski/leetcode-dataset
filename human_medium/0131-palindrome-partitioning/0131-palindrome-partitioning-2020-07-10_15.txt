@@ -1,0 +1,16 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        @lru_cache(maxsize=None)
+        def helper(idx):
+            if idx == len(s):
+                return [[]]
+            
+            result = list()
+            
+            for i in range(idx, len(s)):
+                if s[idx:i+1] == s[idx:i+1][::-1]:
+                    sub_partitions = helper(i+1)
+                    result += [[s[idx:i+1]] + p for p in sub_partitions]    
+            return result
+        
+        return helper(0)

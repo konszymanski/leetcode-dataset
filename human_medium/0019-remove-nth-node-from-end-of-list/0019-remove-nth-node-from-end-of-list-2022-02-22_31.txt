@@ -1,0 +1,23 @@
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        # Purpose: remove a node from list
+        # Method: two pointers
+        # Intuition: run fast by n, run both to end, skip connection for slow
+        
+        # init fast and slow
+        dummy = fast = slow = ListNode(0, head)
+        
+        # run fast by n
+        for _ in range(n):
+            fast = fast.next
+        
+        # run both to end
+        while fast and fast.next:
+            fast = fast.next
+            slow = slow.next
+        
+        # skip connection for slow
+        slow.next = slow.next.next
+        
+        # return 
+        return dummy.next

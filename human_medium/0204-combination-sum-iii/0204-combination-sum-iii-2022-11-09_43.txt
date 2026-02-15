@@ -1,0 +1,26 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        final=[]
+        arr=[]
+        
+        def bt(self, k, n, sum, index, arr):
+            
+            if sum> n:
+                return
+            
+            if len(arr)==k:
+                if sum == n:
+                    final.append(arr.copy())
+                return
+            
+            for i in range(index,10):
+                if i in arr:
+                    continue
+                sum+=i
+                arr.append(i)
+                bt(self,k,n,sum,i+1,arr)
+                sum-=i
+                arr.pop()
+        
+        bt(self,k,n,0,1,arr)
+        return final

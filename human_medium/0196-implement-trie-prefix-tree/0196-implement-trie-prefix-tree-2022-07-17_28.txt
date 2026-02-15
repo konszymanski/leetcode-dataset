@@ -1,0 +1,48 @@
+class Node:
+    def __init__(self, val, isWord= False):
+        self.val = val
+        #To store all 26 children 
+        self.child = {} 
+        self.isWord = isWord
+
+class Trie:
+
+    def __init__(self):
+        #Create a root Node. Root-node has value of \'empty string\' indicating that its root node.
+        self.root = Node(\'\')
+		
+    def insert(self, word: str) -> None:
+        current = self.root
+        for ch in word:
+            if ch not in current.child:
+                #If the char. is not present on the current level, then a Node is created for it.
+                current.child[ch] = Node(ch)
+            #If Node for the char. is present, we simply move down the hierarchy of that char.
+            current = current.child.get(ch)
+        #After the whole word is processed, we set \'isWord\' = True, indicating that a word exists
+        current.isWord = True
+		
+    def search(self, word: str) -> bool:
+        current = self.root
+        for ch in word:
+            if ch in current.child:
+                #If letter of the word to be searched is present in the current level, we go down.
+                current = current.child.get(ch)
+            else:
+                return False
+        return current.isWord
+		
+    def startsWith(self, prefix: str) -> bool:
+        current = self.root
+        for ch in prefix:
+            if ch in current.child:
+                current = current.child.get(ch)
+            else:
+                return False
+        return True
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)

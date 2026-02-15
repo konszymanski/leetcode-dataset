@@ -1,0 +1,30 @@
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if(len(nums) <=2):
+            return max(nums)
+        elif(len(nums) == 3):
+            return max(nums[1],nums[0]+nums[2])
+        
+        
+        arr = [-1]*(len(nums)+1)
+        return max(self.recMem(nums,arr,len(nums)-1),self.recMem(nums,arr,len(nums)-2))
+        
+    def recMem(self,nums,arr,target):
+        if(target == 0):
+            arr[target] = nums[0]
+            return arr[target]
+        elif(target == 1):
+            arr[target] = max(nums[0],nums[1])
+            return arr[target]
+        elif(target == 2):
+            arr[target] = max(nums[1],nums[0]+nums[2])
+            return arr[target]
+        elif(arr[target]!=-1):
+            return arr[target]
+        temp = nums[target]+max(self.recMem(nums,arr,target-2),self.recMem(nums,arr,target-3))
+        arr[target] = temp
+        return arr[target]

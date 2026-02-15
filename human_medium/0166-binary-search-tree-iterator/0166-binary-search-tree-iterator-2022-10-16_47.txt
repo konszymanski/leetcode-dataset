@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class BSTIterator:
+    
+    def bst(self, root):
+        if (root == None): return
+        self.bst(root.left);
+        self.inorder.append(root.val);
+        self.bst(root.right);
+    
+    def __init__(self, root: Optional[TreeNode]):
+        self.inorder = []; self.bst(root);
+        self.i = 0; self.n = len(self.inorder);
+        return None;
+        
+
+    def next(self) -> int:
+        self.i += 1;
+        return self.inorder[self.i - 1];
+    
+    def hasNext(self) -> bool:
+        if (self.i < self.n): return True
+        return False;
+
+
+# Your BSTIterator object will be instantiated and called as such:
+# obj = BSTIterator(root)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()

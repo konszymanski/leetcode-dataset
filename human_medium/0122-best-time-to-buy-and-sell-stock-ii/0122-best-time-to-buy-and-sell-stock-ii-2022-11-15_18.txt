@@ -1,0 +1,15 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # Buy very first stock
+        buy = prices[0]
+        profit = 0
+        for i in range(1, len(prices)):
+            # If you find stock less than what you bought, take that instead
+            if prices[i] < buy:
+                buy = prices[i]
+            # If you find stock greater than what you bought, sell that
+            # Also buy it as you want to sell if you see greater stock in future
+            else:
+                profit += prices[i] - buy
+                buy = prices[i]
+        return profit

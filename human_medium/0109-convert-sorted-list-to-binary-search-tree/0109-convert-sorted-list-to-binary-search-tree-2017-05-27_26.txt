@@ -1,0 +1,32 @@
+def get_ll_len(self, head):
+        count = 0
+        while head is not None:
+            head = head.next
+            count += 1
+        return count
+    
+    def get_bst(self, n):
+        if n <= 0:
+            return None
+        # recursively construct left subtree 
+        left_node = self.get_bst(n/2)
+        # construct root node
+        root_node = TreeNode(self.head.val)
+        # Link above constructed left subtree with root
+        root_node.left = left_node
+        # progress head pointer for the linked list
+        self.head = self.head.next
+        """
+        Recursively construct the right subtree and link it with root. The number of nodes in right subtree  is total nodes - nodes in left subtree - 1 (for root) which is n-n/2-1.
+        """
+        root_node.right = self.get_bst(n-n/2-1)
+        return root_node
+    
+    def sortedListToBST(self, head):
+        """
+        :type head: ListNode
+        :rtype: TreeNode
+        """
+        self.head = head
+        n = self.get_ll_len(head)
+        return self.get_bst(n)

@@ -1,0 +1,18 @@
+def searchBetween(self, nums, target, start, end) -> int:
+    # start inclusive, end exclusive
+
+    # base case
+    if end <= start:
+        return -1
+    
+    # recursive case
+    half = (start + end) // 2
+    if nums[half] == target:
+        return half
+    elif (nums[start] <= target and target < nums[half]) or (nums[start] > nums[half] and (nums[start] <= target or target < nums[half])):
+        return self.searchBetween(nums, target, start, half)
+    else:
+        return self.searchBetween(nums, target, half+1, end)
+
+def search(self, nums: List[int], target: int) -> int:
+    return self.searchBetween(nums, target, 0, len(nums))

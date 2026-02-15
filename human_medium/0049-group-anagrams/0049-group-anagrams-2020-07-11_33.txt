@@ -1,0 +1,36 @@
+# tpl_freq_list stores frequency of each alphabet character of 1 word, as tuple.
+# freq_dict stores tpl_freq_list of all words
+
+# basic idea:
+# For each word:
+#   1. calculate each character\'s frequency of word w.r.t. alphabets in "freq_list". 
+#       freq_list = [\'1\', \'0\', ..., \'0\' , \'1\'] denotes \'az\'
+#   2. hash this list, in "tpl_freq_list".
+#   3. append the word with same "tpl_freq_list" hash in "freq_dict".
+# Return all words of each "tpl_freq_list".
+
+
+from collections import defaultdict, Counter
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        freq_dict = defaultdict(list)
+        anagrams = []
+        
+        for word in strs:
+            counter_dict = Counter(word)
+            freq_list = []
+        
+            for char in \'abcdefghijklmnopqrstuvwxyz\':
+                if char in counter_dict:
+                    freq_list.append(counter_dict[char])
+                else:
+                    freq_list.append(0)
+                    
+            # we need \'tuple(freq_list)\', since we cannot hash a list.
+            tpl_freq_list = tuple(freq_list)
+            freq_dict[tpl_freq_list].append(word)
+        
+        for hash_tuple in freq_dict:
+            anagrams.append(freq_dict[hash_tuple])
+        
+        return anagrams

@@ -1,0 +1,18 @@
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.stack=[]
+        while root:     #if root then pusf root and all its left in the stack till its become null
+            self.stack.append(root)
+            root=root.left
+        
+    def next(self) -> int:      #it will take top element from the stack and do the further operation one by one
+        res=self.stack.pop()
+        cur=res.right              #if that pop element has right then store in cur
+        while cur:             # and put that cur in stack and its all left in stack as we have done above
+            self.stack.append(cur)
+            cur=cur.left
+        return res.val        #if no right then return one by one its value like e.g if there is no right then return null , if right then 15(given in example 1)
+        
+    def hasNext(self) -> bool:
+        return self.stack!=[]     #if stack is not empty return true if empty return false

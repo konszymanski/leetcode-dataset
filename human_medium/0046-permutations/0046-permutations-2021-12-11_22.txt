@@ -1,0 +1,15 @@
+class Solution:
+  def permute(self, nums: List[int]) -> List[List[int]]:
+    if len(nums) == 1:
+      return [nums]
+    
+    result = [];
+    
+    for i, num in enumerate(nums):
+      sub_permutations = self.permute(nums[:i] + nums[i+1:])
+      
+      for j, s in enumerate(sub_permutations):
+        sub_result = [num] + s;
+        result.append(sub_result)
+
+    return result

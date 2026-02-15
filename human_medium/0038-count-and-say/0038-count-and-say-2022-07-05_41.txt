@@ -1,0 +1,28 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n == 1:
+            return \'1\'
+		## Based on the input s, we spell out s using helper function.
+        def helper(s):
+            ans = ""
+            length = len(s)
+			## temp is for remembering how many times same digit is appearing
+            temp = 1
+            for i in range(length):
+				## if same digit appears in the next position
+                if i <= (length - 2) and s[i] == s[i+1]:
+                    temp += 1
+				## if not, just add that to the answer
+                else:
+                    ans += str(temp) + str(s[i])
+                    temp = 1
+            return ans
+			
+		## we initiate the first value which is n = 1. 
+		## Then we call the function iteratively, 
+		## replace the spelled out value for each of the iteration 
+		## and use it for the next iteration
+        curr = "1"
+        for i in range(1, n):
+            curr = helper(curr)
+        return curr

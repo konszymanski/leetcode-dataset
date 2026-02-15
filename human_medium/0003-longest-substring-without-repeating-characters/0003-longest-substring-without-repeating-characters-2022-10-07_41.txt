@@ -1,0 +1,26 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        #create a variable and assign value 0 to it 
+        longest_substring = 0 
+        #create a pointer l and assign 0 to it
+        l = 0 
+        #create a pointer r and assign 0 to it
+        r = 0 
+        #iterate over the elements in string(s)
+        for  i in range(len(s)):
+            #if the length of string[l:r+1] is same as the length of set(s[l:r+1])
+            #that means the elements in substring are unique
+            if len(s[l:r+1] ) == len(set(s[l:r+1])):
+                #then change the longest_substring value as the maximum of r-l+1 and itself
+                longest_substring = max(longest_substring,r-l + 1)
+                #increse the r pointer by 1
+                r = r +1 
+            #if the elements in substring are repeating 
+            else:
+                #then increse the l pointer by 1
+                l = l + 1
+                #and increse r pointer value by 1
+                r = r + 1
+        #after iterating over the string
+        #return the variable(longest_substring)
+        return  longest_substring

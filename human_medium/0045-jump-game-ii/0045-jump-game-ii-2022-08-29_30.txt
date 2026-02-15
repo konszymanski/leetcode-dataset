@@ -1,0 +1,16 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        jumps = 0          #min number of jumps required
+        jumpMaxIdx = 0     #max index reachable with current jumps
+        nextJumpMaxIdx = 0 #max index reachable if we had another jump
+        
+        for i, num in enumerate(nums):
+            # If i is not reachable, jump again
+            if jumpMaxIdx < i:
+                jumps += 1
+                jumpMaxIdx = nextJumpMaxIdx
+                
+            # Update nextJumpMaxIdx with current num
+            nextJumpMaxIdx = max(nextJumpMaxIdx, i+num)
+            
+        return jumps

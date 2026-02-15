@@ -1,0 +1,45 @@
+"""
+Approach:
+
+have 2 pointers for each word
+- if same just increment
+- if not do three things and see which one is better. This can be simulated via pointer manipulation
+
+
+Runtime: 100 ms, faster than 96.25% of Python3 online submissions for Edit Distance.
+Memory Usage: 16.5 MB, less than 80.25% of Python3 online submissions for Edit Distance.
+"""
+from functools import lru_cache
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        
+        
+        @lru_cache(None)
+        def modify(i,j):
+            nonlocal word1, word2
+            
+            #base case
+            if i == len(word1):
+                if j == len(word2):
+                    return 0
+                return len(word2)-j
+            elif j == len(word2):
+                if i == len(word1): return 0
+                else:
+                    return len(word1)-i
+            
+            tempMinChanges = inf
+            if word1[i] == word2[j]:
+                return modify(i+1,j+1)
+            else:
+                #insert char
+                tempMinChanges = min(tempMinChanges,modify(i,j+1))
+                #delete
+                tempMinChanges = min(tempMinChanges,modify(i+1,j))
+                #replace
+                tempMinChanges = min(tempMinChanges,modify(i+1,j+1))
+            return 1 + tempMinChanges
+            
+            
+        
+        return modify(0,0)

@@ -1,0 +1,22 @@
+class BSTIterator:
+
+    def __init__(self, root: TreeNode):
+        self.q=collections.deque()
+        stack=[]
+        while True:
+            while root:
+                stack.append(root)
+                root=root.left
+            if not stack:
+                break
+            
+            node=stack.pop()
+            self.q.append(node.val)
+            root=node.right
+        
+
+    def next(self) -> int:
+        return self.q.popleft()
+
+    def hasNext(self) -> bool:
+        return len(self.q)>0

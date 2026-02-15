@@ -1,0 +1,21 @@
+class Solution:
+    def __init__(self):
+        self.new_nodes = {}
+    
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        if not node: return node
+        
+        cur_val = node.val
+        if cur_val in self.new_nodes:
+            return self.new_nodes[cur_val]
+                
+        cloned_node = Node(cur_val)
+        self.new_nodes[cur_val] = cloned_node
+        for nei in node.neighbors:
+            if nei.val in self.new_nodes:
+                self.new_nodes[cur_val].neighbors.append(self.new_nodes[nei.val])
+            else:
+                cloned_child = self.cloneGraph(nei)
+                self.new_nodes[cur_val].neighbors.append(cloned_child)
+        
+        return self.new_nodes[cur_val]

@@ -1,0 +1,47 @@
+class Node:
+    def __init__(self, terminal = False):
+        self.children = {}
+        self.terminal = terminal
+
+class WordDictionary:
+
+    def __init__(self):
+        self.trie = Node()
+
+    def addWord(self, word: str) -> None:
+        cur = self.trie
+        
+        for c in word:
+            if c in cur.children:
+                cur = cur.children[c]
+            else:
+                cur.children[c] = Node()
+                cur = cur.children[c]
+                
+        cur.terminal = True
+
+    def search(self, word: str) -> bool:
+        
+        stack = [(0, self.trie)] # (wordstartidx, curnode)
+        while stack:
+            idx, cur = stack.pop()
+            
+            if idx >= len(word):
+                if cur.terminal:
+                    return True
+                continue
+                
+            if word[idx] in cur.children:
+                stack.append((idx + 1, cur.children[word[idx]]))
+            elif word[idx] == \'.\':
+                for child in cur.children:
+                    stack.append((idx + 1, cur.children[child]))
+            else:
+                continue
+        
+        return False
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)

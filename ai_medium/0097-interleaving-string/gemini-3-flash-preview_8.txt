@@ -1,0 +1,44 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1 = len(s1)
+        n2 = len(s2)
+        n3 = len(s3)
+        
+        # If the combined lengths don't match, s3 cannot be an interleaving
+        if n1 + n2 != n3:
+            return False
+        
+        # Optimize for space complexity O(min(len(s1), len(s2)))
+        # To strictly use O(s2.length), we can skip the swap, 
+        # but swapping ensures the smaller space is used.
+        if n1 < n2:
+            s1, s2 = s2, s1
+            n1, n2 = n2, n1
+        
+        # dp[j] will store whether s3[0:i+j] can be formed by s1[0:i] and s2[0:j]
+        dp = [False] * (n2 + 1)
+        
+        # Base case: empty s1 and empty s2 form empty s3
+        dp[0] = True
+        
+        # Initialize dp array for the case where s1 is empty (i=0)
+        # dp[j] depends on dp[j-1] and whether s2[j-1] matches s3[j-1]
+        for j in range(1, n2 + 1):
+            dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+            
+        # Transition: i iterates through s1 characters, j iterates through s2 characters
+        for i in range(1, n1 + 1):
+            # Update dp[0] for the case where s2 is empty (j=0)
+            # dp[0] at step i depends on dp[0] at step i-1 and whether s1[i-1] matches s3[i-1]
+            dp[0] = dp[0] and s1[i - 1] == s3[i - 1]
+            
+            for j in range(1, n2 + 1):
+                # s3[i+j-1] can be formed if:
+                # 1. s3[0:i+j-1] was formed and s1[i-1] matches the current character in s3
+                # 2. s3[0:i+j-1] was formed and s2[j-1] matches the current character in s3
+                dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+                
+        return dp[n2]
+
+```

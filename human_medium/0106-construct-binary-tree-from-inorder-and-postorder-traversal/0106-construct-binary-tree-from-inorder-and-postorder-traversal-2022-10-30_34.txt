@@ -1,0 +1,9 @@
+def build(In,post,postEnd,inStart,inEnd):
+        if inStart>inEnd: return None
+        
+        root = Node(post[postEnd])
+        mid = ht[In[postEnd]]
+        postEnd-=1
+        root.right = build(In,post,postEnd,mid+1,inEnd)
+        root.left = build(In,post,postEnd,inStart,mid-1)
+        return root

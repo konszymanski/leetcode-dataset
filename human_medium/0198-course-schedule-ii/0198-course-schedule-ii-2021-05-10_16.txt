@@ -1,0 +1,46 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        
+        # to keep track of visit status
+        # -1 current visit stack, 1: visited, 0 not visited
+        self.visited = [0] * numCourses
+        
+        # adjacency graph/list
+        self.a_list = {x:[] for x in range(numCourses) }
+        for course, prereq in prerequisites:
+            self.a_list[prereq].append(course)
+            
+            
+        # now dfs over the adjacency graph/list and create return order
+        self.ret = []
+        for course in range(numCourses):
+            if not self.dfs(course):
+                return []
+            
+        # Reverse the list and return
+        return self.ret[::-1]
+    
+    
+    def dfs(self, node: int):
+        # already visited in current DFS call, cycle! 
+        if self.visited[node] == -1:
+            return False
+        
+        # Node visited
+        if self.visited[node] == 1:
+            return True
+        
+        # currently processing, so marked as -1
+        self.visited[node] = -1
+        
+        for course in self.a_list[node]:
+            if not self.dfs(course):
+                return False
+                
+        # Mark visited at thee end of DFS
+        self.visited[node] = 1
+        
+        # Traversed, add to result list
+        self.ret.append(node)
+        
+        return True

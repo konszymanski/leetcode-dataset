@@ -1,0 +1,27 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def bfs(board,i,j):
+            if i>=0 and j>=0 and i<len(board) and j<len(board[0]) and board[i][j]==\'O\':
+                board[i][j]=\'A\'
+                bfs(board,i+1,j)
+                bfs(board,i-1,j)
+                bfs(board,i,j+1)
+                bfs(board,i,j-1)
+        m,n=len(board),len(board[0])       
+        for p in range(n):          # this loop will take care of boundary elements top and bottom row
+            bfs(board,0,p)
+            bfs(board,m-1,p)
+            
+        for q in range(m):            # this loop will take care of left and right column boundary.
+            bfs(board,q,0)
+            bfs(board,q,n-1)
+            
+        for p in range(m):
+            for q in range(n):
+                if board[p][q]==\'O\':
+                    board[p][q]=\'X\'
+                elif board[p][q]==\'A\':
+                    board[p][q]=\'O\'

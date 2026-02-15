@@ -1,0 +1,21 @@
+from collections import defaultdict
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        idxmap = defaultdict(int)
+        
+        for i, n in enumerate(inorder):
+            idxmap[n] = i
+        
+        return self.helper(preorder[::-1], inorder, 0, len(inorder), idxmap)
+    
+    def helper(self, preorder, inorder, leftPointer, rightPointer, idxmap):
+        if leftPointer < rightPointer:
+            num = preorder.pop()
+            root = TreeNode(num)
+            idx = idxmap.get(num)
+            
+            root.left = self.helper(preorder, inorder, leftPointer, idx, idxmap)
+            root.right = self.helper(preorder, inorder, idx + 1, rightPointer, idxmap)
+            
+            return root

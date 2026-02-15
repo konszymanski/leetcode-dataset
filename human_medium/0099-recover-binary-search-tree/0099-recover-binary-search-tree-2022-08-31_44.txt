@@ -1,0 +1,25 @@
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        def inorder(cur):
+            if not cur:
+                return
+			#left subtree
+            inorder(cur.left)
+            
+            #logic
+            if self.prev and not self.left and self.prev.val >= cur.val:
+                self.left = self.prev
+            
+            if self.prev and self.left and self.prev.val >= cur.val:
+                self.right = cur
+                
+            self.prev = cur
+            
+			#right subtree
+            inorder(cur.right)
+        
+        
+        
+        self.left = self.right = self.prev = None
+        inorder(root)
+        self.left.val, self.right.val = self.right.val, self.left.val

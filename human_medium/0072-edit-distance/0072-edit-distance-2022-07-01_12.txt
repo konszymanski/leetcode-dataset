@@ -1,0 +1,31 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        return self.find_distance(word1, 0, word2, 0, {})
+
+    def find_distance(self, word1, word1_pointer, word2, word2_pointer, memo):
+        if word1_pointer == len(word1) and word2_pointer == len(word2):
+            return 0
+        
+        if word1_pointer == len(word1) or word2_pointer == len(word2):
+            return max(len(word1) - word1_pointer, len(word2) - word2_pointer)
+        
+        key = (word1_pointer, word2_pointer)
+        if key in memo: return memo[key]
+        
+        word1_len = len(word1) - word1_pointer
+        word2_len = len(word2) - word2_pointer
+        
+        if word1[word1_pointer] == word2[word2_pointer]:
+            memo[key] = self.find_distance(word1, word1_pointer + 1, word2, word2_pointer + 1, memo)
+        else:
+            memo[key] =  1 + self.make_move(word1, word1_pointer, word2, word2_pointer, memo)
+            
+        return memo[key]
+    
+    
+    def make_move(self, word1, word1_pointer, word2, word2_pointer, memo):
+        return min(
+                self.find_distance(word1, word1_pointer + 1, word2, word2_pointer + 1, memo), # update
+                self.find_distance(word1, word1_pointer, word2, word2_pointer + 1, memo), # insert
+                self.find_distance(word1, word1_pointer + 1, word2, word2_pointer, memo) # delete
+            )

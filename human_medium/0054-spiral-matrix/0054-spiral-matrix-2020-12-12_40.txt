@@ -1,0 +1,15 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]: 
+        
+		first = list(matrix[0] )
+        
+        if len(matrix) ==1:
+            return first
+        
+		else:
+            left = matrix[1:]
+            # The following two lines will rotate the left matrix 90 degrees counter-clockwise
+			left = list(zip(*left)) # rotate 90 degrees to the right
+            left.reverse() # rotate 180 degrees to the left
+            
+            return first + self.spiralOrder(left)

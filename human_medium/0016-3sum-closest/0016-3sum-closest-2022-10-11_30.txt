@@ -1,0 +1,59 @@
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        
+        #
+        #  To get the efficient algorithm, we sort the array first.
+        #
+        #  -4 -1 1 2  (sorted)
+        #   i  k   j
+        #
+        #   Assume that we fix an index i. After following procedure, we sweep from 0 to len(nums)-2.
+        #
+        #   Initially, index k is located at the right neighbor of index i, and index j is at
+        #   edge of left.
+        #
+        #   we think the relationship nums[i] + nums[k] + nums[j] = sum, and compare the sum with 
+        #   target.
+        #
+        #   If sum < target, how can we find more close value of sum? Again, i is fixed, and 
+        #   index k and j can be shifted in right and left, respectively. Considering the constraints
+        #   of direction, the only way to have better sum, we shift k in right.
+        #
+        #   after we move k in right successively, the sum will be target<sum. Then, how the sum
+        #   becomes better? we make the sum reduced. The sum is reduced by the right shift of index
+        #   k or j. However, we should not touch k. Because current k comes from left edge, so
+        #   the step back position of index k is already investigated. We shift j in left direction.
+        #
+        #   Again, the situation becomes sum<target. What motion is better for us? j should not
+        #   step back again, because it has been counted. We have to move index k in left.
+        #
+        #   Time O(n^2), space O(n)
+        
+        nums.sort()
+        closest = 1000000
+        
+        # index i is sweeped from 0 to len(nums)-2
+        for i in range(len(nums)-2) :
+            
+            # position index in edge
+            k=i+1
+            j=len(nums)-1
+            
+            # search start
+            while k<j :
+                
+                s = nums[i]+nums[j]+nums[k]
+                
+                # update if we find the better sum
+                if abs(target-s)<abs(target-closest) :
+                    closest = s
+                    
+                # shift index accordin to the rule
+                if s<target :
+                    k+=1
+                elif target<s :
+                    j-=1
+                else :
+                    return s  # found the best sum, so exit
+                
+        return closest

@@ -1,0 +1,29 @@
+def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        m, n = len(matrix), len(matrix[0])
+        total = m * n
+        dire = [(0, 1),(1, 0),(0, -1),(-1, 0)]
+        wall = [n - 1, m - 1, 0, 1]
+        index = 0
+        res = []
+        i, j = 0, 0
+        curDire = 0
+        while index < total:
+            res.append(matrix[i][j])
+            if curDire == 0 and j == wall[curDire]:
+                wall[curDire] -= 1
+                curDire = (curDire + 1) % 4
+            if curDire == 1 and i == wall[curDire]:
+                wall[curDire] -= 1
+                curDire = (curDire + 1) % 4
+            if curDire == 2 and j == wall[curDire]:
+                wall[curDire] += 1
+                curDire = (curDire + 1) % 4
+            if curDire == 3 and i == wall[curDire]:
+                wall[curDire] += 1
+                curDire = (curDire + 1) % 4
+            di, dj = dire[curDire]
+            i += di
+            j += dj
+            
+            index += 1
+        return res

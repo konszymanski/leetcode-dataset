@@ -1,0 +1,44 @@
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        # Constants for 32-bit signed integer limits
+        MAX_INT = 2147483647
+        MIN_INT = -2147483648
+
+        # Handle overflow case for the quotient
+        if dividend == MIN_INT and divisor == -1:
+            return MAX_INT
+        
+        # Determine the sign of the quotient
+        # If one is negative and the other is positive, the result is negative
+        negative = (dividend < 0) != (divisor < 0)
+        
+        # Work with absolute values
+        a, b = abs(dividend), abs(divisor)
+        
+        res = 0
+        # Use bit manipulation to find how many times divisor fits into dividend
+        while a >= b:
+            temp, multiple = b, 1
+            # Double the divisor until it's larger than the remaining dividend
+            while a >= (temp << 1):
+                temp <<= 1
+                multiple <<= 1
+            
+            # Subtract the largest power-of-two multiple of divisor found
+            a -= temp
+            res += multiple
+        
+        # Apply the determined sign
+        if negative:
+            res = -res
+            
+        # Ensure the result is within the 32-bit signed integer range
+        if res < MIN_INT:
+            return MIN_INT
+        if res > MAX_INT:
+            return MAX_INT
+            
+        return res
+
+```

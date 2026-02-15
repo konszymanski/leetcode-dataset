@@ -1,0 +1,31 @@
+class Solution:
+    
+    result = set()
+    
+    def get_result(self,digits,letters,index,length,choosen):
+        if index>=length:
+            self.result.add("".join(choosen[::]))
+            return
+        x = digits[index]
+        for i in range(len(letters[x])):
+            k = letters[x][i]
+            choosen.append(k)
+            self.get_result(digits,letters,index+1,len(digits),choosen)
+            del choosen[-1]            
+    
+    def letterCombinations(self, digits: str) -> List[str]:
+        length = len(digits)
+        if length==0:
+            return []
+        letters = {}
+        letters["2"] = list("abc")
+        letters["3"] = list("def")
+        letters["4"] = list("ghi")
+        letters["5"] = list("jkl")
+        letters["6"] = list("mno")
+        letters["7"] = list("pqrs")
+        letters["8"] = list("tuv")
+        letters["9"] = list("wxyz")
+        self.result = set()
+        self.get_result(digits,letters,0,length,[])
+        return list(self.result)

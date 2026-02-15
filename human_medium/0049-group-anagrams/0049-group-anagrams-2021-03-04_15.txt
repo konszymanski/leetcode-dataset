@@ -1,0 +1,19 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        
+        sorted_letters_list = []
+        for word in strs:
+            sorted_letters_list.append(sorted(word))
+        
+        sorted_letter = []
+        for letter_list in sorted_letters_list:
+            sorted_letter.append(\'\'.join(letter_list))
+        
+        out_dict = dict()
+        for idx,val in enumerate(sorted_letter):
+            if val in out_dict:
+                out_dict[val].append(strs[idx])
+            else:
+                out_dict[val] = [strs[idx]]
+        
+        return [out_dict[x] for x in out_dict]

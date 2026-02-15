@@ -1,0 +1,12 @@
+def subset2(nums):
+	ans = []
+	def backtrack(idx, ds):
+		ans.append(ds.copy())
+		for i in range(idx, len(nums)):
+			if i > idx and nums[i] == nums[i-1]: continue #duplicates found
+			ds.append(nums[i])
+			backtrack(i+1, ds)
+			ds.pop()
+	nums.sort()
+	backtrack(0, [])
+	return ans

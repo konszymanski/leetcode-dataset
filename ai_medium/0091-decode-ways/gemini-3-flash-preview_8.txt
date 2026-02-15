@@ -1,0 +1,35 @@
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        # If the string is empty or starts with '0', it cannot be decoded.
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        # dp[i] will store the number of ways to decode the substring s[0:i].
+        # Initialize the dp array with 0.
+        dp = [0] * (n + 1)
+        
+        # Base cases:
+        # An empty string has 1 way to be decoded (as an empty grouping).
+        dp[0] = 1
+        # A string of length 1 starting with a non-zero digit has 1 way.
+        dp[1] = 1
+        
+        for i in range(2, n + 1):
+            # Check for a valid single-digit decoding at position i-1.
+            # A single digit must not be '0'.
+            if s[i-1] != '0':
+                dp[i] += dp[i-1]
+            
+            # Check for a valid two-digit decoding ending at position i-1.
+            # Two-digit codes must be between "10" and "26".
+            # This naturally excludes codes starting with '0', like "06".
+            two_digit = int(s[i-2:i])
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i-2]
+        
+        # The result for the entire string is stored in dp[n].
+        return dp[n]
+
+```

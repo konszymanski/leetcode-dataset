@@ -1,0 +1,14 @@
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        if not node:
+            return None
+        return self.cloneGraphHelper(node, {})
+
+    def cloneGraphHelper(self, node: \'Node\', clones: map) -> \'Node\':
+        clone = Node(node.val)
+        clones[node] = clone
+        for neighbor in node.neighbors:
+            if neighbor not in clones:
+                self.cloneGraphHelper(neighbor, clones)
+            clone.neighbors.append(clones[neighbor])
+        return clone

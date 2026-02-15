@@ -1,0 +1,17 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        
+        dq = deque()
+        dq.append(root)
+        dq.append(None)
+        
+        while dq:
+            for i in range(len(dq)):
+                x = dq.popleft()
+                if x is not None:
+                    x.next = dq[0]
+                    dq.append(x.left)
+                    dq.append(x.right)
+            if dq: dq.append(None)
+            
+        return root

@@ -1,0 +1,21 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        i = 0
+        j = 10
+        hashmap = {}
+        ans = []
+        print(len(s))
+        while j<len(s)+1:
+            if s[i:j] not in hashmap.keys():
+                hashmap[s[i:j]] = 1
+            else:
+                hashmap[s[i:j]] += 1
+            
+            i += 1
+            j += 1
+        
+        for key,value in hashmap.items():
+            if value > 1:
+                ans.append(key)
+                
+        return ans

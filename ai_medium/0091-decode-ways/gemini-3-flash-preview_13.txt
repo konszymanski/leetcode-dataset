@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        # If the string is empty or starts with '0', it cannot be decoded.
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        # dp[i] will store the number of ways to decode the prefix s[0:i].
+        dp = [0] * (n + 1)
+        
+        # Base cases:
+        # dp[0] = 1: An empty prefix has one way to be represented (as an empty set of decodings).
+        # dp[1] = 1: A single digit (not '0') has exactly one way to be decoded.
+        dp[0] = 1
+        dp[1] = 1
+        
+        for i in range(2, n + 1):
+            # Check the single digit s[i-1]. 
+            # If it's not '0', it contributes dp[i-1] ways.
+            if s[i-1] != '0':
+                dp[i] += dp[i-1]
+            
+            # Check the two-digit code s[i-2:i].
+            # Valid codes are strings from "10" up to "26".
+            two_digit_str = s[i-2:i]
+            if "10" <= two_digit_str <= "26":
+                dp[i] += dp[i-2]
+            
+            # If at any point dp[i] is 0, the string cannot be decoded further.
+            if dp[i] == 0:
+                return 0
+                
+        return dp[n]
+
+```

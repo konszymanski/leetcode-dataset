@@ -1,0 +1,30 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        
+        memo = {}
+        
+        def isMergeResult(s1, s2, s3):
+            ret = -1
+            if ((s1, s2, s3)) in memo:
+                return memo[(s1, s2, s3)]
+            if not s1:
+                return s2 == s3
+            if not s2:
+                return s1 == s3
+            if s1[0] != s2[0]:
+                if s1[0] == s3[0]:
+                    ret = isMergeResult(s1[1:], s2, s3[1:])
+                elif s2[0] == s3[0]:
+                    ret = isMergeResult(s1, s2[1:], s3[1:])
+                else:
+                    ret = False
+            elif s1[0] == s3[0]:
+                ret = isMergeResult(s1[1:], s2, s3[1:]) or isMergeResult(s1, s2[1:], s3[1:])
+            else:
+                ret = False
+            memo[(s1, s2, s3)] = ret
+            return ret
+
+        if len(s1) + len(s2) != len(s3):
+            return False
+        return isMergeResult(s1, s2, s3)

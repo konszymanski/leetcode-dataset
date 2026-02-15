@@ -1,0 +1,18 @@
+class Solution(object):
+    def flatten(self, root):
+        if not root:
+            return root
+        stack=[[0,root]]
+        root=None
+        while stack:
+            state,vertex=stack.pop()
+            if not state: #Subtree of current vertex not visited
+                stack.append([1,vertex])
+                if vertex.left:
+                    stack.append([0,vertex.left])
+                if vertex.right:
+                    stack.append([0,vertex.right])
+            else: #Subtree of current vertex completely visited
+                vertex.right=root
+                vertex.left=None
+                root=vertex

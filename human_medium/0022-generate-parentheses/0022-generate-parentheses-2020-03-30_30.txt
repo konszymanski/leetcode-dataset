@@ -1,0 +1,17 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if not n: return []
+        output = []
+        # recursively generate all valid combinations
+        def generate(left, right, current=\'\'):
+            # invalid state... prunning
+            if right < left: return
+            # match, we are done here
+            if not left and not right: output.append(current)
+            # base case: return
+            if not 0 <= left or not 0 <= right: return
+            # try all possible insertions
+            generate(left-1, right, current+\'(\')
+            generate(left, right-1, current+\')\')
+        generate(left=n, right=n)
+        return output

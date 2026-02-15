@@ -1,0 +1,23 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        # 2 nested loop in a cool check.
+        
+        if not any(map(bool,nums)):
+            return \'0\'
+        
+        # map(function,tuple/list/digit) converting the list to str elements
+        nums=list(map(str,nums))
+        
+        if len(nums)<2:
+            return "".join(nums)
+        
+        for x in range(len(nums)-1):
+            y=x+1
+            while (x<len(nums) and y<len(nums)):
+                if self.compare(nums,x,y):
+                    nums[y],nums[x]=nums[x],nums[y]
+                y+=1
+        return \'\'.join(nums)
+        
+    def compare(self,nums,x,y):
+        return (int(nums[x]+nums[y])) < (int(nums[y]+nums[x]))

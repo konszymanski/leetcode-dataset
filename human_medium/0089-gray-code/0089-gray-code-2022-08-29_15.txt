@@ -1,0 +1,12 @@
+import math
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        n2=2**n
+        ans=[]
+        for j in range(n2):
+            st=0
+            for i in range(n):
+                if(((1<<i)&j>0 and (1<<(i+1))&j==0) or ((1<<i)&j==0 and (1<<(i+1))&j>0)):
+                    st+=2**i
+            ans.append(st)
+        return(ans)

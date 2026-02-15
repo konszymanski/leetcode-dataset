@@ -1,0 +1,26 @@
+```python
+from typing import List
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        
+        def backtrack(first):
+            if first == n:
+                # Add a copy of the current configuration to the result
+                res.append(nums[:])
+                return
+            
+            for i in range(first, n):
+                # Swap the current element with the first element of the current recursion
+                nums[first], nums[i] = nums[i], nums[first]
+                # Recurse for the next position
+                backtrack(first + 1)
+                # Backtrack: swap back to the original configuration
+                nums[first], nums[i] = nums[i], nums[first]
+        
+        backtrack(0)
+        return res
+
+```

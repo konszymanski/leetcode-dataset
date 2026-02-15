@@ -1,0 +1,11 @@
+if not root: return
+stack = [root.right, root.left]
+curr = root
+while stack:
+	node = stack.pop()
+	if node:
+		stack.append(node.right)
+		stack.append(node.left)
+		curr.right = node
+		curr.left = None
+		curr = node

@@ -1,0 +1,26 @@
+def solve(self, board):
+        self.n = len(board)
+        if self.n:
+            self.m = len(board[0])
+        else:
+            return []
+        seen = [[0]*self.m for _ in range(self.n)]
+           
+        def mark(i, j): # mark the spot as seen
+            if i > self.n-1 or i < 0 or j > self.m-1 or j < 0 or seen[i][j] or board[i][j] == "X":
+                return
+            seen[i][j] = 1
+            for (a, b) in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                mark(i+a, j+b)
+                
+        for j in range(self.m):
+            mark(0, j) # top side
+            mark(self.n-1, j) # down side
+        for i in range(1, self.n-1):
+            mark(i, 0) # left side
+            mark(i, self.m-1) # right side
+            
+        for i in range(1,self.n-1):
+            for j in range(1, self.m-1):
+                if not seen[i][j]:
+                    board[i][j] = "X"

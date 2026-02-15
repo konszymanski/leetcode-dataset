@@ -1,0 +1,28 @@
+class Solution:
+    def countNodes(self, head) -> int:
+        n = 0
+        tmp = head
+        while tmp != None:
+            n +=1
+            tmp = tmp.next
+        return n
+    
+    def createBST(self, n) -> TreeNode:
+        if n <= 0:
+            return None
+        left  = self.createBST(int(n/2))
+        root = TreeNode(self.tmp.val)
+        self.tmp = self.tmp.next
+        root.left = left
+        
+        root.right = self.createBST(n-int(n/2)-1)
+        return root
+        
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        self.tmp = head
+        if head == None:
+            return None
+        n = self.countNodes(head)
+        if n == 1:
+            return TreeNode(head.val)
+        return self.createBST(n)

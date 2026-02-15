@@ -1,0 +1,25 @@
+class Solution(object):
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        r,c,ans=len(grid),len(grid[0]),0
+        def dfs(i,j, grid,r,c):
+            if i<0 or j<0 or i>r-1 or j>c-1 or grid[i][j] != "1":  
+                return  
+            
+            grid[i][j] = "*"
+            
+            dfs(i+1, j, grid, r,c)
+            dfs(i-1, j, grid, r,c) 
+            dfs(i, j+1, grid, r,c)
+            dfs(i, j-1, grid, r,c)
+           
+        for i in range(r):
+            for j in range(c):
+                if grid[i][j] == "1":
+                    dfs(i,j, grid, r,c)
+                    ans +=1 
+                    
+        return ans

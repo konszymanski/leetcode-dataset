@@ -1,0 +1,47 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix: return False
+        
+        relevant_row = self.search_row(matrix, target)
+        if relevant_row == -1:
+            return False
+        
+        return self.search_target_in_column(matrix[relevant_row], target)
+    
+    def search_row(self, matrix: List[List[int]], target:int) -> int:
+        # Binary search boundaries
+        last_column_index = len(matrix[0]) - 1
+        begin_row, end_row = 0, len(matrix) - 1
+        
+        while begin_row <= end_row:
+            middle_row = begin_row + (end_row - begin_row) // 2
+            
+            # Check if target exists in that range
+            if matrix[middle_row][0] <= target <= matrix[middle_row][last_column_index]:
+                return middle_row
+        
+            elif target > matrix[middle_row][0]:
+              begin_row = middle_row + 1
+            
+            else:
+                end_row = middle_row - 1
+            
+        return -1
+    
+    def search_target_in_column(self, column: List[int], target: int) -> bool:
+        start_index, end_index = 0, len(column) - 1
+        
+        while start_index <= end_index:
+            middle_index = start_index + (end_index - start_index) // 2
+            current_value = column[middle_index]
+            
+            if current_value == target:
+                return True
+            
+            elif target > current_value:
+                start_index = middle_index + 1
+            
+            else:
+                end_index = middle_index - 1
+            
+        return False

@@ -1,0 +1,35 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either number is "0", their product is "0"
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The maximum possible length of the product is m + n
+        res = [0] * (m + n)
+        
+        # Multiply each digit from num1 and num2
+        for i in range(m - 1, -1, -1):
+            d1 = ord(num1[i]) - ord('0')
+            for j in range(n - 1, -1, -1):
+                d2 = ord(num2[j]) - ord('0')
+                # p2 is the current digit position, p1 is the carry position
+                p1, p2 = i + j, i + j + 1
+                total = d1 * d2 + res[p2]
+                
+                # Store the last digit of total and carry the rest to res[p1]
+                res[p2] = total % 10
+                res[p1] += total // 10
+        
+        # Skip potential leading zeros and convert the result array to a string
+        ans = []
+        for d in res:
+            # We skip 0s until we find the first non-zero digit
+            if not (not ans and d == 0):
+                ans.append(chr(d + ord('0')))
+        
+        # If ans is empty, it means the product was 0 (already handled at the top)
+        return "".join(ans) if ans else "0"
+
+```

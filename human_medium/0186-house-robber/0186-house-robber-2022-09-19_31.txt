@@ -1,0 +1,12 @@
+class Solution:
+        #two pointers 
+        def rob(self, nums: List[int]) -> int:
+                nums.insert(0,0)
+                nums.insert(0,0)
+                rob1 = 0 
+                rob2 = 1
+                for i in range(2,len(nums)):
+                        nums[i] = max((nums[i] + nums[rob1]),nums[rob2])
+                        rob1 = rob2 
+                        rob2 = i
+                return nums[-1]

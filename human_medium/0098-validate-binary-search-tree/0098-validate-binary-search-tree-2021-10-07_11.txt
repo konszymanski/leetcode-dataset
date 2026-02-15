@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void inorder(TreeNode* root)
+    {
+        if(!root)
+            return;
+        
+        inorder(root -> left);
+        bTree.push_back(root -> val);
+        inorder(root -> right);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        // An empty tree
+        if(!root)
+            return true;
+        
+        // A leaf
+        if(!root -> right && !root -> left)
+            return true;
+        
+        // Inorder traversal to get the tree\'s values sorted
+        inorder(root);
+        
+        for(int i = 0; i < bTree.size() - 1; ++i)
+            if(bTree[i] >= bTree[i + 1])
+                return false;
+        return true;
+        
+    }
+    
+    private:
+        vector<int> bTree;
+};

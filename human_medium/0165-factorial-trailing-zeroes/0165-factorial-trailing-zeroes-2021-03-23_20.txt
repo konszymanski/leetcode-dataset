@@ -1,0 +1,23 @@
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        
+        """Brute Force Approach
+        def get_factorial(n):
+            if n in (0,1):
+                return 1
+            else:
+                factorial = 1
+                for i in range(2,n+1):
+                    factorial *= i
+                return factorial
+        factorial = str(get_factorial(n))[::-1]
+        for i in range(len(factorial)):
+            if factorial[i] != \'0\':
+                return (0,i)[i != 0]
+        """
+        """Optimal Solution"""
+        result = 0
+        while n >= 5:
+            n = n // 5
+            result += n
+        return result

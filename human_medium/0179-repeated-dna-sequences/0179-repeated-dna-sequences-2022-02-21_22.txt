@@ -1,0 +1,35 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        n = len(s)
+        if n <= 10:
+            return []
+        
+        # dictionary to remember what we have seen so far - key = string , value = bool
+        seen = {}
+        
+        # output array to store the  repeated sequences
+        op = []
+        
+        # initial start and end pointers
+        start = 0
+        end = 10
+        
+        # total number of iterations = n - 10 + 1
+        while(end <= n):
+            
+            # store the newly identified sub-string in hash map with value = False
+            if not s[start:end] in seen:
+                seen[s[start:end]] = False
+                
+            # if sub-string is already in map, check if it has been added to output array already
+            # Add to output array and change value to True
+            elif seen[s[start:end]] == False:
+			    op.append(s[start:end])
+                seen[s[start:end]] = True
+            
+            # increment pointers to next sub-string
+            start += 1
+            end+=1
+        
+        # return output array
+        return op

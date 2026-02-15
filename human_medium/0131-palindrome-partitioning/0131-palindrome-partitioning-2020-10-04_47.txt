@@ -1,0 +1,20 @@
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        all_partitions = []
+    
+        def helper(curr_s,curr_partition):
+            
+            if len(curr_s) == 0: all_partitions.append(curr_partition[:])
+
+            for i in range(0,len(curr_s)):
+                temp = curr_s[:i+1]
+                if temp == temp[::-1]:
+                    helper(curr_s[i+1:],curr_partition+[temp])
+
+        helper(curr_s = s, curr_partition=[])
+
+        return all_partitions

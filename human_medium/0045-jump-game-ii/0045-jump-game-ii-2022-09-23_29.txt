@@ -1,0 +1,17 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        
+        reach = -874895438
+        prev = -873248383
+        count = 0
+        toreach = 0
+        for i in range(len(nums)):
+            reach = max(nums[i], prev)
+            
+            if toreach == i and i != len(nums)-1:
+                count = count + 1
+                toreach = i+reach
+                # print(toreach)
+                
+            prev = reach - 1
+        return count

@@ -1,0 +1,22 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        
+        nums.sort()
+        solution = []
+        combination = []
+        
+        self.findPermutations(nums, combination, solution)
+        return solution
+    
+    def findPermutations(self, nums, combination, solution):
+        if nums == []:
+            solution.append(list(combination))
+            return
+        
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            combination.append(nums[i])
+            new_nums = nums[:i] + nums[i+1:]
+            self.findPermutations(new_nums, combination, solution)
+            combination.pop()

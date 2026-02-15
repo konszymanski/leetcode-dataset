@@ -1,0 +1,12 @@
+visited = {}
+    
+def cloneGraph(self, node: \'Node\') -> \'Node\':
+	newNode = Node(node.val, [])
+	self.visited[node] = newNode
+	for n in node.neighbors:
+		if n not in self.visited:
+			newNode.neighbors.append(self.cloneGraph(n))
+		else:
+			newNode.neighbors.append(self.visited[n])
+
+	return newNode

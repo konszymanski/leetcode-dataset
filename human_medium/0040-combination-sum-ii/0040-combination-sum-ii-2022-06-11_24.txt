@@ -1,0 +1,25 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort() # sorting the array in order to have the duplicate elements
+                          # side by side and apply recursion
+        ans=[]
+        self.recur(0,candidates,target,[],ans)
+        return ans
+    
+    def recur(self,ind,arr,target,path,ans):
+        if ind==len(arr):
+            if target==0:
+                ans.append(list(path)) # making a deepcopy
+            return
+        for i in range(ind,len(arr)):
+            if i!=ind and arr[i]==arr[i-1]: # to avoid duplicates
+                continue
+            if arr[i]<=target:
+                path.append(arr[i])
+                self.recur(i+1,arr,target-arr[i],path,ans) # pick
+                path.pop() # removing the element
+        self.recur(i+1,arr,target,path,ans) # not pick
+
+# TC = O(2^N x N) (N is here for deep copy)
+# SC = O(2^N) x O(k) 
+# Auxillary Space = O(N)

@@ -1,0 +1,57 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+
+        # find the pivot O(n)
+        
+        # elemenating same no. in first ans last
+        l , r = 0 , len(nums)-1
+        if nums[l]==target or nums[r]==target:
+            return True
+        
+        count=0
+        while(count<r and nums[count]==nums[count+1]): count+=1
+
+        if count==r-1:
+            if nums[0]==target:
+                return True
+            else:
+                 return False
+
+        while(r>0 and nums[0]==nums[r]): r-=1
+        start , end = 0 , r
+        # print(l , r)
+        pivot=-l
+        while(l<=r):
+            m=(l+r)//2
+            if nums[m]==target:
+                return True
+            if nums[0]<=nums[m]:
+                l=m+1
+            else:
+                pivot=m
+                r=m-1
+        # print(pivot)
+        if pivot==-1:
+            return self.find(nums ,start , end  , target)
+        else:
+            if nums[end]<target:
+                return self.find(nums , start , pivot-1 ,target)
+            else:
+                return self.find(nums , pivot , end , target)
+
+        
+
+        # split the array at the pivot and use binary search independently O(nlogn)
+    def find(self , nums , start , end, target):
+        l ,  r = start, end
+        
+        while(l<=r):
+            # print(l , r , target)
+            m=(l+r)//2
+            if nums[m]==target:
+                return True
+            elif nums[m]<target:
+                l=m+1
+            else:
+                r=m-1
+        return False

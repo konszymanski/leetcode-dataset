@@ -1,0 +1,13 @@
+class Solution(object):
+    def myPow(self, x, n):
+        if n == 0:
+            return 1
+        if n < 0:
+            return self.myPow(1/x, -n) #if n < 0, return power of 1/x
+        
+        partial = self.myPow(x, n // 2) #recusively call on n // 2 to solve in log(n) time
+        result = partial * partial
+        
+        if (n % 2) == 1: #if n mod 2 is 1 then multiply result by another x
+            result *= x
+        return result

@@ -1,0 +1,23 @@
+class Solution:
+    def gcd(x,y):
+        return x if y <= 0 else gcd(y,x % y)
+		
+    def rotate(self, nums: List[int], k: int) -> None:
+        n = len(nums)
+        for i in range(gcd(k,n)): # there are exactly gcd(k,n) cycles (this is your assignment/homework)
+			# consider each cycle in the given array : i -> (i - k) % n -> (i - 2k) % n -> (i - 3k) % n -> ... -> i
+			# rotate this whole small cycle
+			
+            j = i # current element
+            tmp = nums[i] # value of the first element (i) in current cycle
+
+            for t in range(1,1000000): # loop until every element of the cycle has been considered (prevJ == i)
+                prevJ = ((j - k) % n + n) % n
+				# prevJ = the previous element of j in current cycle
+                                
+                if(prevJ == i):
+                    nums[j] = tmp # rotate
+                    break
+                       
+                nums[j] = nums[prevJ] # rotate
+                j = prevJ # jump to the previous one

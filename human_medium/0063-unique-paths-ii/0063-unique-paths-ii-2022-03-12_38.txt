@@ -1,0 +1,15 @@
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        countGrid = [[0 for _ in range(n)] for _ in range(m)]
+        countGrid[0][0] = 1
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    countGrid[i][j] = 0
+                else:
+                    if i != 0 or j != 0:
+                        countGrid[i][j] = countGrid[i-1][j] + countGrid[i][j-1]
+                #print(f\'countGrid={countGrid}\')
+        return countGrid[-1][-1]

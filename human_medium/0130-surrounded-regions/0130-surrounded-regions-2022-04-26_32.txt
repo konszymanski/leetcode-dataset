@@ -1,0 +1,53 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        rows, cols = len(board), len(board[0])
+        
+        self.getBoardRegions(board, rows, cols)
+        self.changeUnVisitedRegions(board, rows, cols)
+        self.changeBoarderSymbol(board, rows, cols)
+        
+        return board
+        
+       # get the regions of the board
+    
+    def getBoardRegions(self, board, rows, cols):
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == \'O\' and (r in [0, rows - 1]) or (c in [0, cols - 1]):
+                    self.captureBoarders(board, r, c)
+                    
+       # capture means this function will 
+	   # change the board\'s connect regions to \'T\'
+	   
+    def captureBoarders(self, board, r, c):
+        if r < 0 or r >= len(board) or c < 0 or c >= len(board[0]) or board[r][c] != \'O\':
+            return
+        
+        if board[r][c] == \'O\':
+            board[r][c] = \'T\'
+            
+        self.captureBoarders(board, r - 1, c) # UP
+        self.captureBoarders(board, r + 1, c) # DOWN
+        self.captureBoarders(board, r, c + 1) # LEFT
+        self.captureBoarders(board, r, c - 1) # RIGHT
+        
+      # if a regions is still \'O\' and haven\'t been \'T\' yet it 
+	  # means its not connected with any board regions 
+	  # so simply change them to \'X\' 
+	  
+    def changeUnVisitedRegions(self, board, rows, cols):
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == \'O\':
+                    board[r][c] = \'X\'
+                    
+      # remember we have change our connect \'O\' to \'T\' 
+	  # now its time to make it back to \'O\'
+    def changeBoarderSymbol(self, board, rows, cols):
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == \'T\':
+                    board[r][c] = \'O\'

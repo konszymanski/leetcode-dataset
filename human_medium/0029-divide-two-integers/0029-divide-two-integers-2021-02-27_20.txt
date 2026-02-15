@@ -1,0 +1,56 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+            
+        #account for Q = 2^31 = -2^31/-1 case (because 2^31 doesn\'t fit in environment register range)
+        if dividend == -2147483648 and divisor == -1:
+            return 2147483647
+        
+        #first find the signs of the quotient
+        if (dividend >= 0 and divisor >= 0) or (dividend <= 0 and divisor <= 0):
+            sign = 1
+        else:
+            sign = -1
+
+        #force both integers to positive to make the following operations easier. We will add the sign at the end.
+        extraRemainder = 0
+        if dividend == -2147483648:
+            dividendNew = 2147483647
+            extraRemainder = 1 #need to account for this at the end to see if we need to +1 to our result due to this hovering 1
+        else:
+            dividendNew = abs(dividend)
+        
+        if divisor == -2147483648:
+            if dividend == -2147483648:
+                return 1
+            else:
+                return 0
+        else:
+            divisorNew = abs(divisor)
+        
+        result = 0 #cumulative sum of 2*i
+        remaining = dividendNew #how much of dividend is left that we still need to break into terms
+        
+        #keep iterating until we found all terms
+        while remaining >= divisorNew:
+            termVal = divisorNew #keeps track of value of divisor*2^i
+            amount = 1 #keeps track of what "2^i" is in divisor*2^i
+            while remaining >= termVal:
+                if termVal >= 1073741824 or remaining < (termVal << 1): # make sure we don\'t double 2147483648/2
+                    break
+                else:
+                    #keep multiplying tempVal by 2 (using bit-shift) until we reach a value closest but <= remaining
+                    termVal <<= 1 #be careful here though, because termVal might go to 2^31, which is not allowed. - comeback1
+                    amount <<= 1
+
+            result += amount
+            remaining -= termVal
+            #print("amount={},result={},remaining={}".format(amount,result,remaining))
+        
+        if extraRemainder == 1:
+            #our dividend was -2^31, so account for the extra 1 to see if it mattered
+            if remaining + extraRemainder == abs(divisor): #note that divisor here cannot be -2^31 because we had a return statement at the top for this case
+                result += 1
+
+        #adjust result to have the sign we intend the quotient to be
+        if sign == -1: result = -result
+        return result

@@ -1,0 +1,36 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        
+        def binarySearch(target, index):
+            low = 0
+            high = len(intervals) - 1
+            
+            while low <= high:
+                mid = (low+high) // 2 
+                if intervals[mid][index] == target:
+                    return mid
+                elif intervals[mid][index] < target:
+                    low = mid + 1
+                else:
+                    high = mid -1
+            return low
+        
+        index1 = binarySearch(newInterval[0], 0)
+        index2 = binarySearch(newInterval[1], 1)
+        
+        if index1 > 0:
+            index1 -= 1
+            if newInterval[0] <= intervals[index1][1]:
+                newInterval[0] = min(intervals[index1][0], newInterval[0])
+                newInterval[1] = max(intervals[index1][1], newInterval[1])
+            else:
+                index1 += 1
+             
+        if index2 < len(intervals) and newInterval[1] >= intervals[index2][0]:
+            
+            newInterval[1] = max(intervals[index2][1], newInterval[1])
+            index2 += 1
+        
+        intervals[index1:index2] = [newInterval]
+            
+        return intervals

@@ -1,0 +1,20 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        
+        jump = farthest = currEnd = 0
+        
+        for idx in range(len(nums) - 1):
+            # how far we can go with current chance of jump
+            farthest = max(farthest, idx + nums[idx])
+            
+            # Take the jump
+            if idx == currEnd:
+                jump += 1
+                # we can go upto farthest point with this curr jump
+                currEnd = farthest
+                # did we reach the end? if so, just return the jump number
+                if currEnd >= len(nums) - 1:
+                    return jump
+        
+        # where no jump needed
+        return jump

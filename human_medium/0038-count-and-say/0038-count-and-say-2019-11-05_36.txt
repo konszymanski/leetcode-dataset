@@ -1,0 +1,6 @@
+from itertools import groupby
+
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n == 1: return "1"
+        return "".join(str(len(list(v))) + g for g, v in groupby(self.countAndSay(n-1)))

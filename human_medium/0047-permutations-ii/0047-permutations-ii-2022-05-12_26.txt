@@ -1,0 +1,17 @@
+class Solution:
+    def exampleCode(self, nums: List[int]) -> List[List[int]]:
+        cur = []
+        ans = []
+		
+        def backtrack(cur, ans):
+			if finished:
+				ans.append(cur.copy())
+				return
+            for i in nums:
+				cur.append(nums[i])
+                backtrack(cur, ans)
+                cur.pop()
+				
+        backtrack(cur, ans)
+		
+        return ans

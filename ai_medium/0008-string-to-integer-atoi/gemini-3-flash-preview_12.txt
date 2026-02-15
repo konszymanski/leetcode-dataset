@@ -1,0 +1,39 @@
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        # Step 1: Whitespace
+        s = s.lstrip()
+        if not s:
+            return 0
+        
+        # Step 2: Signedness
+        sign = 1
+        start_idx = 0
+        if s[0] == '-':
+            sign = -1
+            start_idx = 1
+        elif s[0] == '+':
+            start_idx = 1
+        
+        # Step 3: Conversion
+        res = 0
+        for i in range(start_idx, len(s)):
+            if s[i].isdigit():
+                res = res * 10 + int(s[i])
+            else:
+                break
+        
+        # Apply the determined sign
+        res *= sign
+        
+        # Step 4: Rounding (32-bit signed integer range)
+        INT_MIN = -2**31
+        INT_MAX = 2**31 - 1
+        
+        if res < INT_MIN:
+            return INT_MIN
+        if res > INT_MAX:
+            return INT_MAX
+            
+        return res
+```

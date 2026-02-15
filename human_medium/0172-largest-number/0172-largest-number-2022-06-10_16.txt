@@ -1,0 +1,7 @@
+class Solution(object):
+    def largestNumber(self, nums):
+        nums = sorted(nums, key = functools.cmp_to_key(self.reverse_numeric))
+        return str(int("".join([str(i) for i in nums])))
+    
+    def reverse_numeric(self, x, y):
+        return  int(str(y) + str(x)) - int(str(x) + str(y))

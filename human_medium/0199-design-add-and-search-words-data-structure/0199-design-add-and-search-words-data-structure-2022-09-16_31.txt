@@ -1,0 +1,44 @@
+class TrieNode:  # Time: O(1) and Space: O(n)
+    def __init__(self):
+        self.children = {}
+        self.word = False  # flagging every word false and last word will be flagged true to differentiate
+
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:  # Time: O(n) and Space: O(1)
+        cur = self.root
+        for c in word:   # the first letter of every word will be the direct children of root node containing a-z, A-Z, 0-9, etc as the first word
+            if c not in cur.children:  # when the word not in roots direct children, then create a direct node for it
+                cur.children[c] = TrieNode()
+            cur = cur.children[c]      # if the first word is present as a child of root node, then append the word to that children
+        cur.word = True  # when for loop ends means we are on the last word, we are flagging the last as true to differ between last, first and mid words
+
+    def search(self, word: str) -> bool:  # Time: O(n*n) and Space: O(1)
+
+        def dfs(j, root):
+            cur = root
+            for i in range(j, len(word)):  # will only run the searched words length from the current root
+                c = word[i]  # to check if c is . or defined word(a-z)
+
+                if c == ".":  # recursive search when . (any word) occurs
+                    for child in cur.children.values():  # this will run number of children times
+                        if dfs(i + 1, child):    # searching every sub children, skipping . value by doing index+1, so we will only search its children\'s  
+                            return True          # if the dfs returns true, this will return true as it will be skipped and false will be returned
+                    return False
+                
+                else:         # iterative search when a defined value is asked
+                    if c not in cur.children:
+                        return False
+                    cur = cur.children[c]  # moving down the list 
+            return cur.word  # cur will point to a word if it is the last(flag: True) means we have reached the end by matching every word perfectly 
+
+        return dfs(0, self.root)  # index and root
+    
+# Prefix Tree
+#   root
+#  / \\ \\ \\ \\
+# a   b c d e

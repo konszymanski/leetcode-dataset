@@ -1,0 +1,24 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+		# head.next being null means we can\'t swap anyways
+        if not head or not head.next:
+            return head
+			
+		# we need to preserve head.next since it will be lost when
+		# we assign head.next later
+        second = head.next
+		
+		# this is magic. just assume swapPairs will do its job...
+        head.next = self.swapPairs(head.next.next)
+		
+		# of course since head is now the second node of the two
+        second.next = head
+		
+		# second now replaces head as the head remember?
+        return second

@@ -1,0 +1,58 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = self.normalize_spaces(s)
+        self.reverse_string(s)
+        self.restore_string(s)
+        return \'\'.join(s)
+    
+    def reverse_string(self, s: List[str]) -> None:
+        left, right = 0, len(s) - 1
+        self.swap(s, left, right)
+            
+    def restore_string(self, s: List[str]) -> None:
+        start = 0
+        for pointer in range(len(s)):
+    
+            if s[pointer] == \' \':
+                end = pointer - 1  # last symbol in word
+                self.swap(s, start, end)
+                start = pointer + 1
+        self.swap(s, start, pointer) # last word
+        
+    def swap(self, s: List[str], start: int, end: int):
+         while start <= end:
+            s[start], s[end] = s[end], s[start]
+            start += 1
+            end -= 1
+    
+    def normalize_spaces(self, s: str) -> List[str]:
+        write = 0
+        read = 0
+        s = list(s)
+        while s[read] == \' \':  # remove spaces at the beginning
+            read += 1
+        
+        while read < len(s):
+            if s[read] == \' \':
+                new_read = self.get_next_letter_idx(s, read)
+                
+                if new_read == len(s):
+                    break              
+                elif new_read - read > 1:
+                    s[write] = \' \'
+                    read = new_read
+                    write += 1
+                    continue
+                    
+            s[write] = s[read]
+            write += 1
+            read += 1
+        return s[:write]
+            
+    def get_next_letter_idx(self, s: str, start: int) -> int:
+        end = start
+        while s[end] == \' \':
+            end += 1
+            if end == len(s):
+                break
+        return end

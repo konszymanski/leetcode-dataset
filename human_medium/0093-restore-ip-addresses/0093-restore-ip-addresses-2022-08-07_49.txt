@@ -1,0 +1,33 @@
+MAX_DIGIT, DOTS = 256, 4
+
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> list[str]:
+        ip_addr, n = [0] * DOTS, len(s)
+
+        def dfs(idx: int, dots_used: int):
+            """
+            :param idx:
+            :param dots_used:
+            :return: ip-addresses from s[idx:] and with "DOTS - dots_used" remaining dots
+            """
+            if idx == n and dots_used == DOTS:
+                yield \'.\'.join(map(str, ip_addr))
+            elif idx < n and dots_used < DOTS:
+                num = 0
+
+                for i in range(idx, n):
+                    num = 10 * num + int(s[i])
+
+                    if num < MAX_DIGIT:
+                        ip_addr[dots_used] = num
+
+                        yield from dfs(i + 1, dots_used + 1)
+
+                        if num == 0:
+                            # trailering zero will not be allowed
+                            break
+                    else:
+                        break
+
+        return list(dfs(0, 0))

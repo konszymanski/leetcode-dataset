@@ -1,0 +1,17 @@
+from math import ceil
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        sieve = [True]*(n+1)
+        if n == 0 or n == 1:
+            return 0
+        sieve[0] = False
+        sieve[1] = False
+        for factor in range(2, ceil(n**.5)):
+            if sieve[factor]:
+                for multiple in range(2*factor, n+1, factor):
+                    sieve[multiple] = False
+        count = 0
+        for i in range(n):
+            if sieve[i]:
+                count += 1
+        return count

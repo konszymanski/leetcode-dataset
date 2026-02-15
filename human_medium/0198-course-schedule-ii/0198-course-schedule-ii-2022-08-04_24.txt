@@ -1,0 +1,26 @@
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        preDict = {i:[] for i in range(numCourses)}
+        for course, pre in prerequisites:
+            preDict[course].append(pre)
+            
+        output = []
+        status = {}  # 0: unvisited; 1: visiting; -1: visited
+        
+        def dfs(course):
+            if status.get(course, 0) == 1: return False
+            if status.get(course, 0) == -1: return True
+            status[course] = 1
+            if preDict[course] == []:
+                output.append(course)
+                status[course] = -1
+                return True
+            for pre in preDict[course]: 
+                if not dfs(pre): return False
+            output.append(course)
+            status[course] = -1
+            return True
+            
+        for course in range(numCourses):
+            if not dfs(course): return []
+        return output

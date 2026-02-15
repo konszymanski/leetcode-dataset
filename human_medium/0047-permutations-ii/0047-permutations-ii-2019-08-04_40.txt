@@ -1,0 +1,20 @@
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        nums.sort()
+        res = []
+        
+        def dfs(nums, stack):
+            if not nums:
+                res.append(stack)
+            else:
+                for i in range(len(nums)):
+                    if i > 0 and nums[i] == nums[i - 1]:
+                        continue
+                    else:
+                        dfs(nums[:i] + nums[i+1:], stack+[nums[i]])
+        dfs(nums, [])
+        return res

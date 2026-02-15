@@ -1,0 +1,17 @@
+def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+	if not root:
+		return []
+	arr = []
+	stack = [(root, sum, arr)]
+	res = []
+	while stack:
+		node, s, arr = stack.pop()
+		if not node:
+			continue
+		elif node.val==s and not node.left and not node.right:
+			res.append(arr+[node.val])
+		else:
+			stack.append((node.left, s-node.val, arr+[node.val]))
+			stack.append((node.right, s-node.val, arr+[node.val]))
+		
+	return res

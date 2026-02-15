@@ -1,0 +1,23 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key=lambda item: item[0])
+        res = []
+        no_more_merge = False
+        # Some times we have to merge again and again, so we keep a flag to know that:
+        while not no_more_merge:
+            res = []
+            i=0
+            no_more_merge = True
+            while i < len(intervals):
+                # Need to merge:
+                if i != len(intervals) - 1 and intervals[i][1] >= intervals[i + 1][0]:
+                    new = [intervals[i][0], max(intervals[i + 1][1], intervals[i][1])]
+                    res.append(new)
+                    i += 2
+                    no_more_merge = False
+                else:
+                    res.append(intervals[i])
+                    i += 1
+            intervals = res
+    
+        return res

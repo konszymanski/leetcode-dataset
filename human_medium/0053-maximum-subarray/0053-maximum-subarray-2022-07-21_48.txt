@@ -1,0 +1,28 @@
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+		
+		#Initialize and set maxSum to first elem and currSum to 0
+		#( We will be adding first element to currSum thanks to 
+		# for loop so don\'t worry about not taking that into account)
+		
+        maxSum, currSum = nums[0], 0
+
+		#Loop through nums
+        for elem in nums:
+		
+			#if currSum is less than elem and the currSum is negative, 
+			# go ahead and set currSum to be elem. I.E: [-2, -1] and elem = -1, 
+			# currSum will now be -1 instead of adding and getting -3
+			
+            if currSum < elem and currSum < 0:
+                currSum = elem
+            else:
+			
+				#Add elem to currSum
+                currSum += elem
+				
+			#Find the max between what you just computed and the overall maxSum
+			# you\'ve been keeping track of
+            maxSum = max(currSum, maxSum)
+        
+        return maxSum

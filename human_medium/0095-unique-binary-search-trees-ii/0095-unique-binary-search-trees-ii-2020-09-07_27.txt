@@ -1,0 +1,54 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):    
+    def buildBSTs(self, nums, result, treeTrackerMap):
+        if len(nums) == 0:
+            return []
+        elif len(nums) == 1:
+            return [TreeNode(nums[0])]
+        elif len(nums) == 2:
+            tree1 = TreeNode(nums[0])
+            tree1.right = TreeNode(nums[1])
+            tree2 = TreeNode(nums[1])
+            tree2.left = TreeNode(nums[0])
+            
+            return [tree1, tree2]
+        
+        if len(result) != 0:
+            result = []
+        
+        for i in range(0, len(nums)):
+            leftTrees = self.buildBSTs(nums[0:i], treeTrackerMap[nums[i]]["l"], treeTrackerMap)
+            rightTrees = self.buildBSTs(nums[i+1:len(nums)], treeTrackerMap[nums[i]]["r"], treeTrackerMap)
+            if len(leftTrees) == 0:
+                leftTrees.append(None)
+            if len(rightTrees) == 0:
+                rightTrees.append(None)
+            for lTree in leftTrees:
+                for rTree in rightTrees:
+                    nTree = TreeNode(nums[i])
+                    nTree.left = lTree
+                    nTree.right = rTree
+                    result.append(nTree)
+        
+        return result
+                
+    def generateTrees(self, n):
+        visited = {}
+        nums = []
+        
+        for i in range(1, n+1):
+            nums.append(i)
+            visited[i] = {}
+            visited[i]["l"] = []
+            visited[i]["r"] = []
+        return self.buildBSTs(nums, [], visited)
+            
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """

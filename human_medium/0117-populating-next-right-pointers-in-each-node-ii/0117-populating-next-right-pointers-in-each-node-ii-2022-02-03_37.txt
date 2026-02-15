@@ -1,0 +1,14 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        if not root: return root
+        # BFS Approach
+        Q=[root]
+        while Q:
+            q=[]
+            for r in Q:
+                if r.left: q.append(r.left)
+                if r.right:q.append(r.right)
+            for i in range(len(q)-1):
+                q[i].next=q[i+1]
+            Q=q 
+        return root

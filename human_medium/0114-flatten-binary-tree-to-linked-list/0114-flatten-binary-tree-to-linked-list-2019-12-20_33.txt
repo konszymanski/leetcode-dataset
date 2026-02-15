@@ -1,0 +1,17 @@
+class Solution:
+    def __init__ (self):
+        self.l = []
+
+    def flatten(self, root: TreeNode) -> None:
+        def traverse_inorder(node):
+            if node is None:
+                return
+            self.l.append(node)
+            traverse_inorder(node.left)
+            traverse_inorder(node.right)
+        traverse_inorder(root)
+        node = root
+        for i in range(1, len(self.l)):
+            node.left = None
+            node.right = self.l[i]
+            node = node.right

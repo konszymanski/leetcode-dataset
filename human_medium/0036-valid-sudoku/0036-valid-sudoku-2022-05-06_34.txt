@@ -1,0 +1,39 @@
+class Solution:
+    def isValidSudoku(self, board):
+        # Row Check
+        for i in range(9):
+            frequency = []
+            for j in range(9):
+                if board[i][j] == \'.\':
+                    continue
+                if board[i][j] in frequency:
+                    return False
+                else:
+                    frequency.append(board[i][j])
+        
+        # Column Check
+        for i in range(9):
+            frequency = []
+            for j in range(9):
+                if board[j][i] == \'.\':
+                    continue
+                if board[j][i] in frequency:
+                    return False
+                else:
+                    frequency.append(board[j][i])
+        
+        # Block Check
+        for block in range(9):
+            frequency = []
+            relative_row = (block // 3) * 3
+            for i in range(relative_row, relative_row + 3):
+                relative_column = (block % 3) * 3
+                for j in range(relative_column, relative_column + 3):
+                    if board[i][j] == \'.\':
+                        continue
+                    if board[i][j] in frequency:
+                        return False
+                    else:
+                        frequency.append(board[i][j])
+        
+        return True

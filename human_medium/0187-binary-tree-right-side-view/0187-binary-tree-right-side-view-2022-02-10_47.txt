@@ -1,0 +1,22 @@
+from collections import deque
+
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        explored = deque([(0,root)])
+        levels = {}
+
+        while explored:
+            l, n = explored.popleft()
+            
+            levels[l] = n.val
+
+            if n.left:
+                explored.append((l+1, n.left))
+            
+            if n.right:
+                explored.append((l+1, n.right))
+            
+        return levels.values()

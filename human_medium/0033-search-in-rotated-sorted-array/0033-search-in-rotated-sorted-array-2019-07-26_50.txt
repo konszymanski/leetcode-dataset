@@ -1,0 +1,23 @@
+class Solution(object):
+    def search(self, A, target):
+		l,r = 0,len(A)-1
+        while l<=r:
+            m = (l+r)//2
+            if A[m] == target:
+                return m
+            else:
+                if A[m] < A[r]: 
+                     #[rotated subarray] m [asceding subarray]
+					 #  e.g. [812]       3          [456]
+                    if A[m] <= target <=A[r]:
+                        l = m +1
+                    else: 
+                        r = m -1
+                else:
+					# [acceding subarray] m [rotated subarray]
+					# e.g  [789]     10      [11,1,2]
+                    if A[l]<= target <= A[m]:
+                        r = m -1
+                    else:
+                        l = m + 1
+        return -1

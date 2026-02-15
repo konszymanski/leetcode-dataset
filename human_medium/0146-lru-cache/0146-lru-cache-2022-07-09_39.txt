@@ -1,0 +1,47 @@
+class Node:
+    def __init__(self,key,value):
+        self.key = key
+        self.value = value
+        self.next = None
+        self.prev = None
+        
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node("head", 0)
+        self.tail = Node("tail",0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+    
+    def removeNode(self,node):
+        # it removes the binding for node from its neighours
+        node.next.prev = node.prev
+        node.prev.next = node.next
+        
+    def addNode(self, node):
+        # we will add \'node\' after head node
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self.removeNode(node)
+            self.addNode(node)
+            return node.value
+        return -1
+            
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.removeNode(self.cache[key])
+        node = Node(key,value)
+        self.addNode(node)
+        self.cache[key] = node
+        if len(self.cache) > self.capacity:
+            nodeToRemove = self.tail.prev
+            self.removeNode(nodeToRemove)
+            del self.cache[nodeToRemove.key]

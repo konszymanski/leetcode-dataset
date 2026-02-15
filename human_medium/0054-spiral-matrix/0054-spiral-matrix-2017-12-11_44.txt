@@ -1,0 +1,32 @@
+class Solution:
+    def spiralOrder(self, matrix):
+        result = []
+        if len(matrix) == 0:
+            return result
+        visited = [ [False for col in row] for row in matrix ]
+        position = (0, -1) #offset left so our first visit will be (0,0)
+        direction = (0, 1) #right
+        
+        i = 0
+        while i < len(matrix) * len(matrix[0]):
+            # check the next position
+            row = position[0] + direction[0]
+            col = position[1] + direction[1]
+            if not self.inBounds(matrix, row, col) or visited[row][col]:
+                direction = self.turnRight(direction)
+                continue
+            # we can now visit the new position
+            position = (row, col)
+            visited[row][col] = True
+            result.append(matrix[row][col])
+            i += 1
+            
+        return result
+            
+    def inBounds(self, matrix, row, col):
+        return row >= 0 and col >= 0 \\
+            and row < len(matrix) and col < len(matrix[0])
+    
+    # utilizes the linear transformation for rotating -90 degrees in the plane
+    def turnRight(self, vector):
+        return (vector[1], -1 * vector[0])

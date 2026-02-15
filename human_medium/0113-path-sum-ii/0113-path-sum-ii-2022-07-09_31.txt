@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], target_sum: int) -> List[List[int]]:
+        
+        output = []
+        def getPaths(node: Optional[TreeNode], curr_sum: int, curr_path: List[int]):
+            nonlocal output
+            # Base Case
+            if not node:
+                return
+            # Always keep track of current sum and current path
+            curr_sum += node.val
+            curr_path.append(node.val)
+            # If at the leaf node and curr_sum equals target sum append to output
+            if not node.left and not node.right:
+                if curr_sum == target_sum:
+                    # Append a copy using [:] since we do not want to ever append the same reference twice
+                    output.append(curr_path[:])
+            # Recursive call to the node\'s children
+            getPaths(node.left, curr_sum, curr_path)
+            getPaths(node.right, curr_sum, curr_path)
+            # pop the most recent node When traveling up the call stack -
+            # to preserve the integrity of our paths for each recursive call
+            curr_path.pop()
+        
+        getPaths(root, 0, [])
+        return output

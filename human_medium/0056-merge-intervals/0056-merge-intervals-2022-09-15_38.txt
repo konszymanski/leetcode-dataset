@@ -1,0 +1,28 @@
+arr = []
+for interval in intervals:
+	if len(arr) < interval[1] + 1:
+		arr += [0 for i in range(interval[1] - len(arr) + 1)]
+	arr[interval[0]] += 1
+	arr[interval[1]] -= 1
+
+newIntervals = []
+summ = 0
+curIntervalStart = -1
+curInInterval = False
+for i in range(len(arr)):
+	if curInInterval:
+		summ += arr[i]
+		# Interval is ending
+		if summ == 0:
+			curInInterval = False
+			newIntervals.append([curIntervalStart, i])
+
+	# Not in an interval    
+	else:
+		summ += arr[i]
+		# Start new Interval
+		if summ > 0:
+			curIntervalStart = i
+			curInInterval = True
+			
+return newIntervals

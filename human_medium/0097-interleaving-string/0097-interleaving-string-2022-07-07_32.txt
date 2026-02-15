@@ -1,0 +1,12 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        @cache # memo for lazy
+        def dfs(i1, i2, i3):
+            if i3 == 0: # base case: we are at the end of i3 and i1 == i2 == 0 means the strings are interleaving
+                return i1 == 0 and i2 == 0
+
+            return i1 > 0 and s1[i1 - 1] == s3[i3 - 1] and dfs(i1 - 1, i2, i3 - 1) or \\ # s1[x] = s3[y]
+               i2 > 0 and s2[i2 - 1] == s3[i3 - 1] and dfs(i1, i2 - 1, i3 - 1) # s2[z] = s3[y]
+        
+        N1, N2, N3 = len(s1), len(s2), len(s3)
+        return dfs(N1, N2, N3)

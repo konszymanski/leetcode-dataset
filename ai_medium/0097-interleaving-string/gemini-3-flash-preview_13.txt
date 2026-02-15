@@ -1,0 +1,35 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        if n1 + n2 != n3:
+            return False
+        
+        # We ensure that s2 is the string used for the DP array size.
+        # This keeps the space complexity O(len(s2)).
+        # To strictly satisfy the follow-up for any input, 
+        # one could swap s1 and s2 if n1 < n2 to ensure O(min(n1, n2)).
+        
+        dp = [False] * (n2 + 1)
+        
+        # Base case: empty s1 and empty s2 form empty s3
+        dp[0] = True
+        
+        # Initialize the DP array for the case where s1 is empty (row 0 in 2D DP)
+        for j in range(1, n2 + 1):
+            dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+            
+        for i in range(1, n1 + 1):
+            # Update dp[0] for the case where s2 is empty (col 0 in 2D DP)
+            dp[0] = dp[0] and s1[i - 1] == s3[i - 1]
+            
+            for j in range(1, n2 + 1):
+                # Current s3 index is (i + j - 1)
+                # dp[j] (from previous i) represents s1[:i-1] and s2[:j]
+                # dp[j-1] (updated for current i) represents s1[:i] and s2[:j-1]
+                dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or \
+                        (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+                        
+        return dp[n2]
+
+```

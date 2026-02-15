@@ -1,0 +1,48 @@
+#####################################################################################################################
+# Problem: Design Add and Search Words Data Structure
+# Solution : Trie Implementation with a Hash Table
+#####################################################################################################################
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isWord = False
+
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        curr_node = self.root
+
+        for letter in word:
+            if letter not in curr_node.children.keys():
+                curr_node.children[letter] = TrieNode()
+            curr_node = curr_node.children[letter]
+        curr_node.isWord = True
+
+    def search(self, word: str) -> bool:
+        def dfs(start_index, root):
+            curr_node = root
+
+            for i in range(start_index, len(word)):
+                letter = word[i]
+
+                if letter == ".":
+                    for child in curr_node.children.values():
+                        if dfs(i + 1, child):
+                            return True
+                    return False
+                else:
+                    if letter not in curr_node.children.keys():
+                        return False
+                    curr_node = curr_node.children[letter]
+            return curr_node.isWord
+        return dfs(0, self.root)
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)

@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        vector<string> path;
+        dfs(s, 0, path, ans);
+        return ans;
+    }
+    
+    void dfs(const string& s, int start, vector<string>& path, vector<vector<string>>& ans){
+        if(start == s.size()){
+            ans.push_back(path);
+            return;
+        }
+        
+        for(int i = start; i < s.size(); i++){
+            if(isPalindrome(s, start, i)){
+                path.push_back(s.substr(start, i - start + 1));
+                dfs(s, i + 1, path, ans);
+                path.pop_back();
+            }
+        }
+    }
+   
+     bool isPalindrome(const string& s, int l, int r){
+         int mid = l + (r - l) / 2;
+         auto it = s.rbegin() + s.size() - r -1;
+         return equal(s.begin() + l, s.begin() + mid+1, it);
+     }
+};

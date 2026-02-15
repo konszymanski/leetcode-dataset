@@ -1,0 +1,12 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        n = len(s)
+        @lru_cache(None)
+        def recurse(k):
+            if k==n: return [[]]
+            ans = []
+            for j in range(k+1,n+1):
+                if s[k:j] == s[k:j][::-1] : 
+                    ans.extend([[s[k:j]]+i for i in recurse(j)])
+            return ans
+        return recurse(0)

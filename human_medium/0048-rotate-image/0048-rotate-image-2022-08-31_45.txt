@@ -1,0 +1,23 @@
+def beatyprint(matrix, n):
+    for i in range(n):
+        ans = ""
+        for j in range(n):
+            ans += str(matrix[i][j]) + " "
+        print(ans)
+
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        n = len(matrix)
+        
+        if n % 2 == 0:
+            i_range = j_range = n // 2
+        else:
+            i_range = n // 2
+            j_range = n // 2 + 1
+            
+        for i in range(i_range):
+            for j in range(j_range):
+                matrix[i][j] = matrix[n - 1 - j][i]
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j]
+                matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i]
+                matrix[j][n - 1 - i] = tmp

@@ -1,0 +1,7 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        nums_reversed = nums[::-1] # create a reveresed version of nums array
+        for i in range(1, len(nums)):
+            nums[i] *= nums[i - 1] or 1 # multiply the current num to the previous element if exists 
+            nums_reversed[i] *= nums_reversed[i - 1] or 1 # multiply the current num in the reveresed array to the previous one if exists
+        return max(nums + nums_reversed) # return the max of nums + nums reveresed

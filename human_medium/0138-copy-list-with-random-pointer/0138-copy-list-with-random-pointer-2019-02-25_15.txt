@@ -1,0 +1,18 @@
+def copyRandomList(self, head: \'Node\') -> \'Node\':
+	if not head:
+		return None
+
+	tracker = dict()
+	p1 = head
+	while(p1):
+		tracker[p1] = Node(p1.val, None, None)
+		p1 = p1.next
+
+	p1 = head
+	while(p1):
+		p2 = tracker[p1]
+		p2.random = tracker[p1.random] if p1.random else None
+		p2.next = tracker[p1.next] if p1.next else None
+		p1 = p1.next
+
+	return tracker[head]

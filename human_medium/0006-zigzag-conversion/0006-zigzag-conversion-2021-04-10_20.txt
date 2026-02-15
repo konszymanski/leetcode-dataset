@@ -1,0 +1,23 @@
+if numRows==1:
+        return s
+    flag=0
+    l=["" for i in range(numRows)]
+    i=0
+    y=0
+    while i<=len(s)-1:
+        l[y]=l[y]+s[i]
+        i+=1
+        if y==numRows-1:
+            flag=1
+        elif y==0:
+            flag=0
+        else:
+            pass
+        if flag==0:
+            y+=1
+        else:
+            y-=1
+    u=""
+    for i in l:
+        u=u+i
+    return u

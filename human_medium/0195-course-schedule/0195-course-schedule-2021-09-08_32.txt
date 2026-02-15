@@ -1,0 +1,19 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # 0: unknown, 1: checking, 2: done
+        courses = [0 for _ in range(numCourses)]
+        dependents = [[] for _ in range(numCourses)]
+
+        def check(i):
+            if courses[i]:
+                return courses[i] == 2
+            courses[i] = 1
+            if not all(map(check, dependents[i])):
+                return False
+            courses[i] = 2
+            return True
+
+        for a, b in prerequisites:
+            dependents[a].append(b)
+
+        return all(map(check, range(numCourses)))

@@ -1,0 +1,19 @@
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        if head is None:
+            return None
+        
+        if head.next is None:
+            return head
+        
+        if head.next.next is None:
+            newLeader = head.next
+            newLeader.next = head
+            head.next = None
+            return newLeader
+        
+        nextPairLeader = head.next.next
+        newLeader = head.next
+        newLeader.next = head
+        head.next = self.swapPairs(nextPairLeader)
+        return newLeader

@@ -1,0 +1,9 @@
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        track = []
+        while head:
+            for i,node in enumerate(track):
+                if head.next is node:
+                    return node
+            track.append(head)
+            head = head.next

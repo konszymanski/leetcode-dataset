@@ -1,0 +1,18 @@
+bases = [(1<<i) for i in range(n+1)]
+
+def t(prev, base):
+    if base >= len(bases):
+        return []
+    
+	# First half of result
+    rest = t(prev + bases[base], base + 1)
+    
+	# Second half of the result
+    rest = rest + [r - bases[base] for r in reversed(rest[1:])]
+    
+    
+    return [prev] + rest
+    
+
+result = t(0, 0)
+return result

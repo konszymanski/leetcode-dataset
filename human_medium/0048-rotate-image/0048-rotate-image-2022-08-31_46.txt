@@ -1,0 +1,8 @@
+import numpy as np
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        matr = np.array(matrix)
+        mat = np.rot90(np.rot90(np.rot90(matr)))
+        for r in range(len(matrix)):
+            for c in range(len(matrix)):
+                matrix[r][c] = mat[r][c]

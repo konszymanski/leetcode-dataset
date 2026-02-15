@@ -1,0 +1,25 @@
+def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        
+        #Simply consider this matrix as a single array. 
+        # Then all that\'s left to do is figure out the correct row and column indices during the binary search
+        
+        start = 0
+        rows = len(matrix)
+        cols = len(matrix[0])
+            
+        end = (rows * cols) - 1
+        
+        while start <= end:
+            mid = (start + end) // 2
+            
+            row = int(mid / cols)
+            col = mid % cols
+
+            if(matrix[row][col] == target): return True
+            
+            if(matrix[row][col] < target):
+                start = mid + 1
+            else:
+                end = mid - 1
+                
+        return False;

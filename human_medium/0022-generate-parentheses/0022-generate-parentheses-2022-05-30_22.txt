@@ -1,0 +1,14 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        def h(s,l,r,n,d):
+            if l==n:
+                s+=(")"*(n-r))
+                d.append(s)
+                return
+            h(s+"(",l+1,r,n,d)
+            if r<l:
+                h(s+")",l,r+1,n,d)
+            return
+        d=[]
+        h("",0,0,n,d)
+        return d

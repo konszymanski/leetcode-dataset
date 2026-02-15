@@ -1,0 +1,18 @@
+class Solution(object):
+    def partition(self, head, x):
+        front = dummy1 = ListNode()
+        end = dummy2 = ListNode()
+        
+        while head:
+            if head.val < x:
+                front.next = head
+                front = front.next
+            else:
+                end.next = head
+                end = end.next
+            head = head.next
+            
+        end.next = None
+        front.next = dummy2.next
+            
+        return dummy1.next

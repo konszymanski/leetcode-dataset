@@ -1,0 +1,17 @@
+class Solution:
+    def height(self,root):
+        if root is None:
+            return 0
+        return 1 + max(self.height(root.left),self.height(root.right))
+    
+    def dfs(self,root,index,arr):
+        if root:
+            self.dfs(root.left,index-1,arr)
+            arr[index].append(root.val)
+            self.dfs(root.right,index-1,arr)
+    
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        h=self.height(root)
+        arr=[[] for _ in range(h)]
+        self.dfs(root,h-1,arr)
+        return arr

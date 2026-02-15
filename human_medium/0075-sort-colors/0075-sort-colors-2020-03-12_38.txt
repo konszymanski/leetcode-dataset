@@ -1,0 +1,13 @@
+class Solution(object):
+    def sortColors(self, nums):
+        count = [0,0] ## number of sorted 0\'s and 1\'s. number of 2\'s are not necessary because we could always insert 2 after the last ordered 1.
+        for i in nums:
+            curr = nums.pop()
+            if curr == 0:
+                nums.insert(0,0) # insert to the begining
+                count[0]+= 1
+            elif curr == 1:
+                nums.insert(count[0], 1) # insert after ordered 0\'s
+                count[1]+= 1
+            else:
+                nums.insert(count[0]+count[1],2) # insert after ordered 1\'s

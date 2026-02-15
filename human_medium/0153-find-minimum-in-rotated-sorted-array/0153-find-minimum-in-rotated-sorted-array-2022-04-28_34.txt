@@ -1,0 +1,23 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+                   def binarySearch(nums):
+                    #base case
+                    if len(nums) == 2:
+                        res = min(nums)
+                        return res
+                    if len(nums) == 1:
+                        return nums[0]
+                    #divide list into mid,left,right
+                    mid =  len(nums) // 2 
+                    left = nums[:mid]
+                    right= nums[mid:]
+                    #find the matching list to be passed 
+                    if (left[0] < right[0]) and (left[0] < right[-1]):
+                        res = binarySearch(left)
+                    elif (left[-1] < right[0]) and (left[-1] < right[-1]):
+                        res = binarySearch(left)
+                    else :
+                        res = binarySearch(right)
+                    return res
+					
+                return binarySearch(nums)

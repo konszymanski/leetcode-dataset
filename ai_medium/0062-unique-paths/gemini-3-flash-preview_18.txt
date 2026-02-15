@@ -1,0 +1,11 @@
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # The problem can be solved using dynamic programming or combinatorics.
+        # The number of unique paths is equivalent to choosing (m-1) down moves 
+        # from a total of ((m-1) + (n-1)) total moves.
+        # This is given by the formula: C(m + n - 2, m - 1)
+        import math
+        return math.comb(m + n - 2, m - 1)
+
+```

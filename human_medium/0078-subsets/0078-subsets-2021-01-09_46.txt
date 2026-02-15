@@ -1,0 +1,6 @@
+class Solution:
+    def subsets(self, A):
+        B = [ [] ]
+        for x in A:
+            B.extend( [ P+[x] for P in B ] )
+        return B

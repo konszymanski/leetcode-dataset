@@ -1,0 +1,21 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        def str_to_int(x):
+            strlen = len(x)
+            res = 0
+            for i in range(strlen - 1, -1, -1):
+                res += (ord(x[i]) - 48) * 10 ** (strlen - i - 1)
+            return res
+
+        def int_to_str(y):
+            numarr = []
+            while True:
+                numarr.append(chr(ord("0") + y % 10))
+                y //= 10
+                if y == 0:
+                    break
+            return "".join(reversed(numarr))
+
+        num1, num2 = str_to_int(num1), str_to_int(num2)
+        res = num1 * num2
+        return int_to_str(res)

@@ -1,0 +1,11 @@
+def trailingZeroes(self, n: int) -> int:
+        numberOfFives = 0
+        i = 1
+        while True:
+            current = n // (5**i)
+            if current <= 0:
+                break
+            else:
+                numberOfFives += current
+            i += 1
+        return numberOfFives

@@ -1,0 +1,23 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        self.map_inorder = {}
+        for i, num in enumerate(inorder):
+            self.map_inorder[num] = i
+            
+        def recursive(inorder_start,inorder_end,preorder_start,preorder_end):
+            if preorder_start==preorder_end:
+                return TreeNode(preorder[preorder_start])
+            num = preorder[preorder_start]
+            inorder_num_idx = self.map_inorder[num]
+            node = TreeNode(num)
+            left_node_count = inorder_num_idx-inorder_start
+            right_node_count = inorder_end-inorder_num_idx
+            if left_node_count:
+                node.left = recursive(inorder_start, inorder_num_idx-1,
+                                         preorder_start+1, preorder_start+left_node_count)
+            if right_node_count:
+                node.right = recursive(inorder_num_idx+1, inorder_end,
+                                            preorder_start+left_node_count+1, preorder_end)
+            return node
+        n = len(inorder)
+        return recursive(0,n-1,0,n-1)

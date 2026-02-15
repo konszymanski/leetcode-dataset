@@ -1,0 +1,43 @@
+def __init__(self):
+	self._start, self._end = 0, 1 # interval start and end indexes
+
+def _binary_search(self, intervals: List[List[int]], val, l=0, r=None):
+	if r is None:
+		r = len(intervals) - 1
+	
+	while l <= r:
+		mid = (l + r) // 2
+		if intervals[mid][self._start] <= val <= intervals[mid][self._end]:
+			return mid
+            
+		elif val > intervals[mid][self._end]:
+			l = mid + 1
+                
+		else:
+			r = mid - 1
+        
+	return l
+
+# Solution 1:
+def insert(self, intervals: List[List[int]], new_interval: List[int]) -> List[List[int]]:
+
+	intervals_count = len(intervals)
+	
+	# 1. Search the interval where new_interval.start fits in: O(logn) time
+	val = new_interval[self._start]
+	insert_start = self._binary_search(intervals, val)
+	if insert_start < intervals_count and intervals[insert_start][self._start] <= val <= intervals[insert_start][self._end]:
+		new_interval[self._start] = intervals[insert_start][self._start]
+		new_interval[self._end] = max(intervals[insert_start][self._end], new_interval[self._end])        
+	
+	# 2. Search the interval where new_interval.end fits in: O(logn) time
+	val = new_interval[self._end]
+	insert_end = self._binary_search(intervals, val, insert_start)
+	if insert_end < intervals_count and intervals[insert_end][self._start] <= val:
+		new_interval[self._end] = max(intervals[insert_end][self._end], new_interval[self._end])
+		insert_end += 1
+	
+	# 3. Replace overlapping intervals with new_interval: O(n) time and O(1) space
+	intervals[insert_start:insert_end] = [new_interval]
+	
+	return intervals

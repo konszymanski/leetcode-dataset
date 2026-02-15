@@ -1,0 +1,32 @@
+from collections import defaultdict
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        courses = defaultdict(list)
+        for course, reqd in prerequisites:
+            courses[course].append(reqd)
+        
+        def resolve(course, courses, resolved, unresolved):
+            unresolved.add(course)
+            for prereq in courses[course]:
+                if prereq not in resolved:
+                    if prereq in unresolved:
+                        raise Exception(\'Cyclic\')
+                    resolve(prereq, courses, resolved, unresolved)
+            resolved[course] = True
+            unresolved.remove(course)
+        
+        # Python3 dicts maintain order so using it for resolved, we can also use one
+		# set to make searching faster and one list for ordering, or just a list if we
+		# are fine with slower solution
+        resolved = {}
+        unresolved = set()
+        for course in range(numCourses):
+            if course not in resolved:
+				# resolve() only finds the order for current course and it\'s prerequisites, so if a
+				# course is not in resolved, run the function for the course
+                try:
+                    resolve(course, courses, resolved, unresolved)
+                except:
+                    # If cyclic error
+                    return []
+        return resolved

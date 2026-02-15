@@ -1,0 +1,14 @@
+from functools import lru_cache
+
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+        
+        @lru_cache(None)
+        def fn(i, j): 
+            """Return edit distance between word1[i:] and word2[j:]"""
+            if i == m or j == n: return m + n - i - j
+            if word1[i] == word2[j]: return fn(i+1, j+1)
+            return 1 + min(fn(i+1, j), fn(i, j+1), fn(i+1, j+1))
+        
+        return fn(0, 0)

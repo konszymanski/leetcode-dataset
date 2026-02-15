@@ -1,0 +1,10 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        i = bisect.bisect_left(intervals, newInterval)
+        res = intervals[:i]
+        for interval in [newInterval]+intervals[i:]:
+            if res and res[-1][1] >= interval[0]:
+                res[-1][1] = max(res[-1][1], interval[1])
+            else:
+                res.append(interval)
+        return res

@@ -1,0 +1,10 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        res, memory = set(), defaultdict(int)
+        if len(s) >= 10:
+            for i in range(len(s) - 9):
+                subseq = s[i: i + 10]
+                if subseq in memory:
+                    res.add(subseq)
+                memory[subseq] += 1
+        return res

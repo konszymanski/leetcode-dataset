@@ -1,0 +1,48 @@
+class Solution(object):
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        cache = {}
+        return self.helper(x, n, cache)
+
+    def helper(self, base, power, cache):
+        if power == 0:
+            return 1
+        elif power == 1:
+            return base
+
+        if power in cache:
+            return cache[power]
+
+        is_pow_odd = power % 2 != 0
+        is_pow_neg = power < 0
+        curr_power = abs(power)
+
+        # if the power is odd, we decrement it by 1 to get an even power dividable by 2.
+        # Think that 5^9 = 5^8 * 5
+        if is_pow_odd:
+            curr_power -= 1
+
+        # simply recall the same function with the power divided by 2.
+        # Think that 5^8 = 5^4 * 5^4 rather than 5 * 5 * 5 * 5.... 8 times
+        res = self.helper(base, curr_power // 2, cache)
+        res *= res
+
+        # if the power is odd, we have to multiple the result by the base 1 time to
+        # compensate for the 1 we previously decremented.
+        if is_pow_odd:
+            res *= base
+
+        # if the power is negative, we just put the result as a denominator.
+        # Think that 5^(-2) = 1/(5^2)
+        if is_pow_neg:
+            res = 1/res
+        
+        # save the result in the cache using the correct power value
+        # (not the decremented one) for future reference
+        cache[power] = res
+
+        return res

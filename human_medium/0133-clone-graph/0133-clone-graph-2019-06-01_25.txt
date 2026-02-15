@@ -1,0 +1,30 @@
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, neighbors):
+        self.val = val
+        self.neighbors = neighbors
+"""
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+		# 1. Search graph for all nodes
+        node_copies = {}
+        self.fill_copies(node, node_copies)
+		# 2. Create copies of all nodes
+        for val, n in node_copies.items():
+            n[1] = Node(val, None)
+		# 3. Fill neighbors in copies
+        for n in node_copies.values():
+            n[1].neighbors = [node_copies[n2.val][1] for n2 in n[0].neighbors]
+		# (Return)
+        return node_copies[node.val][1]
+    
+    def fill_copies(self, node, copies):
+        copies[node.val] = [node, None]
+        for n in node.neighbors:
+            if n.val not in copies:
+                self.fill_copies(n, copies)

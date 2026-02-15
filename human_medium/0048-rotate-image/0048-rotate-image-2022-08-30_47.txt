@@ -1,0 +1,14 @@
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        for i in range(rows//2): 
+            for j in range(i, rows - i - 1): 
+                temp = matrix[i][j]                
+                matrix[i][j] = matrix[cols - 1 - j][i]
+                matrix[cols - 1 - j][i] = matrix[rows - 1 - i][cols - 1 - j]
+                matrix[rows - 1 - i][cols - 1 - j] = matrix[j][rows - 1 - i]
+                matrix[j][rows - 1 - i] = temp
+            
+        return matrix

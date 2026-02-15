@@ -1,0 +1,16 @@
+def combinationSum2(arr, target):
+	lis = [] 
+	arr.sort() #Sort to skip duplicates 
+	def solve(idx, arr, target, temp):
+		if target == 0:
+			lis.append(list(temp)) #Making deep copy
+			return
+		for i in range(idx, len(arr)):
+			if i > idx and arr[i] == arr[i-1] : continue #Similar previous element
+			if arr[i] > target: break # Element greater than target
+			
+			temp.append(arr[i]) #Add element 
+			solve(idx+1, arr, target - arr[i], temp) #Check for next element
+			temp.pop() #Remove element 
+	solve(0, arr, target, [])
+	return lis

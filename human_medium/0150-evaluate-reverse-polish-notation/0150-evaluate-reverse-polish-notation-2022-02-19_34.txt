@@ -1,0 +1,25 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        """
+		iterate over tokens
+        push numbers to stack, if operation, apply to top 2 numbers then push result back to stack
+        at end return single number in stack
+        O(N), O(N)
+        """
+        OPS={
+            \'+\': lambda x,y:x+y,
+            \'-\': lambda x,y:x-y,
+            \'/\': lambda x,y:int(x/y),
+            \'*\': lambda x,y:x*y
+        }
+        
+        exp=[]
+        for token in tokens:
+            if token in OPS:
+                y=exp.pop()
+                x=exp.pop()
+                exp.append(OPS[token](x,y))
+            else:
+                exp.append(int(token))
+                
+        return exp[0]

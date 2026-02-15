@@ -1,0 +1,33 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        low = 0
+        high = len(nums) - 1
+        
+        while(low<=high):
+            mid = (low+high)//2
+            
+			#checking if mid is equal to target; if it is, return mid;
+            if nums[mid] == target:
+                return mid
+          
+            #as it is a rotated sorted array, there is a pivot. we don\'t know where the pivot is. when we pick the middle, either it\'s left side will be sorted or right side will be sorted. first, let\'s check - if left side is sorted or not. When will be the left side sorted? when low<=mid; if it\'s sorted, we can apply binary search in it.  But, if left side of the middle is sorted we will have to check if our target element is existing there or not. For that, left should be lower or equal to target and mid should be higher or equal to target. if that\'s not the case, our target element is not there, we have check into other half.
+			
+			#checking left side is sorted
+            if nums[low] <= nums[mid]:
+				#then check if target element is there or not.
+                if nums[low]<=target and nums[mid]>=target:
+					#if target exist left side, then search only into that part, high will be mid - 1
+                    high = mid - 1
+					
+					#if not then we have to find target into the other half, low will mid + 1
+                else:
+                    low = mid + 1
+			
+			#that\'s the part for if left side is sorted, but if it\'s not , then right side is sorted, then we will have to apply binary search in there.
+            else:
+                if nums[mid]<=target and nums[high]>=target:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+		#if we don\'t find the element into the whole array, and low>high; the loop will break, and target will not be found. then return -1;
+        return -1;

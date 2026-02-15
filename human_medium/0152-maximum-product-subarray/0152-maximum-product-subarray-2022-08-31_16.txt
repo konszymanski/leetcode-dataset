@@ -1,0 +1,8 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        minProd = maxProd = result = nums[0]        # minimum product, maximum product and result
+        for n in nums[1:]:                          # for each num
+            t = [n, minProd*n, maxProd*n]           # temp array
+            minProd, maxProd = min(t), max(t)       # update minProd and maxProd
+            result = max(result, minProd, maxProd)  # update the result                                     
+        return result

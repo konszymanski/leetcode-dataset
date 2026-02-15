@@ -1,0 +1,43 @@
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        # Map values to their indices in the inorder list for O(1) lookup
+        idx_map = {val: i for i, val in enumerate(inorder)}
+        
+        # We start from the end of the postorder list to find the root
+        post_idx = len(postorder) - 1
+        
+        def helper(in_left, in_right):
+            nonlocal post_idx
+            
+            # If the current inorder range is empty, there's no subtree
+            if in_left > in_right:
+                return None
+            
+            # Select the current root value from postorder and create the node
+            root_val = postorder[post_idx]
+            root = TreeNode(root_val)
+            
+            # Decrement post_idx to move to the next root in postorder traversal
+            post_idx -= 1
+            
+            # Find the index of the current root in the inorder list
+            index = idx_map[root_val]
+            
+            # Build the right subtree before the left subtree
+            # This is necessary because in postorder (Left, Right, Root), 
+            # the element preceding Root is the root of the Right subtree.
+            root.right = helper(index + 1, in_right)
+            root.left = helper(in_left, index - 1)
+            
+            return root
+        
+        return helper(0, len(inorder) - 1)
+
+```

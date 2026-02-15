@@ -1,0 +1,25 @@
+class Solution:
+    def sortedListToBST(self, head):
+        sorted_array = []
+        curr = head
+        # First convert sorted array
+        while curr != None:
+            sorted_array.append(curr.val)
+            curr = curr.next
+        # Now convert to BST, here in every level parent of subtree will be mid of the list
+        # So, root will be mid of the list, then do recursively left and right subtree.
+        # For left, the left and right will be from left and mid - 1, as mid is assigned to this parent
+        # for right, the left and right will be from mid + 1 to right
+        low = 0
+        high = len(sorted_array) - 1
+
+        def convert(left, right):
+            if left > right:
+                return None
+            mid = (left + right) // 2
+            node = TreeNode(sorted_array[mid])
+            node.left = convert(left, mid - 1)
+            node.right = convert(mid + 1, right)
+            return node
+
+        return convert(low, high)

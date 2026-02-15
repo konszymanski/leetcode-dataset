@@ -1,0 +1,17 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        
+        ans = []
+        def get_permute(part):
+            if len(part) == len(nums):
+                ans.append(part.copy())
+                return
+            else:
+                for x in nums:
+                    if x not in part:
+                        part.append(x)
+                        get_permute(part)
+                        part.pop()
+                    
+        get_permute([])
+        return ans

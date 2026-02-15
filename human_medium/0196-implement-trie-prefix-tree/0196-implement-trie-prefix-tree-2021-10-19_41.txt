@@ -1,0 +1,25 @@
+class Trie:
+
+    def __init__(self):
+        self.next = collections.defaultdict(Trie)
+        self.marker = False
+
+    def insert(self, word: str) -> None:
+        if word:
+            self.next[word[0]].insert(word[1:])
+        else:
+            self.marker = True
+
+    def _find(self, word):
+        if word:
+            char = word[0]
+            return char in self.next and self.next[char]._find(word[1:])             
+        else:
+            return self
+    
+    def startsWith(self, prefix: str) -> bool:
+        return self._find(prefix)
+
+    def search(self, word: str) -> bool:
+        node = self.startsWith(word)
+        return node and node.marker

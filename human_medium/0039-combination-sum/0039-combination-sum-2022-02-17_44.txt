@@ -1,0 +1,26 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        res = []
+        comb = []
+        total = 0
+        index = 0
+        
+        self.dfs(candidates, target, index, total, comb, res)
+        
+        return res
+    
+    def dfs(self, nums, target, index, total, comb, res):
+        
+        if total > target:
+            return
+        
+        if total == target:
+            res.append(list(comb))
+        
+        for i in range(index, len(nums)):
+            comb.append(nums[i])
+            total += nums[i]
+            self.dfs(nums, target, i, total, comb, res)
+            total -= nums[i]
+            comb.pop()

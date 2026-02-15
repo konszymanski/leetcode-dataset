@@ -1,0 +1,18 @@
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        
+        if len(inorder) == 0:
+            return 
+          
+        root_val = preorder.pop(0)
+        root =  TreeNode(root_val)
+        index_root = inorder.index(root_val)
+        
+        l_lst = inorder[:index_root:]
+        r_lst = inorder[index_root+1::]
+        
+        root.left = self.buildTree(preorder, l_lst)
+        root.right = self.buildTree(preorder, r_lst)
+        
+        
+        return root

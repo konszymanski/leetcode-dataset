@@ -1,0 +1,17 @@
+def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        
+        wordSet = set(wordDict)
+        
+        def dfs(l,h):
+            if h == 0:
+                return True
+            if l<0:
+                return False
+            
+            if s[l:h] in wordSet:
+                return dfs(l-1,l) or dfs(l-1,h)
+            
+            else:
+                return dfs(l-1,h)
+            
+        return dfs(len(s)-1,len(s))

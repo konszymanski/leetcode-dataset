@@ -1,0 +1,32 @@
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        
+        if not root:
+            return []
+        
+        queue = []
+        ans = []
+        
+        queue.append(root)
+        ans = [[root.val]]
+        
+        while (len(queue)):     # iterating tree
+            size = len(queue)
+            tmp = []
+            while size:         # while all nodes of a level are not kicked out from queue
+                node = queue.pop(0)
+				
+				# simultaneously we are adding all the next level\'s nodes if they exist
+                if node.left:    
+                    queue.append(node.left)
+                    tmp.append(node.left.val)
+                if node.right:
+                    queue.append(node.right)
+                    tmp.append(node.right.val)
+                size -= 1
+				
+            # when both children are Null/None tmp remains empty so need not to append it in ans
+            if len(tmp):
+                ans.append(tmp)
+                    
+        return ans

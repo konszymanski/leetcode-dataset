@@ -1,0 +1,16 @@
+return self.dfs_20221018_A(n)   # Also AC!
+    def dfs_20221018_A(self, n):
+        if n == 1:
+            return \'1\'
+
+        pat = self.dfs_20221018_A(n - 1)
+        pat += \'$\'
+        count = 1
+        res = \'\'
+        for i in range(1, len(pat)):
+            if pat[i] != pat[i - 1]:
+                res += f"{count}{pat[i - 1]}" 
+                count = 1
+            else:
+                count += 1
+        return res

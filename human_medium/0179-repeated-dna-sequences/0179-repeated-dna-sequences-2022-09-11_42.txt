@@ -1,0 +1,33 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        d = defaultdict(int)
+        
+        most_seen = 0
+                
+        res = [] 
+        
+        seq = []
+        
+        for idx in range(len(s)):
+            if idx < 9:
+                seq.append(s[idx])
+            elif idx == 9:
+                seq.append(s[idx])
+                d[\'\'.join(seq)] += 1
+            else:
+                seq.pop(0)
+                seq.append(s[idx])
+                d[\'\'.join(seq)] += 1
+                
+            str_seq = \'\'.join(seq) 
+            
+            if d[str_seq] > most_seen:
+                most_seen = d[str_seq]
+                if most_seen > 1:
+                    res.clear()
+                    res.append(str_seq)
+            elif d[str_seq] == most_seen and most_seen > 1:
+                res.append(str_seq)
+         
+                
+        return res if most_seen > 1 else []

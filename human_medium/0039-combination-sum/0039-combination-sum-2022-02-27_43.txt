@@ -1,0 +1,21 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        ans = []
+        current = []
+        candidates.sort()
+
+        def findCombs(remaining, idx):
+            if remaining == 0:
+                ans.append(current.copy())
+                return
+            if remaining < 0 or idx>=len(candidates) or candidates[idx] > remaining:
+                return
+            
+            current.append(candidates[idx])
+            findCombs(remaining-candidates[idx], idx)
+            current.pop()
+            findCombs(remaining, idx+1)
+            
+        findCombs(target, 0)
+        return ans

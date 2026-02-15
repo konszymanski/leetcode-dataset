@@ -1,0 +1,21 @@
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+	    # Step 1
+        arr = []
+        cur = head
+        while cur:
+            arr.append(cur.val)
+            cur = cur.next
+       
+	   # Step 2
+        arr.sort()
+		
+		# Step 3
+        cur = head
+        i = 0
+        while cur:
+            cur.val = arr[i]
+            i += 1
+            cur = cur.next
+        
+        return head

@@ -1,0 +1,23 @@
+def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # Sort the array with respect to the first number of each interval
+        intervals.sort(key=lambda x:x[0])
+        
+        # l,r represents the current left and right values for the merged interval
+        l=intervals[0][0]
+        r=intervals[0][1]
+        new_intervals=[]
+        
+        for i in range(1,len(intervals)):
+          # Check if the interval is overlapping with the previous interval
+          if intervals[i][0]<=r:
+            if intervals[i][1]>r:
+              r=intervals[i][1]
+          
+          #If interval is not overlapping with the previous interval, append the previous interval
+          else:
+            new_intervals.append([l,r])
+            l=intervals[i][0]
+            r=intervals[i][1]
+        
+        new_intervals.append([l,r])
+        return new_intervals

@@ -1,0 +1,29 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+#     O(n) || O(max(left, right)) where left is the left subtree and right is the right subtree
+# Runtime: 32ms 93.33% Memory: 14mb 22.65%
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return root
+        
+        stack = []
+        
+        def helper(root, depth):
+            if not root:
+                return 0
+            
+            if len(stack) == depth:
+                stack.append(root.val)
+            
+            helper(root.right, depth + 1)
+            helper(root.left, depth + 1)
+            
+        
+        helper(root, 0)
+        
+        return stack

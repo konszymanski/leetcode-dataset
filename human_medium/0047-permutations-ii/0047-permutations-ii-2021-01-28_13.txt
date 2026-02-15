@@ -1,0 +1,1 @@
+return set(itertools.permutations(nums))

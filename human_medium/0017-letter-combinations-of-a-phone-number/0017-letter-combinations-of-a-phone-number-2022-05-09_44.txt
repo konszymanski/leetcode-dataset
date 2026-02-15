@@ -1,0 +1,81 @@
+from collections import deque
+from itertools import product
+
+PHONE_BUTTON_TO_LETTERS = {
+    \'2\': \'abc\',
+    \'3\': \'def\',
+    \'4\': \'ghi\',
+    \'5\': \'jkl\',
+    \'6\': \'mno\',
+    \'7\': \'pqrs\',
+    \'8\': \'tuv\',
+    \'9\': \'wxyz\'
+}
+
+
+class Solution:
+    def letterCombinations(self, digits: str) -> list[str]:
+        if not digits:
+            return []
+
+        return self.bfs(digits)
+        # return self.iterative(digits)
+        # return self.py_product_method(digits)
+        # return self.recursive(digits)
+
+    @staticmethod
+    def bfs(digits: str) -> list[str]:
+        """
+        @see https://leetcode.com/problems/letter-combinations-of-a-phone-number/solutions/8064/my-java-solution-with-fifo-queue/
+        :param digits:
+        :return:
+        """
+        q = deque([\'\'])
+
+        for d in digits:
+            chars = PHONE_BUTTON_TO_LETTERS[d]
+
+            for _ in range(len(q)):
+                comb = q.popleft()
+
+                for c in chars:
+                    q.append(comb + c)
+
+        return q
+
+    @staticmethod
+    def iterative(digits: str) -> list[str]:
+        output = [[]]
+
+        for d in digits:
+            comb_with_d = []
+
+            for c in PHONE_BUTTON_TO_LETTERS[d]:
+                comb_with_d += [comb + [c] for comb in output]
+
+            output = comb_with_d
+
+        return [\'\'.join(comb) for comb in output]
+
+    @staticmethod
+    def recursive(digits: str) -> list[str]:
+        n = len(digits)
+
+        push, pop = (holder := deque()).append, holder.pop
+
+        def dfs(i: int):
+            if i == n:
+                # traversed the complete digits, so creating combination
+                yield \'\'.join(holder)
+            else:
+                for c in PHONE_BUTTON_TO_LETTERS[digits[i]]:
+                    push(c)
+                    yield from dfs(i + 1)
+                    pop()
+
+        return list(dfs(0))
+
+    @staticmethod
+    def py_product_method(digits: str) -> list[str]:
+        # using python has its own benefits
+        return [\'\'.join(c) for c in product(*(PHONE_BUTTON_TO_LETTERS[d] for d in digits))]

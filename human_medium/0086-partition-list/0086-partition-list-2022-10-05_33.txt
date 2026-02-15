@@ -1,0 +1,24 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        if head == None or head.next == None:
+            return head
+        head1 = ListNode()
+        tail1 = head1
+        head2 = ListNode()
+        tail2 = head2
+        
+        temp = head
+        while temp != None:
+            if temp.val >= x:
+                #print("h1")
+                tail2.next = ListNode(temp.val,next=None)
+                tail2 = tail2.next
+            else:
+                #print("h2")
+                tail1.next = ListNode(temp.val,next=None)
+                tail1 = tail1.next
+            temp = temp.next
+        tail2.next = None
+        tail1.next = head2.next
+        head = head1.next
+        return head

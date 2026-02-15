@@ -1,0 +1,47 @@
+import re
+
+class Solution(object):
+    def myAtoi(self, str):
+        PATTERN = r"^(\\+|\\-)?[0-9]\\d*"
+        STRING = str.strip()
+        
+        if not STRING:
+            return 0
+        elif STRING[0].isalpha() or STRING in [\'+\', \'-\']:
+            return 0
+        else:
+            if len(STRING.split()) != 1:
+                frst_el = STRING.split()[0]
+                try:
+                    if frst_el[0] == \'.\':
+                        return 0
+                    elif \'.\' in frst_el:
+                        frst_el = frst_el[:frst_el.index(\'.\')]
+                        return frst_el
+                    else:
+                        return int(frst_el)
+                except ValueError:
+                    return 0
+            
+            else:
+                try:
+                    result = int(STRING)
+                    answer = self.checkNumberCorectness(result)
+                    return answer
+                except ValueError:
+                    result = re.match(PATTERN, STRING)
+                    if result:
+                        answer = int(result.group(0))
+                        answer = self.checkNumberCorectness(answer)
+                        return answer
+                    else:
+                        return 0
+    
+    def checkNumberCorectness(self, result):
+        if (-(2**31) < result < 2**31):
+            return result
+        else:
+            if result < 0:
+                return (-2**31)
+            else:
+                return 2**31 - 1

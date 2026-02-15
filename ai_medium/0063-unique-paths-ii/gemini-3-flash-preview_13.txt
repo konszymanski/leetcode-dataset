@@ -1,0 +1,35 @@
+```python
+from typing import List
+
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        if not obstacleGrid:
+            return 0
+            
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        
+        # dp[j] will store the number of unique paths to reach the j-th column
+        # in the current row being processed.
+        dp = [0] * n
+        
+        # Initial starting point, the robot begins at grid[0][0].
+        # If there is no obstacle at the start, we set dp[0] to 1.
+        dp[0] = 1
+        
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    # If there's an obstacle, no paths can pass through this cell.
+                    dp[j] = 0
+                elif j > 0:
+                    # If not an obstacle and not in the first column, the number of
+                    # paths is the sum of paths from the top (current dp[j]) 
+                    # and from the left (current dp[j-1]).
+                    dp[j] += dp[j-1]
+                # If j == 0 and there is no obstacle at grid[i][0], 
+                # dp[0] remains its previous value (representing paths from above).
+        
+        return dp[n - 1]
+
+```

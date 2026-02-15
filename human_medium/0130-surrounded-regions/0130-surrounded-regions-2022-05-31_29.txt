@@ -1,0 +1,20 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        # T/S: O(mn)
+        m, n = len(board), len(board[0])
+        dirs = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        def dfs(r, c):
+            if r not in range(m) or c not in range(n) or board[r][c] != \'O\':
+                return
+            
+            board[r][c] = \'T\'    
+            for dr, dc in dirs:
+                dfs(r + dr, c + dc)
+        
+        for r in range(m):
+            for c in range(n):
+                if board[r][c] == \'O\' and r in [0, m - 1] or c in [0, n - 1]:
+                    dfs(r, c)
+        for r in range(m):
+            for c in range(n):
+                board[r][c] = \'X\' if board[r][c] != \'T\' else \'O\'

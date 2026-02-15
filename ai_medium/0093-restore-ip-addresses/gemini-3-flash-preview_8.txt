@@ -1,0 +1,49 @@
+```python
+from typing import List
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        n = len(s)
+        # An IPv4 address can have at most 12 digits (4 segments of 3 digits).
+        # It also requires at least 4 digits for 4 segments.
+        if n < 4 or n > 12:
+            return []
+        
+        res = []
+        
+        def is_valid(segment: str) -> bool:
+            """Validates if an IP segment is within [0, 255] and has no leading zeros."""
+            if not segment or len(segment) > 3:
+                return False
+            # Check for leading zeros: '0' is allowed, but '01', '001', etc. are not
+            if len(segment) > 1 and segment[0] == '0':
+                return False
+            # Check if the numeric value is valid (segment contains only digits)
+            return 0 <= int(segment) <= 255
+        
+        # We need to place 3 dots to split the string into 4 segments.
+        # i, j, k represent the indices for the three dots.
+        # First segment: s[:i]
+        # Second segment: s[i:j]
+        # Third segment: s[j:k]
+        # Fourth segment: s[k:]
+        for i in range(1, 4):
+            if i >= n: break
+            p1 = s[:i]
+            if not is_valid(p1): continue
+            
+            for j in range(i + 1, i + 4):
+                if j >= n: break
+                p2 = s[i:j]
+                if not is_valid(p2): continue
+                
+                for k in range(j + 1, j + 4):
+                    if k >= n: break
+                    p3 = s[j:k]
+                    p4 = s[k:]
+                    if is_valid(p3) and is_valid(p4):
+                        res.append(p1 + "." + p2 + "." + p3 + "." + p4)
+        
+        return res
+
+```

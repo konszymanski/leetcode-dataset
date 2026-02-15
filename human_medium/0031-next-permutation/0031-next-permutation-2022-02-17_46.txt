@@ -1,0 +1,18 @@
+class Solution(object):
+    def nextPermutation(self, nums):
+        n = len(nums)
+        # from right to left
+        for i in range(n-2,-1,-1):
+            #  find a break of decreasing order to find the index at which we increment
+            if nums[i]<nums[i+1]:
+                #  first reverse all the values to the right of the index we increment
+                #  we do it now so we can use built in binary search
+                nums[i+1:] = nums[n-1:i:-1]
+                # find the smallest bigger item to use in order to increment
+                j = bisect.bisect(nums, nums[i],i+1)
+                # switch the smallest bigger item with the item needed to increment
+                # easy to see that this maintains the increasing order
+                nums[i],nums[j] = nums[j],nums[i] 
+                return
+        #  no break found we theoretically need to increase the leftest (non existing) item so we reverse whats to the right of it (the array itself)
+        nums.reverse()

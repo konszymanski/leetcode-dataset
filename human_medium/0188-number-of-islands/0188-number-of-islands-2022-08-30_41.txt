@@ -1,0 +1,78 @@
+from typing import List
+
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        numIslands, masterIslandIdsManager = 0, MasterIslandIdsManager()
+
+        # We analyze the grid row by row, keeping track of the results for the previous row and the previous cell
+        tmp = [0] * len(grid[0])
+        for gridRow in grid:
+            islandId = 0
+            # We analyze each cell in the row
+            for colIdx, value in enumerate(gridRow):
+                leftIslandId = islandId
+                if value == _LAND_CHAR:
+                    # There\'s land; we check its up and left cells
+                    upIslandId = tmp[colIdx]
+                    if upIslandId != 0:
+                        if leftIslandId != 0 and leftIslandId != upIslandId:
+                            # The cell is connected to two pieces of land with different IDs => Determine and use the "master" island ID for the merged land
+                            islandId = masterIslandIdsManager.mergeIslands(leftIslandId, upIslandId)
+                        else:
+                            # The cell is connected to either one piece of land, or two pieces of land with the same ID => Use the island ID
+                            islandId = upIslandId
+                    elif leftIslandId != 0:
+                        # The cell is connected to one piece of land => Use the island ID
+                        islandId = leftIslandId
+                    else:
+                        # The cell is so far not connected to any pieces of land => We allocate and use a new island ID
+                        numIslands += 1
+                        islandId = numIslands
+                else:
+                    # No land
+                    islandId = 0
+                tmp[colIdx] = islandId
+
+        # The number of islands is the number of allocated IDs minus the number of non-master IDs that got merged
+        return numIslands - masterIslandIdsManager.getNumberOfNonMasterIslandIds()
+
+
+class MasterIslandIdsManager:
+    # Helper class to manage "master" island IDs.
+    # Space complexity: O(m*n) worst case
+    __slots__ = ("_mapping",)
+
+    def __init__(self) -> None:
+        self._mapping = {}
+
+    def getNumberOfNonMasterIslandIds(self) -> int:
+        # Time complexity: O(1)
+        return len(self._mapping)
+
+    def mergeIslands(self, firstIslandId: int, secondIslandId: int) -> int:
+        # Time complexity: Amortized O(1)
+        firstMasterIslandId, secondMasterIslandId = self._getMasterIslandId(firstIslandId), self._getMasterIslandId(secondIslandId)
+        if firstMasterIslandId == secondMasterIslandId:
+            return firstMasterIslandId
+
+        smallerId, largerId = (
+            (firstMasterIslandId, secondMasterIslandId) if firstMasterIslandId < secondMasterIslandId else (secondMasterIslandId, firstMasterIslandId)
+        )
+        self._mapping[largerId] = smallerId
+        return smallerId
+
+    def _getMasterIslandId(self, islandId: int) -> int:
+        # Time complexity: Amortized O(1)
+        mapping = self._mapping
+
+        mappedIslandId = mapping.get(islandId)
+        if mappedIslandId is None:
+            return islandId
+
+        masterIslandId = self._getMasterIslandId(mappedIslandId)
+        mapping[islandId] = masterIslandId
+        return masterIslandId
+
+
+_LAND_CHAR = "1"

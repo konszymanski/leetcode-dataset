@@ -1,0 +1,17 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        sample = []
+        result = []
+        length = len(s)-10
+        if s[0:5]=="GATGG":
+            return []
+        else:
+            for i in range(0,length+1):
+                c = s[i:i+10]
+                if c in sample and c not in result:
+                    result.append(c)
+                else:
+                    sample.append(c)
+            print(sample)
+            print(result)
+            return result

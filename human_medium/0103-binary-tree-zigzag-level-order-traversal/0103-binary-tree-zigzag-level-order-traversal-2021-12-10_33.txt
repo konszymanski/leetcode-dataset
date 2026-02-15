@@ -1,0 +1,14 @@
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root: return []
+        queue = [root]
+        res = []
+        switch = False
+        while queue:
+            nxt = []
+            for node in queue:
+                if node.left: nxt.append(node.left)
+                if node.right: nxt.append(node.right)
+            res.append([n.val for n in (reversed(queue) if switch else queue)])
+            queue, switch = nxt, not switch
+        return res

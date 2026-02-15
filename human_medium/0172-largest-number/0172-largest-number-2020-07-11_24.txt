@@ -1,0 +1,3 @@
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        return "".join(sorted(map(str, nums), key=cmp_to_key(lambda x, y: int(x+y) - int(y+x)), reverse=True)).lstrip("0") or "0"

@@ -1,0 +1,24 @@
+def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+	# - helper
+	def recurse(start, comboSum, combo):
+		if comboSum == target:
+			res.append(combo[::])
+
+		for i in range(start, len(candidates)):
+			if comboSum+candidates[i] <= target:
+				if i != start and candidates[i] == candidates[i-1]: # ---- NOTE [1] 
+					continue
+				combo.append(candidates[i])
+				recurse(i+1, comboSum+candidates[i], combo) # [2] i+1 cuz each item only once
+				combo.pop()
+		return res
+
+	# - main
+	res = []
+	candidates.sort()
+	return recurse(0, 0, [])
+
+	# NOTE [1]
+	# --------
+	# eliminates duplicates - basically comparing each adj integers and eliminate branch if they are equal
+	# - after sorting (simialr to the idea of 47. Permutations II)

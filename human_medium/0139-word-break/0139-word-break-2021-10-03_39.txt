@@ -1,0 +1,11 @@
+def wordBreak( s, wordDict):
+	dp = [0] * len(s)
+	wordDict = set(wordDict)
+	for i in range(len(s)):
+		if s[:i+1] in wordDict:
+			dp[i] = True
+			continue
+		for j in range(i):
+			if dp[j] and s[j+1:i+1] in wordDict:
+				dp[i] = True
+	return dp[-1]

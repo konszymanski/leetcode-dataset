@@ -1,0 +1,18 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        arr = []
+        def per(nums,i):
+            if i == len(nums)-1:
+			    #append as list(nums) otherwise python will append the original nums everytime
+				#python will not make a new list for each function call, and if we simply append nums that means we are adding to arr, exactly the same list all the times.
+                arr.append(list(nums))
+                return #for unnecessary operations
+            for j in range(i,len(nums)):
+			    #swapping to get different permutations
+                nums[i],nums[j] = nums[j],nums[i]
+				#i here denotes the index where we want to swap, it also says how many characters are swapped
+                per(nums,i+1)
+				#swapping after each call to get back to previous string so that we can work with next operation with the same string
+                nums[i],nums[j] = nums[j],nums[i]
+        per(nums,i=0) #initialising with i=0
+        return arr

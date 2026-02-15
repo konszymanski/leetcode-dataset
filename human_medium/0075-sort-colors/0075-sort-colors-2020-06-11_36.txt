@@ -1,0 +1,18 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        i = 0  # indexing for 0
+        j = 0  # indexing for 1
+        n = len(nums)-1  # indexing for 2
+        while j <= n:  # pass one by one
+            if nums[j] < 1:  # if 0, swap current value with the following value of 0 indexing
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+                j += 1
+            elif nums[j] > 1:  # if 2, swap current value with the preceding value of 2 indexing
+                nums[j], nums[n] = nums[n], nums[j]
+                n -= 1
+            else:  # if 1, move on to the next value
+                j += 1

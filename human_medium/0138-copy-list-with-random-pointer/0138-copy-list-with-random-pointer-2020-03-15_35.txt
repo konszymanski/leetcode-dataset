@@ -1,0 +1,34 @@
+#Approach 1, O(N) Space
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        if not head:
+            return
+        d = {}
+        p = head
+        while p:
+            d[p] = Node(p.val)
+            p = p.next
+        p = head
+        while p:
+            d[p].next = d[p.next] if p.next in d else None
+            d[p].random = d[p.random] if p.random in d else None
+            p = p.next
+        return d[head]
+
+#Approach 2: O(1) Space, P.S original is modified, need another pass to restore, but not a constraint in this problem
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        p = head
+        while p:
+            n = p.next
+            copy = Node(p.val)
+            p.next = copy
+            copy.next = n
+            p = n
+        p = head
+        while p:
+            n = p.next.next
+            p.next.next = n.next if n else None
+            p.next.random = p.random.next if p.random else None
+            p = n
+        return head.next if head else None

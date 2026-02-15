@@ -1,0 +1,21 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        temp = []
+        res = []
+        freq = [False]*len(nums)
+        
+        def helper(nums, temp, res, freq):
+            if len(temp) == len(nums):
+                res.append(temp[:])
+                return
+            
+            for i in range(len(nums)):
+                if not freq[i]:
+                    freq[i] = True
+                    temp.append(nums[i])
+                    helper(nums, temp, res, freq)
+                    freq[i] = False
+                    temp.pop()
+        
+        helper(nums, temp, res, freq)
+        return res

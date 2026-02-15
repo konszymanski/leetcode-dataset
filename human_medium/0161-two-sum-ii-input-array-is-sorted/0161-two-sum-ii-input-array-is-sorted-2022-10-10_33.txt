@@ -1,0 +1,11 @@
+def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        
+        # The Brute Force approach will be -
+        # For each number, try to find any number such that both add up to target
+        
+        for i1,num1 in enumerate(numbers):
+            for i2 in range(i1+1, len(numbers)):
+                num2 = numbers[i2]
+                if num1 + num2 == target:
+                    # Since 1-based indexing
+                    return[i1 + 1, i2 + 1]

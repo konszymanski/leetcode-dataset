@@ -1,0 +1,33 @@
+```python
+from typing import List
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        used = [False] * len(nums)
+        
+        def backtrack(path):
+            if len(path) == len(nums):
+                res.append(list(path))
+                return
+            
+            for i in range(len(nums)):
+                if used[i]:
+                    continue
+                # Skip duplicate elements to ensure uniqueness
+                # If nums[i] == nums[i-1] and nums[i-1] has not been used in the current branch, 
+                # it means we are trying to use a duplicate value at the same position in a different recursive call.
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                    continue
+                
+                used[i] = True
+                path.append(nums[i])
+                backtrack(path)
+                path.pop()
+                used[i] = False
+        
+        backtrack([])
+        return res
+
+```

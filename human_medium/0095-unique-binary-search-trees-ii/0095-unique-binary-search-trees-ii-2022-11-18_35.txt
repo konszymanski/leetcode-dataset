@@ -1,0 +1,36 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def generateTrees(self, n: int):
+        def get_tree(start, end):
+            # return the list of possible unique BST with the node value from start to end
+            node_num = end - start + 1
+            result = []
+            if node_num == 0:
+                return []
+            if node_num == 1:
+                return [TreeNode(start)]
+            for i in range(node_num):
+                # i node at the left tree
+                # root = TreeNode(start + i)
+                possible_left = get_tree(start, start + i - 1)
+                possible_right = get_tree(start + i + 1, end)
+                if len(possible_left) == 0:
+                    for right_tree in possible_right:
+                        result.append(TreeNode(start + i, None, right_tree))
+                    continue
+                if len(possible_right) == 0:
+                    for left_tree in possible_left:
+                        result.append(TreeNode(start + i, left_tree, None))
+                    continue
+                for left_tree in possible_left:
+                    for right_tree in possible_right:
+                        result.append(TreeNode(start + i, left_tree, right_tree))
+
+                
+            return result
+        return get_tree(1, n)

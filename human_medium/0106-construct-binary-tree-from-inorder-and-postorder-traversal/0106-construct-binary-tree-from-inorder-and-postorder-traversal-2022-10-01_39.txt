@@ -1,0 +1,47 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        
+        if len(postorder) == 0 :
+            #means tree is empty
+            return None
+        
+        #last element of postorder is root
+        rootdata = postorder[-1]
+        #creating root node
+        root = TreeNode(rootdata)
+
+        #find inorder of both left and right subtree
+        rootindex = -1
+        for ind, item in enumerate(inorder):
+            if rootdata == item:
+                rootindex = ind
+                break
+        
+        if rootindex ==  -1:
+            return None
+        
+        leftinorder = inorder[0 : rootindex]
+        rightinorder = inorder[rootindex + 1 :]
+
+        #find postorder of both left and right subtree
+
+        lenofrightinorder = len(rightinorder)
+
+        leftpostorder = postorder[0 : rootindex]
+        rightpostorder = postorder[rootindex : lenofrightinorder + rootindex]
+
+        #use recursion to build left and right subtree
+        leftsubtree  = self.buildTree(leftinorder, leftpostorder)
+        rightsubtree = self.buildTree(rightinorder, rightpostorder)
+
+        #attach leftsubtree and rightsubtree to root
+        root.left = leftsubtree
+        root.right = rightsubtree
+
+        return root

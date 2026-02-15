@@ -1,0 +1,22 @@
+class Solution(object):
+    def isValidSudoku(self, board):
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if not self.valid(board, i, j ):
+                    return False
+        return True
+    
+    def valid(self, board, i, j):
+        if board[i][j] == \'.\':
+            return True
+        for m in range(len(board)): # for column
+            if m != i and board[m][j] == board[i][j]:
+                return False
+        for n in range(len(board[0])): # for row
+            if n != j and board[i][n] == board[i][j]:
+                return False
+        for m in range(i//3*3, i//3*3+3): # for sub-box
+            for n in range(j//3*3, j//3*3+3):
+                if (m!=i or n!=j) and board[m][n] == board[i][j]:
+                    return False
+        return True

@@ -1,0 +1,17 @@
+class Trie:
+
+    def __init__(self):
+        self.dic = {}
+
+    def insert(self, word: str) -> None:
+        for i in range(len(word)):
+            if word[:i] in self.dic:
+                continue
+            self.dic[word[:i]] = 1
+        self.dic[word] = 2
+
+    def search(self, word: str) -> bool:
+        return word in self.dic and self.dic[word] == 2
+
+    def startsWith(self, prefix: str) -> bool:
+        return prefix in self.dic

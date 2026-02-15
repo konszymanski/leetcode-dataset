@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+
+        int n=matrix.size();
+        int start=0, end=n-1;
+        while (start<end){
+            for (int shift=0;shift<end-start;shift++){
+                int temp = matrix[start][start+shift];
+                    
+                matrix[start][start+shift] = matrix[end-shift][start];
+                matrix[end-shift][start] = matrix[end][end-shift];
+                matrix[end][end-shift] = matrix[start+shift][end];
+                matrix[start+shift][end] = temp;
+            }
+            start+=1;
+            end-=1;
+        }
+    }
+};

@@ -1,0 +1,12 @@
+class Solution:
+    def generateTrees(self, n: int, m = 1) -> List[Optional[TreeNode]]:
+        if n < m:
+            return [None]
+        ans = []
+        for i in range(m, n + 1):
+            trees1 = self.generateTrees(i - 1, m)
+            trees2 = self.generateTrees(n, i + 1)
+            for tree1 in trees1:
+                for tree2 in trees2:
+                    ans.append(TreeNode(i, tree1, tree2))
+        return ans

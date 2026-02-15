@@ -1,0 +1,27 @@
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        
+        
+        if not root:
+            # Quick response for empty tree
+            return []
+        
+        traversalQ, result = deque([root]), []
+        
+        # level order traversal
+        while traversalQ:
+            
+            # going down level-by-level
+            cur_level_trace, cur_level_len = [], len(traversalQ)
+            for _ in range(cur_level_len):
+                
+                cur_node = traversalQ.popleft()
+                                    
+                cur_level_trace.append(cur_node.val)
+                cur_node.left and traversalQ.append( cur_node.left )
+                cur_node.right and traversalQ.append( cur_node.right )
+               
+            if cur_level_trace:     
+                result.append( cur_level_trace )
+            
+        return result

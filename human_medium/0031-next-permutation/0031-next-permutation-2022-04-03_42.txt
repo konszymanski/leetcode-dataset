@@ -1,0 +1,16 @@
+n=len(nums)
+        pt=0
+        for i in range(n-1,0,-1):
+            if nums[i-1]<nums[i]:
+                pt=i
+                break
+                
+        if pt==0:
+            nums.sort()
+            return
+        swap=n-1
+        while nums[pt-1]>=nums[swap]:
+            swap-=1
+        nums[swap],nums[pt-1]=nums[pt-1],nums[swap]
+        
+        nums[pt:]=sorted(nums[pt:])

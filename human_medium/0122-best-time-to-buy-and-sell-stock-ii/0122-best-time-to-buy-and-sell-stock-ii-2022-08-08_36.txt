@@ -1,0 +1,7 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        profit = 0 # to store the total profit
+        for i in range(1, len(prices)): # traversing the prices list, taking it from 1st index so that we could compare the day gain or loss by comparing it to previous value.
+            if prices[i]>prices[i-1]: # comparing current value with last value
+                profit += (prices[i] - prices[i-1]) # if we have a great value implies we have profit. But we need total profit means after removing losses thats why we are subtracting previous value which is low. 
+        return profit # returning total profit earned.

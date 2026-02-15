@@ -1,0 +1,10 @@
+from math import log
+
+class Solution:
+    c = 5
+	
+    def trailingZeroes(self, n: int) -> int:
+        if n < self.c: return 0
+        p = int(log(n, self.c))
+        d, m = divmod(n, self.c**p)
+        return d*(self.c**p-1)//(self.c-1) + self.trailingZeroes(m)

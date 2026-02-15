@@ -1,0 +1,42 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Determine the sign of x and work with the absolute value
+        sign = 1 if x >= 0 else -1
+        x = abs(x)
+        
+        # Initialize the result variable
+        res = 0
+        
+        # Extract digits one by one and build the reversed integer
+        while x != 0:
+            # Get the last digit of x
+            digit = x % 10
+            # Remove the last digit from x
+            x //= 10
+            
+            # Standard Python integers are arbitrary-precision, but we must
+            # simulate the 32-bit integer constraints. 
+            # Check for overflow before it would happen in a 32-bit environment.
+            # (2**31 - 1) // 10 is 214748364
+            if res > (2**31 - 1) // 10:
+                return 0
+            if res == (2**31 - 1) // 10 and digit > 7:
+                # If sign is positive, max digit is 7. If negative, it can be 8.
+                # However, any input x that results in this state and is already
+                # within 32-bit range will naturally fit the logic.
+                if not (sign == -1 and digit == 8):
+                    return 0
+            
+            res = res * 10 + digit
+            
+        # Re-apply the sign
+        res *= sign
+        
+        # Final boundary check to ensure the result is within [-2^31, 2^31 - 1]
+        if res < -2**31 or res > 2**31 - 1:
+            return 0
+            
+        return res
+
+```

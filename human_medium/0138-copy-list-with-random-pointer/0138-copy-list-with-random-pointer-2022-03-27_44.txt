@@ -1,0 +1,23 @@
+class Solution:
+    # __main__
+    def copyRandomList(self, head):
+        
+        if not head: 
+            return None
+        
+        dataset = {None:None}               # None:None because of end None pointer for list
+        cur = head
+        # Creating and Store new node;
+        while(cur):
+            node = Node(cur.val)
+            dataset[cur] = node
+            cur = cur.next
+        
+        cur = head
+        while(cur):
+            node = dataset[cur]
+            node.next = dataset[cur.next]
+            node.random = dataset[cur.random]
+            cur = cur.next
+        
+        return dataset[head]

@@ -1,0 +1,18 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        """Backtracking."""
+        def depth_first_search(rest: str):
+            if not rest:
+                result.append(current[:])
+            for end in range(1, len(rest) + 1):
+                # Reverse and equal is palindrome. You can save result for
+                # each substring in a dp[n][n] to avoid repeating check in the
+                # future.
+                if rest[:end] == rest[end-1::-1]:
+                    current.append(rest[:end])
+                    depth_first_search(rest[end:])
+                    current.pop()
+        result = []
+        current = []
+        depth_first_search(s)
+        return result

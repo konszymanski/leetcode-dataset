@@ -1,0 +1,64 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+#     O(n) || O(n)
+# Runtime: 53ms 53.68% memory: 15.2mb 48.02%
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        
+        """
+        return self.solOne(root)
+        return self.solTwo(root)
+    
+# O(n) || O(n) (for stack) otherwise it dont use extra memory
+    def solOne(self, root):
+        if not root or (not root.left and not root.right):
+            return root
+        
+        stack = [root]
+        
+        while stack:
+
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+
+            if stack:
+                node.right = stack[-1]
+                
+            node.left = None
+            
+        
+        return root
+                
+    
+    def solTwo(self, root):
+        if not root or (not root.left and not root.right):
+            return root
+        
+        newTreeList = []
+        self.preOrderHelper(root, newTreeList)
+        
+        for i in range(len(newTreeList)-1):
+            root.val = newTreeList[i]
+            root.right = TreeNode()
+            root.left = None
+            root = root.right
+            
+        root.val = newTreeList[-1]
+        return root
+        
+
+    def preOrderHelper(self, root, treeList):
+        if not root:
+            return None
+        treeList.append(root.val)
+        self.preOrderHelper(root.left, treeList)    
+        self.preOrderHelper(root.right, treeList)

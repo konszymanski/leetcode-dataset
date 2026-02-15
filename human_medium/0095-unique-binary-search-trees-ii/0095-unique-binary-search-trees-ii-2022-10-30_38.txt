@@ -1,0 +1,24 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        memo = [[list()]*(n+2) for i in range(n+2)]
+
+        def dfs(start, end):
+            if start > end:
+                return [None]
+            if start == end:
+                return [TreeNode(start)]
+            if len(memo[start][end]):
+                return memo[start][end]
+
+            res = []
+            for i in range(start, end + 1):
+                left = dfs(start, i - 1)
+                right = dfs(i + 1, end)
+                for l in left:
+                    for r in right:
+                        res.append(TreeNode(i, l, r))
+                # res += left * right
+            memo[start][end] = res
+            return res
+
+        return dfs(1, n)

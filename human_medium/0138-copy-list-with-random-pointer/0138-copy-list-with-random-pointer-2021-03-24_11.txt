@@ -1,0 +1,21 @@
+class Solution:
+    def copyRandomList(self, head):
+        
+        if not head: return 
+        
+        p1 = head
+		
+        while p1:
+            q1 = Node(p1.val)
+            p1.cloned_to = q1
+            p1 = p1.next
+        
+        p1 = head
+
+        while p1:
+            q1 = p1.cloned_to
+            q1.next = p1.next.cloned_to if p1.next else None
+            q1.random = p1.random.cloned_to if p1.random else None
+            p1 = p1.next
+            
+        return head.cloned_to

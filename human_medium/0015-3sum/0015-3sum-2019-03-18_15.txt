@@ -1,0 +1,13 @@
+def threeSum(nums):
+	ctr = collections.Counter(nums)
+	tris = [] if counter[0] < 3 else [[0,0,0]]
+	for x in ctr:
+		if x <= 0: ns.append(x)
+		else: ps.append(x)
+	for n in ns:
+		for p in ps:
+			x = -n-p
+			if x in counter:
+				if x in {n, p} and counter[x] > 1 or n < x < p: 
+					tris.append([n, x, p])
+	return tris

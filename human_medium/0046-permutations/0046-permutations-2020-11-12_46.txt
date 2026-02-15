@@ -1,0 +1,14 @@
+def permutation(nums):
+            if len(nums) == 0:
+                return []
+            if len(nums) == 1:
+                return [nums]
+            res = []
+            for i in range(len(nums)):
+                a = nums[i]
+                b = nums[i+1:] + nums[:i]
+				# Recursive call to have all possible combinations
+                for i in permutation(b):
+                    res.append([a]+i)
+            return res
+        return(permutation(nums))

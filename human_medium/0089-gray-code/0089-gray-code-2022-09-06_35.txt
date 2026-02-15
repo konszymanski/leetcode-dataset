@@ -1,0 +1,7 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        arr = []
+        for j in range(0,1<<n):
+            arr.append(j^(j>>1))
+        
+        return arr

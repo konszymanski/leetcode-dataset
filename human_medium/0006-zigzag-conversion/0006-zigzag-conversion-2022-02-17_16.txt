@@ -1,0 +1,10 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        lines = [\'\'] * numRows
+        for i in range(len(s)):
+            mod = i % (2 * (numRows - 1))
+            line = mod if mod < numRows else (2 * numRows - mod - 2)
+            lines[line] += s[i]
+        return \'\'.join(lines)

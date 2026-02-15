@@ -1,0 +1,27 @@
+class Solution:
+	def longestPalindrome(self, s: str) -> str:
+	# Center Expansion Technique
+	# Runtime O(n^2)
+	# Space O(1) 
+	currLongest = [0,1] # Base case: Just one character
+	for i in range(1, len(s)): #start from second character
+		odd = self._getLongestPalindromeFrom(s, i-1, i+1) #Odd Palindrome
+		even = self._getLongestPalindromeFrom(s, i-1, i) #Even Palindrome
+		longest = max(odd, even, key = lambda x: x[1] - x[0])
+		currLongest = max(currLongest, longest, key = lambda x: x[1] - x[0])
+	return s[currLongest[0]:currLongest[1]]
+
+
+	def _getLongestPalindromeFrom(self, s, leftIdx, rightIdx):
+	while leftIdx >= 0 and rightIdx < len(s):
+		if s[leftIdx] != s[rightIdx]:
+			break
+		leftIdx -= 1
+		rightIdx += 1
+	return [leftIdx +1, rightIdx]
+        
+The runtime can be improved from O(n^2) to O(n) using Manachers Algorithm, however from interview point of view its very had to code and would take more than 45mins to come up.
+
+And if you are already familiar with the algo the interviewer is likely to understand you know of the algorithm beforehand.
+
+This solution would work either way

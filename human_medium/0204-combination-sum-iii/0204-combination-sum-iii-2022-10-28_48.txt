@@ -1,0 +1,25 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+
+        candidates = [num for num in range(1,10)] # build candidates
+
+        result = []
+
+        # combination sum II
+        def backtrack(idx,curr,target):
+            if target == 0 and len(curr) == k:
+                result.append(curr[::])
+                return
+
+            if target < 0:
+                return
+
+            for j in range(idx,len(candidates)):
+
+                curr.append(candidates[j])
+                backtrack(j+1,curr,target-candidates[j])
+                curr.pop()
+
+        backtrack(0,[],n)
+
+        return result

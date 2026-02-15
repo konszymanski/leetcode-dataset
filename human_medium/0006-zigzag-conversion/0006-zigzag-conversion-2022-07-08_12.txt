@@ -1,0 +1,16 @@
+def convert(s, numRows):
+#If num rows == 1 ofc u just return the string since by default its 1 row
+    if numRows <= 1: return s
+
+#Create your list of rows based on numRow Amount
+    rows = [\'\'] * numRows
+    index, increment = 0, 1
+    for char in s:
+        rows[index] += char
+# here we say if numRow reached max row decrement
+        if index == numRows - 1: increment = -1
+# here we say if numRow at the start increment it
+        if index == 0: increment = 1
+# here we apply either the increment or decrement based of if statement
+        index += increment
+    return \'\'.join(rows)

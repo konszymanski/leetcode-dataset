@@ -1,0 +1,12 @@
+def fact(a):
+    if a<1:
+        return 1
+    else:
+        return fact(a-1)*a
+    
+class Solution(object):
+
+    def uniquePaths(self, m, n):
+        top=fact(m-1+n-1)
+        bottom=fact(m-1)*fact(n-1);
+        return top/bottom

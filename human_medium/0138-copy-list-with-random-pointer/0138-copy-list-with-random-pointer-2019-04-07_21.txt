@@ -1,0 +1,33 @@
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        if not head: return None
+        cur = head; visited = {}
+        # hash table of original node to copy node
+        # if original node alreay has a copy, return copy
+        # so that we don\'t create it again.
+        while cur:
+            if cur not in visited:
+                new_node = Node(cur.val,None,None)
+                visited[cur] = new_node
+                if cur == head: new_head = new_node
+            else:
+                new_node = visited[cur]
+            if cur.random:
+                if cur.random not in visited:
+                    new_random = Node(cur.random.val,None,None)
+                    visited[cur.random] = new_random
+                else:
+                    new_random = visited[cur.random]
+                new_node.random = new_random
+                
+            if cur.next:
+                if cur.next not in visited:
+                    new_next = Node(cur.next.val,None,None)
+                    visited[cur.next] = new_next
+                else:
+                    new_next = visited[cur.next]
+                new_node.next = new_next
+           
+            cur = cur.next
+
+        return new_head

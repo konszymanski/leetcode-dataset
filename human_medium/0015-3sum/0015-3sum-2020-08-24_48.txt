@@ -1,0 +1,21 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        lookup = {}
+        res = set()
+        
+        nums.sort()
+		# most recent position of a value
+        for i, each in enumerate(nums):
+            lookup[each] = i
+            
+        #print(nums, lookup)
+        for i, a  in enumerate(nums):
+            if (i!=0 and nums[i] == nums[i-1]) : 
+                continue
+            for j, b in enumerate(nums[i+1:]):
+                c = -(a+b)
+				# c occurs after a & b
+                if c in lookup and lookup[c] > i and lookup[c] > j+i+1:
+                    #print(a, b, c, i, j, lookup[c])
+                    res.add((a, b, c))
+        return list(res)

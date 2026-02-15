@@ -1,0 +1,29 @@
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        curr = head
+        first_pt = head
+        while(curr):
+            curr_next = curr.next
+            # identify the first and last pointer of the sorted part of the list
+            first_pt, last_pt = self.insert_at_pos(curr, first_pt)
+            last_pt.next = curr_next
+            curr = curr_next
+        return first_pt
+    
+    def insert_at_pos(self, curr, head):
+        st = head
+        inserted = False
+        prev = None 
+        # find where to insert the curr val in the initial sorted list
+        while(st != curr):
+            if st.val > curr.val and not inserted:
+                if prev:
+                    prev.next = curr
+                else:
+                    head = curr
+                curr.next = st
+                inserted = True
+            prev = st
+            st = st.next
+        # if curr pointer is already in its correct position, return st(as it points to current pointer) otherwise return prev as that will point to the end of the sorted part
+        return head, prev if inserted else st

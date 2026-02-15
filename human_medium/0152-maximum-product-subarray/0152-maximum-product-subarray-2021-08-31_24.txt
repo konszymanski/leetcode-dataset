@@ -1,0 +1,32 @@
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        
+        if n == 1:
+            return nums[0]
+        
+        max_prod = [float(\'-inf\')] * n
+        min_prod = [float(\'inf\')] * n
+        
+        max_prod[0] = nums[0]
+        min_prod[0] = nums[0]
+        
+        for i in range(1, n):
+            max_prod[i] = max(nums[i], nums[i] * max_prod[i - 1], nums[i] * min_prod[i - 1]) # (1)
+            min_prod[i] = min(nums[i], nums[i] * min_prod[i - 1], nums[i] * max_prod[i - 1])
+            
+        return max(max_prod)
+    
+    # The idea is that this is similar to finding maximum continguous subarray sum. However, since this is dealing with maximum product instead of maximum sum, we have to handle cases with negative numbers. For example:
+    #   nums = [-2, 3, -4]
+    #   dp   = [-2, 3, -4]
+    # If we use our solution to maximum continguous subarray sum, we\'ll get 3 as an answer, but the answer should be 12 since -2 * 3 * -4 is 12. We effectively discarded -2 * 3 because -2 * 3 < 3.
+    # A trick we can use is to keep track of minimum continguous subarray product, so that we can keep the -2 * 3. Intuitively, we\'re keeping track of product -X because when we encounter a number -Y, the continguous product would be -X * -Y = X * Y. Here, X * Y is a candidate for maximum product, don\'t you think?
+	# (1) At each index, we consider three cases:
+    #   1) Beginning a new continguous subarray ex. [2]
+    #   2) Continuing the maximum continguous subarray
+    #   3) Continuing the minimum continguous subarray (this is usually the best choice if nums[i] is negative)

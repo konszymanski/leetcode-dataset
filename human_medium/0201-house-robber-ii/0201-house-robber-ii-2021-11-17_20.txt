@@ -1,0 +1,16 @@
+class Solution:
+    def f(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums[1] = max(nums[1], nums[0])
+        for i in range(2, n):
+            nums[i] = max(nums[i-1], nums[i-2]+nums[i])
+        return max(nums)
+    
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 3:
+            return max(nums)
+        
+        a = self.f(nums[1:])
+        b = self.f(nums[:-1])
+        return max(a,b)

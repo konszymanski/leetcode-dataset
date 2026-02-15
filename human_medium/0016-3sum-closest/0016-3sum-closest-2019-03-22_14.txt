@@ -1,0 +1,35 @@
+class Solution:
+    def threeSumClosest(self, nums, target: int) -> int:
+        nums.sort()
+
+        # result cant be worse than sum of random 3 nums
+        res = sum(nums[0: 3])
+        diff = abs(res - target)
+
+        for i in range(len(nums) - 2):
+            j, k = i + 1, len(nums) - 1
+
+            # if 3 * smallest num - target > diff, the rest bigger sum can be skipped
+            if nums[i] * 3 - target > diff:
+                break
+
+            while j < k:
+                r = nums[i] + nums[j] + nums[k]
+
+                # if closer, update
+                if abs(r - target) < diff:
+                    res = r
+                    diff = abs(r - target)
+                
+                # if larger than target, decrease
+                if r > target:
+                    k = k - 1
+                
+                # if smaller than target, increase
+                elif r < target:
+                    j = j + 1
+                
+                # just target
+                else:
+                    return r
+        return res

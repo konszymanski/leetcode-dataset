@@ -1,0 +1,38 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        if not n: return
+        matrix = [[0]*n for _ in range(n)]
+        # auxiliar function to validate a position
+        def valid(node):
+            x, y = node
+            if not 0<=x<len(matrix) or not 0<=y<len(matrix[0]): return False
+            return True
+        # ways to explore the matrix
+        moves = {
+            \'right\': lambda node: (node[0], node[1]+1),
+            \'down\': lambda node: (node[0]+1, node[1]),
+            \'left\': lambda node: (node[0], node[1]-1),
+            \'up\': lambda node: (node[0]-1, node[1]),
+        }
+        # almost standard dfs
+        memory = set()
+        memory.add((0,0))
+        matrix[0][0] = 1
+		# global variable to keep track of the count
+        state = {\'counter\': 2}
+        def dfs(node):
+            memory.add(node)
+			# choose a direction to move
+            for _, move in moves.items():
+                next_node = node
+				# move all the way in the given direction
+                while valid(move(next_node)) and move(next_node) not in memory:
+                    memory.add(next_node)
+                    next_node = move(next_node)
+                    x, y = next_node
+                    matrix[x][y] = state[\'counter\']
+                    state[\'counter\'] += 1
+                if valid(next_node) and next_node not in memory: dfs(next_node)
+        # launch recursive function
+        dfs((0,0))
+        return matrix

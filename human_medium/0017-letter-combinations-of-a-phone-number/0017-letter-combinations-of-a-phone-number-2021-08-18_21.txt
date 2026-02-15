@@ -1,0 +1,39 @@
+class Solution(object):
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        
+        ab = {
+            \'2\': \'abc\',
+            \'3\': \'def\',
+            \'4\': \'ghi\',
+            \'5\': \'jkl\',
+            \'6\': \'mno\',
+            \'7\': \'pqrs\',
+            \'8\': \'tuv\',
+            \'9\': \'wxyz\',
+        }
+        
+        if digits == "":
+            return []
+
+        return self.func(ab, digits)
+    
+    def func(self, ab, custom_string):
+        if len(custom_string) == 1:
+            return ab[custom_string]
+
+        starter = custom_string[0]
+        rem_string = custom_string[1:]
+
+        output_rem_string = self.func(ab, rem_string)
+
+        curr_arr = []
+
+        for i in ab[starter]:
+            for j in output_rem_string:
+                curr_arr.append(i + j)
+
+        return curr_arr

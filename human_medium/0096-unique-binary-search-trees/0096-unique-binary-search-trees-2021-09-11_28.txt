@@ -1,0 +1,24 @@
+from collections import defaultdict
+
+class Solution:
+    def numTrees(self, n: int) -> int:
+        
+        
+        # No. of trees for zero nodes: 1 empty tree
+        # No of trees for one nodes: 1 single tree
+        trees = defaultdict(lambda: 0)
+        trees[0] = 1
+        trees[1] = 1
+        
+        # For all other case where n > 1
+        # Number of trees for 2 nodes
+        # trees[0]*trees[1] + trees[1]*trees[0]
+        # Number of trees for 3 nodes
+        # trees[0]*trees[2] + trees[1]*trees[1] + trees[2]*trees[0]
+        # Number of trees for 4 nodes
+        # trees[0]*trees[3] + trees[1]*trees[2] + trees[2]*trees[1] + trees[3]*trees[0]
+        for num_nodes in range(2,n+1):
+            for i in range(0,num_nodes):
+                trees[num_nodes] += trees[i] * trees[num_nodes-i-1]
+       
+        return trees[n]

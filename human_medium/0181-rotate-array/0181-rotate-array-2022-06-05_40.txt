@@ -1,0 +1,11 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+		
+        k = k % len(nums) # A + \u03BB * len(nums) rotations is equvialent to A rotations
+        
+        nums[k:], nums[:k] = nums[:-k], nums[-k:] # swap the two halves of the array
+        
+        return None

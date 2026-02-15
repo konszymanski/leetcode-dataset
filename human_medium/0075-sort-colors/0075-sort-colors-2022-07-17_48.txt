@@ -1,0 +1,41 @@
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        
+        
+        # O(N)
+        zeros = 0
+        onces = 0
+        for num in nums:
+            if num == 0:
+                zeros += 1
+            elif num == 1:
+                onces += 1
+        
+        for i in range(len(nums)):
+            if zeros > 0:
+                nums[i] = 0
+                zeros -= 1
+            elif onces > 0 :
+                nums[i] = 1
+                onces -= 1
+            else:
+                nums[i] = 2
+        
+        
+        # Maintin 3 pointer curr, zeros, twos
+        curr,  zeros, twos = 0, 0, len(nums)-1
+        while curr <= twos:
+            if nums[curr] == 0:
+                # swap with zeros position
+                nums[curr], nums[zeros] = nums[zeros], nums[curr]
+                curr += 1
+                zeros += 1
+            elif nums[curr] == 2:
+                # swap with twos position
+                nums[curr], nums[twos] = nums[twos], nums[curr]
+                twos -= 1
+            else:
+                curr += 1

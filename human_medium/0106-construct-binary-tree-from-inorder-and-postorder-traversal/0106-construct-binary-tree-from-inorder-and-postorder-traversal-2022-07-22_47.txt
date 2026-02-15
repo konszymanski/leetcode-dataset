@@ -1,0 +1,53 @@
+class Solution:
+    \'\'\'
+    Inorder = [9,3,15,20,7]
+    Postorder = [9,15,7,20,3]
+    Expected Tree:
+               3
+             /   \\
+            /     \\
+           9       20
+                  / \\
+                 /   \\
+                15    7
+    Steps:
+        0. Convert inorder list to dictionary to find the index easily.
+        1. Start with the root node - the last item in the postorder list.
+        2. Find the boundary/mid index of its left and right subtree in the dictionary (inroder). 
+    
+    - All keys before the root node in the inorder list, become part of the left subtree.
+    - All keys after the root node, become part of the right subtree. 
+    
+        3. Repeat this recursively for all nodes in the tree and build the tree.
+    \'\'\'
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+
+        # dictionary used to find the index of any element in inorder list
+        dict = {}
+        for i, e in enumerate(inorder): 
+            dict[e] = i
+
+        def build(start, end, postorder, pEnd):
+            if start > end: 
+                return None, pEnd
+        
+            # create root node by using pEnd from postorder list
+            root = TreeNode(postorder[pEnd])
+            pEnd -= 1
+        
+            # mid index of root in inorder list
+            mid = dict[root.val]
+
+            # strictly build the right subtree first, before left subtree
+            root.right, pEnd = build(mid + 1, end, postorder, pEnd)
+
+            # build the left subtree only after right subtree
+            root.left, pEnd = build(start, mid - 1, postorder, pEnd)
+        
+            # return the root node
+            return root, pEnd
+
+    
+        # pEnd: index of next root node from postorder
+        pEnd = len(inorder) -1
+        return build(0, pEnd, postorder, pEnd)[0]

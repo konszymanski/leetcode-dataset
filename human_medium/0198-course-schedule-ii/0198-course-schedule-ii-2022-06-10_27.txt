@@ -1,0 +1,36 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # initialize hashmaps for incoming edges count + graph adjacency list
+        incoming_edges = {i: 0 for i in range(numCourses)}
+        graph = {i: [] for i in range(numCourses)}
+        
+        order = []
+        # source = a node that has only outgoing directed edges
+        # sink = a node that has only incoming directed edges
+        # we want to find all sources of our graph and add them to the order first
+    
+        # build out graph and keep track of incoming edges
+        for prereq in prerequisites:
+            child, parent = prereq
+            graph[parent].append(child)
+            incoming_edges[child] += 1
+            
+        sources = collections.deque()
+        # if no incoming edges - the node is a source
+        for key in incoming_edges:
+            if incoming_edges[key] == 0:
+                sources.append(key)
+        
+        # add source to order -> remove edges -> add child to sources if it has no more incoming edges
+        while sources:
+            source = sources.popleft()
+            order.append(source)
+            
+            for child in graph[source]:
+                incoming_edges[child] -= 1
+                if incoming_edges[child] == 0:
+                    sources.append(child)
+        
+        # if the size of our output doesnt match the number of courses, it is impossible to order courses
+        # there is a cycle in our graph
+        return order if len(order) == numCourses else []

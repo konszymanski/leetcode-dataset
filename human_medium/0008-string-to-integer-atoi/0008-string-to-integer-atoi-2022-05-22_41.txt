@@ -1,0 +1,20 @@
+class Solution:
+    def myAtoi(self, st: str) -> int:
+        st = st.lstrip(\' \')
+        sign = \'\'
+        f = True
+        arr = []
+        for let in st:
+            if let == \'-\' or let == \'+\':
+                if not f:
+                    break
+                f = False
+                sign = let
+            elif let.isdigit():
+                f = False
+                arr.append(let)
+            else: break
+        try: res = int(sign + \'\'.join(arr))
+        except ValueError: res = 0
+        if res > 0: return min(res, 2 ** 31 - 1)
+        else: return max(res, -2 ** 31)

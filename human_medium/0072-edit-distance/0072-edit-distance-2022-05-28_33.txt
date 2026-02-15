@@ -1,0 +1,22 @@
+def f(i,j,s1,s2):
+    if(i < 0):
+        return j + 1
+    
+    if(j < 0):
+        return i + 1
+    
+    if(s1[i] == s2[j]):
+        return 0 + f(i-1,j-1,s1,s2)
+        
+    else:
+        return 1 + min(f(i-1,j-1,s1,s2),f(i-1,j,s1,s2),f(i,j-1,s1,s2))
+        
+
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        
+        n = len(word1)
+        m = len(word2)
+        dp = [[-1 for i in range(m)] for i in range(n)]
+        
+        return f(n-1,m-1,word1,word2)

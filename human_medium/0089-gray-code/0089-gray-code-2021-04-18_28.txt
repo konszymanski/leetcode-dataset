@@ -1,0 +1,10 @@
+class Solution(object):
+    def grayCode(self, n):
+        """
+        :type n: int
+        :rtype: List[int]
+        """
+        if n==1: return [0,1]
+        pre = self.grayCode(n-1)
+        ans = pre + [i+2**(n-1) for i in pre[::-1]]
+        return ans

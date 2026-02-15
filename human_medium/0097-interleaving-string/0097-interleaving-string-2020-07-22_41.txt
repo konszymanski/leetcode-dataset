@@ -1,0 +1,40 @@
+class Solution:
+    def solver(self,i1,i2,i3):
+        key  = (i1,i2) # i3 = f(i1,i2), so it is implicitly saved
+        memo = self.memo
+        if key in memo:
+            return memo[key]
+        #
+        s1,s2,s3 = self.s1,self.s2,self.s3
+        L1,L2,L3 = self.L1,self.L2,self.L3
+        #
+        while i3<L3:
+            x   = s3[i3]
+            i3 += 1 # Increase counter (could be needed in case of recursion for "b1 and b2")
+            #
+            b1 = i1<L1 and x==s1[i1] # Does s1 have an alternative?
+            b2 = i2<L2 and x==s2[i2] # Idem
+            if b1 and b2:
+                # Tough case, we need to decide between s1[i1] == s2[i2]
+				# Recursion + Memoization is our best alternative
+				memo[key] = self.solver(i1+1,i2,i3) or self.solver(i1,i2+1,i3)
+                return memo[key]
+            elif b1:
+                i1 += 1
+            elif b2:
+                i2 += 1
+            else:
+                memo[key] = False
+                return False
+        memo[key] = True
+        return True
+    def isInterleave(self, s1, s2, s3):
+        #
+        if (len(s1)+len(s2)) != len(s3):
+            return False
+        #
+        self.s1,self.s2,self.s3 = list(s1),list(s2),list(s3)
+        self.L1,self.L2,self.L3 = len(s1), len(s2), len(s3) 
+        self.memo = {}
+		#
+        return self.solver(0,0,0)

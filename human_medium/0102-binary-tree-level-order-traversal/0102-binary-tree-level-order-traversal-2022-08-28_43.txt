@@ -1,0 +1,19 @@
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:  # Time: O(n) and Space: O(n)
+        res = []                 # will contain level list 	
+        q = collections.deque()  # for BFS approach
+        q.append(root)           # it can be a value or NULL
+
+        while q:          # while root has right or left child & q has values in the queue left
+            qLen = len(q)
+            level = []
+            for i in range(qLen):
+                node = q.popleft()
+                if node:  # to check the popped element is not NULL
+                    level.append(node.val)
+                    q.append(node.left)
+                    q.append(node.right)
+            if level:              # to check if the current level is not empty i.e. node was always NULL
+                res.append(level)  # res = [[level 1 = x], [level 2 = a, b], [level 3 = m, n, o, p]]
+				
+        return res

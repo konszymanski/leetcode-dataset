@@ -1,0 +1,33 @@
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        first, second = None, None
+        prev, curr = TreeNode(float(\'-inf\')), root
+        
+        def find_recover_nodes(prev, curr):
+            nonlocal first, second
+            # check if in order encounter invalid node value
+            if not first and prev.val >= curr.val:
+                first = prev
+            if first and prev.val >= curr.val:
+                second = curr
+        
+        while curr:
+            if curr.left:
+                right_most = curr.left
+                
+                # find right most element of curr.left
+                while right_most.right and right_most.right is not curr:
+                    right_most = right_most.right
+                    
+                if right_most.right: # link was established previously
+                    find_recover_nodes(prev, curr)
+                    right_most.right = None # break link
+                    prev, curr = curr, curr.right
+                else:
+                    right_most.right = curr # establish link
+                    curr = curr.left
+            else:
+                find_recover_nodes(prev, curr)
+                prev, curr = curr, curr.right
+        
+        first.val, second.val = second.val, first.val

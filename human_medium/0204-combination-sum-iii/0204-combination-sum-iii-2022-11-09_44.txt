@@ -1,0 +1,12 @@
+class Solution(object):
+    def combinationSum3(self, k, n):
+        res=[];
+        def backtrack(arr,sum,idx):
+            if sum>n or len(arr)>k:
+                return
+            if sum==n and len(arr)==k:
+                res.append(arr)
+            for i in range(idx,10):
+                backtrack(arr+[i],sum+i,i+1)
+        backtrack([],0,1)
+        return res

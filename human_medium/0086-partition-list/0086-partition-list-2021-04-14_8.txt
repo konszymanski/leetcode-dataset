@@ -1,0 +1,53 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        
+        if not head:
+            
+            # Quick response for empty linked list
+            return None
+        
+        # < as dummy head value for less_than linked list
+        less_than = ListNode("<")
+        
+        # >= as dummy head value for not_less_than linked list
+        not_less_than = ListNode(">=")
+        
+        # backup dummy head position for less_than and not_less_than for linkage update later
+        head_of_less_than, head_of_not_less_than = less_than, not_less_than
+        
+        
+        ## Seperate original linked list into two lists
+        # one is less than x, where node value < x
+        # the other is not less than x, where node value >= x
+        
+        cur = head
+        
+        while cur:
+            
+            if cur.val < x:
+                less_than.next = cur
+                less_than = less_than.next
+            
+            else:
+                not_less_than.next = cur
+                not_less_than = not_less_than.next
+                
+            cur = cur.next
+        
+        
+        ## Update linkage
+        
+        # connect less than\'s tail to not_less_than
+        less_than.next = head_of_not_less_than.next
+        
+        # let not_less_than\'s tail point to None (i.e., empty node)
+        not_less_than.next = None
+        
+        
+        return head_of_less_than.next

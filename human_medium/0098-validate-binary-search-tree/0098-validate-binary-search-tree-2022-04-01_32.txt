@@ -1,0 +1,9 @@
+class Solution(object):
+    def isValidBST(self, root,left=-2**32,right=2**32):
+        if not root:
+            return True
+        
+        if(root.val>=right or root.val<=left):
+            return False
+        
+        return(self.isValidBST(root.left,left,root.val) and self.isValidBST(root.right,root.val,right))

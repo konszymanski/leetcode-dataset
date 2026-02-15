@@ -1,0 +1,37 @@
+class Solution:
+        
+    def inorder(self,root: Optional[TreeNode]) -> None:
+        if root is None:
+            return None
+        
+        self.inorder(root.left)
+
+        if(self.prev !=None and(self.prev.val > root.val)):
+            #anomaly detected
+            if self.first == None:
+                #first case detected
+                self.first = self.prev
+                self.mid = root
+            else:
+                # second case detected
+                self.last = root
+        
+        
+        self.prev = root
+        self.inorder(root.right)
+        
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        
+        self.first = None
+        self.mid = None
+        self.prev = None
+        self.last = None
+        self.inorder(root)
+        
+        if self.first and self.last:
+            self.first.val,self.last.val = self.last.val,self.first.val
+        elif self.first and self.mid:
+            self.first.val,self.mid.val = self.mid.val,self.first.val

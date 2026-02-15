@@ -1,0 +1,47 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        """
+        Constraints
+        
+        1. for each node:
+            lc < root < rc
+        
+        2. height balanced tree i.e. abs(lh - rh) <= 1
+        
+        """
+        
+        # base condition
+        if not head:
+            return None
+        if not head.next:
+            return TreeNode(head.val)
+        
+        # 1. Find the mid element using two pointer technique: slow will be the mid of LL- root of the BST 
+        
+        slow = fast = head
+        prev = None
+        while fast and fast.next:
+            prev = slow
+            slow = slow.next
+            fast = fast.next.next
+        
+        if prev:
+            prev.next = None
+        root = TreeNode(slow.val)
+        # 2. Left subtree
+        root.left = self.sortedListToBST(head)
+        # 3. Right subtree
+        root.right = self.sortedListToBST(slow.next)
+        
+        return root

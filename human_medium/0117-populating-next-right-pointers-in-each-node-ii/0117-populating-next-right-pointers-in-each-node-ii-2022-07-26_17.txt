@@ -1,0 +1,37 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        # it will contain the left most node of tree at the current level
+        leftMost = root
+
+        # start from the first top-left-most node of the tree
+        while leftMost:
+            cur = leftMost
+            leftMost = None
+            curLeftNode = None
+
+            # update pointers for the current level of tree
+            while cur:
+                if cur.left:
+                    # set the left most node at the current level
+                    if not leftMost: leftMost = cur.left
+
+                    # update the next pointer to right side node
+                    if curLeftNode: curLeftNode.next = cur.left
+
+                    # update curLeftNode to next right side node
+                    curLeftNode = cur.left
+
+                if cur.right:
+                    # set the left most node at the current level
+                    if not leftMost: leftMost = cur.right
+
+                    # update the next pointer to right side node
+                    if curLeftNode: curLeftNode.next = cur.right
+
+                    # update curLeftNode to next right side node
+                    curLeftNode = cur.right
+                
+                # move rightward at that level
+                cur = cur.next
+        
+        return root

@@ -1,0 +1,21 @@
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        n = len(nums)
+        nums[n-1] = True
+        l = n-1
+        for i in reversed(range(n-1)):
+            nums[i] = (nums[i+1] and nums[i]>0) or (nums[i] >= l - i)
+            if nums[i]:
+                l = i
+        #print(nums)
+        return nums[0]
+        
+		#dp from right to left
+        #dp[i] = true if at i-th position, you have a way to go to last index
+        #dp[i] = (dp[i+1] and dp[i]>0) or (dp[i] >= last_true_index - i)
+		# if dp[i+1] is true, then we dp[i] is also true when it is not 0
+		#if dp[i+1] is false but dp[i] is large enough, it can reach to the last_true_index and be true

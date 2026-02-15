@@ -1,0 +1,33 @@
+```python
+from typing import List
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        # Sorting helps in pruning the search tree early
+        candidates.sort()
+        
+        def dfs(remain, start, path):
+            if remain == 0:
+                # Target sum achieved, add a copy of current combination
+                res.append(list(path))
+                return
+            
+            for i in range(start, len(candidates)):
+                # If the candidate exceeds the remaining target, stop the loop
+                # because subsequent candidates will also be larger (sorted)
+                if candidates[i] > remain:
+                    break
+                
+                # Choose the number
+                path.append(candidates[i])
+                # Recursively call with reduced target; 'i' allows using the same number again
+                dfs(remain - candidates[i], i, path)
+                # Backtrack: remove the number before trying the next candidate
+                path.pop()
+        
+        # Start the recursive search
+        dfs(target, 0, [])
+        return res
+
+```

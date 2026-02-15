@@ -1,0 +1,47 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        """
+        One of the easiest solution for this problem is to use BackTracking
+
+        We have to keep in mind few conditions:
+        1. We can only put an open paranthesis iff number of open paranthesis < n
+        2. We can only close the paranthesis iff number of close paranthesis < number of open paranthesis
+
+        Both these points are very intutive but please feel free to drop a comment if
+        you want an explanation on these two points
+        """
+        closed = opened = 0
+        curr = [] # We\'ll use this array/stack to keep a track of current paranthesis
+        result = []
+
+        # Now, we just have to define a simple function for backtracking
+        # following the above two conditions
+        def backtrack(nuOpenedPara, nuClosedPara):
+            # If nuOpenedPara and nuClosedPara == n, then we can say that we have the 
+            # correct number of opening and closing paranthesis and that can now be 
+            # added to the result
+            if nuClosedPara == nuOpenedPara == n:
+                result.append(\'\'.join(curr))
+                return
+
+            # Implementing the above two conditions
+            if nuOpenedPara < n:
+                curr.append("(") # we added the opened paranthesis in the current stack
+
+                # We\'ll call the function recursively and we have also incremented the 
+                # value of number of opened paranthesis as we have added one
+                backtrack(nuOpenedPara+1, nuClosedPara) 
+
+                # To keep the stack clean from the recursive call, we\'ll also have to pop
+                # the last element added because of the recursive call
+                curr.pop()
+
+            if nuClosedPara < nuOpenedPara:
+                # It\'s exactlty what we did above
+                curr.append(")") 
+                backtrack(nuOpenedPara, nuClosedPara+1)
+                curr.pop()
+
+        backtrack(opened, closed)
+
+        return result

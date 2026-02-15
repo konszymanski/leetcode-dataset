@@ -1,0 +1,36 @@
+class Trie:
+    def __init__(self):
+        self.next = defaultdict(Trie)
+        self.isEnd = False
+        
+    def add(self, word):
+        cur = self
+        for c in word:
+            if c not in cur.next:
+                cur.next[c] = Trie()
+            cur = cur.next[c]
+        
+        cur.isEnd = True
+    
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        words = Trie()
+        
+        for word in wordDict:
+            words.add(word)
+        
+        @cache
+        def recurse(index, trie):
+            if index == len(s):
+                return trie.isEnd
+            
+            if trie.isEnd:
+                if recurse(index, words):
+                    return True
+
+            if s[index] in trie.next:
+                return recurse(index + 1, trie.next[s[index]])
+
+            return False
+        
+        return recurse(0, words)

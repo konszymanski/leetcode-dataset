@@ -1,0 +1,7 @@
+def swapPairs(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        swapped = ListNode(head.next.val, ListNode(head.val))
+        if head.next.next:
+            swapped.next.next = self.swapPairs(head.next.next)
+        return swapped

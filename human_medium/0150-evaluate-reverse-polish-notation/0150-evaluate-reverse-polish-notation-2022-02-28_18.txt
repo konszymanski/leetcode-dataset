@@ -1,0 +1,11 @@
+stk = []
+ops = {"+": lambda a,b: a+b, "-": lambda a,b: a-b, "*": lambda a,b: a*b, "/": lambda a,b:int(a/b)}
+for j in tokens:
+	if j in ops:
+		b = stk.pop()
+		a = stk.pop()
+		stk.append(ops[j](a,b))
+	else:
+		stk.append(int(j))
+	# print(stk)
+return stk[0]

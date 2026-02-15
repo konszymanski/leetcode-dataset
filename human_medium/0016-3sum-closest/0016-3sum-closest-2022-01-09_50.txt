@@ -1,0 +1,25 @@
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        result = sum(nums[:3])
+        for i in range(len(nums)-2):
+            ## Handle Duplicates
+            if i > 0 and nums[i] == nums[i - 1]:
+               continue 
+            
+            # Solve Using two pointers
+            leftPointer, rightPointer = i+1, len(nums) - 1
+            
+            while leftPointer < rightPointer:
+                threeSums = nums[i] + nums[leftPointer] + nums[rightPointer]
+                if threeSums == target:
+                    return threeSums
+                if abs(threeSums - target) < abs(result - target):
+                    result = threeSums
+                if threeSums < target:
+                    leftPointer +=1
+                elif threeSums >target:
+                    rightPointer -=1
+                    
+                    
+        return result

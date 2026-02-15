@@ -1,0 +1,25 @@
+def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        import bisect
+        start_new, end_new = newInterval
+                    
+        start_min = bisect.bisect_right(intervals, start_new, key=lambda x: x[0])
+        start_max = bisect.bisect_left(intervals, start_new, key=lambda x: x[1])
+
+        end_min = bisect.bisect_right(intervals, end_new, key=lambda x: x[0])
+        end_max = bisect.bisect_left(intervals, end_new, key=lambda x: x[1])
+        
+        overlap_start = start_min != start_max
+        overlap_end = end_min != end_max
+        
+        if overlap_start: 
+            newInterval[0] = intervals[start_max][0]
+        
+        if overlap_end: 
+            newInterval[1] = intervals[end_max][1]
+        
+        if (not overlap_start and not overlap_end) and start_min == end_min: 
+            intervals.insert(start_min, newInterval)
+        else: 
+            intervals[start_max:end_min] = [newInterval]
+        
+        return intervals

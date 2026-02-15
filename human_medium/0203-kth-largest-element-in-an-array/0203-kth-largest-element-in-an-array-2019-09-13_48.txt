@@ -1,0 +1,21 @@
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        nums = [3,2,1,5,6,4] k =2
+        3    [-inf, 3]
+        2    [2, 3]
+        1    [2, 3]
+        5    [3, 5]
+        6    [5, 6]
+        4    [5, 6]
+        
+        """
+        # initialize a min_heap of size of k, which keep updating the k largest elements of the arry.
+        min_heap = [-2**32] * k
+        heapq.heapify(min_heap)
+        for i in nums:
+            #  i larger than the smallest element in heap, we need to replace min_heap[0] with i. 
+            if i > min_heap[0]:
+                heapq.heappoppush(min_heap, i)
+            #print(i, "  ",min_heap)
+        return min_heap[0]

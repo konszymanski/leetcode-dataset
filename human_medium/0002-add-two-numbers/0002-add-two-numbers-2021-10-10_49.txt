@@ -1,0 +1,34 @@
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        list_l1 = []
+        list_l1_int = \'\'
+        list_l2 = []
+        list_l2_int = \'\'
+        
+        # convert linked lists to lists
+        while l1:
+            list_l1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            list_l2.append(l2.val)
+            l2 = l2.next
+        
+        # iterate thru lists in reverse and recreate int from list
+        for x in list_l1[::-1]:
+            list_l1_int += str(x)
+            
+        for x in list_l2[::-1]:
+            list_l2_int += str(x)
+            
+        # sum
+        list_sum = int(list_l1_int) + int(list_l2_int)
+        
+        # now create list node from the sum (use s, t to return linked list at right iteration)
+        s = t = ListNode()
+        
+        # conv to str, iterate thru items in reverse, create linked list
+        for x in str(list_sum)[::-1]:
+            s.next = ListNode(x)
+            s = s.next
+
+        return t.next

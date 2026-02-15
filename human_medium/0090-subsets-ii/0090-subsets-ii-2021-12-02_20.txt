@@ -1,0 +1,35 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = []
+		
+	    # need to sort so that duplicates are adjacent
+        nums.sort()
+        
+        def get_subsets(nums, ind, subset, next_skip = False):
+			# if we have reached the last index add it to result and return
+            if ind == len(nums):
+                result.append(subset)
+                return 
+
+            # Previous call didn\'t set next_skip to True because of no duplicate
+			# so include curr ind element in subset and recur
+            if next_skip == False:
+                get_subsets(nums, ind+1, subset + [nums[ind]], next_skip)
+                
+            # next_skip was set True so set it to False
+            next_skip = False
+                
+            # if next ind ele is same as curr 
+            # then if you skip that the current and take the next 
+            # that would result in same subset so eliminate that
+            if ind < len(nums)-1 and nums[ind] == nums[ind + 1]:
+                next_skip = True
+                
+            # Skipping curr index element and 
+			# calling with the desired next_skip value 
+            get_subsets(nums, ind+1, subset, next_skip)
+                
+                
+		# initial call 
+        get_subsets(nums, 0, [], False)
+        return result

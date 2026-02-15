@@ -1,0 +1,24 @@
+class Solution:
+    def copyRandomList(self, head: \'Optional[Node]\') -> \'Optional[Node]\':
+        nodes = {None: None}
+        #This is going to map each node from the "old" linked list to its corresponding
+        #node in the copy. We will set initialize it with the key None to match to None
+        #so that if we try to access nodes[curr.random] and curr.random is None, we don\'t
+        #have a key error.
+        
+        #This loop will instantiae all of the nodes in our copied list, but we don\'t set their next or randoms yet.
+        curr = head
+        while curr:
+            nodes[curr] = Node(curr.val)
+            curr = curr.next
+        
+        #Now we can loop through our old linked list and match the nexts and randoms.
+        curr = head
+        while curr:
+            #nodes[curr] returns the "new" node, and we\'ll set its next to the one that corresponds to the old\'s next
+            nodes[curr].next = nodes[curr.next]
+            nodes[curr].random = nodes[curr.random]
+            curr = curr.next
+        
+        copyHead = nodes[head]
+        return copyHead

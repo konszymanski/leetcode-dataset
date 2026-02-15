@@ -1,0 +1,16 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        def findPairs(ans, su, index):
+            if su>target:
+                return 
+            if su==target:
+                result.append(ans)
+            else:
+                for i in range(index, len(candidates)):
+                    if i>index and candidates[i]==candidates[i-1]:
+                        continue
+                    findPairs(ans+[candidates[i]], su+candidates[i], i+1)
+        result = []
+        findPairs([], 0, 0)
+        return result

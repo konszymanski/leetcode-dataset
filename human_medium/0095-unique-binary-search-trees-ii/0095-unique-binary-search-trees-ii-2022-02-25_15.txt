@@ -1,0 +1,24 @@
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        def helper(start, end):
+
+            if start > end:  # Leaf Node
+                return [None]
+
+            result = []
+            for i in range(start, end + 1):  # Root Index
+
+                left_trees = helper(start, i - 1)
+                right_trees = helper(i + 1, end)
+                allTrees = (
+                    TreeNode(i, left_t, right_t)
+                    for left_t in left_trees
+                    for right_t in right_trees
+                )
+                result.extend(allTrees)
+
+            return result
+
+        return helper(
+            1, n
+        )  # Root position can go from 1 to N (can\'t be 0 which is a Leaf)

@@ -1,0 +1,31 @@
+```python
+from typing import List
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        n = len(nums)
+        # If the array has only one element, we are already at the last index.
+        if n < 2:
+            return 0
+        
+        jumps = 0
+        current_jump_end = 0
+        farthest = 0
+        
+        # We iterate through the array, but we don't need to jump from the last element.
+        for i in range(n - 1):
+            # Update the farthest reachable index from the current position.
+            farthest = max(farthest, i + nums[i])
+            
+            # If we have reached the end of the range for the current jump,
+            # we increment the jump count and update the end of the range.
+            if i == current_jump_end:
+                jumps += 1
+                current_jump_end = farthest
+                
+                # If the current jump can already reach the last index, we can stop.
+                if current_jump_end >= n - 1:
+                    break
+                    
+        return jumps
+```

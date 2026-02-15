@@ -1,0 +1,19 @@
+class Solution:
+    def binary_search(self, arr, x):
+        lo, hi = 0, len(arr)
+        while lo != hi:
+            mid = (lo + hi) // 2
+            if x <= arr[mid]:
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+    
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        start = self.binary_search(nums, target)
+        end = self.binary_search(nums, target + 1) - 1
+        
+        if start < len(nums) and nums[start] == target:
+            return [start, end]
+        else:
+            return [-1, -1]

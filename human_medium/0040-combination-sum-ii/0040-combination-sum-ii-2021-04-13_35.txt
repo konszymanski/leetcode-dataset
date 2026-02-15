@@ -1,0 +1,16 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        ans=[]
+        def backtrack(nums, res,target):
+            if target<0:
+                return
+            if target==0:
+                ans.append(res)
+                return
+            for i in range(len(nums)):
+                if i>0 and nums[i]==nums[i-1]: # dont consider the path starting with same element
+                    continue
+                backtrack(nums[i+1:],res+[nums[i]], target-nums[i])
+        backtrack(candidates,[],target)
+        return ans

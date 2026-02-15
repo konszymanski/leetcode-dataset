@@ -1,0 +1,12 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        pat = r\'\\s*(\\+|-)?\\d+\'
+        ans = re.match(pat, s)
+        if not ans:
+            return 0
+        ans = int(ans.group().strip())
+        
+        ans = max(ans, -2 ** 31)
+        ans = min(ans, 2 ** 31 - 1)
+        
+        return ans

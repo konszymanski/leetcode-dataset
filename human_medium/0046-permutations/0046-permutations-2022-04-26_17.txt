@@ -1,0 +1,15 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+#       T.C = 2^n where n=len(nums)
+        
+        res=[]  # to store the main result
+        self.helper(nums,res,[]) #bactracking function
+        return res
+    
+    def helper(self,nums,res,path):
+        # when we have visited all the number of element once
+        if len(nums)==0:
+            res.append(path)
+        # to traverse all the possible paths
+        for i in range(len(nums)):
+            self.helper(nums[:i]+nums[i+1:],res,path+[nums[i]])

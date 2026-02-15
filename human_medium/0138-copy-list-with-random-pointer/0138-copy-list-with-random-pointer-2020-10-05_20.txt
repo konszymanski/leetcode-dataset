@@ -1,0 +1,121 @@
+class Node:
+    def __init__(self, x: int, next: \'Node\' = None, random: \'Node\' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+
+
+class Solution:
+    def copyRandomList(self, head: \'Node\') -> \'Node\':
+        """
+        Given a head pointer to a linked with random pointers,
+        this program creates a clone of the linked list using
+        a hash table.
+
+        :param head: head pointer to given linked list with
+                     random pointers
+        :type head: Node
+        :return: head pointer to clone of given linked list
+        :rtype: Node
+        """
+
+        """
+        Base Case:
+        - If given linked list has no nodes, return None.
+        """
+        if head is None:
+            return None
+
+        """
+        Create hash table and clone of linked list:
+        - Create node_to_clone, a hash table that maps a node
+          in the given linked list to its clone.
+        - Create clone of the given linked list without the
+          random pointers being defined.
+        """
+        node_to_clone = dict()
+        node = head
+        clone_head = Node(head.val)
+        node_to_clone[head] = clone_head
+        clone_node = clone_head
+        while node.next:
+            clone_node.next = Node(node.next.val)
+            node = node.next
+            clone_node = clone_node.next
+            node_to_clone[node] = clone_node
+
+        """
+        Add the random pointers to the linked list clone with
+        the help of the hash table node_to_node.
+        """
+        node = head
+        while node:
+            if node.random:
+                clone_node = node_to_clone[node]
+                clone_node.random = node_to_clone[node.random]
+            node = node.next
+        return clone_head
+
+    def copyRandomList2(self, head: \'Node\') -> \'Node\':
+        """
+        Given a head pointer to a linked with random pointers,
+        this program creates a clone of the linked list by using
+        interleaving of the linked lists to save the memory that
+        would be used for a hash table.
+
+        :param head: head pointer to given linked list with
+                     random pointers
+        :type head: Node
+        :return: head pointer to clone of given linked list
+        :rtype: Node
+        """
+
+        """
+        Base Case:
+        - If given linked list has no nodes, return None.
+        """
+        if head is None:
+            return None
+
+        """
+        Create clone of linked list interleaved with the given
+        linked list:
+        - Replace the next pointer for each node in the given
+          linked list as follows:
+          - Set the next pointer of each node to its clone.
+          - Set the next pointer of each clone node to the original
+            setting of the given node\'s next pointer.
+        """
+        node = head
+        while node:
+            clone_node = Node(node.val)
+            clone_node.next = node.next
+            node.next = clone_node
+            node = clone_node.next
+
+        """
+        Add the random pointers to the clone linked list using
+        the information that each given node points to its clone.
+        """
+        node = head
+        while node:
+            if node.random:
+                node.next.random = node.random.next
+            node = node.next.next
+
+        """
+        Deinterleave the linked lists to separate the given
+        linked list and its clone. The result will be the given
+        linked list in its original state and a separate clone
+        linked list.
+        """
+        clone_head = head.next
+        node = head
+        clone_node = clone_head
+        while node:
+            node.next = clone_node.next
+            if node.next:
+                clone_node.next = node.next.next
+            node = node.next
+            clone_node = clone_node.next
+        return clone_head

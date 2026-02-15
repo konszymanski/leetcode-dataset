@@ -1,0 +1,36 @@
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    """
+    approach: 
+    we can store the preorder taraversal of nodes in a stack
+    then we can iterate over the stack and update the pointers of the
+    current node. 
+    if stack has let\'s say 4 nodes [TreeNode(1), TreeNode(2), TreeNode(3), TreeNode(4)]
+    I will take a pointer, say curr and set it to stack[0] (root is also pointing at stack[0])
+    now I will iterate over stack[1:]
+    and set curr.right to node and curr.left to None
+    update curr to current node
+    """
+
+    def get_preorder_traversal(self, root, stack):
+        if root is None:
+            return
+        stack.append(root)
+        self.get_preorder_traversal(root.left, stack)
+        self.get_preorder_traversal(root.right, stack)
+        
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        if root is None:
+            return
+        
+        stack = []
+        self.get_preorder_traversal(root, stack)
+        curr = stack[0]
+        for node in stack[1:]:
+            curr.right = node
+            curr.left = None
+            curr = node

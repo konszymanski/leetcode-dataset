@@ -1,0 +1,38 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        # for loop for checking if all the rows in the Sudoku have unique numbers.
+        for i in range(0, 9):
+            row = []
+            for j in range(0, 9):
+                if board[i][j] != ".":
+                    row += [board[i][j]]
+            if len(set(row)) != len(row):
+                print(i)
+                return False
+        # for loop for checking if all the columns in the Sudoku have unique numbers.
+        for i in range(0, 9):
+            column = []
+            for j in range(0, 9):
+                if board[j][i] != ".":
+                    column += [board[j][i]]
+            if len(set(column)) != len(column):
+                return False
+        # for loop for extracting all the numbers in all the 3 x 3 grids.  
+        boxes = []
+        for i in range(0, 7, 3):
+            elements = []
+            for j in range(0, 9):
+                elements += board[j][i: i + 3]
+                if j == 2 or j == 5 or j == 8:
+                    boxes += [elements]
+                    elements = []
+        # for loop for checking if all the 3 x 3 grids have unique numbers.
+        for i in range(0, len(boxes)):
+            numbers = []
+            for j in range(0, len(boxes[i])):
+                if boxes[i][j] != ".":
+                    numbers += boxes[i][j]
+            if len(set(numbers)) != len(numbers):
+                return False
+        
+        return True

@@ -1,0 +1,20 @@
+from math import factorial
+class Solution:
+    
+    def combination_n_m(self, n: int, m:int)->int:
+
+        if m == 0 or n == m:
+            return 1
+        else:
+            return factorial(n) // ( factorial( m ) * factorial( n-m ) )
+    
+    
+    def numTrees(self, n: int) -> int:
+        
+        # Number of structurally unique bst wieth n nodes 
+        # = Catalan number of n
+        # = C(2n, n) / ( n + 1)
+        
+        num_of_unique_bst = ( self.combination_n_m( 2*n, n) ) // (n+1)
+
+        return num_of_unique_bst

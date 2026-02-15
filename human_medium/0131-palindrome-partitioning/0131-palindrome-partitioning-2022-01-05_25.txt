@@ -1,0 +1,41 @@
+def partition(self, s):
+	"""
+	:type s: str
+	:rtype: List[List[str]]
+	"""
+	
+	# Use a recursive function partition() to find possible partitions and isPalindrome() to check if a
+	# substring is a palindrome.
+	
+	# Use i and j to indicate the start and the end of the substring
+	
+	# When a substring is a palindrome, we can either take s[i:j] or 
+	# add j by 1 as long as it is smaller than len(s)
+
+	self.ans = []
+
+	def partition(s, i, j, new):
+		if isPalindrome(s[i:j]):
+			# End of string reached, update answer array
+			if j == len(s):                    
+				new.append(s[i:j])
+				self.ans.append(new)
+			else:
+				# append the substring and process the remaining
+				partition(s, j, j+1, new+[s[i:j]])
+				# don\'t append the substring
+				partition(s, i, j+1, new)
+		else:
+			# Because the remaining substring may be palindrome so we cannot ignore non-palindrome 
+			# substring where j is smaller than total length.
+			if j < len(s):
+				partition(s, i, j+1, new)
+
+	def isPalindrome(s):
+		for i in range(len(s)/2):
+			if s[i] != s[len(s)-1-i]: return False
+		return True
+
+	partition(s, 0, 1, [])
+
+	return self.ans

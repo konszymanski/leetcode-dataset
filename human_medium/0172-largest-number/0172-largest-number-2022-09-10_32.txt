@@ -1,0 +1,6 @@
+import functools
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        def compare(x,y):
+            return int(str(y)+str(x))-int((str(x)+str(y)))
+        return str(int(\'\'.join(sorted(map(str,nums),key=functools.cmp_to_key(compare)))))

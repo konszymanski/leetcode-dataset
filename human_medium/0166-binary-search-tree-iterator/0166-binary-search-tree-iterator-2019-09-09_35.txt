@@ -1,0 +1,34 @@
+class BSTIterator:
+
+    def __init__(self, root: TreeNode):
+        self.next_val = None
+        self.gen = self.make_gen(root)
+        self.next_val = next(self.gen, None)
+
+
+    def next(self) -> int:
+        """
+        @return the next smallest number
+        """
+        val = self.next_val
+        self.next_val = next(self.gen, None)
+        return val
+        
+
+    def hasNext(self) -> bool:
+        """
+        @return whether we have a next smallest number
+        """
+        return self.next_val is not None
+    
+    def make_gen(self, root):
+        
+        def recurse(node):
+            if node:
+                if node.left:
+                    yield from recurse(node.left)
+                yield node.val
+                if node.right:
+                    yield from recurse(node.right)
+        
+        return recurse(root)

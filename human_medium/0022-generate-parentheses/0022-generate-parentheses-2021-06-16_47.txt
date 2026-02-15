@@ -1,0 +1,33 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+    
+        #use python native cache as memoization for DP
+        @cache
+        def dp(n):
+            
+			## Base case
+            if n == 0:
+                return [""]
+				
+            elif n == 1:
+                return ["()"]
+            
+			#----------------------------
+			
+			## General case:
+			
+            ## Generation pattern for valid parenthesis of n pairs 
+            
+            \'\'\'
+            valid parenthesis of n pairs 
+            = "(" +  preStr ")" + postStr where both preStr and postStr are previous valid parenthesis pattern
+            
+            preStr contributes i pairs while postStr contributes (n - 1 - i) pairs, total contribute (n - 1) pairs.
+            The last pair comes from the () jacket out of preStr.
+            \'\'\'
+            
+            return [ "(" + preStr + ")" + postStr for i in range(n) for preStr in dp(i) for postStr in dp(n-1-i) ]
+            
+        
+        # ----------------------------------
+        return dp(n)

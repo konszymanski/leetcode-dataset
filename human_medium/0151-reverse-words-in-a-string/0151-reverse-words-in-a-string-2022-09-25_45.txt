@@ -1,0 +1,11 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = s.split(\' \')
+        f = \'\'
+        final = []
+        s = s[::-1]
+        for i in s:
+            if i!=f:
+                final.append(i)
+        major = \' \'.join([str(elem) for elem in final])
+        return major

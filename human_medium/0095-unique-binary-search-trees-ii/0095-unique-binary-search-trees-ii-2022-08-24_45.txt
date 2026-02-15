@@ -1,0 +1,30 @@
+func generateTrees(n int) []*TreeNode {
+    return makeSubTrees(1, n + 1)
+}
+
+func makeSubTrees(start, end int) []*TreeNode {
+    if start == end {
+        return []*TreeNode{nil}
+    }
+    
+    subTrees := []*TreeNode{}
+    
+    for val := start; val < end; val++ {
+        leftSubTrees := makeSubTrees(start, val)
+        rightSubTrees := makeSubTrees(val + 1, end)
+        
+        for _, leftSubTree := range leftSubTrees {
+            for _, rightSubTree := range rightSubTrees {
+                subTree := &TreeNode{
+                    Val: val,
+                    Left: leftSubTree,
+                    Right: rightSubTree,
+                }
+                
+                subTrees = append(subTrees, subTree)
+            }
+        }
+    }
+    
+    return subTrees
+}

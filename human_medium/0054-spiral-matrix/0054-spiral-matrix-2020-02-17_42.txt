@@ -1,0 +1,56 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return []
+        
+        self.num_rows = len(matrix)
+        self.num_cols = len(matrix[0])
+        
+		# 4 type of directions
+		# right, down, left, up
+        directions = [(0,1), (-1,0), (0,-1), (1,0)]
+        
+		# starting coordinates
+        i, j = 0, 0
+		# initial direction type
+        direction_type = 0 
+		# a set to record the coordinates that we visited
+        visited = set()
+		# a list to record the output
+        output = []
+        
+        while True:
+            # visited
+            visited.add((i,j))
+			# add into the output list
+            output.append(matrix[i][j])
+            
+			# exiting condition
+            if len(visited) == (self.num_rows * self.num_cols):
+                break
+            
+			# Here is the major idea
+			# try to generate a new coordinate each time
+			# if success, then we quit the loop
+			# otherwise, we change the direction and get a new coordinate
+            while True:
+			    # get the direction by the variable direction type
+                direction = directions[direction_type % 4]
+				# get the new coordinates
+                new_i = i + direction[0]
+                new_j = j + direction[1]
+				# see if the new coordinates are valid and unvisited
+				# if yes, quit
+                if self.is_valid(new_i, new_j) and (new_i, new_j) not in visited:
+                    break
+				# if no, change the direction type
+                direction_type += 1
+            
+            i, j = new_i, new_j
+            
+        return output
+    
+    def is_valid(self, i, j):
+        if i >= 0 and i < self.num_rows and j >= 0 and j < self.num_cols:
+            return True
+        return False

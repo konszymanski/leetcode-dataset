@@ -1,0 +1,63 @@
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        """
+        let n1 = len(s1), n2 = len(s2) and n3 = len(s3)
+
+        if n1 + n2 != n3:
+            return False
+
+        let DP[i, j] = if s1[i:] and s2[j:] can interleave s3[i + j:]
+
+        1. DP[n1, n2] = True
+        2. DP[i, n2] = s1[i] == s3[i + n2] and DP[i + 1, n2]           0 <= i < n1
+        3. DP[n1, j] = s2[j] == s3[n1 + j] and DP[n1, j + 1]           0 <= j < n2
+        4. DP[i, j] = {
+              4.1       False                                          s3[i + j] not in {s1[i], s2[j]}
+              4.2       DP[i + 1, j] or DP[i, j + 1]                   s1[i] = s2[j]
+              4.3       DP[i + 1, j]                                   s1[i] = s3[i + j]
+              4.4       DP[i, j + 1]                                   otherwise (that is, s2[j] = s3[i + j])
+            }
+
+        :param s1:
+        :param s2:
+        :param s3:
+
+        :return: DP[0, 0]
+        """
+        if len(s1) < len(s2):
+            s1, s2 = s2, s1  # making sure space complexity is O(min(len(s1), len(s2)))
+
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+
+        if n1 + n2 != n3:
+            return False
+        elif n1 == 0 or n2 == 0:  # just some optimization, not required theoretically
+            return s1 + s2 == s3
+
+        dp = [False] * (n2 + 1)
+        dp[-1] = True  # by 1
+
+        for j in reversed(range(n2)):
+            dp[j] = dp[j + 1] and s3[n1 + j] == s2[j]  # by 3
+
+            if not dp[j]:  # for rest of j, cache[j] will be False
+                break
+
+        for i in reversed(range(n1)):
+            e1, dp_at_i = s1[i], [True] * (n2 + 1)
+
+            dp_at_i[-1] = e1 == s3[i + n2] and dp[-1]  # by 2
+
+            for j in reversed(range(n2)):
+                e2, e3 = s2[j], s3[i + j]
+
+                if e3 not in (e1, e2):
+                    dp_at_i[j] = False  # by 4.1
+                elif e1 != e2:
+                    dp_at_i[j] = dp[j] if e3 == e1 else dp_at_i[j + 1]  # by 4.3 and 4.4 respectively
+                else:
+                    dp_at_i[j] = dp[j] or dp_at_i[j + 1]  # by 4.2
+
+            dp = dp_at_i
+
+        return dp[0]

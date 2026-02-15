@@ -1,0 +1,34 @@
+class Trie:
+    def __init__(self):
+        self.d = {}
+        
+    def insert(self, word: str) -> None:
+        d_copy = self.d
+        for char in word + \'$\':
+            if char not in d_copy:
+                d_copy[char] = {}
+            d_copy = d_copy[char]
+     
+    def search(self, word: str) -> bool:
+        d_copy = self.d
+        for char in word:
+            if char not in d_copy:
+                return False
+            d_copy = d_copy[char]
+        return \'$\' in d_copy
+
+    def startsWith(self, prefix: str) -> bool:
+        d_copy = self.d
+        for char in prefix:
+            if char not in d_copy:
+                return False
+            d_copy = d_copy[char]
+        return True
+        
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)

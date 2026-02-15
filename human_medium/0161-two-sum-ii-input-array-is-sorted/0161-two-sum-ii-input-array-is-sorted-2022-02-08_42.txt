@@ -1,0 +1,12 @@
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        # Idea: 
+        # 1) have a dict that store number and index of seen values
+        # 2) if the target - current_value is in the dict, return the indices of target - current_value and current value (plus 1)
+        # Note: remember to do (1) after (2) to avoid using the same index twice. Ex: [2,3,4] with target 6 might return [2,2] since 3+3 = 6.
+        num_index = {}
+        for i, num in enumerate(numbers):
+            if target - num in num_index:
+                return [num_index[target - num]+1, i+1]
+            if num not in num_index:
+                num_index[num] = i

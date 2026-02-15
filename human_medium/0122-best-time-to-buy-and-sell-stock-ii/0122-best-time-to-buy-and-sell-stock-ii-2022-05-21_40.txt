@@ -1,0 +1,12 @@
+class Solution:
+    def maxProfit(self, pr: List[int]) -> int:
+        ans = 0
+        for i in range(len(pr)):
+            if i==0:
+                mi = pr[i]
+            else:
+                if pr[i]<pr[i-1]:
+                    ans += pr[i-1]-mi
+                    mi = pr[i]
+        ans += pr[i]-mi
+        return ans

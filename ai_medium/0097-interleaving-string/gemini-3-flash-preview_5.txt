@@ -1,0 +1,38 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2 = len(s1), len(s2)
+        # Length of s3 must be the sum of lengths of s1 and s2
+        if n1 + n2 != len(s3):
+            return False
+        
+        # Space optimization: ensure s2 is the shorter string
+        # This makes the space complexity O(min(len(s1), len(s2)))
+        if n1 < n2:
+            s1, s2 = s2, s1
+            n1, n2 = n2, n1
+        
+        # dp[j] will store whether s3[0...i+j-1] can be formed by 
+        # interleaving s1[0...i-1] and s2[0...j-1].
+        dp = [False] * (n2 + 1)
+        
+        # Base case: empty s1 and empty s2 form an empty s3
+        dp[0] = True
+        
+        # Initialize for the first row where only characters from s2 are used
+        for j in range(1, n2 + 1):
+            dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+        
+        # Fill the DP table row by row
+        for i in range(1, n1 + 1):
+            # Update dp[0] for the current row (only characters from s1 are used)
+            dp[0] = dp[0] and s1[i - 1] == s3[i - 1]
+            for j in range(1, n2 + 1):
+                # dp[j] is True if:
+                # 1. dp[j] from the previous row was True and s1[i-1] matches the current char in s3
+                # 2. dp[j-1] from the current row was True and s2[j-1] matches the current char in s3
+                dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+        
+        return dp[n2]
+
+```

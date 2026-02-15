@@ -1,0 +1,28 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        idx = None
+        n = len(nums)
+        for i in range(n-1,0,-1):
+            if nums[i] > nums[i-1]:
+                idx = i-1
+                break
+
+        if idx is None:
+            nums.sort()
+            return
+
+        minindex = -1
+        minnum = float(\'inf\')
+        for i in range(idx+1,n):
+            if nums[idx] < nums[i] < minnum:
+                minnum = nums[i]
+                minindex = i
+
+        nums[idx],nums[minindex] = nums[minindex],nums[idx]
+        x = nums[idx+1:].copy()
+        x.sort()
+        for i in range(len(x)):
+            nums[i+idx+1] = x[i]

@@ -1,0 +1,12 @@
+def wordBreak(strings, wordDict):
+    prefixChecks = [False for i in range(len(strings) + 1)]
+    prefixChecks[0] = True
+
+    for i in range(len(strings) + 1):
+        for j in range(i):
+            isPrefixDecmposed = prefixChecks[j]
+            rightSideString = strings[j:i]
+            if isPrefixDecmposed and rightSideString in wordDict:
+                prefixChecks[i] = True
+                break
+    return prefixChecks[-1]

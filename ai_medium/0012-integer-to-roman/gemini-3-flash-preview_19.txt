@@ -1,0 +1,39 @@
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Define the mapping of integer values to Roman numeral symbols
+        # including the subtractive forms as specified by the rules.
+        mapping = [
+            (1000, "M"),
+            (900, "CM"),
+            (500, "D"),
+            (400, "CD"),
+            (100, "C"),
+            (90, "XC"),
+            (50, "L"),
+            (40, "XL"),
+            (10, "X"),
+            (9, "IX"),
+            (5, "V"),
+            (4, "IV"),
+            (1, "I")
+        ]
+        
+        result = []
+        
+        # Iterate through the mapping from largest value to smallest
+        for value, symbol in mapping:
+            if num == 0:
+                break
+            # Determine how many times the current symbol fits into the remaining num
+            count = num // value
+            if count > 0:
+                # Append the symbol 'count' times to the result list
+                result.append(symbol * count)
+                # Subtract the total value represented by these symbols from num
+                num -= value * count
+                
+        # Join the list into the final Roman numeral string
+        return "".join(result)
+
+```

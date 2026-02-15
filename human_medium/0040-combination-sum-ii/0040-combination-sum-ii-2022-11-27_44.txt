@@ -1,0 +1,45 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        # sort the list N log N 
+        candidates.sort()
+        # find the limit of consideration log N 
+        candidate_limit = bisect.bisect_right(candidates, target)
+        # shorten the candidates to those that matter O(1) 
+        candidates = candidates[:candidate_limit]
+        # make them into a collection for frequency values O(n) where n is shortened version of N  
+        candidates_ = collections.Counter(candidates)
+        # make them into a value and frequency tuple stored in a list O(n)
+        candidates_2 = [(value, candidates_[value]) for value in candidates_]
+        # set return list and temporary list 
+        return_list = []
+        temporary_list = []
+        # recurse over the shortened list (for n targets, recursively call considering those targets within their frequency) 
+        # unsure of run time. Definitely T * n ^ of something. That of something likely has to do with target and frequency of values in average considerations 
+        # nasty run time to calculate a max of. Due to this, set at above limit of 2^n, where we can say it is at least O(2^n) and no more than O(2^N) so Theta(2^n)
+        self.find_combinations(return_list, temporary_list, candidates_2, target, 0)
+        # return when done 
+        return return_list
+
+    def find_combinations(self, return_list, temporary_list, candidates, target, index) : 
+        # if at end point, return 
+        if target == 0 : 
+            return_list.append(list(temporary_list))
+            return
+        # otherwise, check for those that matter 
+        for sub_array_index in range(index, len(candidates)) :
+            # get the candidate and frequency from the list of tuples  
+            candidate, frequency = candidates[sub_array_index]
+            # if target - candidate is greater than or equal to 0, and frequency is more than 0 
+            if target - candidate >= 0 and frequency > 0 : 
+                # add this candidate 
+                temporary_list.append(candidate)
+                # modify this candidate listing to show current usage 
+                candidates[sub_array_index] = (candidate, frequency-1)
+                # recurse from this index forward 
+                self.find_combinations(return_list, temporary_list, candidates, target-candidate, sub_array_index)
+                # reset this candidate listing to show no longer using 
+                candidates[sub_array_index] = (candidate, frequency)
+                # remove from the temporary listing 
+                temporary_list.pop()
+        # return when completed 
+        return

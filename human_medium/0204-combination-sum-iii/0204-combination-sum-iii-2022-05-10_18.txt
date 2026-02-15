@@ -1,0 +1,16 @@
+def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        l = []
+        def backtrack(n, v, k, pre):
+            cur = pre[:]
+            if k == 0 and n == 0:
+                l.append(cur)
+                return
+            if v == 10 or n < 0:
+                return
+            backtrack(n, v+1, k, cur)
+            cur.append(v)
+            backtrack(n-v, v+1, k-1, cur)
+                
+        backtrack(n-1, 2, k-1, [1])
+        backtrack(n, 2, k, [])
+        return l

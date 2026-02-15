@@ -1,0 +1,21 @@
+def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+	ans = []
+	if root== None: return ans
+	queue = [root]
+	flag = 0     """let\'s suppose the direction of traversal is left to right if flag = 0 and vice versa"""
+
+	while queue:
+		size = len(queue)
+		temp = []
+		
+		for _ in range(size):
+			node = queue.pop(0)
+			temp.append(node.val)
+			if node.left: queue.append(node.left)
+			if node.right: queue.append(node.right)
+		if flag==0:              """ flag = 0; left to right"""
+			ans.append(temp)
+		else:                    """ flag = 1; right to left"""
+			ans.append(temp[::-1])
+		flag^=1                  """ XOR operation; 1^1 = 0, 0^1=1  """
+	return ans

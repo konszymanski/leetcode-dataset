@@ -1,0 +1,8 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        res = (
+		    int(match.group(0))
+            if (match := re.match(r"\\s*[+-]?\\d+", s))
+            else 0
+        )
+        return min(max(res, -2**31), 2**31 - 1)

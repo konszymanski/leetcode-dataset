@@ -1,0 +1,13 @@
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        
+        def util(li,lp):
+            if not lp: return None 
+            rootN=TreeNode(lp.pop())
+            idx=li.index(rootN.val)
+            if idx>0: rootN.left=util(li[:idx],lp[:idx])
+            if idx<len(li)-1: rootN.right=util(li[idx+1:],lp[idx:]) 
+            
+            return rootN
+        
+        return util(inorder,postorder)

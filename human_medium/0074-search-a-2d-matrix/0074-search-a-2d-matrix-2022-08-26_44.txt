@@ -1,0 +1,9 @@
+def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        c = len(matrix[0])  # columns
+        
+        # find the row which has its last element greater than or equal to target
+        # then, check if target is present in that row
+        for row in matrix:
+            if target <= row[c-1]:
+                return target in row
+				# return binarySearch(row, target)

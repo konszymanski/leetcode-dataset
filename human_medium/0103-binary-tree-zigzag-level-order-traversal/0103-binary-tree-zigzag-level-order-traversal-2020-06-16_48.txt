@@ -1,0 +1,23 @@
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        ## RC ##
+        ## APPROACH : BFS ##
+        ## Similar to Leetcode : 102. Binary Tree Level Order Traversal ##
+        
+		## TIME COMPLEXITY : O(N) ##
+		## SPACE COMPLEXITY : O(N) ##
+        
+        if(not root):   return []
+        queue = collections.deque([root])
+        all_levels = []
+        while (queue): 
+            size = len(queue)
+            curr_level = []
+            for _ in range(size):
+                curr = queue.popleft()
+                curr_level.append(curr.val)
+                
+                if(curr.left):     queue.append(curr.left)
+                if(curr.right):    queue.append(curr.right)
+            all_levels.append(curr_level if(len(all_levels) % 2 == 0) else curr_level[::-1])
+        return all_levels

@@ -1,0 +1,18 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        sign = 1 if x >= 0 else -1
+        x = abs(x)
+        res = 0
+        while x:
+            res = res * 10 + (x % 10)
+            x //= 10
+        
+        res *= sign
+        
+        # Check if the result is within the signed 32-bit integer range
+        if res < -2147483648 or res > 2147483647:
+            return 0
+            
+        return res
+```

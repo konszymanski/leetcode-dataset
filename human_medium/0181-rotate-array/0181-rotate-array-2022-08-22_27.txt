@@ -1,0 +1,6 @@
+class Solution:
+    def rotate(self, nums, k):
+        while k > 0:  # O(k)
+            remove = nums.pop() # O(1)
+            nums.insert(0,remove) # O(n)
+            k-=1

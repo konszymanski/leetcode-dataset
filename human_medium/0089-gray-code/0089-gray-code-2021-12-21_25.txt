@@ -1,0 +1,11 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        x = 1
+        res = [0, 1]
+        while x < n:
+            base = 1 << x
+            res.extend([base + t for t in res[::-1]])
+            
+            x += 1
+            
+        return res

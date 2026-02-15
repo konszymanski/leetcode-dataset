@@ -1,0 +1,32 @@
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        # handle the situations don\'t need to rotate
+        n = self.get_length(head)
+        if n <= 1:
+            return head
+        
+        k = k % n
+        if k == 0:
+            return head
+        
+        # since we already have the length, we go straight to the node instead of using two pointer
+        slow = head
+        for _ in range(n-k-1):
+            slow = slow.next
+        
+        # record the latter part would be swapped (in example 1 will be [4,5])
+        # remember to use two variables (prev, curr) because the curr need to travel down the last node
+        prev = curr = slow.next
+        slow.next = None 
+        while curr.next:
+            curr = curr.next
+        
+        curr.next = head
+        return prev
+    
+    def get_length(self, head: ListNode) -> int:
+        i = 0
+        while head:
+            i += 1
+            head = head.next
+        return i

@@ -1,0 +1,57 @@
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        N = len(matrix)
+        if N == 0:
+            return
+        if N != len(matrix[0]):
+            return
+
+        # Think of the matrix as layers which you are peeling 1 by 1
+        # And it shrinks each time by 1
+        # so after every peel inc += 1 and dec -= 1
+        # Initialize your peel boundaries
+        inc = 0
+        dec = N - 1
+
+        # Run outer loop for N - 1 peels
+        for _ in range(N - 1):
+
+            # 4 directions to consider
+            # col_top (->) and row_right (v) are increasing in each peel
+            # whereas,
+            # col_bottom (<-) and row_left (^) are decreasing in each peel
+            col_top, col_bottom = inc, dec
+            row_right, row_left = inc, dec
+
+            # Run for each peel, from inc to dec
+            for _ in range(inc, dec):
+
+                # Yes in python swaps can be done as tuple swaps
+                # with no additional temp variable.
+                # But because of readability this is a better way
+                # to perform a 4 way swap
+                t1 = matrix[inc][col_top]
+                t2 = matrix[row_right][dec]
+                t3 = matrix[dec][col_bottom]
+                t4 = matrix[row_left][inc]
+
+                matrix[row_right][dec] = t1
+                matrix[dec][col_bottom] = t2
+                matrix[row_left][inc] = t3
+                matrix[inc][col_top] = t4
+
+                # Within the same peel, these variables are increasing
+                # or decreasing,
+                # col_top (->), row_right (v)
+                # col_bottom (<-), row_left (^)
+                row_right += 1
+                col_top += 1
+                col_bottom -= 1
+                row_left -= 1
+
+            # Shrink the array to go to inner peel
+            inc += 1
+            dec -= 1

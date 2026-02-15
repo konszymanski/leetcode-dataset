@@ -1,0 +1,9 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        while len(tokens) > 1:
+            t = tokens.pop(0)
+            if t not in \'+-*/\': tokens.append(t)
+            else:
+                num1, num2 = tokens.pop(), tokens.pop()
+                tokens.append(str(int(eval(\'\'.join([num2,t,num1])))))
+        return int(tokens[0])

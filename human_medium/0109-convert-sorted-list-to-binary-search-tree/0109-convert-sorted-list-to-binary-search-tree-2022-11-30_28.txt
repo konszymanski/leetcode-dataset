@@ -1,0 +1,25 @@
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        if not head:
+            return 
+        if not head.next:
+            # returns the leaf node
+            return TreeNode(val = head.val) 
+        # find the middle list node, next of middle node and prev of middle node
+        prev_node = None
+        fast_pointer = head
+        slow_pointer = head
+        while(True):
+            if not fast_pointer.next:
+                break
+            else:
+                if not fast_pointer.next.next:
+                    prev_node = slow_pointer
+                    slow_pointer = slow_pointer.next
+                    break
+            fast_pointer = fast_pointer.next.next
+            prev_node = slow_pointer
+            slow_pointer = slow_pointer.next
+        prev_node.next = None
+        root = TreeNode(val = slow_pointer.val, left = self.sortedListToBST(head), right = self.sortedListToBST(slow_pointer.next))
+        return root

@@ -1,0 +1,12 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        prev = 0
+        curr = 0
+        # every loop, calculate the maximum cumulative amount of money until current house
+        for i in nums:
+            # as the loop begins\uFF0Ccurr represents dp[k-1]\uFF0Cprev represents dp[k-2]
+            # dp[k] = max{ dp[k-1], dp[k-2] + i }
+            prev, curr = curr, max(curr, prev + i)
+            # as the loop ends\uFF0Ccurr represents dp[k]\uFF0Cprev represents dp[k-1]
+
+        return curr

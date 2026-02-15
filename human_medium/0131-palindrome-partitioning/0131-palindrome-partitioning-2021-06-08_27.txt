@@ -1,0 +1,12 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]: 
+        def dfs(res, curr, s):
+            if s == "":
+                res.append(curr)
+            for i in range(len(s)):
+                if s[:i + 1] == s[i::-1]:
+                    dfs(res, curr + [s[:i + 1]], s[i + 1:])
+
+        res = []
+        dfs(res, [], s)
+        return res

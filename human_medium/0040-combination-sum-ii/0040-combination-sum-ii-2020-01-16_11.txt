@@ -1,0 +1,17 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        
+        def fn(i, val): 
+            """Populate ans via stack."""
+            if val == 0: ans.append(stack.copy())
+            elif val > 0: 
+                for ii in range(i, len(candidates)): 
+                    if i == ii or candidates[ii-1] != candidates[ii]: 
+                        stack.append(candidates[ii])
+                        fn(ii+1, val - candidates[ii])
+                        stack.pop()
+            
+        ans, stack = [], []
+        fn(0, target)
+        return ans

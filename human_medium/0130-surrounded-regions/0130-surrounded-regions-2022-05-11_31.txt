@@ -1,0 +1,32 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        visited = set()
+        
+        def dfs(i, j, visited):
+            if (i, j) in visited:
+                return
+            if board[i][j] == \'X\':
+                return
+            visited.add((i, j))
+            
+            for child in ((i-1, j), (i+1, j), (i, j-1), (i, j+1)):
+                if 0 <= child[0] < len(board) and 0 <= child[1] < len(board[0]):
+                    dfs(child[0], child[1], visited)
+        
+        
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if i == 0 or i == len(board) - 1 or j == 0 or j == len(board[0]) - 1:
+                    if (i, j) not in visited:
+                        dfs(i, j, visited)
+        
+        
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if (i, j) not in visited:
+                    board[i][j] = "X"
+        
+        return board

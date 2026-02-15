@@ -1,0 +1,9 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def genPermute(S, permutation=[]):                             # Recursion Function
+            if S:
+                for s in S:
+                    yield from genPermute(S-{s}, permutation + [s])    # Recursion. Note: \'yield from\' will defer to/generate the innermost-nested yield statement.
+            else:
+                yield permutation                                      # Recursion Base-Case. Note: This is innermost-nested yield statement that returns a permutation.
+        return [*genPermute(set(nums))]                                # \'*\' unpacks our generated permutations

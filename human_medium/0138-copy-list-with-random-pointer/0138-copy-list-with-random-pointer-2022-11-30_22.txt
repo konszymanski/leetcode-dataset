@@ -1,0 +1,36 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: \'Node\' = None, random: \'Node\' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: \'Optional[Node]\') -> \'Optional[Node]\':
+        # Make a copy of the head pointer
+        cur = head
+        
+        # Create hashmap to map old nodes to new nodes
+        old_to_new = {}
+        
+        # Traverse the list and create copies of each node while keeping them in the hashmap
+        while cur:
+            copy = Node(cur.val)
+            old_to_new[cur] = copy
+            cur = cur.next
+            
+        
+        # Again, make a copy of the head pointer
+        cur = head
+        
+        # Traverse the list the second and map the new pointers to the old ones
+        while cur:
+            copy = old_to_new[cur]
+            copy.next = old_to_new.get(cur.next, None)
+            copy.random = old_to_new.get(cur.random, None)
+            cur = cur.next
+        
+        # Finally return the head of the copy list which can be accessed using the hashmap
+        return old_to_new.get(head, None)

@@ -1,0 +1,31 @@
+```python
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2 = len(s1), len(s2)
+        if n1 + n2 != len(s3):
+            return False
+        
+        # Optimization: use an O(n2 + 1) space DP array.
+        # dp[j] will store the result for s1[0:i] and s2[0:j].
+        dp = [False] * (n2 + 1)
+        
+        for i in range(n1 + 1):
+            for j in range(n2 + 1):
+                if i == 0 and j == 0:
+                    # Base case: empty strings s1, s2 interleave to form empty s3
+                    dp[j] = True
+                elif i == 0:
+                    # Case where s1 is empty: s3 must match s2 up to this point
+                    dp[j] = dp[j - 1] and s2[j - 1] == s3[i + j - 1]
+                elif j == 0:
+                    # Case where s2 is empty: s3 must match s1 up to this point
+                    # dp[j] here is still from the previous iteration of i (dp[i-1][0])
+                    dp[j] = dp[j] and s1[i - 1] == s3[i + j - 1]
+                else:
+                    # General case: dp[j] from current iteration represents dp[i][j-1]
+                    # and dp[j] from the previous i iteration represents dp[i-1][j]
+                    dp[j] = (dp[j] and s1[i - 1] == s3[i + j - 1]) or (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+                    
+        return dp[n2]
+
+```

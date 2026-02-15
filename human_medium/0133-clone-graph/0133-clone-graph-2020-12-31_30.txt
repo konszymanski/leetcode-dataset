@@ -1,0 +1,44 @@
+"""
+# reference : https://www.youtube.com/watch?v=vma9tCQUXk8&ab_channel=BackToBackSWE
+
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        
+        # Base case
+        if node is None:
+            return None
+        
+        # Standard BFS Procedure
+        mapping = dict()
+        queue = deque()
+        
+        # Populate queue and map with
+        # starting node
+        queue.appendleft(node)
+        mapping[node] = Node(node.val)
+        
+        while queue:
+            
+            curr = queue.pop()
+            
+            # go through each neighbors
+            for neighbor in curr.neighbors:
+                # If not in map then populate it
+                # And since its not visited add to queue
+                # to visit later
+                if neighbor not in mapping:
+                    mapping[neighbor] = Node(neighbor.val)
+                    queue.appendleft(neighbor)
+            
+                # Add the neighbor as a neighbor to parent
+                mapping[curr].neighbors.append(mapping[neighbor])
+                
+        # return the Start node from map
+        return mapping[node]

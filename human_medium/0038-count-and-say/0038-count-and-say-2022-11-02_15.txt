@@ -1,0 +1,20 @@
+class Solution:
+    def numTosay(self,num):
+        s = ""
+        index =0
+        while(index< len(num)):
+            number = num[index]
+            freq =0
+            while(index< len(num) and num[index] == number):
+                index+=1
+                freq +=1
+            s+= str(freq) + number
+        return s
+
+
+
+    def countAndSay(self, n: int) -> str:
+        s = "1"
+        for i in range(n-1):
+            s =self.numTosay(s)
+        return s

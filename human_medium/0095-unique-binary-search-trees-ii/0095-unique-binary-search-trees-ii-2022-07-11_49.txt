@@ -1,0 +1,19 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+        
+class Solution:
+    def generate_recursive(self, nums: list):
+        if not nums: return [None]
+        res = []
+        for i in range(len(nums)):
+            left_trees = self.generate_recursive(nums[:i]) # generate tree with nums less than i (left)
+            right_trees = self.generate_recursive(nums[i+1:]) # generate tree with nums greater than i (right)
+            res.extend([TreeNode(nums[i], l, r) for l in left_trees for r in right_trees]) # combine received trees
+        return res
+    
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        return self.generate_recursive([i+1 for i in range(n)]) # call recursive with nums [1..n]

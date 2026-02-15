@@ -1,0 +1,19 @@
+def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        pq, r, c = list(intervals), [], []
+        heapq.heapify(pq)
+        
+        while pq:
+            i = heapq.heappop(pq)
+            if not c:
+                c = i
+            else:
+                i_s, i_e, c_s, c_e = *i, *c
+                if i_s <= c_e:
+                    c = [c_s, max(i_e, c_e)]
+                else:
+                    r.append(c)
+                    c = i
+        if c:
+            r.append(c)
+        
+        return r

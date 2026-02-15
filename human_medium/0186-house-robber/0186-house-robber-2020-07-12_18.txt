@@ -1,0 +1,10 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        
+        @lru_cache(None)
+        def fn(i):
+            """Return the maximum amount of money robbing up to ith house."""
+            if i < 0: return 0
+            return max(fn(i-1), fn(i-2) + nums[i])
+        
+        return fn(len(nums)-1)

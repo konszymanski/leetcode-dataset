@@ -1,0 +1,20 @@
+def spiralOrder(self, matrix):
+        if not matrix:
+            return []
+        i, iend , j, jend = 0, len(matrix)-1, 0, len(matrix[0])-1
+        ans, turn = [], 0
+        while i <= iend and j <= jend:
+            if turn%4 == 0: # left to right
+                ans += matrix[i][j:jend+1]
+                i += 1
+            elif turn%4 == 1: # top to bottom
+                ans += [matrix[k][jend] for k in xrange(i, iend+1)]
+                jend -=1
+            elif turn%4 == 2: # right to left
+                ans += matrix[iend][j:jend+1][::-1]
+                iend -=1
+            elif turn%4 == 3: # bottom to top
+                ans += [matrix[k][j] for k in xrange(iend, i-1,-1)]
+                j += 1
+            turn += 1
+        return ans

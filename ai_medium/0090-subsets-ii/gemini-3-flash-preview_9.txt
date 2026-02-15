@@ -1,0 +1,23 @@
+```python
+from typing import List
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        result = []
+        
+        def backtrack(start: int, current_subset: List[int]):
+            result.append(list(current_subset))
+            for i in range(start, len(nums)):
+                # If the current element is the same as the previous one,
+                # skip it to avoid generating duplicate subsets.
+                if i > start and nums[i] == nums[i - 1]:
+                    continue
+                
+                current_subset.append(nums[i])
+                backtrack(i + 1, current_subset)
+                current_subset.pop()
+        
+        backtrack(0, [])
+        return result
+```

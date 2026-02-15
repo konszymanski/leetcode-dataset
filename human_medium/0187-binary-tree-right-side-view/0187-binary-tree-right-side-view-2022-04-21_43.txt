@@ -1,0 +1,23 @@
+def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        
+        ans = []
+        
+        if root:
+        
+            q = deque([root])
+
+            while q:
+
+                for _ in range(len(q)):
+
+                    cur = q.popleft()
+
+                    if cur.left:
+                        q.append(cur.left)
+                    if cur.right:
+                        q.append(cur.right)
+						
+				# after each for loop cur have the last element in a level
+                ans.append(cur.val)
+
+        return ans

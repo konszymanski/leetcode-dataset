@@ -1,0 +1,39 @@
+class Solution(object):
+	# consumes a very small memory portion
+    dict = {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "0": 0,
+        }
+    
+    
+    # gets the key val pair for num1 and num2
+    def getKey(self,num):
+        n = 0
+        for i in range(len(num)):
+            a = self.dict[num[i]] # find value as per dict key
+            #print(a)
+            n = (10) * n + a  # builds the integer back 
+        #print(n)
+        return n
+         
+            
+    
+    def multiply(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+       
+        a = self.getKey(num1)
+        b = self.getKey(num2)
+        res = a*b
+        return str(res) # converts back to string

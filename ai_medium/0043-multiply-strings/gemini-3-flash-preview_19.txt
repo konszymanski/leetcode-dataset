@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        # If either number is 0, the product is 0
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        m, n = len(num1), len(num2)
+        # The product of two numbers of length m and n can have at most m + n digits
+        res = [0] * (m + n)
+        
+        # Iterate from right to left on num1 and num2
+        for i in range(m - 1, -1, -1):
+            d1 = ord(num1[i]) - 48  # Convert character of num1 to integer digit
+            for j in range(n - 1, -1, -1):
+                d2 = ord(num2[j]) - 48  # Convert character of num2 to integer digit
+                
+                # Positions in the result array corresponding to the current digits
+                p1, p2 = i + j, i + j + 1
+                
+                # Multiply the digits and add to the value currently at p2
+                total = d1 * d2 + res[p2]
+                
+                # Update the result array with the new values and carry
+                res[p2] = total % 10
+                res[p1] += total // 10
+        
+        # Identify where the non-zero digits start to ignore potential leading zeros
+        idx = 0
+        while idx < len(res) and res[idx] == 0:
+            idx += 1
+            
+        # Convert the integer digits back to characters and join them into a string
+        # chr(d + 48) converts a single digit d to its corresponding character
+        return "".join(chr(d + 48) for d in res[idx:])
+```

@@ -1,0 +1,38 @@
+class Solution:
+    def divide_help(self, dividend, divisor):
+        q = 0
+        while dividend - divisor>=0:
+            dividend -= divisor
+            q+=1
+        
+        return q, dividend
+    
+    
+    def divide(self, dividend: int, divisor: int) -> int:
+        #code to decide whether the quotient should be positive or negative
+        temp_divisor = abs(divisor)
+        temp_dividend = abs(dividend)
+        pos = (divisor > 0)and(dividend>0) or (divisor<0)and(dividend<0)
+        
+        # convert divisor and dividend to strings to solve the answer using the long division
+        # method
+        temp_dividend = str(temp_dividend)
+        quo = \'\'
+        div = \'\'
+        for i in range(0,len(temp_dividend)):
+            q,r = self.divide_help(int(div+temp_dividend[i]), temp_divisor)
+            div = str(r)
+            quo+=str(q)
+        
+        quo = int(quo)
+        
+        # put appropriate sign on the quotient
+        quo = quo if pos else -quo
+        
+        # check if quotient can be represented as a 32 bit binary
+        if quo < -2**31:
+            return -2**31
+        elif quo > 2**31-1:
+            return 2**31-1
+        else:
+            return quo

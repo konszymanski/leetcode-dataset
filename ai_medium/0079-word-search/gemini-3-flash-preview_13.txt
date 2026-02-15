@@ -1,0 +1,55 @@
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows = len(board)
+        cols = len(board[0])
+        
+        # Pruning: Check if word is longer than the total number of cells
+        if len(word) > rows * cols:
+            return False
+        
+        # Pruning: Check if all characters in the word are present in the board with sufficient frequency
+        board_counts = Counter(char for row in board for char in row)
+        word_counts = Counter(word)
+        for char, count in word_counts.items():
+            if board_counts[char] < count:
+                return False
+        
+        # Search Pruning: Start search from the end if the first character is more frequent than the last character
+        if board_counts[word[0]] > board_counts[word[-1]]:
+            word = word[::-1]
+            
+        def backtrack(r, c, index):
+            # Base Case: Entire word has been matched
+            if index == len(word):
+                return True
+            
+            # Boundary and character match check
+            if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[index]:
+                return False
+            
+            # Mark the current cell as visited
+            temp = board[r][c]
+            board[r][c] = '#'
+            
+            # Explore neighbors in 4 directions
+            found = (backtrack(r + 1, c, index + 1) or 
+                     backtrack(r - 1, c, index + 1) or 
+                     backtrack(r, c + 1, index + 1) or 
+                     backtrack(r, c - 1, index + 1))
+            
+            # Backtrack: restore the cell's original value
+            board[r][c] = temp
+            return found
+
+        # Try to start DFS from every cell that matches the first character of the word
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0] and backtrack(r, c, 0):
+                    return True
+        
+        return False
+```

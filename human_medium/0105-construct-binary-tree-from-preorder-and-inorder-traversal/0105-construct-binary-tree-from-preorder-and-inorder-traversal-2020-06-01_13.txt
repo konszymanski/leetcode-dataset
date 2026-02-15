@@ -1,0 +1,26 @@
+def recursive(self, preorder, inorder):
+        def rec(inorder, preorder):
+            if len(inorder) and len(preorder):
+                root_val = preorder.pop()
+                node = TreeNode(root_val)
+                root_index = -1
+                for i,v in enumerate(inorder):
+                    if v == root_val:
+                        root_index = i
+                        break
+                node.left = rec(inorder[:root_index], preorder)
+                node.right = rec(inorder[root_index + 1:], preorder)
+                return node
+        return rec(inorder, preorder[::-1])
+    
+    def recursive_optimized(self, preorder, inorder):
+        pos = {v:i for i,v in enumerate(inorder)}
+        preorder = preorder[::-1]
+        def rec(left, right):
+            if left <= right and len(preorder):
+                root_val = preorder.pop()
+                node = TreeNode(root_val)
+                node.left = rec(left, pos[root_val] - 1)
+                node.right = rec(pos[root_val] + 1, right)
+                return node
+        return rec(0, len(preorder) - 1)

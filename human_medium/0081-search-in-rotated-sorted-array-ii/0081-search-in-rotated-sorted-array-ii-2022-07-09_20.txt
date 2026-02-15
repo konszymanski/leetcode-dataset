@@ -1,0 +1,33 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        if len(nums) == 1:
+            return nums[0] == target
+        return self.recur(nums, target, 0, len(nums)-1)
+        
+    def recur(self, nums, target, start, end):
+        if start >= end:
+            return False
+        if nums[start] == target or nums[end] == target:
+            return True
+        
+        mid = (start + end) // 2
+        if start == mid:
+            return False
+        elif nums[start] < nums[mid]:
+            # left is in logical order
+            if nums[start] < target <= nums[mid]:
+                return self.recur(nums, target, start, mid)
+            else:
+                return self.recur(nums, target, mid, end)
+        
+        elif nums[mid] < nums[end]:
+            # right is in logical order
+            if nums[mid] <= target < nums[end]:
+                return self.recur(nums, target, mid, end)
+            else:
+                return self.recur(nums, target, start, mid)
+
+        else:
+            # need to check both sides
+            return self.recur(nums, target, start, mid) \\
+            or self.recur(nums, target, mid, end)

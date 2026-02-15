@@ -1,0 +1,25 @@
+class Solution:
+    def is_palindrome(self, s):
+        return s == s[::-1]
+    
+    def partition(self, s: str) -> List[List[str]]:
+        result = []
+        subset = []
+        
+        def dfs(i, current_string):
+            if i == len(s):
+                if self.is_palindrome(current_string):
+                    if len(current_string) > 0:
+                        result.append(subset + [current_string])
+                return
+            
+            current_string += s[i]
+            if self.is_palindrome(current_string):
+                subset.append(current_string)
+                dfs(i+1, "")
+                subset.pop()
+                
+            dfs(i+1, current_string)
+        
+        dfs(0, "")
+        return result

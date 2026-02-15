@@ -1,0 +1,15 @@
+def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res  = []
+        def dfs(nums, target, index, temp):
+            if target < 0:    
+                return  # backtracking 
+            elif target == 0:
+                if temp not in res:  # for getting unique sub-lists
+                    res.append(temp)
+                return 
+            for i in range(index, len(nums)): 
+                dfs(nums, target-nums[i], i+1, temp+[nums[i]]) 
+				
+        candidates.sort()
+        dfs(candidates, target, 0, [])
+        return res

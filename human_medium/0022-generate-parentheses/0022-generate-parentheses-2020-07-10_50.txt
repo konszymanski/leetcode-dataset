@@ -1,0 +1,17 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        out = []
+        def bt(s: str, op: int, cl: int): # op = opened parentheses, cl = closed parentheses
+            if len(s) == n*2: 
+                out.append(s)
+                return
+            
+            if op < n: 
+                bt(s + "(", op + 1, cl)
+                
+            if op > cl:
+                bt(s + ")", op, cl + 1)
+                
+        bt("", 0, 0)
+            
+        return out

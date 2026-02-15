@@ -1,0 +1,15 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        dp1=[0]*(len(nums)-1)
+        dp2=[0]*(len(nums)-1)
+        for i in range(len(dp1)-1,-1,-1):
+            
+            rob_1=nums[i]+dp1[i+2] if i+2<len(dp1) else nums[i]
+            rob_not_1=dp1[i+1] if i+1<len(dp1) else 0
+            dp1[i]=max(rob_1,rob_not_1)
+            
+            rob_2=nums[(i+1)%len(nums)]+dp2[i+2] if i+2<len(dp2) else nums[(i+1)%len(nums)]
+            rob_not_2=dp2[i+1] if i+1<len(dp2) else 0
+            dp2[i]=max(rob_2,rob_not_2)
+            
+        return max(dp1[0],dp2[0]) if len(nums)>1 else nums[0]

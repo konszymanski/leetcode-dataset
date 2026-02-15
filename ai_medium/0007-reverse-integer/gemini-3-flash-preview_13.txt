@@ -1,0 +1,36 @@
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Define the limits for a signed 32-bit integer
+        MIN_INT = -2**31
+        MAX_INT = 2**31 - 1
+        
+        # Determine the sign and work with the absolute value
+        sign = 1 if x >= 0 else -1
+        x = abs(x)
+        
+        res = 0
+        while x != 0:
+            # Extract the last digit
+            digit = x % 10
+            x //= 10
+            
+            # Check for overflow before updating the result
+            # Based on the constraint "Assume the environment does not allow you to store 64-bit integers"
+            # we perform the check as if we're working in a 32-bit environment.
+            if res > (MAX_INT - digit) // 10:
+                return 0
+            
+            res = res * 10 + digit
+            
+        # Re-apply the sign and return the final result
+        res *= sign
+        
+        # Although Python handles arbitrary precision, we check the final range 
+        # to ensure it strictly follows the problem requirement.
+        if res < MIN_INT or res > MAX_INT:
+            return 0
+            
+        return res
+
+```

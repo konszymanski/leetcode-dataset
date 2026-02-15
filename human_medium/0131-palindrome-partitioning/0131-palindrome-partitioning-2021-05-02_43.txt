@@ -1,0 +1,27 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        
+        l = len(s)
+        dp = [False] * (l + 1)
+        dp[0] = True
+        def isPalindrome(s):
+            l = len(s)
+            i, j = 0, l - 1
+            while i <= j:
+                if s[i] != s[j]: return False
+                i += 1
+                j -= 1
+            return True
+        graph = collections.defaultdict(list)
+        for i in range(1, l+1):
+            for j in range(0, i):
+                if dp[j] and isPalindrome(s[j:i]):
+                    dp[i] = True
+                    graph[i].append(j)
+        def dfs(pos):
+            ans = []
+            for p in graph[pos]:
+                tmp = s[p:pos]
+                ans += [x + \'-\' + tmp for x in dfs(p)] if p > 0 else [tmp]
+            return ans
+        return [x.split(\'-\') for x in dfs(l)]

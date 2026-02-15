@@ -1,0 +1,44 @@
+"""Algorithm 
+TC : O(n * 2^n) + nlogn
+Sc : O(n * 2^n) memory stack
+
+Intutions 
+
+* power set == subset of a set
+but here as input we don\'t have a set.
+code wil be simialr to what we should do for subset problem. but here it will generate same subsets due to duplicate present in "nums".
+
+*** Find duplicate subsets***
+
+we need to sort nums..
+So, that the duplicate subsets would be similar and can be preveneted in prevention setep mentioned above
+
+LVI = lowest valid input"""
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        
+        #Global variables
+        res = []
+        subset= []
+        
+        def dfs(i):
+            
+            #Base Case
+            if i >= len(nums): #LVI
+                if subset.copy() not in res:#Preventon step
+                    res.append(subset.copy())
+                return
+            
+            subset.append(nums[i])
+            #RightSubtree
+            dfs(i+1)
+            subset.pop()
+            #Left subtree
+            dfs(i+1)
+        
+        #To get the extra combinations of similar subset  **[1,4,4,4]** present in "res" same as **[1,4,4,4]** not as **[4,1,4,4]**
+        nums.sort()
+        
+        dfs(0)
+        return res

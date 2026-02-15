@@ -1,0 +1,33 @@
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        inorder_map = {val: i for i, val in enumerate(inorder)}
+        pre_iter = iter(preorder)
+        
+        def build(left, right):
+            if left > right:
+                return None
+            
+            # The next element in preorder traversal is always the root of the current subtree
+            root_val = next(pre_iter)
+            node = TreeNode(root_val)
+            
+            # Find the root in inorder to split the tree into left and right subtrees
+            idx = inorder_map[root_val]
+            
+            # Build the left subtree first because preorder follows Root -> Left -> Right
+            node.left = build(left, idx - 1)
+            # Then build the right subtree
+            node.right = build(idx + 1, right)
+            
+            return node
+            
+        return build(0, len(inorder) - 1)
+
+```

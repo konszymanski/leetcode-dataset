@@ -1,0 +1,22 @@
+class Solution:
+    def connect(self, root: \'Node\') -> \'Node\':
+        if not root:
+            return None
+        
+		# bfs algorithm below
+        queue = [root]
+        while len(queue):
+            level_nodes = [] # for collecting each node from current level
+            new_nodes = [] # nodes from next level
+            for node in queue:
+                if node:
+                    level_nodes.append(node)
+                    new_nodes.append(node.left)
+                    new_nodes.append(node.right)
+
+            for i in range(len(level_nodes) - 1):
+                level_nodes[i].next = level_nodes[i + 1] # making a pointer to the next node
+        
+            queue = new_nodes
+        
+        return root

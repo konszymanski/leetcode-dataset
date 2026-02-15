@@ -1,0 +1,22 @@
+class Solution:
+
+    def reverse_in_place(self, arr, start):
+        end = len(arr) - 1
+
+        while start < end:
+            arr[start], arr[end] = arr[end], arr[start]
+            start += 1
+            end -= 1
+
+    def nextPermutation(self, nums: List[int]) -> None:
+
+        for i in range(len(nums) - 2, -1, -1):
+            if nums[i+1] > nums[i]:
+                for j in range(len(nums) - 1, 0, -1):
+                    if nums[j] > nums[i]:
+                        nums[i], nums[j] = nums[j], nums[i]
+                        self.reverse_in_place(nums, i + 1)
+                        return
+                return
+
+        self.reverse_in_place(nums, 0)

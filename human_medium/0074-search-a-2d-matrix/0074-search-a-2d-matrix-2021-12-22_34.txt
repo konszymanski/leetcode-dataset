@@ -1,0 +1,27 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        
+        if not matrix or not matrix[0]:
+            # Quick response on empty input matrix
+            return False
+        
+        h, w =  len(matrix), len(matrix[0])
+        left, right = 0, h * w - 1
+        
+        while left <= right:
+            
+            mid = left + (right - left) // 2
+            
+            row, col = divmod(mid, w)
+            mid_value = matrix[row][col]
+            
+            if mid_value == target:
+                return True
+            
+            elif mid_value > target:
+                right -= 1
+            
+            else:
+                left += 1
+        
+        return False

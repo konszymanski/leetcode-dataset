@@ -1,0 +1,37 @@
+class Solution:
+    def first_occurance(self, nums, target):
+        low = 0
+        high = len(nums)-1
+        while low<=high:
+            mid = low+(high-low)//2
+            if nums[mid]==target:
+                if mid-1>=0 and nums[mid-1]==target:
+                    high = mid-1
+                else:
+                    return mid
+            elif nums[mid]>target:
+                high=mid-1
+            else:
+                low = mid+1
+        return -1
+    
+    def last_occurance(self, nums, target):
+        low = 0
+        high = len(nums)-1
+        while low<=high:
+            mid = low+(high-low)//2
+            if nums[mid]==target:
+                if mid+1<len(nums) and nums[mid+1]==target:
+                    low = mid+1
+                else:
+                    return mid
+            elif nums[mid]>target:
+                high=mid-1
+            else:
+                low = mid+1
+        return -1
+    
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums:
+            return [-1,-1]
+        return [self.first_occurance(nums,target),self.last_occurance(nums,target)]

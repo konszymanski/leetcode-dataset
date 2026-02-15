@@ -1,0 +1,25 @@
+class Solution:
+    def partition(self, s: str):
+        path = []
+        temp = []
+
+        def isPalindrome(st, en):
+            while (st <= en):
+                if (s[st] != s[en]):
+                    return False
+                st += 1
+                en -= 1
+            return True
+
+        def findPath(index, temp):
+            if index == len(s):
+                path.append(temp.copy())
+                return
+            for i in range(index, len(s)):
+                if isPalindrome(index, i):
+                    temp.append(s[index:i + 1])
+                    findPath(i + 1, temp)
+                    temp.pop()
+
+        findPath(0, temp)
+        return path

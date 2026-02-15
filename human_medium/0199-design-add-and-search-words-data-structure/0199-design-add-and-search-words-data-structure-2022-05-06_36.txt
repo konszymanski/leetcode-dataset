@@ -1,0 +1,36 @@
+class WordDictionary:
+
+    def __init__(self):
+        self.root = {}
+
+    def addWord(self, word: str) -> None:
+        node = self.root
+        for w in word:
+            if w in node:
+                node = node[w]
+            else:
+                node[w] = {}
+                node = node[w]
+        node[\'isword\'] = True 
+        
+    def search(self, word: str) -> bool:
+        q = [(0, self.root)]
+        while q:
+            i, node = q.pop()
+            if i >= len(word):
+                if \'isword\' in node:
+                    return True
+                else:
+                    continue
+                    
+            if word[i] == \'.\':
+                for w in node:
+                    if w == \'isword\':
+                        continue
+                    q.append((i+1, node[w]))
+            elif word[i] in node:
+                q.append((i+1, node[word[i]]))
+            else:
+                continue
+        
+        return False

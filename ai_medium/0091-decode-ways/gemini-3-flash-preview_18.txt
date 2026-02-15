@@ -1,0 +1,29 @@
+```python
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        # dp[i] represents the number of ways to decode the prefix of s of length i
+        dp = [0] * (n + 1)
+        
+        # Base cases
+        dp[0] = 1  # An empty string has 1 way to be decoded (doing nothing)
+        dp[1] = 1  # We already checked that s[0] is not '0'
+        
+        for i in range(2, n + 1):
+            # Check the single-digit possibility (s[i-1])
+            # If the digit is '1'-'9', it can be decoded on its own.
+            if s[i-1] != '0':
+                dp[i] += dp[i-1]
+            
+            # Check the two-digit possibility (s[i-2:i])
+            # The two-digit number must be between 10 and 26 inclusive.
+            two_digit = int(s[i-2:i])
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i-2]
+                
+        return dp[n]
+
+```

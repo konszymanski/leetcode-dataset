@@ -1,0 +1,12 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 1:
+            return [nums]
+        N = len(nums)
+        res = []
+        x = nums[0]
+        _res = self.permute(nums[1:])
+        for i in range(N):
+            for l in _res:
+                res.append(l[:i] + [x] + l[i:])
+        return res

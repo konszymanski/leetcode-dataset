@@ -1,0 +1,17 @@
+def partition(self, s: str) -> List[List[str]]: 
+        
+        def check(s, path, final):
+            if not s:
+                final.append(path)
+                
+            for i in range(len(s)):
+                if pal(s[:i+1]):
+                    check(s[i+1:], path+[s[:i+1]], final)
+        
+        def pal(s):
+            return s==s[::-1]
+        
+        final = []
+        check(s, [], final)
+        
+        return final

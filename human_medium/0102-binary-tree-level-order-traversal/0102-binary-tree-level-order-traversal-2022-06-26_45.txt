@@ -1,0 +1,27 @@
+def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        #level used to contain the nodes in one level at a time
+		level=[root]
+		#final ans to be saved in ans
+        ans=[]              
+        while(root and level):
+			#will contain the nodes of next level 
+            nextlevel=[]
+			#sub list to be appended in ans. ans1 will contain the nodes of the current level
+            ans1=[]
+            for node in level:
+			
+				#append all the nodes in level in order in ans1
+                ans1.append(node.val)
+				
+				#parallely take the children of the nodes in current level. take both child of there.
+                if(node.left):
+                    nextlevel.append(node.left)
+                if node.right:
+                    nextlevel.append(node.right)
+					
+			#changing the level to nextlevel
+            level=nextlevel
+			
+			#append the node of the current level in final ans
+            ans.append(ans1)
+        return ans

@@ -1,0 +1,21 @@
+class Solution:
+    #T=O(n), S=O(n)
+    #dp Tabulation, bottom-up, iterative
+    def rob(self, nums: List[int]) -> int:
+        def houseRobber(num):
+            n = len(num)
+            #edge cases
+            #if there is only single house in the input, return it
+            #the calling function passes an empty parameter for single item input
+            if n == 0: return nums[0]
+            #init dp array
+            dp = [0]*(n+1)
+            #single house so far
+            dp[1] = num[0]
+            for i in range(1, n):
+                #recursive relation
+                #max(dp[previous], current item + dp[previous - 1])
+                dp[i+1] = max(dp[i], num[i]+dp[i-1])
+            return dp[n]
+        #take max excluding first or last house as it\'s circular
+        return max(houseRobber(nums[1:]), houseRobber(nums[:-1]))

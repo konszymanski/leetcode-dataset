@@ -1,0 +1,23 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+       
+        def generateParens(nopen,nclose,current,ans):
+            if nopen == nclose and nopen == 0:
+                ans.append("".join(current))
+            else:
+                if nopen>0:
+                    current.append("(")
+                    generateParens(nopen-1,nclose,current,ans)
+                    current.pop()
+                if nopen<nclose and nclose>0:
+                    current.append(")")
+                    generateParens(nopen,nclose-1,current,ans)
+                    current.pop()
+            return ans
+                    
+        nopen=nclose=n
+        current,ans = [],[]
+        
+        generateParens(nopen,nclose,current,ans)
+        
+        return ans

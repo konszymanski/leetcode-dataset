@@ -1,0 +1,34 @@
+class Solution:
+    def findOrder(self, n: int, prerequisites: List[List[int]]) -> List[int]:
+        adj_list = [[] for _ in range(n)]
+        for pos, nb in prerequisites:
+            adj_list[pos].append(nb)
+
+        # Step 1: Compute the in degree for each node
+        in_degree = [0] * n
+        for i in range(n):
+            for j in adj_list[i]:
+                in_degree[j] += 1
+        
+        # Step 2: Initialize queue with all nodes having 0 in-degree
+        queue, top_order = [], []
+        for i in range(n):
+            if in_degree[i] == 0:
+                queue.append(i)
+                
+        # Step 3.(a) Reduce in-degree for all the neighbors
+        count = 0 # Tracks number of nodes visited 
+		while queue:
+            node = queue.pop()
+            top_order.append(node)
+            
+			# Step 3.(b)
+            count += 1
+            for nb in adj_list[node]:
+                in_degree[nb] -= 1
+                # Step 3.(c) Add neighbor to queue if in-degree becomes 0
+                if in_degree[nb] == 0:
+                    queue.append(nb)
+                    
+        # Step 5:Check if n(nodes visited) == n(nodes) and return top sort answer accordingly
+        return top_order[::-1] if count == n else []

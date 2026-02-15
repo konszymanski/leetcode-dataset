@@ -1,0 +1,25 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        # since te intervals are already sorted.
+        # We only need to check where newInterval is overlapping
+        # loop through the intervals:
+        # if newInterval[1] < interval[0] then res append newInterval and append the rest of the intervals
+        # elif newInterval[0] > intervals[i][1], then append interval, since interval need to be compare with the next interval.
+        # if overlapping then update the newInterval so that it can be compared for the nex interval
+        # Time: O(n), Space: O(n)
+        
+        
+        n = len(intervals)
+        res = []
+        
+        for i in range(n):
+            if newInterval[1] < intervals[i][0]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            elif newInterval[0] > intervals[i][1]:
+                res.append(intervals[i])
+            else:
+                newInterval = [min(intervals[i][0],newInterval[0]),max(intervals[i][1],newInterval[1]) ]
+        
+        res.append(newInterval)
+        return res

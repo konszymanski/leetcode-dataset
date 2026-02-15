@@ -1,0 +1,57 @@
+from collections import deque
+
+
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+
+class Solution:
+    def cloneGraph(self, node: \'Node\') -> \'Node\':
+        """
+        This program uses breadth-first search (BFS) and hashing
+        to create a clone, or deep copy of a given graph.
+
+        :param node: first node of a graph (val = 1)
+        :type node: Node
+        :return: first node of the clone graph (val = 1)
+        :rtype: Node
+        """
+
+        """
+        Create graph hash table (graph_hash) mapping each node
+        value (node.val) to its neighboring node values.
+        """
+        graph_hash = {}
+        queue = deque()
+        if node:
+            queue.append( node )
+        else:
+            return None
+        while queue:
+            node = queue.popleft()
+            if node.val not in graph_hash:
+                graph_hash[node.val] = []
+                for neighbor in node.neighbors:
+                    graph_hash[node.val].append(neighbor.val)
+                    if neighbor.val not in graph_hash:
+                        queue.append(neighbor)
+
+        """
+        Use graph_hash to create a clone of the original graph:
+        - Create the clone nodes.
+        - Create a hash table (clone_map) mapping a clone node
+          value (val) to its clone node.
+        - Use graph_hash and clone_map to create the links from
+          each clone node to its neighbors.
+        """
+        clone_map = {}
+        for val in graph_hash:
+            clone_map[val] = Node(val)
+        for val in clone_map:
+            node = clone_map[val]
+            for neighbor in graph_hash[val]:
+                node.neighbors.append(clone_map[neighbor])
+        clone = clone_map[1]
+        return clone

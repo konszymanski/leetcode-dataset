@@ -1,0 +1,23 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        d={}
+        i,j=0,0
+        l=\'\'
+        ans=[]
+        if(len(s)<10):
+            return 
+        while(j-i+1!=10+1):
+            l=l+s[j]
+            j=j+1
+        d.update({l: 0})
+        for m in range(i,len(s)-10):
+            l=l+s[m+10]
+            l=l[1:]
+            if(l in d):
+                d[l]=d[l]+1
+            else:
+                d.update({l: 0})
+        for k in d:
+            if(d[k]>=1):
+                ans.append(k)
+        return ans

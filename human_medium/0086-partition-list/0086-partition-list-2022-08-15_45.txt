@@ -1,0 +1,22 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        if head==None:
+            return None
+        d1=ListNode(-1)
+        d2=ListNode(-1)
+        dummy1=d1
+        dummy2=d2
+        curr=head
+        while curr:
+            if curr.val<x:
+                # lesser.append(curr.val)
+                d1.next=ListNode(curr.val)
+                d1=d1.next
+            else:
+                # greater.append(curr.val)
+                d2.next=ListNode(curr.val)
+                d2=d2.next
+        
+            curr=curr.next
+        d1.next=dummy2.next
+        return dummy1.next

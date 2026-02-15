@@ -1,0 +1,53 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def get_tree(self, inorder, preorder, fi, ei, fp, ep):
+        \'\'\'
+        This function returns the root node of the subtree whose, 
+        -> inorder traversal is represented in the inorder list from fi to ei index
+        -> preorder traversal is represented in the inorder list from fp to ep index
+        
+        inorder : inorder list of tree
+        preorder : preorder list of tree
+        
+        pointers are used to represent inorder traversal of a subtree
+        fi : first pointer of the inorder of the subtree
+        ei : last pointer of the inorder of the subtree
+
+        pointers are used to represent preorder traversal of a subtree
+        fi : first pointer of the preorder of the subtree
+        ei : last pointer of the preorder of the subtree
+        \'\'\'
+        
+        # if inorder and preorder list is empty that means there is no subtree 
+        if fp > ep:
+            return None
+        \'\'\'
+        if the list is not empty, then make a node that, 
+        -> value contains the first element of the preorder list
+        -> left pointer contains the root of the left subtree
+        -> right pointer contains the root of the right subtree
+        
+        new pointers are calculated using simple math on the size of the new inorder and preorder lists of subtree and old pointers   
+		find the subtrees using recursion
+        \'\'\'
+        node = TreeNode(preorder[fp])
+        node.left = self.get_tree(inorder, preorder, fi, self.inorder_d[preorder[fp]]-1, fp+1, fp + self.inorder_d[preorder[fp]] - fi)
+        node.right = self.get_tree(inorder, preorder, self.inorder_d[preorder[fp]]+1, ei, fp + self.inorder_d[preorder[fp]] - fi + 1, ep)
+        return node
+        
+    
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        
+        # Make a dictionary so that the time complexity of the operation to find the index of the element becomes O(1)
+        self.inorder_d = {}
+        n = len(inorder)
+        for i in range(n):
+            self.inorder_d[inorder[i]] = i
+            
+        # get the tree
+        return self.get_tree(inorder, preorder, 0, n-1, 0, n-1)

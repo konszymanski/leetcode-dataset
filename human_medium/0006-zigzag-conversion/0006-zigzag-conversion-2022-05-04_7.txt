@@ -1,0 +1,22 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        zero_period = numRows * 2 - 3
+
+        def collect_chars_by_level(idx: int) -> str:
+            iter_value = (numRows - idx) * 2 - 3
+            chars_by_level = \'\'
+
+            while idx < len(s):
+                chars_by_level += s[idx]
+                if idx + iter_value + 1 < len(s) and iter_value != -1 and iter_value != zero_period:
+                    chars_by_level += s[idx + iter_value + 1]
+
+                idx = idx + 1 if zero_period == -1 else idx + zero_period + 1
+
+            return chars_by_level
+
+        chars = \'\'
+        for curr_row_idx in range(numRows):
+            chars += collect_chars_by_level(idx=curr_row_idx)
+
+        return chars

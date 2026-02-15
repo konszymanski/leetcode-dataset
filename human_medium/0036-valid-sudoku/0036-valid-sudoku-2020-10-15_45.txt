@@ -1,0 +1,28 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        size = len(board)
+        for i in range(size):
+            uniq_x = set()
+            uniq_y = set()
+            for j in range(size):
+                if board[i][j] != \'.\':
+                    if board[i][j] in uniq_x:
+                        return False
+                    uniq_x.add(board[i][j])
+                if board[j][i] != \'.\':
+                    if board[j][i] in uniq_y:
+                        return False
+                    uniq_y.add(board[j][i])
+        
+        grid_starts = [0, 3, 6]
+        for i in grid_starts:
+            for j in grid_starts:
+                uniq = set()
+                for ii in range(i, i+3):
+                    for jj in range(j, j+3):
+                        if board[ii][jj] != \'.\':
+                            if board[ii][jj] in uniq:
+                                return False
+                            uniq.add(board[ii][jj])
+        
+        return True

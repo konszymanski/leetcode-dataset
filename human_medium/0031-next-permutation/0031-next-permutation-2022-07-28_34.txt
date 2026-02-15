@@ -1,0 +1,51 @@
+class Solution:
+    import random 
+
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        import random 
+
+        def quicksort(arr, start , stop): 
+            if(start < stop): 
+                pivotindex = partitionrand(arr, start, stop) 
+                quicksort(arr , start , pivotindex - 1) 
+                quicksort(arr, pivotindex + 1, stop) 
+
+
+        def partitionrand(arr , start, stop): 
+
+            randpivot = random.randrange(start, stop) 
+
+            arr[start], arr[randpivot] = arr[randpivot], arr[start] 
+            return partition(arr, start, stop) 
+
+
+        def partition(arr,start,stop): 
+            pivot = start 
+            i = start + 1
+                          
+            for j in range(start + 1, stop + 1): 
+                if arr[j] <= arr[pivot]: 
+                    arr[i] , arr[j] = arr[j] , arr[i] 
+                    i = i + 1
+            arr[pivot] , arr[i - 1] = arr[i - 1] , arr[pivot] 
+            pivot = i - 1
+            return (pivot) 
+        
+        for i in range(len(nums)-1, 0, -1):
+            if nums[i] > nums[i-1]:
+                
+                min_index = i
+                curr_min = nums[i]
+                for j in range(i+1, len(nums)):
+                    if nums[j] < nums[i] and nums[j] > nums[i-1]:
+                        min_index = j
+                
+                nums[i-1], nums[min_index] = nums[min_index], nums[i-1]
+                
+                quicksort(nums, i, len(nums)-1)
+                break
+        else:
+            nums[:] = nums[::-1]

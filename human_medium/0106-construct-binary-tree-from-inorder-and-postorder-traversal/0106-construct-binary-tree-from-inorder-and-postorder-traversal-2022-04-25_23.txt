@@ -1,0 +1,18 @@
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        if len(inorder) == 0: return None
+        root = TreeNode(postorder[-1])
+        stack, i = [root], len(inorder)-1
+        for n in reversed(postorder[:-1]):
+            if stack[-1].val != inorder[i]:
+                stack[-1].right = right = TreeNode(n)
+                stack.append(right)
+            else:
+                cur = stack[-1]
+                while stack and stack[-1].val == inorder[i]:
+                    cur = stack.pop()
+                    i -= 1
+                if i >= 0:
+                    cur.left = left = TreeNode(n)
+                    stack.append(left)
+        return root

@@ -1,0 +1,29 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        ans = []
+        used_bits = set()
+        SIZE = 2 ** n
+        
+        def bracktrack(cur: int):
+            if len(ans) == SIZE:
+                return True
+            
+            for i in range(n):
+				# Try to change one bit from 0 to n - 1
+                next_cur = cur ^ (1 << i)
+				# A candidate is not already used
+                if next_cur not in used_bits:
+                    used_bits.add(next_cur)
+                    ans.append(next_cur)
+                    if bracktrack(next_cur):
+                        return True
+					# Fail to find any soluton and bracktrack
+                    used_bits.remove(next_cur)
+                    ans.pop()
+            
+            return False
+
+        used_bits.add(0)
+        ans.append(0)
+        bracktrack(0)
+        return ans

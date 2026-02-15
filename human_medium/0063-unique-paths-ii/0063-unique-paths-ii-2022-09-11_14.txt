@@ -1,0 +1,26 @@
+class Solution:
+    def uniquePathsWithObstacles(self, grid: List[List[int]]) -> int:
+        self.grid = grid
+        self.R = len(grid)
+        self.C = len(grid[0])
+        self.directions = [(1, 0), (0, 1)]
+        
+        return self.explore(0, 0)
+    
+    @cache
+    def explore(self, r, c):
+        if not self.isValidCell(r, c):
+            return 0
+        
+        if r == self.R - 1 and c == self.C - 1:
+            return 1
+        
+        count = 0
+        for rInc, cInc in self.directions:
+            count += self.explore(r + rInc, c + cInc)
+            
+        return count
+        
+        
+    def isValidCell(self, r, c):
+        return r >= 0 and c >= 0 and r < self.R and c < self.C and self.grid[r][c] == 0

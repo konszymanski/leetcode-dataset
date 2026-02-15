@@ -1,0 +1,22 @@
+def flatten(self, root: Optional[TreeNode]) -> None:
+	def flatten(node):
+		node.right = node.left
+		node.left = None
+		while(node):
+			if(node.left):
+				n = node.right
+				x = flatten(node)
+				x.right = n
+			prev = node
+			node = node.right
+		return prev
+	t = root
+	while(t):
+		if(t.left):
+			n = t.right
+			x = flatten(t)
+			x.right = n
+			t = n
+		else:
+			t = t.right
+	return root

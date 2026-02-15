@@ -1,0 +1,21 @@
+class Solution(object):
+    def rec(self, n, lst, s):
+        numOpening = s.count(\'(\')
+        numClosing = s.count(\')\')
+        
+        if numClosing > numOpening or numOpening > n or numClosing > n:
+            return
+        
+        if numOpening == n and numClosing == n:
+            lst.append(s)
+            return
+        
+        self.rec(n, lst, s+\'(\')
+        self.rec(n, lst, s+\')\')
+        return
+        
+        
+    def generateParenthesis(self, n):
+        lst = []
+        self.rec(n, lst, \'(\')
+        return lst

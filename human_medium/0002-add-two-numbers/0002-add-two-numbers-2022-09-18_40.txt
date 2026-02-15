@@ -1,0 +1,33 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode() # taking dummy node
+        curr = dummy # making pointer to point to the dummy node.
+        
+        carry = 0 # taking variable to take care of carry.
+        
+        while l1 or l2 or carry: # Firstly we are considering we should be having 2 list & then we have to take care of 2nd edge case for that we are taking carry in it. If we didnt have to take care of carry then we could have used l1 and l2 as in merging of 2 linked lists.
+            v1 = l1.val if l1 else 0 # if we have any node in list1 else will add 0 as we might have carry to take care of.
+            # Could be written as :
+            #     if l1:
+            #         v1 = l1.val
+            #     else:
+            #         None
+            v2 = l2.val if l2 else 0 # if we have any node in list2 else will add 0 as we might have carry to take care of.
+            
+            # new digit
+            val = v1 + v2 + carry # calculating the sum of the values in both the list with any carry we might have.
+            carry = val // 10 # for calculating carry, for instance we have 15 as val then we`ll get 1 as carry.
+            val = val % 10 # for having the first digit(reminder), for instance we have 15 as val then we`ll get 5 as value(reminder).
+            curr.next = ListNode(val) # updating the reference to the next node of val. 
+            
+            # update pointers
+            curr = curr.next # updating pointer to point to the new node(value)
+            l1 = l1.next if l1 else None # updating pointer of list1 to have next value of list1.
+            l2 = l2.next if l2 else None # updating pointer of list2 to have next value of list2.
+            
+        return dummy.next # returing dummy next bcz actuall linked list is after dummy node only, that why we dont consider dummy node while returing the linked list.

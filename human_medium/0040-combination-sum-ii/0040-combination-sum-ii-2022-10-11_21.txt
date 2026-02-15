@@ -1,0 +1,23 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        output = []
+        
+        def helper(currCombo, currIndex, currTotal):
+            
+            if currIndex > len(candidates):
+                return
+            
+            if currIndex == len(candidates):
+                if currTotal == target:
+                    uniqueCombo = sorted(currCombo[:])
+                    if uniqueCombo not in output:
+                        output.append(uniqueCombo)
+                return
+
+            
+            helper(currCombo + [candidates[currIndex]], currIndex + 1, currTotal + candidates[currIndex])
+            helper(currCombo, currIndex + 1, currTotal)
+        
+        helper([], 0, 0)
+        return output

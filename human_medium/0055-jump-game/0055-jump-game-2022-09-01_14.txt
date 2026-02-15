@@ -1,0 +1,7 @@
+def canJump(self, nums: list) -> bool:
+        count, carry = 1, nums[0]
+        while carry and count < len(nums):
+            carry -= 1
+            carry = max(carry, nums[count])
+            count += 1
+        return count == len(nums)

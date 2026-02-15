@@ -1,0 +1,17 @@
+def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+	nums.sort()
+	res = []
+	stack = [([], 0)]
+	l = len(nums)
+
+	while stack:
+		sub, pos = stack.pop()
+		res.append(sub)
+		last = None
+
+		while pos<l:
+			if nums[pos]!=last:
+				stack.append((sub+[nums[pos]], pos+1))
+				last = nums[pos]
+			pos+=1
+	return res

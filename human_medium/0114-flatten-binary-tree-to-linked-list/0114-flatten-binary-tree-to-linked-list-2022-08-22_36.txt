@@ -1,0 +1,19 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        
+        if root:
+            
+            self.flatten(root.left)       
+            left = root.left
+            root.left = None
+            
+            self.flatten(root.right)
+            right = root.right
+            root.right = left
+            
+            temp = root
+            
+            while temp.right:
+                temp = temp.right
+                
+            temp.right = right

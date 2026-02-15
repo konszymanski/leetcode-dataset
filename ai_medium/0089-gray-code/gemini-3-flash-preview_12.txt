@@ -1,0 +1,11 @@
+```python
+from typing import List
+
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        # The i-th number in a standard n-bit Gray code sequence
+        # can be calculated using the formula: i XOR (i >> 1)
+        # This formula generates a sequence where adjacent elements,
+        # including the first and last, differ by exactly one bit.
+        return [i ^ (i >> 1) for i in range(1 << n)]
+```

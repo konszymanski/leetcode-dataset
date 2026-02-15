@@ -1,0 +1,13 @@
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        result = []
+        def bfs(root,level):
+            if root:
+                if len(result) > level:
+                    result[level].append(root.val)
+                else:
+                    result.append([root.val])
+                bfs(root.left,level + 1)
+                bfs(root.right,level + 1)
+        bfs(root,0)
+        return [i[-1] for i in result]

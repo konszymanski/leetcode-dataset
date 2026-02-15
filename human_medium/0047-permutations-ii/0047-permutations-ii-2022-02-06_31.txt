@@ -1,0 +1,14 @@
+class Solution:  
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        permutation=[]
+        def findPermute(nums,permute):
+            if not nums:
+                permutation.append(permute)
+                return
+            seen={}
+            for i in range(len(nums)):
+                if nums[i] not in seen: 
+                    findPermute(nums[:i]+nums[i+1:],permute+[nums[i]])
+                    seen[nums[i]]=1
+        findPermute(nums,[])
+        return permutation

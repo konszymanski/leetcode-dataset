@@ -1,0 +1,60 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        n = len(s)
+        stack = []
+        res = []
+        
+        def isValid(s):
+            """
+            Check if the current segment is valid :      
+                1. the first character could be \'0\' 
+                   only if the segment is equal to \'0\'
+                2. 0 <= segment <= 255
+            """
+            sInt = int(s)
+            return len(str(sInt)) == len(s) and (0 <= sInt <= 255)
+        
+        \'\'\'
+        Each loop processes a maximum of 3 iterations to find where
+        to put the "."
+        \'\'\'
+        for i in range(1, min(4, n)):
+            firstNum = s[:i]
+            
+            if not isValid(firstNum):
+                \'\'\'
+                If the current number is not valid, we cannot create a
+                valid IP address by consuming any more numbers using this
+                current number, so break early to move on to the next iteration.
+                \'\'\'
+                break
+                
+            stack.append(firstNum)
+            
+            for j in range(i+1, min(i+4, n)):
+                secondNum = s[i:j]
+                
+                if not isValid(secondNum):
+                    break
+                
+                stack.append(secondNum)
+
+                for k in range(j+1, min(j+4, n)):
+                    thirdNum = s[j:k]
+                    fourthNum = s[k:]
+                    
+                    if isValid(thirdNum) and isValid(fourthNum):
+                        \'\'\'
+                        All number segments are valid, so combine and add them
+                        to the final answer.
+                        \'\'\'
+                        res.append(".".join(stack[:] + [thirdNum, fourthNum]))
+                     
+                \'\'\'
+                Remove processed number segments from the stack to accept
+                new valid IP number segments.
+                \'\'\'
+                stack.pop()
+            stack.pop()
+                    
+        return res

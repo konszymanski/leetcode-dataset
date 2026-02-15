@@ -1,0 +1,20 @@
+from collections import namedtuple
+
+Interval = namedtuple("Interval", ["start", "end"])
+
+class Solution:
+    def insert(self, intervals, newInterval):
+        intervals = [Interval(x[0], x[1]) for x in intervals]
+        s, e = newInterval[0], newInterval[1]
+        left_intervals, right_intervals = [], []
+        for interval in intervals:
+            # Intervals with end time strictly lesser than start time of newInterval
+            if interval.end < s: 
+                left_intervals.append([interval.start, interval.end])
+            # Intervals with start time strictly greater than end time of newInterval
+            elif interval.start > e:
+                right_intervals.append([interval.start, interval.end])
+            else:
+                s = min(s, interval.start)
+                e = max(e, interval.end)
+        return left_intervals + [[s, e]] + right_intervals

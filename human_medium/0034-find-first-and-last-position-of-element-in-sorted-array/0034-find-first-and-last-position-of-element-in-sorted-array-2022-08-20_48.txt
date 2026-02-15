@@ -1,0 +1,23 @@
+class Solution(object):
+    def searchRange(self, nums, target):
+        l,r = 0, len(nums)-1
+
+        while l<=r:
+            m = (l+r)//2
+
+            lpoint=m
+            rpoint=m
+            if nums[m] == target:
+                while lpoint-1 >=0 and nums[lpoint-1] == nums[lpoint]:
+                    lpoint-=1
+                while rpoint+1 <= len(nums)-1 and nums[rpoint+1] == nums[rpoint]:
+                    rpoint+=1
+
+                return [lpoint, rpoint]
+
+            elif nums[m] > target:
+                r = m-1
+            else:
+                l = m+1
+
+        return [-1, -1]

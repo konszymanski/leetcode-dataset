@@ -1,0 +1,42 @@
+```python
+from typing import List
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        n = len(s)
+        res = []
+        if n < 4 or n > 12:
+            return res
+
+        def backtrack(start: int, path: List[str]):
+            # If we have 4 segments and have used all characters, add to results
+            if len(path) == 4:
+                if start == n:
+                    res.append(".".join(path))
+                return
+            
+            # Pruning: check if the remaining characters can fit in the remaining segments
+            remaining_segments = 4 - len(path)
+            remaining_chars = n - start
+            if remaining_chars < remaining_segments or remaining_chars > remaining_segments * 3:
+                return
+
+            for length in range(1, 4):
+                if start + length <= n:
+                    segment = s[start : start + length]
+                    
+                    # Rule: Each integer is between 0 and 255 (inclusive)
+                    if int(segment) > 255:
+                        continue
+                    
+                    # Rule: Each integer cannot have leading zeros unless it is "0"
+                    if len(segment) > 1 and segment[0] == '0':
+                        continue
+                        
+                    path.append(segment)
+                    backtrack(start + length, path)
+                    path.pop()
+
+        backtrack(0, [])
+        return res
+```

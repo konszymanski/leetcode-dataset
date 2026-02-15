@@ -1,0 +1,41 @@
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+"""
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        deep_copy_dict={}
+        # if the list is empty return none
+        if not head:
+            return None
+        current_node=head
+        # we are creating a while loop which will add elements to the copy dictionary till Null
+        while current_node:
+            #we are only copying the values from the list 
+            deep_copy_dict[current_node]=Node(current_node.val,None,None)
+            #increment current_node to next node value
+            current_node=current_node.next
+        # by this time we have copied all data values to the new dictionary
+        current_node=head
+        # we wil run a while loop until the end ogflist
+        while current_node:
+            if current_node.next:
+            # we are assigning the copied list next pointer the value from the 
+            # original current_node.next value. This creates a link within the lists
+                deep_copy_dict[current_node].next=deep_copy_dict.get(current_node.next)
+            if current_node.random:
+            # we are assigning the copied list random pointer the value from the 
+            # original current_node.random value. This will make our copy list to 
+            # point to the exact value which was in the earlier list
+                deep_copy_dict[current_node].random=deep_copy_dict.get(current_node.random)
+            current_node=current_node.next
+            
+        return deep_copy_dict.get(head)

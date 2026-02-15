@@ -1,0 +1,21 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        ans = []
+        comb = []
+        
+        def combSum(i, total):
+            # Base case --> We can only use 1-9, if i reaches 10 --> we need to check for valid combination
+            if i == 10:
+                if total == n and len(comb) == k:
+                    ans.append(comb.copy())
+                return
+            
+            # Pick this element
+            comb.append(i)
+            combSum(i + 1, total + i)
+            comb.pop()
+            # Not pick this element
+            combSum(i + 1, total)
+            
+        combSum(1, 0)
+        return ans

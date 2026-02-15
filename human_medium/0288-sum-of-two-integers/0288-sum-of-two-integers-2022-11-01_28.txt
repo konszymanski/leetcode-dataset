@@ -1,0 +1,1 @@
+return int(math.log2(2**a * 2**b))

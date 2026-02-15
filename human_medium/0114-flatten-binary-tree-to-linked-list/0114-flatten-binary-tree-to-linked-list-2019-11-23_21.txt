@@ -1,0 +1,13 @@
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        right_most = None
+        def DFS(node):
+            if node is None:
+                return
+            nonlocal right_most
+            DFS(node.right)
+            DFS(node.left)
+            node.left = None
+            node.right = right_most
+            right_most = node
+        DFS(root)
