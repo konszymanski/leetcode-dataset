@@ -13,7 +13,7 @@ This repository contains the dataset and analysis scripts for the research paper
 (*AGH University of Krakow, Faculty of Electrical Engineering, Automatics, IT and Biomedical Engineering*)
 
 ---
-### **Original respository (private)**
+### **Original respository**
 
 [https://github.com/sprawdzarka-aisd/plagiarism-detection-tools-comparison](https://github.com/paulinagacek/leetcode-dataset)
 
